@@ -191,7 +191,8 @@ def GetGoodFiles(edir):
 		name = x[-1]
 		ident = identifier(name)
 		# goodeval = IsNotCorruptionTest('root://eoscms//eos/cms/'+name)
-		goodeval = IsNotCorruptionTest('~/eos/cms'+name)
+		# goodeval = IsNotCorruptionTest('~/eos/cms'+name)
+		goodeval = True
 		print name,goodeval
 		if goodeval == True:
 			files.append([size,name,ident])
@@ -252,9 +253,10 @@ else:
 	print '\n *** NOTE: You can refresh the file list at anytime with the argument: --FileRefresh\n\n'
 	_allfiles = [line for line in open(masterdirlist,'r')]
 
-blacklist = ['/store/group/phys_exotica/leptonsPlusJets/RootNtuple/eberry/RootNtuple-V00-03-09-Summer12MC_DYNJetsToLL_MG_20121104_171728/DY3JetsToLL_M-50_TuneZ2Star_8TeV-madgraph__Summer12_DR53X-PU_S10_START53_V7A-v1__AODSIM_17_2_9nV.root']
-blacklist.append('/store/group/phys_exotica/leptonsPlusJets/RootNtuple/eberry/RootNtuple-V00-03-09-Summer12MC_DYNJetsToLL_MG_20121104_171728/DY4JetsToLL_M-50_TuneZ2Star_8TeV-madgraph__Summer12_DR53X-PU_S10_START53_V7A-v1__AODSIM_426_1_dk8.root')
-blacklist.append('/store/group/phys_exotica/leptonsPlusJets/RootNtuple/darinb/RootNtuple-V00-03-08-Summer12MC_WJetsToLNu_Systematics_MG_20130103_171750/WJetsToLNu_matchingup_8TeV-madgraph-tauola__Summer12_DR53X-PU_S10_START53_V7A-v1__AODSIM_235_1_aqW.root')
+blacklist = []
+# blacklist = ['/store/group/phys_exotica/leptonsPlusJets/RootNtuple/eberry/RootNtuple-V00-03-09-Summer12MC_DYNJetsToLL_MG_20121104_171728/DY3JetsToLL_M-50_TuneZ2Star_8TeV-madgraph__Summer12_DR53X-PU_S10_START53_V7A-v1__AODSIM_17_2_9nV.root']
+# blacklist.append('/store/group/phys_exotica/leptonsPlusJets/RootNtuple/eberry/RootNtuple-V00-03-09-Summer12MC_DYNJetsToLL_MG_20121104_171728/DY4JetsToLL_M-50_TuneZ2Star_8TeV-madgraph__Summer12_DR53X-PU_S10_START53_V7A-v1__AODSIM_426_1_dk8.root')
+# blacklist.append('/store/group/phys_exotica/leptonsPlusJets/RootNtuple/darinb/RootNtuple-V00-03-08-Summer12MC_WJetsToLNu_Systematics_MG_20130103_171750/WJetsToLNu_matchingup_8TeV-madgraph-tauola__Summer12_DR53X-PU_S10_START53_V7A-v1__AODSIM_235_1_aqW.root')
 
 
 allfiles = []
@@ -478,12 +480,13 @@ if 'Counter' in pyfile:
 		Ostr = str(SignalType[x]) +' , '+ str(OCount)+'\n'
 		countlog.write(Ostr)
 	countlog.close()
-	print 'Output is in ',thisdir+ '/'+ifile.replace('.','_EventCountLog.'),' ...'
 	os.system('cat '+thisdir+ '/'+ifile.replace('.','_EventCountLog.'))
 	print '\n\n\n'
 	for r in rms:
 		print r
 		os.system(r)
+
+	print 'Output is in ',thisdir+ '/'+ifile.replace('.','_EventCountLog.'),' ...'
 
 
 def listsplit(l, n):
@@ -558,6 +561,6 @@ if 'Analyz' in pyfile:
 
 
 
-print ('\n\n'+140*'*'+ '\n\n      Analysis Complete. A full set of output files can be found in  \n\n       '+thiseos+'/SummaryFiles\n')
-os.system('ls '+thiseos+'/SummaryFiles')
-print ('\n\n'+140*'*'+ '\n\n')
+	print ('\n\n'+140*'*'+ '\n\n      Analysis Complete. A full set of output files can be found in  \n\n       '+thiseos+'/SummaryFiles\n')
+	os.system('ls '+thiseos+'/SummaryFiles')
+	print ('\n\n'+140*'*'+ '\n\n')
