@@ -374,9 +374,7 @@ def MakeJobs(njobs):
 	for j in jobgroups:
 		Nj += 1
 		subber = open(thiseos+'/subber_'+str(Nj)+'.tcsh','w')
-		# subber.write('#!/bin/tcsh\n\ncd /afs/cern.ch/work/d/darinb/CMSSW_4_2_8/src\ncmsenv\n\n')
-		# subber.write('\ncd '+thisdir+'\n\n')
-		subber.write('#!/bin/tcsh\n\ncd /afs/cern.ch/work/d/darinb/CMSSW_4_2_8/src\ncmsenv\ncd -\n\n')
+		subber.write('#!/bin/tcsh\n\nscram project CMSSW CMSSW_5_3_5\ncd CMSSW_5_3_5/src\ncmsenv\ncd -\n\n')
 		subber.write('\ncp '+thisdir+'/'+pyfile+' .')
 		subber.write('\ncp '+thisdir+'/'+json+' .')
 		subber.write('\ncp '+thisdir+'/*json .')
