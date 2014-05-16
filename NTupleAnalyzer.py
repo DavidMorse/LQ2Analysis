@@ -6,7 +6,6 @@ from ROOT import *
 import array
 import math
 from optparse import OptionParser
-startTime = datetime.now()
 tRand = TRandom3()
 from random import randint
 import os
@@ -234,18 +233,7 @@ def GetPDFWeightVars(T):
 
 
 # Get the appropriate numbers of PDF weights from the tree
-_pdfweights = GetPDFWeightVars(t)
-
-# _pdfLHS will store the lefthand side of an equation to cast all pdfweights
-#  into their appropriate branches
-_pdfLHS = '['
-if dopdf:
-	for b in _pdfweights:
-		_pdfLHS += (b+'[0],')
-
-_pdfLHS +=']' 
-_pdfLHS = _pdfLHS.replace(',]',']')
-
+_pdfweightsnames = GetPDFWeightVars(t)
 
 ##########################################################################################
 #################         Prepare the Output Tree                  #######################
@@ -261,23 +249,37 @@ tout=TTree("PhysicalVariables","PhysicalVariables")
 
 
 # Below all the branches are created, everything is a double except for flags
+# for b in _kinematicvariables:
+# 	for v in _variations:
+# 		exec(b+v+' = array.array("f",[0])')
+# 		exec('tout.Branch("'+b+v+'",'+b+v+',"'+b+v+'/F")' )
+# for b in _weights:
+# 	exec(b+' = array.array("f",[0])')
+# 	exec('tout.Branch("'+b+'",'+b+',"'+b+'/F")' )
+# if dopdf:
+# 	for b in _pdfweights:
+# 		exec(b+' = array.array("f",[0])')
+# 		print (b+' = array.array("f",[0])')
+# 		exec('tout.Branch("'+b+'",'+b+',"'+b+'/F")' )
+# for b in _flags:
+# 	exec(b+' = array.array("L",[0])')
+# 	exec('tout.Branch("'+b+'",'+b+',"'+b+'/i")' )
+
+Branches = {}
 for b in _kinematicvariables:
 	for v in _variations:
-		exec(b+v+' = array.array("f",[0])')
-		exec('tout.Branch("'+b+v+'",'+b+v+',"'+b+v+'/F")' )
+		Branches[b+v] = array.array("f",[0])
+		tout.Branch(b+v,Branches[b+v],b+v+"/F")
 for b in _weights:
-	exec(b+' = array.array("f",[0])')
-	exec('tout.Branch("'+b+'",'+b+',"'+b+'/F")' )
+	Branches[b] = array.array("f",[0])
+	tout.Branch(b,Branches[b],b+"/F")
 if dopdf:
-	for b in _pdfweights:
-		exec(b+' = array.array("f",[0])')
-		print (b+' = array.array("f",[0])')
-		exec('tout.Branch("'+b+'",'+b+',"'+b+'/F")' )
+	for b in _pdfweightsnames:
+		Branches[b] = array.array("f",[0])
+		tout.Branch(b,Branches[b],b+"/F")
 for b in _flags:
-	exec(b+' = array.array("L",[0])')
-	exec('tout.Branch("'+b+'",'+b+',"'+b+'/i")' )
-
-
+	Branches[b] = array.array("L",[0])
+	tout.Branch(b,Branches[b],b+"/i")
 
 
 ##########################################################################################
@@ -453,14 +455,13 @@ def GetPUWeight(T,version,puversion):
 	return puweight
 
 
-def FillPDFWeights(T):
-	# Purpose: Given the _pdfLHS stored at the begging when branches were created,
-	#         this function will set all PDFweights in the event. 	
+def GetPDFWeights(T):
+	# Purpose: Gather the pdf weights into a single list. 	
 	_allweights = []
 	_allweights += T.PDFCTEQWeights
 	_allweights += T.PDFNNPDFWeights
 	_allweights += T.PDFMSTWWeights
-	return (_pdfLHS+' = '+str(_allweights))
+	return _allweights
 
 
 def MuonsFromLQ(T):
@@ -720,15 +721,22 @@ def LooseIDJets(T,_met,variation,isdata):
 			_PFJetPt = [pt for pt in T.PFJetScaledDownPt]
 			_met.SetPtEtaPhiM(T.PFMETType01XYCorJetEnDown[0],0,T.PFMETPhiType01XYCorJetEnDown[0],0)
 
-
+	# This is just a variable which will store the highest pT jet failing ID
+	# It was just a curiosity.
 	JetFailThreshold=0.0
 
+	# The list of jets, their indices in the jet list, and a couple energy fractions
+	# we were interested in storing.
 	jets=[]
 	jetinds = []
 	NHF = []
 	NEMF = []
+
+	# Loop over jets
 	for n in range(len(_PFJetPt)):
+		#  Jet kinematics thresholds. More pT cuts will be applied later.
 		if _PFJetPt[n]>30 and abs(T.PFJetEta[n])<2.4 :
+			# ID criteria
 			if T.PFJetPassLooseID[n]==1:
 				j = TLorentzVector()
 				j.SetPtEtaPhiM(_PFJetPt[n],T.PFJetEta[n],T.PFJetPhi[n],0)		
@@ -751,19 +759,26 @@ def MetVector(T):
 def GetLLJJMasses(l1,l2,j1,j2):
 	# Purpose: For LLJJ channels, this function returns two L-J Masses, corresponding to the
 	#         pair of L-Js which minimizes the difference between LQ masses in the event
+
+	# These are the invariant mass combinations 
 	m11 = (l1+j1).M()
 	m12 = (l1+j2).M()
 	m21 = (l2+j1).M()
 	m22 = (l2+j2).M()
-	mh = 0.0
+	mh = 0.0 # This will be the invariant mass of the lepton and leading jet
+
+	# Difference in Mass for the two matching scenarios
 	diff1 = abs(m21-m12)
 	diff2 = abs(m11-m22)
+
+	# The ideal match minimizes the Mass difference above
+	# Based on the the diffs, store the appropriate pairs	
 	if diff1 < diff2:
-		pair =  [m21,m12]
-		mh = m21
+		pair =  [m21,m12] # The invariant mass pair
+		mh = m21          # invariant mass corresponding to leading jet
 	else:
-		pair = [m11,m22]
-		mh = m11
+		pair = [m11,m22]  # The invariant mass pair
+		mh = m11          # invariant mass corresponding to leading jet
 	pair.sort()
 	pair.reverse()
 	pair.append(mh)
@@ -773,23 +788,32 @@ def GetLVJJMasses(l1,met,j1,j2):
 	# Purpose: For LVJJ channels, this function returns two L-J Masses, and an LJ mass and mT, 
 	#         Quantities corresponding to the pair of L-Js which minimizes the difference 
 	#         between LQ masses in the event
+
+	# These are the lepton-jet masses
 	m11 = (l1+j1).M()
 	m12 = (l1+j2).M()
+	# These are the lepton-jet transverse masses
 	mt11 = TransMass(l1,j1)
 	mt12 = TransMass(l1,j2)
+	# These are the met-jet transverse masses
 	mte1 = TransMass(met,j1)
 	mte2 = TransMass(met,j2)
 	mh = 0.0	
-	diff1 = abs(mte1-mt12)
-	diff2 = abs(mt11-mte2)
+	# Difference in MT for the two matching scenarios
+	diff1 = abs(mte1-mt12)  # MET matched to jet1, lepton matched to jet2
+	diff2 = abs(mt11-mte2)  # MET matched to jet2, lepton matched to jet1
+	# The ideal match minimizes the MT difference above
+	# Based on the the diffs, store the appropriate pairs
 	if diff1 < diff2:
-		pair =  [mte1,mt12]
-		pairwithinv = [m12,mte1]
+		pair =  [mte1,mt12]      # These are the two trans-mass values
+		pairwithinv = [m12,mte1] # Instead we could store one invariant mass and one trans mass
+	# This is the other matching possibility
 	else:
 		pair = [mt11,mte2]
 		invmass = m11
-		mh = m11
+		mh = m11 # The invariant mass pair with the leading jet
 		pairwithinv = [m11,mte2]
+	# Let put the pair of trans-masses in pT order
 	pair.sort()
 	pair.reverse()
 	
@@ -953,6 +977,7 @@ def FullKinematicCalculation(T,variation):
 ##########################################################################################
 #################    BELOW IS THE ACTUAL LOOP OVER ENTRIES         #######################
 ##########################################################################################
+startTime = datetime.now()
 
 # Please don't edit here. It is static. The kinematic calulations are the only thing to edit!
 lumisection = array.array("L",[0])
@@ -974,57 +999,58 @@ for n in range(N):
 	## ===========================  BASIC SETUP  ============================= ##
 	# print '-----'
 	# Assign Weights
-	weight_central[0] = startingweight*GetPUWeight(t,'Central','Basic')
-	weight_pu_down[0] = startingweight*GetPUWeight(t,'SysDown','Basic')
-	weight_pu_up[0] = startingweight*GetPUWeight(t,'SysUp','Basic')
-	weight_central_2012D = startingweight*GetPUWeight(t,'Central','2012D')
-	weight_nopu[0] = startingweight
+	Branches['weight_central'][0] = startingweight*GetPUWeight(t,'Central','Basic')
+	Branches['weight_pu_down'][0] = startingweight*GetPUWeight(t,'SysDown','Basic')
+	Branches['weight_pu_up'][0] = startingweight*GetPUWeight(t,'SysUp','Basic')
+	Branches['weight_central_2012D'][0] = startingweight*GetPUWeight(t,'Central','2012D')
+	Branches['weight_nopu'][0] = startingweight
 	if dopdf:
-		exec(FillPDFWeights(t))
+		pdfweights = GetPDFWeights(t)
+		for p in range(len(pdfweights)):
+			Branches[_pdfweightsnames[p]][0] = pdfweights[p]
 	
 	# Event Flags
-
-
-	run_number[0]   = t.run
+	Branches['run_number'][0]   = t.run
 	# event_number[0] = int(t.event)
-	event_number[0] = t.event
-	lumi_number[0]  = lumisection[0]
-	GoodVertexCount[0] = CountVertices(t)
+	Branches['event_number'][0] = t.event
+	Branches['lumi_number'][0]  = lumisection[0]
+	Branches['GoodVertexCount'][0] = CountVertices(t)
 
 
 
 
 	if t.isData == True:
-		pass_HLTMu40_eta2p1[0] = PassTrigger(t,["HLT_Mu40_eta2p1_v"],1)         # Data Only
-		passTriggerObjectMatching[0]  = 1*(True in t.MuonHLTSingleMuonMatched)  # Data Only
-		passBPTX0[0]                  = 1*(t.isBPTX0)          # Unused, Data only: MC = 0
-		passBeamScraping[0]           = 1*(1-t.isBeamScraping) # Used, Data only
-		passTrackingFailure[0]        = 1*(1-t.isTrackingFailure) # Used, Data only
-		passBadEESuperCrystal[0]      = 1*(1-t.passBadEESupercrystalFilter) # Used, Data only
-		passEcalLaserCorr[0]          = 1*(t.passEcalLaserCorrFilter) # Used, Data only
-		# passHcalLaserEvent[0]         = 1*(1-t.passHcalLaserEventFilter) # Used, Data only
-		passHcalLaserEvent[0]         = 1 # Ooops, where did it go?
-		passPhysDeclared[0]           = 1*(t.isPhysDeclared)
+		Branches['pass_HLTMu40_eta2p1'][0] = PassTrigger(t,["HLT_Mu40_eta2p1_v"],1)         # Data Only
+		Branches['passTriggerObjectMatching'][0]  = 1*(True in t.MuonHLTSingleMuonMatched)  # Data Only
+		Branches['passBPTX0'][0]                  = 1*(t.isBPTX0)          # Unused, Data only: MC = 0
+		Branches['passBeamScraping'][0]           = 1*(1-t.isBeamScraping) # Used, Data only
+		Branches['passTrackingFailure'][0]        = 1*(1-t.isTrackingFailure) # Used, Data only
+		Branches['passBadEESuperCrystal'][0]      = 1*(1-t.passBadEESupercrystalFilter) # Used, Data only
+		Branches['passEcalLaserCorr'][0]          = 1*(t.passEcalLaserCorrFilter) # Used, Data only
+		Branches['# passHcalLaserEvent'][0]         = 1*(1-t.passHcalLaserEventFilter) # Used, Data only
+		Branches['passHcalLaserEvent'][0]         = 1 # Ooops, where did it go?
+		Branches['passPhysDeclared'][0]           = 1*(t.isPhysDeclared)
 
 	else:
-		pass_HLTMu40_eta2p1[0] = PassTrigger(t,["HLT_Mu40_eta2p1_v"],1)        
-		passTriggerObjectMatching[0]  = 1
-		passBPTX0[0]                  = 1
-		passBeamScraping[0]           = 1
-		passTrackingFailure[0]        = 1
-		passBadEESuperCrystal[0]      = 1
-		passEcalLaserCorr[0]          = 1
-		passHcalLaserEvent[0]         = 1
-		passPhysDeclared[0]           = 1
+		Branches['pass_HLTMu40_eta2p1'][0] = PassTrigger(t,["HLT_Mu40_eta2p1_v"],1)        
+		Branches['passTriggerObjectMatching'][0]  = 1
+		Branches['passBPTX0'][0]                  = 1
+		Branches['passBeamScraping'][0]           = 1
+		Branches['passTrackingFailure'][0]        = 1
+		Branches['passBadEESuperCrystal'][0]      = 1
+		Branches['passEcalLaserCorr'][0]          = 1
+		Branches['passHcalLaserEvent'][0]         = 1
+		Branches['passPhysDeclared'][0]           = 1
 	
-	passPrimaryVertex[0]          = 1*(t.isPrimaryVertex)     # checked, data+MC
-	passHBHENoiseFilter[0]        = 1*(t.passHBHENoiseFilter) # checked, data+MC
-	passBeamHalo[0]               = 1*(t.passBeamHaloFilterTight) # checked, data+MC
-	passEcalDeadCellBE[0]         = 1*(1-t.passEcalDeadCellBoundaryEnergyFilter) # Checked, data + MC
-	passEcalDeadCellTP[0]         = 1*(1-t.passEcalDeadCellTriggerPrimitiveFilter) # Checked, data + MC
+	Branches['passPrimaryVertex'][0]          = 1*(t.isPrimaryVertex)     # checked, data+MC
+	Branches['passHBHENoiseFilter'][0]        = 1*(t.passHBHENoiseFilter) # checked, data+MC
+	Branches['passBeamHalo'][0]               = 1*(t.passBeamHaloFilterTight) # checked, data+MC
+	Branches['passEcalDeadCellBE'][0]         = 1*(1-t.passEcalDeadCellBoundaryEnergyFilter) # Checked, data + MC
+	Branches['passEcalDeadCellTP'][0]         = 1*(1-t.passEcalDeadCellTriggerPrimitiveFilter) # Checked, data + MC
 
-	passDataCert[0] = 1
-	if ( (t.isData==True) and (CheckRunLumiCert(t.run,lumisection[0]) == False) ) : 	passDataCert[0] = 0
+	Branches['passDataCert'][0] = 1
+	if ( (t.isData==True) and (CheckRunLumiCert(t.run,lumisection[0]) == False) ) : 	
+		Branches['passDataCert'][0] = 0
 
 
 
@@ -1036,23 +1062,22 @@ for n in range(N):
 		calculations = FullKinematicCalculation(t,v)
 		# Now cleverly cast the variables
 		for b in range(len(_kinematicvariables)):
-			exec(_kinematicvariables[b]+v+'[0] = calculations['+str(b)+']')
-
+			Branches[_kinematicvariables[b]+v][0] = calculations[b]
 
 	## ===========================     Skim out events     ============================= ##
 
-	# Feel like skimming? Do it here. The syntax is just {branchname}[0] > blah, or whatever condition
-	# you want to impose. The [0] is because pyroot passes everything as an array of length 1.
+	# Feel like skimming? Do it here. The syntax is just Branches[branchname] > blah, or whatever condition
+	# you want to impose. This Branches[blah] mapping was needed because branches must be linked to arrays of length [0]
 	# BE MINDFUL: Just because the central (non-systematic) quantity meets the skim, does not mean 
 	# that the systematic varied quantity will, and that will throw off systematics calculations later.
 	# Make sure your skim is looser than any selection you will need afterward!
 
-	if (Pt_muon1[0] < 42): continue
+	if (Branches['Pt_muon1'][0] < 42): continue
 	if nonisoswitch != True:
-		if (Pt_muon2[0] < 42) and (Pt_miss[0] < 35): continue
-	if (Pt_jet1[0] < 110): continue
-	if (Pt_jet2[0] < 40): continue
-	if (St_uujj[0] < 250) and (St_uvjj[0] < 250): continue
+		if (Branches['Pt_muon2'][0] < 42) and (Branches['Pt_miss'][0] < 35): continue
+	if (Branches['Pt_jet1'][0] < 110): continue
+	if (Branches['Pt_jet2'][0] < 40): continue
+	if (Branches['St_uujj'][0] < 250) and (Branches['St_uvjj'][0] < 250): continue
 	# Fill output tree with event
 	tout.Fill()
 
