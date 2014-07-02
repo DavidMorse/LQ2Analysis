@@ -270,6 +270,10 @@ for a in _allfiles:
 
 jobs = []
 
+output_subfolders = [thiseos+'/outputdir'+str(random.randint(1,999999999)) for nnn in range(20)]
+for f in output_subfolders:
+	os.system('mkdir '+f)
+
 for x in range(len(SignalType)):
 
 	signal = SignalType[x]
@@ -290,12 +294,12 @@ for x in range(len(SignalType)):
 	print 'Preparing '+ SignalType[x],':', len(fcont),'files.'
 
 	for f in fcont:
-		jobs.append('python '+pyfile.replace('\n','')+' -f '+f.replace('\n','').replace('//','/')+' -s '+sigma+' -n '+Norig+' -j '+thisjson + ' -l 1.0 -p '+dopdf+' -d '+thiseos.replace('\n',''))
+		jobs.append('python '+pyfile.replace('\n','')+' -f '+f.replace('\n','').replace('//','/')+' -s '+sigma+' -n '+Norig+' -j '+thisjson + ' -l 1.0 -p '+dopdf+' -d '+random.choice(output_subfolders).replace('\n',''))
 
 # Some NTuple sets have larger files then others. Avoid grouping of large files by shuffling. 
 random.shuffle(jobs)
 
-print 'jobs: ',len(jobs)
+print 'Total file count: ',len(jobs)
 
 def FolderizeOutput(MainFolder):
 	foldername = MainFolder+'/outputdir'+str(random.randint(1,999999999))
@@ -340,17 +344,17 @@ def MakeJobs(njobs):
 	nj=0
 
 	bjq = bq
-	if len(jlist) < 1000:
-		njobs = 5
-	if len(jlist) < 500:
-		njobs = 3
-		bjq = '8nh'
-	if len(jlist) < 200:
-		njobs = 2
-		bjq = '8nh'
-	if len(jlist) < 50:
-		njobs = 1
-		bjq = '8nh'
+	#if len(jlist) < 1000:
+	#	njobs = 5
+	#if len(jlist) < 500:
+	#	njobs = 3
+	#	bjq = '8nh'
+	#if len(jlist) < 200:
+	#	njobs = 2
+	#	bjq = '8nh'
+	#if len(jlist) < 50:
+	#	njobs = 1
+	#	bjq = '8nh'
 
 	for ii in range(len(jlist)):
 		nj += 1
@@ -366,22 +370,22 @@ def MakeJobs(njobs):
 
 	print 'subbing: ',len(jobgroups),'jobs.'
 	findircont =   str(os.popen('ls '+thiseos).readlines())
-	if '.txt' in findircont or '.root' in findircont:
-		FolderizeOutput(thiseos)
+	# if '.txt' in findircont or '.root' in findircont:
+	# 	FolderizeOutput(thiseos)
 
-	FolderizeOutput(thiseos)
+	# FolderizeOutput(thiseos)
 	os.system('rm '+thiseos+'/subber_*.tcsh')
 	for j in jobgroups:
 		Nj += 1
 		subber = open(thiseos+'/subber_'+str(Nj)+'.tcsh','w')
-		subber.write('#!/bin/tcsh\n\nscram project CMSSW CMSSW_5_3_5\ncd CMSSW_5_3_5/src\ncmsenv\ncd -\n\n')
+		subber.write('#!/bin/tcsh\n\nscram project CMSSW CMSSW_5_3_18\ncd CMSSW_5_3_18/src\ncmsenv\ncd -\n\n')
 		subber.write('\ncp '+thisdir+'/'+pyfile+' .')
 		subber.write('\ncp '+thisdir+'/'+json+' .')
 		subber.write('\ncp '+thisdir+'/*json .')
 		subber.write('\ncp '+thisdir+'/PU*root .\n\n')
 
-		if Nj*njobs>5000:
-			continue
+		# if Nj*njobs>5000:
+		# 	continue
 		for x in j:
 			subber.write(x+'\n')
 

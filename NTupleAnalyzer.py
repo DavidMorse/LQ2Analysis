@@ -104,6 +104,7 @@ print 'After demand 1 pt42 muon: ',N
 _kinematicvariables = ['Pt_muon1','Pt_muon2','Pt_ele1','Pt_ele2','Pt_jet1','Pt_jet2','Pt_miss']
 _kinematicvariables += ['Eta_muon1','Eta_muon2','Eta_ele1','Eta_ele2','Eta_jet1','Eta_jet2','Eta_miss']
 _kinematicvariables += ['Phi_muon1','Phi_muon2','Phi_ele1','Phi_ele2','Phi_jet1','Phi_jet2','Phi_miss']
+_kinematicvariables += ['X_miss','Y_miss']
 _kinematicvariables += ['TrkIso_muon1','TrkIso_muon2']
 _kinematicvariables += ['Chi2_muon1','Chi2_muon2']
 _kinematicvariables += ['PFID_muon1','PFID_muon2']
@@ -520,7 +521,45 @@ def PropagatePTChangeToMET(met,original_object,varied_object):
 	return  met + varied_object - original_object
 
 
+# def MuonsForJetSeparation(T):
 
+# 	# Attempting to be the same as process.analysisPatMuons.finalCut = cms.string("isGlobalMuon & muonID('GlobalMuonPromptTight') & pt > 20")
+# 	# GlobalTightPrompt is muon.isGlobalMuon() && muon.globalTrack()->normalizedChi2() < 10. && muon.globalTrack()->hitPattern().numberOfValidMuonHits() > 0
+# 	muons = []
+# 	for n in range(len(T.MuonPt)):
+# 		Pass = True
+# 		Pass *= T.MuonIsGlobal[n]
+# 		Pass *= T.MuonGlobalChi2[n]<10.
+# 		Pass *= T.MuonGlobalTrkValidHits[n]>=1
+# 		Pass *= T.MuonPt[n] > 20.
+# 		if Pass == True:
+# 			ThisMu = TLorentzVector()
+# 			ThisMu.SetPtEtaPhiM(T.MuonPt[n],T.MuonEta[n],T.MuonPhi[n],0)
+# 			muons.append(ThisMu)
+# 	return muons
+
+# def TausForJetSeparation(T):
+# 	# process.analysisPatTaus.preselection = cms.string(
+# 	#     'tauID("decayModeFinding") > 0.5 &'
+# 	#     ' tauID("byLooseCombinedIsolationDeltaBetaCorr3Hits") > 0.5 &'
+# 	#     ' tauID("againstMuonLoose3") > 0.5 &'
+# 	#     ' tauID("againstElectronLooseMVA3") > 0.5'
+# 	# )
+# 	# process.analysisPatTaus.finalCut = cms.string('pt > 20. & abs(eta) < 2.3')
+# 	taus = []
+# 	for n in range(len(T.HPSTauPt)):
+# 		Pass = True
+# 		Pass *= T.HPSTauDecayModeFindingDiscr[n] > 0.5
+# 		Pass *= T.HPSTauLooseCombinedIsolationDeltaBetaCorr3HitsDiscr[n] > 0.5
+# 		Pass *= T.HPSTauAgainstMuonLoose3Discr[n]>0.5
+# 		Pass *= T.HPSTauAgainstElectronLooseMVA3Discr[n] > 0.5
+# 		Pass *= (T.HPSTauEta[n] > -2.3)*(T.HPSTauEta[n] < 2.3)
+# 		Pass *= T.HPSTauPt[n] > 20.
+# 		if Pass == True:
+# 			ThisTau = TLorentzVector()
+# 			ThisTau.SetPtEtaPhiM(T.HPSTauPt[n],T.HPSTauEta[n],T.HPSTauPhi[n],0)
+# 			taus.append(ThisTau)
+# 	return taus
 
 def TightHighPtIDMuons(T,_met,variation,isdata):
 	# Purpose: Gets the collection of muons passing tight muon ID. 
@@ -549,13 +588,18 @@ def TightHighPtIDMuons(T,_met,variation,isdata):
 	pfid = []
 	layers = []
 
+	nequiv = []
+	for n in range(len(T.MuonPt)):
+		if T.MuonIsGlobal[n]:
+			nequiv.append(n)
+
 	# Loop over muons using the pT array from above
 	for n in range(len(_MuonCocktailPt)):
 
 		# Some muon alignment studies use the inverse diff of the high pT and Trk pT values
 		deltainvpt = -1.0	
-		if ( T.MuonTrkPt[n] > 0.0 ) and (_MuonCocktailPt[n]>0.0):
-			deltainvpt = ( 1.0/T.MuonTrkPt[n] - 1.0/_MuonCocktailPt[n])
+		if ( T.MuonTrkPt[nequiv[n]] > 0.0 ) and (_MuonCocktailPt[n]>0.0):
+			deltainvpt = ( 1.0/T.MuonTrkPt[nequiv[n]] - 1.0/_MuonCocktailPt[n])
 	
 		# For alignment correction studies in MC, the pT is modified according to
 		# parameterizations of the position
@@ -564,10 +608,10 @@ def TightHighPtIDMuons(T,_met,variation,isdata):
 				__Pt_mu = _MuonCocktailPt[n]
 				__Eta_mu = T.MuonCocktailEta[n]
 				__Phi_mu = T.MuonCocktailPhi[n]
-				__Charge_mu = T.MuonCharge[n]
+				__Charge_mu = T.MuonCharge[nequiv[n]]
 				if (__Pt_mu >200)*(abs(__Eta_mu) < 0.9)      : 
 					_MuonCocktailPt[n] =  ( (1.0) / ( -5e-05*__Charge_mu*sin(-1.4514813+__Phi_mu ) + 1.0/__Pt_mu ) ) 
-				deltainvpt = ( 1.0/T.MuonTrkPt[n] - 1.0/_MuonCocktailPt[n])
+				deltainvpt = ( 1.0/T.MuonTrkPt[nequiv[n]] - 1.0/_MuonCocktailPt[n])
 
 
 		# For the ID, begin by assuming it passes. Veto if it fails any condition
@@ -581,35 +625,26 @@ def TightHighPtIDMuons(T,_met,variation,isdata):
 		Pass *= abs(T.MuonCocktailEta[n])<2.1    
 
 		# Number of valid hits
-		Pass *= T.MuonGlobalTrkValidHits[n]>=1
+		Pass *= T.MuonGlobalTrkValidHits[nequiv[n]]>=1
 
 		# Number of station matches
-		Pass *= T.MuonStationMatches[n]>1 
+		Pass *= T.MuonStationMatches[nequiv[n]]>1 
 
 		# Impact parameters
-		Pass *= abs(T.MuonCocktailTrkVtxDXY[n]) < 0.2     
-		Pass *= abs(T.MuonCocktailTrkVtxDZ[n]) < 0.5      
-
+		# Pass *= abs(T.MuonCocktailTrkVtxDXY[n]) < 0.2     
+		# Pass *= abs(T.MuonCocktailTrkVtxDZ[n]) < 0.5      
+		Pass *= abs(T.MuonBestTrackVtxDistXY[nequiv[n]]) < 0.2     # Fixed
+		Pass *= abs(T.MuonBestTrackVtxDistZ[nequiv[n]]) < 0.5      #Fixed 
 		# Pixel hits
-		Pass *= T.MuonTrkPixelHits[n]>=1  
+		Pass *= T.MuonTrkPixelHits[nequiv[n]]>=1  
 
 		# Layers with measurement (high PT ID cut is 5, used to be tight id cut at 8)
-		Pass *= T.MuonTrackLayersWithMeasurement[n] > 5 
-
-
-		# Isolation condition now using delta beta isolation
-		# if nonisoswitch != True:
-		# 	sumChargedHadronPt = T.MuonPFIsoR04ChargedHadron[n]
-		# 	sumNeutralHadronPt = T.MuonPFIsoR04NeutralHadron[n]
-		# 	sumPhotonPt        = T.MuonPFIsoR04Photon[n]
-		# 	sumPUPt            = T.MuonPFIsoR04PU
-		# 	muonisolotion = sumChargedHadronPt+ max([0.,sumNeutralHadronPt+sumPhotonPt-0.5*sumPUPt])
-		# 	Pass*= (muonisolotion)/(T.MuonCocktailPt[n]) < 0.12
-		# 	Pass *= (T.MuonTrackerIsoSumPT[nequiv[n]]/_MuonCocktailPt[n])<0.1
+		Pass *= T.MuonTrackLayersWithMeasurement[nequiv[n]] > 5 
+		Pass *= T.MuonCocktailPtError[n]/T.MuonCocktailPt[n]  < 0.3
 
 		# Isolation condition using tracker-only isolation
 		if nonisoswitch != True:
-			Pass *= (T.MuonTrackerIsoSumPT[n]/_MuonCocktailPt[n])<0.1
+			Pass *= (T.MuonTrackerIsoSumPT[nequiv[n]]/_MuonCocktailPt[n])<0.1
 
 		# Propagate MET changes if undergoing systematic variation
 		if (Pass):
@@ -619,13 +654,13 @@ def TightHighPtIDMuons(T,_met,variation,isdata):
 			OldMu.SetPtEtaPhiM(T.MuonCocktailPt[n],T.MuonCocktailEta[n],T.MuonCocktailPhi[n],0)
 			_met = PropagatePTChangeToMET(_met,OldMu,NewMu)
 
-		# Append items to retun if the muon is good
-		if (Pass):
+			# Append items to retun if the muon is good
+
 			muons.append(NewMu)
-			trk_isos.append((T.MuonTrackerIsoSumPT[n]/_MuonCocktailPt[n]))
-			chi2.append(T.MuonGlobalChi2[n])
-			pfid.append(T.MuonIsPF[n])
-			layers.append(T.MuonTrackLayersWithMeasurement[n])
+			trk_isos.append((T.MuonTrackerIsoSumPT[nequiv[n]]/_MuonCocktailPt[n]))
+			chi2.append(T.MuonGlobalChi2[nequiv[n]])
+			pfid.append(T.MuonIsPF[nequiv[n]])
+			layers.append(T.MuonTrackLayersWithMeasurement[nequiv[n]])
 			charges.append(T.MuonCocktailCharge[n])
 			muoninds.append(n)
 			deltainvpts.append(deltainvpt)
@@ -696,50 +731,90 @@ def HEEPElectrons(T,_met,variation):
 			electroninds.append(n)
 	return [electrons,electroninds,_met]
 
-def LooseIDJets(T,_met,variation,isdata):
-	# Purpose: Gets the collection of jets passing loose PFJet ID. 
+
+def JERModifiedPt(pt,eta,phi,T,modtype):
+	# Pupose: Modify reco jets based on genjets. Input is pt/eta/phi of a jet. 
+	#         The jet will be matched to a gen jet, and the difference
+	#         between reco and gen will be modified according to appropriate
+	#         pt/eta dependent scale factors. 
+	#         The modified jet PT is returned.
+	#         https://hypernews.cern.ch/HyperNews/CMS/get/JetMET/1336.html
+	#         https://twiki.cern.ch/twiki/bin/view/CMS/JetResolution
+	bestn = -1
+	bestdpt = 0
+	bestdR = 9999999.9
+	jet = TLorentzVector()
+	jet.SetPtEtaPhiM(pt,eta,phi,0.0)
+	for n in range(len(T.GenJetPt)):
+		gjet = TLorentzVector()
+		gjet.SetPtEtaPhiM(T.GenJetPt[n],T.GenJetEta[n],T.GenJetPhi[n],0.0)
+		dR = abs(jet.DeltaR(gjet))
+		if dR<bestdR and  dR<0.3 :
+			bestdR = dR
+			bestn = n
+			bestdpt = pt-gjet.Pt()
+
+	if bestdR>0.5:
+		return pt
+
+	abseta = abs(eta)
+	if abseta >= 0   : jfacs = [  0.05200 , 0.11515 , -0.00900 ]
+	if abseta >= 0.5 : jfacs = [  0.05700 , 0.11427 , 0.00200  ]
+	if abseta >= 1.1 : jfacs = [  0.09600 , 0.16125 , 0.03400  ]
+	if abseta >= 1.7 : jfacs = [  0.13400 , 0.22778 , 0.04900  ]
+	if abseta >= 2.3 : jfacs = [  0.28800 , 0.48838 , 0.13500  ]
+
+	if modtype == '':
+		adjustmentfactor = jfacs[0]
+	if modtype == 'up':
+		adjustmentfactor = jfacs[1]
+	if modtype == 'down':
+		adjustmentfactor = jfacs[2]
+
+	ptadjustment = adjustmentfactor*bestdpt
+	pt += ptadjustment
+	return pt
+
+
+def LooseIDJets(T,met,variation,isdata):
+	# Pupose: Gets the collection of jets passing loose PFJet ID. 
 	#         Returns jets as TLorentzVectors, and indices corrresponding
 	#         to the surviving jetss of the jet collection. 
 	#         Also returns modified MET for systematic variations.	
 
-	# Switch ntuple branches depending on systematic variation
-	if ("JE" not in variation) or isdata==True:
-		_PFJetPt = [pt for pt in T.PFJetPt]
-	else:
-		if variation == 'JERup':
-			_PFJetPt = [pt for pt in T.PFJetSmearedUpPt]
-			_met.SetPtEtaPhiM(T.PFMETType01XYCorJetResUp[0],0,T.PFMETPhiType01XYCorJetResUp[0],0)
-		if variation == 'JERdown':
-			_PFJetPt = [pt for pt in T.PFJetSmearedDownPt]
-			_met.SetPtEtaPhiM(T.PFMETType01XYCorJetResDown[0],0,T.PFMETPhiType01XYCorJetResDown[0],0)
+	if variation!='JERup' and variation!='JERdown':
+		# _PFJetPt = [JERModifiedPt(T.PFJetPt[n],T.PFJetEta[n],T.PFJetPhi[n],T,'') for n in range(len(T.PFJetPt))] 	
+		 _PFJetPt = [pt for pt in T.PFJetPt]				
+	if variation=='JERup':	
+		_PFJetPt = [JERModifiedPt(T.PFJetPt[n],T.PFJetEta[n],T.PFJetPhi[n],T,'up') for n in range(len(T.PFJetPt))] 
+	if variation=='JERdown':	
+		_PFJetPt = [JERModifiedPt(T.PFJetPt[n],T.PFJetEta[n],T.PFJetPhi[n],T,'down') for n in range(len(T.PFJetPt))] 		
 
-		if variation == 'JESup':
-			_PFJetPt = [pt for pt in T.PFJetScaledUpPt]
-			_met.SetPtEtaPhiM(T.PFMETType01XYCorJetEnUp[0],0,T.PFMETPhiType01XYCorJetEnUp[0],0)
+	if variation=='JESup':	
+		_PFJetPt = [ _PFJetPt[n]*(1.0+T.PFJetJECUnc[n]) for n in range(len(_PFJetPt))]
+	if variation=='JESdown':	
+		_PFJetPt = [ _PFJetPt[n]*(1.0-T.PFJetJECUnc[n]) for n in range(len(_PFJetPt))]
 
-		if variation == 'JESdown':
-			_PFJetPt = [pt for pt in T.PFJetScaledDownPt]
-			_met.SetPtEtaPhiM(T.PFMETType01XYCorJetEnDown[0],0,T.PFMETPhiType01XYCorJetEnDown[0],0)
+	if (isdata):
+		_PFJetPt = [pt for pt in T.PFJetPt]	
 
-	# This is just a variable which will store the highest pT jet failing ID
-	# It was just a curiosity.
+	# print met.Pt(),
+
+
 	JetFailThreshold=0.0
 
-	# The list of jets, their indices in the jet list, and a couple energy fractions
-	# we were interested in storing.
 	jets=[]
 	jetinds = []
 	NHF = []
 	NEMF = []
-
-	# Loop over jets
 	for n in range(len(_PFJetPt)):
-		#  Jet kinematics thresholds. More pT cuts will be applied later.
 		if _PFJetPt[n]>30 and abs(T.PFJetEta[n])<2.4 :
-			# ID criteria
 			if T.PFJetPassLooseID[n]==1:
 				j = TLorentzVector()
-				j.SetPtEtaPhiM(_PFJetPt[n],T.PFJetEta[n],T.PFJetPhi[n],0)		
+				j.SetPtEtaPhiM(_PFJetPt[n],T.PFJetEta[n],T.PFJetPhi[n],0)
+				oldjet = TLorentzVector()
+				oldjet.SetPtEtaPhiM(T.PFJetPt[n],T.PFJetEta[n],T.PFJetPhi[n],0)				
+				met = PropagatePTChangeToMET(met,oldjet,j)
 				jets.append(j)
 				jetinds.append(n)
 				NHF.append(T.PFJetNeutralHadronEnergyFraction[n])
@@ -748,13 +823,17 @@ def LooseIDJets(T,_met,variation,isdata):
 				if _PFJetPt[n] > JetFailThreshold:
 					JetFailThreshold = _PFJetPt[n]
 
-	return [jets,jetinds,_met,JetFailThreshold,NHF,NEMF]
+	# print met.Pt()
+
+	return [jets,jetinds,met,JetFailThreshold,NHF,NEMF]
+
 
 def MetVector(T):
 	# Purpose: Creates a TLorentzVector represting the MET. No pseudorapidith, obviously.
 	met = TLorentzVector()
 	met.SetPtEtaPhiM(T.PFMETType01XYCor[0],0,T.PFMETPhiType01XYCor[0],0)
 	return met
+
 
 def GetLLJJMasses(l1,l2,j1,j2):
 	# Purpose: For LLJJ channels, this function returns two L-J Masses, corresponding to the
@@ -837,11 +916,15 @@ def FullKinematicCalculation(T,variation):
 	met = MetVector(T)
 	# ID Muons,Electrons
 	[muons,goodmuoninds,met,trkisos,charges,dpts,chi2,pfid,layers] = TightHighPtIDMuons(T,met,variation,T.isData)
+	# muons_forjetsep = MuonsForJetSeparation(T)
+	# taus_forjetsep = TausForJetSeparation(T)
 	[electrons,electroninds,met] = HEEPElectrons(T,met,variation)
 	# ID Jets and filter from muons
 	[jets,jetinds,met,failthreshold,neutralhadronEF,neutralemEF] = LooseIDJets(T,met,variation,T.isData)
-	jets = GeomFilterCollection(jets,muons,0.3)
-	jets = GeomFilterCollection(jets,electrons,0.3)
+	# jets = GeomFilterCollection(jets,muons_forjetsep,0.5)
+	jets = GeomFilterCollection(jets,muons,0.5)
+	jets = GeomFilterCollection(jets,electrons,0.5)
+	# jets = GeomFilterCollection(jets,taus_forjetsep,0.5)
 	# Empty lorenz vector for bookkeeping
 	EmptyLorentz = TLorentzVector()
 	EmptyLorentz.SetPtEtaPhiM(.01,0,0,0)
@@ -907,6 +990,7 @@ def FullKinematicCalculation(T,variation):
 	[_ptj2,_etaj2,_phij2]    = [jets[1].Pt(),jets[1].Eta(),jets[1].Phi()]
 	[_nhefj1,_nhefj2,_nemefj1,_nemefj2] = [neutralhadronEF[0],neutralhadronEF[1],neutralemEF[0],neutralemEF [1]]
 	[_ptmet,_etamet,_phimet] = [met.Pt(),0,met.Phi()]
+	[_xmiss,_ymiss] = [met.Px(),met.Py()]
 
 	_stuujj = ST([muons[0],muons[1],jets[0],jets[1]])
 	_stuvjj = ST([muons[0],met,jets[0],jets[1]])
@@ -948,6 +1032,7 @@ def FullKinematicCalculation(T,variation):
 	toreturn = [_ptmu1,_ptmu2,_ptel1,_ptel2,_ptj1,_ptj2,_ptmet]
 	toreturn += [_etamu1,_etamu2,_etael1,_etael2,_etaj1,_etaj2,_etamet]
 	toreturn += [_phimu1,_phimu2,_phiel1,_phiel2,_phij1,_phij2,_phimet]
+	toreturn += [_xmiss,_ymiss]
 	toreturn += [_isomu1,_isomu2]
 	
 	toreturn += [_chimu1,_chimu2]
@@ -1027,7 +1112,7 @@ for n in range(N):
 		Branches['passTrackingFailure'][0]        = 1*(1-t.isTrackingFailure) # Used, Data only
 		Branches['passBadEESuperCrystal'][0]      = 1*(1-t.passBadEESupercrystalFilter) # Used, Data only
 		Branches['passEcalLaserCorr'][0]          = 1*(t.passEcalLaserCorrFilter) # Used, Data only
-		Branches['# passHcalLaserEvent'][0]         = 1*(1-t.passHcalLaserEventFilter) # Used, Data only
+		# Branches['passHcalLaserEvent'][0]         = 1*(1-t.passHcalLaserEventFilter) # Used, Data only
 		Branches['passHcalLaserEvent'][0]         = 1 # Ooops, where did it go?
 		Branches['passPhysDeclared'][0]           = 1*(t.isPhysDeclared)
 
