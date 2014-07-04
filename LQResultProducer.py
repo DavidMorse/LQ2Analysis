@@ -74,7 +74,8 @@ pdf_uujj_WJets =[  3.86 , 3.67 , 6.01 , 6.01 , 10.94 , 10.94 , 10.94 , 10.94 , 1
 pdf_uujj_sTop =[  7.44 , 8.97 , 11.78 , 13.98 , 18.23 , 20.37 , 20.37 , 20.37 , 20.37 , 20.37 , 21.2 , 21.2 , 47.28 , 47.28 , 47.28 , 47.28 , 47.28 , 47.28 , 47.28]
 pdf_uujj_VV =[  2.9 , 3.2 , 3.43 , 3.88 , 4.27 , 4.27 , 4.34 , 4.34 , 4.86 , 12.8 , 24.32 , 30.4 , 30.4 , 30.4 , 30.4 , 30.4 , 30.4 , 30.4 , 30.4]
 pdf_uujj_Signal = [2.0 for x in pdf_MASS]               
-               
+
+       
 pdf_uvjj_TTBar =[  0.65 , 0.94 , 1.75 , 2.44 , 2.52 , 3.28 , 4.14 , 4.99 , 5.81 , 4.48 , 3.58 , 4.28 , 5.15 , 4.56 , 7.93 , 7.93 , 7.93 , 7.93 , 7.93]
 pdf_uvjj_ZJets =[  0.44 , 0.56 , 0.59 , 0.7 , 0.63 , 0.9 , 1.33 , 1.91 , 2.51 , 3.85 , 3.85 , 3.74 , 8.11 , 8.11 , 8.11 , 8.11 , 8.11 , 8.11 , 8.11]
 pdf_uvjj_WJets =[  1.17 , 1.36 , 1.85 , 2.72 , 3.02 , 4.41 , 7.16 , 10.54 , 15.21 , 19.12 , 16.87 , 40.14 , 40.14 , 40.14 , 40.14 , 40.14 , 40.14 , 40.14 , 40.14]
@@ -180,7 +181,7 @@ def main():
 	#################################################################################
 
 	# ====================================================================================================================================================== #
-	# These are PDF uncertainty studies. Ignore these for now!      ### WHAT TO DO WITH THIS?
+	# These are PDF uncertainty studies. Ignore these for now!      ### STILL FIXING THIS PORTION
 	# ====================================================================================================================================================== #
 
 	if (False):
@@ -190,7 +191,7 @@ def main():
 		PDFUncStudy(MuMuOptCutFile,MuNuOptCutFile)
 		sys.exit("PDF systematic study requested. Completed and exiting.")
 
-	if (True):
+	if (False):
 		PDFSignalUncStudy(MuMuOptCutFile,MuNuOptCutFile)
 
 
@@ -220,6 +221,53 @@ def main():
 		qcdselectionmunu = '((Pt_muon1>45)*(Pt_muon2<45.0)*(Pt_jet1>125)*(Pt_jet2>45)*(Pt_ele1<45.0)*(St_uvjj>300)*(DPhi_muon1met>0.8)*(DPhi_jet1met>0.5))'
 
 		QCDStudy(qcdselectionmumu,qcdselectionmunu,MuMuOptCutFile,MuNuOptCutFile,NormalWeightMuMu,NormalWeightMuNu,version_name)
+
+
+	# ====================================================================================================================================================== #
+	# This is a testing plot routine for use with the new RPV susy sample
+	# ====================================================================================================================================================== #
+	if (True):
+
+		# Get Scale Factors
+		[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = GetMuMuScaleFactors( NormalWeightMuMu+'*'+preselectionmumu, NormalDirectory, '(M_uu>80)*(M_uu<100)', '(M_uu>100)')
+		[[Rw_uvjj,Rw_uvjj_err],[Rtt_uvjj,Rtt_uvjj_err]] = GetMuNuScaleFactors( NormalWeightMuNu+'*'+preselectionmunu, NormalDirectory, '(MT_uv>70)*(MT_uv<110)*(JetCount<3.5)', '(MT_uv>70)*(MT_uv<110)*(JetCount>3.5)')
+
+		# UUJJ plots at preselection, Note that putting 'TTBarDataDriven' in the name turns on the use of data-driven ttbar e-mu sample in place of MC
+		MakeBasicPlot("Pt_jet1","p_{T}(jet_{1}) [GeV]",ptbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard_TTBarDataDriven','susy',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,500)
+		MakeBasicPlot("Pt_jet2","p_{T}(jet_{2}) [GeV]",ptbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard_TTBarDataDriven','susy',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,500)
+		MakeBasicPlot("Pt_muon1","p_{T}(#mu_{1}) [GeV]",ptbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard_TTBarDataDriven','susy',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,500)
+		MakeBasicPlot("Pt_muon2","p_{T}(#mu_{2}) [GeV]",ptbinning2,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard_TTBarDataDriven','susy',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,500)
+		MakeBasicPlot("Pt_miss","E_{T}^{miss} [GeV]",[60,0,600],preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard_TTBarDataDriven','susy',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,500)
+		MakeBasicPlot("Eta_jet1","#eta(jet_{1}) [GeV]",etabinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard_TTBarDataDriven','susy',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,500)
+		MakeBasicPlot("Eta_jet2","#eta(jet_{2}) [GeV]",etabinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard_TTBarDataDriven','susy',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,500)
+		MakeBasicPlot("Eta_muon1","#eta(#mu_{1}) [GeV]",etabinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard_TTBarDataDriven','susy',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,500)
+		MakeBasicPlot("Eta_muon2","#eta(#mu_{2}) [GeV]",etabinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard_TTBarDataDriven','susy',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,500)	
+		MakeBasicPlot("Phi_jet1","#phi(jet_{1}) [GeV]",phibinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard_TTBarDataDriven','susy',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,500)
+		MakeBasicPlot("Phi_jet2","#phi(jet_{2}) [GeV]",phibinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard_TTBarDataDriven','susy',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,500)
+		MakeBasicPlot("Phi_muon1","#phi(#mu_{1}) [GeV]",phibinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard_TTBarDataDriven','susy',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,500)
+		MakeBasicPlot("Phi_muon2","#phi(#mu_{2}) [GeV]",phibinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard_TTBarDataDriven','susy',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,500)	
+		MakeBasicPlot("St_uujj","S_{T}^{#mu #mu j j} [GeV]",stbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard_TTBarDataDriven','susy',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,500)
+		MakeBasicPlot("M_uu","M^{#mu #mu} [GeV]",bosonbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard_TTBarDataDriven','susy',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,500)
+		MakeBasicPlot("MH_uujj","M^{#mu j} (lead jet combo) [GeV]",lqbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard_TTBarDataDriven','susy',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,500)
+		MakeBasicPlot("M_uujj1","M^{#mu j}_{1} [GeV]",lqbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard_TTBarDataDriven','susy',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,500)
+		MakeBasicPlot("M_uujj2","M^{#mu j}_{2} [GeV]",lqbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard_TTBarDataDriven','susy',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,500)
+		MakeBasicPlot("GoodVertexCount","N_{Vertices}",vbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard_TTBarDataDriven','susy',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,500)
+		MakeBasicPlot("JetCount","N_{jet}",nbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard_TTBarDataDriven','susy',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,500)
+		MakeBasicPlot("MuonCount","N_{#mu}",nbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard_TTBarDataDriven','susy',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,500)
+		MakeBasicPlot("ElectronCount","N_{e}",nbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard_TTBarDataDriven','susy',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,500)
+		MakeBasicPlot("DR_muon1muon2","#DeltaR(#mu_{1},#mu_{2})",drbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard_TTBarDataDriven','susy',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,500)
+		MakeBasicPlot("DR_muon1jet1","#DeltaR(#mu_{1},j_{1})",drbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard_TTBarDataDriven','susy',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,500)
+		MakeBasicPlot("DR_muon1jet2","#DeltaR(#mu_{1},j_{2})",drbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard_TTBarDataDriven','susy',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,500)
+		MakeBasicPlot("DR_muon2jet1","#DeltaR(#mu_{2},j_{1})",drbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard_TTBarDataDriven','susy',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,500)
+		MakeBasicPlot("DR_muon2jet2","#DeltaR(#mu_{2},j_{2})",drbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard_TTBarDataDriven','susy',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,500)
+		MakeBasicPlot("DPhi_muon1met","#Delta #phi (#mu_{1},E_{T}^{miss})",dphibinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard_TTBarDataDriven','susy',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,500)
+		MakeBasicPlot("DPhi_jet1met","#Delta #phi(j_{1},E_{T}^{miss})",dphibinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard_TTBarDataDriven','susy',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,500)
+		MakeBasicPlot("DPhi_jet2met","#Delta #phi(j_{2},E_{T}^{miss})",dphibinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard_TTBarDataDriven','susy',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,500)
+		MakeBasicPlot("DPhi_muon1jet1","#Delta #phi(#mu_{1},j_{1})",dphibinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard_TTBarDataDriven','susy',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,500)
+		MakeBasicPlot("DPhi_muon1jet2","#Delta #phi(#mu_{1},j_{2})",dphibinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard_TTBarDataDriven','susy',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,500)
+		MakeBasicPlot("DPhi_muon2jet1","#Delta #phi(#mu_{2},j_{1})",dphibinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard_TTBarDataDriven','susy',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,500)
+		MakeBasicPlot("DPhi_muon2jet2","#Delta #phi(#mu_{2},j_{2})",dphibinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard_TTBarDataDriven','susy',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,500)
+
 
 	# ====================================================================================================================================================== #
 	# This is a basic plotting routine to make Analysis-Note style plots with ratio plots. 
@@ -379,10 +427,14 @@ def main():
 	# This runs a "FullAnalysis" - i.e. produces tables with full systematis included. 
 	# ====================================================================================================================================================== #
 
+	# You can run this to make the full set of tables needed to construct the higgs card. This takes a long time!
+	# Alternatively, you can run > python SysBatcher.py --launch to do each table in a separate batch job
+	# When done, proceed to the next step to make higgs limit cards
 	if (False):
 		FullAnalysis(MuMuOptCutFile, preselectionmumu,preselectionmunu,NormalDirectory,NormalWeightMuMu,'TTBarDataDriven')  # scriptflag
 		FullAnalysis(MuNuOptCutFile, preselectionmumu,preselectionmunu,NormalDirectory,NormalWeightMuNu,'normal')  # scriptflag
 
+	if (False):
 		uujjcardfiles = MuMuOptCutFile.replace('.txt','_systable*.txt')
 		uvjjcardfiles = MuNuOptCutFile.replace('.txt','_systable*.txt')
 
@@ -478,8 +530,8 @@ rnd= TRandom3()
 person = (os.popen('whoami').readlines()[0]).replace("\n",'')
 
 for f in os.popen('ls '+NormalDirectory+"| grep \".root\"").readlines():
-	exec('t_'+f.replace(".root\n","")+" = TFile.Open(\""+NormalDirectory+"/"+f.replace("\n","")+"\")"+".Get(\""+TreeName+"\")")
-	# print('t_'+f.replace(".root\n","")+" = TFile.Open(\""+NormalDirectory+"/"+f.replace("\n","")+"\")"+".Get(\""+TreeName+"\")")
+	exec ('t_'+f.replace(".root\n","")+" = TFile.Open(\""+NormalDirectory+"/"+f.replace("\n","")+"\")"+".Get(\""+TreeName+"\")")
+	print('t_'+f.replace(".root\n","")+" = TFile.Open(\""+NormalDirectory+"/"+f.replace("\n","")+"\")"+".Get(\""+TreeName+"\")")
 
 for f in os.popen('ls '+EMuDirectory+"| grep \".root\"").readlines():
 	exec('te_'+f.replace(".root\n","")+" = TFile.Open(\""+EMuDirectory+"/"+f.replace("\n","")+"\")"+".Get(\""+TreeName+"\")")
@@ -604,42 +656,194 @@ def PDFSignalUncStudy(MuMuOptCutFile,MuNuOptCutFile):
 def PDF4LHCUncStudy(MuMuOptCutFile,MuNuOptCutFile):
 
 	N_cteq = 53
-	N_nnpdf = 101
-	N_mstw = 41
+	N_nnpdf = 0
+	N_mstw = 0
+	# N_cteq = 3
+	# N_nnpdf = 0
+	# N_mstw = 0
 	cteqweights = ['*(factor_cteq_'+str(n+1)+'/factor_cteq_1)' for n in range(N_cteq)]
 	nnpdfweights = ['*(factor_nnpdf_'+str(n+1)+'/factor_cteq_1)' for n in range(N_nnpdf)]
 	mstwweights = ['*(factor_mstw_'+str(n+1)+'/factor_cteq_1)' for n in range(N_mstw)]
 
-	junkfile = TFile.Open('myjunkfileforpdfanalysis.root','RECREATE')
-
+	ResultList = []
 	MuMuSels = []
-	uncnames = ['pdf_uujj_'+x for x in ['TTBar']]
-	trees  = [t_TTBarDBin]
+	MuNuSels = []
+
+	# Get selections
 	for line in open(MuMuOptCutFile,'r'):
 		if '=' in line:
 			MuMuSels.append(line.split('=')[-1].replace('\n','').replace(' ',''))
+	for line in open(MuNuOptCutFile,'r'):
+		if '=' in line:
+			MuNuSels.append(line.split('=')[-1].replace('\n','').replace(' ',''))
 
+
+	# UUJJ CHANNEL SYSTEMATICS
+
+	treenames = ['ZJets','TTBar','WJets','VV','sTop','Signal']
+	uncnames = ['pdf_uujj_'+x for x in treenames]
+	trees  = [[t_ZJetsJBin],[t_TTBarDBin],[t_WJetsJBin],[t_DiBoson],[t_SingleTop]]
+	trees.append([t_LQuujj300,t_LQuujj350,t_LQuujj400,t_LQuujj450,t_LQuujj500,t_LQuujj550,t_LQuujj600,t_LQuujj650,t_LQuujj700,t_LQuujj750,t_LQuujj800,t_LQuujj850,t_LQuujj900,t_LQuujj950,t_LQuujj1000,t_LQuujj1050,t_LQuujj1100,t_LQuujj1150,t_LQuujj1200])
+
+
+	# ================================================================================================================
+	# Loop over trees to consider
 	for ii in range(len(trees)):
-		_t = trees[ii]
-		_tnew = _t.CopyTree(preselectionmumu)
+		junkfile = TFile.Open('myjunkfileforpdfanalysis.root','RECREATE')
+
+		# Speed up by copying to new preselection tree
+		ntree = 0
+		systematic = '0.0'
+		_t = trees[ii][ntree]
+		norm_sel = '(1)'
+		print 'Analyzing',  uncnames[ii], 'in the uujj channel. Systematics are:'
+		result = uncnames[ii]+' = ['
+		if 'ZJets' in uncnames[ii]:
+			norm_sel = '(M_uu>80)*(M_uu<100)'
+		_tnew = _t.CopyTree(preselectionmumu + '*'+norm_sel)
+		# Get the preselection values for all PDF members
 		presel_central_value = QuickIntegral(_tnew,NormalWeightMuMu,1.0)[0]
-		presel_varied_cteq_values = [QuickIntegral(_tnew,NormalWeightMuMu+'*'+_fact,1.0)[0] for _fact in cteqweights]
-		presel_varied_nnpdf_values = [QuickIntegral(_tnew,NormalWeightMuMu+'*'+_fact,1.0)[0] for _fact in nnpdfweights]
-		presel_varied_mstw_values = [QuickIntegral(_tnew,NormalWeightMuMu+'*'+_fact,1.0)[0] for _fact in mstwweights]
-
+		presel_varied_cteq_values = [QuickIntegral(_tnew,NormalWeightMuMu+_fact,1.0)[0] for _fact in cteqweights]
+		presel_varied_nnpdf_values = [QuickIntegral(_tnew,NormalWeightMuMu+_fact,1.0)[0] for _fact in nnpdfweights]
+		presel_varied_mstw_values = [QuickIntegral(_tnew,NormalWeightMuMu+_fact,1.0)[0] for _fact in mstwweights]
+		# Loop over selections
 		for _sel in MuMuSels:
-			_tnewsel = _tnew.CopyTree(_sel)
+			print '   ... using tree ',trees[ii][ntree]
+			if 'Signal' in uncnames[ii]:
+				_t = trees[ii][ntree]
+				ntree += 1
+				_tnew = _t.CopyTree(preselectionmumu + '*'+norm_sel)
+				# Get the preselection values for all PDF members
+				presel_central_value = QuickIntegral(_tnew,NormalWeightMuMu,1.0)[0]
+				presel_varied_cteq_values = [QuickIntegral(_tnew,NormalWeightMuMu+_fact,1.0)[0] for _fact in cteqweights]
+				presel_varied_nnpdf_values = [QuickIntegral(_tnew,NormalWeightMuMu+_fact,1.0)[0] for _fact in nnpdfweights]
+				presel_varied_mstw_values = [QuickIntegral(_tnew,NormalWeightMuMu+_fact,1.0)[0] for _fact in mstwweights]
+
+			# Copy tree to new final selection tree
+			_tnewsel = _t.CopyTree(preselectionmumu+'*'+_sel)
+			# Get the final-selection integrals
 			finsel_central_value=QuickIntegral(_tnewsel,NormalWeightMuMu,1.0)[0]
-			finsel_varied_cteq_values = [QuickIntegral(_tnewsel,NormalWeightMuMu+'*'+_fact,1.0)[0] for _fact in cteqweights]
-			finsel_varied_nnpdf_values = [QuickIntegral(_tnewsel,NormalWeightMuMu+'*'+_fact,1.0)[0] for _fact in nnpdfweights]
-			finsel_varied_mstw_values = [QuickIntegral(_tnewsel,NormalWeightMuMu+'*'+_fact,1.0)[0] for _fact in mstwweights]
-			print 'Done',_sel
+			finsel_varied_cteq_values = [QuickIntegral(_tnewsel,NormalWeightMuMu+_fact,1.0)[0] for _fact in cteqweights]
+			finsel_varied_nnpdf_values = [QuickIntegral(_tnewsel,NormalWeightMuMu+_fact,1.0)[0] for _fact in nnpdfweights]
+			finsel_varied_mstw_values = [QuickIntegral(_tnewsel,NormalWeightMuMu+_fact,1.0)[0] for _fact in mstwweights]
 
-			if 'TTBar' in uncnames[ii] or 'ZJet' in uncnames[ii] or 'LQ' in uncnames[ii]:
+			# Normalize Z and Signal at preselection
+			if 'ZJet' in uncnames[ii] or 'Signal' in uncnames[ii]:
 				finsel_central_value /= presel_central_value
-				finsel_varied_cteq_values
+				finsel_varied_cteq_values = [finsel_varied_cteq_values[jj]/presel_varied_cteq_values[jj] for jj in range(len(presel_varied_cteq_values))]
+				finsel_varied_mstw_values = [finsel_varied_mstw_values[jj]/presel_varied_mstw_values[jj] for jj in range(len(presel_varied_mstw_values))]
+				finsel_varied_nnpdf_values = [finsel_varied_nnpdf_values[jj]/presel_varied_nnpdf_values[jj] for jj in range(len(presel_varied_nnpdf_values))]
 
-	print MuMuSels
+			if finsel_central_value >0.0:
+				# Get the variations w.r.t the central memeber
+				finsel_varied_cteq_diffs = [abs(x - finsel_central_value)/finsel_central_value for x in  finsel_varied_cteq_values]
+				finsel_varied_mstw_diffs = [abs(x - finsel_central_value)/finsel_central_value for x in  finsel_varied_mstw_values]
+				finsel_varied_nnpdf_diffs =[abs(x - finsel_central_value)/finsel_central_value for x in  finsel_varied_nnpdf_values]
+				# Adjust cteq to 68% CL
+				finsel_varied_cteq_diffs = [xx/1.645  for xx in finsel_varied_cteq_diffs]
+				old_systematic = str(systematic)
+				systematic = str(round(100.0*max( finsel_varied_cteq_diffs + finsel_varied_mstw_diffs + finsel_varied_nnpdf_diffs ),3))
+				if float(systematic) < float(old_systematic):
+					systematic = str(old_systematic)
+
+				if float(systematic) > 100.0:
+					systematic = '100.0'
+
+			print systematic+'%'
+			result += systematic+','
+			junkfile.Close()
+
+
+		result = result[:-1]+']'
+		ResultList.append(result)
+
+
+
+	# ================================================================================================================
+	# UvJJ CHANNEL SYSTEMATICS
+
+	treenames = ['ZJets','TTBar','WJets','VV','sTop','Signal']
+	uncnames = ['pdf_uvjj_'+x for x in treenames]
+	trees  = [[t_ZJetsJBin],[t_TTBarDBin],[t_WJetsJBin],[t_DiBoson],[t_SingleTop]]
+	trees.append([t_LQuvjj300,t_LQuvjj350,t_LQuvjj400,t_LQuvjj450,t_LQuvjj500,t_LQuvjj550,t_LQuvjj600,t_LQuvjj650,t_LQuvjj700,t_LQuvjj750,t_LQuvjj800,t_LQuvjj850,t_LQuvjj900,t_LQuvjj950,t_LQuvjj1000,t_LQuvjj1050,t_LQuvjj1100,t_LQuvjj1150,t_LQuvjj1200])
+
+
+	# Loop over trees to consider
+	for ii in range(len(trees)):
+		junkfile = TFile.Open('myjunkfileforpdfanalysis.root','RECREATE')
+
+		# Speed up by copying to new preselection tree
+		ntree = 0
+		systematic = '0.0'
+		_t = trees[ii][ntree]
+		norm_sel = '(1)'
+		print 'Analyzing',  uncnames[ii], 'in the uvjj channel. Systematics are:'
+		result = uncnames[ii]+' = ['
+		if 'WJets' in uncnames[ii]:
+			norm_sel = '(MT_uv>70)*(MT_uv<110)*(JetCount<3.5)'
+		if 'TTBar' in uncnames[ii]:
+			norm_sel = '(MT_uv>70)*(MT_uv<110)*(JetCount>3.5)'		
+		_tnew = _t.CopyTree(preselectionmunu + '*'+norm_sel)
+		# Get the preselection values for all PDF members
+		presel_central_value = QuickIntegral(_tnew,NormalWeightMuNu,1.0)[0]
+		presel_varied_cteq_values = [QuickIntegral(_tnew,NormalWeightMuNu+_fact,1.0)[0] for _fact in cteqweights]
+		presel_varied_nnpdf_values = [QuickIntegral(_tnew,NormalWeightMuNu+_fact,1.0)[0] for _fact in nnpdfweights]
+		presel_varied_mstw_values = [QuickIntegral(_tnew,NormalWeightMuNu+_fact,1.0)[0] for _fact in mstwweights]
+		# Loop over selections
+		for _sel in MuNuSels:
+			print '   ... using tree ',trees[ii][ntree]
+			if 'Signal' in uncnames[ii]:
+				_t = trees[ii][ntree]
+				ntree += 1
+				_tnew = _t.CopyTree(preselectionmunu + '*'+norm_sel)
+				# Get the preselection values for all PDF members
+				presel_central_value = QuickIntegral(_tnew,NormalWeightMuNu,1.0)[0]
+				presel_varied_cteq_values = [QuickIntegral(_tnew,NormalWeightMuNu+_fact,1.0)[0] for _fact in cteqweights]
+				presel_varied_nnpdf_values = [QuickIntegral(_tnew,NormalWeightMuNu+_fact,1.0)[0] for _fact in nnpdfweights]
+				presel_varied_mstw_values = [QuickIntegral(_tnew,NormalWeightMuNu+_fact,1.0)[0] for _fact in mstwweights]
+
+			# Copy tree to new final selection tree
+			_tnewsel = _t.CopyTree(preselectionmunu+'*'+_sel)
+			# Get the final-selection integrals
+			finsel_central_value=QuickIntegral(_tnewsel,NormalWeightMuNu,1.0)[0]
+			finsel_varied_cteq_values = [QuickIntegral(_tnewsel,NormalWeightMuNu+_fact,1.0)[0] for _fact in cteqweights]
+			finsel_varied_nnpdf_values = [QuickIntegral(_tnewsel,NormalWeightMuNu+_fact,1.0)[0] for _fact in nnpdfweights]
+			finsel_varied_mstw_values = [QuickIntegral(_tnewsel,NormalWeightMuNu+_fact,1.0)[0] for _fact in mstwweights]
+
+			# Normalize W, TTBar, and Z at preselection
+			if 'WJet' in uncnames[ii] or 'TTBar' in uncnames[ii] or 'Signal' in uncnames[ii]:
+				finsel_central_value /= presel_central_value
+				finsel_varied_cteq_values = [finsel_varied_cteq_values[jj]/presel_varied_cteq_values[jj] for jj in range(len(presel_varied_cteq_values))]
+				finsel_varied_mstw_values = [finsel_varied_mstw_values[jj]/presel_varied_mstw_values[jj] for jj in range(len(presel_varied_mstw_values))]
+				finsel_varied_nnpdf_values = [finsel_varied_nnpdf_values[jj]/presel_varied_nnpdf_values[jj] for jj in range(len(presel_varied_nnpdf_values))]
+
+			if finsel_central_value >0.0:
+				# Get the variations w.r.t the central memeber
+				finsel_varied_cteq_diffs = [abs(x - finsel_central_value)/finsel_central_value for x in  finsel_varied_cteq_values]
+				finsel_varied_mstw_diffs = [abs(x - finsel_central_value)/finsel_central_value for x in  finsel_varied_mstw_values]
+				finsel_varied_nnpdf_diffs =[abs(x - finsel_central_value)/finsel_central_value for x in  finsel_varied_nnpdf_values]
+				# Adjust cteq to 68% CL
+				finsel_varied_cteq_diffs = [xx/1.645  for xx in finsel_varied_cteq_diffs]
+				old_systematic = str(systematic)
+				systematic = str(round(100.0*max( finsel_varied_cteq_diffs + finsel_varied_mstw_diffs + finsel_varied_nnpdf_diffs ),3))
+				if float(systematic) < float(old_systematic):
+					systematic = str(old_systematic)
+
+				if float(systematic) > 100.0:
+					systematic = '100.0'
+
+			print systematic+'%'
+			result += systematic+','
+			junkfile.Close()
+
+		result = result[:-1]+']'
+		ResultList.append(result)
+
+
+	print '\n\n---------- Summary of PDF systematics as percentages --------\n'
+	for result in ResultList:
+		print result
+	print '\n\n'
 
 def PDFUncStudy(MuMuOptCutFile,MuNuOptCutFile):
 
@@ -809,6 +1013,7 @@ def QuickFIntegral(tree,selection,scalefac):
 
 def QuickIntegral(tree,selection,scalefac):
 
+	# print selection+'*'+str(scalefac)
 	h = TH1D('h','h',1,-1,3)
 	h.Sumw2()
 	tree.Project('h','1.0',selection+'*'+str(scalefac))
@@ -2038,6 +2243,10 @@ def MakeBasicPlot(recovariable,xlabel,presentationbinning,selection,weight,FileD
 	if channel == 'uvjj':
 		syslist = totunc_uvjj
 
+	if channel == 'susy':
+		plotmass = 500
+		print "SUSY TESTS: Using only mass of ",plotmass
+
 	if 'PAS' not in tagname:
 		c1 = TCanvas("c1","",800,800)
 		pad1 = TPad( 'pad1', 'pad1', 0.0, 0.4, 1.0, 1.0 )#divide canvas into pads
@@ -2196,6 +2405,21 @@ def MakeBasicPlot(recovariable,xlabel,presentationbinning,selection,weight,FileD
 		if 'final' not in tagname:
 			hs_rec_Signal=CreateHisto('hs_rec_Signal',sig1name,t_LQuujj500,recovariable,presentationbinning,selection+'*'+weight,SignalStyle,Label)
 			hs_rec_Signal2=CreateHisto('hs_rec_Signal2',sig2name,t_LQuujj900,recovariable,presentationbinning,selection+'*'+weight,SignalStyle2,Label)
+		if 'final' in tagname:
+			exec ("_stree = t_LQ"+channel+str(plotmass))
+			hs_rec_Signal=CreateHisto('hs_rec_Signal','LQ, M = '+str(plotmass)+' GeV',_stree,recovariable,presentationbinning,selection+'*'+weight,SignalStyle,Label)
+
+		hs_rec_DiBoson.SetTitle("Other Backgrounds")
+		hs_rec_DiBoson.Add(hs_rec_WJets)
+		hs_rec_DiBoson.Add(hs_rec_SingleTop)
+		SM=[hs_rec_DiBoson,hs_rec_TTBar,hs_rec_ZJets]
+
+	if channel == 'susy':
+		sig1name = 'LQ, M = 500 GeV'
+		sig2name = 'RPV Susy, M = 500 GeV'
+		if 'final' not in tagname:
+			hs_rec_Signal=CreateHisto('hs_rec_Signal',sig1name,t_LQuujj500,recovariable,presentationbinning,selection+'*'+weight,SignalStyle,Label)
+			hs_rec_Signal2=CreateHisto('hs_rec_Signal2',sig2name,t_Susy500,recovariable,presentationbinning,selection+'*'+weight,SignalStyle2,Label)
 		if 'final' in tagname:
 			exec ("_stree = t_LQ"+channel+str(plotmass))
 			hs_rec_Signal=CreateHisto('hs_rec_Signal','LQ, M = '+str(plotmass)+' GeV',_stree,recovariable,presentationbinning,selection+'*'+weight,SignalStyle,Label)
