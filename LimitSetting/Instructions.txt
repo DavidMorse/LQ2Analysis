@@ -1,0 +1,120 @@
+###########################################################################
+##    Instructions for using NTupleAnalyzer Limit-Setting Features       ##
+##         Darin Baumgartel - Nov 29, 2011 - darinb@cern.ch              ##
+###########################################################################
+
+These instructions are for setting up the portion of the LQ2 NTuple Analyzer
+which uses the Higgs Combine package to run limit setting on an LQ Analysis 
+using a set of input datacards. 
+
+The Higgs Combine package has further documentation at:
+https://twiki.cern.ch/twiki/bin/view/CMS/SWGuideHiggsAnalysisCombinedLimit
+
+
+1) Check out the package. If you haven't already: 
+
+    setenv SCRAM_ARCH slc5_amd64_gcc472 
+    cmsrel CMSSW_6_1_1 
+    cd CMSSW_6_1_1/src 
+    cmsenv
+    git clone https://github.com/cms-analysis/HiggsAnalysis-CombinedLimit.git HiggsAnalysis/CombinedLimit
+    cd HiggsAnalysis/CombinedLimit
+    git pull origin master
+    git checkout V03-05-00
+    cd ../../
+    scramv1 b clean 
+    scramv1 b -j 16 
+    cmsenv
+    cd ../../
+    combine --help
+
+   You should see all of the options for the combine facility.
+   
+
+2) Set up the data-card information for all the LQ Masses/channels. 
+
+   The combine facility runs on input datacards, and the limit calculations are
+   based one one-line commands using those input datacards. For many masses/channels
+   it is useful to organize everything and have a short python script which 
+   submits to batch and gathers the output. In this step we will organize all the
+   input datacards. 
+   
+   Ultimately we will use a python script to facilitate all this, so let's keep all
+   the data-card information in a single text file called 'FinalCards.txt'.
+   
+   Model this after an example at: NTupleAnalyzerV2/tools/HiggsLimit/SingleChannel/FinalCards_Example.txt
+   
+   Each card in the text file will start with a name like 'LQ_BetaHalf_M_250.txt' or 'LQ_M_250.txt'. 
+   Keep these name conventions as such changing only the mass values. 
+   
+   The rest of the card structure is documented at: https://twiki.cern.ch/twiki/bin/view/CMS/SWGuideHiggsAnalysisCombinedLimit
+   I summarize briefly:
+   
+    The channel info first ....
+    * imax 1  - number of channels  (1 for our single channel analyses)
+    * jmax 5  - number of backgrounds
+    * kmax 13  - number of nuisance parameters, including statistical uncertainties for each channel
+    
+    The infor on the processes (signal and backgrounds ... )
+    * bin  1 1 1 1 1 1 -  identifies the channel the process belongs to (only 1 channel for now...)
+    * observation 431 - number of observed events in data passing selection
+    * process LQ_BetaHalf_M_250 DiBoson ....  - name for our processes we wil list
+    * process 0 1 2 3 4 5 - An integer index for each process
+    * rate ... tells the expected yield of events in the specified bin and process 
+   
+    The nuisance parameter info
+    
+    e.g. jet energy scale: 
+    * Jes  lnN  1.049 ... - The name (Jes) and the integration (lnN=lognormal) and 1 + fractional uncertainty. 
+    
+    
+    
+	If statistics are low, for statistical uncertainties you can use gamma-function (gmM) integration, and would list
+	* name gmM (number MC events)  weight_1 weight_2 weight_3 weight_4 ...
+	
+	
+	Important note on correlations:
+	
+	If systematics are listed on the same row as (1+fractional uncertainty), they are considered correlated. Hence all 
+	our JES systematics are full correlated. 
+	Systematics on different rows are uncorrelated, hence JES and MES are uncorrelated, and all statistical uncertainties
+	are uncorrelated. 
+
+   
+##################################################
+#                                                #                
+#    NEW: QUICK RESULTS WITH ASYMPTOTIC CLS      #
+#                                                #
+##################################################
+
+#
+#   FOR SIGMA VS M LIMIT PLOTS  
+#
+
+0) Follow steps (1) and (2) of the normal method above to set up the working area and make your FinalCards.txt
+
+1) Put your normal "FinalCards.txt" in the SingleChanel directory and run the individual channel limits with:
+
+    python RunStatsBasicCLs.py --do_BetaOne --do_BetaHalf -c LimitTest --Asymptotic_Only
+       
+	Results will print to screen.
+	
+
+
+#
+#   FOR COMBINATION BETA VS M LIMIT PLOTS 
+#
+
+
+2) You can also run the Combination asymptotically. Every beta value takes about as long as step (1), and 
+   it's good to use many beta values. So a quick fix is to batch this. 
+   
+   A) First run the script that submits the jobs to batch. This will fill text files of results into a newly created 
+      "BatcherResults" directory.   
+   
+       python AsympBatcher.py --do_Combo -q 8nh -n 1 -c LimitTest --Asymptotic_Only
+
+   B) When Jobs from (A) are done, run the additional script to scan the contents of the "BatcherResults" directory. Results output to screen.
+  
+       python AsympBatcherParser.py 
+       
