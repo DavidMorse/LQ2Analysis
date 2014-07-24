@@ -689,8 +689,8 @@ def HEEPElectrons(T,_met,variation):
 		Pass *= (T.ElectronPtHeep[n] > 35)
 		Pass *= abs(T.ElectronEta[n])<2.1
 
-		barrel = (abs(T.ElectronEta[n]))<1.442
-		endcap = (abs(T.ElectronEta[n]))>1.56 
+		barrel = (abs(T.ElectronSCEta[n]))<1.442
+		endcap = (abs(T.ElectronSCEta[n]))>1.56 
 		Pass *= (barrel+endcap)
 
 		if barrel:
@@ -699,7 +699,7 @@ def HEEPElectrons(T,_met,variation):
 			Pass *= T.ElectronDeltaPhiTrkSC[n] < 0.06
 			Pass *= T.ElectronHoE[n] < 0.05
 			Pass *= ((T.ElectronE2x5OverE5x5[n] > 0.94) or (T.ElectronE1x5OverE5x5[n] > 0.83) )
-			Pass *= T.ElectronHcalIsoD1DR03[n] <  (2.0 + 0.03*_ElectronPt[n] + 0.28*T.rhoForHEEP)
+			Pass *= (T.ElectronHcalIsoD1DR03[n] + T.ElectronEcalIsoDR03[n]) <  (2.0 + 0.03*_ElectronPt[n] + 0.28*T.rhoForHEEP)
 			Pass *= T.ElectronTrkIsoDR03[n] < 5.0
 			Pass *= T.ElectronMissingHits[n] <=1
 			Pass *= T.ElectronLeadVtxDistXY[n]<0.02
@@ -711,9 +711,9 @@ def HEEPElectrons(T,_met,variation):
 			Pass *= T.ElectronHoE[n] < 0.05
 			Pass *= T.ElectronSigmaIEtaIEta[n] < 0.03
 			if _ElectronPt[n]<50:
-				Pass *= (T.ElectronHcalIsoD1DR03[n] < (2.5 + 0.28*T.rhoForHEEP))
+				Pass *= ((T.ElectronHcalIsoD1DR03[n] + T.ElectronEcalIsoDR03[n]) < (2.5 + 0.28*T.rhoForHEEP))
 			else:
-				Pass *= (T.ElectronHcalIsoD1DR03[n] < (2.5 + 0.03*(_ElectronPt[n]-50.0) + 0.28*T.rhoForHEEP))
+				Pass *= ((T.ElectronHcalIsoD1DR03[n] + T.ElectronEcalIsoDR03[n]) < (2.5 + 0.03*(_ElectronPt[n]-50.0) + 0.28*T.rhoForHEEP))
 			Pass *= T.ElectronTrkIsoDR03[n] < 5.0
 			Pass *= T.ElectronMissingHits[n] <=1
 			Pass *= T.ElectronLeadVtxDistXY[n]<0.05
