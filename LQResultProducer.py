@@ -6,9 +6,9 @@ from glob import glob
 ##########################################################################
 
 # Directory where root files are kept and the tree you want to get root files from
-QCDDirectory = 'NTupleAnalyzer_FullJun27QCDNonIsoQuickTest_2014_06_29_18_18_25/SummaryFiles'
-EMuDirectory = 'NTupleAnalyzer_FullJun27EMuSwitch_2014_06_28_21_38_54/SummaryFiles'
-NormalDirectory='NTupleAnalyzer_FullJun27_2014_06_27_21_15_57/SummaryFiles'
+QCDDirectory = 'NTupleAnalyzer_FullJuly24QCDNonIsoQuickTest_2014_07_25_15_39_48/SummaryFiles'
+EMuDirectory = 'NTupleAnalyzer_FullJuly24EMuSwitch_2014_07_25_03_54_54/SummaryFiles'
+NormalDirectory='NTupleAnalyzer_FullJuly24_2014_07_24_17_24_05/SummaryFiles'
 
 # The name of the main ttree (ntuple structure)
 TreeName = "PhysicalVariables"
@@ -18,14 +18,14 @@ lumi = 19600.0
 
 # Single-mu trigger efficiencies as a functino of muon Eta. 
 # This is for the case of one muon
-singlemuHLT =  '*( 0.94*(abs(Eta_muon1)<=0.9) + 0.84*(abs(Eta_muon1)>0.9)*(abs(Eta_muon1)<=1.2) + 0.82*(abs(Eta_muon1)>1.2)*(abs(Eta_muon1)<=2.1) )'
+singlemuHLT =  '*( 0.93*(abs(Eta_muon1)<=0.9) + 0.83*(abs(Eta_muon1)>0.9)*(abs(Eta_muon1)<=1.2) + 0.80*(abs(Eta_muon1)>1.2)*(abs(Eta_muon1)<=2.1) )'
 # This if for the case of two muons (i.e. the above factors, but for the case where the events has two muosn)
-doublemuHLT =  '*(1.0-(( 1.0 - 0.94*(abs(Eta_muon1)<=0.9) - 0.84*(abs(Eta_muon1)>0.9)*(abs(Eta_muon1)<=1.2) - 0.82*(abs(Eta_muon1)>1.2)*(abs(Eta_muon1)<=2.1) )'
-doublemuHLT += '*( 1.0 - 0.94*(abs(Eta_muon2)<=0.9) - 0.84*(abs(Eta_muon2)>0.9)*(abs(Eta_muon2)<=1.2) - 0.82*(abs(Eta_muon2)>1.2)*(abs(Eta_muon2)<=2.1) )))'
+doublemuHLT =  '*(1.0-(( 1.0 - 0.93*(abs(Eta_muon1)<=0.9) - 0.83*(abs(Eta_muon1)>0.9)*(abs(Eta_muon1)<=1.2) - 0.80*(abs(Eta_muon1)>1.2)*(abs(Eta_muon1)<=2.1) )'
+doublemuHLT += '*( 1.0 - 0.93*(abs(Eta_muon2)<=0.9) - 0.83*(abs(Eta_muon2)>0.9)*(abs(Eta_muon2)<=1.2) - 0.80*(abs(Eta_muon2)>1.2)*(abs(Eta_muon2)<=2.1) )))'
 # This is for the case of the E-mu sample, where one "muon" is replaced by an exlectron. In that case, we check
 # which muon is a real muon (IsMuon_muon1) and apply the trigger efficiency based on the muon
-singlemuHLTEMU = '*((IsMuon_muon1*( 0.94*(abs(Eta_muon1)<=0.9) + 0.84*(abs(Eta_muon1)>0.9)*(abs(Eta_muon1)<=1.2) + 0.82*(abs(Eta_muon1)>1.2)*(abs(Eta_muon1)<=2.1) ))'
-singlemuHLTEMU += '+(IsMuon_muon2*( 0.94*(abs(Eta_muon2)<=0.9) + 0.84*(abs(Eta_muon2)>0.9)*(abs(Eta_muon2)<=1.2) + 0.82*(abs(Eta_muon2)>1.2)*(abs(Eta_muon2)<=2.1) )))'
+singlemuHLTEMU = '*((IsMuon_muon1*( 0.93*(abs(Eta_muon1)<=0.9) + 0.83*(abs(Eta_muon1)>0.9)*(abs(Eta_muon1)<=1.2) + 0.80*(abs(Eta_muon1)>1.2)*(abs(Eta_muon1)<=2.1) ))'
+singlemuHLTEMU += '+(IsMuon_muon2*( 0.93*(abs(Eta_muon2)<=0.9) + 0.83*(abs(Eta_muon2)>0.9)*(abs(Eta_muon2)<=1.2) + 0.80*(abs(Eta_muon2)>1.2)*(abs(Eta_muon2)<=2.1) )))'
 
 # This is the rescaling of the EMu data for the ttbar estimate (2 - Eff_trigger)
 dataHLTEMUADJ = '*(2.0 - 1.0'+singlemuHLTEMU+')'
@@ -62,26 +62,81 @@ preselectionmunu+=passfilter
 # These are hard-coded results for the more grueling studies we don't want to repeat every time. 
 
 # First is the ttbar data-driven e-mu scale factor.
-emu_id_eff = 0.55448
-emu_id_eff_err = 0.00585
+emu_id_eff = 0.5716
+emu_id_eff_err = 0.00606
 
 
 # Next are the PDF uncertainties. 
 pdf_MASS   =[ 300 , 350 , 400 , 450 , 500 , 550 , 600 , 650 , 700 , 750 , 800 , 850 , 900 , 950 , 1000 , 1050 , 1100 , 1150 , 1200 ]               
-pdf_uujj_TTBar =[ 3.92 , 4.42 , 4.96 , 5.14 , 5.48 , 5.43 , 5.18 , 5.26 , 5.15 , 5.89 , 4.57 , 6.08 , 10.13 , 16.58 , 16.58 , 16.58 , 16.58 , 16.58 , 16.58]
-pdf_uujj_ZJets =[  0.33 , 0.65 , 0.94 , 1.31 , 1.59 , 2.23 , 3.04 , 2.34 , 2.38 , 2.58 , 2.58 , 2.58 , 2.97 , 2.97 , 4.45 , 4.45 , 4.45 , 4.45 , 4.45]
-pdf_uujj_WJets =[  3.86 , 3.67 , 6.01 , 6.01 , 10.94 , 10.94 , 10.94 , 10.94 , 10.94 , 10.94 , 10.94 , 10.94 , 10.94 , 10.94 , 10.94 , 10.94 , 10.94 , 10.94 , 10.94]
-pdf_uujj_sTop =[  7.44 , 8.97 , 11.78 , 13.98 , 18.23 , 20.37 , 20.37 , 20.37 , 20.37 , 20.37 , 21.2 , 21.2 , 47.28 , 47.28 , 47.28 , 47.28 , 47.28 , 47.28 , 47.28]
-pdf_uujj_VV =[  2.9 , 3.2 , 3.43 , 3.88 , 4.27 , 4.27 , 4.34 , 4.34 , 4.86 , 12.8 , 24.32 , 30.4 , 30.4 , 30.4 , 30.4 , 30.4 , 30.4 , 30.4 , 30.4]
-pdf_uujj_Signal = [2.0 for x in pdf_MASS]               
+# pdf_uujj_TTBar =[ 3.92 , 4.42 , 4.96 , 5.14 , 5.48 , 5.43 , 5.18 , 5.26 , 5.15 , 5.89 , 4.57 , 6.08 , 10.13 , 16.58 , 16.58 , 16.58 , 16.58 , 16.58 , 16.58]
+# pdf_uujj_ZJets =[  0.33 , 0.65 , 0.94 , 1.31 , 1.59 , 2.23 , 3.04 , 2.34 , 2.38 , 2.58 , 2.58 , 2.58 , 2.97 , 2.97 , 4.45 , 4.45 , 4.45 , 4.45 , 4.45]
+# pdf_uujj_WJets =[  3.86 , 3.67 , 6.01 , 6.01 , 10.94 , 10.94 , 10.94 , 10.94 , 10.94 , 10.94 , 10.94 , 10.94 , 10.94 , 10.94 , 10.94 , 10.94 , 10.94 , 10.94 , 10.94]
+# pdf_uujj_sTop =[  7.44 , 8.97 , 11.78 , 13.98 , 18.23 , 20.37 , 20.37 , 20.37 , 20.37 , 20.37 , 21.2 , 21.2 , 47.28 , 47.28 , 47.28 , 47.28 , 47.28 , 47.28 , 47.28]
+# pdf_uujj_VV =[  2.9 , 3.2 , 3.43 , 3.88 , 4.27 , 4.27 , 4.34 , 4.34 , 4.86 , 12.8 , 24.32 , 30.4 , 30.4 , 30.4 , 30.4 , 30.4 , 30.4 , 30.4 , 30.4]
+# pdf_uujj_Signal = [2.0 for x in pdf_MASS]               
 
        
-pdf_uvjj_TTBar =[  0.65 , 0.94 , 1.75 , 2.44 , 2.52 , 3.28 , 4.14 , 4.99 , 5.81 , 4.48 , 3.58 , 4.28 , 5.15 , 4.56 , 7.93 , 7.93 , 7.93 , 7.93 , 7.93]
-pdf_uvjj_ZJets =[  0.44 , 0.56 , 0.59 , 0.7 , 0.63 , 0.9 , 1.33 , 1.91 , 2.51 , 3.85 , 3.85 , 3.74 , 8.11 , 8.11 , 8.11 , 8.11 , 8.11 , 8.11 , 8.11]
-pdf_uvjj_WJets =[  1.17 , 1.36 , 1.85 , 2.72 , 3.02 , 4.41 , 7.16 , 10.54 , 15.21 , 19.12 , 16.87 , 40.14 , 40.14 , 40.14 , 40.14 , 40.14 , 40.14 , 40.14 , 40.14]
-pdf_uvjj_sTop =[  9.56 , 12.25 , 8.74 , 9.07 , 9.6 , 11.44 , 8.52 , 12.8 , 12.8 , 12.8 , 12.8 , 12.8 , 12.8 , 12.8 , 12.8 , 12.8 , 12.8 , 12.8 , 12.8]
-pdf_uvjj_VV =[  2.09 , 2 , 2.12 , 2.13 , 2.26 , 2.8 , 2.4 , 2.27 , 2.34 , 2.7 , 3.42 , 3.2 , 4.19 , 4.19 , 4.19 , 4.19 , 4.19 , 4.19 , 4.19]
-pdf_uvjj_Signal = [2.0 for x in pdf_MASS]               
+# pdf_uvjj_TTBar =[  0.65 , 0.94 , 1.75 , 2.44 , 2.52 , 3.28 , 4.14 , 4.99 , 5.81 , 4.48 , 3.58 , 4.28 , 5.15 , 4.56 , 7.93 , 7.93 , 7.93 , 7.93 , 7.93]
+# pdf_uvjj_ZJets =[  0.44 , 0.56 , 0.59 , 0.7 , 0.63 , 0.9 , 1.33 , 1.91 , 2.51 , 3.85 , 3.85 , 3.74 , 8.11 , 8.11 , 8.11 , 8.11 , 8.11 , 8.11 , 8.11]
+# pdf_uvjj_WJets =[  1.17 , 1.36 , 1.85 , 2.72 , 3.02 , 4.41 , 7.16 , 10.54 , 15.21 , 19.12 , 16.87 , 40.14 , 40.14 , 40.14 , 40.14 , 40.14 , 40.14 , 40.14 , 40.14]
+# pdf_uvjj_sTop =[  9.56 , 12.25 , 8.74 , 9.07 , 9.6 , 11.44 , 8.52 , 12.8 , 12.8 , 12.8 , 12.8 , 12.8 , 12.8 , 12.8 , 12.8 , 12.8 , 12.8 , 12.8 , 12.8]
+# pdf_uvjj_VV =[  2.09 , 2 , 2.12 , 2.13 , 2.26 , 2.8 , 2.4 , 2.27 , 2.34 , 2.7 , 3.42 , 3.2 , 4.19 , 4.19 , 4.19 , 4.19 , 4.19 , 4.19 , 4.19]
+# pdf_uvjj_Signal = [2.0 for x in pdf_MASS]               
+
+
+# pdf_uujj_ZJets = [0.241,0.451,0.666,0.936,1.178,1.775,2.52,2.52,2.52,2.52,2.52,2.52,2.52,2.52,3.64,3.64,3.64,3.64,3.64]
+# pdf_uujj_TTBar = [3.73,4.249,4.838,5.054,5.492,5.492,5.492,5.492,5.492,5.492,5.492,6.373,11.177,18.24,18.24,18.24,18.24,18.24,18.24]
+# pdf_uujj_WJets = [1.984,2.275,3.811,3.811,6.956,6.956,6.956,6.956,6.956,6.956,6.956,6.956,6.956,6.956,6.956,6.956,6.956,6.956,6.956]
+# pdf_uujj_VV = [2.288,2.657,2.899,3.243,3.554,3.606,3.606,4.888,6.976,13.459,17.724,20.767,20.767,20.767,20.767,20.767,20.767,20.767,20.767]
+# pdf_uujj_sTop = [7.94,9.713,13.337,15.854,20.022,27.444,27.444,27.444,27.444,33.063,45.625,45.625,100.0,100.0,100.0,100.0,100.0,100.0,100.0]
+# pdf_uujj_Signal = [0.025,0.041,0.061,0.094,0.116,0.172,0.216,0.226,0.235,0.259,0.291,0.298,0.337,0.389,0.447,0.447,0.447,0.447,0.447]
+# pdf_uujj_Signal = [2.0 for x in pdf_MASS]               
+
+# pdf_uvjj_ZJets = [1.363,1.363,1.363,1.544,1.544,1.598,2.375,2.375,2.678,3.443,3.443,3.604,4.443,5.091,5.091,5.091,5.091,5.091,5.091]
+# pdf_uvjj_TTBar = [0.91,1.622,2.254,2.953,3.113,4.102,5.037,5.816,6.131,6.131,6.131,6.131,6.131,6.131,10.147,10.147,10.147,10.147,10.147]
+# pdf_uvjj_WJets = [0.843,1.089,1.614,2.326,2.7,3.754,7.133,9.918,14.182,18.07,18.07,69.647,69.647,69.647,69.647,69.647,69.647,69.647,69.647]
+# pdf_uvjj_VV = [2.191,2.191,2.191,2.236,2.397,3.011,3.011,3.011,3.011,3.011,3.313,3.909,4.674,4.873,4.873,4.873,4.873,4.873,4.873]
+# pdf_uvjj_sTop = [5.599,7.664,8.186,9.168,10.064,12.788,15.976,15.976,15.976,15.976,15.976,15.976,15.976,15.976,15.976,15.976,15.976,15.976,15.976]
+# pdf_uvjj_Signal = [0.13,0.141,0.461,0.461,0.461,0.496,0.523,0.603,0.637,0.74,0.865,0.901,0.967,1.006,1.136,1.136,1.136,1.136,1.136]
+# pdf_uvjj_Signal = [2.0 for x in pdf_MASS]               
+
+
+
+# pdf_uujj_Signal = [0.1,0.17,0.18,0.21,0.26,0.26,0.26,0.27,0.29,0.31,0.35,0.36,0.46,0.65,1.06,1.06,1.06,1.06,1.06]
+# pdf_uvjj_Signal = [0.35,0.53,0.83,0.83,0.83,0.83,0.83,0.83,0.83,0.84,1.2,1.2,1.62,1.62,2.22,2.35,2.35,2.35,2.35]
+# pdf_uujj_Signal = [2.0 for x in pdf_MASS]               
+# pdf_uvjj_Signal = [3.0 for x in pdf_MASS]               
+
+# pdf_uujj_TTBar = [4.11,4.11,4.11,4.11,4.11,4.11,4.11,4.11,4.11,4.11,4.11,4.11,4.11,4.11,4.11,4.11,4.11,4.11,4.11]
+# pdf_uujj_WJets = [3.58,3.58,3.58,3.58,3.58,3.58,3.58,3.58,3.58,3.58,3.58,3.58,3.58,3.58,3.58,3.58,3.58,3.58,3.58]
+# pdf_uujj_VV = [3.15,3.33,3.63,4.15,4.15,4.15,4.15,4.15,4.15,4.15,4.15,4.15,4.15,4.15,4.15,4.15,4.15,4.15,4.15]
+# pdf_uujj_ZJets = [0.58,1.35,1.93,2.8,4.07,5.96,8.62,8.62,8.62,8.62,8.62,8.62,8.62,8.62,8.62,8.62,8.62,8.62,8.62]
+# pdf_uujj_sTop = [8.43,8.43,8.43,8.43,8.43,8.43,8.43,8.43,8.43,8.43,8.43,8.43,8.43,8.43,8.43,8.43,8.43,8.43,8.43]
+
+# pdf_uvjj_TTBar = [2.15,3.48,5.15,6.33,7.33,9.97,14.52,14.52,14.52,14.52,14.52,14.52,14.52,14.52,14.52,14.52,14.52,14.52,14.52]
+# pdf_uvjj_WJets = [1.06,1.46,2.3,3.67,4.72,4.72,4.72,4.72,4.72,4.72,4.72,4.72,4.72,4.72,4.72,4.72,4.72,4.72,4.72]
+# pdf_uvjj_ZJets = [2.98,3.15,3.49,3.49,3.49,3.49,3.49,3.49,3.49,3.49,3.49,3.49,3.49,3.49,3.49,3.49,3.49,3.49,3.49]
+# pdf_uvjj_VV = [3.34,3.41,3.62,3.73,4.03,4.03,4.03,4.03,4.03,4.03,4.03,4.03,4.03,4.03,4.03,4.03,4.03,4.03,4.03]
+# pdf_uvjj_sTop = [8.77,8.77,8.77,8.77,8.77,8.77,8.77,8.77,8.77,8.77,8.77,8.77,8.77,8.77,8.77,8.77,8.77,8.77,8.77]
+
+
+pdf_uujj_TTBar = [4.1,4.1,4.1,4.1,4.1,4.1,4.1,4.1,4.1,4.1,4.1,4.1,4.1,4.1,4.1,4.1,4.1,4.1,4.1]
+pdf_uujj_WJets = [3.58,3.58,3.58,3.58,3.58,3.58,3.58,3.58,3.58,3.58,3.58,3.58,3.58,3.58,3.58,3.58,3.58,3.58,3.58]
+pdf_uujj_VV = [3.15,3.33,3.63,4.15,4.15,4.15,4.15,4.15,4.15,4.15,4.15,4.15,4.15,4.15,4.15,4.15,4.15,4.15,4.15]
+pdf_uujj_ZJets = [0.58,1.34,1.93,2.8,4.07,5.96,8.62,8.62,8.62,8.62,8.62,8.62,8.62,8.62,8.62,8.62,8.62,8.62,8.62]
+pdf_uujj_sTop = [8.43,8.43,8.43,8.43,8.43,8.43,8.43,8.43,8.43,8.43,8.43,8.43,8.43,8.43,8.43,8.43,8.43,8.43,8.43]
+
+pdf_uvjj_WJets = [1.06,1.46,2.3,3.67,4.72,4.72,4.72,4.72,4.72,4.72,4.72,4.72,4.72,4.72,4.72,4.72,4.72,4.72,4.72]
+pdf_uvjj_sTop = [8.78,8.78,8.78,8.78,8.78,8.78,8.78,8.78,8.78,8.78,8.78,8.78,8.78,8.78,8.78,8.78,8.78,8.78,8.78]
+pdf_uvjj_TTBar = [2.18,3.54,5.16,6.33,7.34,10.01,14.36,14.36,14.36,14.36,14.36,14.36,14.36,14.36,14.36,14.36,14.36,14.36,14.36]
+pdf_uvjj_ZJets = [2.98,3.15,3.49,3.49,3.49,3.49,3.49,3.49,3.49,3.49,3.49,3.49,3.49,3.49,3.49,3.49,3.49,3.49,3.49]
+pdf_uvjj_VV = [3.35,3.41,3.62,3.73,4.03,4.03,4.03,4.03,4.03,4.03,4.03,4.03,4.03,4.03,4.03,4.03,4.03,4.03,4.03]
+
+pdf_uvjj_Signal = [0.35,0.53,0.83,0.83,0.83,0.83,0.83,0.83,0.83,0.84,1.21,1.21,1.62,1.62,2.22,2.35,2.35,2.35,2.35]
+pdf_uujj_Signal = [0.1,0.17,0.18,0.21,0.26,0.26,0.26,0.27,0.29,0.31,0.35,0.36,0.46,0.65,1.06,1.06,1.06,1.06,1.06]
+pdf_uujj_Signal = [2.0 for x in pdf_MASS]               
+pdf_uvjj_Signal = [3.0 for x in pdf_MASS]               
+
 
 
 # These are the total background uncertainties. They are used just to make some error bands on plots. 
@@ -114,7 +169,7 @@ def main():
 	# for this, and make use of it. e.g. For systematic variations, we can in batch instead
 	# of running serially, which speeds things up.
 
-	version_name = 'Testing_June27' # scriptflag
+	version_name = 'Testing_July24' # scriptflag
 	os.system('mkdir Results_'+version_name) 
 
 	MuMuOptCutFile = 'Results_'+version_name+'/Opt_uujjCuts_Smoothed_pol2cutoff.txt' # scriptflag
@@ -185,31 +240,32 @@ def main():
 	# ====================================================================================================================================================== #
 
 	if (False):
-		PDF4LHCUncStudy(MuMuOptCutFile,MuNuOptCutFile)
-
-	if ('-pdf' in sys.argv):
-		PDFUncStudy(MuMuOptCutFile,MuNuOptCutFile)
-		sys.exit("PDF systematic study requested. Completed and exiting.")
-
-	if (False):
-		PDFSignalUncStudy(MuMuOptCutFile,MuNuOptCutFile)
+		PDF4LHCUncStudy(MuMuOptCutFile,MuNuOptCutFile,version_name)
+		PDF4LHCPlotsFromResultDict('Results_'+version_name+'/PDFVariationsDictionary.json',version_name)
 
 
 	# ====================================================================================================================================================== #
 	# The ttbar e-mu data-driven study. You only need to do this once, check the validation output, and use the scale-factor as global variable "emu_id_eff"
 	# The scale-factor should be near 0.5
 	# ====================================================================================================================================================== #
-	if (False):
+	if (True):
 		# TTBar STudy
 		[Rtt_uujj,Rtt_uujj_err] = GetEMuScaleFactors( NormalWeightEMu+'*'+preselectionemu, EMuDirectory)
 		Rw_uvjj,Rz_uujj = [1.0,1.0]
 		# # PreSelection Plots
-		MakeBasicPlotEMu("Pt_miss","E_{T}^{miss} [GeV]",metbinning2,preselectionemu,NormalWeightEMu,EMuDirectory,'emusel','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,500)
+
+		# MakeBasicPlotEMu("Pt_miss","E_{T}^{miss} [GeV]",metbinning2,preselectionemu,NormalWeightEMu,EMuDirectory,'emusel','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,500)
 		MakeBasicPlotEMu("St_uujj","S_{T}^{e #mu j j} [GeV]",stbinning,preselectionemu,NormalWeightEMu,EMuDirectory,'emusel','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,500)
+		exit()
 		MakeBasicPlotEMu("M_uu","M^{e #mu} [GeV]",bosonbinning,preselectionemu,NormalWeightEMu,EMuDirectory,'emusel','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,500)
 		MakeBasicPlotEMu("M_uujj2","M^{e/#mu j}_{2} [GeV]",lqbinning,preselectionemu,NormalWeightEMu,EMuDirectory,'emusel','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,500)
 		MakeBasicPlotEMu("DR_muon1muon2","#DeltaR(#mu,e})",drbinning,preselectionemu,NormalWeightEMu,EMuDirectory,'emusel','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,500)
 
+		MakeBasicPlotEMu("Pt_miss","E_{T}^{miss} [GeV]",metbinning2,preselectionemu,NormalWeightEMu,EMuDirectory,'emuselPAS','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,500)
+		MakeBasicPlotEMu("St_uujj","S_{T}^{e #mu j j} [GeV]",stbinning,preselectionemu,NormalWeightEMu,EMuDirectory,'emuselPAS','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,500)
+		MakeBasicPlotEMu("M_uu","M^{e #mu} [GeV]",bosonbinning,preselectionemu,NormalWeightEMu,EMuDirectory,'emuselPAS','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,500)
+		MakeBasicPlotEMu("M_uujj2","M^{e/#mu j}_{2} [GeV]",lqbinning,preselectionemu,NormalWeightEMu,EMuDirectory,'emuselPAS','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,500)
+		MakeBasicPlotEMu("DR_muon1muon2","#DeltaR(#mu,e})",drbinning,preselectionemu,NormalWeightEMu,EMuDirectory,'emuselPAS','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,500)
 
 
 
@@ -226,12 +282,12 @@ def main():
 	# ====================================================================================================================================================== #
 	# This is a testing plot routine for use with the new RPV susy sample
 	# ====================================================================================================================================================== #
-	if (True):
+	if (False):
 
 		# Get Scale Factors
 		[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = GetMuMuScaleFactors( NormalWeightMuMu+'*'+preselectionmumu, NormalDirectory, '(M_uu>80)*(M_uu<100)', '(M_uu>100)')
 		[[Rw_uvjj,Rw_uvjj_err],[Rtt_uvjj,Rtt_uvjj_err]] = GetMuNuScaleFactors( NormalWeightMuNu+'*'+preselectionmunu, NormalDirectory, '(MT_uv>70)*(MT_uv<110)*(JetCount<3.5)', '(MT_uv>70)*(MT_uv<110)*(JetCount>3.5)')
-
+		exit()
 		# UUJJ plots at preselection, Note that putting 'TTBarDataDriven' in the name turns on the use of data-driven ttbar e-mu sample in place of MC
 		MakeBasicPlot("Pt_jet1","p_{T}(jet_{1}) [GeV]",ptbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard_TTBarDataDriven','susy',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,500)
 		MakeBasicPlot("Pt_jet2","p_{T}(jet_{2}) [GeV]",ptbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard_TTBarDataDriven','susy',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,500)
@@ -277,6 +333,14 @@ def main():
 		# Get Scale Factors
 		[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = GetMuMuScaleFactors( NormalWeightMuMu+'*'+preselectionmumu, NormalDirectory, '(M_uu>80)*(M_uu<100)', '(M_uu>100)')
 		[[Rw_uvjj,Rw_uvjj_err],[Rtt_uvjj,Rtt_uvjj_err]] = GetMuNuScaleFactors( NormalWeightMuNu+'*'+preselectionmunu, NormalDirectory, '(MT_uv>70)*(MT_uv<110)*(JetCount<3.5)', '(MT_uv>70)*(MT_uv<110)*(JetCount>3.5)')
+
+
+		# Optionally, you can make an event-count table for each selection. Useful if testing a new optimiation
+		# We will do this later wtih full systematics for our set of stable cuts. 
+		if False:
+			QuickTableTTDD(MuMuOptCutFile, preselectionmumu+"*(M_uu>100)",NormalWeightMuMu,Rz_uujj, Rw_uvjj,Rtt_uujj,0)
+			QuickTable(MuNuOptCutFile, preselectionmunu,NormalWeightMuNu,Rz_uujj, Rw_uvjj,Rtt_uvjj,0)
+
 
 		# Here are a few plots which are zoomed-in on control regions. 
 		MakeBasicPlot("M_uu","M^{#mu #mu} [GeV]",bosonzoombinning_uujj_Z,preselectionmumu,NormalWeightMuMu,NormalDirectory,'controlzoom_ZRegion','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,500)
@@ -371,12 +435,6 @@ def main():
 			MakeBasicPlot("M_uu","M^{#mu #mu} [GeV]",bosonbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'finalTTBarDataDriven','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,MuMuOptCutFile,version_name,lqmass)
 			MakeBasicPlot("M_uujj2","M^{#mu j}_{2} [GeV]",lqbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'finalTTBarDataDriven','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,MuMuOptCutFile,version_name,lqmass)
 
-		# Optionally, you can make an event-count table for each selection. Useful if testing a new optimiation
-		# We will do this later wtih full systematics for our set of stable cuts. 
-		if True:
-			QuickTableTTDD(MuMuOptCutFile, preselectionmumu,NormalWeightMuMu,Rz_uujj, Rw_uvjj,Rtt_uujj,0)
-			QuickTable(MuNuOptCutFile, preselectionmunu,NormalWeightMuNu,Rz_uujj, Rw_uvjj,Rtt_uvjj,0)
-
 
 		os.system('echo Combining Figures; convert -density 800 Results_'+version_name+'/*png Results_'+version_name+'/AllPlots.pdf')
 
@@ -387,6 +445,22 @@ def main():
 	# ====================================================================================================================================================== #
 
 	if False:
+
+
+		# Get Scale Factors
+		[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = GetMuMuScaleFactors( NormalWeightMuMu+'*'+preselectionmumu, NormalDirectory, '(M_uu>80)*(M_uu<100)', '(M_uu>100)')
+		[[Rw_uvjj,Rw_uvjj_err],[Rtt_uvjj,Rtt_uvjj_err]] = GetMuNuScaleFactors( NormalWeightMuNu+'*'+preselectionmunu, NormalDirectory, '(MT_uv>70)*(MT_uv<110)*(JetCount<3.5)', '(MT_uv>70)*(MT_uv<110)*(JetCount>3.5)')
+
+		# Here are a few plots which are zoomed-in on control regions. 
+		MakeBasicPlot("M_uu","M^{#mu #mu} [GeV]",[20,80,100],preselectionmumu,NormalWeightMuMu,NormalDirectory,'controlzoomPASTTBarDataDriven_ZRegion','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,500)
+		# MakeBasicPlot("M_uu","M^{#mu #mu} [GeV]",bosonzoombinning_uujj_Z,preselectionmumu,NormalWeightMuMu,NormalDirectory,'controlzoomPAS_ZRegion','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,500)
+		bosonzoombinning_uvjj = [20,70,110]
+		MakeBasicPlot("MT_uv","M_{T}^{#mu #nu} [GeV]",bosonzoombinning_uvjj,preselectionmunu+'*(MT_uv>70)*(MT_uv<110)*(JetCount<3.5)',NormalWeightMuNu,NormalDirectory,'controlzoomPAS_WRegion','uvjj',Rz_uujj, Rw_uvjj,Rtt_uvjj,'',version_name,500)
+		MakeBasicPlot("MT_uv","M_{T}^{#mu #nu} [GeV]",bosonzoombinning_uvjj,preselectionmunu+'*(MT_uv>70)*(MT_uv<110)*(JetCount>3.5)',NormalWeightMuNu,NormalDirectory,'controlzoomPAS_TTRegion','uvjj',Rz_uujj, Rw_uvjj,Rtt_uvjj,'',version_name,500)
+		exit()
+
+		# sys.exit()
+
 		# Preselection plots in the UUJJ channel in the PAS style (no subplot)
 		MakeBasicPlot("Pt_jet1","p_{T}(jet_{1}) [GeV]",ptbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standardPAS_TTBarDataDriven','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,500)
 		MakeBasicPlot("Pt_jet2","p_{T}(jet_{2}) [GeV]",ptbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standardPAS_TTBarDataDriven','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,500)
@@ -413,7 +487,7 @@ def main():
 		MakeBasicPlot("JetCount","N_{jet}",nbinning,preselectionmunu,NormalWeightMuNu,NormalDirectory,'standardPAS','uvjj',Rz_uujj, Rw_uvjj,Rtt_uvjj,'',version_name,500)
 
 		# Full Selection Plots in the PAS style
-		for lqmass in [300, 500,700,900]:
+		for lqmass in [300,400, 500,600,700,800,900,1000,1100]:
 			MakeBasicPlot("St_uujj","S_{T}^{#mu #mu j j} [GeV]",stbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'finalTTBarDataDrivenPAS','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,MuMuOptCutFile,version_name,lqmass)
 			MakeBasicPlot("M_uu","M^{#mu #mu} [GeV]",bosonbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'finalTTBarDataDrivenPAS','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,MuMuOptCutFile,version_name,lqmass)
 			MakeBasicPlot("M_uujj2","M_{min}(#mu, jet) [GeV]",lqbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'finalTTBarDataDrivenPAS','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,MuMuOptCutFile,version_name,lqmass)
@@ -558,106 +632,13 @@ gStyle.SetNumberContours(NCont)
 ##########################################################################
 ##########################################################################
 
-def PDFSignalUncStudy(MuMuOptCutFile,MuNuOptCutFile):
 
-	weights = []
+
+def PDF4LHCUncStudy(MuMuOptCutFile,MuNuOptCutFile,versionname):
 
 	N_cteq = 53
 	N_nnpdf = 101
 	N_mstw = 41
-
-	cteqweights = ['*(factor_cteq_'+str(n+1)+'/factor_cteq_1)' for n in range(N_cteq)]
-	nnpdfweights = ['*(factor_nnpdf_'+str(n+1)+'/factor_cteq_1)' for n in range(N_nnpdf)]
-	mstwweights = ['*(factor_mstw_'+str(n+1)+'/factor_cteq_1)' for n in range(N_mstw)]
-
-	uujjtrees = []
-	uvjjtrees = []
-
-	uujjsels = [NormalWeightMuMu]
-	for line in open(MuMuOptCutFile,'r'):
-		fsel = line.split('=')[-1]
-		fsel = fsel.replace(' ','')
-		fsel = fsel.replace('\n','')
-		uujjsels.append(preselectionmumu+'*'+NormalWeightMuMu+'*'+fsel)
-		tree = line.split('=')[0]
-		tree = tree.split('_')[-1]
-		tree = tree.replace(' ','')
-		exec('uujjtrees.append(t_'+tree+')')
-
-	uvjjsels = [NormalWeightMuNu]
-	for line in open(MuNuOptCutFile,'r'):
-		fsel = line.split('=')[-1]
-		fsel = fsel.replace(' ','')
-		fsel = fsel.replace('\n','')		
-		uvjjsels.append(preselectionmunu+'*'+NormalWeightMuNu+'*'+fsel)
-		tree = line.split('=')[0]
-		tree = tree.split('_')[-1]
-		tree = tree.replace(' ','')
-		exec('uvjjtrees.append(t_'+tree+')')
-
-	uujjresults = []
-	for w in cteqweights:
-		uujjresults.append([])
-		print ' For Cteq weight ',w,' .',
-		for n in range(len(uujjsels)-1):
-			print '.',
-
-			s = uujjsels[n+1]
-			s0 =uujjsels[0]
-			t = uujjtrees[n]
-			uujjresults[-1].append(QuickFIntegral(t,s+w,1.0)[0]/QuickFIntegral(t,s0+w,1.0)[0])
-		print '.'
-
-
-	uvjjresults = []
-	for w in cteqweights:
-		uvjjresults.append([])
-		print ' For Cteq weight ',w,' .',
-		for n in range(len(uvjjsels)-1):
-			print '.',
-
-			s = uvjjsels[n+1]
-			s0 =uvjjsels[0]
-			t = uvjjtrees[n]
-			uvjjresults[-1].append(QuickFIntegral(t,s+w,1.0)[0]/QuickFIntegral(t,s0+w,1.0)[0])
-		print '.'
-
-
-
-	print 'pdf_uujj_Signal = [',
-	for m in range(len(uujjresults[0])):
-		allvals = []
-		for x in uujjresults:
-			allvals.append(x[m])
-		allrelvals = []
-		for v in allvals:
-			allrelvals.append(100.0*(abs(v/allvals[0] - 1.0)))
-		sys = max(allrelvals)
-		sys = str(round(sys,3))
-		print sys+',',
-	print ']'
-
-
-
-	print 'pdf_uvjj_Signal = [',
-	for m in range(len(uvjjresults[0])):
-		allvals = []
-		for x in uvjjresults:
-			allvals.append(x[m])
-		allrelvals = []
-		for v in allvals:
-			allrelvals.append(100.0*(abs(v/allvals[0] - 1.0)))
-		sys = max(allrelvals)
-		sys = str(round(sys,3))
-		print sys+',',
-	print ']'
-
-
-def PDF4LHCUncStudy(MuMuOptCutFile,MuNuOptCutFile):
-
-	N_cteq = 53
-	N_nnpdf = 0
-	N_mstw = 0
 	# N_cteq = 3
 	# N_nnpdf = 0
 	# N_mstw = 0
@@ -666,6 +647,7 @@ def PDF4LHCUncStudy(MuMuOptCutFile,MuNuOptCutFile):
 	mstwweights = ['*(factor_mstw_'+str(n+1)+'/factor_cteq_1)' for n in range(N_mstw)]
 
 	ResultList = []
+	ResultDict = {}
 	MuMuSels = []
 	MuNuSels = []
 
@@ -680,8 +662,10 @@ def PDF4LHCUncStudy(MuMuOptCutFile,MuNuOptCutFile):
 
 	# UUJJ CHANNEL SYSTEMATICS
 
+	# treenames = ['ZJets','Signal']
 	treenames = ['ZJets','TTBar','WJets','VV','sTop','Signal']
 	uncnames = ['pdf_uujj_'+x for x in treenames]
+	# trees  = [[t_ZJetsJBin]]
 	trees  = [[t_ZJetsJBin],[t_TTBarDBin],[t_WJetsJBin],[t_DiBoson],[t_SingleTop]]
 	trees.append([t_LQuujj300,t_LQuujj350,t_LQuujj400,t_LQuujj450,t_LQuujj500,t_LQuujj550,t_LQuujj600,t_LQuujj650,t_LQuujj700,t_LQuujj750,t_LQuujj800,t_LQuujj850,t_LQuujj900,t_LQuujj950,t_LQuujj1000,t_LQuujj1050,t_LQuujj1100,t_LQuujj1150,t_LQuujj1200])
 
@@ -698,6 +682,10 @@ def PDF4LHCUncStudy(MuMuOptCutFile,MuNuOptCutFile):
 		norm_sel = '(1)'
 		print 'Analyzing',  uncnames[ii], 'in the uujj channel. Systematics are:'
 		result = uncnames[ii]+' = ['
+		ResultDict[uncnames[ii]+'_uujj'] = {}
+		ResultDict[uncnames[ii]+'_uujj']['cteq'] = []
+		ResultDict[uncnames[ii]+'_uujj']['mstw'] = []
+		ResultDict[uncnames[ii]+'_uujj']['nnpdf'] = []		
 		if 'ZJets' in uncnames[ii]:
 			norm_sel = '(M_uu>80)*(M_uu<100)'
 		_tnew = _t.CopyTree(preselectionmumu + '*'+norm_sel)
@@ -721,6 +709,11 @@ def PDF4LHCUncStudy(MuMuOptCutFile,MuNuOptCutFile):
 
 			# Copy tree to new final selection tree
 			_tnewsel = _t.CopyTree(preselectionmumu+'*'+_sel)
+			if _tnewsel.GetEntries()<100 and ResultDict[uncnames[ii]+'_uujj']['cteq'] != []:
+				ResultDict[uncnames[ii]+'_uujj']['cteq'].append(  ResultDict[uncnames[ii]+'_uujj']['cteq'][-1] )
+				ResultDict[uncnames[ii]+'_uujj']['mstw'].append(  ResultDict[uncnames[ii]+'_uujj']['mstw'][-1] )
+				ResultDict[uncnames[ii]+'_uujj']['nnpdf'].append( ResultDict[uncnames[ii]+'_uujj']['nnpdf'][-1] )					
+				continue
 			# Get the final-selection integrals
 			finsel_central_value=QuickIntegral(_tnewsel,NormalWeightMuMu,1.0)[0]
 			finsel_varied_cteq_values = [QuickIntegral(_tnewsel,NormalWeightMuMu+_fact,1.0)[0] for _fact in cteqweights]
@@ -739,8 +732,18 @@ def PDF4LHCUncStudy(MuMuOptCutFile,MuNuOptCutFile):
 				finsel_varied_cteq_diffs = [abs(x - finsel_central_value)/finsel_central_value for x in  finsel_varied_cteq_values]
 				finsel_varied_mstw_diffs = [abs(x - finsel_central_value)/finsel_central_value for x in  finsel_varied_mstw_values]
 				finsel_varied_nnpdf_diffs =[abs(x - finsel_central_value)/finsel_central_value for x in  finsel_varied_nnpdf_values]
+
+				sfinsel_varied_cteq_diffs = [(x - finsel_central_value)/finsel_central_value for x in  finsel_varied_cteq_values]
+				sfinsel_varied_mstw_diffs = [(x - finsel_central_value)/finsel_central_value for x in  finsel_varied_mstw_values]
+				sfinsel_varied_nnpdf_diffs =[(x - finsel_central_value)/finsel_central_value for x in  finsel_varied_nnpdf_values]
+
 				# Adjust cteq to 68% CL
 				finsel_varied_cteq_diffs = [xx/1.645  for xx in finsel_varied_cteq_diffs]
+				ResultDict[uncnames[ii]+'_uujj']['cteq'].append(  [100*jj for jj in sfinsel_varied_cteq_diffs])
+				ResultDict[uncnames[ii]+'_uujj']['mstw'].append(  [100*jj for jj in sfinsel_varied_mstw_diffs])
+				ResultDict[uncnames[ii]+'_uujj']['nnpdf'].append( [100*jj for jj in sfinsel_varied_nnpdf_diffs])
+		
+
 				old_systematic = str(systematic)
 				systematic = str(round(100.0*max( finsel_varied_cteq_diffs + finsel_varied_mstw_diffs + finsel_varied_nnpdf_diffs ),3))
 				if float(systematic) < float(old_systematic):
@@ -748,7 +751,11 @@ def PDF4LHCUncStudy(MuMuOptCutFile,MuNuOptCutFile):
 
 				if float(systematic) > 100.0:
 					systematic = '100.0'
-
+			else:
+				ResultDict[uncnames[ii]+'_uujj']['cteq'].append(  ResultDict[uncnames[ii]+'_uujj']['cteq'][-1] )
+				ResultDict[uncnames[ii]+'_uujj']['mstw'].append(  ResultDict[uncnames[ii]+'_uujj']['mstw'][-1] )
+				ResultDict[uncnames[ii]+'_uujj']['nnpdf'].append( ResultDict[uncnames[ii]+'_uujj']['nnpdf'][-1] )		
+			# print ResultDict
 			print systematic+'%'
 			result += systematic+','
 			junkfile.Close()
@@ -762,8 +769,10 @@ def PDF4LHCUncStudy(MuMuOptCutFile,MuNuOptCutFile):
 	# ================================================================================================================
 	# UvJJ CHANNEL SYSTEMATICS
 
+	# treenames = ['TTBar','WJets','Signal']
 	treenames = ['ZJets','TTBar','WJets','VV','sTop','Signal']
 	uncnames = ['pdf_uvjj_'+x for x in treenames]
+	# trees  = [[t_TTBarDBin],[t_WJetsJBin]]
 	trees  = [[t_ZJetsJBin],[t_TTBarDBin],[t_WJetsJBin],[t_DiBoson],[t_SingleTop]]
 	trees.append([t_LQuvjj300,t_LQuvjj350,t_LQuvjj400,t_LQuvjj450,t_LQuvjj500,t_LQuvjj550,t_LQuvjj600,t_LQuvjj650,t_LQuvjj700,t_LQuvjj750,t_LQuvjj800,t_LQuvjj850,t_LQuvjj900,t_LQuvjj950,t_LQuvjj1000,t_LQuvjj1050,t_LQuvjj1100,t_LQuvjj1150,t_LQuvjj1200])
 
@@ -778,6 +787,11 @@ def PDF4LHCUncStudy(MuMuOptCutFile,MuNuOptCutFile):
 		_t = trees[ii][ntree]
 		norm_sel = '(1)'
 		print 'Analyzing',  uncnames[ii], 'in the uvjj channel. Systematics are:'
+		result = uncnames[ii]+' = ['
+		ResultDict[uncnames[ii]+'_uvjj'] = {}
+		ResultDict[uncnames[ii]+'_uvjj']['cteq'] = []
+		ResultDict[uncnames[ii]+'_uvjj']['mstw'] = []
+		ResultDict[uncnames[ii]+'_uvjj']['nnpdf'] = []				
 		result = uncnames[ii]+' = ['
 		if 'WJets' in uncnames[ii]:
 			norm_sel = '(MT_uv>70)*(MT_uv<110)*(JetCount<3.5)'
@@ -804,6 +818,11 @@ def PDF4LHCUncStudy(MuMuOptCutFile,MuNuOptCutFile):
 
 			# Copy tree to new final selection tree
 			_tnewsel = _t.CopyTree(preselectionmunu+'*'+_sel)
+			if _tnewsel.GetEntries()<100  and ResultDict[uncnames[ii]+'_uvjj']['cteq'] != []:
+				ResultDict[uncnames[ii]+'_uvjj']['cteq'].append(  ResultDict[uncnames[ii]+'_uvjj']['cteq'][-1] )
+				ResultDict[uncnames[ii]+'_uvjj']['mstw'].append(  ResultDict[uncnames[ii]+'_uvjj']['mstw'][-1] )
+				ResultDict[uncnames[ii]+'_uvjj']['nnpdf'].append( ResultDict[uncnames[ii]+'_uvjj']['nnpdf'][-1] )	
+				continue				
 			# Get the final-selection integrals
 			finsel_central_value=QuickIntegral(_tnewsel,NormalWeightMuNu,1.0)[0]
 			finsel_varied_cteq_values = [QuickIntegral(_tnewsel,NormalWeightMuNu+_fact,1.0)[0] for _fact in cteqweights]
@@ -822,8 +841,17 @@ def PDF4LHCUncStudy(MuMuOptCutFile,MuNuOptCutFile):
 				finsel_varied_cteq_diffs = [abs(x - finsel_central_value)/finsel_central_value for x in  finsel_varied_cteq_values]
 				finsel_varied_mstw_diffs = [abs(x - finsel_central_value)/finsel_central_value for x in  finsel_varied_mstw_values]
 				finsel_varied_nnpdf_diffs =[abs(x - finsel_central_value)/finsel_central_value for x in  finsel_varied_nnpdf_values]
+
+				sfinsel_varied_cteq_diffs = [(x - finsel_central_value)/finsel_central_value for x in  finsel_varied_cteq_values]
+				sfinsel_varied_mstw_diffs = [(x - finsel_central_value)/finsel_central_value for x in  finsel_varied_mstw_values]
+				sfinsel_varied_nnpdf_diffs =[(x - finsel_central_value)/finsel_central_value for x in  finsel_varied_nnpdf_values]
+
 				# Adjust cteq to 68% CL
 				finsel_varied_cteq_diffs = [xx/1.645  for xx in finsel_varied_cteq_diffs]
+				ResultDict[uncnames[ii]+'_uvjj']['cteq'].append([100*jj for jj in sfinsel_varied_cteq_diffs])
+				ResultDict[uncnames[ii]+'_uvjj']['mstw'].append([100*jj for jj in sfinsel_varied_mstw_diffs])
+				ResultDict[uncnames[ii]+'_uvjj']['nnpdf'].append([100*jj for jj in sfinsel_varied_nnpdf_diffs])
+
 				old_systematic = str(systematic)
 				systematic = str(round(100.0*max( finsel_varied_cteq_diffs + finsel_varied_mstw_diffs + finsel_varied_nnpdf_diffs ),3))
 				if float(systematic) < float(old_systematic):
@@ -831,7 +859,10 @@ def PDF4LHCUncStudy(MuMuOptCutFile,MuNuOptCutFile):
 
 				if float(systematic) > 100.0:
 					systematic = '100.0'
-
+			else:
+				ResultDict[uncnames[ii]+'_uvjj']['cteq'].append(  ResultDict[uncnames[ii]+'_uvjj']['cteq'][-1] )
+				ResultDict[uncnames[ii]+'_uvjj']['mstw'].append(  ResultDict[uncnames[ii]+'_uvjj']['mstw'][-1] )
+				ResultDict[uncnames[ii]+'_uvjj']['nnpdf'].append( ResultDict[uncnames[ii]+'_uvjj']['nnpdf'][-1] )	
 			print systematic+'%'
 			result += systematic+','
 			junkfile.Close()
@@ -839,65 +870,212 @@ def PDF4LHCUncStudy(MuMuOptCutFile,MuNuOptCutFile):
 		result = result[:-1]+']'
 		ResultList.append(result)
 
+	json_name = 'Results_'+versionname+'/PDFVariationsDictionary.json'
+	print ' -------- Creating JSON file: ',json_name
+	import json
+	json.dump(ResultDict, open(json_name, 'wb'))
+
+
+	# print '\n\n---------- Summary of PDF systematics as percentages --------\n'
+	# for result in ResultList:
+	# 	print result
+	# print '\n\n'
+
+
+
+def PDF4LHCPlotsFromResultDict(filename,versionname):
+	import json
+	dictionary = json.load(open(filename))
+	
+	mass = [300 + x*50 for x in range(19)]
+
+	resultlist = []
+
+	def rms(X):
+		n = 0.0
+		rms = 0.0
+		for x in X:
+			n += 1.0
+			rms += x*x
+		rms = rms/n
+		rms = math.sqrt(rms)
+		return rms
+
+	for key in dictionary:
+		result = key + ' = ['
+		print 'Evaluating PDF bands for',key
+		basename = key.split('_')
+		chan = '#mu #mu jj'*('uujj' in basename) + '#mu #nu jj'*('uvjj' in basename)
+		data = dictionary[key]
+
+		c0 = TCanvas("c1","",1200,900)
+		gStyle.SetOptStat(0)
+		cl = TH1F('cl','cl',1,275,1225)
+		cl.SetLineStyle(2)
+		gStyle.SetOptTitle(1)
+		cl.GetXaxis().SetTitle("LQ Mass [GeV]")
+		cl.GetYaxis().SetTitle("Percent Variation")
+		cl.SetTitle(basename[2]+' '+chan) 
+		rmax = 1.0
+		for pdfset in data:
+			vsets = data[pdfset]
+			for vset in vsets:
+				for v in vset:
+					if abs(v) > rmax:
+						rmax = abs(v)
+		# rmax *=0.6
+		if rmax > 200.0:
+			rmax = 200.0
+		print '    ... Drawing for variations up to ',rmax,'percent.'
+
+		cl.SetMaximum(1.0*rmax)
+		cl.SetMinimum(-1.0*(rmax))
+		cl.Draw()
+
+		hlist = []
+		Crms, Mrms, Nrms, Ms = [],[],[],[]
+
+		cteq,mstw,nnpd = [],[],[]
+		old_systematic = 0.0
+		systematic = 0.0
+		for imass in range(len(mass)):
+
+
+			old_cteq = list(cteq)
+			old_mstw = list(mstw)
+			old_nnpd = list(nnpd)
+
+			cteq = data['cteq'][imass]
+			mstw = data['mstw'][imass]
+			nnpd = data['nnpdf'][imass]
+
+			if cteq == old_cteq or old_cteq == [0]:
+				cteq = [0]
+			if mstw == old_mstw or old_mstw == [0]:
+				mstw = [0]
+			if nnpd == old_nnpd or  old_nnpd == [0]:
+				nnpd = [0]
+
+			C, M, N = array('d',cteq), array('d',mstw), array('d',nnpd)
+			m = mass[imass]
+			Cm = array('d',[m for x in C])
+			Mm = array('d',[m-7. for x in M])
+			Nm = array('d',[m+7. for x in N])
+
+			# print C
+			Crms.append(rms(C))
+			Mrms.append(rms(M))
+			Nrms.append(rms(N))
+
+			old_systematic = systematic
+			systematic = max([ Crms[-1],Mrms[-1],Nrms[-1] ])
+			if systematic < old_systematic:
+				systematic = old_systematic
+			result += (str(round(systematic,2))) + ','
+			Ms.append(1.0*m)
+
+			hlist.append(TGraph(len(C), Cm, C))
+			hlist[-1].SetMarkerStyle(24)
+			hlist[-1].SetMarkerColor(6)
+			hlist[-1].SetMarkerSize(0.3)
+
+			hlist.append(TGraph(len(M), Mm, M))
+			hlist[-1].SetMarkerStyle(24)
+			hlist[-1].SetMarkerColor(2)
+			hlist[-1].SetMarkerSize(0.3)	
+
+			hlist.append(TGraph(len(N), Nm, N))
+			hlist[-1].SetMarkerStyle(24)
+			hlist[-1].SetMarkerColor(4)	
+			hlist[-1].SetMarkerSize(0.3)
+
+
+		result = result[:-1]
+		result += ']'
+		resultlist.append(result)
+		print result
+		for plot in hlist:
+			plot.Draw("P")
+
+
+
+		leg = TLegend(0.12,0.77,0.27,0.89,"","brNDC")
+		leg.SetTextFont(42)
+		leg.SetFillColor(0)
+		leg.SetBorderSize(0)
+		leg.SetTextSize(.037)
+
+
+		Crmsclone = list(Crms)
+		Nrmsclone = list(Nrms)
+		Mrmsclone = list(Mrms)
+		Msclone = list(Ms)
+
+		for xx in range(len(Crms)):
+			Crms.append(-1.0*Crmsclone[-1-xx])
+			Nrms.append(-1.0*Nrmsclone[-1-xx])
+			Mrms.append(-1.0*Mrmsclone[-1-xx])
+			Ms.append(Msclone[-1-xx])
+
+		Crms.append(Crms[0])
+		Mrms.append(Mrms[0])
+		Nrms.append(Nrms[0])
+		Ms.append(Ms[0])
+
+		Crms = array('d',Crms)
+		Nrms = array('d',Nrms)
+		Mrms = array('d',Mrms)
+		Ms = array('d',Ms)
+
+		cwin = TPolyLine(len(Crms),Ms,Crms,"")
+		cwin.SetFillColor(6)
+		cwin.SetLineColor(6)
+		cwin.SetLineWidth(2)
+		cwin.Draw("L")
+
+		mwin = TPolyLine(len(Mrms),Ms,Mrms,"")
+		mwin.SetFillColor(2)
+		mwin.SetLineColor(2)
+		mwin.SetLineWidth(2)
+		mwin.Draw("L")
+
+		nwin = TPolyLine(len(Nrms),Ms,Nrms,"")
+		nwin.SetFillColor(4)
+		nwin.SetLineColor(4)
+		nwin.SetLineWidth(2)
+		nwin.Draw("L")
+
+		ch=TH1F()
+		ch.SetLineColor(6)
+		ch.SetMarkerColor(6)
+		ch.SetLineWidth(2)
+
+		mh=TH1F()
+		mh.SetLineColor(2)
+		mh.SetMarkerColor(2)
+		mh.SetLineWidth(2)
+
+		nh=TH1F()
+		nh.SetLineColor(4)
+		nh.SetMarkerColor(4)
+		nh.SetLineWidth(2)
+
+		leg.AddEntry(ch,"CT10")
+		leg.AddEntry(mh,"MSTW")
+		leg.AddEntry(nh,"NNPDF")
+		leg.Draw()
+
+
+		c0.Print('Results_'+versionname+'/PDFValidation_'+key+'.pdf')
+		c0.Print('Results_'+versionname+'/PDFValidation_'+key+'.png')
 
 	print '\n\n---------- Summary of PDF systematics as percentages --------\n'
-	for result in ResultList:
+	for result in resultlist:
 		print result
 	print '\n\n'
 
-def PDFUncStudy(MuMuOptCutFile,MuNuOptCutFile):
-
-	weights = []
-
-	N_cteq = 53
-	N_nnpdf = 101
-	N_mstw = 41
-
-
-	cteqweights = ['*(factor_cteq_'+str(n+1)+'/factor_cteq_1)' for n in range(N_cteq)]
-	nnpdfweights = ['*(factor_nnpdf_'+str(n+1)+'/factor_cteq_1)' for n in range(N_nnpdf)]
-	mstwweights = ['*(factor_mstw_'+str(n+1)+'/factor_cteq_1)' for n in range(N_mstw)]
-
-	NC = 0
-
-	for n in range(len(sys.argv)):
-		if sys.argv[n]=='-pdf':
-			NC = int(sys.argv[n+1])
-
-	nc = 0
-	for c in cteqweights:
-		nc += 1
-		if nc != NC:
-			continue
-		[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = GetMuMuScaleFactors( NormalWeightMuMu+'*'+preselectionmumu+c, NormalDirectory, '(M_uu>80)*(M_uu<100)', '(M_uu>100)')
-		[[Rw_uvjj,Rw_uvjj_err],[Rtt_uvjj,Rtt_uvjj_err]] = GetMuNuScaleFactors( NormalWeightMuNu+'*'+preselectionmunu+c, NormalDirectory, '(MT_uv>70)*(MT_uv<110)*(JetCount<3.5)', '(MT_uv>70)*(MT_uv<110)*(JetCount>3.5)')
-		QuickTable(MuMuOptCutFile, preselectionmumu+c,NormalWeightMuMu+c,Rz_uujj, Rw_uvjj,Rtt_uujj,nc)
-		QuickTable(MuNuOptCutFile, preselectionmunu+c,NormalWeightMuNu+c,Rz_uujj, Rw_uvjj,Rtt_uvjj,nc)
-		os.system('mv '+MuNuOptCutFile.replace('.txt','_table'+str(nc)+'.csv')+' '+MuNuOptCutFile.replace('.txt','_table_cteqmod'+str(nc)+'.csv'))
-		os.system('mv '+MuMuOptCutFile.replace('.txt','_table'+str(nc)+'.csv')+' '+MuMuOptCutFile.replace('.txt','_table_cteqmod'+str(nc)+'.csv'))
-
-	for c in nnpdfweights:
-		nc += 1
-		if nc != NC:
-			continue
-		[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = GetMuMuScaleFactors( NormalWeightMuMu+'*'+preselectionmumu+c, NormalDirectory, '(M_uu>80)*(M_uu<100)', '(M_uu>100)')
-		[[Rw_uvjj,Rw_uvjj_err],[Rtt_uvjj,Rtt_uvjj_err]] = GetMuNuScaleFactors( NormalWeightMuNu+'*'+preselectionmunu+c, NormalDirectory, '(MT_uv>70)*(MT_uv<110)*(JetCount<3.5)', '(MT_uv>70)*(MT_uv<110)*(JetCount>3.5)')
-		QuickTable(MuMuOptCutFile, preselectionmumu+c,NormalWeightMuMu,Rz_uujj, Rw_uvjj,Rtt_uujj,nc)
-		QuickTable(MuNuOptCutFile, preselectionmunu+c,NormalWeightMuNu,Rz_uujj, Rw_uvjj,Rtt_uvjj,nc)
-		os.system('mv '+MuNuOptCutFile.replace('.txt','_table'+str(nc)+'.csv')+' '+MuNuOptCutFile.replace('.txt','_table_nnpdfmod'+str(nc)+'.csv'))
-		os.system('mv '+MuMuOptCutFile.replace('.txt','_table'+str(nc)+'.csv')+' '+MuMuOptCutFile.replace('.txt','_table_nnpdfmod'+str(nc)+'.csv'))
-
-	for c in mstwweights:
-		nc += 1
-		if nc != NC:
-			continue		
-		[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = GetMuMuScaleFactors( NormalWeightMuMu+'*'+preselectionmumu+c, NormalDirectory, '(M_uu>80)*(M_uu<100)', '(M_uu>100)')
-		[[Rw_uvjj,Rw_uvjj_err],[Rtt_uvjj,Rtt_uvjj_err]] = GetMuNuScaleFactors( NormalWeightMuNu+'*'+preselectionmunu+c, NormalDirectory, '(MT_uv>70)*(MT_uv<110)*(JetCount<3.5)', '(MT_uv>70)*(MT_uv<110)*(JetCount>3.5)')
-		QuickTable(MuMuOptCutFile, preselectionmumu+c,NormalWeightMuMu,Rz_uujj, Rw_uvjj,Rtt_uujj,nc)
-		QuickTable(MuNuOptCutFile, preselectionmunu+c,NormalWeightMuNu,Rz_uujj, Rw_uvjj,Rtt_uvjj,nc)
-		os.system('mv '+MuNuOptCutFile.replace('.txt','_table'+str(nc)+'.csv')+' '+MuNuOptCutFile.replace('.txt','_table_mstwmod'+str(nc)+'.csv'))
-		os.system('mv '+MuMuOptCutFile.replace('.txt','_table'+str(nc)+'.csv')+' '+MuMuOptCutFile.replace('.txt','_table_mstwmod'+str(nc)+'.csv'))
-
+	# os.system('convert -density 400 Results_'+versionname+'/PDFValidation*png Results_'+versionname+'/PDFValidation_ValPlots.pdf')
+	gStyle.SetOptTitle(0)
 
 
 def FixDrawLegend(legend):
@@ -1100,6 +1278,8 @@ def QCDStudy(sel_mumu,sel_munu,cutlogmumu,cutlogmunu,weight_mumu,weight_munu,ver
 	sel_mumu_ss = sel_mumu#+'*(Charge_muon1*Charge_muon2 > 0)'
 	MakeBasicPlotQCD("TrkIso_muon1","Tracker Rel Iso Lead Mu  (non-isolated)",[0.001,0.05,0.1,0.2,0.5,1.0,2.0,5.0],sel_mumu_ss,sel_mumu_ss+'*'+weight_mumu,weight_mumu,NormalDirectory,'qcd_noniso','uujj',1.0,1.0,1.0,version_name,1.0)
 	MakeBasicPlotQCD("TrkIso_muon2","Tracker Rel Iso Second Mu  (non-isolated)",[0.001,0.05,0.10,0.2,0.5,1.0,2.0,5.0],sel_mumu_ss,sel_mumu_ss+'*'+weight_mumu,weight_mumu,NormalDirectory,'qcd_noniso','uujj',1.0,1.0,1.0,version_name,1.0)
+	MakeBasicPlotQCD("TrkIso_muon1","Tracker Rel Iso Lead Mu  (non-isolated)",[0.001,0.05,0.1,0.2,0.5,1.0,1.5,2.0],sel_mumu_ss,sel_mumu_ss+'*'+weight_mumu,weight_mumu,NormalDirectory,'qcd_nonisoPAS','uujj',1.0,1.0,1.0,version_name,1.0)
+	MakeBasicPlotQCD("TrkIso_muon2","Tracker Rel Iso Second Mu  (non-isolated)",[0.001,0.05,0.10,0.2,0.5,1.0,1.5,2.0],sel_mumu_ss,sel_mumu_ss+'*'+weight_mumu,weight_mumu,NormalDirectory,'qcd_nonisoPAS','uujj',1.0,1.0,1.0,version_name,1.0)
 
 
 	print '\nFor final selections, this gives estimates:\n'
@@ -1164,6 +1344,8 @@ def QCDStudy(sel_mumu,sel_munu,cutlogmumu,cutlogmunu,weight_mumu,weight_munu,ver
 
 	MakeBasicPlotQCD("Pt_miss","MET [GeV] (muon non-isolated)",[50,0,10],sel_low_munu,sel_low_munu+'*'+weight_munu,weight_mumu,NormalDirectory,'qcd_noniso_unweighted','uvjj',1.0,1.0,1.0,version_name,1.0)
 	MakeBasicPlotQCD("Pt_miss","MET [GeV] (muon non-isolated, qcd reweighted)",[50,0,10],sel_low_munu,sel_low_munu+'*'+weight_munu,weight_mumu,NormalDirectory,'qcd_noniso_weighted','uvjj',1.0,1.0,1.0,version_name,ScaleFactor_QCD)
+	MakeBasicPlotQCD("Pt_miss","MET [GeV] (muon non-isolated)",[50,0,10],sel_low_munu,sel_low_munu+'*'+weight_munu,weight_mumu,NormalDirectory,'qcd_noniso_unweightedPAS','uvjj',1.0,1.0,1.0,version_name,1.0)
+	MakeBasicPlotQCD("Pt_miss","MET [GeV] (muon non-isolated, qcd reweighted)",[50,0,10],sel_low_munu,sel_low_munu+'*'+weight_munu,weight_mumu,NormalDirectory,'qcd_noniso_weightedPAS','uvjj',1.0,1.0,1.0,version_name,ScaleFactor_QCD)
 
 
 	sel__munu = sel_munu + '*(MT_uv>50)*(Pt_miss>55)'
@@ -2071,7 +2253,7 @@ def GetEMuScaleFactors( selection, FileDirectory):
 
 	print 'Checking TTBar E-Mu sample against E_Mu MC with selection:'
 	print selection 
-	N1 = QuickEntries(te_SingleMuData,selection + '*' + dataHLT,1.0)
+	N1 = QuickEntries(te_SingleMuData,selection  + dataHLT,1.0)
 
 	Z1 = QuickIntegral(te_ZJetsJBin,selection ,1.0)
 	T1 = QuickIntegral(te_TTBarDBin,selection ,1.0)
@@ -2574,6 +2756,7 @@ def MakeBasicPlot(recovariable,xlabel,presentationbinning,selection,weight,FileD
 		MCStack.Add(x)
 		x.SetMaximum(10*hs_rec_Data.GetMaximum())
 
+
 	MCStack.Draw("HIST")
 	c1.cd(1).SetLogy()
 
@@ -2621,7 +2804,7 @@ def MakeBasicPlot(recovariable,xlabel,presentationbinning,selection,weight,FileD
 	l1.SetNDC()
 	l1.SetTextSize(0.06)
  
-	l1.DrawLatex(0.18,0.94,"Work In Progress        "+sqrts+", 19.6 fb^{-1}")
+	l1.DrawLatex(0.18,0.94,"CMS #it{Preliminary}      "+sqrts+", 19.6 fb^{-1}")
 	# l1.DrawLatex(0.13,0.76,sqrts)
 
 	# l2=TLatex()
@@ -2636,6 +2819,9 @@ def MakeBasicPlot(recovariable,xlabel,presentationbinning,selection,weight,FileD
 
 	MCStack.SetMinimum(yaxismin)
 	MCStack.SetMaximum(100*hs_rec_Data.GetMaximum())
+	if 'control' in tagname:
+		MCStack.SetMaximum(100000*hs_rec_Data.GetMaximum())
+		
 	resstring = ''
 	if 'PAS' not in tagname:
 
@@ -2845,23 +3031,44 @@ def MakeBasicPlotQCD(recovariable,xlabel,presentationbinning,selection,qcdselect
 	tmpfile = TFile("tmpbin.root","RECREATE")
 	print "  Preparing basic histo for "+channel+":"+recovariable+"...  "
 	# Create Canvas
-	c1 = TCanvas("c1","",800,800)
-	gStyle.SetOptStat(0)
+	# c1 = TCanvas("c1","",800,800)
+	# gStyle.SetOptStat(0)
 
-	pad1 = TPad( 'pad1', 'pad1', 0.0, 0.47, 1.0, 1.0 )#divide canvas into pads
-	pad2 = TPad( 'pad2', 'pad2', 0.0, 0.25, 1.0, 0.44 )
-	pad3 = TPad( 'pad3', 'pad3', 0.0, 0.03, 1.0, 0.22 )
-	if tagname == 'uujj':
-		pad1.SetLogx()
-		pad2.SetLogx()
-		pad3.SetLogx()
+	# pad1 = TPad( 'pad1', 'pad1', 0.0, 0.47, 1.0, 1.0 )#divide canvas into pads
+	# pad2 = TPad( 'pad2', 'pad2', 0.0, 0.25, 1.0, 0.44 )
+	# pad3 = TPad( 'pad3', 'pad3', 0.0, 0.03, 1.0, 0.22 )
+	# if tagname == 'uujj':
+	# 	pad1.SetLogx()
+	# 	pad2.SetLogx()
+	# 	pad3.SetLogx()
 
-	pad1.Draw()
-	pad2.Draw()
-	pad3.Draw()
+	# pad1.Draw()
+	# pad2.Draw()
+	# pad3.Draw()
+
+	if 'PAS' not in tagname:
+		c1 = TCanvas("c1","",800,800)
+		pad1 = TPad( 'pad1', 'pad1', 0.0, 0.4, 1.0, 1.0 )#divide canvas into pads
+		pad2 = TPad( 'pad2', 'pad2', 0.0, 0.26, 1.0, 0.4 )
+		pad3 = TPad( 'pad3', 'pad3', 0.0, 0.0, 1.0, 0.26 )
+		pad1.Draw()
+		pad2.Draw()
+		pad3.Draw()
+		pad1.SetBottomMargin(0.0)		
+		pad2.SetTopMargin(0.0)
+		pad3.SetTopMargin(0.0)
+		pad2.SetBottomMargin(0.0)
+		pad3.SetBottomMargin(0.43)
+	else:
+		# if 'final' not in tagname:
+		c1 = TCanvas("c1","",800,550)		
+		pad1 = TPad( 'pad1', 'pad1', 0.0, 0.0, 1.0, 1.0 )#divide canvas into pads
+		pad1.Draw()
+		perc = 5.0
+
 
 	pad1.cd()
-	pad1.SetGrid()
+	# pad1.SetGrid()
 	# These are the style parameters for certain plots - [FillStyle,MarkerStyle,MarkerSize,LineWidth,Color]
 	MCRecoStyle=[0,20,.00001,1,4]
 	DataRecoStyle=[0,20,.7,1,1]
@@ -2972,7 +3179,7 @@ def MakeBasicPlotQCD(recovariable,xlabel,presentationbinning,selection,qcdselect
 	l1.SetNDC()
 	l1.SetTextSize(0.06)
  
-	l1.DrawLatex(0.37,0.94,"CMS 2012  "+sqrts+", 19.6 fb^{-1}")
+	# l1.DrawLatex(0.37,0.94,"CMS 2012  "+sqrts+", 19.6 fb^{-1}")
 	# l1.DrawLatex(0.13,0.76,sqrts)
 
 	l2=TLatex()
@@ -2981,12 +3188,22 @@ def MakeBasicPlotQCD(recovariable,xlabel,presentationbinning,selection,qcdselect
 	l2.SetNDC()
 	l2.SetTextSize(0.06)
 	# l2.SetTextAngle(45);	
-	l2.DrawLatex(0.15,0.83,"PRELIMINARY")
+	# l2.DrawLatex(0.15,0.83,"CMS #it{Preliminary}")
+	l2.DrawLatex(0.18,0.94,"CMS #it{Preliminary}      "+sqrts+", 19.6 fb^{-1}")
 
 	gPad.RedrawAxis()
 
-	MCStack.SetMinimum(.03333)
+	MCStack.SetMinimum(1.)
 	MCStack.SetMaximum(100*hs_rec_Data.GetMaximum())
+
+	if 'PAS' in tagname:
+		print 'Saving...  ',
+		c1.Print('Results_'+version_name+'/BasicQCD_'+channel+'_'+recovariable+'_'+tagname+'.pdf')
+		c1.Print('Results_'+version_name+'/BasicQCD_'+channel+'_'+recovariable+'_'+tagname+'.png')		
+		print 'Done.'
+		return
+
+
 
 	pad2.cd()
 	# pad2.SetLogy()
@@ -3107,6 +3324,8 @@ def MakeBasicPlotQCD(recovariable,xlabel,presentationbinning,selection,qcdselect
 	c1.Print('Results_'+version_name+'/BasicQCD_'+channel+'_'+recovariable+'_'+tagname+'.png')		
 	print 'Done.'
 
+
+
 def MakeBasicPlotEMu(recovariable,xlabel,presentationbinning,selection,weight,FileDirectory,tagname,channel, zscale, wscale, ttscale,cutlog,version_name,plotmass):
 
 	# Load all root files as trees - e.g. file "DiBoson.root" will give you tree called "te_DiBoson"
@@ -3118,15 +3337,29 @@ def MakeBasicPlotEMu(recovariable,xlabel,presentationbinning,selection,weight,Fi
 	c1 = TCanvas("c1","",800,800)
 	gStyle.SetOptStat(0)
 
-	pad1 = TPad( 'pad1', 'pad1', 0.0, 0.47, 1.0, 1.0 )#divide canvas into pads
-	pad2 = TPad( 'pad2', 'pad2', 0.0, 0.25, 1.0, 0.44 )
-	pad3 = TPad( 'pad3', 'pad3', 0.0, 0.03, 1.0, 0.22 )
-	pad1.Draw()
-	pad2.Draw()
-	pad3.Draw()
+	if 'PAS' not in tagname:
+		c1 = TCanvas("c1","",800,800)
+		pad1 = TPad( 'pad1', 'pad1', 0.0, 0.4, 1.0, 1.0 )#divide canvas into pads
+		pad2 = TPad( 'pad2', 'pad2', 0.0, 0.26, 1.0, 0.4 )
+		pad3 = TPad( 'pad3', 'pad3', 0.0, 0.0, 1.0, 0.26 )
+		pad1.Draw()
+		pad2.Draw()
+		pad3.Draw()
+		pad1.SetBottomMargin(0.0)		
+		pad2.SetTopMargin(0.0)
+		pad3.SetTopMargin(0.0)
+		pad2.SetBottomMargin(0.0)
+		pad3.SetBottomMargin(0.43)
+	else:
+		# if 'final' not in tagname:
+		c1 = TCanvas("c1","",800,550)		
+		pad1 = TPad( 'pad1', 'pad1', 0.0, 0.0, 1.0, 1.0 )#divide canvas into pads
+		pad1.Draw()
+		perc = 5.0
+
 
 	pad1.cd()
-	pad1.SetGrid()
+	# pad1.SetGrid()
 	# These are the style parameters for certain plots - [FillStyle,MarkerStyle,MarkerSize,LineWidth,Color]
 	MCRecoStyle=[0,20,.00001,1,4]
 	DataRecoStyle=[0,20,.7,1,1]
@@ -3229,7 +3462,7 @@ def MakeBasicPlotEMu(recovariable,xlabel,presentationbinning,selection,weight,Fi
 	l1.SetNDC()
 	l1.SetTextSize(0.06)
  
-	l1.DrawLatex(0.37,0.94,"CMS 2012  "+sqrts+", 19.6 fb^{-1}")
+	# l1.DrawLatex(0.37,0.94,"CMS 2012  "+sqrts+", 19.6 fb^{-1}")
 	# l1.DrawLatex(0.13,0.76,sqrts)
 
 	l2=TLatex()
@@ -3238,12 +3471,26 @@ def MakeBasicPlotEMu(recovariable,xlabel,presentationbinning,selection,weight,Fi
 	l2.SetNDC()
 	l2.SetTextSize(0.06)
 	# l2.SetTextAngle(45);	
-	l2.DrawLatex(0.15,0.83,"PRELIMINARY")
+	# l2.DrawLatex(0.15,0.83,"CMS #it{Preliminary} ")
+	l2.DrawLatex(0.18,0.94,"CMS #it{Preliminary}      "+sqrts+", 19.6 fb^{-1}")
 
 	gPad.RedrawAxis()
 
 	MCStack.SetMinimum(.03333)
 	MCStack.SetMaximum(100*hs_rec_Data.GetMaximum())
+
+	if 'PAS' in tagname:
+
+		print 'Saving...  ',
+		if 'final' not in tagname:
+			c1.Print('Results_'+version_name+'/Basic_NoRatio_'+channel+'_'+recovariable+'_'+tagname+'.pdf')
+			c1.Print('Results_'+version_name+'/Basic_NoRatio_'+channel+'_'+recovariable+'_'+tagname+'.png')
+		else:
+			c1.Print('Results_'+version_name+'/Basic_NoRatio_'+channel+'_'+recovariable+'_'+tagname+str(plotmass)+'.pdf')
+			c1.Print('Results_'+version_name+'/Basic_NoRatio_'+channel+'_'+recovariable+'_'+tagname+str(plotmass)+'.png')		
+		print 'Done.'
+
+		return
 
 	pad2.cd()
 	# pad2.SetLogy()
