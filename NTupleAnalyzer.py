@@ -65,6 +65,9 @@ startingweight = float(options.crosssection)*float(options.lumi)/float(options.n
 
 # Get the file, tree, and number of entries
 print name
+newntupleswitch = 'V00-03-18' in name
+if newntupleswitch == True:
+	print 'Detected V00-03-18 ntuple - making small tweaks to handle this!'
 
 fin = TFile.Open(name,"READ")
 to = fin.Get("rootTupleTree/tree")
@@ -590,7 +593,7 @@ def TightHighPtIDMuons(T,_met,variation,isdata):
 
 	nequiv = []
 	for n in range(len(T.MuonPt)):
-		if T.MuonIsGlobal[n]:
+		if T.MuonIsGlobal[n] or newntupleswitch==True:
 			nequiv.append(n)
 
 	# Loop over muons using the pT array from above
