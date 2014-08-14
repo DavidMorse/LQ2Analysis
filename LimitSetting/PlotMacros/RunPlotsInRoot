@@ -1,0 +1,18 @@
+{
+
+gROOT->ProcessLine(".L ComboPlotLQ2.C++");
+gROOT->ProcessLine("makePlots()");
+
+gROOT->Reset();
+
+gROOT->ProcessLine(".L BR_Sigma_MuMu_vsMass.C++");
+gROOT->ProcessLine("makePlotsBO()");
+
+gROOT->Reset();
+
+gROOT->ProcessLine(".L BR_Sigma_MuNu_vsMass.C++");
+gROOT->ProcessLine("makePlotsBH()");
+
+gROOT->ProcessLine(".q");
+
+}

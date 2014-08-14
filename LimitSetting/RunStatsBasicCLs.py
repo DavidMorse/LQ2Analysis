@@ -168,6 +168,7 @@ if do_BetaOne == 1:
 		while 'r < 0.0000' in str(EstimationInformation):
 			ntry += 1
 			EstimationInformation = os.popen('combine '+ESTIMATIONMETHOD+' CLSLimits/BetaOne'+cdir+'/confbetaone_'+cdir+'_'+name[x]+'.cfg --rMax '+str(rmax)).readlines()
+			print ('combine '+ESTIMATIONMETHOD+' CLSLimits/BetaOne'+cdir+'/confbetaone_'+cdir+'_'+name[x]+'.cfg --rMax '+str(rmax))
 			if breaker ==True:
 				break
 			if 'r < 0.0000' not in str(EstimationInformation):
@@ -179,7 +180,12 @@ if do_BetaOne == 1:
 						thisrval = float(thisrval)
 						if thisrval>effrmax:
 							effrmax = thisrval
-				rmax = effrmax*2.0
+
+				if effrmax < 0:
+					rmax = 0.8*rmax
+				else:
+					rmax = effrmax*2.0
+
 				EstimationInformation = [' r < 0.0000']
 				if ntry>3:
 					breaker = True
@@ -285,6 +291,11 @@ if do_BetaHalf == 1:
 			ntry += 1
 			EstimationInformation = os.popen('combine '+ESTIMATIONMETHOD+' CLSLimits/BetaHalf'+cdir+'/confbetahalf_'+cdir+'_'+name[x]+'.cfg --rMax '+str(rmax)).readlines()
 			# print('combine '+ESTIMATIONMETHOD+' CLSLimits/BetaHalf'+cdir+'/confbetahalf_'+cdir+'_'+name[x]+'.cfg --rMax '+str(rmax))
+			# print '-'*100
+			print ('combine '+ESTIMATIONMETHOD+' CLSLimits/BetaHalf'+cdir+'/confbetahalf_'+cdir+'_'+name[x]+'.cfg --rMax '+str(rmax))
+			# for xinf in EstimationInformation:
+			# 	print xinf.replace('\n','')
+			# print EstimationInformation
 			if breaker ==True:
 				break
 			if 'r < 0.0000' not in str(EstimationInformation):
@@ -296,11 +307,15 @@ if do_BetaHalf == 1:
 						thisrval = float(thisrval)
 						if thisrval>effrmax:
 							effrmax = thisrval
-				rmax = effrmax*2.0
+				if effrmax < 0:
+					rmax = 0.8*rmax
+				else:
+					rmax = effrmax*2.0
 				EstimationInformation = [' r < 0.0000']
 				if ntry > 3:
 					breaker = True
 		## Estimation Complete
+		print '='*60
 		
 		expectedlines = []
 		for line in EstimationInformation:
@@ -327,6 +342,7 @@ if do_BetaHalf == 1:
 					BetaHalf68up.append((line.split('<')[-1]).replace('\n',''))
 				if '97.5%' in line:
 					BetaHalf95up.append((line.split('<')[-1]).replace('\n',''))
+		print '='*60
 		
 		vstart = round((min(values)/3),5)
 		vstop = round((max(values)*3),5)
@@ -540,11 +556,14 @@ if do_combo == 1:
 			rmax = 10000.0
 			breaker = False 
 			ntry = 0
+			oldrmax = 100000.0
+
 			while 'r < 0.0000' in str(EstimationInformation0):
 				ntry += 1
 				print 'combine '+ESTIMATIONMETHOD+' '+newcard +' --rMax '+str(rmax)
 				EstimationInformation0 = os.popen('combine '+ESTIMATIONMETHOD+' '+newcard +' --rMax '+str(rmax)).readlines()
-				
+				if abs(rmax - oldrmax)<.01*rmax:
+					breaker=True				
 				if breaker ==True:
 					break
 				if 'r < 0.0000' not in str(EstimationInformation0):
@@ -556,9 +575,17 @@ if do_combo == 1:
 							thisrval = float(thisrval)
 							if thisrval>effrmax:
 								effrmax = thisrval
-					rmax = effrmax*2.0
+
+					oldrmax = float(rmax)
+
+					if effrmax < 0:
+						rmax = 0.8*rmax
+					else:
+						rmax = effrmax*2.0
+
+					# rmax = effrmax*2.0
 					EstimationInformation0 = [' r < 0.0000']
-					if ntry > 3:
+					if ntry > 30:
 						breaker = True
 
 
@@ -566,12 +593,15 @@ if do_combo == 1:
 			rmax = 10000.0
 			breaker = False 
 			ntry = 0
-
+			oldrmax = 100000.0
 			while 'r < 0.0000' in str(EstimationInformation1):
 				ntry += 1				
 				print 'combine '+ESTIMATIONMETHOD+' '+newcard_BetaOne +' --rMax '+str(rmax)
 				EstimationInformation1 = os.popen('combine '+ESTIMATIONMETHOD+' '+newcard_BetaOne +' --rMax '+str(rmax)).readlines()
 				
+				if abs(rmax - oldrmax)<.01*rmax:
+					breaker=True
+
 				if breaker ==True:
 					break
 				if 'r < 0.0000' not in str(EstimationInformation1):
@@ -583,21 +613,32 @@ if do_combo == 1:
 							thisrval = float(thisrval)
 							if thisrval>effrmax:
 								effrmax = thisrval
-					rmax = effrmax*2.0
+
+
+
+					oldrmax = float(rmax)
+					if effrmax < 0:
+						rmax = 0.8*rmax
+					else:
+						rmax = effrmax*2.0
+
 					EstimationInformation1 = [' r < 0.0000']
-					if ntry > 3:
+					if ntry > 30:
 						breaker = True
+
 				
 			EstimationInformation2 = [' r < 0.0000']
 			rmax = 10000.0
 			breaker = False 
 			ntry = 0
+			oldrmax = 100000.0
 
 			while 'r < 0.0000' in str(EstimationInformation2):
 				ntry += 1
 				print 'combine '+ESTIMATIONMETHOD+' '+newcard_BetaHalf +' --rMax '+str(rmax)
 				EstimationInformation2 = os.popen('combine '+ESTIMATIONMETHOD+' '+newcard_BetaHalf +' --rMax '+str(rmax)).readlines()
-				
+				if abs(rmax - oldrmax)<.01*rmax:
+					breaker=True				
 				if breaker ==True:
 					break
 				if 'r < 0.0000' not in str(EstimationInformation2):
@@ -609,10 +650,19 @@ if do_combo == 1:
 							thisrval = float(thisrval)
 							if thisrval>effrmax:
 								effrmax = thisrval
-					rmax = effrmax*2.0
+
+					oldrmax = float(rmax)
+
+					if effrmax < 0:
+						rmax = 0.8*rmax
+					else:
+						rmax = effrmax*2.0
+
 					EstimationInformation2 = [' r < 0.0000']
-					if ntry > 3:
+					if ntry > 30:
 						breaker = True
+
+
 			
 			expectedlines0 = []
 			for line in EstimationInformation0:

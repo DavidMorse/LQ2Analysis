@@ -1,20 +1,26 @@
 import os
 import sys
 
-files = []
+sortedreslist = [x.replace('\n','') for x in os.popen('ls -1 BatcherResults/*txt | sort').readlines()]
+os.system('rm BatcherResults/allresults.log')
+os.system('touch BatcherResults/allresults.log')
+for x in sortedreslist:
+	print x
+	os.system('cat '+x+' >> BatcherResults/allresults.log')
 
-blist = os.popen('cat BatcherResults/*txt | grep Double_t | grep beta_vals').readlines()
+blist = os.popen('cat BatcherResults/allresults.log | grep Double_t | grep beta_vals').readlines()
 
-excom = os.popen('cat BatcherResults/*txt | grep Double_t | grep expected | grep combo').readlines()
-obcom = os.popen('cat BatcherResults/*txt | grep Double_t | grep observed | grep combo').readlines()
-s1com = os.popen('cat BatcherResults/*txt | grep Double_t | grep 1sigma | grep combo').readlines()
-s2com = os.popen('cat BatcherResults/*txt | grep Double_t | grep 2sigma | grep combo').readlines()
+excom = os.popen('cat BatcherResults/allresults.log | grep Double_t | grep expected | grep combo').readlines()
+obcom = os.popen('cat BatcherResults/allresults.log | grep Double_t | grep observed | grep combo').readlines()
+s1com = os.popen('cat BatcherResults/allresults.log | grep Double_t | grep 1sigma | grep combo').readlines()
+s2com = os.popen('cat BatcherResults/allresults.log | grep Double_t | grep 2sigma | grep combo').readlines()
 
-exlljj = os.popen('cat BatcherResults/*txt | grep Double_t | grep expected | grep lljj').readlines()
-oblljj = os.popen('cat BatcherResults/*txt | grep Double_t | grep observed | grep lljj').readlines()
+exlljj = os.popen('cat BatcherResults/allresults.log | grep Double_t | grep expected | grep lljj').readlines()
+oblljj = os.popen('cat BatcherResults/allresults.log | grep Double_t | grep observed | grep lljj').readlines()
 
-exlvjj = os.popen('cat BatcherResults/*txt | grep Double_t | grep expected | grep lvjj').readlines()
-oblvjj = os.popen('cat BatcherResults/*txt | grep Double_t | grep observed | grep lvjj').readlines()
+exlvjj = os.popen('cat BatcherResults/allresults.log | grep Double_t | grep expected | grep lvjj').readlines()
+oblvjj = os.popen('cat BatcherResults/allresults.log | grep Double_t | grep observed | grep lvjj').readlines()
+
 
 def parselist(L):
 	header = (L[0].split('{'))[0]

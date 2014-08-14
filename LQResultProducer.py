@@ -68,56 +68,6 @@ emu_id_eff_err = 0.00606
 
 # Next are the PDF uncertainties. 
 pdf_MASS   =[ 300 , 350 , 400 , 450 , 500 , 550 , 600 , 650 , 700 , 750 , 800 , 850 , 900 , 950 , 1000 , 1050 , 1100 , 1150 , 1200 ]               
-# pdf_uujj_TTBar =[ 3.92 , 4.42 , 4.96 , 5.14 , 5.48 , 5.43 , 5.18 , 5.26 , 5.15 , 5.89 , 4.57 , 6.08 , 10.13 , 16.58 , 16.58 , 16.58 , 16.58 , 16.58 , 16.58]
-# pdf_uujj_ZJets =[  0.33 , 0.65 , 0.94 , 1.31 , 1.59 , 2.23 , 3.04 , 2.34 , 2.38 , 2.58 , 2.58 , 2.58 , 2.97 , 2.97 , 4.45 , 4.45 , 4.45 , 4.45 , 4.45]
-# pdf_uujj_WJets =[  3.86 , 3.67 , 6.01 , 6.01 , 10.94 , 10.94 , 10.94 , 10.94 , 10.94 , 10.94 , 10.94 , 10.94 , 10.94 , 10.94 , 10.94 , 10.94 , 10.94 , 10.94 , 10.94]
-# pdf_uujj_sTop =[  7.44 , 8.97 , 11.78 , 13.98 , 18.23 , 20.37 , 20.37 , 20.37 , 20.37 , 20.37 , 21.2 , 21.2 , 47.28 , 47.28 , 47.28 , 47.28 , 47.28 , 47.28 , 47.28]
-# pdf_uujj_VV =[  2.9 , 3.2 , 3.43 , 3.88 , 4.27 , 4.27 , 4.34 , 4.34 , 4.86 , 12.8 , 24.32 , 30.4 , 30.4 , 30.4 , 30.4 , 30.4 , 30.4 , 30.4 , 30.4]
-# pdf_uujj_Signal = [2.0 for x in pdf_MASS]               
-
-       
-# pdf_uvjj_TTBar =[  0.65 , 0.94 , 1.75 , 2.44 , 2.52 , 3.28 , 4.14 , 4.99 , 5.81 , 4.48 , 3.58 , 4.28 , 5.15 , 4.56 , 7.93 , 7.93 , 7.93 , 7.93 , 7.93]
-# pdf_uvjj_ZJets =[  0.44 , 0.56 , 0.59 , 0.7 , 0.63 , 0.9 , 1.33 , 1.91 , 2.51 , 3.85 , 3.85 , 3.74 , 8.11 , 8.11 , 8.11 , 8.11 , 8.11 , 8.11 , 8.11]
-# pdf_uvjj_WJets =[  1.17 , 1.36 , 1.85 , 2.72 , 3.02 , 4.41 , 7.16 , 10.54 , 15.21 , 19.12 , 16.87 , 40.14 , 40.14 , 40.14 , 40.14 , 40.14 , 40.14 , 40.14 , 40.14]
-# pdf_uvjj_sTop =[  9.56 , 12.25 , 8.74 , 9.07 , 9.6 , 11.44 , 8.52 , 12.8 , 12.8 , 12.8 , 12.8 , 12.8 , 12.8 , 12.8 , 12.8 , 12.8 , 12.8 , 12.8 , 12.8]
-# pdf_uvjj_VV =[  2.09 , 2 , 2.12 , 2.13 , 2.26 , 2.8 , 2.4 , 2.27 , 2.34 , 2.7 , 3.42 , 3.2 , 4.19 , 4.19 , 4.19 , 4.19 , 4.19 , 4.19 , 4.19]
-# pdf_uvjj_Signal = [2.0 for x in pdf_MASS]               
-
-
-# pdf_uujj_ZJets = [0.241,0.451,0.666,0.936,1.178,1.775,2.52,2.52,2.52,2.52,2.52,2.52,2.52,2.52,3.64,3.64,3.64,3.64,3.64]
-# pdf_uujj_TTBar = [3.73,4.249,4.838,5.054,5.492,5.492,5.492,5.492,5.492,5.492,5.492,6.373,11.177,18.24,18.24,18.24,18.24,18.24,18.24]
-# pdf_uujj_WJets = [1.984,2.275,3.811,3.811,6.956,6.956,6.956,6.956,6.956,6.956,6.956,6.956,6.956,6.956,6.956,6.956,6.956,6.956,6.956]
-# pdf_uujj_VV = [2.288,2.657,2.899,3.243,3.554,3.606,3.606,4.888,6.976,13.459,17.724,20.767,20.767,20.767,20.767,20.767,20.767,20.767,20.767]
-# pdf_uujj_sTop = [7.94,9.713,13.337,15.854,20.022,27.444,27.444,27.444,27.444,33.063,45.625,45.625,100.0,100.0,100.0,100.0,100.0,100.0,100.0]
-# pdf_uujj_Signal = [0.025,0.041,0.061,0.094,0.116,0.172,0.216,0.226,0.235,0.259,0.291,0.298,0.337,0.389,0.447,0.447,0.447,0.447,0.447]
-# pdf_uujj_Signal = [2.0 for x in pdf_MASS]               
-
-# pdf_uvjj_ZJets = [1.363,1.363,1.363,1.544,1.544,1.598,2.375,2.375,2.678,3.443,3.443,3.604,4.443,5.091,5.091,5.091,5.091,5.091,5.091]
-# pdf_uvjj_TTBar = [0.91,1.622,2.254,2.953,3.113,4.102,5.037,5.816,6.131,6.131,6.131,6.131,6.131,6.131,10.147,10.147,10.147,10.147,10.147]
-# pdf_uvjj_WJets = [0.843,1.089,1.614,2.326,2.7,3.754,7.133,9.918,14.182,18.07,18.07,69.647,69.647,69.647,69.647,69.647,69.647,69.647,69.647]
-# pdf_uvjj_VV = [2.191,2.191,2.191,2.236,2.397,3.011,3.011,3.011,3.011,3.011,3.313,3.909,4.674,4.873,4.873,4.873,4.873,4.873,4.873]
-# pdf_uvjj_sTop = [5.599,7.664,8.186,9.168,10.064,12.788,15.976,15.976,15.976,15.976,15.976,15.976,15.976,15.976,15.976,15.976,15.976,15.976,15.976]
-# pdf_uvjj_Signal = [0.13,0.141,0.461,0.461,0.461,0.496,0.523,0.603,0.637,0.74,0.865,0.901,0.967,1.006,1.136,1.136,1.136,1.136,1.136]
-# pdf_uvjj_Signal = [2.0 for x in pdf_MASS]               
-
-
-
-# pdf_uujj_Signal = [0.1,0.17,0.18,0.21,0.26,0.26,0.26,0.27,0.29,0.31,0.35,0.36,0.46,0.65,1.06,1.06,1.06,1.06,1.06]
-# pdf_uvjj_Signal = [0.35,0.53,0.83,0.83,0.83,0.83,0.83,0.83,0.83,0.84,1.2,1.2,1.62,1.62,2.22,2.35,2.35,2.35,2.35]
-# pdf_uujj_Signal = [2.0 for x in pdf_MASS]               
-# pdf_uvjj_Signal = [3.0 for x in pdf_MASS]               
-
-# pdf_uujj_TTBar = [4.11,4.11,4.11,4.11,4.11,4.11,4.11,4.11,4.11,4.11,4.11,4.11,4.11,4.11,4.11,4.11,4.11,4.11,4.11]
-# pdf_uujj_WJets = [3.58,3.58,3.58,3.58,3.58,3.58,3.58,3.58,3.58,3.58,3.58,3.58,3.58,3.58,3.58,3.58,3.58,3.58,3.58]
-# pdf_uujj_VV = [3.15,3.33,3.63,4.15,4.15,4.15,4.15,4.15,4.15,4.15,4.15,4.15,4.15,4.15,4.15,4.15,4.15,4.15,4.15]
-# pdf_uujj_ZJets = [0.58,1.35,1.93,2.8,4.07,5.96,8.62,8.62,8.62,8.62,8.62,8.62,8.62,8.62,8.62,8.62,8.62,8.62,8.62]
-# pdf_uujj_sTop = [8.43,8.43,8.43,8.43,8.43,8.43,8.43,8.43,8.43,8.43,8.43,8.43,8.43,8.43,8.43,8.43,8.43,8.43,8.43]
-
-# pdf_uvjj_TTBar = [2.15,3.48,5.15,6.33,7.33,9.97,14.52,14.52,14.52,14.52,14.52,14.52,14.52,14.52,14.52,14.52,14.52,14.52,14.52]
-# pdf_uvjj_WJets = [1.06,1.46,2.3,3.67,4.72,4.72,4.72,4.72,4.72,4.72,4.72,4.72,4.72,4.72,4.72,4.72,4.72,4.72,4.72]
-# pdf_uvjj_ZJets = [2.98,3.15,3.49,3.49,3.49,3.49,3.49,3.49,3.49,3.49,3.49,3.49,3.49,3.49,3.49,3.49,3.49,3.49,3.49]
-# pdf_uvjj_VV = [3.34,3.41,3.62,3.73,4.03,4.03,4.03,4.03,4.03,4.03,4.03,4.03,4.03,4.03,4.03,4.03,4.03,4.03,4.03]
-# pdf_uvjj_sTop = [8.77,8.77,8.77,8.77,8.77,8.77,8.77,8.77,8.77,8.77,8.77,8.77,8.77,8.77,8.77,8.77,8.77,8.77,8.77]
 
 
 pdf_uujj_TTBar = [4.1,4.1,4.1,4.1,4.1,4.1,4.1,4.1,4.1,4.1,4.1,4.1,4.1,4.1,4.1,4.1,4.1,4.1,4.1]
@@ -140,8 +90,8 @@ pdf_uvjj_Signal = [3.0 for x in pdf_MASS]
 
 
 # These are the total background uncertainties. They are used just to make some error bands on plots. 
-totunc_uujj = [3.46, 2.55, 2.98, 3.67, 5.44, 5.73, 6.21, 6.47, 9.47, 11.16, 14.79, 19.75, 31.11, 35.41, 8.12, 8.12, 8.12, 8.12, 8.12]
-totunc_uvjj = [13.37, 12.37, 13.35, 12.97, 13.62, 15.94, 16.23, 20.67, 23.94, 30.29, 35.3, 52.94, 69.57, 46.09, 42.3, 42.3, 42.3, 42.3, 42.3]
+totunc_uujj = [3.36, 2.57, 2.79, 3.36, 5.28, 5.67, 6.85, 6.79, 10.29, 10.59, 11.95, 32.6, 14.88, 45.57, 53.55, 53.55, 53.55, 53.55, 53.55 ]
+totunc_uvjj = [7.36, 7.58, 9.62, 10.52, 11.75, 14.42, 18.26, 24.61, 23.88, 38.78, 27.65, 30.1, 47.37, 53.7, 53.99, 53.99, 53.99, 53.99, 53.99]
 
 
 # Muon alignment Uncs, [uujj sig, uujj bg, uvjj sig, [uvjj bg] ] Only uvjj BG significantly varies with mass
@@ -165,7 +115,7 @@ def main():
     ######  The output directories, and the files that define final selection cuts  #######
 	#######################################################################################
 
-	# Please retain the "scriptflag" comment. Some python scripts are available which search
+	# Please retain the "script flag" comment. Some python scripts are available which search
 	# for this, and make use of it. e.g. For systematic variations, we can in batch instead
 	# of running serially, which speeds things up.
 
@@ -252,7 +202,6 @@ def main():
 		# TTBar STudy
 		[Rtt_uujj,Rtt_uujj_err] = GetEMuScaleFactors( NormalWeightEMu+'*'+preselectionemu, EMuDirectory)
 		Rw_uvjj,Rz_uujj = [1.0,1.0]
-
 		# # PreSelection Plots
 		MakeBasicPlotEMu("St_uujj","S_{T}^{e #mu j j} [GeV]",stbinning,preselectionemu,NormalWeightEMu,EMuDirectory,'emuseltagfree','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,500)
 		MakeBasicPlotEMu("Pt_miss","E_{T}^{miss} [GeV]",metbinning2,preselectionemu,NormalWeightEMu,EMuDirectory,'emuseltagfree','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,500)
@@ -330,7 +279,6 @@ def main():
 		# Get Scale Factors
 		[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = GetMuMuScaleFactors( NormalWeightMuMu+'*'+preselectionmumu, NormalDirectory, '(M_uu>80)*(M_uu<100)', '(M_uu>100)')
 		[[Rw_uvjj,Rw_uvjj_err],[Rtt_uvjj,Rtt_uvjj_err]] = GetMuNuScaleFactors( NormalWeightMuNu+'*'+preselectionmunu, NormalDirectory, '(MT_uv>70)*(MT_uv<110)*(JetCount<3.5)', '(MT_uv>70)*(MT_uv<110)*(JetCount>3.5)')
-
 
 		# Optionally, you can make an event-count table for each selection. Useful if testing a new optimiation
 		# We will do this later wtih full systematics for our set of stable cuts. 
@@ -444,9 +392,21 @@ def main():
 	if True:
 
 
+		# Some modifications to the ST and LQ mass binning
+		stbinning = [280 ,300]
+		lqbinning = [-20,0]
+		for x in range(22):
+			stbinning.append(stbinning[-1]+10+stbinning[-1]-stbinning[-2])
+		for x in range(24):
+			lqbinning.append(lqbinning[-1]+5+lqbinning[-1]-lqbinning[-2])
+		stbinning = stbinning[1:]
+		lqbinning = lqbinning[1:]
+
+
 		# Get Scale Factors
 		[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = GetMuMuScaleFactors( NormalWeightMuMu+'*'+preselectionmumu, NormalDirectory, '(M_uu>80)*(M_uu<100)', '(M_uu>100)')
 		[[Rw_uvjj,Rw_uvjj_err],[Rtt_uvjj,Rtt_uvjj_err]] = GetMuNuScaleFactors( NormalWeightMuNu+'*'+preselectionmunu, NormalDirectory, '(MT_uv>70)*(MT_uv<110)*(JetCount<3.5)', '(MT_uv>70)*(MT_uv<110)*(JetCount>3.5)')
+
 
 		# Here are a few plots which are zoomed-in on control regions. 
 		MakeBasicPlot("M_uu","M^{#mu #mu} [GeV]",[20,80,100],preselectionmumu,NormalWeightMuMu,NormalDirectory,'controlzoomPASTTBarDataDriven_ZRegiontagfree','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,500)
@@ -455,7 +415,6 @@ def main():
 		MakeBasicPlot("MT_uv","M_{T}^{#mu #nu} [GeV]",bosonzoombinning_uvjj,preselectionmunu+'*(MT_uv>70)*(MT_uv<110)*(JetCount<3.5)',NormalWeightMuNu,NormalDirectory,'controlzoomPAS_WRegiontagfree','uvjj',Rz_uujj, Rw_uvjj,Rtt_uvjj,'',version_name,500)
 		MakeBasicPlot("MT_uv","M_{T}^{#mu #nu} [GeV]",bosonzoombinning_uvjj,preselectionmunu+'*(MT_uv>70)*(MT_uv<110)*(JetCount>3.5)',NormalWeightMuNu,NormalDirectory,'controlzoomPAS_TTRegiontagfree','uvjj',Rz_uujj, Rw_uvjj,Rtt_uvjj,'',version_name,500)
 
-		# sys.exit()
 		# The two flags are for regular plots, and tagfree plots (plots that don't say CMS Preliminary - for notes or thesis)
 		for flag in ['','tagfree']:
 
@@ -502,11 +461,11 @@ def main():
 	# You can run this to make the full set of tables needed to construct the higgs card. This takes a long time!
 	# Alternatively, you can run > python SysBatcher.py --launch to do each table in a separate batch job
 	# When done, proceed to the next step to make higgs limit cards
-	if (True):
+	if (False):
 		FullAnalysis(MuMuOptCutFile, preselectionmumu,preselectionmunu,NormalDirectory,NormalWeightMuMu,'TTBarDataDriven')  # scriptflag
 		FullAnalysis(MuNuOptCutFile, preselectionmumu,preselectionmunu,NormalDirectory,NormalWeightMuNu,'normal')  # scriptflag
 
-	if (True):
+	if (False):
 		uujjcardfiles = MuMuOptCutFile.replace('.txt','_systable*.txt')
 		uvjjcardfiles = MuNuOptCutFile.replace('.txt','_systable*.txt')
 
@@ -1249,6 +1208,13 @@ def QCDStudy(sel_mumu,sel_munu,cutlogmumu,cutlogmunu,weight_mumu,weight_munu,ver
 
 	print Q_ss
 	print Q_os
+
+	D_ss = QuickIntegral(tn_QCDMu,sel_mumu + '*(Charge_muon1*Charge_muon2 > 0)*'+weight_mumu,1.0)
+	# print 'Test: In normal Iso data, the number of same-sign events is ',QuickEntries(t_SingleMuData,sel_mumu + '*(Charge_muon1*Charge_muon2 > 0)',1.0)
+	# print 'Test: In normal Iso MC, the number of same-sign events is ',QuickIntegral(t_ZJetsJBin,sel_mumu + '*(Charge_muon1*Charge_muon2 > 0)*'+weight_mumu,1.0),		QuickIntegral(t_WJetsJBin,sel_mumu + '*(Charge_muon1*Charge_muon2 > 0)*'+weight_mumu,1.0),		QuickIntegral(t_SingleTop,sel_mumu + '*(Charge_muon1*Charge_muon2 > 0)*'+weight_mumu,1.0),		QuickIntegral(t_DiBoson,sel_mumu + '*(Charge_muon1*Charge_muon2 > 0)*'+weight_mumu,1.0),		QuickIntegral(t_TTBarDBin,sel_mumu + '*(Charge_muon1*Charge_muon2 > 0)*'+weight_mumu,1.0)
+	# print 'Test: QCD Prediction in SS Isolated:', QuickIntegral(tn_QCDMu,sel_mumu + '*(Charge_muon1*Charge_muon2 > 0)*'+weight_mumu+'*(TrkIso_muon1<0.1)*(TrkIso_muon2<0.1)',1.0)
+
+
 	# sys.exit()
 	studyvals = []
 	for x in range(1000):
@@ -1340,10 +1306,10 @@ def QCDStudy(sel_mumu,sel_munu,cutlogmumu,cutlogmunu,weight_mumu,weight_munu,ver
 	print "\nThe data-driven fake-rate is:", texentry4([FakeRate,FakeRate_err])
 	print "\nThe MC-driven fake-rate is:", texentry4([MCFakeRate,MCFakeRate_err])
 
-	MakeBasicPlotQCD("Pt_miss","MET [GeV] (muon non-isolated)",[50,0,10],sel_low_munu,sel_low_munu+'*'+weight_munu,weight_mumu,NormalDirectory,'qcd_noniso_unweightedtagfree','uvjj',1.0,1.0,1.0,version_name,1.0)
-	MakeBasicPlotQCD("Pt_miss","MET [GeV] (muon non-isolated, qcd reweighted)",[50,0,10],sel_low_munu,sel_low_munu+'*'+weight_munu,weight_mumu,NormalDirectory,'qcd_noniso_weightedtagfree','uvjj',1.0,1.0,1.0,version_name,ScaleFactor_QCD)
-	MakeBasicPlotQCD("Pt_miss","MET [GeV] (muon non-isolated)",[50,0,10],sel_low_munu,sel_low_munu+'*'+weight_munu,weight_mumu,NormalDirectory,'qcd_noniso_unweightedPAStagfree','uvjj',1.0,1.0,1.0,version_name,1.0)
-	MakeBasicPlotQCD("Pt_miss","MET [GeV] (muon non-isolated, qcd reweighted)",[50,0,10],sel_low_munu,sel_low_munu+'*'+weight_munu,weight_mumu,NormalDirectory,'qcd_noniso_weightedPAStagfree','uvjj',1.0,1.0,1.0,version_name,ScaleFactor_QCD)
+	MakeBasicPlotQCD("Pt_miss","E_{T}^{miss} [GeV] (muon non-isolated)",[50,0,10],sel_low_munu,sel_low_munu+'*'+weight_munu,weight_mumu,NormalDirectory,'qcd_noniso_unweightedtagfree','uvjj',1.0,1.0,1.0,version_name,1.0)
+	MakeBasicPlotQCD("Pt_miss","E_{T}^{miss} [GeV] (muon non-isolated, qcd reweighted)",[50,0,10],sel_low_munu,sel_low_munu+'*'+weight_munu,weight_mumu,NormalDirectory,'qcd_noniso_weightedtagfree','uvjj',1.0,1.0,1.0,version_name,ScaleFactor_QCD)
+	MakeBasicPlotQCD("Pt_miss","E_{T}^{miss} [GeV] (muon non-isolated)",[50,0,10],sel_low_munu,sel_low_munu+'*'+weight_munu,weight_mumu,NormalDirectory,'qcd_noniso_unweightedPAStagfree','uvjj',1.0,1.0,1.0,version_name,1.0)
+	MakeBasicPlotQCD("Pt_miss","E_{T}^{miss} [GeV] (muon non-isolated, qcd reweighted)",[50,0,10],sel_low_munu,sel_low_munu+'*'+weight_munu,weight_mumu,NormalDirectory,'qcd_noniso_weightedPAStagfree','uvjj',1.0,1.0,1.0,version_name,ScaleFactor_QCD)
 
 
 	sel__munu = sel_munu + '*(MT_uv>50)*(Pt_miss>55)'
@@ -4074,6 +4040,8 @@ def ParseFinalCards(cardcoll):
 					this_sysset.append(ss)
 			if len(this_sysset) == 1:
 				this_sysset.append(this_sysset[0])
+			print 'For sys',v
+			print 'Looking at',this_sysset
 			exec ('sys1 = '+this_sysset[0].split('=')[-1])
 			exec ('sys2 = '+this_sysset[1].split('=')[-1])
 			sysline += CompareMeanSys(minfo,sys1,sys2)

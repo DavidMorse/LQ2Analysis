@@ -31,7 +31,7 @@ for b in betas:
 	bs = str(b).replace('.','_')
 	f = open('BatcherResults/batch_R_'+bs+'.csh','w')
 	f.write('#!/bin/csh\n\n')
-	f.write('cd '+mdir+'/CMSSW_5_3_4/src/\n')
+	f.write('cd '+mdir+'/CMSSW_6_1_1/src/\n')
 	f.write('cmsenv\n')
 	f.write('cd -\n')
 	f.write('cp '+mdir+'/RunStatsBasicCLs.py .\n')
@@ -41,7 +41,7 @@ for b in betas:
 	f.write('cp Result* '+mdir+'/BatcherResults/\n\n')
 	
 	f.close()
-	bsubs .append('bsub  -e /dev/null -q 1nd -J job_'+bs+' < ' +'BatcherResults/batch_R_'+bs+'.csh')
+	bsubs .append('bsub  -e /dev/null -q 8nh -J job_'+bs+' < ' +'BatcherResults/batch_R_'+bs+'.csh')
 	#bsubs .append('bsub -q 1nd -J job_'+bs+' < ' +'BatcherResults/batch_R_'+bs+'.csh')
 
 	
