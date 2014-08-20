@@ -19,7 +19,13 @@ do_BetaOne = 0
 do_BetaHalf = 0 
 do_combo = 0
 do_observedonly = 0
+
+lqtype = 'LQ'
+
 cdir = ''
+
+fullcardfile = 'FinalCardsLQ.txt'
+
 if 'do_BetaOne' in str(sys.argv):
 	do_BetaOne = 1
 if 'do_BetaHalf' in str(sys.argv):
@@ -28,6 +34,21 @@ if 'do_Combo' in str(sys.argv):
 	do_combo = 1
 if 'just_observed' in str(sys.argv):
 	do_observedonly = 1	
+if '--scalar' in sys.argv:
+	lqtype = 'LQ'
+if '--vectorAM' in sys.argv:
+	lqtype = 'AM'
+	fullcardfile = 'FinalCardsAM.txt'
+if '--vectorYM' in sys.argv:
+	lqtype = 'YM'
+	fullcardfile = 'FinalCardsYM.txt'
+if '--vectorMM' in sys.argv:
+	lqtype = 'MM'
+	fullcardfile = 'FinalCardsMM.txt'
+if '--vectorMC' in sys.argv:
+	lqtype = 'MC'		
+	fullcardfile = 'FinalCardsMC.txt'
+
 singlebeta = -1
 
 numdo = 1	
@@ -66,7 +87,7 @@ m_combo = []
 dif_combo = []
 cr = '  \n'
 
-fullcards = open('FinalCards.txt','r')
+fullcards = open(fullcardfile,'r')
 mycards = []
 for line in fullcards:
 	mycards.append(line.replace('\n',''))
@@ -161,40 +182,47 @@ if do_BetaOne == 1:
 		fsub.close()
 		
 		## Estimate the r values with Asymptotic CLs
-		EstimationInformation = [' r < 0.0000']
+		EstimationInformation = [' r < 0.000000']
 		rmax = 10000.0
 		breaker = False
 		ntry = 0 
-		while 'r < 0.0000' in str(EstimationInformation):
+		oldrmax = 100000.0
+
+		while 'r < 0.000000' in str(EstimationInformation):
 			ntry += 1
-			EstimationInformation = os.popen('combine '+ESTIMATIONMETHOD+' CLSLimits/BetaOne'+cdir+'/confbetaone_'+cdir+'_'+name[x]+'.cfg --rMax '+str(rmax)).readlines()
-			print ('combine '+ESTIMATIONMETHOD+' CLSLimits/BetaOne'+cdir+'/confbetaone_'+cdir+'_'+name[x]+'.cfg --rMax '+str(rmax))
+			EstimationInformation = os.popen('combine '+ESTIMATIONMETHOD+' CLSLimits/BetaOne'+cdir+'/confbetaone_'+cdir+'_'+name[x]+'.cfg --rMax '+str(rmax)+' --rAbsAcc .0000005').readlines()
+			print ('combine '+ESTIMATIONMETHOD+' CLSLimits/BetaOne'+cdir+'/confbetaone_'+cdir+'_'+name[x]+'.cfg --rMax '+str(rmax)+'  --rAbsAcc .0000005')
+
+			if abs(rmax - oldrmax)<.01*rmax:
+				breaker=True		
+
 			if breaker ==True:
 				break
-			if 'r < 0.0000' not in str(EstimationInformation):
-				effrmax = -999999
-				for e in EstimationInformation:
-					if 'r <'  in e and 'Expected' in e:
-						thisrval = e.split('<')[-1]
-						thisrval = thisrval.replace('\n','')
-						thisrval = float(thisrval)
-						if thisrval>effrmax:
-							effrmax = thisrval
 
-				if effrmax < 0:
-					rmax = 0.8*rmax
-				else:
-					rmax = effrmax*2.0
+			effrmax = -999999
+			for e in EstimationInformation:
+				if 'r <'  in e and 'Expected' in e:
+					thisrval = e.split('<')[-1]
+					thisrval = thisrval.replace('\n','')
+					thisrval = float(thisrval)
+					if thisrval>effrmax:
+						effrmax = thisrval
 
-				EstimationInformation = [' r < 0.0000']
-				if ntry>3:
-					breaker = True
-			# rmax = rmax/5.0
-		## Estimation Complete
+			oldrmax = float(rmax)
+
+			if effrmax < 0:
+				rmax = 0.8*rmax
+			else:
+				rmax = effrmax*2.0
+
+			EstimationInformation = [' r < 0.000000']
+			if ntry>30:
+				breaker = True
 
 		
 		expectedlines = []
 		for line in EstimationInformation:
+			print line
 			if 'Expected' in line and 'r <' in line:
 				expectedlines.append(line.replace('\n',''))
 		values = []
@@ -219,8 +247,8 @@ if do_BetaOne == 1:
 				if '97.5%' in line:
 					BetaOne95up.append((line.split('<')[-1]).replace('\n',''))
 
-		vstart = round((min(values)/3),5)
-		vstop = round((max(values)*3),5)
+		vstart = round((min(values)/3),15)
+		vstop = round((max(values)*3),15)
 		rvalues = []
 		interval = abs(vstop-vstart)/100.0
 		
@@ -229,6 +257,7 @@ if do_BetaOne == 1:
 		while thisr<vstop:
 			thisr = vstart*1.05**(float(nindex))
 			rvalues.append(thisr)
+			print thisr
 			nindex +=1
 		strRvalues = []
 		for r in rvalues:
@@ -283,37 +312,39 @@ if do_BetaHalf == 1:
 		fsub.close()
 		
 		## Estimate the r values with Asymptotic CLs
-		EstimationInformation = [' r < 0.0000']
+		EstimationInformation = [' r < 0.000000']
 		rmax = 10000.0
 		breaker = False 
 		ntry = 0
-		while 'r < 0.0000' in str(EstimationInformation):
+		oldrmax = 100000.0
+
+		while 'r < 0.000000' in str(EstimationInformation):
 			ntry += 1
-			EstimationInformation = os.popen('combine '+ESTIMATIONMETHOD+' CLSLimits/BetaHalf'+cdir+'/confbetahalf_'+cdir+'_'+name[x]+'.cfg --rMax '+str(rmax)).readlines()
-			# print('combine '+ESTIMATIONMETHOD+' CLSLimits/BetaHalf'+cdir+'/confbetahalf_'+cdir+'_'+name[x]+'.cfg --rMax '+str(rmax))
-			# print '-'*100
-			print ('combine '+ESTIMATIONMETHOD+' CLSLimits/BetaHalf'+cdir+'/confbetahalf_'+cdir+'_'+name[x]+'.cfg --rMax '+str(rmax))
-			# for xinf in EstimationInformation:
-			# 	print xinf.replace('\n','')
-			# print EstimationInformation
+			EstimationInformation = os.popen('combine '+ESTIMATIONMETHOD+' CLSLimits/BetaHalf'+cdir+'/confbetahalf_'+cdir+'_'+name[x]+'.cfg --rMax '+str(rmax)+' --rAbsAcc .0000005').readlines()
+			print ('combine '+ESTIMATIONMETHOD+' CLSLimits/BetaHalf'+cdir+'/confbetahalf_'+cdir+'_'+name[x]+'.cfg --rMax '+str(rmax)+' --rAbsAcc .0000005')
+			if abs(rmax - oldrmax)<.01*rmax:
+				breaker=True		
+
 			if breaker ==True:
 				break
-			if 'r < 0.0000' not in str(EstimationInformation):
-				effrmax = -999999
-				for e in EstimationInformation:
-					if 'r <'  in e and 'Expected' in e:
-						thisrval = e.split('<')[-1]
-						thisrval = thisrval.replace('\n','')
-						thisrval = float(thisrval)
-						if thisrval>effrmax:
-							effrmax = thisrval
-				if effrmax < 0:
-					rmax = 0.8*rmax
-				else:
-					rmax = effrmax*2.0
-				EstimationInformation = [' r < 0.0000']
-				if ntry > 3:
-					breaker = True
+			effrmax = -999999
+			for e in EstimationInformation:
+				if 'r <'  in e and 'Expected' in e:
+					thisrval = e.split('<')[-1]
+					thisrval = thisrval.replace('\n','')
+					thisrval = float(thisrval)
+					if thisrval>effrmax:
+						effrmax = thisrval
+
+			oldrmax = float(rmax)
+			
+			if effrmax < 0:
+				rmax = 0.8*rmax
+			else:
+				rmax = effrmax*2.0
+			EstimationInformation = [' r < 0.000000']
+			if ntry > 3:
+				breaker = True
 		## Estimation Complete
 		print '='*60
 		
@@ -344,8 +375,8 @@ if do_BetaHalf == 1:
 					BetaHalf95up.append((line.split('<')[-1]).replace('\n',''))
 		print '='*60
 		
-		vstart = round((min(values)/3),5)
-		vstop = round((max(values)*3),5)
+		vstart = round((min(values)/3),15)
+		vstop = round((max(values)*3),15)
 		rvalues = []
 		interval = abs(vstop-vstart)/100.0
 		
@@ -382,7 +413,7 @@ if do_combo == 1:
 	cardcontent = []
 	card = ''
 
-	flog = open('FinalCards.txt','r')
+	flog = open(fullcardfile,'r')
 	os.system('rm -r TMPComboCards/; mkdir TMPComboCards')	
 	for line in flog:
 		if '.txt' not in line:
@@ -491,12 +522,12 @@ if do_combo == 1:
 				betaoneplace = 99
 				for line in fnorm:
 	
-					if ('LQ' in line and 'process' in line):
+					if (lqtype in line and 'process' in line):
 						linesplit = line.split()
 						for place in range(len(linesplit)):
-							if 'LQ' in linesplit[place] and 'BetaHalf' in linesplit[place]:
+							if lqtype in linesplit[place] and 'BetaHalf' in linesplit[place]:
 								betahalfplace = place
-							if 'LQ' in linesplit[place] and 'BetaHalf' not in linesplit[place]:
+							if lqtype in linesplit[place] and 'BetaHalf' not in linesplit[place]:
 								betaoneplace = place
 								
 					if ( 'rate' in line):
@@ -552,115 +583,112 @@ if do_combo == 1:
 			fsub.close()
 			
 			## Estimate the r values with Asymptotic CLs
-			EstimationInformation0 = [' r < 0.0000']
+			EstimationInformation0 = [' r < 0.000000']
 			rmax = 10000.0
 			breaker = False 
 			ntry = 0
 			oldrmax = 100000.0
 
-			while 'r < 0.0000' in str(EstimationInformation0):
+			while 'r < 0.000000' in str(EstimationInformation0):
 				ntry += 1
-				print 'combine '+ESTIMATIONMETHOD+' '+newcard +' --rMax '+str(rmax)
-				EstimationInformation0 = os.popen('combine '+ESTIMATIONMETHOD+' '+newcard +' --rMax '+str(rmax)).readlines()
+				print 'combine '+ESTIMATIONMETHOD+' '+newcard +' --rMax '+str(rmax)+' --rAbsAcc .0000005'
+				EstimationInformation0 = os.popen('combine '+ESTIMATIONMETHOD+' '+newcard +' --rMax '+str(rmax)+' --rAbsAcc .0000005').readlines()
 				if abs(rmax - oldrmax)<.01*rmax:
 					breaker=True				
 				if breaker ==True:
 					break
-				if 'r < 0.0000' not in str(EstimationInformation0):
-					effrmax = -999999
-					for e in EstimationInformation0:
-						if 'r <'  in e and 'Expected' in e:
-							thisrval = e.split('<')[-1]
-							thisrval = thisrval.replace('\n','')
-							thisrval = float(thisrval)
-							if thisrval>effrmax:
-								effrmax = thisrval
+				effrmax = -999999
+				for e in EstimationInformation0:
+					if 'r <'  in e and 'Expected' in e:
+						thisrval = e.split('<')[-1]
+						thisrval = thisrval.replace('\n','')
+						thisrval = float(thisrval)
+						if thisrval>effrmax:
+							effrmax = thisrval
 
-					oldrmax = float(rmax)
+				oldrmax = float(rmax)
 
-					if effrmax < 0:
-						rmax = 0.8*rmax
-					else:
-						rmax = effrmax*2.0
+				if effrmax < 0:
+					rmax = 0.8*rmax
+				else:
+					rmax = effrmax*2.0
 
-					# rmax = effrmax*2.0
-					EstimationInformation0 = [' r < 0.0000']
-					if ntry > 30:
-						breaker = True
+				# rmax = effrmax*2.0
+				EstimationInformation0 = [' r < 0.000000']
+				if ntry > 30:
+					breaker = True
 
 
-			EstimationInformation1 = [' r < 0.0000']
+			EstimationInformation1 = [' r < 0.000000']
 			rmax = 10000.0
 			breaker = False 
 			ntry = 0
 			oldrmax = 100000.0
-			while 'r < 0.0000' in str(EstimationInformation1):
+			while 'r < 0.000000' in str(EstimationInformation1):
 				ntry += 1				
-				print 'combine '+ESTIMATIONMETHOD+' '+newcard_BetaOne +' --rMax '+str(rmax)
-				EstimationInformation1 = os.popen('combine '+ESTIMATIONMETHOD+' '+newcard_BetaOne +' --rMax '+str(rmax)).readlines()
+				print 'combine '+ESTIMATIONMETHOD+' '+newcard_BetaOne +' --rMax '+str(rmax)+' --rAbsAcc .0000005'
+				EstimationInformation1 = os.popen('combine '+ESTIMATIONMETHOD+' '+newcard_BetaOne +' --rMax '+str(rmax)+' --rAbsAcc .0000005').readlines()
 				
 				if abs(rmax - oldrmax)<.01*rmax:
 					breaker=True
 
 				if breaker ==True:
 					break
-				if 'r < 0.0000' not in str(EstimationInformation1):
-					effrmax = -999999
-					for e in EstimationInformation1:
-						if 'r <'  in e and 'Expected' in e:
-							thisrval = e.split('<')[-1]
-							thisrval = thisrval.replace('\n','')
-							thisrval = float(thisrval)
-							if thisrval>effrmax:
-								effrmax = thisrval
+				effrmax = -999999
+				for e in EstimationInformation1:
+					if 'r <'  in e and 'Expected' in e:
+						thisrval = e.split('<')[-1]
+						thisrval = thisrval.replace('\n','')
+						thisrval = float(thisrval)
+						if thisrval>effrmax:
+							effrmax = thisrval
 
 
 
-					oldrmax = float(rmax)
-					if effrmax < 0:
-						rmax = 0.8*rmax
-					else:
-						rmax = effrmax*2.0
+				oldrmax = float(rmax)
+				if effrmax < 0:
+					rmax = 0.8*rmax
+				else:
+					rmax = effrmax*2.0
 
-					EstimationInformation1 = [' r < 0.0000']
-					if ntry > 30:
-						breaker = True
+				EstimationInformation1 = [' r < 0.000000']
+				if ntry > 30:
+					breaker = True
 
 				
-			EstimationInformation2 = [' r < 0.0000']
+			EstimationInformation2 = [' r < 0.000000']
 			rmax = 10000.0
 			breaker = False 
 			ntry = 0
 			oldrmax = 100000.0
 
-			while 'r < 0.0000' in str(EstimationInformation2):
+			while 'r < 0.000000' in str(EstimationInformation2):
 				ntry += 1
-				print 'combine '+ESTIMATIONMETHOD+' '+newcard_BetaHalf +' --rMax '+str(rmax)
-				EstimationInformation2 = os.popen('combine '+ESTIMATIONMETHOD+' '+newcard_BetaHalf +' --rMax '+str(rmax)).readlines()
+				print 'combine '+ESTIMATIONMETHOD+' '+newcard_BetaHalf +' --rMax '+str(rmax)+' --rAbsAcc .0000005'
+				EstimationInformation2 = os.popen('combine '+ESTIMATIONMETHOD+' '+newcard_BetaHalf +' --rMax '+str(rmax)+' --rAbsAcc .0000005').readlines()
 				if abs(rmax - oldrmax)<.01*rmax:
 					breaker=True				
 				if breaker ==True:
 					break
-				if 'r < 0.0000' not in str(EstimationInformation2):
-					effrmax = -999999
-					for e in EstimationInformation2:
-						if 'r <'  in e and 'Expected' in e:
-							thisrval = e.split('<')[-1]
-							thisrval = thisrval.replace('\n','')
-							thisrval = float(thisrval)
-							if thisrval>effrmax:
-								effrmax = thisrval
+				effrmax = -999999
+				for e in EstimationInformation2:
+					if 'r <'  in e and 'Expected' in e:
+						thisrval = e.split('<')[-1]
+						thisrval = thisrval.replace('\n','')
+						thisrval = float(thisrval)
+						if thisrval>effrmax:
+							effrmax = thisrval
 
-					oldrmax = float(rmax)
+				oldrmax = float(rmax)
 
-					if effrmax < 0:
-						rmax = 0.8*rmax
-					else:
-						rmax = effrmax*2.0
+				if effrmax < 0:
+					rmax = 0.8*rmax
+				else:
+					rmax = effrmax*2.0
 
-					EstimationInformation2 = [' r < 0.0000']
-					if ntry > 30:
-						breaker = True
+				EstimationInformation2 = [' r < 0.000000']
+				if ntry > 30:
+					breaker = True
 
 
 			
@@ -845,7 +873,18 @@ print '\n\n\n'
 mTh = [ 0.200E+03,0.210E+03,0.220E+03,0.230E+03,0.240E+03,0.250E+03,0.260E+03,0.270E+03,0.290E+03,0.300E+03,0.310E+03,0.320E+03,0.330E+03,0.340E+03,0.350E+03,0.360E+03,0.370E+03,0.380E+03,0.390E+03,0.400E+03,0.410E+03,0.420E+03,0.430E+03,0.440E+03,0.450E+03,0.460E+03,0.470E+03,0.480E+03,0.490E+03,0.500E+03,0.510E+03,0.520E+03,0.530E+03,0.540E+03,0.550E+03,0.560E+03,0.570E+03,0.580E+03,0.590E+03,0.600E+03,0.610E+03,0.620E+03,0.630E+03,0.640E+03,0.650E+03,0.660E+03,0.670E+03,0.680E+03,0.690E+03,0.700E+03,0.710E+03,0.720E+03,0.730E+03,0.740E+03,0.750E+03,0.760E+03,0.770E+03,0.780E+03,0.790E+03,0.800E+03,0.810E+03,0.820E+03,0.830E+03,0.840E+03,0.850E+03,0.860E+03,0.870E+03,0.880E+03,0.890E+03,0.900E+03,0.910E+03,0.920E+03,0.930E+03,0.940E+03,0.950E+03,0.960E+03,0.970E+03,0.980E+03,0.990E+03,0.100E+04,0.101E+04,0.102E+04,0.103E+04,0.104E+04,0.105E+04,0.106E+04,0.107E+04,0.108E+04,0.109E+04,0.110E+04,0.111E+04,0.112E+04,0.113E+04,0.114E+04,0.115E+04,0.116E+04,0.117E+04,0.118E+04,0.119E+04,0.120E+04,0.121E+04,0.122E+04,0.123E+04,0.124E+04,0.125E+04,0.126E+04,0.127E+04,0.128E+04,0.129E+04,0.130E+04,0.131E+04,0.132E+04,0.133E+04,0.134E+04,0.135E+04,0.136E+04,0.137E+04,0.138E+04,0.139E+04,0.140E+04,0.141E+04,0.142E+04,0.143E+04,0.144E+04,0.145E+04,0.146E+04,0.147E+04,0.148E+04,0.149E+04,0.150E+04,0.151E+04,0.152E+04,0.153E+04,0.154E+04,0.155E+04,0.156E+04,0.157E+04,0.158E+04,0.159E+04,0.160E+04,0.161E+04,0.162E+04,0.163E+04,0.164E+04,0.165E+04,0.166E+04,0.167E+04,0.168E+04,0.169E+04,0.170E+04,0.171E+04,0.172E+04,0.173E+04,0.174E+04,0.175E+04,0.176E+04,0.177E+04,0.178E+04,0.179E+04,0.180E+04,0.181E+04,0.182E+04,0.183E+04,0.184E+04,0.185E+04,0.186E+04,0.187E+04,0.188E+04,0.189E+04,0.190E+04,0.191E+04,0.192E+04,0.193E+04,0.194E+04,0.195E+04,0.196E+04,0.197E+04,0.198E+04,0.199E+04,0.200E+04,0.201E+04,0.202E+04,0.203E+04,0.204E+04,0.205E+04,0.206E+04,0.207E+04,0.208E+04,0.209E+04,0.210E+04,0.211E+04,0.212E+04,0.213E+04,0.214E+04,0.215E+04,0.216E+04,0.217E+04,0.218E+04,0.219E+04,0.220E+04,0.221E+04,0.222E+04,0.223E+04,0.224E+04,0.225E+04,0.226E+04,0.227E+04,0.228E+04,0.229E+04,0.230E+04,0.231E+04,0.232E+04,0.233E+04,0.234E+04,0.235E+04,0.236E+04,0.237E+04,0.238E+04,0.239E+04,0.240E+04,0.241E+04,0.242E+04,0.243E+04,0.244E+04,0.245E+04,0.246E+04,0.247E+04,0.248E+04,0.249E+04,0.250E+04,0.251E+04,0.252E+04,0.253E+04,0.254E+04,0.255E+04,0.256E+04,0.257E+04,0.258E+04,0.259E+04,0.260E+04,0.261E+04,0.262E+04,0.263E+04,0.264E+04,0.265E+04,0.266E+04,0.267E+04,0.268E+04,0.269E+04,0.270E+04,0.271E+04,0.272E+04,0.273E+04,0.274E+04,0.275E+04,0.276E+04,0.277E+04,0.278E+04,0.279E+04,0.280E+04,0.281E+04,0.282E+04,0.283E+04,0.284E+04,0.285E+04,0.286E+04,0.287E+04,0.288E+04,0.289E+04,0.290E+04,0.291E+04,0.292E+04,0.293E+04,0.294E+04,0.295E+04,0.296E+04,0.297E+04,0.298E+04,0.299E+04 ]
 xsTh = [ 0.174E+02,0.134E+02,0.105E+02,0.827E+01,0.657E+01,0.526E+01,0.424E+01,0.344E+01,0.230E+01,0.189E+01,0.157E+01,0.130E+01,0.109E+01,0.914E+00,0.770E+00,0.650E+00,0.551E+00,0.469E+00,0.400E+00,0.342E+00,0.294E+00,0.253E+00,0.218E+00,0.188E+00,0.163E+00,0.142E+00,0.123E+00,0.107E+00,0.937E-01,0.820E-01,0.719E-01,0.631E-01,0.555E-01,0.489E-01,0.431E-01,0.381E-01,0.337E-01,0.298E-01,0.265E-01,0.235E-01,0.209E-01,0.186E-01,0.166E-01,0.148E-01,0.132E-01,0.118E-01,0.106E-01,0.946E-02,0.848E-02,0.761E-02,0.683E-02,0.614E-02,0.552E-02,0.497E-02,0.448E-02,0.404E-02,0.364E-02,0.329E-02,0.297E-02,0.269E-02,0.243E-02,0.220E-02,0.199E-02,0.181E-02,0.164E-02,0.149E-02,0.135E-02,0.123E-02,0.111E-02,0.101E-02,0.922E-03,0.839E-03,0.764E-03,0.696E-03,0.634E-03,0.578E-03,0.527E-03,0.481E-03,0.439E-03,0.401E-03,0.366E-03,0.335E-03,0.306E-03,0.280E-03,0.256E-03,0.234E-03,0.214E-03,0.196E-03,0.180E-03,0.165E-03,0.151E-03,0.138E-03,0.127E-03,0.116E-03,0.107E-03,0.980E-04,0.899E-04,0.825E-04,0.758E-04,0.696E-04,0.639E-04,0.587E-04,0.540E-04,0.496E-04,0.456E-04,0.419E-04,0.385E-04,0.355E-04,0.326E-04,0.300E-04,0.276E-04,0.254E-04,0.234E-04,0.215E-04,0.198E-04,0.182E-04,0.168E-04,0.155E-04,0.142E-04,0.131E-04,0.121E-04,0.111E-04,0.103E-04,0.945E-05,0.871E-05,0.802E-05,0.740E-05,0.682E-05,0.628E-05,0.579E-05,0.534E-05,0.492E-05,0.454E-05,0.418E-05,0.385E-05,0.355E-05,0.328E-05,0.302E-05,0.278E-05,0.257E-05,0.237E-05,0.218E-05,0.201E-05,0.186E-05,0.171E-05,0.158E-05,0.145E-05,0.134E-05,0.124E-05,0.114E-05,0.105E-05,0.968E-06,0.893E-06,0.823E-06,0.758E-06,0.699E-06,0.644E-06,0.594E-06,0.547E-06,0.504E-06,0.465E-06,0.428E-06,0.394E-06,0.363E-06,0.335E-06,0.308E-06,0.284E-06,0.261E-06,0.241E-06,0.222E-06,0.204E-06,0.188E-06,0.173E-06,0.159E-06,0.147E-06,0.135E-06,0.124E-06,0.114E-06,0.105E-06,0.965E-07,0.888E-07,0.816E-07,0.750E-07,0.690E-07,0.634E-07,0.583E-07,0.535E-07,0.492E-07,0.452E-07,0.415E-07,0.381E-07,0.349E-07,0.321E-07,0.294E-07,0.270E-07,0.248E-07,0.227E-07,0.208E-07,0.191E-07,0.175E-07,0.160E-07,0.147E-07,0.134E-07,0.123E-07,0.113E-07,0.103E-07,0.943E-08,0.862E-08,0.788E-08,0.720E-08,0.658E-08,0.601E-08,0.549E-08,0.501E-08,0.457E-08,0.417E-08,0.381E-08,0.347E-08,0.316E-08,0.288E-08,0.262E-08,0.239E-08,0.217E-08,0.198E-08,0.180E-08,0.163E-08,0.148E-08,0.135E-08,0.122E-08,0.111E-08,0.101E-08,0.913E-09,0.827E-09,0.749E-09,0.678E-09,0.614E-09,0.555E-09,0.502E-09,0.453E-09,0.409E-09,0.369E-09,0.333E-09,0.300E-09,0.270E-09,0.243E-09,0.219E-09,0.197E-09,0.177E-09,0.159E-09,0.143E-09,0.128E-09,0.115E-09,0.103E-09,0.919E-10,0.821E-10,0.734E-10,0.655E-10,0.585E-10,0.521E-10,0.464E-10,0.413E-10,0.368E-10,0.327E-10,0.290E-10,0.257E-10,0.228E-10,0.202E-10,0.178E-10,0.158E-10,0.139E-10,0.123E-10,0.108E-10,0.950E-11,0.835E-11,0.733E-11,0.643E-11,0.563E-11,0.493E-11,0.431E-11 ]
 
-
+if lqtype in ['AM','YM','MM','MC']:
+	print 'WARNING WARNING WARNING WARNING'
+	print 'USING VECTOR LQ CROSS SECTIONS DERIVED FOR SECOND GENERATION 8TEV LQS'
+	mTh = [200.,300.,400.,500.,600.,700.,800.,900.,1000.,1100.,1200.,1300.,1400.,1500.,1600.,1700.,1800.]
+	if lqtype == 'YM':
+		xsTh = [1064,104.6,17.74,4.03,1.125,0.3519,0.1194,0.04373,0.01731,0.006853,0.002832,0.001203,0.0005089,0.0002236,9.675E-05,4.159E-05,1.794E-05]
+	if lqtype == 'MC':
+		xsTh = [246.7,21.19,3.354,0.7378,0.2034,0.06362,0.02177,0.008059,0.003231,0.001298,0.0005442,0.0002344,0.0001006,4.478E-05,1.96E-05,8.518E-06,3.711E-06]
+	if lqtype == 'MM':
+		xsTh = [74640,2510,242.9,40.14,9.204,2.528,0.7827,0.2678,0.1006,0.03822,0.01528,0.006316,0.002614,0.001128,0.0004799,0.0002037,8.697E-05]
+	if lqtype == 'AM':
+		xsTh = [242.3,20.06,2.956,0.5897,0.1458,0.04056,0.01228,0.004027,0.001431,0.0005108,0.0001909,7.373E-05,2.849E-05,1.148E-05,4.578E-06,1.829E-06,7.371E-07]
 
 #### BETA ONE CHANNEL
 if do_BetaOne == 1:
