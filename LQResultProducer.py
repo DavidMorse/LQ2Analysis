@@ -6,8 +6,11 @@ from glob import glob
 ##########################################################################
 
 # Directory where root files are kept and the tree you want to get root files from
-QCDDirectory = 'NTupleAnalyzer_FullJuly24QCDNonIsoQuickTest_2014_07_25_15_39_48/SummaryFiles'
-EMuDirectory = 'NTupleAnalyzer_FullJuly24EMuSwitch_2014_07_25_03_54_54/SummaryFiles'
+# QCDDirectory = '/store/group/phys_exotica/darinb/SharedAnalyzer/NTupleAnalyzer_FullJuly24QCDNonIsoQuickTest_2014_07_25_15_39_48/SummaryFiles'
+# EMuDirectory = '/store/group/phys_exotica/darinb/SharedAnalyzer/NTupleAnalyzer_FullJuly24EMuSwitch_2014_07_25_03_54_54/SummaryFiles'
+# NormalDirectory='/store/group/phys_exotica/darinb/SharedAnalyzer/NTupleAnalyzer_FullJuly24_2014_07_24_17_24_05/SummaryFiles'
+QCDDirectory  = 'NTupleAnalyzer_FullJuly24QCDNonIsoQuickTest_2014_07_25_15_39_48/SummaryFiles'
+EMuDirectory  = 'NTupleAnalyzer_FullJuly24EMuSwitch_2014_07_25_03_54_54/SummaryFiles'
 NormalDirectory='NTupleAnalyzer_FullJuly24_2014_07_24_17_24_05/SummaryFiles'
 
 # The name of the main ttree (ntuple structure)
@@ -122,8 +125,8 @@ def main():
 	version_name = 'Testing_Aug8' # scriptflag
 	os.system('mkdir Results_'+version_name) 
 
-	MuMuOptCutFile = 'Results_'+version_name+'/Opt_uujjCuts_Smoothed_pol2cutoff.txt' # scriptflag
-	MuNuOptCutFile = 'Results_'+version_name+'/Opt_uvjjCuts_Smoothed_pol2cutoff.txt' # scriptflag
+	MuMuOptCutFile = 'Results_'+version_name+'/OptLQ_uujjCuts_Smoothed_pol2cutoff.txt' # scriptflag
+	MuNuOptCutFile = 'Results_'+version_name+'/OptLQ_uvjjCuts_Smoothed_pol2cutoff.txt' # scriptflag
 
 
 	############################################################
@@ -389,7 +392,7 @@ def main():
 	# This is a plotting routine for PAS-style publication-quality plots
 	# ====================================================================================================================================================== #
 
-	if True:
+	if False:
 
 
 		# Some modifications to the ST and LQ mass binning
@@ -461,11 +464,11 @@ def main():
 	# You can run this to make the full set of tables needed to construct the higgs card. This takes a long time!
 	# Alternatively, you can run > python SysBatcher.py --launch to do each table in a separate batch job
 	# When done, proceed to the next step to make higgs limit cards
-	if (False):
+	if (True):
 		FullAnalysis(MuMuOptCutFile, preselectionmumu,preselectionmunu,NormalDirectory,NormalWeightMuMu,'TTBarDataDriven')  # scriptflag
 		FullAnalysis(MuNuOptCutFile, preselectionmumu,preselectionmunu,NormalDirectory,NormalWeightMuNu,'normal')  # scriptflag
 
-	if (False):
+	if (True):
 		uujjcardfiles = MuMuOptCutFile.replace('.txt','_systable*.txt')
 		uvjjcardfiles = MuNuOptCutFile.replace('.txt','_systable*.txt')
 
@@ -529,7 +532,7 @@ def main():
 ####################################################################################################################################################
 ####################################################################################################################################################
 
-signal = 'LQToCMu_M_250'
+signal = 'LQToCMu_M_300'
 
 for n in range(len(sys.argv)):
 	if sys.argv[n]=='-v' or sys.argv[n]=='--version_name':
@@ -560,15 +563,49 @@ import math
 rnd= TRandom3()
 person = (os.popen('whoami').readlines()[0]).replace("\n",'')
 
-for f in os.popen('ls '+NormalDirectory+"| grep \".root\"").readlines():
-	exec ('t_'+f.replace(".root\n","")+" = TFile.Open(\""+NormalDirectory+"/"+f.replace("\n","")+"\")"+".Get(\""+TreeName+"\")")
-	print('t_'+f.replace(".root\n","")+" = TFile.Open(\""+NormalDirectory+"/"+f.replace("\n","")+"\")"+".Get(\""+TreeName+"\")")
 
-for f in os.popen('ls '+EMuDirectory+"| grep \".root\"").readlines():
-	exec('te_'+f.replace(".root\n","")+" = TFile.Open(\""+EMuDirectory+"/"+f.replace("\n","")+"\")"+".Get(\""+TreeName+"\")")
+if '/store' in NormalDirectory:
+	NormalFiles = [(x.split('/')[-1]).replace('\n','') for x in os.popen('cmsLs '+NormalDirectory+"| grep \".root\" | awk '{print $5}'").readlines()]
+else:
+	NormalFiles = [ff.replace('\n','') for ff in os.popen('ls '+NormalDirectory+"| grep \".root\"").readlines()]
 
-for f in os.popen('ls '+QCDDirectory+"| grep \".root\"").readlines():
-	exec('tn_'+f.replace(".root\n","")+" = TFile.Open(\""+QCDDirectory+"/"+f.replace("\n","")+"\")"+".Get(\""+TreeName+"\")")
+if '/store' in EMuDirectory:
+	EMuFiles = [(x.split('/')[-1]).replace('\n','') for x in os.popen('cmsLs '+EMuDirectory+"| grep \".root\" | awk '{print $5}'").readlines()]
+else:
+	EMuFiles = [ff.replace('\n','') for ff in os.popen('ls '+EMuDirectory+"| grep \".root\"").readlines()]
+
+if '/store' in QCDDirectory:	
+	QCDFiles = [(x.split('/')[-1]).replace('\n','') for x in os.popen('cmsLs '+QCDDirectory+"| grep \".root\" | awk '{print $5}'").readlines()]
+else:
+	QCDFiles = [ff.replace('\n','') for ff in os.popen('ls '+QCDDirectory+"| grep \".root\"").readlines()]
+
+for f in NormalFiles:
+	_tree = 't_'+f.split('/')[-1].replace(".root","")
+	_prefix = '' +'root://eoscms//eos/cms'*('/store' in NormalDirectory)
+	print(_tree+" = TFile.Open(\""+_prefix+NormalDirectory+"/"+f.replace("\n","")+"\",\"READ\")"+".Get(\""+TreeName+"\")")
+	exec (_tree+" = TFile.Open(\""+_prefix+NormalDirectory+"/"+f.replace("\n","")+"\",\"READ\")"+".Get(\""+TreeName+"\")")
+
+for f in EMuFiles:
+	_tree = 'te_'+f.split('/')[-1].replace(".root","")	
+	_prefix = '' +'root://eoscms//eos/cms'*('/store' in EMuDirectory)	
+	print(_tree+" = TFile.Open(\""+_prefix+EMuDirectory+"/"+f.replace("\n","")+"\",\"READ\")"+".Get(\""+TreeName+"\")")
+	exec (_tree+" = TFile.Open(\""+_prefix+EMuDirectory+"/"+f.replace("\n","")+"\",\"READ\")"+".Get(\""+TreeName+"\")")
+
+for f in QCDFiles:
+	_tree = 'tn_'+f.split('/')[-1].replace(".root","")
+	_prefix = '' +'root://eoscms//eos/cms'*('/store' in QCDDirectory)	
+	print(_tree+" = TFile.Open(\""+_prefix+QCDDirectory+"/"+f.replace("\n","")+"\",\"READ\")"+".Get(\""+TreeName+"\")")
+	exec (_tree+" = TFile.Open(\""+_prefix+QCDDirectory+"/"+f.replace("\n","")+"\",\"READ\")"+".Get(\""+TreeName+"\")")
+
+# for f in os.popen('ls '+NormalDirectory+"| grep \".root\"").readlines():
+# 	exec ('t_'+f.replace(".root\n","")+" = TFile.Open(\""+NormalDirectory+"/"+f.replace("\n","")+"\")"+".Get(\""+TreeName+"\")")
+# 	print('t_'+f.replace(".root\n","")+" = TFile.Open(\""+NormalDirectory+"/"+f.replace("\n","")+"\")"+".Get(\""+TreeName+"\")")
+
+# for f in os.popen('ls '+EMuDirectory+"| grep \".root\"").readlines():
+# 	exec('te_'+f.replace(".root\n","")+" = TFile.Open(\""+EMuDirectory+"/"+f.replace("\n","")+"\")"+".Get(\""+TreeName+"\")")
+
+# for f in os.popen('ls '+QCDDirectory+"| grep \".root\"").readlines():
+# 	exec('tn_'+f.replace(".root\n","")+" = TFile.Open(\""+QCDDirectory+"/"+f.replace("\n","")+"\")"+".Get(\""+TreeName+"\")")
 
 
 
@@ -1023,8 +1060,8 @@ def PDF4LHCPlotsFromResultDict(filename,versionname):
 		leg.Draw()
 
 
-		c0.Print('Results_'+versionname+'/PDFValidation_'+key+'.pdf')
-		c0.Print('Results_'+versionname+'/PDFValidation_'+key+'.png')
+		c0.Print('Results_'+versionname+'/LQPDFValidation_'+key+'.pdf')
+		c0.Print('Results_'+versionname+'/LQPDFValidation_'+key+'.png')
 
 	print '\n\n---------- Summary of PDF systematics as percentages --------\n'
 	for result in resultlist:
@@ -1785,18 +1822,9 @@ def SysTable(optimlog, selection_uujj,selection_uvjj,NormalDirectory, weight,sys
 
 	nalign = -1
 	for line in open(optimlog,'r'):
-		nalign += 1
+		nalign =-1
 		line = line.replace('\n','')
 		print 'processing table line for optimization:  ', line
-
-		if sysmethod == 'ALIGN':
-			if 'uujj' in optimlog:
-				rglobals = 1.0 + alignmentcorrs[0]*.01
-				rglobalb = 1.0 + alignmentcorrs[1]*.01
-			if 'uvjj' in optimlog:
-				rglobals = 1.0 + alignmentcorrs[0]*.01
-				rglobalb = 1.0 + alignmentcorrs[1][nalign] *.01
-
 
 		fsel = line.replace('\n','')
 		fsel = ModSelection(fsel,sysmethod,optimlog)
@@ -1808,6 +1836,23 @@ def SysTable(optimlog, selection_uujj,selection_uvjj,NormalDirectory, weight,sys
 		fsel = (fsel.split("="))[-1]
 		fsel = '*'+fsel.replace(" ","")
 		this_sel = '('+selection+fsel+')'
+
+		print ' *'*100
+		for ii in range(len(pdf_MASS)):
+			pdfm = pdf_MASS[ii]
+			if str(pdfm) == mass:
+				nalign = ii
+		print nalign
+
+		if sysmethod == 'ALIGN':
+			if 'uujj' in optimlog:
+				rglobals = 1.0 + alignmentcorrs[0]*.01
+				rglobalb = 1.0 + alignmentcorrs[1]*.01
+			if 'uvjj' in optimlog:
+				rglobals = 1.0 + alignmentcorrs[0]*.01
+				rglobalb = 1.0 + alignmentcorrs[1][nalign] *.01
+
+
 
 		rstop = 1
 		rdiboson = 1
@@ -1915,17 +1960,9 @@ def SysTableTTDD(optimlog, selection_uujj,selection_uvjj,NormalDirectory, weight
 
 	nalign = -1
 	for line in open(optimlog,'r'):
-		nalign += 1
+		nalign = -1
 		line = line.replace('\n','')
 		print 'processing table line for optimization:  ', line
-
-		if sysmethod == 'ALIGN':
-			if 'uujj' in optimlog:
-				rglobals = 1.0 + alignmentcorrs[0]*.01
-				rglobalb = 1.0 + alignmentcorrs[1]*.01
-			if 'uvjj' in optimlog:
-				rglobals = 1.0 + alignmentcorrs[0]*.01
-				rglobalb = 1.0 + alignmentcorrs[1][nalign] *.01
 
 
 		fsel = line.replace('\n','')
@@ -1941,6 +1978,24 @@ def SysTableTTDD(optimlog, selection_uujj,selection_uvjj,NormalDirectory, weight
 		fsel = (fsel.split("="))[-1]
 		fsel = '*'+fsel.replace(" ","")
 		this_sel = '('+selection+fsel+')'
+
+		print ' *'*100
+		for ii in range(len(pdf_MASS)):
+			pdfm = pdf_MASS[ii]
+			if str(pdfm) == mass:
+				nalign = ii
+		print nalign
+
+		if sysmethod == 'ALIGN':
+			if 'uujj' in optimlog:
+				rglobals = 1.0 + alignmentcorrs[0]*.01
+				rglobalb = 1.0 + alignmentcorrs[1]*.01
+			if 'uvjj' in optimlog:
+				rglobals = 1.0 + alignmentcorrs[0]*.01
+				rglobalb = 1.0 + alignmentcorrs[1][nalign] *.01
+
+
+
 
 		fsel_unmod = (fsel_unmod.split("="))[-1]
 		fsel_unmod = '*'+fsel_unmod.replace(" ","")
@@ -2386,10 +2441,13 @@ def MakeBasicPlot(recovariable,xlabel,presentationbinning,selection,weight,FileD
 	# Create Canvas
 	yaxismin = .13333
 	perc = 0.0
+	betamarker = '#beta = '
 	if channel == 'uujj':
 		syslist = totunc_uujj	
+		betamarker +="1.0"
 	if channel == 'uvjj':
 		syslist = totunc_uvjj
+		betamarker +="0.5"
 
 	if channel == 'susy':
 		plotmass = 500
@@ -2548,14 +2606,14 @@ def MakeBasicPlot(recovariable,xlabel,presentationbinning,selection,weight,FileD
 	sig2name = ''
 
 	if channel == 'uujj':
-		sig1name = 'LQ, M = 450 GeV'
-		sig2name = 'LQ, M = 650 GeV'
+		sig1name = 'LQ, M = 450 GeV, '+betamarker
+		sig2name = 'LQ, M = 650 GeV, '+betamarker
 		if 'final' not in tagname:
 			hs_rec_Signal=CreateHisto('hs_rec_Signal',sig1name,t_LQuujj450,recovariable,presentationbinning,selection+'*'+weight,SignalStyle,Label)
 			hs_rec_Signal2=CreateHisto('hs_rec_Signal2',sig2name,t_LQuujj650,recovariable,presentationbinning,selection+'*'+weight,SignalStyle2,Label)
 		if 'final' in tagname:
 			exec ("_stree = t_LQ"+channel+str(plotmass))
-			hs_rec_Signal=CreateHisto('hs_rec_Signal','LQ, M = '+str(plotmass)+' GeV',_stree,recovariable,presentationbinning,selection+'*'+weight,SignalStyle,Label)
+			hs_rec_Signal=CreateHisto('hs_rec_Signal','LQ, M = '+str(plotmass)+' GeV, '+betamarker,_stree,recovariable,presentationbinning,selection+'*'+weight,SignalStyle,Label)
 
 		print 'W:', hs_rec_WJets.Integral()
 		print 'Z:',hs_rec_ZJets.Integral()
@@ -2586,13 +2644,13 @@ def MakeBasicPlot(recovariable,xlabel,presentationbinning,selection,weight,FileD
 
 	if channel == 'uvjj':
 		if 'final' not in tagname:	
-			sig1name = 'LQ, M = 450 GeV'
-			sig2name = 'LQ, M = 650 GeV'
+			sig1name = 'LQ, M = 450 GeV, '+betamarker
+			sig2name = 'LQ, M = 650 GeV, '+betamarker
 			hs_rec_Signal=CreateHisto('hs_rec_Signal',sig1name,t_LQuvjj450,recovariable,presentationbinning,selection+'*'+weight,SignalStyle,Label)
 			hs_rec_Signal2=CreateHisto('hs_rec_Signal2',sig2name,t_LQuvjj650,recovariable,presentationbinning,selection+'*'+weight,SignalStyle2,Label)
 		if 'final' in tagname:
 			exec ("_stree = t_LQ"+channel+str(plotmass))
-			hs_rec_Signal=CreateHisto('hs_rec_Signal','LQ, M = '+str(plotmass)+' GeV',_stree,recovariable,presentationbinning,selection+'*'+weight,SignalStyle,Label)
+			hs_rec_Signal=CreateHisto('hs_rec_Signal','LQ, M = '+str(plotmass)+' GeV, '+betamarker,_stree,recovariable,presentationbinning,selection+'*'+weight,SignalStyle,Label)
 	
 		hs_rec_DiBoson.SetTitle("Other Backgrounds")
 		hs_rec_DiBoson.Add(hs_rec_ZJets)
@@ -2748,7 +2806,8 @@ def MakeBasicPlot(recovariable,xlabel,presentationbinning,selection,weight,FileD
 	print 'Legend...  ',
 	# Create Legend
 	# FixDrawLegend(c1.cd(1).BuildLegend())
-	leg = TLegend(0.53,0.52,0.89,0.88,"","brNDC");
+	leg = TLegend(0.43,0.52,0.89,0.88,"","brNDC");	
+	# leg = TLegend(0.53,0.52,0.89,0.88,"","brNDC");
 	leg.SetTextFont(42);
 	leg.SetFillColor(0);
 	leg.SetBorderSize(0);
@@ -2767,7 +2826,7 @@ def MakeBasicPlot(recovariable,xlabel,presentationbinning,selection,weight,FileD
 	else:
 		if 'PAS' in tagname:
 			leg.AddEntry(hs_bgband,'Unc. (stat + syst)')
-		leg.AddEntry(hs_rec_Signal,'LQ, M = '+str(plotmass)+' GeV')
+		leg.AddEntry(hs_rec_Signal,'LQ, M = '+str(plotmass)+' GeV, '+betamarker)
 	leg.Draw()
 
 	sqrts = "#sqrt{s} = 8 TeV";
@@ -2799,7 +2858,9 @@ def MakeBasicPlot(recovariable,xlabel,presentationbinning,selection,weight,FileD
 	MCStack.SetMaximum(100*hs_rec_Data.GetMaximum())
 	if 'control' in tagname:
 		MCStack.SetMaximum(100000*hs_rec_Data.GetMaximum())
-		
+	if 'St' in recovariable:
+		MCStack.SetMaximum(250*hs_rec_Data.GetMaximum())
+
 	resstring = ''
 	if 'PAS' not in tagname:
 
@@ -2981,11 +3042,11 @@ def MakeBasicPlot(recovariable,xlabel,presentationbinning,selection,weight,FileD
 	recovariable = recovariable.replace('/','_DIV_')
 	print 'Saving...  ',
 	if 'final' not in tagname:
-		c1.Print('Results_'+version_name+'/Basic_'+channel+'_'+recovariable+'_'+tagname+'.pdf')
-		c1.Print('Results_'+version_name+'/Basic_'+channel+'_'+recovariable+'_'+tagname+'.png')
+		c1.Print('Results_'+version_name+'/BasicLQ_'+channel+'_'+recovariable+'_'+tagname+'.pdf')
+		c1.Print('Results_'+version_name+'/BasicLQ_'+channel+'_'+recovariable+'_'+tagname+'.png')
 	else:
-		c1.Print('Results_'+version_name+'/Basic_'+channel+'_'+recovariable+'_'+tagname+str(plotmass)+'.pdf')
-		c1.Print('Results_'+version_name+'/Basic_'+channel+'_'+recovariable+'_'+tagname+str(plotmass)+'.png')		
+		c1.Print('Results_'+version_name+'/BasicLQ_'+channel+'_'+recovariable+'_'+tagname+str(plotmass)+'.pdf')
+		c1.Print('Results_'+version_name+'/BasicLQ_'+channel+'_'+recovariable+'_'+tagname+str(plotmass)+'.png')		
 	print 'Done.'
 
 	return resstring
@@ -3169,8 +3230,8 @@ def MakeBasicPlotQCD(recovariable,xlabel,presentationbinning,selection,qcdselect
 
 	if 'PAS' in tagname:
 		print 'Saving...  ',
-		c1.Print('Results_'+version_name+'/BasicQCD_'+channel+'_'+recovariable+'_'+tagname+'.pdf')
-		c1.Print('Results_'+version_name+'/BasicQCD_'+channel+'_'+recovariable+'_'+tagname+'.png')		
+		c1.Print('Results_'+version_name+'/BasicLQQCD_'+channel+'_'+recovariable+'_'+tagname+'.pdf')
+		c1.Print('Results_'+version_name+'/BasicLQQCD_'+channel+'_'+recovariable+'_'+tagname+'.png')		
 		print 'Done.'
 		return
 
@@ -3291,8 +3352,8 @@ def MakeBasicPlotQCD(recovariable,xlabel,presentationbinning,selection,qcdselect
 
 
 	print 'Saving...  ',
-	c1.Print('Results_'+version_name+'/BasicQCD_'+channel+'_'+recovariable+'_'+tagname+'.pdf')
-	c1.Print('Results_'+version_name+'/BasicQCD_'+channel+'_'+recovariable+'_'+tagname+'.png')		
+	c1.Print('Results_'+version_name+'/BasicLQQCD_'+channel+'_'+recovariable+'_'+tagname+'.pdf')
+	c1.Print('Results_'+version_name+'/BasicLQQCD_'+channel+'_'+recovariable+'_'+tagname+'.png')		
 	print 'Done.'
 
 
@@ -3457,11 +3518,11 @@ def MakeBasicPlotEMu(recovariable,xlabel,presentationbinning,selection,weight,Fi
 
 		print 'Saving...  ',
 		if 'final' not in tagname:
-			c1.Print('Results_'+version_name+'/Basic_NoRatio_'+channel+'_'+recovariable+'_'+tagname+'.pdf')
-			c1.Print('Results_'+version_name+'/Basic_NoRatio_'+channel+'_'+recovariable+'_'+tagname+'.png')
+			c1.Print('Results_'+version_name+'/BasicLQ_NoRatio_'+channel+'_'+recovariable+'_'+tagname+'.pdf')
+			c1.Print('Results_'+version_name+'/BasicLQ_NoRatio_'+channel+'_'+recovariable+'_'+tagname+'.png')
 		else:
-			c1.Print('Results_'+version_name+'/Basic_NoRatio_'+channel+'_'+recovariable+'_'+tagname+str(plotmass)+'.pdf')
-			c1.Print('Results_'+version_name+'/Basic_NoRatio_'+channel+'_'+recovariable+'_'+tagname+str(plotmass)+'.png')		
+			c1.Print('Results_'+version_name+'/BasicLQ_NoRatio_'+channel+'_'+recovariable+'_'+tagname+str(plotmass)+'.pdf')
+			c1.Print('Results_'+version_name+'/BasicLQ_NoRatio_'+channel+'_'+recovariable+'_'+tagname+str(plotmass)+'.png')		
 		print 'Done.'
 
 		return
@@ -3583,11 +3644,11 @@ def MakeBasicPlotEMu(recovariable,xlabel,presentationbinning,selection,weight,Fi
 
 	print 'Saving...  ',
 	if 'final' not in tagname:
-		c1.Print('Results_'+version_name+'/Basic_'+channel+'_'+recovariable+'_'+tagname+'.pdf')
-		c1.Print('Results_'+version_name+'/Basic_'+channel+'_'+recovariable+'_'+tagname+'.png')
+		c1.Print('Results_'+version_name+'/BasicLQ_'+channel+'_'+recovariable+'_'+tagname+'.pdf')
+		c1.Print('Results_'+version_name+'/BasicLQ_'+channel+'_'+recovariable+'_'+tagname+'.png')
 	else:
-		c1.Print('Results_'+version_name+'/Basic_'+channel+'_'+recovariable+'_'+tagname+str(plotmass)+'.pdf')
-		c1.Print('Results_'+version_name+'/Basic_'+channel+'_'+recovariable+'_'+tagname+str(plotmass)+'.png')		
+		c1.Print('Results_'+version_name+'/BasicLQ_'+channel+'_'+recovariable+'_'+tagname+str(plotmass)+'.pdf')
+		c1.Print('Results_'+version_name+'/BasicLQ_'+channel+'_'+recovariable+'_'+tagname+str(plotmass)+'.png')		
 	print 'Done.'
 
 def round_to(n, precission):
@@ -3704,7 +3765,7 @@ def OptimizeCuts3D(variablespace,presel,weight,tag,scalefacs,cutfile,channel):
 	for h in backgrounds:
 		exec('BAKS.append(h_'+h+')')
 
-	optimlog = open('Results_'+tag+'/Opt_'+channel+'Cuts.txt','w')
+	optimlog = open('Results_'+tag+'/OptLQ_'+channel+'Cuts.txt','w')
 
 	valuetable = []
 
@@ -3885,10 +3946,10 @@ def MakeSmoothCuts(vals,vnames,versionname,chan,rawmethod):
 			new_val = round_to(orig_val,5)
 			betterfits.append(new_val)
 		optim_res.append(betterfits)
-		c1.Print('Results_'+versionname+'/Optimization_'+chan+'_'+vnames[y-1]+'_'+rawmethod+'.pdf')
-		c1.Print('Results_'+versionname+'/Optimization_'+chan+'_'+vnames[y-1]+'_'+rawmethod+'.png')
+		c1.Print('Results_'+versionname+'/OptimizationLQ_'+chan+'_'+vnames[y-1]+'_'+rawmethod+'.pdf')
+		c1.Print('Results_'+versionname+'/OptimizationLQ_'+chan+'_'+vnames[y-1]+'_'+rawmethod+'.png')
 
-	optimlog = open('Results_'+versionname+'/Opt_'+chan+'Cuts_Smoothed_'+rawmethod+'.txt','w')	
+	optimlog = open('Results_'+versionname+'/OptLQ_'+chan+'Cuts_Smoothed_'+rawmethod+'.txt','w')	
 
 	for x in range(len(optim_res[0])):
 		cutstr = ''
@@ -3898,7 +3959,7 @@ def MakeSmoothCuts(vals,vnames,versionname,chan,rawmethod):
 		print optline
 		optimlog.write(optline+'\n')
 	optimlog.close()
-	return 'Results_'+versionname+'/Opt_'+chan+'Cuts_Smoothed.txt'
+	return 'Results_'+versionname+'/OptLQ_'+chan+'Cuts_Smoothed.txt'
 
 def CompareMeanSys(m,s1,s2):
 	_m = []
@@ -4070,7 +4131,7 @@ def ParseFinalCards(cardcoll):
 	return finalcards
 
 def FixFinalCards(cardsets):
-	f = cardsets[0].split('/')[0]+'/FinalCards.txt'
+	f = cardsets[0].split('/')[0]+'/FinalCardsLQ.txt'
 	fout = open(f,'w')
 	for c in cardsets:
 		for line in open(c,'r'):

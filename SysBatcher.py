@@ -87,7 +87,7 @@ for c in ['uujj','uvjj']:
 		fout.close()
 		# bsub command
 		os.system('chmod 755 '+ftcsh)
-		bsub =  'bsub -q 2nd -e /dev/null -J '+runfile.split('.')[0]+' < '+ftcsh
+		bsub =  'bsub -q 8nh -e /dev/null -J '+runfile.split('.')[0]+' < '+ftcsh
 		print bsub
 		# Run bsub command if using "--launch" argument
 		if '--launch' in sys.argv:

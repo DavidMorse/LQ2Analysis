@@ -102,7 +102,8 @@ def cardtotex(card):
 	textable += '\\hline\n Total & '+systot_s + ' & ' + systot_b + '\\\\ \\hline\n'
 	textable += '\\end{tabular}\n\\label{tab:SysUncertainties_'+texchan+'_'+mass+'}\n\\end{center}\n\\end{table}\n\n'
 
-	if '300' in mass or '500' in mass or '700' in mass or '1000' in mass:
+	# if '300' in mass or '500' in mass or '700' in mass or '1000' in mass:
+	if '650' in mass:
 		print textable
 	return [mass,str(round(float(systot_b),2)) ]
 
