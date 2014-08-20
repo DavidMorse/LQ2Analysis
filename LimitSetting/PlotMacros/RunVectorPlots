@@ -1,0 +1,18 @@
+{
+
+
+gROOT->ProcessLine(".L BR_Sigma_MuMu_vsMassVector.C++");
+gROOT->ProcessLine("makePlotsBOVector()");
+
+gROOT->Reset();
+
+
+
+gROOT->ProcessLine(".L BR_Sigma_MuNu_vsMassVector.C++");
+gROOT->ProcessLine("makePlotsBHVector()");
+
+gROOT->Reset();
+
+gROOT->ProcessLine(".q");
+
+}
