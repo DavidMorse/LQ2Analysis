@@ -35,7 +35,7 @@ for b in betas:
 	f.write('cmsenv\n')
 	f.write('cd -\n')
 	f.write('cp '+mdir+'/RunStatsBasicCLs.py .\n')
-	f.write('cp '+mdir+'/FinalCards.txt .\n')
+	f.write('cp '+mdir+'/FinalCardsLQ.txt .\n')
 
 	f.write('python RunStatsBasicCLs.py '+sysargs+' '+str(b)+' > Result_'+bs+'.txt\n')
 	f.write('cp Result* '+mdir+'/BatcherResults/\n\n')

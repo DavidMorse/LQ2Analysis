@@ -1,0 +1,5 @@
+python RunStatsBasicCLs.py --do_BetaOne --do_BetaHalf -c LimitTest --Asymptotic_Only --vectorYM > ymlog.txt
+python RunStatsBasicCLs.py --do_BetaOne --do_BetaHalf -c LimitTest --Asymptotic_Only --vectorAM > amlog.txt
+python RunStatsBasicCLs.py --do_BetaOne --do_BetaHalf -c LimitTest --Asymptotic_Only --vectorMM > mmlog.txt
+python RunStatsBasicCLs.py --do_BetaOne --do_BetaHalf -c LimitTest --Asymptotic_Only --vectorMC > mclog.txt
+python RunStatsBasicCLs.py --do_BetaOne --do_BetaHalf -c LimitTest --Asymptotic_Only > lqlog.txt
