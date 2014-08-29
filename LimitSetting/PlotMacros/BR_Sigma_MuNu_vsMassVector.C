@@ -27,6 +27,8 @@ void makePlotsBHVector()
  // integrated luminosity
  string lint = "19.7 fb^{-1}";
 
+bool NoteStyle = false;
+
 
 Double_t mTh[16] = {300.0 , 400.0 , 500.0 , 600.0 , 700.0 , 800.0 , 900.0 , 1000.0 , 1100.0 , 1200.0 , 1300.0 , 1400.0 , 1500.0 , 1600.0 , 1700.0 , 1800.0 }; 
 Double_t mData[16] = {300.0 , 400.0 , 500.0 , 600.0 , 700.0 , 800.0 , 900.0 , 1000.0 , 1100.0 , 1200.0 , 1300.0 , 1400.0 , 1500.0 , 1600.0 , 1700.0 , 1800.0 }; 
@@ -47,15 +49,54 @@ Double_t MCxsUp_observed[16] = {0.104413163465 , 0.02921060649 , 0.0085795711197
 Double_t MCy_1sigma[32]={0.05549006229 , 0.01283248785 , 0.0044011323069 , 0.0022705814556 , 0.0013487271407 , 0.000855737195495 , 0.000471521476297 , 0.000430247454304 , 0.000376025766248 , 0.000352384960722 , 0.000335296018164 , 0.000329027716749 , 0.000320369777049 , 0.000317788993075 , 0.00031853370079 , 0.000326116639206 , 0.000765476479661 , 0.000747677471022 , 0.000745929446413 , 0.000751987176171 , 0.000772309514519 , 0.000787022775025 , 0.000827134750444 , 0.000883570654967 , 0.00100989722259 , 0.00108083382864 , 0.00176605894332 , 0.00264777749508 , 0.0043461834678 , 0.0083761747846 , 0.024064183611 , 0.103890999485 }; 
 Double_t MCy_2sigma[32]={0.042041987715 , 0.009703861557 , 0.0033152511784 , 0.001710366192 , 0.00101554455644 , 0.00063496802824 , 0.000337249852725 , 0.00030684819924 , 0.000269842192202 , 0.000251317452326 , 0.000239129769846 , 0.000234659283903 , 0.000228484524679 , 0.000226643935011 , 0.000227175060652 , 0.000232583142426 , 0.00116745808575 , 0.00114031202695 , 0.00113764607544 , 0.00114688501029 , 0.00116645491617 , 0.0011886769604 , 0.00124926003664 , 0.00133925431388 , 0.00152529469161 , 0.0016155573516 , 0.00248469504654 , 0.00361605430012 , 0.005809127391 , 0.0111475065226 , 0.031509060765 , 0.13603236231 }; 
 
-
 Double_t YMxsUp_observed[16] = {0.1231011773 , 0.03106166673 , 0.008923502055 , 0.0047150173125 , 0.00271921241295 , 0.0015931106787 , 0.00077441898673 , 0.000896392490565 , 0.000788042571123 , 0.000730440742512 , 0.000699814735304 , 0.000678743077571 , 0.000669716176701 , 0.000670867198551 , 0.000660684935614 , 0.000667966377344 }; 
 Double_t MMxsUp_observed[16] = {0.092843645 , 0.02585366875 , 0.00797730318 , 0.00417440517 , 0.002511691872 , 0.0015027871308 , 0.0007246354674 , 0.0008480577988 , 0.00076070993544 , 0.00071464383516 , 0.000692348008024 , 0.000681316782975 , 0.000671245280184 , 0.000659616664506 , 0.000667070594612 , 0.000664050889763 }; 
 Double_t AMxsUp_observed[16] = {0.10209887047 , 0.028651668496 , 0.0086205135281 , 0.0045361034289 , 0.00260125453692 , 0.00153616364666 , 0.000748489592343 , 0.000876358325777 , 0.000785746157359 , 0.000723417325943 , 0.000701778220402 , 0.000683930341938 , 0.000677965714619 , 0.000680100154246 , 0.000677849946698 , 0.000691806264893 }; 
 
 
+ Double_t MCxsUp_observed_logY[16], MCxsUp_expected_logY[16], MCxsTh_logY[16],YMxsTh_logY[16],MMxsTh_logY[16],AMxsTh_logY[16];
+ for (int ii = 0; ii<16; ++ii) MCxsUp_observed_logY[ii] = log10(MCxsUp_observed[ii]);
+ for (int ii = 0; ii<16; ++ii) MCxsUp_expected_logY[ii] = log10(MCxsUp_expected[ii]);
+ for (int ii = 0; ii<16; ++ii) MCxsTh_logY[ii] = log10(MCxsTh[ii]);
+ for (int ii = 0; ii<16; ++ii) YMxsTh_logY[ii] = log10(YMxsTh[ii]);
+ for (int ii = 0; ii<16; ++ii) MMxsTh_logY[ii] = log10(MMxsTh[ii]);
+ for (int ii = 0; ii<16; ++ii) AMxsTh_logY[ii] = log10(AMxsTh[ii]);
 
+ TGraph *MCxsData_vs_m_expected_log = new TGraph(16, mData, MCxsUp_expected_logY);
+ TGraph *MCxsData_vs_m_observed_log = new TGraph(16, mData, MCxsUp_observed_logY);
+ TGraph *MCxsTh_vs_m_log = new TGraph(16, mTh, MCxsTh_logY);
+ TGraph *YMxsTh_vs_m_log = new TGraph(16, mTh, YMxsTh_logY);
+ TGraph *MMxsTh_vs_m_log = new TGraph(16, mTh, MMxsTh_logY);
+ TGraph *AMxsTh_vs_m_log = new TGraph(16, mTh, AMxsTh_logY);
+ 
 
+ double MCobslim = 0.0;
+ double MCexlim = 0.0;
+ double YMobslim = 0.0;
+ double YMexlim = 0.0;
+ double MMobslim = 0.0;
+ double MMexlim = 0.0;
+ double AMobslim = 0.0;
+ double AMexlim = 0.0;   
+ for (Double_t mtest=300.10; mtest<1799.90; mtest = mtest+0.10){
+   if(( pow(10.0,MCxsData_vs_m_expected_log->Eval(mtest))/pow(10.0,MCxsTh_vs_m_log->Eval(mtest)) ) < 1.0 && ( pow(10.0,MCxsData_vs_m_expected_log->Eval(mtest+0.1))/pow(10.0,MCxsTh_vs_m_log->Eval(mtest+0.10)) ) > 1.0) MCexlim = mtest; 
+   if(( pow(10.0,MCxsData_vs_m_observed_log->Eval(mtest))/pow(10.0,MCxsTh_vs_m_log->Eval(mtest)) ) < 1.0 && ( pow(10.0,MCxsData_vs_m_observed_log->Eval(mtest+0.1))/pow(10.0,MCxsTh_vs_m_log->Eval(mtest+0.10)) ) > 1.0) MCobslim = mtest; 
+   if(( pow(10.0,MCxsData_vs_m_expected_log->Eval(mtest))/pow(10.0,YMxsTh_vs_m_log->Eval(mtest)) ) < 1.0 && ( pow(10.0,MCxsData_vs_m_expected_log->Eval(mtest+0.1))/pow(10.0,YMxsTh_vs_m_log->Eval(mtest+0.10)) ) > 1.0) YMexlim = mtest; 
+   if(( pow(10.0,MCxsData_vs_m_observed_log->Eval(mtest))/pow(10.0,YMxsTh_vs_m_log->Eval(mtest)) ) < 1.0 && ( pow(10.0,MCxsData_vs_m_observed_log->Eval(mtest+0.1))/pow(10.0,YMxsTh_vs_m_log->Eval(mtest+0.10)) ) > 1.0) YMobslim = mtest; 
+   if(( pow(10.0,MCxsData_vs_m_expected_log->Eval(mtest))/pow(10.0,MMxsTh_vs_m_log->Eval(mtest)) ) < 1.0 && ( pow(10.0,MCxsData_vs_m_expected_log->Eval(mtest+0.1))/pow(10.0,MMxsTh_vs_m_log->Eval(mtest+0.10)) ) > 1.0) MMexlim = mtest; 
+   if(( pow(10.0,MCxsData_vs_m_observed_log->Eval(mtest))/pow(10.0,MMxsTh_vs_m_log->Eval(mtest)) ) < 1.0 && ( pow(10.0,MCxsData_vs_m_observed_log->Eval(mtest+0.1))/pow(10.0,MMxsTh_vs_m_log->Eval(mtest+0.10)) ) > 1.0) MMobslim = mtest; 
+   if(( pow(10.0,MCxsData_vs_m_expected_log->Eval(mtest))/pow(10.0,AMxsTh_vs_m_log->Eval(mtest)) ) < 1.0 && ( pow(10.0,MCxsData_vs_m_expected_log->Eval(mtest+0.1))/pow(10.0,AMxsTh_vs_m_log->Eval(mtest+0.10)) ) > 1.0) AMexlim = mtest; 
+   if(( pow(10.0,MCxsData_vs_m_observed_log->Eval(mtest))/pow(10.0,AMxsTh_vs_m_log->Eval(mtest)) ) < 1.0 && ( pow(10.0,MCxsData_vs_m_observed_log->Eval(mtest+0.1))/pow(10.0,AMxsTh_vs_m_log->Eval(mtest+0.10)) ) > 1.0) AMobslim = mtest; 
 
+  }
+  std::cout<<"## MC LLJJ observed limit: "<<MCobslim<<" GeV"<<std::endl;
+  std::cout<<"## MC LLJJ expected limit: "<<MCexlim<<" GeV"<<std::endl;
+  std::cout<<"## YM LLJJ observed limit: "<<YMobslim<<" GeV"<<std::endl;
+  std::cout<<"## YM LLJJ expected limit: "<<YMexlim<<" GeV"<<std::endl;
+  std::cout<<"## MM LLJJ observed limit: "<<MMobslim<<" GeV"<<std::endl;
+  std::cout<<"## MM LLJJ expected limit: "<<MMexlim<<" GeV"<<std::endl;
+  std::cout<<"## AM LLJJ observed limit: "<<AMobslim<<" GeV"<<std::endl;
+  std::cout<<"## AM LLJJ expected limit: "<<AMexlim<<" GeV"<<std::endl;    
   // turn on/off batch mode
  gROOT->SetBatch(kTRUE);
 
@@ -191,10 +232,12 @@ MMxsData_vs_m_observed->SetMarkerSize(2);
  MCxsData_vs_m_expected->Draw("LP");
  MCxsData_vs_m_observed->Draw("LP");
 
+if (NoteStyle)
+{
  AMxsData_vs_m_observed->Draw("LP");
  YMxsData_vs_m_observed->Draw("LP");
  MMxsData_vs_m_observed->Draw("LP");
-
+}
  
  // grshade->SetFillStyle(1001); 
 
@@ -225,17 +268,12 @@ legend->AddEntry(AMxsTh_vs_m,"AM, #sigma_{theory}#times 2#beta(1-#beta), (#beta=
  l1.SetTextFont(42);
  l1.SetNDC();
  l1.SetTextSize(0.04);
-// double stamp_x = 0.76;
-//  double stamp_y = 0.58;
 
- // l1.DrawLatex(stamp_x,stamp_y - 0.00,"CMS 2012");     
- // l1.DrawLatex(stamp_x,stamp_y - 0.05,"#sqrt{s} = 8 TeV");
-  //l1.DrawLatex(0.70,0.53,"CMS 2011");
- //l1.DrawLatex(0.70,0.48,"#sqrt{s} = 7 TeV");
 
  l1.DrawLatex(0.14,0.93,"CMS #it{Preliminary}          #sqrt{s} = 8 TeV         19.7 fb^{-1}");
 
-
+if (NoteStyle)
+{
  TLatex l1b;
  l1b.SetTextAlign(12);
  l1b.SetTextFont(42);
@@ -244,17 +282,7 @@ legend->AddEntry(AMxsTh_vs_m,"AM, #sigma_{theory}#times 2#beta(1-#beta), (#beta=
  l1b.DrawLatex(.17,.215,"The limits are computed with the MC vector sample.");
  l1b.DrawLatex(.17,.19,"X markers indicate observed limits using other vector samples.");
  l1b.DrawLatex(.17,.165,"X markers would be removed for publication.");
- // l1.DrawLatex(0.14,0.93,"CMS Work In Progres       #sqrt{s} = 8 TeV         19.6 fb^{-1}");
- // l1.DrawLatex(0.76,0.53,"Preliminary");
- // l1.DrawLatex(0.76,0.48,"#sqrt{s} = 8 TeV");
- // l1.DrawLatex(0.76,0.43,"19.6 fb^{-1}");
- 
-//  TLatex l2;
-//  l2.SetTextAlign(12);
-//  l2.SetTextSize(0.037);
-//  l2.SetTextFont(42);
-//  l2.SetNDC();
-//  l2.DrawLatex(0.4,0.485,"EXO-10-005 scaled to #sqrt{s} = 7 TeV");
+}
 
  c->SetGridx();
  c->SetGridy();
@@ -266,10 +294,6 @@ legend->AddEntry(AMxsTh_vs_m,"AM, #sigma_{theory}#times 2#beta(1-#beta), (#beta=
  c->SaveAs((fileName2).c_str());
  c->SaveAs((fileName3).c_str());
 
- // delete pl;
- // delete xsTh_vs_m;
- // delete bg;
- // delete c;
 }
 
 
