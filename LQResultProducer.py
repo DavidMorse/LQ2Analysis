@@ -93,8 +93,10 @@ pdf_uvjj_Signal = [3.0 for x in pdf_MASS]
 
 
 # These are the total background uncertainties. They are used just to make some error bands on plots. 
-totunc_uujj = [3.36, 2.57, 2.79, 3.36, 5.28, 5.67, 6.85, 6.79, 10.29, 10.59, 11.95, 32.6, 14.88, 45.57, 53.55, 53.55, 53.55, 53.55, 53.55 ]
-totunc_uvjj = [7.36, 7.58, 9.62, 10.52, 11.75, 14.42, 18.26, 24.61, 23.88, 38.78, 27.65, 30.1, 47.37, 53.7, 53.99, 53.99, 53.99, 53.99, 53.99]
+# totunc_uujj = [3.36, 2.57, 2.79, 3.36, 5.28, 5.67, 6.85, 6.79, 10.29, 10.59, 11.95, 32.6, 14.88, 45.57, 53.55, 53.55, 53.55, 53.55, 53.55 ]
+# totunc_uvjj = [7.36, 7.58, 9.62, 10.52, 11.75, 14.42, 18.26, 24.61, 23.88, 38.78, 27.65, 30.1, 47.37, 53.7, 53.99, 53.99, 53.99, 53.99, 53.99]
+totunc_uujj = [3.8, 3.05, 4.2, 5.31, 6.98, 7.68, 10.44, 14.04, 21.9, 27.56, 27.67, 42.04, 32.78, 55.57, 64.98, 64.98, 64.98, 64.98, 64.98]
+totunc_uvjj = [7.42, 7.65, 9.94, 11.06, 12.39, 15.64, 19.79, 27.6, 32.69, 51.06, 50.28, 39.12, 51.71, 58.42, 60.18, 60.18, 60.18, 60.18, 60.18]
 
 
 # Muon alignment Uncs, [uujj sig, uujj bg, uvjj sig, [uvjj bg] ] Only uvjj BG significantly varies with mass
@@ -105,6 +107,11 @@ shapesys_uujj_zjets = 2.99
 shapesys_uujj_ttbar = 6.27
 shapesys_uvjj_wjets = 4.13
 shapesys_uvjj_ttbar = 4.72
+
+
+shapesysvar_uujj_zjets = [4.57,4.8,7.39,9.18,9.76,10.42,14.54,22.64,36.79,36.91,36.91,36.91,36.91,36.91,36.91,36.91,36.91,36.91,36.91]
+shapesysvar_uvjj_wjets = [4.92,4.98,7.71,9.07,9.63,12.37,16.22,23.75,41.81,55.82,70.55,70.55,70.55,70.55,70.55,70.55,70.55,70.55,70.55]
+
 
 ##########################################################################
 ########    THE MAIN FUNCTION THAT DEFINES WHAT STUDIES TO DO     ########
@@ -454,7 +461,6 @@ def main():
 				MakeBasicPlot("St_uvjj","S_{T}^{#mu #nu j j} [GeV]",stbinning,preselectionmunu,NormalWeightMuNu,NormalDirectory,'finalPAS'+flag,'uvjj',Rz_uujj, Rw_uvjj,Rtt_uvjj,MuNuOptCutFile,version_name,lqmass)
 				MakeBasicPlot("MT_uv","M_{T}^{#mu #nu} [GeV]",bosonbinning,preselectionmunu,NormalWeightMuNu,NormalDirectory,'finalPAS'+flag,'uvjj',Rz_uujj, Rw_uvjj,Rtt_uvjj,MuNuOptCutFile,version_name,lqmass)
 				MakeBasicPlot("M_uvjj","M^{#mu j} [GeV]",lqbinning,preselectionmunu,NormalWeightMuNu,NormalDirectory,'finalPAS'+flag,'uvjj',Rz_uujj, Rw_uvjj,Rtt_uvjj,MuNuOptCutFile,version_name,lqmass)
-
 
 
 	# ====================================================================================================================================================== #
@@ -1805,8 +1811,8 @@ def SysTable(optimlog, selection_uujj,selection_uvjj,NormalDirectory, weight,sys
 		if 'uvjj' in optimlog: 
 			rt = (1.+.01*shapesys_uvjj_ttbar )*rt
 
-	if sysmethod == 'SHAPEZ'  : rz = (1.+.01*shapesys_uujj_zjets)*rz
-	if sysmethod == 'SHAPEW'  : rw = (1.+.01*shapesys_uvjj_wjets)*rw
+	# if sysmethod == 'SHAPEZ'  : rz = (1.+.01*shapesys_uujj_zjets)*rz
+	# if sysmethod == 'SHAPEW'  : rw = (1.+.01*shapesys_uvjj_wjets)*rw
 
 
 	sysfile = optimlog.replace('.txt','_systable_'+sysmethod+'.txt')
@@ -1860,6 +1866,12 @@ def SysTable(optimlog, selection_uujj,selection_uvjj,NormalDirectory, weight,sys
 		_rt = rt
 		_rw = rw
 		_rz = rz
+
+		if sysmethod == 'SHAPEZ':
+			_rz *= (1.0+shapesysvar_uujj_zjets[nalign]*0.01)
+
+		if sysmethod == 'SHAPEW':
+			_rw *= (1.0+shapesysvar_uvjj_wjets[nalign]*0.01)
 
 		if 'PDF'  in sysmethod:
 			if 'uujj' in optimlog:
@@ -1944,8 +1956,8 @@ def SysTableTTDD(optimlog, selection_uujj,selection_uvjj,NormalDirectory, weight
 	# 	if 'uvjj' in optimlog: 
 	# 		rt = 1.199*rt
 
-	if sysmethod == 'SHAPEZ'  : rz = (1.+.01*shapesys_uujj_zjets)*rz
-	if sysmethod == 'SHAPEW'  : rw = (1.+.01*shapesys_uvjj_wjets)*rw
+	# if sysmethod == 'SHAPEZ'  : rz = (1.+.01*shapesys_uujj_zjets)*rz
+	# if sysmethod == 'SHAPEW'  : rw = (1.+.01*shapesys_uvjj_wjets)*rw
 
 	sysfile = optimlog.replace('.txt','_systable_'+sysmethod+'.txt')
 
@@ -2007,6 +2019,14 @@ def SysTableTTDD(optimlog, selection_uujj,selection_uvjj,NormalDirectory, weight
 		_rt = rt
 		_rw = rw
 		_rz = rz
+
+
+		if sysmethod == 'SHAPEZ':
+			_rz *= (1.0+shapesysvar_uujj_zjets[nalign]*0.01)
+
+		if sysmethod == 'SHAPEW':
+			_rw *= (1.0+shapesysvar_uvjj_wjets[nalign]*0.01)
+
 
 		if 'PDF'  in sysmethod:
 			if 'uujj' in optimlog:

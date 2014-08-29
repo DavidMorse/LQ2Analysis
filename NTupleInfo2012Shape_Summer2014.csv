@@ -1,0 +1,13 @@
+SignalType,Xsections,N_orig,Group,CustomJson,EOSDirectory
+DY2JetsToLL_M-50_scaledown_8TeV-madgraph,214.9737,11170429,ZJetsJBinScaleDown,0,/store/group/phys_exotica/leptonsPlusJets/RootNtuple/scooper/RootNtuple-V00-03-11-Summer12MC_DY2JetsToLL_ScaleSysts_MG_20131008_124216/
+DY3JetsToLL_M-50_scaledown_8TeV-madgraph,60.69147,8544421,ZJetsJBinScaleDown,0,/store/group/phys_exotica/leptonsPlusJets/RootNtuple/scooper/RootNtuple-V00-03-11-Summer12MC_DY3JetsToLL_ScaleSystematics_MG_20131014_180057/
+DY2JetsToLL_M-50_scaleup_8TeV-madgraph,214.9737,11070907,ZJetsJBinScaleUp,0,/store/group/phys_exotica/leptonsPlusJets/RootNtuple/scooper/RootNtuple-V00-03-11-Summer12MC_DY2JetsToLL_ScaleSysts_MG_20131008_124216/
+DY3JetsToLL_M-50_scaleup_8TeV-madgraph,60.69147,8385379,ZJetsJBinScaleUp,0,/store/group/phys_exotica/leptonsPlusJets/RootNtuple/scooper/RootNtuple-V00-03-11-Summer12MC_DY3JetsToLL_ScaleSystematics_MG_20131014_180057/
+W2JetsToLNu_matchingdown_8TeV-madgraph,2087.225,23065807,WJetsJBinMatchDown,0,/store/group/phys_exotica/leptonsPlusJets/RootNtuple/scooper/RootNtuple-V00-03-11-Summer12MC_W2JetsToLNu_ScaleAndMatchingSysts_MG_20131101_124856/
+W3JetsToLNu_matchingdown_8TeV-madgraph,619.0113,3138222,WJetsJBinMatchDown,0,/store/group/phys_exotica/leptonsPlusJets/RootNtuple/scooper/RootNtuple-V00-03-11-Summer12MC_W3JetsToLNu_ScaleAndMatchingSysts_MG_20140120_112704/
+W2JetsToLNu_matchingup_8TeV-madgraph,2087.225,34319476,WJetsJBinMatchUp,0,/store/group/phys_exotica/leptonsPlusJets/RootNtuple/scooper/RootNtuple-V00-03-11-Summer12MC_W2JetsToLNu_ScaleAndMatchingSysts_MG_20131101_124856/
+W3JetsToLNu_matchingup_8TeV-madgraph,619.0113,6551014,WJetsJBinMatchUp,0,/store/group/phys_exotica/leptonsPlusJets/RootNtuple/scooper/RootNtuple-V00-03-11-Summer12MC_W3JetsToLNu_ScaleAndMatchingSysts_MG_20140120_112704/
+W2JetsToLNu_scaledown_8TeV-madgraph,2087.225,29155308,WJetsJBinScaleDown,0,/store/group/phys_exotica/leptonsPlusJets/RootNtuple/scooper/RootNtuple-V00-03-11-Summer12MC_W2JetsToLNu_ScaleAndMatchingSysts_MG_20131101_124856/
+W3JetsToLNu_scaledown_8TeV-madgraph,619.0113,1117088,WJetsJBinScaleDown,0,/store/group/phys_exotica/leptonsPlusJets/RootNtuple/scooper/RootNtuple-V00-03-11-Summer12MC_W3JetsToLNu_ScaleAndMatchingSysts_MG_20140120_112704/
+W2JetsToLNu_scaleup_8TeV-madgraph,2087.225,30098957,WJetsJBinScaleUp,0,/store/group/phys_exotica/leptonsPlusJets/RootNtuple/scooper/RootNtuple-V00-03-11-Summer12MC_W2JetsToLNu_ScaleAndMatchingSysts_MG_20131101_124856/
+W3JetsToLNu_scaleup_8TeV-madgraph,619.0113,4553531,WJetsJBinScaleUp,0,/store/group/phys_exotica/leptonsPlusJets/RootNtuple/scooper/RootNtuple-V00-03-11-Summer12MC_W3JetsToLNu_ScaleAndMatchingSysts_MG_20140120_112704/
