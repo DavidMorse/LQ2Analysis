@@ -1,0 +1,11 @@
+{
+
+
+gROOT->ProcessLine(".L BR_Sigma_MuMu_vsMassSUSYRPV.C++");
+gROOT->ProcessLine("makePlotsRPV()");
+
+gROOT->Reset();
+
+gROOT->ProcessLine(".q");
+
+}
