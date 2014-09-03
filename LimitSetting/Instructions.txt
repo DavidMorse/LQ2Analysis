@@ -155,3 +155,8 @@ python RunStatsBasicCLs.py --do_BetaOne -c LimitTest --Asymptotic_Only --susyRV
 
 
 
+
+
+Other notes:
+Vector lq cross sections: https://darinb.web.cern.ch/darinb/LQPublic/CrossSectionsVerboseNarrow.html
+Susy cross sections: https://darinb.web.cern.ch/darinb/LQPublic/CrossSectionsVerboseNarrow.html
