@@ -11,7 +11,7 @@ The Higgs Combine package has further documentation at:
 https://twiki.cern.ch/twiki/bin/view/CMS/SWGuideHiggsAnalysisCombinedLimit
 
 
-1) Check out the package. If you haven't already: 
+1) Check out the package on SLC5. If you haven't already: 
 
     setenv SCRAM_ARCH slc5_amd64_gcc472 
     cmsrel CMSSW_6_1_1 
@@ -158,5 +158,5 @@ python RunStatsBasicCLs.py --do_BetaOne -c LimitTest --Asymptotic_Only --susyRV
 
 
 Other notes:
-Vector lq cross sections: https://darinb.web.cern.ch/darinb/LQPublic/CrossSectionsVerboseNarrow.html
+Vector lq cross sections: https://twiki.cern.ch/twiki/pub/Main/LQPairSecondGen8TeVOutline/CrossSectionLogVerbose_OfficialRequest.html
 Susy cross sections: https://darinb.web.cern.ch/darinb/LQPublic/CrossSectionsVerboseNarrow.html
