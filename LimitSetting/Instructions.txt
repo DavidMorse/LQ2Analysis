@@ -30,6 +30,13 @@ https://twiki.cern.ch/twiki/bin/view/CMS/SWGuideHiggsAnalysisCombinedLimit
 
    You should see all of the options for the combine facility.
    
+   If you intend to run vector samples, with large cross-sections, you may need to increase the precision of the printouts of the limits. 
+   From the CMSSW src directory, do:
+   
+   sed -i 's#6.4#9.9#g' ./HiggsAnalysis/CombinedLimit/src/Asymptotic.cc
+   scram b -j 16
+   cd ../../
+
 
 2) Set up the data-card information for all the LQ Masses/channels. 
 
@@ -40,7 +47,7 @@ https://twiki.cern.ch/twiki/bin/view/CMS/SWGuideHiggsAnalysisCombinedLimit
    input datacards. 
    
    Ultimately we will use a python script to facilitate all this, so let's keep all
-   the data-card information in a single text file called 'FinalCards.txt'.
+   the data-card information in a single text file called 'FinalCardsLQ.txt'.
    
    Model this after an example at: NTupleAnalyzerV2/tools/HiggsLimit/SingleChannel/FinalCards_Example.txt
    
@@ -83,7 +90,7 @@ https://twiki.cern.ch/twiki/bin/view/CMS/SWGuideHiggsAnalysisCombinedLimit
    
 ##################################################
 #                                                #                
-#    NEW: QUICK RESULTS WITH ASYMPTOTIC CLS      #
+#    QUICK RESULTS WITH ASYMPTOTIC CLS           #
 #                                                #
 ##################################################
 
@@ -118,3 +125,33 @@ https://twiki.cern.ch/twiki/bin/view/CMS/SWGuideHiggsAnalysisCombinedLimit
   
        python AsympBatcherParser.py 
        
+       
+##################################################
+#                                                #                
+#    Vector LQ and RPV Susy Limits               #
+#                                                #
+##################################################       
+
+The RunStatsBasicCLS.py has been udpated for sigma-vs-mass limits on vector LQ and RPV susy. You will see new hard-coded cross
+section values in the script now. To use these, there are certain flags, and a slight tweak to the FinalCards file. 
+
+Whereas scalar leptoquarks use a 'FinalCardsLQ.txt' file, which contains signal denoted 'LQ', vector leptoquark samples 
+will be donated with 'YM','MM','MC', or 'AM', depending on the coupling scenario. RPV Susy ssamples are denoted 'RV'. 
+
+So, for instance, if you have a FinalCards file for YM coupling vector leptoquarks, it should be calleed 'FinalCardsYM.txt'
+and it should list cards like 'YM_M_300.txt' inside it, and have process name like "process  YM_M_300". Basically, all
+instances of 'LQ' become 'YM'. 
+
+Now, just run the RunStatsBasicCLs.py script as you normally would, but using flags for the different signal types. e.g.:
+
+python RunStatsBasicCLs.py --do_BetaOne --do_BetaHalf -c LimitTest --Asymptotic_Only --vectorYM
+python RunStatsBasicCLs.py --do_BetaOne --do_BetaHalf -c LimitTest --Asymptotic_Only --vectorAM
+python RunStatsBasicCLs.py --do_BetaOne --do_BetaHalf -c LimitTest --Asymptotic_Only --vectorMM
+python RunStatsBasicCLs.py --do_BetaOne --do_BetaHalf -c LimitTest --Asymptotic_Only --vectorMC
+
+or for RPV susy:
+
+python RunStatsBasicCLs.py --do_BetaOne -c LimitTest --Asymptotic_Only --susyRV
+
+
+
