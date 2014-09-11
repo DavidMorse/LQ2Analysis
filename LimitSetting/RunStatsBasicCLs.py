@@ -214,12 +214,12 @@ if do_BetaOne == 1:
 			oldrmax = float(rmax)
 
 			if effrmax < 0:
-				rmax = 0.8*rmax
+				rmax = 0.7*rmax
 			else:
 				rmax = effrmax*2.0
 
 			EstimationInformation = [' r < 0.000000']
-			if ntry>30:
+			if ntry>100:
 				breaker = True
 
 		
@@ -342,11 +342,11 @@ if do_BetaHalf == 1:
 			oldrmax = float(rmax)
 			
 			if effrmax < 0:
-				rmax = 0.8*rmax
+				rmax = 0.7*rmax
 			else:
 				rmax = effrmax*2.0
 			EstimationInformation = [' r < 0.000000']
-			if ntry > 30:
+			if ntry > 100:
 				breaker = True
 		## Estimation Complete
 		print '='*60
