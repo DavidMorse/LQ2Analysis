@@ -346,7 +346,7 @@ if do_BetaHalf == 1:
 			else:
 				rmax = effrmax*2.0
 			EstimationInformation = [' r < 0.000000']
-			if ntry > 3:
+			if ntry > 30:
 				breaker = True
 		## Estimation Complete
 		print '='*60
