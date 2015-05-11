@@ -4,6 +4,7 @@ LQ2Analysis8TeV
 Batch-processing facility for EXO Leptons+Jets Ntuples to create light-weight trees, and analyzer facility for histograms, signal-background separation optimization, event-counting and limit-setting. 
 
 Darin Baumgartel (darinb@cern.ch) Feb 2014
+cloned to David Morse (dmorse@cern.ch) May 2015
 
 ===============
 *** Running Instructions: This requires running on the CERN LXPlus5 computing system. ****
