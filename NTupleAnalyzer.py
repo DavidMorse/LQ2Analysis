@@ -65,7 +65,7 @@ startingweight = float(options.crosssection)*float(options.lumi)/float(options.n
 
 # Get the file, tree, and number of entries
 print name
-newntupleswitch = 'V00-03-18' in name
+newntupleswitch = True#'V00-03-18' in name
 if newntupleswitch == True:
 	print 'Detected V00-03-18 ntuple - making small tweaks to handle this!'
 
@@ -121,11 +121,19 @@ _kinematicvariables += ['M_uu','MT_uv']
 _kinematicvariables += ['DR_muon1muon2','DPhi_muon1met','DPhi_jet1met','DPhi_jet2met']
 _kinematicvariables += ['DR_muon1jet1','DR_muon1jet2','DR_muon2jet1','DR_muon2jet2']
 _kinematicvariables += ['DPhi_muon1jet1','DPhi_muon1jet2','DPhi_muon2jet1','DPhi_muon2jet2']
-_kinematicvariables += ['M_uujj1','M_uujj2','M_uujjavg','MT_uvjj1','MT_uvjj2','M_uvjj','MT_uvjj']
+_kinematicvariables += ['M_uujj1_gen','M_uujj2_gen','M_uujjavg_gen']
+_kinematicvariables += ['M_uujj1_genMatched','M_uujj2_genMatched','M_uujjavg_genMatched']
+_kinematicvariables += ['M_uujj1_3jet','M_uujj2_3jet','M_uujjavg_3jet']
+_kinematicvariables += ['M_uujj1_3jet_rel','M_uujj2_3jet_rel','M_uujjavg_3jet_rel']
+_kinematicvariables += ['M_uujj1','M_uujj2','M_uujjavg']
+_kinematicvariables += ['M_uujj1_rel','M_uujj2_rel','M_uujjavg_rel']
+_kinematicvariables += ['MT_uvjj1','MT_uvjj2','M_uvjj','MT_uvjj']
 _kinematicvariables += ['MH_uujj','MH_uvjj']
 _kinematicvariables += ['M_eejj1','M_eejj2','MT_evjj1','MT_evjj2','M_evjj','MT_evjj']
 _kinematicvariables += ['JetCount','MuonCount','ElectronCount','GenJetCount']
 _kinematicvariables += ['IsMuon_muon1','IsMuon_muon2']
+_kinematicvariables += ['muonIndex1','muonIndex2']
+_kinematicvariables += ['jetIndex1','jetIndex2']
 _weights = ['weight_nopu','weight_central', 'weight_pu_up', 'weight_pu_down','weight_central_2012D']
 _flags = ['run_number','event_number','lumi_number','pass_HLTMu40_eta2p1','GoodVertexCount']
 _flags += ['passPrimaryVertex','passBeamScraping','passHBHENoiseFilter','passBPTX0','passBeamHalo','passTrackingFailure','passTriggerObjectMatching','passDataCert']
@@ -484,9 +492,11 @@ def MuonsFromLQ(T):
 		if pdg not in [13,-13]:
 			continue
 		motherIndex = T.GenParticleMotherIndex[n]
+		
 		motherid = 0
 		if motherIndex>-1:
 			motherid = T.GenParticlePdgId[motherIndex]
+			#print 'pdgId:',pdg,'index:',T.GenParticleMotherIndex[n],'mother pdgId:',T.GenParticlePdgId[motherIndex]
 		if motherid not in [42,-42]:
 			continue	
 		m = TLorentzVector()
@@ -496,6 +506,7 @@ def MuonsFromLQ(T):
 	matchedrecomuons=[]
 	emptyvector = TLorentzVector()
 	emptyvector.SetPtEtaPhiM(0,0,0,0)
+	#print 'number of genmuons:',len(genmuons)
 	for g in genmuons:
 		bestrecomuonind=-1
 		mindr = 99999
@@ -512,8 +523,57 @@ def MuonsFromLQ(T):
 		else:
 			matchedrecomuons.append(emptyvector)
 			recomuoninds.append(-99)
-		# print mindr, muons[bestrecomuonind].Pt(), g.Pt()
+		#print mindr, muons[bestrecomuonind].Pt(), g.Pt()
 	return([genmuons,matchedrecomuons,recomuoninds])
+	#return(recomuoninds)
+
+def JetsFromLQ(T):
+	# Purpose: Testing. Get the quarks from LQ decays and find the matching reco pfJets. 
+	#         Return TLorentzVectors of the gen and reco jets, and the indices for
+	#         the recojets as well.
+	jets = []
+	genjets=[]
+	recojetinds = []
+	for n in range(len(T.PFJetPt)):	
+		m = TLorentzVector()
+		m.SetPtEtaPhiM(T.PFJetPt[n],T.PFJetEta[n],T.PFJetPhi[n],0)
+		jets.append(m)
+	for n in range(len(T.GenParticlePdgId)):
+		pdg = T.GenParticlePdgId[n]
+		if pdg not in [4,-4]: #Get charm quarks
+			continue
+		motherIndex = T.GenParticleMotherIndex[n]
+		motherid = 0
+		if motherIndex>-1:
+			motherid = T.GenParticlePdgId[motherIndex]
+		if motherid not in [42,-42]:
+			continue	
+		m = TLorentzVector()
+		m.SetPtEtaPhiM(T.GenParticlePt[n],T.GenParticleEta[n],T.GenParticlePhi[n],0.0)
+		genjets.append(m)
+	
+	matchedrecojets=[]
+	emptyvector = TLorentzVector()
+	emptyvector.SetPtEtaPhiM(0,0,0,0)
+	for g in genjets:
+		bestrecojetind=-1
+		mindr = 99999
+		ind=-1
+		for m in jets:
+			ind+=1
+			dr = abs(m.DeltaR(g))
+			if dr<mindr:
+				mindr =dr
+				bestrecojetind=ind
+		if mindr<0.6:
+			matchedrecojets.append(jets[bestrecojetind])
+			recojetinds.append(bestrecojetind)
+		else:
+			matchedrecojets.append(emptyvector)
+			recojetinds.append(-99)
+		#print mindr, jets[bestrecojetind].Pt(), g.Pt()
+	return([genjets,matchedrecojets,recojetinds])
+	#return(recojetinds)
 
 
 def PropagatePTChangeToMET(met,original_object,varied_object):
@@ -572,16 +632,21 @@ def TightHighPtIDMuons(T,_met,variation,isdata):
 	muons = []
 	muoninds = []
 	if variation=='MESup':	
-		_MuonCocktailPt = [(pt + pt*(0.05*pt/1000.0)) for pt in T.MuonCocktailPt]
+		#_MuonCocktailPt = [(pt + pt*(0.05*pt/1000.0)) for pt in T.MuonCocktailPt]
+		_MuonCocktailPt = [(pt + pt*(0.05*pt/1000.0)) for pt in T.MuonPt]
 	elif variation=='MESdown':	
-		_MuonCocktailPt = [(pt - pt*(0.05*pt/1000.0)) for pt in T.MuonCocktailPt]
+		#_MuonCocktailPt = [(pt - pt*(0.05*pt/1000.0)) for pt in T.MuonCocktailPt]
+		_MuonCocktailPt = [(pt - pt*(0.05*pt/1000.0)) for pt in T.MuonPt]
 	elif variation=='MER':	
-		_MuonCocktailPt = [pt+pt*tRand.Gaus(0.0,  0.01*(pt<=200.0) + (0.04)*(pt>200.0) ) for pt in T.MuonCocktailPt]
+		#_MuonCocktailPt = [pt+pt*tRand.Gaus(0.0,  0.01*(pt<=200.0) + (0.04)*(pt>200.0) ) for pt in T.MuonCocktailPt]
+		_MuonCocktailPt = [pt+pt*tRand.Gaus(0.0,  0.01*(pt<=200.0) + (0.04)*(pt>200.0) ) for pt in T.MuonPt]
 	else:	
-		_MuonCocktailPt = [pt for pt in T.MuonCocktailPt]	
+		#_MuonCocktailPt = [pt for pt in T.MuonPt]	
+		_MuonCocktailPt = [pt for pt in T.MuonPt]	
 
 	if (isdata):
-		_MuonCocktailPt = [pt for pt in T.MuonCocktailPt]	
+		#_MuonCocktailPt = [pt for pt in T.MuonCocktailPt]	
+		_MuonCocktailPt = [pt for pt in T.MuonPt]	
 
 	trk_isos = []
 	charges = []
@@ -609,11 +674,13 @@ def TightHighPtIDMuons(T,_met,variation,isdata):
 		if alignementcorrswitch == True and isdata==False:
 			if abs(deltainvpt) > 0.0000001:
 				__Pt_mu = _MuonCocktailPt[n]
-				__Eta_mu = T.MuonCocktailEta[n]
-				__Phi_mu = T.MuonCocktailPhi[n]
+				#__Eta_mu = T.MuonCocktailEta[n]
+				__Eta_mu = T.MuonEta[n]
+				#__Phi_mu = T.MuonCocktailPhi[n]
+				__Phi_mu = T.MuonPhi[n]
 				__Charge_mu = T.MuonCharge[nequiv[n]]
-				if (__Pt_mu >200)*(abs(__Eta_mu) < 0.9)      : 
-					_MuonCocktailPt[n] =  ( (1.0) / ( -5e-05*__Charge_mu*sin(-1.4514813+__Phi_mu ) + 1.0/__Pt_mu ) ) 
+				#if (__Pt_mu >200)*(abs(__Eta_mu) < 0.9)      : 
+					#_MuonCocktailPt[n] =  ( (1.0) / ( -5e-05*__Charge_mu*sin(-1.4514813+__Phi_mu ) + 1.0/__Pt_mu ) ) 
 				deltainvpt = ( 1.0/T.MuonTrkPt[nequiv[n]] - 1.0/_MuonCocktailPt[n])
 
 
@@ -625,7 +692,7 @@ def TightHighPtIDMuons(T,_met,variation,isdata):
 		# all non-global muosn have cocktail pT of -1 in the ntuples.
 		Pass *= (_MuonCocktailPt[n] > 35)      
 		# Eta requirement matches trigger.
-		Pass *= abs(T.MuonCocktailEta[n])<2.1    
+		Pass *= abs(T.MuonEta[n])<2.1    
 
 		# Number of valid hits
 		Pass *= T.MuonGlobalTrkValidHits[nequiv[n]]>=1
@@ -643,7 +710,7 @@ def TightHighPtIDMuons(T,_met,variation,isdata):
 
 		# Layers with measurement (high PT ID cut is 5, used to be tight id cut at 8)
 		Pass *= T.MuonTrackLayersWithMeasurement[nequiv[n]] > 5 
-		Pass *= T.MuonCocktailPtError[n]/T.MuonCocktailPt[n]  < 0.3
+		#Pass *= T.MuonCocktailPtError[n]/T.MuonCocktailPt[n]  < 0.3
 
 		# Isolation condition using tracker-only isolation
 		if nonisoswitch != True:
@@ -653,8 +720,10 @@ def TightHighPtIDMuons(T,_met,variation,isdata):
 		if (Pass):
 			NewMu = TLorentzVector()
 			OldMu = TLorentzVector()
-			NewMu.SetPtEtaPhiM(_MuonCocktailPt[n],T.MuonCocktailEta[n],T.MuonCocktailPhi[n],0)
-			OldMu.SetPtEtaPhiM(T.MuonCocktailPt[n],T.MuonCocktailEta[n],T.MuonCocktailPhi[n],0)
+			#NewMu.SetPtEtaPhiM(_MuonCocktailPt[n],T.MuonCocktailEta[n],T.MuonCocktailPhi[n],0)
+			NewMu.SetPtEtaPhiM(_MuonCocktailPt[n],T.MuonEta[n],T.MuonPhi[n],0)
+			#OldMu.SetPtEtaPhiM(T.MuonCocktailPt[n],T.MuonCocktailEta[n],T.MuonCocktailPhi[n],0)
+			OldMu.SetPtEtaPhiM(T.MuonPt[n],T.MuonEta[n],T.MuonPhi[n],0)
 			_met = PropagatePTChangeToMET(_met,OldMu,NewMu)
 
 			# Append items to retun if the muon is good
@@ -664,7 +733,7 @@ def TightHighPtIDMuons(T,_met,variation,isdata):
 			chi2.append(T.MuonGlobalChi2[nequiv[n]])
 			pfid.append(T.MuonIsPF[nequiv[n]])
 			layers.append(T.MuonTrackLayersWithMeasurement[nequiv[n]])
-			charges.append(T.MuonCocktailCharge[n])
+			charges.append(T.MuonCharge[n])
 			muoninds.append(n)
 			deltainvpts.append(deltainvpt)
 
@@ -702,7 +771,7 @@ def HEEPElectrons(T,_met,variation):
 			Pass *= T.ElectronDeltaPhiTrkSC[n] < 0.06
 			Pass *= T.ElectronHoE[n] < 0.05
 			Pass *= ((T.ElectronE2x5OverE5x5[n] > 0.94) or (T.ElectronE1x5OverE5x5[n] > 0.83) )
-			Pass *= (T.ElectronHcalIsoD1DR03[n] + T.ElectronEcalIsoDR03[n]) <  (2.0 + 0.03*_ElectronPt[n] + 0.28*T.rhoForHEEP)
+			#Pass *= (T.ElectronHcalIsoD1DR03[n] + T.ElectronEcalIsoDR03[n]) <  (2.0 + 0.03*_ElectronPt[n] + 0.28*T.rhoForHEEP)
 			Pass *= T.ElectronTrkIsoDR03[n] < 5.0
 			Pass *= T.ElectronMissingHits[n] <=1
 			Pass *= T.ElectronLeadVtxDistXY[n]<0.02
@@ -713,10 +782,10 @@ def HEEPElectrons(T,_met,variation):
 			Pass *= T.ElectronDeltaPhiTrkSC[n] < 0.06
 			Pass *= T.ElectronHoE[n] < 0.05
 			Pass *= T.ElectronSigmaIEtaIEta[n] < 0.03
-			if _ElectronPt[n]<50:
-				Pass *= ((T.ElectronHcalIsoD1DR03[n] + T.ElectronEcalIsoDR03[n]) < (2.5 + 0.28*T.rhoForHEEP))
-			else:
-				Pass *= ((T.ElectronHcalIsoD1DR03[n] + T.ElectronEcalIsoDR03[n]) < (2.5 + 0.03*(_ElectronPt[n]-50.0) + 0.28*T.rhoForHEEP))
+			#if _ElectronPt[n]<50:
+				#Pass *= ((T.ElectronHcalIsoD1DR03[n] + T.ElectronEcalIsoDR03[n]) < (2.5 + 0.28*T.rhoForHEEP))
+			#else:
+				#Pass *= ((T.ElectronHcalIsoD1DR03[n] + T.ElectronEcalIsoDR03[n]) < (2.5 + 0.03*(_ElectronPt[n]-50.0) + 0.28*T.rhoForHEEP))
 			Pass *= T.ElectronTrkIsoDR03[n] < 5.0
 			Pass *= T.ElectronMissingHits[n] <=1
 			Pass *= T.ElectronLeadVtxDistXY[n]<0.05
@@ -832,7 +901,7 @@ def LooseIDJets(T,met,variation,isdata):
 
 
 def MetVector(T):
-	# Purpose: Creates a TLorentzVector represting the MET. No pseudorapidith, obviously.
+	# Purpose: Creates a TLorentzVector represting the MET. No pseudorapidity, obviously.
 	met = TLorentzVector()
 	met.SetPtEtaPhiM(T.PFMETType01XYCor[0],0,T.PFMETPhiType01XYCor[0],0)
 	return met
@@ -861,6 +930,199 @@ def GetLLJJMasses(l1,l2,j1,j2):
 	else:
 		pair = [m11,m22]  # The invariant mass pair
 		mh = m11          # invariant mass corresponding to leading jet
+	least = min(diff1,diff2)
+	#print '2Jet min:',least,'masses: ',pair[0],pair[1]
+	pair.sort()
+	pair.reverse()
+	pair.append(mh)
+	return pair
+
+def GetLLJJMassesRelative(l1,l2,j1,j2):
+	# Purpose: For LLJJ channels, this function returns two L-J Masses, corresponding to the
+	#         pair of L-Js which minimizes the difference between LQ masses in the event
+
+	# These are the invariant mass combinations 
+	m11 = (l1+j1).M()
+	m12 = (l1+j2).M()
+	m21 = (l2+j1).M()
+	m22 = (l2+j2).M()
+	mh = 0.0 # This will be the invariant mass of the lepton and leading jet
+
+	# Difference in Mass for the two matching scenarios
+	diff1 = abs(m21-m12)/m12
+	diff2 = abs(m11-m22)/m11
+
+	# The ideal match minimizes the Mass difference above
+	# Based on the the diffs, store the appropriate pairs	
+	if diff1 < diff2:
+		pair =  [m21,m12] # The invariant mass pair
+		mh = m21          # invariant mass corresponding to leading jet
+	else:
+		pair = [m11,m22]  # The invariant mass pair
+		mh = m11          # invariant mass corresponding to leading jet
+	least = min(diff1,diff2)
+	#print '2Jet min:',least,'masses: ',pair[0],pair[1]
+	pair.sort()
+	pair.reverse()
+	pair.append(mh)
+	return pair
+
+def GetLLJJMasses3Jets(l1,l2,j1,j2,j3):
+
+	m11 = (l1+j1).M()
+	m12 = (l1+j2).M()
+	m13 = (l1+j3).M()
+	m21 = (l2+j1).M()
+	m22 = (l2+j2).M()
+	m23 = (l2+j3).M()
+
+	diff1 = abs(m11-m22)
+	diff2 = abs(m11-m23)
+	diff3 = abs(m12-m21)
+	diff4 = abs(m12-m23)
+	diff5 = abs(m13-m21)
+	diff6 = abs(m13-m22)
+
+	least = min(diff1,diff2,diff3,diff4,diff5,diff6)
+	
+	if least == diff1 :
+		pair = [m11,m22] # The invariant mass pair
+		mh = m11 # invariant mass corresponding to leading jet
+	elif least == diff2:
+		pair = [m11,m23] # The invariant mass pair
+		mh = m11 # invariant mass corresponding to leading jet
+	elif least == diff3:
+		pair = [m12,m21] # The invariant mass pair
+		mh = m21 # invariant mass corresponding to leading jet
+	elif least == diff4:
+		pair = [m12,m23] # The invariant mass pair
+		mh = m12 # invariant mass corresponding to leading jet
+	elif least == diff5:
+		pair = [m13,m21] # The invariant mass pair
+		mh = m21 # invariant mass corresponding to leading jet
+	elif least == diff6:
+		pair = [m13,m22] # The invariant mass pair
+		mh = m22 # invariant mass corresponding to leading jet
+        else:
+		pair = [0,0]
+		mh=0
+	#print '3Jet min:',least,'masses: ',pair[0],pair[1]
+	pair.sort()
+	pair.reverse()
+	pair.append(mh)
+	return pair
+
+def GetLLJJMasses3JetsRelative(l1,l2,j1,j2,j3):
+
+	m11 = (l1+j1).M()
+	m12 = (l1+j2).M()
+	m13 = (l1+j3).M()
+	m21 = (l2+j1).M()
+	m22 = (l2+j2).M()
+	m23 = (l2+j3).M()
+
+	diff1 = abs(m11-m22)/j1.Pt()
+	diff2 = abs(m11-m23)/j1.Pt()
+	diff3 = abs(m12-m21)/j1.Pt()
+	diff4 = abs(m12-m23)/j2.Pt()
+	diff5 = abs(m13-m21)/j1.Pt()
+	diff6 = abs(m13-m22)/j2.Pt()
+
+	least = min(diff1,diff2,diff3,diff4,diff5,diff6)
+	
+	if least == diff1 :
+		pair = [m11,m22] # The invariant mass pair
+		mh = m11 # invariant mass corresponding to leading jet
+	elif least == diff2:
+		pair = [m11,m23] # The invariant mass pair
+		mh = m11 # invariant mass corresponding to leading jet
+	elif least == diff3:
+		pair = [m12,m21] # The invariant mass pair
+		mh = m21 # invariant mass corresponding to leading jet
+	elif least == diff4:
+		pair = [m12,m23] # The invariant mass pair
+		mh = m12 # invariant mass corresponding to leading jet
+	elif least == diff5:
+		pair = [m13,m21] # The invariant mass pair
+		mh = m21 # invariant mass corresponding to leading jet
+	elif least == diff6:
+		pair = [m13,m22] # The invariant mass pair
+		mh = m22 # invariant mass corresponding to leading jet
+        else:
+		pair = [0,0]
+		mh=0
+	#print '3Jet min:',least,'masses: ',pair[0],pair[1]
+	pair.sort()
+	pair.reverse()
+	pair.append(mh)
+	return pair
+
+def GetLLJJMasses4Jets(l1,l2,j1,j2,j3,j4):
+
+	m11 = (l1+j1).M()
+	m12 = (l1+j2).M()
+	m13 = (l1+j3).M()
+	m14 = (l1+j4).M()
+	m21 = (l2+j1).M()
+	m22 = (l2+j2).M()
+	m23 = (l2+j3).M()
+	m24 = (l2+j4).M()
+
+	diff1  = abs(m11-m22)
+	diff2  = abs(m11-m23)
+	diff3  = abs(m11-m24)
+	diff4  = abs(m12-m21)
+	diff5  = abs(m12-m23)
+	diff6  = abs(m12-m24)
+	diff7  = abs(m13-m21)
+	diff8  = abs(m13-m22)
+	diff9  = abs(m13-m24)
+	diff10 = abs(m14-m21)
+	diff11 = abs(m14-m22)
+	diff12 = abs(m14-m23)
+
+	least = min(diff1,diff2,diff3,diff4,diff5,diff6,diff7,diff8,diff9,diff10,diff11,diff12)
+	if least == diff1 :
+		pair = [m11,m22] # The invariant mass pair
+		mh = m11 # invariant mass corresponding to leading jet
+	elif least == diff2:
+		pair = [m11,m23] # The invariant mass pair
+		mh = m11 # invariant mass corresponding to leading jet
+	elif least == diff3:
+		pair = [m12,m21] # The invariant mass pair
+		mh = m21 # invariant mass corresponding to leading jet
+	elif least == diff4:
+		pair = [m12,m23] # The invariant mass pair
+		mh = m12 # invariant mass corresponding to leading jet
+	elif least == diff5:
+		pair = [m13,m21] # The invariant mass pair
+		mh = m21 # invariant mass corresponding to leading jet
+	elif least == diff6:
+		pair = [m13,m22] # The invariant mass pair
+		mh = m22 # invariant mass corresponding to leading jet
+	elif least == diff7 :
+		pair = [m13,m21] # The invariant mass pair
+		mh = m21 # invariant mass corresponding to leading jet
+	elif least == diff8:
+		pair = [m13,m22] # The invariant mass pair
+		mh = m22 # invariant mass corresponding to leading jet
+	elif least == diff9:
+		pair = [m13,m24] # The invariant mass pair
+		mh = m13 # invariant mass corresponding to leading jet
+	elif least == diff10:
+		pair = [m14,m21] # The invariant mass pair
+		mh = m21 # invariant mass corresponding to leading jet
+	elif least == diff11:
+		pair = [m14,m22] # The invariant mass pair
+		mh = m22 # invariant mass corresponding to leading jet
+	elif least == diff12:
+		pair = [m14,m23] # The invariant mass pair
+		mh = m23 # invariant mass corresponding to leading jet
+        else:
+		pair = [0,0]
+		mh=0
+
+	#print '4Jet min:',least,'masses: ',pair[0],pair[1]
 	pair.sort()
 	pair.reverse()
 	pair.append(mh)
@@ -979,6 +1241,17 @@ def FullKinematicCalculation(T,variation):
 			muons[0] = electrons[0]
 			_ismuon_muon1=0.0
 
+	[_genMuons,_matchedRecoMuons,muonInd] = MuonsFromLQ(T)
+	[_genJets,_matchedRecoJets,jetInd] = JetsFromLQ(T)
+	#print 'muon index:',muonInd,'  jet index:',jetInd
+	_muonInd1=muonInd[0]
+	_muonInd2=muonInd[1]
+	_jetInd1=jetInd[0]
+	_jetInd2=jetInd[1]
+
+	#[_Muujj1_gen,_Muujj2_gen]=GetLLJJMassesGen(muonInd,jetInd);
+
+
 	# Get kinmetic quantities
 	[_ptmu1,_etamu1,_phimu1,_isomu1,_qmu1,_dptmu1] = [muons[0].Pt(),muons[0].Eta(),muons[0].Phi(),trkisos[0],charges[0],dpts[0]]
 	[_ptmu2,_etamu2,_phimu2,_isomu2,_qmu2,_dptmu2] = [muons[1].Pt(),muons[1].Eta(),muons[1].Phi(),trkisos[1],charges[1],dpts[1]]
@@ -1019,6 +1292,43 @@ def FullKinematicCalculation(T,variation):
 	_DPhiu2j1 = abs(muons[1].DeltaPhi(jets[0]))
 	_DPhiu2j2 = abs(muons[1].DeltaPhi(jets[1]))
 
+	_Muujj1_gen=0
+	_Muujj2_gen=0
+	_MHuujj_gen=0
+	_Muujjavg_gen=0
+	#if(_jetInd1 != -99 and _jetInd2 != -99 and len(jets) > _jetInd2 and len(jets) > _jetInd1): 
+	#	print _muonInd1,_muonInd2,_jetInd1,_jetInd2
+	#	print '#jets: ',len(jets)
+	[_Muujj1_gen,_Muujj2_gen,_MHuujj_gen] = GetLLJJMasses(_genMuons[0],_genMuons[1],_genJets[0],_genJets[1])
+	_Muujjavg_gen = 0.5*(_Muujj1_gen + _Muujj1_gen)
+
+	[_Muujj1_genMatched,_Muujj2_genMatched,_MHuujj_genMatched] = GetLLJJMasses(_matchedRecoMuons[0],_matchedRecoMuons[1],_matchedRecoJets[0],_matchedRecoJets[1])
+	_Muujjavg_genMatched = 0.5*(_Muujj1_genMatched + _Muujj1_genMatched)
+
+
+
+	_Muujj1_3jet=0
+	_Muujj2_3jet=0
+	_MHuujj_3jet=0	
+	_Muujj1_3jet_rel=0
+	_Muujj2_3jet_rel=0
+	_MHuujj_3jet_rel=0
+	#if len(jets)>= 4:
+	#	[_Muujj1_3jet, _Muujj2_3jet,_MHuujj_3jet] = GetLLJJMasses4Jets(muons[0],muons[1],jets[0],jets[1],jets[2],jets[3])
+	if len(jets)>= 3 and jets[1].Pt()>130 and jets[2].Pt()>45 :
+		[_Muujj1_3jet, _Muujj2_3jet,_MHuujj_3jet] = GetLLJJMasses3Jets(muons[0],muons[1],jets[0],jets[1],jets[2])
+	else:
+		[_Muujj1_3jet, _Muujj2_3jet,_MHuujj_3jet] = GetLLJJMasses(muons[0],muons[1],jets[0],jets[1])
+	_Muujjavg_3jet = 0.5*(_Muujj1_3jet+_Muujj2_3jet)
+
+	if len(jets)>= 3 and jets[1].Pt()>130 and jets[2].Pt()>45 :
+		[_Muujj1_3jet_rel, _Muujj2_3jet_rel,_MHuujj_3jet_rel] = GetLLJJMasses3JetsRelative(muons[0],muons[1],jets[0],jets[1],jets[2])
+	else:
+		[_Muujj1_3jet_rel, _Muujj2_3jet_rel,_MHuujj_3jet_rel] = GetLLJJMassesRelative(muons[0],muons[1],jets[0],jets[1])
+	_Muujjavg_3jet_rel = 0.5*(_Muujj1_3jet_rel+_Muujj2_3jet_rel)
+
+
+
 	[_Muujj1, _Muujj2,_MHuujj] = GetLLJJMasses(muons[0],muons[1],jets[0],jets[1])
 	[[_MTuvjj1, _MTuvjj2], [_Muvjj, _MTuvjj],_MHuvjj] = GetLVJJMasses(muons[0],met,jets[0],jets[1])
 
@@ -1026,6 +1336,17 @@ def FullKinematicCalculation(T,variation):
 	[[_MTevjj1, _MTevjj2], [_Mevjj, _MTevjj],_MHevjj] = GetLVJJMasses(electrons[0],met,jets[0],jets[1])
 
 	_Muujjavg = 0.5*(_Muujj1+_Muujj2)
+
+	[_Muujj1_rel, _Muujj2_rel,_MHuujj_rel] = GetLLJJMassesRelative(muons[0],muons[1],jets[0],jets[1])
+	_Muujjavg_rel = 0.5*(_Muujj1_rel+_Muujj2_rel)
+
+
+
+	if _ptmu1>42 and  _ptmu2>42 and _ptmet>35 and _ptj1>110 and _ptj2>40 and _stuujj>250 and _stuvjj>250:
+		#print ' Here we go:'
+		if len(jets)>= 4: GetLLJJMasses4Jets(muons[0],muons[1],jets[0],jets[1],jets[2],jets[3])
+		if len(jets)>= 3: GetLLJJMasses3Jets(muons[0],muons[1],jets[0],jets[1],jets[2])
+		GetLLJJMasses(muons[0],muons[1],jets[0],jets[1])
 
 	_genjetcount = 0
 	if T.isData==0:
@@ -1051,13 +1372,20 @@ def FullKinematicCalculation(T,variation):
 	toreturn += [_DRuu,_DPHIuv,_DPHIj1v,_DPHIj2v]
 	toreturn += [_DRu1j1,_DRu1j2,_DRu2j1,_DRu2j2]
 	toreturn += [_DPhiu1j1,_DPhiu1j2,_DPhiu2j1,_DPhiu2j2]
+	toreturn += [_Muujj1_gen, _Muujj2_gen,_Muujjavg_gen]
+	toreturn += [_Muujj1_genMatched, _Muujj2_genMatched,_Muujjavg_genMatched]
+	toreturn += [_Muujj1_3jet, _Muujj2_3jet,_Muujjavg_3jet]
+	toreturn += [_Muujj1_3jet_rel, _Muujj2_3jet_rel,_Muujjavg_3jet_rel]
 	toreturn += [_Muujj1, _Muujj2,_Muujjavg]
+	toreturn += [_Muujj1_rel, _Muujj2_rel,_Muujjavg_rel]
 	toreturn += [_MTuvjj1, _MTuvjj2,_Muvjj, _MTuvjj]
 	toreturn += [_MHuujj,_MHuvjj]
 	toreturn += [_Meejj1, _Meejj2]
 	toreturn += [_MTevjj1, _MTevjj2,_Mevjj, _MTevjj]	
 	toreturn += [_jetcount,_mucount,_elcount,_genjetcount]
 	toreturn += [_ismuon_muon1,_ismuon_muon2]
+	toreturn += [_muonInd1,_muonInd2]
+	toreturn += [_jetInd1,_jetInd2]
 	return toreturn
 
 
@@ -1108,7 +1436,7 @@ for n in range(N):
 
 
 	if t.isData == True:
-		Branches['pass_HLTMu40_eta2p1'][0] = PassTrigger(t,["HLT_Mu40_eta2p1_v"],1)         # Data Only
+		Branches['pass_HLTMu40_eta2p1'][0] = PassTrigger(t,["HLT_Mu40_v"],1)         # Data Only
 		Branches['passTriggerObjectMatching'][0]  = 1*(True in t.MuonHLTSingleMuonMatched)  # Data Only
 		Branches['passBPTX0'][0]                  = 1*(t.isBPTX0)          # Unused, Data only: MC = 0
 		Branches['passBeamScraping'][0]           = 1*(1-t.isBeamScraping) # Used, Data only
@@ -1120,7 +1448,7 @@ for n in range(N):
 		Branches['passPhysDeclared'][0]           = 1*(t.isPhysDeclared)
 
 	else:
-		Branches['pass_HLTMu40_eta2p1'][0] = PassTrigger(t,["HLT_Mu40_eta2p1_v"],1)        
+		Branches['pass_HLTMu40_eta2p1'][0] = PassTrigger(t,["HLT_Mu40_v"],1)        
 		Branches['passTriggerObjectMatching'][0]  = 1
 		Branches['passBPTX0'][0]                  = 1
 		Branches['passBeamScraping'][0]           = 1
@@ -1133,7 +1461,7 @@ for n in range(N):
 	Branches['passPrimaryVertex'][0]          = 1*(t.isPrimaryVertex)     # checked, data+MC
 	Branches['passHBHENoiseFilter'][0]        = 1*(t.passHBHENoiseFilter) # checked, data+MC
 	Branches['passBeamHalo'][0]               = 1*(t.passBeamHaloFilterTight) # checked, data+MC
-	Branches['passEcalDeadCellBE'][0]         = 1*(1-t.passEcalDeadCellBoundaryEnergyFilter) # Checked, data + MC
+	Branches['passEcalDeadCellBE'][0]         = 1#*(1-t.passEcalDeadCellBoundaryEnergyFilter) # Checked, data + MC
 	Branches['passEcalDeadCellTP'][0]         = 1*(1-t.passEcalDeadCellTriggerPrimitiveFilter) # Checked, data + MC
 
 	Branches['passDataCert'][0] = 1
