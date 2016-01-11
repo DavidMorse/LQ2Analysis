@@ -1,0 +1,37 @@
+set resultDir = Results_Testing_Dec16
+
+cp $resultDir/OptimizationLQ_uujj_St_uujj_pol2cutoff.pdf ~/work/leptoQuark/lqpaper/notes/AN-15-292/trunk/Figures/OptPlots/.
+cp $resultDir/OptimizationLQ_uujj_M_uujj2_pol2cutoff.pdf ~/work/leptoQuark/lqpaper/notes/AN-15-292/trunk/Figures/OptPlots/.
+cp $resultDir/OptimizationLQ_uujj_M_uu_pol2cutoff.pdf ~/work/leptoQuark/lqpaper/notes/AN-15-292/trunk/Figures/OptPlots/.
+cp $resultDir/OptimizationLQ_uvjj_MT_uv_pol2cutoff.pdf ~/work/leptoQuark/lqpaper/notes/AN-15-292/trunk/Figures/OptPlots/.
+cp $resultDir/OptimizationLQ_uvjj_St_uvjj_pol2cutoff.pdf ~/work/leptoQuark/lqpaper/notes/AN-15-292/trunk/Figures/OptPlots/.
+cp $resultDir/OptimizationLQ_uvjj_M_uvjj_pol2cutoff.pdf ~/work/leptoQuark/lqpaper/notes/AN-15-292/trunk/Figures/OptPlots/.
+cp $resultDir/BasicLQ_uujj_M_uujj2_emuseltagfree.pdf ~/work/leptoQuark/lqpaper/notes/AN-15-292/trunk/Figures/mumu/.
+cp $resultDir/BasicLQ_uujj_St_uujj_emuseltagfree.pdf ~/work/leptoQuark/lqpaper/notes/AN-15-292/trunk/Figures/mumu/.
+cp $resultDir/BasicLQ_uujj_Pt_*_standard_TTBarDataDriven*pdf ~/work/leptoQuark/lqpaper/notes/AN-15-292/trunk/Figures/mumu/.
+cp $resultDir/BasicLQ_uujj_DR_muon*jet*_standard_TTBarDataDriven.pdf  ~/work/leptoQuark/lqpaper/notes/AN-15-292/trunk/Figures/mumu/.
+cp $resultDir/BasicLQ_uujj_*Count_standard_TTBarDataDriven.pdf ~/work/leptoQuark/lqpaper/notes/AN-15-292/trunk/Figures/mumu/.
+cp $resultDir/BasicLQ_uujj_St_uujj_standard_TTBarDataDriven.pdf  ~/work/leptoQuark/lqpaper/notes/AN-15-292/trunk/Figures/mumu/.
+cp $resultDir/BasicLQ_uujj_M_uu*_standard_TTBarDataDriven.pdf  ~/work/leptoQuark/lqpaper/notes/AN-15-292/trunk/Figures/mumu/.
+cp $resultDir/BasicLQ_uujj_DR_muon*muon*_standard_TTBarDataDriven.pdf ~/work/leptoQuark/lqpaper/notes/AN-15-292/trunk/Figures/mumu/.
+cp $resultDir/BasicLQ_uujj_GoodVertexCount_standard_TTBarDataDriven.pdf  ~/work/leptoQuark/lqpaper/notes/AN-15-292/trunk/Figures/mumu/.
+cp $resultDir/BasicLQQCD_uujj_TrkIso_muon1_qcd_nonisotagfree.pdf ~/work/leptoQuark/lqpaper/notes/AN-15-292/trunk/Figures/mumu/.
+cp $resultDir/BasicLQQCD_uujj_TrkIso_muon2_qcd_nonisotagfree.pdf ~/work/leptoQuark/lqpaper/notes/AN-15-292/trunk/Figures/mumu/.
+
+
+cp $resultDir/BasicLQ_uvjj_Pt_muon1_standard.pdf ~/work/leptoQuark/lqpaper/notes/AN-15-292/trunk/Figures/munu/.
+cp $resultDir/BasicLQ_uvjj_Pt_jet1_standard.pdf ~/work/leptoQuark/lqpaper/notes/AN-15-292/trunk/Figures/munu/.
+cp $resultDir/BasicLQ_uvjj_Pt_miss_standard.pdf ~/work/leptoQuark/lqpaper/notes/AN-15-292/trunk/Figures/munu/.
+cp $resultDir/BasicLQ_uvjj_Pt_jet2_standard.pdf ~/work/leptoQuark/lqpaper/notes/AN-15-292/trunk/Figures/munu/.
+cp $resultDir/BasicLQ_uvjj_DPhi_jet1met_standard.pdf ~/work/leptoQuark/lqpaper/notes/AN-15-292/trunk/Figures/munu/.
+cp $resultDir/BasicLQ_uvjj_DPhi_jet2met_standard.pdf ~/work/leptoQuark/lqpaper/notes/AN-15-292/trunk/Figures/munu/.
+cp $resultDir/BasicLQ_uvjj_DPhi_muon1met_standard.pdf ~/work/leptoQuark/lqpaper/notes/AN-15-292/trunk/Figures/munu/.
+cp $resultDir/BasicLQ_uvjj_JetCount_standard.pdf ~/work/leptoQuark/lqpaper/notes/AN-15-292/trunk/Figures/munu/.
+cp $resultDir/BasicLQ_uvjj_DR_muon1jet1_standard.pdf ~/work/leptoQuark/lqpaper/notes/AN-15-292/trunk/Figures/munu/.
+cp $resultDir/BasicLQ_uvjj_DR_muon1jet2_standard.pdf ~/work/leptoQuark/lqpaper/notes/AN-15-292/trunk/Figures/munu/.
+cp $resultDir/BasicLQ_uvjj_St_uvjj_standard.pdf ~/work/leptoQuark/lqpaper/notes/AN-15-292/trunk/Figures/munu/.
+cp $resultDir/BasicLQ_uvjj_MT_uv_standard.pdf ~/work/leptoQuark/lqpaper/notes/AN-15-292/trunk/Figures/munu/.
+cp $resultDir/BasicLQ_uvjj_M_uvjj_standard.pdf ~/work/leptoQuark/lqpaper/notes/AN-15-292/trunk/Figures/munu/.
+cp $resultDir/BasicLQ_uvjj_GoodVertexCount_standard.pdf ~/work/leptoQuark/lqpaper/notes/AN-15-292/trunk/Figures/munu/.
+cp $resultDir/BasicLQQCD_uvjj_Pt_miss_qcd_noniso_unweightedtagfree.pdf ~/work/leptoQuark/lqpaper/notes/AN-15-292/trunk/Figures/munu/.
+cp $resultDir/BasicLQQCD_uvjj_Pt_miss_qcd_noniso_weightedtagfree.pdf ~/work/leptoQuark/lqpaper/notes/AN-15-292/trunk/Figures/munu/.

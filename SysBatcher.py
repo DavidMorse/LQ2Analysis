@@ -36,7 +36,7 @@ for c in ['uujj','uvjj']:
 				mainon = 0
 
 
-			# Repalce the _Variations = [ ... ] line with our single variation
+			# Replace the _Variations = [ ... ] line with our single variation
 			if '_Variations = ' in line and '#' not in line: 
 				line = line.split('=')[0]+' = [\''+v+'\']\n'
 			dowrite = True
@@ -80,14 +80,14 @@ for c in ['uujj','uvjj']:
 		fout = open(ftcsh,'w')
 
 		# Lines for CMSSW setup
-		fout.write('#!/bin/csh\ncmsrel CMSSW_6_0_0\ncd CMSSW_6_0_0/src\ncmsenv\ncd '+pwd+'\n')
+		fout.write('#!/bin/csh\ncmsrel CMSSW_7_2_3_patch1\ncd CMSSW_7_2_3_patch1/src\ncmsenv\ncd '+pwd+'\n')
 		# Line for running the .py file
 		fout.write('python '+runfile+'\n\n')
 		# Close tcsh script
 		fout.close()
 		# bsub command
 		os.system('chmod 755 '+ftcsh)
-		bsub =  'bsub -q 8nh -e /dev/null -J '+runfile.split('.')[0]+' < '+ftcsh
+		bsub =  'bsub -q 1nw -e /dev/null -J '+runfile.split('.')[0]+' < '+ftcsh
 		print bsub
 		# Run bsub command if using "--launch" argument
 		if '--launch' in sys.argv:

@@ -13,6 +13,7 @@ print 'Importing root...',
 from ROOT import *
 print '   ... done.'
 
+
 a = sys.argv
 tagname = 'default'
 json = ''
@@ -110,11 +111,11 @@ possiblemasterdirs = []
 mastersubdirs = []
 posdir = ''
 mastersubdirs = EOSDirectory
-# print mastersubdirs
+#print mastersubdirs
 for p in EOSDirectory[0]:
 	posdir += p
 	possiblemasterdirs.append(posdir)
-	
+#print possiblemasterdirs	
 masterdir = ''
 for p in possiblemasterdirs:
 	isgood=1
@@ -123,7 +124,7 @@ for p in possiblemasterdirs:
 			isgood = 0
 	if isgood==1 and p[-1]=='/':
 		masterdir=p
-
+#print masterdir
 print '\n\n Reading File List, please wait ...\n\n'
 
 
@@ -149,7 +150,9 @@ def GetGoodFiles(edir):
 
 	print 'Getting eos info...'
 	def GetSpaceUse():
-		command =  'cmsLs -R '+edir + '| grep root'
+		#print 'edir',edir
+		#command =  'cmsLs -R '+edir + '| grep root | grep -v failed'
+		command =  '/afs/cern.ch/project/eos/installation/0.3.84-aquamarine/bin/eos.select find '+edir + '| grep root | grep -v failed'
 		dircont = [ x.replace('\n','') for x in os.popen(command).readlines()]
 		print 'Total files (', len(dircont),') reduced to ',
 		
@@ -184,11 +187,22 @@ def GetGoodFiles(edir):
 	for x in i:
 		ni += 1
 		print ni,'of',Ni
+		#print x
 		if ".root" not in x:
 			continue
 		x = x.split()
-		size = int(x[1])
+		#print x
+		newCommand = '/afs/cern.ch/project/eos/installation/0.3.84-aquamarine/bin/eos.select ls -l '+x[-1]
+		lsDashL =  os.popen(newCommand).readlines()
+		#print lsDashL[0]
+		pieces = lsDashL[0].split()
+		#print pieces
+		size=int(pieces[4])#size is size of file, now taken as eos ls -l of eos find result - stupid and slow but it works....
+		#size = int(x[0])#was 1
 		name = x[-1]
+		if '/eos/cms' in name:
+			name = name[8:]
+		#print name
 		ident = identifier(name)
 		# goodeval = IsNotCorruptionTest('root://eoscms//eos/cms/'+name)
 		# goodeval = IsNotCorruptionTest('~/eos/cms'+name)
@@ -205,7 +219,7 @@ def GetGoodFiles(edir):
 		goodfiles = []
 		dups = []
 		for x in files:
-			if x[-1]==f[-1]:
+			if x[-2]==f[-2]:
 				dups.append(x)
 				checkedfiles.append(x)
 
@@ -226,8 +240,8 @@ def GetGoodFiles(edir):
 	allcheckedfiles = []
 	nfiles = len(files)
 	for f in range(nfiles):
-		if f%1000 == 0: 
-			print 'Checking file',f,'of',nfiles,'.'
+		if f%1 == 0: 
+			print 'Checking file',f,' = ',files[f],' of',nfiles,'.'
 
 		[gg,cc] = checkid(files[f])
 		if files[f] not in allcheckedfiles:
@@ -326,7 +340,10 @@ def MakeJobs(njobs):
 	jstr = str(os.popen('find '+thiseos).readlines())
 	for j in jobs:
 		filesig1 = (((j.split(' -f ')[-1]).split(' ')[0]))
+		#print filesig1
 		filesig = filesig1.split('/')[-2]+'__'+filesig1.split('/')[-1].replace('.root','')
+		#print filesig
+		#print jstr
 			# .replace('/','___').)replace('.root','')
 		# print filesig
 		if filesig not in jstr:
@@ -378,10 +395,12 @@ def MakeJobs(njobs):
 	for j in jobgroups:
 		Nj += 1
 		subber = open(thiseos+'/subber_'+str(Nj)+'.tcsh','w')
-		subber.write('#!/bin/tcsh\n\nscram project CMSSW CMSSW_5_3_18\ncd CMSSW_5_3_18/src\ncmsenv\ncd -\n\n')
+		#subber.write('#!/bin/tcsh\n\nscram project CMSSW CMSSW_5_3_18\ncd CMSSW_5_3_18/src\ncmsenv\ncd -\n\n')
+		subber.write('#!/bin/tcsh\n\nscram project CMSSW CMSSW_7_2_3_patch1\ncd CMSSW_7_2_3_patch1/src\ncmsenv\ncd -\n\n')
 		subber.write('\ncp '+thisdir+'/'+pyfile+' .')
 		subber.write('\ncp '+thisdir+'/'+json+' .')
 		subber.write('\ncp '+thisdir+'/*json .')
+		subber.write('\ncp '+thisdir+'/metFilterTxtFiles/* .')
 		subber.write('\ncp '+thisdir+'/PU*root .\n\n')
 
 		# if Nj*njobs>5000:
@@ -392,7 +411,9 @@ def MakeJobs(njobs):
 		subber.close()
 		os.system('chmod 777 '+thiseos+'/subber_'+str(Nj)+'.tcsh')
 
-		os.system( 'bsub -R "pool>40000" -q '+bjq+'  -o /dev/null -e /dev/null -J job_'+str(Nj)+'_'+now+' < '+thiseos+'/subber_'+str(Nj)+'.tcsh')
+		#Morse
+		#os.system( 'bsub -R "pool>40000" -q '+bjq+'  -o /dev/null -e /dev/null -J job_'+str(Nj)+'_'+now+' < '+thiseos+'/subber_'+str(Nj)+'.tcsh')
+		os.system( 'bsub -R "pool>40000" -q '+bjq+'  -o '+thiseos+'_'+str(Nj)+' -e '+thiseos+'_'+str(Nj)+' -J job_'+str(Nj)+'_'+now+' < '+thiseos+'/subber_'+str(Nj)+'.tcsh')
 		os.system('sleep 0.4')
 		# sys.exit()
 
@@ -423,13 +444,15 @@ while keep_going != 0:
 		if jobsleft>=0:
 			print  str(jobsleft+1) +' jobs remaining.'
 
-		if (ncheck > 200) or ((ncheck>45) and jobsleft<3):
+		if (ncheck > 200) or ((ncheck>125) and jobsleft<3):
 			 print "\nJobs taking too long. Killing remaining jobs. \n"
 			 os.system('bjobs -w | grep '+now+' |awk \'{if (NR!=1) print $1}\' | xargs bkill')
 			 os.system('sleep 10')
 			 break
 
 os.system('rm '+thiseos+'/subber_*tcsh')
+os.system('mkdir '+thiseos+'/logs')
+os.system('mv '+thiseos+'_* '+thiseos+'/logs/')
 
 #sys.exit()
 
@@ -463,7 +486,8 @@ if 'Counter' in pyfile:
 		print SignalType[x], subdir
 		# sys.exit()
 		for ftxt in txtfiles:
-			if SignalType[x] in ftxt and subdir in ftxt:
+			#print SignalType[x],subdir,ftxt
+			if SignalType[x] in ftxt:# and subdir in ftxt:
 				sigfiles.append(ftxt)
 		OCount = 0
 		for s in sigfiles:
@@ -502,7 +526,7 @@ def splithadd(hstring):
 		morefiles = files = [x.replace('\n','') for x in os.popen('find '+a).readlines()]
 		allfiles += morefiles
 
-	fileblocks = listsplit(allfiles,25)
+	fileblocks = listsplit(allfiles,500)
 
 	haddout = hstring.split( ' ' )[1]
 
@@ -552,7 +576,9 @@ if 'Analyz' in pyfile:
 			if subdir =='':
 				subdir = subdirsig[-2]
 
-			signifier = thiseos+'/output*/'+subdir+'*'+SignalType[x]+'*.root'
+			#signifier = thiseos+'/output*/*'+subdir+'*'+SignalType[x]+'*.root'
+			signifier = thiseos+'/output*/*'+SignalType[x]+'*.root'
+			#signifier = thiseos+'/output*/*'+subdir+'*.root'
 			haddstring += ' '+signifier
 
 		for x in range(10):
