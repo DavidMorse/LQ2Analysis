@@ -1,4 +1,4 @@
-LQ2Analysis8TeV
+LQ2Analysis13TeV
 ===============
 
 Batch-processing facility for EXO Leptons+Jets Ntuples to create light-weight trees, and analyzer facility for histograms, signal-background separation optimization, event-counting and limit-setting. 
@@ -15,9 +15,9 @@ cloned to David Morse (dmorse@cern.ch) May 2015
 
 Checking out the package
 
-git clone git@github.com:darinbaumgartel/LQ2Analysis8TeV.git LQ2Analysis8TeV
+git clone git@github.com:DavidMorse/LQ2Analysis8TeV.git LQ2Analysis13TeV
 
-cd LQ2Analysis8TeV
+cd LQ2Analysis13TeV
 
 --------------------------------------------------------------------------------
 
@@ -49,7 +49,7 @@ A little info:
 
 
 Please see a convenient example: 
-NTupleInfo2012Full.csv
+NTupleInfo2015Full_MiniAODv2.csv
 
 --------------------------------------------------------------------------------
 
@@ -59,7 +59,7 @@ Get the original number of events for MC (to fill out the N_orig in the csv file
 
 Use the counting histograms in the ntuples to determine this. There is a way of batching this and gathering the results, as such:
 
-  > python AnalyzerMakerFastLocal.py -i NTupleInfo2012Full.csv -py NTupleEvCounter.py -t PreFullLumiCountUpdate -j CustomJson2012ABCD.txt -p 0 -q 8nh -s 100 --FileRefresh
+  > python AnalyzerMakerFastLocal.py -i NTupleInfo2015Full_MiniAODv2.csv -py NTupleEvCounter.py -t PreFullLumiCountUpdate -j Cert_246908-260627_13TeV_PromptReco_Collisions15_25ns_JSON_Silver_v2.txt -p 0 -q 8nh -s 100 --FileRefresh
   
   Some notes on the arguments:
   
