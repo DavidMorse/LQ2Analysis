@@ -11,20 +11,19 @@ The Higgs Combine package has further documentation at:
 https://twiki.cern.ch/twiki/bin/view/CMS/SWGuideHiggsAnalysisCombinedLimit
 
 
-1) Check out the package on SLC5. If you haven't already: 
+1) Check out the package on SLC6. If you haven't already: 
 
-    setenv SCRAM_ARCH slc5_amd64_gcc472 
-    cmsrel CMSSW_6_1_1 
-    cd CMSSW_6_1_1/src 
+    export SCRAM_ARCH=slc6_amd64_gcc491
+    cmsrel CMSSW_7_4_7
+    cd CMSSW_7_4_7/src 
     cmsenv
     git clone https://github.com/cms-analysis/HiggsAnalysis-CombinedLimit.git HiggsAnalysis/CombinedLimit
     cd HiggsAnalysis/CombinedLimit
-    git pull origin master
-    git checkout V03-05-00
-    cd ../../
-    scramv1 b clean 
-    scramv1 b -j 16 
-    cmsenv
+    cd $CMSSW_BASE/src/HiggsAnalysis/CombinedLimit
+    git fetch origin
+    git checkout v6.2.1
+    scramv1 b clean; scramv1 b # always make a clean build, as scram doesn't always see updates to src/LinkDef.h
+
     cd ../../
     combine --help
 
