@@ -341,7 +341,7 @@ def MakeJobs(njobs):
 	for j in jobs:
 		filesig1 = (((j.split(' -f ')[-1]).split(' ')[0]))
 		#print filesig1
-		filesig = filesig1.split('/')[-2]+'__'+filesig1.split('/')[-1].replace('.root','')
+		filesig = filesig1.split('/')[-4]+'__'+filesig1.split('/')[-1].replace('.root','')#changed -2 to -4 to get dataset name instead of 0000
 		#print filesig
 		#print jstr
 			# .replace('/','___').)replace('.root','')
@@ -396,11 +396,11 @@ def MakeJobs(njobs):
 		Nj += 1
 		subber = open(thiseos+'/subber_'+str(Nj)+'.tcsh','w')
 		#subber.write('#!/bin/tcsh\n\nscram project CMSSW CMSSW_5_3_18\ncd CMSSW_5_3_18/src\ncmsenv\ncd -\n\n')
-		subber.write('#!/bin/tcsh\n\nscram project CMSSW CMSSW_7_2_3_patch1\ncd CMSSW_7_2_3_patch1/src\ncmsenv\ncd -\n\n')
+		subber.write('#!/bin/tcsh\n\nscram project CMSSW CMSSW_7_4_16\ncd CMSSW_7_4_16/src\ncmsenv\ncd -\n\n')
 		subber.write('\ncp '+thisdir+'/'+pyfile+' .')
 		subber.write('\ncp '+thisdir+'/'+json+' .')
 		subber.write('\ncp '+thisdir+'/*json .')
-		subber.write('\ncp '+thisdir+'/metFilterTxtFiles/* .')
+		subber.write('\ncp '+thisdir+'/metFilterLists/* .')
 		subber.write('\ncp '+thisdir+'/PU*root .\n\n')
 
 		# if Nj*njobs>5000:
@@ -444,7 +444,7 @@ while keep_going != 0:
 		if jobsleft>=0:
 			print  str(jobsleft+1) +' jobs remaining.'
 
-		if (ncheck > 200) or ((ncheck>125) and jobsleft<3):
+		if (ncheck > 2000) or ((ncheck>1250) and jobsleft<3):
 			 print "\nJobs taking too long. Killing remaining jobs. \n"
 			 os.system('bjobs -w | grep '+now+' |awk \'{if (NR!=1) print $1}\' | xargs bkill')
 			 os.system('sleep 10')
