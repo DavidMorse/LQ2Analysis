@@ -55,7 +55,7 @@ def cutoff_place(num):
 					return nn -3
 
 def round_sig(x,sig):
-	if x > 0.00001:
+	if x > 0.005:
 		val = str(round(x, sig-int(floor(log10(x)))-1))
 		return [val,cutoff_place(val)]
 	else:
@@ -155,6 +155,7 @@ def cardtotex(card):
 
 		if 'lnN' in line:
 			sysline = [float(x) for x in line.split()[2:]]
+			sysline.append(x)
 			systable.append(sysline)
 
 		if 'gmN' in line:
@@ -203,7 +204,7 @@ def cardtotex(card):
 		__B = tableentryfromraw(__setrates,__setstats,__setsys,0)
 		tabline += __B+' & '
 
-	tabhead += ' All BG & '
+	tabhead += ' All BG (stat + syst)& '
 	__setrates = []
 	__setstats = []
 	__setsys = []

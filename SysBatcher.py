@@ -80,7 +80,7 @@ for c in ['uujj','uvjj']:
 		fout = open(ftcsh,'w')
 
 		# Lines for CMSSW setup
-		fout.write('#!/bin/csh\ncmsrel CMSSW_7_2_3_patch1\ncd CMSSW_7_2_3_patch1/src\ncmsenv\ncd '+pwd+'\n')
+		fout.write('#!/bin/csh\ncmsrel CMSSW_7_4_16\ncd CMSSW_7_4_16/src\ncmsenv\ncd '+pwd+'\n')
 		# Line for running the .py file
 		fout.write('python '+runfile+'\n\n')
 		# Close tcsh script

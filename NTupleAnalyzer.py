@@ -14,7 +14,7 @@ import os
 #################      SETUP OPTIONS - File, Normalization, etc    #######################
 ##########################################################################################
 
-# Input Options - file, cross-section, number of vevents
+# Input Options - file, cross-section, number of events
 parser = OptionParser()
 parser.add_option("-f", "--file", dest="filename", help="input root file", metavar="FILE")
 parser.add_option("-b", "--batch", dest="dobatch", help="run in batch mode", metavar="BATCH")
@@ -78,17 +78,17 @@ indicator = ((name.split('/'))[-1]).replace('.root','')
 #print indicator
 junkfile1 = str(randint(100000000,1000000000))+indicator+'junk.root'
 
-# At least one 100 GeV PFJet#fixme todo changed to 42
+# At least one 44 GeV Muon - offline cut is 50
 fj1 = TFile.Open(junkfile1,'RECREATE')
-t1 = to.CopyTree('MuonPt[]>42')
+t1 = to.CopyTree('MuonPt[]>44')
 # t1 = to.CopyTree('(1)')
 Nm1 = t1.GetEntries()
 
 junkfile2 = str(randint(100000000,1000000000))+indicator+'junk.root'
 
-# At least one 40 GeV muon
+# At least one 44 GeV jet - offline cut is 50
 fj2 = TFile.Open(junkfile2,'RECREATE')
-t = t1.CopyTree('PFJetPtAK4CHS[]>42')
+t = t1.CopyTree('PFJetPtAK4CHS[]>44')
 N = t.GetEntries()
 
 # Print the reduction status
@@ -118,6 +118,7 @@ _kinematicvariables += ['NHEF_jet1','NHEF_jet2','NEMEF_jet1','NEMEF_jet2']
 _kinematicvariables += ['St_uujj','St_uvjj']
 _kinematicvariables += ['St_eejj','St_evjj']
 _kinematicvariables += ['M_uu','MT_uv']
+_kinematicvariables += ['M_jj']
 _kinematicvariables += ['DR_muon1muon2','DPhi_muon1met','DPhi_jet1met','DPhi_jet2met']
 _kinematicvariables += ['DR_muon1jet1','DR_muon1jet2','DR_muon2jet1','DR_muon2jet2']
 _kinematicvariables += ['DPhi_muon1jet1','DPhi_muon1jet2','DPhi_muon2jet1','DPhi_muon2jet2']
@@ -137,10 +138,11 @@ _kinematicvariables += ['jetIndex1','jetIndex2']
 _kinematicvariables += ['ptHat']
 _kinematicvariables += ['CISV_jet1','CISV_jet2']
 
-_weights = ['scaleWeight_Up','scaleWeight_Down','weight_amcNLO','weight_nopu','weight_central', 'weight_pu_up', 'weight_pu_down','weight_central_2012D']
-_flags = ['run_number','event_number','lumi_number','pass_HLTMu40_eta2p1','GoodVertexCount']
-_flags += ['passPrimaryVertex','passBeamScraping','passHBHENoiseFilter','passBPTX0','passBeamHalo','passTrackingFailure','passTriggerObjectMatching','passDataCert']
-_flags += ['passBadEESuperCrystal','passEcalDeadCellBE','passEcalDeadCellTP','passEcalLaserCorr','passHcalLaserEvent','passPhysDeclared','passBeamHalo2015','passBadEcalSC']
+_weights = ['scaleWeight_Up','scaleWeight_Down','scaleWeight_R1_F1','scaleWeight_R1_F2','scaleWeight_R1_F0p5','scaleWeight_R2_F1','scaleWeight_R2_F2','scaleWeight_R2_F0p5','scaleWeight_R0p5_F1','scaleWeight_R0p5_F2','scaleWeight_R0p5_F0p5','scaleWeight_R2_F2','weight_amcNLO','weight_nopu','weight_central', 'weight_pu_up', 'weight_pu_down','weight_central_2012D']
+_flagDoubles = ['run_number','event_number','lumi_number']
+_flags = ['pass_HLTMu40_eta2p1','GoodVertexCount']
+_flags += ['passPrimaryVertex','passBeamScraping','passHBHENoiseFilter','passHBHENoiseIsoFilter','passBPTX0','passBeamHalo','passTrackingFailure','passTriggerObjectMatching','passDataCert']
+_flags += ['passBadEESuperCrystal','passEcalDeadCellBE','passEcalDeadCellTP','passEcalLaserCorr','passHcalLaserEvent','passPhysDeclared','passBeamHalo2015','passBadEcalSC','passBadMuonTrackList','passBadResTrackList']
 _variations = ['','JESup','JESdown','MESup','MESdown','JERup','JERdown','MER']
 # _variations = ['','JESup','JESdown','MESup','MESdown','EESup','EESdown','JER','MER','EER']
 if nonisoswitch==True or emuswitch==True or quicktestswitch==True:
@@ -167,7 +169,7 @@ def GetPURescalingFactors(puversion):
         #              9.513E-04, 7.107E-04, 5.259E-04, 3.856E-04, 2.801E-04, 2.017E-04, 1.439E-04, 1.017E-04, 7.126E-05, 4.948E-05, 3.405E-05, 2.322E-05, 
         #              1.570E-05, 5.005E-06]
 
-	MCDistSummer12 = [4.8551E-07,1.74806E-06,3.30868E-06,1.62972E-05,4.95667E-05,0.000606966,0.003307249,0.010340741,0.022852296,0.041948781,0.058609363,0.067475755,0.072817826,0.075931405,0.076782504,0.076202319,0.074502547,0.072355135,0.069642102,0.064920999,0.05725576,0.047289348,0.036528446,0.026376131,0.017806872,0.011249422,0.006643385,0.003662904,0.001899681,0.00095614,0.00050028,0.000297353,0.000208717,0.000165856,0.000139974,0.000120481,0.000103826,8.88868E-05,7.53323E-05,6.30863E-05,5.21356E-05,4.24754E-05,3.40876E-05,2.69282E-05,2.09267E-05,1.5989E-05,4.8551E-06,2.42755E-06,4.8551E-07,2.42755E-07,1.21378E-07,4.8551E-08]#fixme todo updated to 2015, from https://github.com/cms-sw/cmssw/blob/CMSSW_7_6_X/SimGeneral/MixingModule/python/mix_2015_25ns_Startup_PoissonOOTPU_cfi.py and https://twiki.cern.ch/twiki/bin/view/CMS/PdmVPileUpDescription#Run_2_and_Upgrades
+	MCDistStartup15 = [4.8551E-07,1.74806E-06,3.30868E-06,1.62972E-05,4.95667E-05,0.000606966,0.003307249,0.010340741,0.022852296,0.041948781,0.058609363,0.067475755,0.072817826,0.075931405,0.076782504,0.076202319,0.074502547,0.072355135,0.069642102,0.064920999,0.05725576,0.047289348,0.036528446,0.026376131,0.017806872,0.011249422,0.006643385,0.003662904,0.001899681,0.00095614,0.00050028,0.000297353,0.000208717,0.000165856,0.000139974,0.000120481,0.000103826,8.88868E-05,7.53323E-05,6.30863E-05,5.21356E-05,4.24754E-05,3.40876E-05,2.69282E-05,2.09267E-05,1.5989E-05,4.8551E-06,2.42755E-06,4.8551E-07,2.42755E-07,1.21378E-07,4.8551E-08]#fixme todo updated to 2015, from https://github.com/cms-sw/cmssw/blob/CMSSW_7_6_X/SimGeneral/MixingModule/python/mix_2015_25ns_Startup_PoissonOOTPU_cfi.py and https://twiki.cern.ch/twiki/bin/view/CMS/PdmVPileUpDescription#Run_2_and_Upgrades
 
     # This is the standard (all of 2012) pileup scenario
 	if puversion =='Basic':
@@ -209,13 +211,13 @@ def GetPURescalingFactors(puversion):
 	total_pu_central = sum(bins_pu_central)
 	total_pu_up = sum(bins_pu_up)
 	total_pu_down = sum(bins_pu_down)
-	total_mc = sum(MCDistSummer12)
+	total_mc = sum(MCDistStartup15)
 
 	# Get normalized bins
 	bins_pu_central_norm = [x/total_pu_central for x in bins_pu_central]
 	bins_pu_up_norm = [x/total_pu_up for x in bins_pu_up]
 	bins_pu_down_norm = [x/total_pu_down for x in bins_pu_down]
-	bins_mc_norm  = [x/total_mc for x in MCDistSummer12]
+	bins_mc_norm  = [x/total_mc for x in MCDistStartup15]
 
 	# Arrays for scale factors (central and systematic varied)
 	scale_pu_central = []
@@ -253,11 +255,14 @@ def GetPDFWeightVars(T):
 		T.GetEntry(1)
 		pdfweights=[]
 		for x in range(len(T.PDFCTEQWeights)):
-			pdfweights.append('factor_cteq_'+str(x+1))
+			#if(T.PDFCTEQWeights[x]>-10 and T.PDFCTEQWeights[x]<10): pdfweights.append('factor_cteq_'+str(x+1-53))
+			if(T.PDFCTEQWeights[x]>-10 and T.PDFCTEQWeights[x]<10): pdfweights.append('factor_cteq_'+str(x+1))
 		for x in range(len(T.PDFMSTWWeights)):
-			pdfweights.append('factor_mstw_'+str(x+1))		
+			#if(T.PDFMSTWWeights[x]>-10 and T.PDFMSTWWeights[x]<10): pdfweights.append('factor_mstw_'+str(x+1-51))
+			if(T.PDFMSTWWeights[x]>-10 and T.PDFMSTWWeights[x]<10): pdfweights.append('factor_mstw_'+str(x+1))
 		for x in range(len(T.PDFNNPDFWeights)):
-			pdfweights.append('factor_nnpdf_'+str(x+1))			
+			#if(T.PDFNNPDFWeights[x]>-10 and T.PDFNNPDFWeights[x]<10): pdfweights.append('factor_nnpdf_'+str(x+1-101))
+			if(T.PDFNNPDFWeights[x]>-10 and T.PDFNNPDFWeights[x]<10): pdfweights.append('factor_nnpdf_'+str(x+1))
 		return pdfweights
 
 
@@ -271,7 +276,7 @@ _pdfweightsnames = GetPDFWeightVars(t)
 # First create the output file. 
 tmpfout = str(randint(100000000,1000000000))+indicator+'.root'
 if '/store' in name:
-	finalfout = options.dir+'/'+(name.split('/')[-2]+'__'+name.split('/')[-1].replace('.root','_tree.root'))
+	finalfout = options.dir+'/'+(name.split('/')[-4]+'__'+name.split('/')[-1].replace('.root','_tree.root'))#changed -2 to -4 to get dataset name instead of 0000
 else:
 	finalfout = options.dir+'/'+name.replace('.root','_tree.root')
 
@@ -309,6 +314,10 @@ if dopdf:
 	for b in _pdfweightsnames:
 		Branches[b] = array.array("f",[0])
 		tout.Branch(b,Branches[b],b+"/F")
+for b in _flagDoubles:
+	Branches[b] = array.array("f",[0])
+	tout.Branch(b,Branches[b],b+"/F")
+
 for b in _flags:
 	Branches[b] = array.array("L",[0])
 	tout.Branch(b,Branches[b],b+"/i")
@@ -356,9 +365,9 @@ def GetRunLumiEventListNew(fileName):
 	lumi=''
 	event=''
 	triples=[]
-	for line in mfile :
-		#print line
+	for lines in mfile :
 		triple=[]
+		line=lines.replace('\n','')
 		line=line.split(':')
 		exec('run = '+line[0])
 		exec('lumi = '+line[1])
@@ -384,6 +393,7 @@ def GetRunLumiEventListNew(fileName):
 			if triples[i+1][0] not in _runs :
 				_le.append([_l,_e])
 				parsedTriples.append([_r,_le])
+				#print _r,_le
 				_le = []
 				i = i+1		
 			else :
@@ -394,6 +404,7 @@ def GetRunLumiEventListNew(fileName):
 			if i==N-2 :
 				_le.append([_l,_e])
 				parsedTriples.append([_r,_le])
+	#print 'DONE',parsedTriples
 	return parsedTriples
 
 def GetRunLumiEventList(fileName):
@@ -420,10 +431,13 @@ def GetRunLumiEventList(fileName):
 		#n=n+1
 	return triples
 
-BadBeamHaloRunLumiEventsNew = GetRunLumiEventListNew('csc2015.txt')
 BadEcalSCRunLumiEventsNew = GetRunLumiEventListNew('ecalscn1043093.txt')
-BadBeamHaloRunLumiEvents = GetRunLumiEventList('csc2015.txt')
-BadEcalSCRunLumiEvents = GetRunLumiEventList('ecalscn1043093.txt')
+BadMuonRunLumiEventsNew = GetRunLumiEventListNew('muonBadTrack.txt')
+BadTrackResRunLumiEventsNew = GetRunLumiEventListNew('badResolutionTrack.txt')
+BadBeamHaloRunLumiEventsNew = GetRunLumiEventListNew('csc2015.txt')
+
+#BadBeamHaloRunLumiEvents = GetRunLumiEventList('csc2015.txt')
+#BadEcalSCRunLumiEvents = GetRunLumiEventList('ecalscn1043093.txt')
 
 def CheckBadRunLumiEventNew(badEvents,r,l,e,isData):
 	#Purpose: Use the BadBeamHaloRunLumiEvents list, to check and see if a given event
@@ -435,16 +449,17 @@ def CheckBadRunLumiEventNew(badEvents,r,l,e,isData):
 		#print _rle[0],_rle[1],_rle[2]
 			#print 'before run'
 			#print _rle[0]
+			#print name,r,_rle[0]
 			if _rle[0]==r :
 				#print 'before lumi'
 				for _le in _rle[1] :
-					print r,l,e
-					print '  ',_rle[0],_le[0],_le[1]
+					#print r,l,e
+					#print '  ',_rle[0],_le[0],_le[1]
 					if _le[0]==l :
 					#print 'before event'
-						if _rle[1]==e :
+						if _le[1]==e :
 							return False
-			return True
+		return True
 	else :
 		return True
 
@@ -553,18 +568,18 @@ def PassTrigger(T,trigger_identifiers,prescale_threshold):
 	for n in range(len(T.HLTInsideDatasetTriggerNames)):
 		name = T.HLTInsideDatasetTriggerNames[n]
 		consider_trigger=True
-
 		for ident in trigger_identifiers:
 			if ident not in name:
 				consider_trigger=False
 		if (consider_trigger==False) : continue
 
 		prescale = T.HLTInsideDatasetTriggerPrescales[n]
+
 		if prescale > prescale_threshold:
 			consider_trigger=False
 		if (consider_trigger==False) : continue
 
-		decision = T.HLTInsideDatasetTriggerDecisions[n]
+		decision = bool(T.HLTInsideDatasetTriggerDecisions[n])
 		if decision==True:
 			return 1
 	return 0	
@@ -628,9 +643,12 @@ def GetPUWeight(T,version,puversion):
 def GetPDFWeights(T):
 	# Purpose: Gather the pdf weights into a single list. 	
 	_allweights = []
-	_allweights += T.PDFCTEQWeights
-	_allweights += T.PDFNNPDFWeights
-	_allweights += T.PDFMSTWWeights
+	for x in range(len(T.PDFCTEQWeights)):
+		if(T.PDFCTEQWeights[x]>-10 and T.PDFCTEQWeights[x]<10): _allweights.append(T.PDFCTEQWeights[x])
+	for x in range(len(T.PDFMSTWWeights)):
+		if(T.PDFMSTWWeights[x]>-10 and T.PDFMSTWWeights[x]<10): _allweights.append(T.PDFMSTWWeights[x])
+	for x in range(len(T.PDFNNPDFWeights)):
+		if(T.PDFNNPDFWeights[x]>-10 and T.PDFNNPDFWeights[x]<10): _allweights.append(T.PDFNNPDFWeights[x])
 	return _allweights
 
 
@@ -795,21 +813,18 @@ def TightHighPtIDMuons(T,_met,variation,isdata):
 	muons = []
 	muoninds = []
 	if variation=='MESup':	
-		_MuonCocktailPt = [(pt + pt*(0.05*pt/1000.0)) for pt in T.MuonCocktailPt]#fixme todo
-		#_MuonCocktailPt = [(pt + pt*(0.05*pt/1000.0)) for pt in T.MuonPt]
+		#_MuonCocktailPt = [(pt + pt*(0.05*pt/1000.0)) for pt in T.MuonCocktailPt]#original
+		_MuonCocktailPt = [(pt + pt*(0.10*pt/1000.0)) for pt in T.MuonCocktailPt]#updated to Zprime 13TeV study number
 	elif variation=='MESdown':	
-		_MuonCocktailPt = [(pt - pt*(0.05*pt/1000.0)) for pt in T.MuonCocktailPt]
-		#_MuonCocktailPt = [(pt - pt*(0.05*pt/1000.0)) for pt in T.MuonPt]
+		#_MuonCocktailPt = [(pt - pt*(0.05*pt/1000.0)) for pt in T.MuonCocktailPt]
+		_MuonCocktailPt = [(pt - pt*(0.10*pt/1000.0)) for pt in T.MuonCocktailPt]
 	elif variation=='MER':	
 		_MuonCocktailPt = [pt+pt*tRand.Gaus(0.0,  0.01*(pt<=200.0) + (0.04)*(pt>200.0) ) for pt in T.MuonCocktailPt]
-		#_MuonCocktailPt = [pt+pt*tRand.Gaus(0.0,  0.01*(pt<=200.0) + (0.04)*(pt>200.0) ) for pt in T.MuonPt]
 	else:	
 		_MuonCocktailPt = [pt for pt in T.MuonCocktailPt]	
-		#_MuonCocktailPt = [pt for pt in T.MuonPt]	
 
 	if (isdata):
 		_MuonCocktailPt = [pt for pt in T.MuonCocktailPt]	
-		#_MuonCocktailPt = [pt for pt in T.MuonPt]	
 
 	trk_isos = []
 	charges = []
@@ -821,7 +836,7 @@ def TightHighPtIDMuons(T,_met,variation,isdata):
 
 	nequiv = []
 	for n in range(len(T.MuonPt)):
-		#if T.MuonIsGlobal[n] or newntupleswitch==True: #fixme todo not necessary anymore - global muon requirement encompassed later
+		#if T.MuonIsGlobal[n] or newntupleswitch==True: #not necessary anymore - global muon requirement encompassed later
 		nequiv.append(n)
 
 	# Loop over muons using the pT array from above
@@ -837,13 +852,11 @@ def TightHighPtIDMuons(T,_met,variation,isdata):
 		if alignementcorrswitch == True and isdata==False:
 			if abs(deltainvpt) > 0.0000001:
 				__Pt_mu = _MuonCocktailPt[n]
-				#__Eta_mu = T.MuonCocktailEta[n]
-				__Eta_mu = T.MuonEta[n]
-				#__Phi_mu = T.MuonCocktailPhi[n]
-				__Phi_mu = T.MuonPhi[n]
+				__Eta_mu = T.MuonCocktailEta[n]
+				__Phi_mu = T.MuonCocktailPhi[n]
 				__Charge_mu = T.MuonCharge[nequiv[n]]
-				#if (__Pt_mu >200)*(abs(__Eta_mu) < 0.9)      : 
-					#_MuonCocktailPt[n] =  ( (1.0) / ( -5e-05*__Charge_mu*sin(-1.4514813+__Phi_mu ) + 1.0/__Pt_mu ) ) 
+				if (__Pt_mu >200)*(abs(__Eta_mu) < 0.9)      : 
+					_MuonCocktailPt[n] =  ( (1.0) / ( -5e-05*__Charge_mu*sin(-1.4514813+__Phi_mu ) + 1.0/__Pt_mu ) ) 
 				deltainvpt = ( 1.0/T.MuonTrkPt[nequiv[n]] - 1.0/_MuonCocktailPt[n])
 
 
@@ -852,10 +865,10 @@ def TightHighPtIDMuons(T,_met,variation,isdata):
 		# NTuple definitions in https://raw.githubusercontent.com/CMSLQ/RootTupleMakerV2/master/src/RootTupleMakerV2_Muons.cc
 		Pass = True
 		# A preliminary pT cut. This also encompasses the GlobalMuon conditions, since
-		# all non-global muosn have cocktail pT of -1 in the ntuples.
+		# all non-global muons have cocktail pT of -1 in the ntuples.
 		Pass *= (_MuonCocktailPt[n] > 35)      
 		# Eta requirement matches trigger.
-		Pass *= abs(T.MuonEta[n])<2.1    
+		Pass *= abs(T.MuonCocktailEta[n])<2.1    
 
 		# Number of valid hits
 		Pass *= T.MuonGlobalTrkValidHits[nequiv[n]]>=1
@@ -873,7 +886,7 @@ def TightHighPtIDMuons(T,_met,variation,isdata):
 
 		# Layers with measurement (high PT ID cut is 5, used to be tight id cut at 8)
 		Pass *= T.MuonTrackLayersWithMeasurement[nequiv[n]] > 5 
-		#Pass *= T.MuonCocktailPtError[n]/T.MuonCocktailPt[n]  < 0.3
+		Pass *= T.MuonCocktailPtError[n]/T.MuonCocktailPt[n]  < 0.3
 
 		# Isolation condition using tracker-only isolation
 		if nonisoswitch != True:
@@ -883,10 +896,10 @@ def TightHighPtIDMuons(T,_met,variation,isdata):
 		if (Pass):
 			NewMu = TLorentzVector()
 			OldMu = TLorentzVector()
-			#NewMu.SetPtEtaPhiM(_MuonCocktailPt[n],T.MuonCocktailEta[n],T.MuonCocktailPhi[n],0)
-			NewMu.SetPtEtaPhiM(_MuonCocktailPt[n],T.MuonEta[n],T.MuonPhi[n],0)
-			#OldMu.SetPtEtaPhiM(T.MuonCocktailPt[n],T.MuonCocktailEta[n],T.MuonCocktailPhi[n],0)
-			OldMu.SetPtEtaPhiM(T.MuonPt[n],T.MuonEta[n],T.MuonPhi[n],0)
+			NewMu.SetPtEtaPhiM(_MuonCocktailPt[n],T.MuonCocktailEta[n],T.MuonCocktailPhi[n],0)
+			#NewMu.SetPtEtaPhiM(_MuonCocktailPt[n],T.MuonEta[n],T.MuonPhi[n],0)
+			OldMu.SetPtEtaPhiM(T.MuonCocktailPt[n],T.MuonCocktailEta[n],T.MuonCocktailPhi[n],0)
+			#OldMu.SetPtEtaPhiM(T.MuonPt[n],T.MuonEta[n],T.MuonPhi[n],0)
 			_met = PropagatePTChangeToMET(_met,OldMu,NewMu)
 
 			# Append items to retun if the muon is good
@@ -896,7 +909,7 @@ def TightHighPtIDMuons(T,_met,variation,isdata):
 			chi2.append(T.MuonGlobalChi2[nequiv[n]])
 			pfid.append(T.MuonIsPF[nequiv[n]])
 			layers.append(T.MuonTrackLayersWithMeasurement[nequiv[n]])
-			charges.append(T.MuonCharge[n])
+			charges.append(T.MuonCocktailCharge[n])
 			muoninds.append(n)
 			deltainvpts.append(deltainvpt)
 
@@ -980,7 +993,7 @@ def JERModifiedPt(pt,eta,phi,T,modtype):
 		return pt
 	
 	bestn = -1
-	bestdpt = 0
+	bestdpt = 0.
 	bestdR = 9999999.9
 	jet = TLorentzVector()
 	jet.SetPtEtaPhiM(pt,eta,phi,0.0)
@@ -988,7 +1001,7 @@ def JERModifiedPt(pt,eta,phi,T,modtype):
 		gjet = TLorentzVector()
 		gjet.SetPtEtaPhiM(T.GenJetPtAK4[n],T.GenJetEtaAK4[n],T.GenJetPhiAK4[n],0.0)
 		dR = abs(jet.DeltaR(gjet))
-		if dR<bestdR and  dR<0.3 :
+		if dR<bestdR and dR<0.3 :
 			bestdR = dR
 			bestn = n
 			bestdpt = pt-gjet.Pt()
@@ -997,11 +1010,19 @@ def JERModifiedPt(pt,eta,phi,T,modtype):
 		return pt
 
 	abseta = abs(eta)
-	if abseta >= 0   : jfacs = [  0.05200 , 0.11515 , -0.00900 ]
-	if abseta >= 0.5 : jfacs = [  0.05700 , 0.11427 , 0.00200  ]
-	if abseta >= 1.1 : jfacs = [  0.09600 , 0.16125 , 0.03400  ]
-	if abseta >= 1.7 : jfacs = [  0.13400 , 0.22778 , 0.04900  ]
-	if abseta >= 2.3 : jfacs = [  0.28800 , 0.48838 , 0.13500  ]
+	#if abseta >= 0   : jfacs = [  0.05200 , 0.11515 , -0.00900 ]
+	#if abseta >= 0.5 : jfacs = [  0.05700 , 0.11427 , 0.00200  ]
+	#if abseta >= 1.1 : jfacs = [  0.09600 , 0.16125 , 0.03400  ]
+	#if abseta >= 1.7 : jfacs = [  0.13400 , 0.22778 , 0.04900  ]
+	#if abseta >= 2.3 : jfacs = [  0.28800 , 0.48838 , 0.13500  ]
+
+	if abseta >= 0   : jfacs = [  0.061 , 0.084 , 0.038  ]
+	if abseta >= 0.8 : jfacs = [  0.088 , 0.117 , 0.059  ]
+	if abseta >= 1.3 : jfacs = [  0.106 , 0.136 , 0.076  ]
+	if abseta >= 1.9 : jfacs = [  0.126 , 0.220 , 0.032  ]
+	if abseta >= 2.5 : jfacs = [  0.343 , 0.466 , 0.220  ]
+	if abseta >= 3.0 : jfacs = [  0.303 , 0.414 , 0.192  ]
+	if abseta >= 3.2 : jfacs = [  0.320 , 0.606 , 0.034  ]
 
 	if modtype == '':
 		adjustmentfactor = jfacs[0]
@@ -1012,7 +1033,7 @@ def JERModifiedPt(pt,eta,phi,T,modtype):
 
 	ptadjustment = adjustmentfactor*bestdpt
 	pt += ptadjustment
-	return pt
+	return max(0.,pt)
 
 
 def LooseIDJets(T,met,variation,isdata):
@@ -1036,6 +1057,7 @@ def LooseIDJets(T,met,variation,isdata):
 
 	if (isdata):
 		_PFJetPt = [pt for pt in T.PFJetPtAK4CHS]	
+		#_PFJetPt = [T.PFJetPtAK4CHS[n]*T.PFJetL2L3ResJECAK4CHS[n] for n in range(len(T.PFJetPtAK4CHS))]	
 
 	# print met.Pt(),
 
@@ -1469,6 +1491,7 @@ def FullKinematicCalculation(T,variation):
 
 	_Muu = (muons[0]+muons[1]).M()
 	_MTuv = TransMass(muons[0],met)
+	_Mjj = (jets[0]+jets[1]).M()
 	_DRuu = (muons[0]).DeltaR(muons[1])
 	_DPHIuv = abs((muons[0]).DeltaPhi(met))
 	_DPHIj1v = abs((jets[0]).DeltaPhi(met))
@@ -1570,6 +1593,7 @@ def FullKinematicCalculation(T,variation):
 	toreturn += [_stuujj,_stuvjj]
 	toreturn += [_steejj,_stevjj]
 	toreturn += [_Muu,_MTuv]
+	toreturn += [_Mjj]
 	toreturn += [_DRuu,_DPHIuv,_DPHIj1v,_DPHIj2v]
 	toreturn += [_DRu1j1,_DRu1j2,_DRu2j1,_DRu2j2]
 	toreturn += [_DPhiu1j1,_DPhiu1j2,_DPhiu2j1,_DPhiu2j2]
@@ -1601,7 +1625,7 @@ startTime = datetime.now()
 # Please don't edit here. It is static. The kinematic calulations are the only thing to edit!
 lumisection = array.array("L",[0])
 t.SetBranchAddress("ls",lumisection)
-for n in range(N):#fixme todo changed from N to 1000
+for n in range(N):
 
 	# This is the loop over events. Due to the heavy use of functions and automation of 
 	# systematic variations, this loop is very small. It should not really be editted, 
@@ -1633,15 +1657,34 @@ for n in range(N):#fixme todo changed from N to 1000
 		Branches['weight_nopu'][0]*=t.amcNLOWeight
 	Branches['weight_amcNLO'][0]=0#t.amcNLOWeight
 	if len(t.ScaleWeights) > 7 :
-		Branches['scaleWeight_Up'][0]=t.ScaleWeights[4]
-		Branches['scaleWeight_Down'][0]=t.ScaleWeights[8]
+		Branches['scaleWeight_Up'][0]=       t.ScaleWeights[4]
+		Branches['scaleWeight_Down'][0]=     t.ScaleWeights[8]
+		Branches['scaleWeight_R1_F1'][0]=    t.ScaleWeights[0]
+		Branches['scaleWeight_R1_F2'][0]=    t.ScaleWeights[1]
+		Branches['scaleWeight_R1_F0p5'][0]=  t.ScaleWeights[2]
+		Branches['scaleWeight_R2_F1'][0]=    t.ScaleWeights[3]
+		Branches['scaleWeight_R2_F2'][0]=    t.ScaleWeights[4]
+		Branches['scaleWeight_R2_F0p5'][0]=  t.ScaleWeights[5]
+		Branches['scaleWeight_R0p5_F1'][0]=  t.ScaleWeights[6]
+		Branches['scaleWeight_R0p5_F2'][0]=  t.ScaleWeights[7]
+		Branches['scaleWeight_R0p5_F0p5'][0]=t.ScaleWeights[8]
 	else :
-		Branches['scaleWeight_Up'][0]=1.0
-		Branches['scaleWeight_Down'][0]=1.0
+		Branches['scaleWeight_Up'][0]=       1.0
+		Branches['scaleWeight_Down'][0]=     1.0
+		Branches['scaleWeight_R1_F1'][0]=    1.0
+		Branches['scaleWeight_R1_F2'][0]=    1.0
+		Branches['scaleWeight_R1_F0p5'][0]=  1.0
+		Branches['scaleWeight_R2_F1'][0]=    1.0
+		Branches['scaleWeight_R2_F2'][0]=    1.0
+		Branches['scaleWeight_R2_F0p5'][0]=  1.0
+		Branches['scaleWeight_R0p5_F1'][0]=  1.0
+		Branches['scaleWeight_R0p5_F2'][0]=  1.0
+		Branches['scaleWeight_R0p5_F0p5'][0]=1.0
 	if dopdf:
 		pdfweights = GetPDFWeights(t)
-		for p in range(len(pdfweights)):
-			Branches[_pdfweightsnames[p]][0] = pdfweights[p]
+		if len(pdfweights)==len(_pdfweightsnames) :#fixme put in check that there are the same number of weights as weight names - update when all pdf weights work again
+			for p in range(len(pdfweights)):
+				Branches[_pdfweightsnames[p]][0] = pdfweights[p]
 	
 	# Event Flags
 	Branches['run_number'][0]   = t.run
@@ -1678,11 +1721,14 @@ for n in range(N):#fixme todo changed from N to 1000
 	
 	Branches['passPrimaryVertex'][0]          = 1*(t.isPrimaryVertex)     # checked, data+MC
 	Branches['passHBHENoiseFilter'][0]        = 1*(t.passHBHENoiseFilter) # checked, data+MC
+	Branches['passHBHENoiseFilter'][0]        = 1*(t.passHBHENoiseIsoFilter) # checked, data+MC
 	Branches['passBeamHalo'][0]               = 1*(t.passBeamHaloFilterTight) # checked, data+MC
 	Branches['passEcalDeadCellBE'][0]         = 1#*(1-t.passEcalDeadCellBoundaryEnergyFilter) # Checked, data + MC
 	Branches['passEcalDeadCellTP'][0]         = 1*(1-t.passEcalDeadCellTriggerPrimitiveFilter) # Checked, data + MC
 	Branches['passBeamHalo2015'][0]           = CheckBadRunLumiEventNew(BadBeamHaloRunLumiEventsNew,t.run,lumisection[0],t.event,t.isData)
 	Branches['passBadEcalSC'][0]              = CheckBadRunLumiEventNew(BadEcalSCRunLumiEventsNew,t.run,lumisection[0],t.event,t.isData)
+	Branches['passBadMuonTrackList'][0]       = CheckBadRunLumiEventNew(BadMuonRunLumiEventsNew,t.run,lumisection[0],t.event,t.isData)
+	Branches['passBadResTrackList'][0]        = CheckBadRunLumiEventNew(BadTrackResRunLumiEventsNew,t.run,lumisection[0],t.event,t.isData)
 
 	Branches['passDataCert'][0] = 1
 	if ( (t.isData==True) and (CheckRunLumiCert(t.run,lumisection[0]) == False) ) : 	
@@ -1708,13 +1754,13 @@ for n in range(N):#fixme todo changed from N to 1000
 	# that the systematic varied quantity will, and that will throw off systematics calculations later.
 	# Make sure your skim is looser than any selection you will need afterward!
 
-	#todo fixme turned off skim for amc@NLO weights
-	if (Branches['Pt_muon1'][0] < 42): continue
+	if (Branches['Pt_muon1'][0] < 45): continue
 	if nonisoswitch != True:
-			if (Branches['Pt_muon2'][0] < 42) and (Branches['Pt_miss'][0] < 35): continue
-	if (Branches['Pt_jet1'][0] < 42): continue #was 110
-	if (Branches['Pt_jet2'][0] < 42): continue
-	if (Branches['St_uujj'][0] < 200) and (Branches['St_uvjj'][0] < 200): continue # was on
+			if (Branches['Pt_muon2'][0] < 45) and (Branches['Pt_miss'][0] < 45): continue
+	if (Branches['Pt_jet1'][0] <  45): continue
+	if (Branches['Pt_jet2'][0] <  45): continue
+	if (Branches['St_uujj'][0] < 260) and (Branches['St_uvjj'][0] < 260): continue
+	if (Branches['M_uu'][0]    <  45) and (Branches['MT_uv'][0]   <  45): continue
 	# Fill output tree with event
 	tout.Fill()
 

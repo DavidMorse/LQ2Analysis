@@ -1,9 +1,9 @@
 #!/bin/tcsh
 
 # Set up CMSSW
-scramv1 p -n CMSSW_7_4_14_PUCALC CMSSW_7_4_14
+scramv1 p -n CMSSW_7_4_16_PUCALC CMSSW_7_4_16
 
-cd CMSSW_7_4_14_PUCALC/src
+cd CMSSW_7_4_16_PUCALC/src
 cmsenv
 #git clone https://github.com/cms-sw/RecoLuminosity-LumiDB.git RecoLuminosity/LumiDB
 #cd RecoLuminosity/LumiDB
@@ -18,7 +18,7 @@ cmsenv
 
 # Set the LumiJSON and PUJSON for PU Calculations
 #set LumiJSON=/afs/cern.ch/cms/CAF/CMSCOMM/COMM_DQM/certification/Collisions12/8TeV/Reprocessing/Cert_190456-208686_8TeV_22Jan2013ReReco_Collisions12_JSON.txt
-set LumiJSON=/afs/cern.ch/cms/CAF/CMSCOMM/COMM_DQM/certification/Collisions15/13TeV/Cert_246908-260627_13TeV_PromptReco_Collisions15_25ns_JSON.txt
+set LumiJSON=/afs/cern.ch/cms/CAF/CMSCOMM/COMM_DQM/certification/Collisions15/13TeV/Cert_246908-260627_13TeV_PromptReco_Collisions15_25ns_JSON_v2.txt
 
 #set PUJSON=/afs/cern.ch/cms/CAF/CMSCOMM/COMM_DQM/certification/Collisions12/8TeV/PileUp/pileup_JSON_DCSONLY_190389-208686_corr.txt
 set PUJSON=/afs/cern.ch/cms/CAF/CMSCOMM/COMM_DQM/certification/Collisions15/13TeV/PileUp/pileup_latest.txt
@@ -42,7 +42,7 @@ cp $LumiJSON ../../
 cp LumiLog.txt ../../
 cp PU*root ../../
 cd ../../
-rm -r CMSSW_7_4_14_PUCALC
+rm -r CMSSW_7_4_16_PUCALC
 
 echo "\n ------ Done! ------\n"
 echo "\nPlease find LumiLog at:"
