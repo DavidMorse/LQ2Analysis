@@ -80,7 +80,7 @@ junkfile1 = str(randint(100000000,1000000000))+indicator+'junk.root'
 
 # At least one 44 GeV Muon - offline cut is 50
 fj1 = TFile.Open(junkfile1,'RECREATE')
-t1 = to.CopyTree('MuonPt[]>44')
+t1 = to.CopyTree('')#fixme was MuonPt[]>44
 # t1 = to.CopyTree('(1)')
 Nm1 = t1.GetEntries()
 
@@ -88,7 +88,7 @@ junkfile2 = str(randint(100000000,1000000000))+indicator+'junk.root'
 
 # At least one 44 GeV jet - offline cut is 50
 fj2 = TFile.Open(junkfile2,'RECREATE')
-t = t1.CopyTree('PFJetPtAK4CHS[]>44')
+t = t1.CopyTree('PFJetPtAK4CHS[]>0')#fixme was 44
 N = t.GetEntries()
 
 # Print the reduction status
@@ -121,6 +121,7 @@ _kinematicvariables += ['M_uu','MT_uv']
 _kinematicvariables += ['M_jj']
 _kinematicvariables += ['DR_muon1muon2','DPhi_muon1met','DPhi_jet1met','DPhi_jet2met']
 _kinematicvariables += ['DR_muon1jet1','DR_muon1jet2','DR_muon2jet1','DR_muon2jet2']
+_kinematicvariables += ['DR_jet1jet2','DPhi_jet1jet2']
 _kinematicvariables += ['DPhi_muon1jet1','DPhi_muon1jet2','DPhi_muon2jet1','DPhi_muon2jet2']
 _kinematicvariables += ['M_uujj1_gen','M_uujj2_gen','M_uujjavg_gen']
 _kinematicvariables += ['M_uujj1_genMatched','M_uujj2_genMatched','M_uujjavg_genMatched']
@@ -128,6 +129,10 @@ _kinematicvariables += ['M_uujj1_3jet','M_uujj2_3jet','M_uujjavg_3jet']
 _kinematicvariables += ['M_uujj1_3jet_rel','M_uujj2_3jet_rel','M_uujjavg_3jet_rel']
 _kinematicvariables += ['M_uujj1','M_uujj2','M_uujjavg']
 _kinematicvariables += ['M_uujj1_rel','M_uujj2_rel','M_uujjavg_rel']
+_kinematicvariables += ['M_uujj','M_uu4j','M_ee4j','M_ll4j']
+_kinematicvariables += ['M_uu4j_gen','M_uu4j_genMatched']
+_kinematicvariables += ['M_ee4j_gen','M_ee4j_genMatched']
+_kinematicvariables += ['M_ll4j_gen','M_ll4j_genMatched']
 _kinematicvariables += ['MT_uvjj1','MT_uvjj2','M_uvjj','MT_uvjj']
 _kinematicvariables += ['MH_uujj','MH_uvjj']
 _kinematicvariables += ['M_eejj1','M_eejj2','MT_evjj1','MT_evjj2','M_evjj','MT_evjj']
@@ -652,6 +657,8 @@ def GetPDFWeights(T):
 	return _allweights
 
 
+
+
 def MuonsFromLQ(T):
 	# Purpose: Testing. Get the muons from LQ decays and find the matching reco muons. 
 	#         Return TLorentzVectors of the gen and reco muons, and the indices for
@@ -754,6 +761,246 @@ def JetsFromLQ(T):
 	while len(recojetinds)<2 :
 		recojetinds.append(-99)
 	return([genjets,matchedrecojets,recojetinds])
+	#return(recojetinds)
+
+def LeptonsAndJetsFromHH(T):
+	# Purpose: Testing. HH. Get the muons from Z decays (on and off shell) and find the matching reco muons. 
+	#         Return TLorentzVectors of the gen and reco muons, and the indices for
+	#         the recomuons as well.
+	muons = []
+	genmuons=[]
+	recomuoninds = []
+	electrons = []
+	genelectrons=[]
+	recoelectroninds = []
+	onShellZMu=False
+	onShellZEle=False
+	for n in range(len(T.MuonPt)):	
+		m = TLorentzVector()
+		m.SetPtEtaPhiM(T.MuonPt[n],T.MuonEta[n],T.MuonPhi[n],0)
+		muons.append(m)
+	for n in range(len(T.GenParticlePdgId)):
+		pdg = T.GenParticlePdgId[n]
+		if pdg not in [13,-13]:
+			continue
+		motherIndex = T.GenParticleMotherIndex[n]
+		
+		motherid = 0
+		if motherIndex>-1:
+			motherid = T.GenParticlePdgId[motherIndex]
+			#print 'pdgId:',pdg,'index:',T.GenParticleMotherIndex[n],'mother pdgId:',T.GenParticlePdgId[motherIndex]
+		if motherid not in [23,-23,25,-25]:
+			continue
+		if motherid in [23,-23]: onShellZMu=True
+		#elif v=='': print 'Muon not from Z???  Muparent:',motherid
+		m = TLorentzVector()
+		m.SetPtEtaPhiM(T.GenParticlePt[n],T.GenParticleEta[n],T.GenParticlePhi[n],0.0)
+		genmuons.append(m)
+	
+	matchedrecomuons=[]
+	matchedrecoelectrons=[]
+	emptyvector = TLorentzVector()
+	emptyvector.SetPtEtaPhiM(0,0,0,0)
+	#print 'number of genmuons:',len(genmuons)
+	for g in genmuons:
+		bestrecomuonind=-1
+		mindr = 99999
+		ind=-1
+		for m in muons:
+			ind+=1
+			dr = abs(m.DeltaR(g))
+			if dr<mindr:
+				mindr =dr
+				bestrecomuonind=ind
+		if mindr<0.4:
+			matchedrecomuons.append(muons[bestrecomuonind])
+			recomuoninds.append(bestrecomuonind)
+		else:
+			matchedrecomuons.append(emptyvector)
+			recomuoninds.append(-99)
+		#print mindr, muons[bestrecomuonind].Pt(), g.Pt()
+	while len(recomuoninds)<2 :
+		recomuoninds.append(-99)
+	#return([genmuons,matchedrecomuons,recomuoninds])
+	#return(recomuoninds)
+
+	for n in range(len(T.ElectronPt)):	
+		m = TLorentzVector()
+		m.SetPtEtaPhiM(T.ElectronPt[n],T.ElectronEta[n],T.ElectronPhi[n],0)
+		electrons.append(m)
+	for n in range(len(T.GenParticlePdgId)):
+		pdg = T.GenParticlePdgId[n]
+		if pdg not in [11,-11]:
+			continue
+		motherIndex = T.GenParticleMotherIndex[n]
+		
+		motherid = 0
+		if motherIndex>-1:
+			motherid = T.GenParticlePdgId[motherIndex]
+			#print 'pdgId:',pdg,'index:',T.GenParticleMotherIndex[n],'mother pdgId:',T.GenParticlePdgId[motherIndex]
+		if motherid not in [23,-23,25,-25]:
+			continue
+		if motherid in [23,-23]: onShellZEle=True
+		#elif v=='': print 'Electron not from Z???  Eleparent:',motherid
+		m = TLorentzVector()
+		m.SetPtEtaPhiM(T.GenParticlePt[n],T.GenParticleEta[n],T.GenParticlePhi[n],0.0)
+		genelectrons.append(m)
+	
+	#if v=='':print 'onShellZMu:',onShellZMu,'onShellZEle:',onShellZEle
+
+	matchedrecoelectrons=[]
+	emptyvector = TLorentzVector()
+	emptyvector.SetPtEtaPhiM(0,0,0,0)
+	#print 'number of genelectrons:',len(genelectrons)
+	for g in genelectrons:
+		bestrecoelectronind=-1
+		mindr = 99999
+		ind=-1
+		for m in electrons:
+			ind+=1
+			dr = abs(m.DeltaR(g))
+			if dr<mindr:
+				mindr =dr
+				bestrecoelectronind=ind
+		if mindr<0.4:
+			matchedrecoelectrons.append(electrons[bestrecoelectronind])
+			recoelectroninds.append(bestrecoelectronind)
+		else:
+			matchedrecoelectrons.append(emptyvector)
+			recoelectroninds.append(-99)
+		#print mindr, electrons[bestrecoelectronind].Pt(), g.Pt()
+	while len(recoelectroninds)<2 :
+		recoelectroninds.append(-99)
+	# Purpose: Testing. HH. Get the quarks from H and Z decays (on and off shell) and find the matching reco pfJets. 
+	#         Return TLorentzVectors of the gen and reco jets, and the indices for
+	#         the recojets as well.
+	jetsZ = []
+	genjetsZ=[]
+	recojetindsZ = []
+	jetsH = []
+	genjetsH=[]
+	recojetindsH = []
+	genjetsZH = []
+	if onShellZMu or onShellZEle: 
+		#parentParticles = [25,-25]
+		daughterJets = [1,2,3,4,5,6,-6,-5,-4,-3,-2,-1] #Get charm quarks
+	if not (onShellZMu or onShellZEle)  : 
+		#parentParticles = [23,-23]
+		daughterJets = [1,2,3,4,5,6,-6,-5,-4,-3,-2,-1] #Get all quark flavors
+	for n in range(len(T.PFJetPtAK4CHS)):	
+		#if  T.PFJetPassLooseIDAK4CHS[n]==1 and T.PFJetPtAK4CHS[n]>15 and abs(T.PFJetEtaAK4CHS[n])<2.4 : #morse only use jets that pass id #fixme loosening to study HH
+		m = TLorentzVector()
+		m.SetPtEtaPhiM(T.PFJetPtAK4CHS[n],T.PFJetEtaAK4CHS[n],T.PFJetPhiAK4CHS[n],0)
+		jetsZ.append(m)
+		jetsH.append(m)
+	for n in range(len(T.GenParticlePdgId)):
+		pdg = T.GenParticlePdgId[n]
+		if pdg not in daughterJets:
+			continue
+		motherIndex = T.GenParticleMotherIndex[n]
+		[motherid,motherStatus,grandMotherid] = [0,0,0]
+		if motherIndex>-1:
+			motherid = T.GenParticlePdgId[motherIndex]
+			motherStatus = T.GenParticleStatus[motherIndex]
+			grandMotherid = T.GenParticlePdgId[T.GenParticleMotherIndex[motherIndex]]
+			#if parent=='Z' : print 'daughter:',pdg,'  mother:',motherid, '  grandMother:',grandMotherid
+		if motherid not in [23,-23,25,-25] :#parentParticles:
+			continue	
+		m = TLorentzVector()
+		m.SetPtEtaPhiM(T.GenParticlePt[n],T.GenParticleEta[n],T.GenParticlePhi[n],0.0)
+		if not (onShellZMu or onShellZEle) :
+			#if v=='':print 'jet:',pdg,'  mother:',motherid
+			if motherid in [23,-23] : genjetsZ.append(m)
+			if motherid in [25,-25] : genjetsH.append(m)
+		if onShellZMu or onShellZEle :
+			genjetsZH.append(m)
+		
+	if onShellZMu or onShellZEle or len(genjetsH)>=4:
+		if len(genjetsZH)>=4:
+			mass1 = abs(125.-(genjetsZH[0]+genjetsZH[1]).M())
+			mass2 = abs(125.-(genjetsZH[0]+genjetsZH[2]).M())
+			mass3 = abs(125.-(genjetsZH[0]+genjetsZH[3]).M())
+			mass4 = abs(125.-(genjetsZH[1]+genjetsZH[2]).M())
+			mass5 = abs(125.-(genjetsZH[1]+genjetsZH[3]).M())
+			mass6 = abs(125.-(genjetsZH[2]+genjetsZH[3]).M())
+			minMass = min(mass1,mass2,mass3,mass4,mass5,mass6)
+			if mass1 == minMass: [h1,h2,z1,z2]=[0,1,2,3]
+			if mass2 == minMass: [h1,h2,z1,z2]=[0,2,1,3]
+			if mass3 == minMass: [h1,h2,z1,z2]=[0,3,1,2]
+			if mass4 == minMass: [h1,h2,z1,z2]=[1,2,0,3]
+			if mass5 == minMass: [h1,h2,z1,z2]=[1,3,0,2]
+			if mass6 == minMass: [h1,h2,z1,z2]=[2,3,0,1]
+			genjetsH.append(genjetsZH[h1])
+			genjetsH.append(genjetsZH[h2])
+			genjetsZ.append(genjetsZH[z1])
+			genjetsZ.append(genjetsZH[z2])
+		elif len(genjetsH)>=4:
+			genjetsZH=genjetsH
+			[genjetsZ,genjetsH]=[[],[]]
+			mass1 = abs(125.-(genjetsZH[0]+genjetsZH[1]).M())
+			mass2 = abs(125.-(genjetsZH[0]+genjetsZH[2]).M())
+			mass3 = abs(125.-(genjetsZH[0]+genjetsZH[3]).M())
+			mass4 = abs(125.-(genjetsZH[1]+genjetsZH[2]).M())
+			mass5 = abs(125.-(genjetsZH[1]+genjetsZH[3]).M())
+			mass6 = abs(125.-(genjetsZH[2]+genjetsZH[3]).M())
+			minMass = min(mass1,mass2,mass3,mass4,mass5,mass6)
+			if mass1 == minMass: [h1,h2,z1,z2]=[0,1,2,3]
+			if mass2 == minMass: [h1,h2,z1,z2]=[0,2,1,3]
+			if mass3 == minMass: [h1,h2,z1,z2]=[0,3,1,2]
+			if mass4 == minMass: [h1,h2,z1,z2]=[1,2,0,3]
+			if mass5 == minMass: [h1,h2,z1,z2]=[1,3,0,2]
+			if mass6 == minMass: [h1,h2,z1,z2]=[2,3,0,1]
+			genjetsH.append(genjetsZH[h1])
+			genjetsH.append(genjetsZH[h2])
+			genjetsZ.append(genjetsZH[z1])
+			genjetsZ.append(genjetsZH[z2])
+
+		
+	matchedrecojetsZ=[]
+	matchedrecojetsH=[]
+	emptyvector = TLorentzVector()
+	emptyvector.SetPtEtaPhiM(0,0,0,0)
+	#if not (onShellZMu or onShellZEle) :
+	if True :
+		for g in genjetsZ:
+			bestrecojetind=-1
+			mindr = 99999
+			ind=-1
+			for m in jetsZ:
+				ind+=1
+				dr = abs(m.DeltaR(g))
+				if dr<mindr:
+					mindr =dr
+					bestrecojetind=ind
+			if mindr<0.6:
+				matchedrecojetsZ.append(jetsZ[bestrecojetind])
+				recojetindsZ.append(bestrecojetind)
+			else:
+				matchedrecojetsZ.append(emptyvector)
+				recojetindsZ.append(-99)
+		while len(recojetindsZ)<2 :
+			recojetindsZ.append(-99)
+		for g in genjetsH:
+			bestrecojetind=-1
+			mindr = 99999
+			ind=-1
+			for m in jetsH:
+				ind+=1
+				dr = abs(m.DeltaR(g))
+				if dr<mindr:
+					mindr =dr
+					bestrecojetind=ind
+			if mindr<0.6:
+				matchedrecojetsH.append(jetsH[bestrecojetind])
+				recojetindsH.append(bestrecojetind)
+			else:
+				matchedrecojetsH.append(emptyvector)
+				recojetindsH.append(-99)
+		while len(recojetindsH)<2 :
+			recojetindsH.append(-99)
+
+
+	return([genmuons,matchedrecomuons,recomuoninds,genelectrons,matchedrecoelectrons,recoelectroninds,genjetsH,matchedrecojetsH,recojetindsH,genjetsZ,matchedrecojetsZ,recojetindsZ,onShellZMu,onShellZEle])
 	#return(recojetinds)
 
 
@@ -866,7 +1113,7 @@ def TightHighPtIDMuons(T,_met,variation,isdata):
 		Pass = True
 		# A preliminary pT cut. This also encompasses the GlobalMuon conditions, since
 		# all non-global muons have cocktail pT of -1 in the ntuples.
-		Pass *= (_MuonCocktailPt[n] > 35)      
+		Pass *= (_MuonCocktailPt[n] > 10)#was 35      
 		# Eta requirement matches trigger.
 		Pass *= abs(T.MuonCocktailEta[n])<2.1    
 
@@ -1456,6 +1703,7 @@ def FullKinematicCalculation(T,variation):
 
 	[_genMuons,_matchedRecoMuons,muonInd] = MuonsFromLQ(T)
 	[_genJets,_matchedRecoJets,jetInd] = JetsFromLQ(T)
+	[_genMuonsZ,_matchedRecoMuonsZ,muonIndZ,_genElectronsZ,_matchedRecoElectronsZ,electronIndZ,_genJetsH,_matchedRecoJetsH,jetIndH,_genJetsZ,_matchedRecoJetsZ,jetIndZ,onShellZMu,onShellZEle] = LeptonsAndJetsFromHH(T)
 	#print 'muon index:',muonInd,'  jet index:',jetInd
 	_muonInd1=muonInd[0]
 	_muonInd2=muonInd[1]
@@ -1501,6 +1749,9 @@ def FullKinematicCalculation(T,variation):
 	_DRu1j2 = abs(muons[0].DeltaR(jets[1]))
 	_DRu2j1 = abs(muons[1].DeltaR(jets[0]))
 	_DRu2j2 = abs(muons[1].DeltaR(jets[1]))
+
+	_DRj1j2   = abs(jets[0].DeltaR(jets[1]))
+	_DPhij1j2 = abs(jets[0].DeltaPhi(jets[1]))
 
 	_DPhiu1j1 = abs(muons[0].DeltaPhi(jets[0]))
 	_DPhiu1j2 = abs(muons[0].DeltaPhi(jets[1]))
@@ -1554,6 +1805,52 @@ def FullKinematicCalculation(T,variation):
 
 
 	[_Muujj1, _Muujj2,_MHuujj] = GetLLJJMasses(muons[0],muons[1],jets[0],jets[1])
+
+	_Muujj = (muons[0]+muons[1]+jets[0]+jets[1]).M()
+
+
+	if len(electrons)>=1 :
+		_pte1 = electrons[0].Pt()
+		if len(electrons)>=2 : _pte2 = electrons[1].Pt()
+		else : _pte2 = 0.
+	else :
+		_pte1 = 0.
+		
+
+	[_Muu4j,_Mee4j,_Mll4j] = [0., 0., 0.]
+	if len(jets)>=4 and ( len(muons)>=2 or len(electrons)>=2 ):
+		if len(muons)>=2 :
+			_Muu4j = (muons[0]+muons[1]+jets[0]+jets[1]+jets[2]+jets[3]).M()
+		if len(electrons)>=2 :
+			_Mee4j = (electrons[0]+electrons[1]+jets[0]+jets[1]+jets[2]+jets[3]).M()
+		if _ptmu1 > _pte1 and len(muons)>=2:
+			_Mll4j = (muons[0]+muons[1]+jets[0]+jets[1]+jets[2]+jets[3]).M()
+		elif _pte1 > _ptmu1 and len(electrons)>=2 :
+			_Mll4j = (electrons[0]+electrons[1]+jets[0]+jets[1]+jets[2]+jets[3]).M()
+	
+
+	didMuon = False
+	[ _Muu4j_gen,_Mee4j_gen,_Mll4j_gen,_Muu4j_genMatched,_Mee4j_genMatched,_Mll4j_genMatched]=[0.,0.,0.,0.,0.,0.]
+
+	#if v == '' : print 'Gen level ZJets:',len(_genJetsZ),'HJets:',len(_genJetsH),'ZMuons:',len(_genMuonsZ),'ZElectrons:',len(_genElectronsZ)
+	if len(_genJetsZ)>=2 and len(_genJetsH)>=2 and len(_genMuonsZ)>=2 :
+		_Muu4j_gen = (_genJetsZ[0]+_genJetsZ[1]+_genJetsH[0]+_genJetsH[1]+_genMuonsZ[0]+_genMuonsZ[1]).M()
+		_Mll4j_gen = (_genJetsZ[0]+_genJetsZ[1]+_genJetsH[0]+_genJetsH[1]+_genMuonsZ[0]+_genMuonsZ[1]).M()
+		didMuon = True
+
+	if len(_genJetsZ)>=2 and len(_genJetsH)>=2 and len(_genElectronsZ)>=2 and not didMuon:
+		_Mee4j_gen = (_genJetsZ[0]+_genJetsZ[1]+_genJetsH[0]+_genJetsH[1]+_genElectronsZ[0]+_genElectronsZ[1]).M()
+		_Mll4j_gen = (_genJetsZ[0]+_genJetsZ[1]+_genJetsH[0]+_genJetsH[1]+_genElectronsZ[0]+_genElectronsZ[1]).M()
+
+	if len(_matchedRecoJetsZ)>=2 and len(_matchedRecoJetsH)>=2 and len(_matchedRecoMuonsZ)>=2 and didMuon:
+		_Muu4j_genMatched = (_matchedRecoJetsZ[0]+_matchedRecoJetsZ[1]+_matchedRecoJetsH[0]+_matchedRecoJetsH[1]+_matchedRecoMuonsZ[0]+_matchedRecoMuonsZ[1]).M()
+		_Mll4j_genMatched = (_matchedRecoJetsZ[0]+_matchedRecoJetsZ[1]+_matchedRecoJetsH[0]+_matchedRecoJetsH[1]+_matchedRecoMuonsZ[0]+_matchedRecoMuonsZ[1]).M()
+
+	if len(_matchedRecoJetsZ)>=2 and len(_matchedRecoJetsH)>=2 and len(_matchedRecoElectronsZ)>=2 and not didMuon:
+		_Mee4j_genMatched = (_matchedRecoJetsZ[0]+_matchedRecoJetsZ[1]+_matchedRecoJetsH[0]+_matchedRecoJetsH[1]+_matchedRecoElectronsZ[0]+_matchedRecoElectronsZ[1]).M()
+		_Mll4j_genMatched = (_matchedRecoJetsZ[0]+_matchedRecoJetsZ[1]+_matchedRecoJetsH[0]+_matchedRecoJetsH[1]+_matchedRecoElectronsZ[0]+_matchedRecoElectronsZ[1]).M()
+
+
 	[[_MTuvjj1, _MTuvjj2], [_Muvjj, _MTuvjj],_MHuvjj] = GetLVJJMasses(muons[0],met,jets[0],jets[1])
 
 	[_Meejj1, _Meejj2,_MHeejj] = GetLLJJMasses(electrons[0],electrons[1],jets[0],jets[1])
@@ -1596,6 +1893,7 @@ def FullKinematicCalculation(T,variation):
 	toreturn += [_Mjj]
 	toreturn += [_DRuu,_DPHIuv,_DPHIj1v,_DPHIj2v]
 	toreturn += [_DRu1j1,_DRu1j2,_DRu2j1,_DRu2j2]
+	toreturn += [_DRj1j2,_DPhij1j2]
 	toreturn += [_DPhiu1j1,_DPhiu1j2,_DPhiu2j1,_DPhiu2j2]
 	toreturn += [_Muujj1_gen, _Muujj2_gen,_Muujjavg_gen]
 	toreturn += [_Muujj1_genMatched, _Muujj2_genMatched,_Muujjavg_genMatched]
@@ -1603,6 +1901,10 @@ def FullKinematicCalculation(T,variation):
 	toreturn += [_Muujj1_3jet_rel, _Muujj2_3jet_rel,_Muujjavg_3jet_rel]
 	toreturn += [_Muujj1, _Muujj2,_Muujjavg]
 	toreturn += [_Muujj1_rel, _Muujj2_rel,_Muujjavg_rel]
+	toreturn += [_Muujj, _Muu4j, _Mee4j, _Mll4j]
+	toreturn += [_Muu4j_gen,_Muu4j_genMatched]
+	toreturn += [_Mee4j_gen,_Mee4j_genMatched]
+	toreturn += [_Mll4j_gen,_Mll4j_genMatched]
 	toreturn += [_MTuvjj1, _MTuvjj2,_Muvjj, _MTuvjj]
 	toreturn += [_MHuujj,_MHuvjj]
 	toreturn += [_Meejj1, _Meejj2]
@@ -1754,6 +2056,8 @@ for n in range(N):
 	# that the systematic varied quantity will, and that will throw off systematics calculations later.
 	# Make sure your skim is looser than any selection you will need afterward!
 
+	#fixme turning off skim for now
+	"""
 	if (Branches['Pt_muon1'][0] < 45): continue
 	if nonisoswitch != True:
 			if (Branches['Pt_muon2'][0] < 45) and (Branches['Pt_miss'][0] < 45): continue
@@ -1761,6 +2065,7 @@ for n in range(N):
 	if (Branches['Pt_jet2'][0] <  45): continue
 	if (Branches['St_uujj'][0] < 260) and (Branches['St_uvjj'][0] < 260): continue
 	if (Branches['M_uu'][0]    <  45) and (Branches['MT_uv'][0]   <  45): continue
+	"""
 	# Fill output tree with event
 	tout.Fill()
 
