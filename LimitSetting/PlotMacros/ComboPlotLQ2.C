@@ -16,7 +16,7 @@ using namespace std;
 void myStyle();
 void setTDRStyle();
 
-void makePlots()
+void ComboPlotLQ2()
 {
  // **********************************************
  // *            Input parameters                *

@@ -88,13 +88,13 @@ junkfile2 = str(randint(100000000,1000000000))+indicator+'junk.root'
 
 # At least one 44 GeV jet - offline cut is 50
 fj2 = TFile.Open(junkfile2,'RECREATE')
-t = t1.CopyTree('PFJetPtAK4CHS[]>0')#fixme was 44
+t = t1.CopyTree('PFJetPtAK4CHS[]>16')#fixme was 44
 N = t.GetEntries()
 
 # Print the reduction status
 print 'Original events:          ',No
-print 'After demand 1 pT42 muon: ',Nm1
-print 'After demand 1 pT42 jet:  ',N
+print 'After demand 1 pT16 muon or electron: ',Nm1
+print 'After demand 1 pT16 jet:  ',N
 
 ##########################################################################################
 #################      PREPARE THE VARIABLES FOR THE OUTPUT TREE   #######################
@@ -118,6 +118,7 @@ _kinematicvariables += ['NHEF_jet1','NHEF_jet2','NEMEF_jet1','NEMEF_jet2']
 _kinematicvariables += ['St_uujj','St_uvjj']
 _kinematicvariables += ['St_eejj','St_evjj']
 _kinematicvariables += ['M_uu','MT_uv']
+_kinematicvariables += ['M_ee']
 _kinematicvariables += ['M_jj']
 _kinematicvariables += ['DR_muon1muon2','DPhi_muon1met','DPhi_jet1met','DPhi_jet2met']
 _kinematicvariables += ['DR_muon1jet1','DR_muon1jet2','DR_muon2jet1','DR_muon2jet2']
@@ -130,9 +131,16 @@ _kinematicvariables += ['M_uujj1_3jet_rel','M_uujj2_3jet_rel','M_uujjavg_3jet_re
 _kinematicvariables += ['M_uujj1','M_uujj2','M_uujjavg']
 _kinematicvariables += ['M_uujj1_rel','M_uujj2_rel','M_uujjavg_rel']
 _kinematicvariables += ['M_uujj','M_uu4j','M_ee4j','M_ll4j']
-_kinematicvariables += ['Mbb_H','Mjj_Z']
+_kinematicvariables += ['Mbb_H','Mjj_Z','Mjj_Z_3jet']
+_kinematicvariables += ['Mbb_H_gen','Mjj_Z_gen']
+_kinematicvariables += ['Mbb_H_genMatched','Mjj_Z_genMatched']
+_kinematicvariables += ['cosThetaStar']
 _kinematicvariables += ['Pt_Hjet1','Pt_Hjet2','Pt_Zjet1','Pt_Zjet2']
 _kinematicvariables += ['Pt_Hjets','Pt_Zjets','Pt_uu','Pt_ee','Pt_ll']
+_kinematicvariables += ['DR_jj_Z','DR_bb_H','DR_uu_bb_H','DR_uu_jj_Z','DPhi_uu_bb_H','DPhi_uu_jj_Z']
+_kinematicvariables += ['DPhi_jj_Z','DPhi_bb_H']
+_kinematicvariables += ['DR_ee_bb_H','DR_ee_jj_Z','DPhi_ee_bb_H','DPhi_ee_jj_Z']
+_kinematicvariables += ['minDR_muonjet','minDR_electronjet']
 _kinematicvariables += ['M_uu4j_gen','M_uu4j_genMatched']
 _kinematicvariables += ['M_ee4j_gen','M_ee4j_genMatched']
 _kinematicvariables += ['M_ll4j_gen','M_ll4j_genMatched']
@@ -149,7 +157,8 @@ _kinematicvariables += ['CISV_bjet1','CISV_bjet2']
 
 _weights = ['scaleWeight_Up','scaleWeight_Down','scaleWeight_R1_F1','scaleWeight_R1_F2','scaleWeight_R1_F0p5','scaleWeight_R2_F1','scaleWeight_R2_F2','scaleWeight_R2_F0p5','scaleWeight_R0p5_F1','scaleWeight_R0p5_F2','scaleWeight_R0p5_F0p5','scaleWeight_R2_F2','weight_amcNLO','weight_nopu','weight_central', 'weight_pu_up', 'weight_pu_down','weight_central_2012D']
 _flagDoubles = ['run_number','event_number','lumi_number']
-_flags = ['pass_HLTMu45_eta2p1','GoodVertexCount']
+_flags = ['pass_HLTMu45_eta2p1','pass_HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_DZ','pass_HLT_Ele16_Ele12_Ele8_CaloIdL_TrackIdL','pass_HLT_Mu17_Mu8']
+_flags += ['GoodVertexCount']
 _flags += ['passPrimaryVertex','passBeamScraping','passHBHENoiseFilter','passHBHENoiseIsoFilter','passBPTX0','passBeamHalo','passTrackingFailure','passTriggerObjectMatching','passDataCert']
 _flags += ['passBadEESuperCrystal','passEcalDeadCellBE','passEcalDeadCellTP','passEcalLaserCorr','passHcalLaserEvent','passPhysDeclared','passBeamHalo2015','passBadEcalSC','passBadMuonTrackList','passBadResTrackList']
 _variations = ['','JESup','JESdown','MESup','MESdown','JERup','JERdown','MER']
@@ -285,7 +294,7 @@ _pdfweightsnames = GetPDFWeightVars(t)
 # First create the output file. 
 tmpfout = str(randint(100000000,1000000000))+indicator+'.root'
 if '/store' in name:
-	finalfout = options.dir+'/'+(name.split('/')[-4]+'__'+name.split('/')[-1].replace('.root','_tree.root'))#changed -2 to -4 to get dataset name instead of 0000
+	finalfout = options.dir+'/'+(name.split('/')[-5]+'__'+name.split('/')[-1].replace('.root','_tree.root'))#changed -2 to -5 to get dataset name instead of 0000
 else:
 	finalfout = options.dir+'/'+name.replace('.root','_tree.root')
 
@@ -795,14 +804,15 @@ def LeptonsAndJetsFromHH(T):
 		motherid = 0
 		if motherIndex>-1:
 			motherid = T.GenParticlePdgId[motherIndex]
-			#print 'pdgId:',pdg,'index:',T.GenParticleMotherIndex[n],'mother pdgId:',T.GenParticlePdgId[motherIndex]
+			#if v=='': print 'pdgId:',pdg,'index:',T.GenParticleMotherIndex[n],'muStatus:',T.GenParticleStatus[n],'mother pdgId:',T.GenParticlePdgId[motherIndex]
 		if motherid not in [23,-23,25,-25]:
 			continue
 		if motherid in [23,-23]: onShellZMu=True
-		#elif v=='': print 'Muon not from Z???  Muparent:',motherid
+		#elif v=='': print 'Muon not from Z???  muStatus:',T.GenParticleStatus[n],'  Muparent:',motherid
 		m = TLorentzVector()
 		m.SetPtEtaPhiM(T.GenParticlePt[n],T.GenParticleEta[n],T.GenParticlePhi[n],0.0)
 		genmuons.append(m)
+	#if v=='': print ''
 	
 	matchedrecomuons=[]
 	matchedrecoelectrons=[]
@@ -890,16 +900,16 @@ def LeptonsAndJetsFromHH(T):
 	genjetsZH = []
 	if onShellZMu or onShellZEle: 
 		#parentParticles = [25,-25]
-		daughterJets = [1,2,3,4,5,6,-6,-5,-4,-3,-2,-1] #Get charm quarks
+		daughterJets = [1,2,3,4,5,-5,-4,-3,-2,-1] #Get charm quarks
 	if not (onShellZMu or onShellZEle)  : 
 		#parentParticles = [23,-23]
-		daughterJets = [1,2,3,4,5,6,-6,-5,-4,-3,-2,-1] #Get all quark flavors
+		daughterJets = [1,2,3,4,5,-5,-4,-3,-2,-1] #Get all quark flavors
 	for n in range(len(T.PFJetPtAK4CHS)):	
-		#if  T.PFJetPassLooseIDAK4CHS[n]==1 and T.PFJetPtAK4CHS[n]>15 and abs(T.PFJetEtaAK4CHS[n])<2.4 : #morse only use jets that pass id #fixme loosening to study HH
-		m = TLorentzVector()
-		m.SetPtEtaPhiM(T.PFJetPtAK4CHS[n],T.PFJetEtaAK4CHS[n],T.PFJetPhiAK4CHS[n],0)
-		jetsZ.append(m)
-		jetsH.append(m)
+		if  T.PFJetPassLooseIDAK4CHS[n]==1 and T.PFJetPtAK4CHS[n]>15 and abs(T.PFJetEtaAK4CHS[n])<2.4 : #morse only use jets that pass id #fixme loosening to study HH
+			m = TLorentzVector()
+			m.SetPtEtaPhiM(T.PFJetPtAK4CHS[n],T.PFJetEtaAK4CHS[n],T.PFJetPhiAK4CHS[n],0)
+			jetsZ.append(m)
+			jetsH.append(m)
 	for n in range(len(T.GenParticlePdgId)):
 		pdg = T.GenParticlePdgId[n]
 		if pdg not in daughterJets:
@@ -916,13 +926,15 @@ def LeptonsAndJetsFromHH(T):
 		m = TLorentzVector()
 		m.SetPtEtaPhiM(T.GenParticlePt[n],T.GenParticleEta[n],T.GenParticlePhi[n],0.0)
 		if not (onShellZMu or onShellZEle) :
-			#if v=='':print 'jet:',pdg,'  mother:',motherid
+			#if v=='':print 'jet:',pdg,'  mother:',motherid,'  status:',
 			if motherid in [23,-23] : genjetsZ.append(m)
 			if motherid in [25,-25] : genjetsH.append(m)
 		if onShellZMu or onShellZEle :
 			genjetsZH.append(m)
 		
 	if onShellZMu or onShellZEle or len(genjetsH)>=4:
+		genjetsZnew,genjetsHnew = [],[]
+
 		if len(genjetsZH)>=4:
 			mass1 = abs(125.-(genjetsZH[0]+genjetsZH[1]).M())
 			mass2 = abs(125.-(genjetsZH[0]+genjetsZH[2]).M())
@@ -937,13 +949,12 @@ def LeptonsAndJetsFromHH(T):
 			if mass4 == minMass: [h1,h2,z1,z2]=[1,2,0,3]
 			if mass5 == minMass: [h1,h2,z1,z2]=[1,3,0,2]
 			if mass6 == minMass: [h1,h2,z1,z2]=[2,3,0,1]
-			genjetsH.append(genjetsZH[h1])
-			genjetsH.append(genjetsZH[h2])
-			genjetsZ.append(genjetsZH[z1])
-			genjetsZ.append(genjetsZH[z2])
+			genjetsHnew.append(genjetsZH[h1])
+			genjetsHnew.append(genjetsZH[h2])
+			genjetsZnew.append(genjetsZH[z1])
+			genjetsZnew.append(genjetsZH[z2])
 		elif len(genjetsH)>=4:
 			genjetsZH=genjetsH
-			[genjetsZ,genjetsH]=[[],[]]
 			mass1 = abs(125.-(genjetsZH[0]+genjetsZH[1]).M())
 			mass2 = abs(125.-(genjetsZH[0]+genjetsZH[2]).M())
 			mass3 = abs(125.-(genjetsZH[0]+genjetsZH[3]).M())
@@ -957,12 +968,13 @@ def LeptonsAndJetsFromHH(T):
 			if mass4 == minMass: [h1,h2,z1,z2]=[1,2,0,3]
 			if mass5 == minMass: [h1,h2,z1,z2]=[1,3,0,2]
 			if mass6 == minMass: [h1,h2,z1,z2]=[2,3,0,1]
-			genjetsH.append(genjetsZH[h1])
-			genjetsH.append(genjetsZH[h2])
-			genjetsZ.append(genjetsZH[z1])
-			genjetsZ.append(genjetsZH[z2])
+			genjetsHnew.append(genjetsZH[h1])
+			genjetsHnew.append(genjetsZH[h2])
+			genjetsZnew.append(genjetsZH[z1])
+			genjetsZnew.append(genjetsZH[z2])
 
-		
+		genjetsZ,genjetsH = genjetsZnew,genjetsHnew
+					
 	matchedrecojetsZ=[]
 	matchedrecojetsH=[]
 	emptyvector = TLorentzVector()
@@ -1006,6 +1018,30 @@ def LeptonsAndJetsFromHH(T):
 		while len(recojetindsH)<2 :
 			recojetindsH.append(-99)
 
+
+	hjet1,hjet2,zjet1,zjet2 = -1,-1,-1,-1
+	for hJet in matchedrecojetsH :
+		for n in range(len(T.PFJetPtAK4CHS)) :
+			if abs(hJet.Pt()-T.PFJetPtAK4CHS[n])<0.01 and  abs(hJet.Eta()-T.PFJetEtaAK4CHS[n])<0.01 :
+				if hjet1 < 0 : hjet1 = n
+				else : hjet2 = n
+	for zJet in matchedrecojetsZ :
+		for n in range(len(T.PFJetPtAK4CHS)) :
+			if abs(zJet.Pt()-T.PFJetPtAK4CHS[n])<0.01 and  abs(zJet.Eta()-T.PFJetEtaAK4CHS[n])<0.01 :
+				if zjet1 < 0 : zjet1 = n
+	"""			else : zjet2 = n
+	if v=='':
+		h1,h2,z1,z2 = TLorentzVector(),TLorentzVector(),TLorentzVector(),TLorentzVector()
+		h1.SetPtEtaPhiM(T.PFJetPtAK4CHS[hjet1],T.PFJetEtaAK4CHS[hjet1],T.PFJetPhiAK4CHS[hjet1],0)
+		h2.SetPtEtaPhiM(T.PFJetPtAK4CHS[hjet2],T.PFJetEtaAK4CHS[hjet2],T.PFJetPhiAK4CHS[hjet2],0)
+		z1.SetPtEtaPhiM(T.PFJetPtAK4CHS[zjet1],T.PFJetEtaAK4CHS[zjet1],T.PFJetPhiAK4CHS[zjet1],0)
+		z2.SetPtEtaPhiM(T.PFJetPtAK4CHS[zjet2],T.PFJetEtaAK4CHS[zjet2],T.PFJetPhiAK4CHS[zjet2],0)
+		print 'jet indices (h1, h2, z1, z2):',hjet1,hjet2,zjet1,zjet2
+		print 'masses                (h, z):',(h1+h2).M(),(z1+z2).M()
+		print 'pt          (h1, h2, z1, z2):',T.PFJetPtAK4CHS[hjet1],T.PFJetPtAK4CHS[hjet2],T.PFJetPtAK4CHS[zjet1],T.PFJetPtAK4CHS[zjet2]
+		print 'btags       (h1, h2, z1, z2):',T.PFJetCombinedInclusiveSecondaryVertexBTagAK4CHS[hjet1],T.PFJetCombinedInclusiveSecondaryVertexBTagAK4CHS[hjet2],T.PFJetCombinedInclusiveSecondaryVertexBTagAK4CHS[zjet1],T.PFJetCombinedInclusiveSecondaryVertexBTagAK4CHS[zjet2]
+		print ''
+	"""
 
 	return([genmuons,matchedrecomuons,recomuoninds,genelectrons,matchedrecoelectrons,recoelectroninds,genjetsH,matchedrecojetsH,recojetindsH,genjetsZ,matchedrecojetsZ,recojetindsZ,onShellZMu,onShellZEle])
 	#return(recojetinds)
@@ -1058,6 +1094,133 @@ def PropagatePTChangeToMET(met,original_object,varied_object):
 # 			ThisTau.SetPtEtaPhiM(T.HPSTauPt[n],T.HPSTauEta[n],T.HPSTauPhi[n],0)
 # 			taus.append(ThisTau)
 # 	return taus
+
+def MediumIDMuons(T,_met,variation,isdata):
+	# Purpose: Gets the collection of muons passing medium muon ID. 
+	#         Returns muons as TLorentzVectors, and indices corrresponding
+	#         to the surviving muons of the muon collection. 
+	#         Also returns modified MET for systematic variations.
+	muons = []
+	muoninds = []
+	if variation=='MESup':	
+		#_MuonPt = [(pt + pt*(0.05*pt/1000.0)) for pt in T.MuonPt]#original
+		_MuonPt = [(pt + pt*(0.10*pt/1000.0)) for pt in T.MuonPt]#updated to Zprime 13TeV study number
+	elif variation=='MESdown':	
+		#_MuonPt = [(pt - pt*(0.05*pt/1000.0)) for pt in T.MuonPt]
+		_MuonPt = [(pt - pt*(0.10*pt/1000.0)) for pt in T.MuonPt]
+	elif variation=='MER':	
+		_MuonPt = [pt+pt*tRand.Gaus(0.0,  0.01*(pt<=200.0) + (0.04)*(pt>200.0) ) for pt in T.MuonPt]
+	else:	
+		_MuonPt = [pt for pt in T.MuonPt]	
+
+	if (isdata):
+		_MuonPt = [pt for pt in T.MuonPt]	
+
+	trk_isos = []
+	charges = []
+	deltainvpts = []
+
+	chi2 = []
+	pfid = []
+	layers = []
+
+	nequiv = []
+	for n in range(len(T.MuonPt)):
+		#if T.MuonIsGlobal[n] or newntupleswitch==True: #not necessary anymore - global muon requirement encompassed later
+		nequiv.append(n)
+
+	# Loop over muons using the pT array from above
+	for n in range(len(_MuonPt)):
+
+		# Some muon alignment studies use the inverse diff of the high pT and Trk pT values
+		deltainvpt = -1.0	
+		if ( T.MuonTrkPt[nequiv[n]] > 0.0 ) and (_MuonPt[n]>0.0):
+			deltainvpt = ( 1.0/T.MuonTrkPt[nequiv[n]] - 1.0/_MuonPt[n])
+	
+		# For alignment correction studies in MC, the pT is modified according to
+		# parameterizations of the position
+		if alignementcorrswitch == True and isdata==False:
+			if abs(deltainvpt) > 0.0000001:
+				__Pt_mu = _MuonPt[n]
+				__Eta_mu = T.MuonEta[n]
+				__Phi_mu = T.MuonPhi[n]
+				__Charge_mu = T.MuonCharge[nequiv[n]]
+				if (__Pt_mu >200)*(abs(__Eta_mu) < 0.9)      : 
+					_MuonPt[n] =  ( (1.0) / ( -5e-05*__Charge_mu*sin(-1.4514813+__Phi_mu ) + 1.0/__Pt_mu ) ) 
+				deltainvpt = ( 1.0/T.MuonTrkPt[nequiv[n]] - 1.0/_MuonPt[n])
+
+
+		# For the ID, begin by assuming it passes. Veto if it fails any condition
+		# High PT conditions from https://twiki.cern.ch/twiki/bin/view/CMSPublic/SWGuideMuonIdRun2#Short_Term_Medium_Muon_Definitio
+		# NTuple definitions in https://raw.githubusercontent.com/CMSLQ/RootTupleMakerV2/master/src/RootTupleMakerV2_Muons.cc
+		Pass = True
+                #There is an or of requirements, do this by making 2 bools and OR'ing them later
+	        Pass1, Pass2 =  True, True
+
+                # Require Loose muon flag
+	        Pass *= T.MuonIsLooseMuon[n] > 0
+
+	        #fixme these two are equivalent to IsLooseMuon
+		#Pass *= T.MuonIsPF[n]
+	        #Pass *= (T.MuonIsGlobal[n] or T.MuonIsTracker[n])
+
+	        # Require valid fraction of hits
+	        Pass *= T.MuonTrkValidFractionOfHits[n] > 0.49
+
+		# A preliminary pT cut.
+		Pass *= (_MuonPt[n] > 10)#fixme offline cuts are 20(10)
+
+		# Eta requirement 
+		Pass *= abs(T.MuonEta[n])<2.4
+
+	        # Require Global Muon
+                Pass1 *= T.MuonIsGlobal[n]
+
+		# Global Track chi2
+                Pass1 *= T.MuonGlobalChi2[n] < 3
+
+		# combined Quality chi2LocalPosition
+		Pass1 *= T.MuonCombinedQualityChi2LocalPosition[n] < 12
+
+		# combined Quality Track Kink
+		Pass1 *= T.MuonCombinedQualityTrkKink[n] < 20
+
+		# segment Compatibility
+		Pass1 *= T.MuonSegmentCompatibility[n] > 0.303
+
+		# segment Compatibility
+		Pass2 *= T.MuonSegmentCompatibility[n] > 0.451
+
+		Pass *= (Pass1 or Pass2)
+
+		# Isolation condition using combined PF relative isolation - 0.25 for loose (98% efficiency), 0.15 for tight (95% efficiency)
+		if nonisoswitch != True:
+			correctedIso = T.MuonPFIsoR04ChargedHadron[n] + max(0.,T.MuonPFIsoR04NeutralHadron[n]+T.MuonPFIsoR04Photon[n]-0.5*T.MuonPFIsoR04PU[n])
+			Pass *= correctedIso/_MuonPt[n] < 0.25
+
+		# Propagate MET changes if undergoing systematic variation
+		if (Pass):
+			NewMu = TLorentzVector()
+			OldMu = TLorentzVector()
+			NewMu.SetPtEtaPhiM(_MuonPt[n],T.MuonEta[n],T.MuonPhi[n],0)
+			#NewMu.SetPtEtaPhiM(_MuonPt[n],T.MuonEta[n],T.MuonPhi[n],0)
+			OldMu.SetPtEtaPhiM(T.MuonPt[n],T.MuonEta[n],T.MuonPhi[n],0)
+			#OldMu.SetPtEtaPhiM(T.MuonPt[n],T.MuonEta[n],T.MuonPhi[n],0)
+			_met = PropagatePTChangeToMET(_met,OldMu,NewMu)
+
+			# Append items to retun if the muon is good
+
+			muons.append(NewMu)
+			trk_isos.append((T.MuonTrackerIsoSumPT[nequiv[n]]/_MuonPt[n]))
+			chi2.append(T.MuonGlobalChi2[nequiv[n]])
+			pfid.append(T.MuonIsPF[nequiv[n]])
+			layers.append(T.MuonTrackLayersWithMeasurement[nequiv[n]])
+			charges.append(T.MuonCharge[n])
+			muoninds.append(n)
+			deltainvpts.append(deltainvpt)
+
+	return [muons,muoninds,_met,trk_isos,charges,deltainvpts,chi2,pfid,layers]
+
 
 def TightHighPtIDMuons(T,_met,variation,isdata):
 	# Purpose: Gets the collection of muons passing tight muon ID. 
@@ -1234,6 +1397,48 @@ def HEEPElectrons(T,_met,variation):
 	return [electrons,electroninds,_met]
 
 
+def TightElectrons(T,_met,variation):
+	# Purpose: Gets the collection of electrons passing Tight Electron ID. 
+	#         Returns electrons as TLorentzVectors, and indices corrresponding
+	#         to the surviving electrons of the electron collection. 
+	#         Also returns modified MET for systematic variations.	
+	#         https://twiki.cern.ch/twiki/bin/view/CMS/CutBasedElectronIdentificationRun2#Recommended_Working_points_for_2
+	electrons = []
+	electroninds = []
+	if variation=='EESup':	
+		_ElectronPt = [pt*1.01 for pt in T.ElectronPt]
+	elif variation=='EESdown':	
+		_ElectronPt = [pt*0.99 for pt in T.ElectronPt]
+	elif variation=='EER':	
+		_ElectronPt = [pt+pt*tRand.Gaus(0.0,0.04) for pt in T.ElectronPt]
+	else:	
+		_ElectronPt = [pt for pt in T.ElectronPt]	
+
+	for n in range(len(_ElectronPt)):
+		Pass = True
+		Pass *= (T.ElectronPt[n] > 15)
+		Pass *= abs(T.ElectronEta[n])<2.5
+
+		barrel = (abs(T.ElectronSCEta[n]))<1.442
+		endcap = (abs(T.ElectronSCEta[n]))>1.56 
+		Pass *= (barrel+endcap)
+
+	        Pass *= T.ElectronPassEGammaIDTight[n]>0
+
+		if (Pass):
+			NewEl = TLorentzVector()
+			OldEl = TLorentzVector()
+			NewEl.SetPtEtaPhiM(_ElectronPt[n],T.ElectronEta[n],T.ElectronPhi[n],0)
+			OldEl.SetPtEtaPhiM(T.ElectronPt[n],T.ElectronEta[n],T.ElectronPhi[n],0)
+			met = PropagatePTChangeToMET(_met,OldEl,NewEl)
+
+		if (Pass):
+			electrons.append(NewEl)
+			electroninds.append(n)
+	return [electrons,electroninds,_met]
+
+
+
 def JERModifiedPt(pt,eta,phi,T,modtype):
 	# Pupose: Modify reco jets based on genjets. Input is pt/eta/phi of a jet. 
 	#         The jet will be matched to a gen jet, and the difference
@@ -1324,7 +1529,7 @@ def LooseIDJets(T,met,variation,isdata):
 	NEMF = []
 	CSVscores = []
 	for n in range(len(_PFJetPt)):
-		if _PFJetPt[n]>15 and abs(T.PFJetEtaAK4CHS[n])<2.4 :#fixme todo was pt>30, reduced for HH
+		if _PFJetPt[n]>10 and abs(T.PFJetEtaAK4CHS[n])<2.4 :#fixme todo was pt>30, reduced for HH
 			if T.PFJetPassLooseIDAK4CHS[n]==1:
 				j = TLorentzVector()
 				j.SetPtEtaPhiM(_PFJetPt[n],T.PFJetEtaAK4CHS[n],T.PFJetPhiAK4CHS[n],0)
@@ -1631,7 +1836,7 @@ def GetHHJets(jets,btagScores):
         #Purpose: select which jets to use for HH analysis, separating bJets from light jets. Note that jets have already been cleaned from muons and electrons in cone of 0.3.
 	EmptyLorentz = TLorentzVector()
 	EmptyLorentz.SetPtEtaPhiM(.01,0,0,0)
-        [bjet1,bjet2,jet1,jet2]=[EmptyLorentz,EmptyLorentz,EmptyLorentz,EmptyLorentz]
+        [bjet1,bjet2,jet1,jet2,jet3]=[EmptyLorentz,EmptyLorentz,EmptyLorentz,EmptyLorentz,EmptyLorentz]
 	#if v == '' : print len(jets)
 	highBtag = -5.0
 	secondBtag = -5.0
@@ -1647,7 +1852,7 @@ def GetHHJets(jets,btagScores):
 			secondBtagCounter = i
 	[bjet1,bjet2] = [jets[highBtagCounter],jets[secondBtagCounter]]
 	#if v == '' : print 'bjet counters',highBtagCounter,secondBtagCounter
-	gotJet1=False
+	gotJet1,gotJet2=False,False
 	[jet1Btag,jet2Btag]=[-5.0,-5.0]
 	for i in range(len(jets)):
 		if i==highBtagCounter or i==secondBtagCounter:
@@ -1657,14 +1862,146 @@ def GetHHJets(jets,btagScores):
 			gotJet1=True
 			jet1Btag = btagScores[i]
 			continue
-		jet2=jets[i]
-		jet2Btag = btagScores[i]
+		if not gotJet2:
+			jet2=jets[i]
+			jet2Btag = btagScores[i]
+			continue
+		jet3=jets[i]
 		break
 	#if v == '' : 
 	#	print 'pts:',bjet1.Pt(),bjet2.Pt(),jet1.Pt(),jet2.Pt()
 	#	print 'btag scores:', highBtag,secondBtag,jet1Btag,jet2Btag
-	return [bjet1,highBtag,bjet2,secondBtag,jet1,jet2]
+	return [bjet1,highBtag,bjet2,secondBtag,jet1,jet2,jet3]
 
+def GetHHJets2(jets,btagScores,muon1,muon2):
+        #Purpose: select which jets to use for HH analysis, separating bJets from light jets. Note that jets have already been cleaned from muons and electrons in cone of 0.3.
+	EmptyLorentz = TLorentzVector()
+	EmptyLorentz.SetPtEtaPhiM(.01,0,0,0)
+        [bjet1,bjet2,jet1,jet2,jet3]=[EmptyLorentz,EmptyLorentz,EmptyLorentz,EmptyLorentz,EmptyLorentz]
+	#if v == '' : print len(jets)
+	#highBtag = -5.0
+	#secondBtag = -5.0
+	#highBtagCounter = -1
+	#secondBtagCounter = -1
+
+
+	jet1index, jet2index, bjet1index, bjet2index, closestZ = -1,-1,-1,-1,999.
+	for i in range(len(jets)-1) :
+		for j in range(i+1,len(jets)) :
+			if i>=j: continue
+			if abs((muon1+muon2+jets[i]+jets[j]).M()-125) < closestZ :
+				closestZ = abs((muon1+muon2+jets[i]+jets[j]).M()-125)
+				jet1index,jet2index = i,j
+				jet1, jet2 = jets[i], jets[j]
+			#if j+2==len(jets) : break
+	#if v=='': print jet1index,jet2index,(muon1+muon2+jets[jet1index]+jets[jet2index]).M()
+
+	gotbjet1,gotbjet2,jet1Btag,jet2Btag = False,False,0.,0.
+	for i in range(len(jets)):
+		if i==jet1index or i==jet2index: continue
+		if not gotbjet1:
+			bjet1=jets[i]
+			gotbjet1=True
+			jet1Btag = btagScores[i]
+			bjet1index = i
+			continue
+		if not gotbjet2:
+			bjet2=jets[i]
+			gotbjet2=True
+			jet2Btag = btagScores[i]
+			bjet2index = i
+			continue
+		break
+
+	#if v == '' : 
+	#	print 'pts:',bjet1.Pt(),bjet2.Pt(),jet1.Pt(),jet2.Pt()
+	#	print 'btag scores:', highBtag,secondBtag,jet1Btag,jet2Btag
+	return [bjet1,jet1Btag,bjet2,jet2Btag,jet1,jet2,jet3]
+
+def GetHHJets3(jets,btagScores):
+        #Purpose: select which jets to use for HH analysis, separating bJets from light jets. Note that jets have already been cleaned from muons and electrons in cone of 0.3.
+	EmptyLorentz = TLorentzVector()
+	EmptyLorentz.SetPtEtaPhiM(.01,0,0,0)
+        [bjet1,bjet2,jet1,jet2,jet3]=[EmptyLorentz,EmptyLorentz,EmptyLorentz,EmptyLorentz,EmptyLorentz]
+	#if v == '' : print len(jets)
+	highBtag = -5.0
+	secondBtag = -5.0
+	highBtagCounter = -1
+	secondBtagCounter = -1
+	"""
+	bjets = []
+	for n in range(len(jets)) :
+		if btagScores[n]>0.605 :
+			bjets.append[n]
+	"""
+	jet1index, jet2index, bjet1index, bjet2index, closestZ, closestH = -1,-1,-1,-1,999.,999.
+	gotBs = False
+
+	for i in range(len(jets)-1) :
+		for j in range(i+1,len(jets)) :
+			if i>=j: continue
+			if btagScores[i]>0. and btagScores[j]>0. :
+				if abs((jets[i]+jets[j]).M()-125) < closestH :
+					closestH = abs((jets[i]+jets[j]).M()-125)
+					bjet1index,bjet2index = i,j
+					highBtagCounter,secondBtagCounter = i,j
+					bjet1, bjet2 = jets[i], jets[j]
+					highBtag, secondBtag = btagScores[i],btagScores[j]
+					gotBs = True
+	if not gotBs :
+		for i in range(len(btagScores)) :
+			if btagScores[i]>highBtag:
+				highBtag = btagScores[i]
+				highBtagCounter = i
+		for i in range(len(btagScores)) :
+			if  btagScores[i]>secondBtag and btagScores[i]<highBtag:
+				secondBtag = btagScores[i]
+				secondBtagCounter = i
+		[bjet1,bjet2] = [jets[highBtagCounter],jets[secondBtagCounter]]
+			#if j+2==len(jets) : break
+	#if v=='': print jet1index,jet2index,(muon1+muon2+jets[jet1index]+jets[jet2index]).M()
+
+	gotJet1,gotJet2=False,False
+	[jet1Btag,jet2Btag]=[-5.0,-5.0]
+	for i in range(len(jets)):
+		if i==highBtagCounter or i==secondBtagCounter:
+			continue
+		if not gotJet1:
+			jet1=jets[i]
+			gotJet1=True
+			jet1Btag = btagScores[i]
+			continue
+		if not gotJet2:
+			jet2=jets[i]
+			jet2Btag = btagScores[i]
+			continue
+		jet3=jets[i]
+		break
+
+	#if v == '' : 
+	#	print 'pts:',bjet1.Pt(),bjet2.Pt(),jet1.Pt(),jet2.Pt()
+	#	print 'btag scores:', highBtag,secondBtag,jet1Btag,jet2Btag
+	return [bjet1,highBtag,bjet2,secondBtag,jet1,jet2,jet3]
+
+def getCosThetaStar_CS(h1, h2, ebeam = 6500.) :
+	#cos theta star angle in the Collins Soper frame
+	p1, p2, hh = TLorentzVector(), TLorentzVector(), TLorentzVector()
+	p1.SetPxPyPzE(0, 0,  ebeam, ebeam)
+	p2.SetPxPyPzE(0, 0, -ebeam, ebeam)
+	
+	hh = h1 + h2
+
+	boost = TVector3(- hh.BoostVector())	
+	#boost = - hh.BoostVector();
+	p1.Boost(boost);
+	p2.Boost(boost);
+	h1.Boost(boost);
+	
+	#TVector3 CSaxis = p1.Vect().Unit() - p2.Vect().Unit()
+	CSaxis = TVector3(p1.Vect().Unit() - p2.Vect().Unit())
+	CSaxis.Unit();
+	
+	return math.cos(   CSaxis.Angle( h1.Vect().Unit() )    );
 
 
 
@@ -1687,10 +2024,12 @@ def FullKinematicCalculation(T,variation):
 	# MET as a vector
 	met = MetVector(T)
 	# ID Muons,Electrons
-	[muons,goodmuoninds,met,trkisos,charges,dpts,chi2,pfid,layers] = TightHighPtIDMuons(T,met,variation,T.isData)
+	[muons,goodmuoninds,met,trkisos,charges,dpts,chi2,pfid,layers] = MediumIDMuons(T,met,variation,T.isData)
+	#[muons,goodmuoninds,met,trkisos,charges,dpts,chi2,pfid,layers] = TightHighPtIDMuons(T,met,variation,T.isData)
 	# muons_forjetsep = MuonsForJetSeparation(T)
 	# taus_forjetsep = TausForJetSeparation(T)
-	[electrons,electroninds,met] = HEEPElectrons(T,met,variation)
+	#[electrons,electroninds,met] = HEEPElectrons(T,met,variation)
+	[electrons,electroninds,met] = TightElectrons(T,met,variation)
 	# ID Jets and filter from leptons
 	[jets,jetinds,met,failthreshold,neutralhadronEF,neutralemEF,btagCSVscores] = LooseIDJets(T,met,variation,T.isData)
 	# jets = GeomFilterCollection(jets,muons_forjetsep,0.5)
@@ -1746,13 +2085,18 @@ def FullKinematicCalculation(T,variation):
 			_ismuon_muon2 = 0.0
 		else:
 			muons[1] = muons[0]
-			muons[0] = electrons[0]
+			muons[0] = eletrons[0]
 			_ismuon_muon1=0.0
 
 	[_genMuons,_matchedRecoMuons,muonInd] = MuonsFromLQ(T)
 	[_genJets,_matchedRecoJets,jetInd] = JetsFromLQ(T)
 	[_genMuonsZ,_matchedRecoMuonsZ,muonIndZ,_genElectronsZ,_matchedRecoElectronsZ,electronIndZ,_genJetsH,_matchedRecoJetsH,jetIndH,_genJetsZ,_matchedRecoJetsZ,jetIndZ,onShellZMu,onShellZEle] = LeptonsAndJetsFromHH(T)
-	#print 'muon index:',muonInd,'  jet index:',jetInd
+	"""
+	if variation=='':
+		print 'bjet indices:',jetIndH
+		print ' jet indices:',jetIndZ
+		print ''
+	"""
 	_muonInd1=muonInd[0]
 	_muonInd2=muonInd[1]
 	_jetInd1=jetInd[0]
@@ -1784,7 +2128,6 @@ def FullKinematicCalculation(T,variation):
 	_steejj = ST([electrons[0],electrons[1],jets[0],jets[1]])
 	_stevjj = ST([electrons[0],met,jets[0],jets[1]])
 
-
 	_Muu = (muons[0]+muons[1]).M()
 	_MTuv = TransMass(muons[0],met)
 	_Mjj = (jets[0]+jets[1]).M()
@@ -1792,6 +2135,9 @@ def FullKinematicCalculation(T,variation):
 	_DPHIuv = abs((muons[0]).DeltaPhi(met))
 	_DPHIj1v = abs((jets[0]).DeltaPhi(met))
 	_DPHIj2v = abs((jets[1]).DeltaPhi(met))
+
+	_Mee = (electrons[0]+electrons[1]).M()
+	_DRee = (electrons[0]).DeltaR(electrons[1])
 
 	_DRu1j1 = abs(muons[0].DeltaR(jets[0]))
 	_DRu1j2 = abs(muons[0].DeltaR(jets[1]))
@@ -1854,7 +2200,7 @@ def FullKinematicCalculation(T,variation):
 
 	[_Muujj1, _Muujj2,_MHuujj] = GetLLJJMasses(muons[0],muons[1],jets[0],jets[1])
 
-	_Muujj = (muons[0]+muons[1]+jets[0]+jets[1]).M()
+	#_Muujj = (muons[0]+muons[1]+jets[0]+jets[1]).M()
 
 
 	if len(electrons)>=1 :
@@ -1865,7 +2211,17 @@ def FullKinematicCalculation(T,variation):
 		_pte1 = 0.
 
 
-	[bjet1,bscore1,bjet2,bscore2,jet1,jet2] = GetHHJets(jets,btagCSVscores)
+	[bjet1,bscore1,bjet2,bscore2,jet1,jet2,jet3] = GetHHJets(jets,btagCSVscores)
+	[bjet1_2,bscore1_2,bjet2_2,bscore2_2,jet1_2,jet2_2,jet3_2] = GetHHJets2(jets,btagCSVscores,muons[0],muons[1])
+	[bjet1_3,bscore1_3,bjet2_3,bscore2_3,jet1_3,jet2_3,jet3_3] = GetHHJets3(jets,btagCSVscores)
+
+	"""
+	if muons[0].Pt()>20 and muons[1].Pt()>10 and variation=='':
+		print '1: bjet1score, bjet2score, Hmass, Zmass, ZMuMass, uu4jMass = ',bscore1,bscore2,(bjet1+bjet2).M(),(jet1+jet2).M(),(muons[0]+muons[1]).M(),(muons[0]+muons[1]+jet1+jet2).M()
+		print '2:                                                           ',bscore1_2,bscore2_2,(bjet1_2+bjet2_2).M(),(jet1_2+jet2_2).M(),(muons[0]+muons[1]).M(),(muons[0]+muons[1]+jet1_2+jet2_2).M()
+		print '3:                                                           ',bscore1_3,bscore2_3,(bjet1_3+bjet2_3).M(),(jet1_3+jet2_3).M(),(muons[0]+muons[1]).M(),(muons[0]+muons[1]+jet1_3+jet2_3).M()
+		print ''	
+	"""
 
 	[_Muu4j,_Mee4j,_Mll4j] = [0., 0., 0.]
 	#if len(jets)>=4 and ( len(muons)>=2 or len(electrons)>=2 ):
@@ -1885,8 +2241,14 @@ def FullKinematicCalculation(T,variation):
 		_Mll4j = (muons[0]+muons[1]+bjet1+bjet2+jet1+jet2).M()
 	elif _pte1 > _ptmu1 and len(electrons)>=2 :
 		_Mll4j = (electrons[0]+electrons[1]+bjet1+bjet2+jet1+jet2).M()
+	_Muujj = (muons[0]+muons[1]+jet1+jet2).M()
 	_Mbb_H = (bjet1+bjet2).M()
+	_dRbb_H = abs(bjet1.DeltaR(bjet2))
+	_dPhibb_H = abs(bjet1.DeltaPhi(bjet2))
 	_Mjj_Z = (jet1+jet2).M()
+	_Mjj_Z_3jet = min(abs((jet1+jet2).M()-91.),abs((jet1+jet3).M()-91.),abs((jet2+jet3).M()-91.))
+	_dRjj_Z = abs(jet1.DeltaR(jet2))
+	_dPhijj_Z = abs(jet1.DeltaPhi(jet2))
 	[_Pt_Hjet1,_Pt_Hjet2,_Pt_Zjet1,_Pt_Zjet2] = [bjet1.Pt(),bjet2.Pt(),jet1.Pt(),jet2.Pt()]
 	[_Pt_Hjets,_Pt_Zjets] = [(bjet1+bjet2).Pt(),(jet1+jet2).Pt()]
 	[_Pt_uu,_Pt_ee] = [(muons[0]+muons[1]).Pt(),(electrons[0]+electrons[1]).Pt()]
@@ -1896,9 +2258,23 @@ def FullKinematicCalculation(T,variation):
 	elif _pte1 > _ptmu1 and len(electrons)>=2 :
 		_Pt_ll = (electrons[0]+electrons[1]).Pt()
 
+	_dRuubb_H = abs((muons[0]+muons[1]).DeltaR(bjet1+bjet2))
+	_dRuujj_Z = abs((muons[0]+muons[1]).DeltaR(jet1+jet2))
+	_dPHIuubb_H = abs((muons[0]+muons[1]).DeltaPhi(bjet1+bjet2))
+	_dPHIuujj_Z = abs((muons[0]+muons[1]).DeltaR(jet1+jet2))
+
+	_dReebb_H = abs((electrons[0]+electrons[1]).DeltaR(bjet1+bjet2))
+	_dReejj_Z = abs((electrons[0]+electrons[1]).DeltaR(jet1+jet2))
+	_dPHIeebb_H = abs((electrons[0]+electrons[1]).DeltaPhi(bjet1+bjet2))
+	_dPHIeejj_Z = abs((electrons[0]+electrons[1]).DeltaR(jet1+jet2))
+
+	_minDRuj = abs(min(muons[0].DeltaR(jet1),muons[0].DeltaR(jet2),muons[1].DeltaR(jet1),muons[1].DeltaR(jet2)))
+	_minDRej = abs(min(electrons[0].DeltaR(jet1),electrons[0].DeltaR(jet2),electrons[1].DeltaR(jet1),electrons[1].DeltaR(jet2)))
+
+	_cosThetaStar = getCosThetaStar_CS(bjet1+bjet2,muons[0]+muons[1]+jet1+jet2)
 
 	didMuon = False
-	[ _Muu4j_gen,_Mee4j_gen,_Mll4j_gen,_Muu4j_genMatched,_Mee4j_genMatched,_Mll4j_genMatched]=[0.,0.,0.,0.,0.,0.]
+	_Muu4j_gen,_Mee4j_gen,_Mll4j_gen,_Muu4j_genMatched,_Mee4j_genMatched,_Mll4j_genMatched = 0.,0.,0.,0.,0.,0.
 
 	#if v == '' : print 'Gen level ZJets:',len(_genJetsZ),'HJets:',len(_genJetsH),'ZMuons:',len(_genMuonsZ),'ZElectrons:',len(_genElectronsZ)
 	if len(_genJetsZ)>=2 and len(_genJetsH)>=2 and len(_genMuonsZ)>=2 :
@@ -1918,7 +2294,14 @@ def FullKinematicCalculation(T,variation):
 		_Mee4j_genMatched = (_matchedRecoJetsZ[0]+_matchedRecoJetsZ[1]+_matchedRecoJetsH[0]+_matchedRecoJetsH[1]+_matchedRecoElectronsZ[0]+_matchedRecoElectronsZ[1]).M()
 		_Mll4j_genMatched = (_matchedRecoJetsZ[0]+_matchedRecoJetsZ[1]+_matchedRecoJetsH[0]+_matchedRecoJetsH[1]+_matchedRecoElectronsZ[0]+_matchedRecoElectronsZ[1]).M()
 
-
+	_Mjj_Z_gen, _Mbb_H_gen, _Mjj_Z_genMatched, _Mbb_H_genMatched = 0.,0.,0.,0.
+	if len(_genJetsZ)>=2 and len(_genJetsH)>=2 :
+		_Mjj_Z_gen = (_genJetsZ[0]+_genJetsZ[1]).M()
+		_Mbb_H_gen = (_genJetsH[0]+_genJetsH[1]).M()
+	if len(_matchedRecoJetsZ)>=2 and len(_matchedRecoJetsH)>=2 :
+		_Mjj_Z_genMatched = (_matchedRecoJetsZ[0]+_matchedRecoJetsZ[1]).M()
+		_Mbb_H_genMatched = (_matchedRecoJetsH[0]+_matchedRecoJetsH[1]).M()
+	
 	[[_MTuvjj1, _MTuvjj2], [_Muvjj, _MTuvjj],_MHuvjj] = GetLVJJMasses(muons[0],met,jets[0],jets[1])
 
 	[_Meejj1, _Meejj2,_MHeejj] = GetLLJJMasses(electrons[0],electrons[1],jets[0],jets[1])
@@ -1928,7 +2311,6 @@ def FullKinematicCalculation(T,variation):
 
 	[_Muujj1_rel, _Muujj2_rel,_MHuujj_rel] = GetLLJJMassesRelative(muons[0],muons[1],jets[0],jets[1])
 	_Muujjavg_rel = 0.5*(_Muujj1_rel+_Muujj2_rel)
-
 
 
 	if _ptmu1>42 and  _ptmu2>42 and _ptmet>35 and _ptj1>110 and _ptj2>40 and _stuujj>250 and _stuvjj>250:
@@ -1958,6 +2340,7 @@ def FullKinematicCalculation(T,variation):
 	toreturn += [_stuujj,_stuvjj]
 	toreturn += [_steejj,_stevjj]
 	toreturn += [_Muu,_MTuv]
+	toreturn += [_Mee]
 	toreturn += [_Mjj]
 	toreturn += [_DRuu,_DPHIuv,_DPHIj1v,_DPHIj2v]
 	toreturn += [_DRu1j1,_DRu1j2,_DRu2j1,_DRu2j2]
@@ -1970,9 +2353,16 @@ def FullKinematicCalculation(T,variation):
 	toreturn += [_Muujj1, _Muujj2,_Muujjavg]
 	toreturn += [_Muujj1_rel, _Muujj2_rel,_Muujjavg_rel]
 	toreturn += [_Muujj, _Muu4j, _Mee4j, _Mll4j]
-	toreturn += [_Mbb_H,_Mjj_Z]
+	toreturn += [_Mbb_H,_Mjj_Z,_Mjj_Z_3jet]
+	toreturn += [_Mbb_H_gen,_Mjj_Z_gen]
+	toreturn += [_Mbb_H_genMatched,_Mjj_Z_genMatched]
+	toreturn += [_cosThetaStar]
 	toreturn += [_Pt_Hjet1,_Pt_Hjet2,_Pt_Zjet1,_Pt_Zjet2]
 	toreturn += [_Pt_Hjets,_Pt_Zjets,_Pt_uu,_Pt_ee,_Pt_ll]
+	toreturn += [_dRjj_Z,_dRbb_H,_dRuubb_H,_dRuujj_Z,_dPHIuubb_H,_dPHIuujj_Z]
+	toreturn += [_dPhijj_Z,_dPhibb_H]
+	toreturn += [_dReebb_H,_dReejj_Z,_dPHIeebb_H,_dPHIeejj_Z]
+	toreturn += [_minDRuj,_minDRej]
 	toreturn += [_Muu4j_gen,_Muu4j_genMatched]
 	toreturn += [_Mee4j_gen,_Mee4j_genMatched]
 	toreturn += [_Mll4j_gen,_Mll4j_genMatched]
@@ -2072,6 +2462,9 @@ for n in range(N):
 
 	if t.isData == True:
 		Branches['pass_HLTMu45_eta2p1'][0] = PassTrigger(t,["HLT_Mu45_eta2p1_v"],1)         # Data Only
+		Branches['pass_HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_DZ'][0] = PassTrigger(t,["HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v"],1)         # Data Only
+		Branches['pass_HLT_Ele16_Ele12_Ele8_CaloIdL_TrackIdL'][0] = PassTrigger(t,["HLT_Ele16_Ele12_Ele8_CaloIdL_TrackIdL_v"],1)         # Data Only
+		Branches['pass_HLT_Mu17_Mu8'][0] = PassTrigger(t,["HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v"],1) + PassTrigger(t,["HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v"],1)          # Data Only
 		Branches['passTriggerObjectMatching'][0]  = 1*(True in t.MuonHLTSingleMuonMatched)  # Data Only
 		Branches['passBPTX0'][0]                  = 1*(t.isBPTX0)          # Unused, Data only: MC = 0
 		Branches['passBeamScraping'][0]           = 1#*(1-t.isBeamScraping) # Used, Data only #fixme todo removed because it wasnt found
@@ -2083,7 +2476,11 @@ for n in range(N):
 		Branches['passPhysDeclared'][0]           = 1*(t.isPhysDeclared)
 
 	else:
-		Branches['pass_HLTMu40_eta2p1'][0] = PassTrigger(t,["HLT_Mu45_eta2p1_v"],1)        
+		Branches['pass_HLTMu45_eta2p1'][0] = PassTrigger(t,["HLT_Mu45_eta2p1_v"],1)   
+		Branches['pass_HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_DZ'][0] = PassTrigger(t,["HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v"],1)         # Data Only
+		Branches['pass_HLT_Ele16_Ele12_Ele8_CaloIdL_TrackIdL'][0] = PassTrigger(t,["HLT_Ele16_Ele12_Ele8_CaloIdL_TrackIdL_v"],1)         # Data Only
+		Branches['pass_HLT_Mu17_Mu8'][0] = PassTrigger(t,["HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v"],1) + PassTrigger(t,["HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v"],1)          # Data Only
+
 		Branches['passTriggerObjectMatching'][0]  = 1
 		Branches['passBPTX0'][0]                  = 1
 		Branches['passBeamScraping'][0]           = 1
@@ -2127,17 +2524,16 @@ for n in range(N):
 	# BE MINDFUL: Just because the central (non-systematic) quantity meets the skim, does not mean 
 	# that the systematic varied quantity will, and that will throw off systematics calculations later.
 	# Make sure your skim is looser than any selection you will need afterward!
-
-	#fixme turning off skim for now
-	"""
-	if (Branches['Pt_muon1'][0] < 45): continue
-	if nonisoswitch != True:
-			if (Branches['Pt_muon2'][0] < 45) and (Branches['Pt_miss'][0] < 45): continue
-	if (Branches['Pt_jet1'][0] <  45): continue
-	if (Branches['Pt_jet2'][0] <  45): continue
-	if (Branches['St_uujj'][0] < 260) and (Branches['St_uvjj'][0] < 260): continue
-	if (Branches['M_uu'][0]    <  45) and (Branches['MT_uv'][0]   <  45): continue
-	"""
+	
+	if (Branches['Pt_muon1'][0] < 16) and (Branches['Pt_ele1'][0] < 16) : continue
+	if (Branches['Pt_muon2'][0] < 8)  and (Branches['Pt_ele2'][0] < 12) : continue
+	#if nonisoswitch != True:
+	#		if (Branches['Pt_muon2'][0] < 45) and (Branches['Pt_miss'][0] < 45): continue
+	if (Branches['Pt_jet1'][0] <  16): continue
+	if (Branches['Pt_jet2'][0] <  16): continue
+	#if (Branches['St_uujj'][0] < 260) and (Branches['St_uvjj'][0] < 260): continue
+	#if (Branches['M_uu'][0]    <  45) and (Branches['MT_uv'][0]   <  45): continue
+	
 	# Fill output tree with event
 	tout.Fill()
 

@@ -417,7 +417,7 @@ def main():
 	# This is a testing plot routine for use with the new Displaced SUSY (l+b) samples
         # Following samples are still missing: 
 	# ====================================================================================================================================================== #
-	if True :
+	if False :
 
 		# Some modifications to the ST and LQ mass binning
 		bjetbinning = [0,.05]
@@ -524,7 +524,7 @@ def main():
 	# ====================================================================================================================================================== #
 	# This is a basic plotting routine to make Analysis Note style plots with ratio plots. AN Analysis-Note
 	# ====================================================================================================================================================== #
-	if False :
+	if True :
 		global preselectionmumu 
 		# Some modifications to the ST and LQ mass binning
 		bjetbinning = [0,.05]

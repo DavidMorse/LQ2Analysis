@@ -281,7 +281,7 @@ _pdfweightsnames = GetPDFWeightVars(t)
 # First create the output file. 
 tmpfout = str(randint(100000000,1000000000))+indicator+'.root'
 if '/store' in name:
-	finalfout = options.dir+'/'+(name.split('/')[-4]+'__'+name.split('/')[-1].replace('.root','_tree.root'))#changed -2 to -4 to get dataset name instead of 0000
+	finalfout = options.dir+'/'+(name.split('/')[-5]+'__'+name.split('/')[-1].replace('.root','_tree.root'))#changed -2 to -5 to get dataset name instead of 0000
 else:
 	finalfout = options.dir+'/'+name.replace('.root','_tree.root')
 
