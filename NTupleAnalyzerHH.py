@@ -5,32 +5,33 @@ sys.argv.append( '-b True' )
 from ROOT import *
 import array
 import math
-from optparse import OptionParser
+from argparse import ArgumentParser
 tRand = TRandom3()
 from random import randint
-import os
 
 ##########################################################################################
 #################      SETUP OPTIONS - File, Normalization, etc    #######################
 ##########################################################################################
 
 # Input Options - file, cross-section, number of events
-parser = OptionParser()
-parser.add_option("-f", "--file", dest="filename", help="input root file", metavar="FILE")
-parser.add_option("-b", "--batch", dest="dobatch", help="run in batch mode", metavar="BATCH")
-parser.add_option("-s", "--sigma", dest="crosssection", help="specify the process cross-section", metavar="SIGMA")
-parser.add_option("-n", "--ntotal", dest="ntotal", help="total number of MC events for the sample", metavar="NTOTAL")
-parser.add_option("-l", "--lumi", dest="lumi", help="integrated luminosity for data taking", metavar="LUMI")
-parser.add_option("-j", "--json", dest="json", help="json file for certified run:lumis", metavar="JSON")
-parser.add_option("-d", "--dir", dest="dir", help="output directory", metavar="DIR")
-parser.add_option("-p", "--pdf", dest="pdf", help="option to produce pdf uncertainties", metavar="PDF")
+parser = ArgumentParser()
+parser.add_argument("-f", "--file", dest="filename", help="input root file", metavar="FILE")
+parser.add_argument("-b", "--batch", dest="dobatch", help="run in batch mode", metavar="BATCH")
+parser.add_argument("-s", "--sigma", dest="crosssection", help="specify the process cross-section", metavar="SIGMA")
+parser.add_argument("-n", "--ntotal", dest="ntotal", help="total number of MC events for the sample", metavar="NTOTAL")
+parser.add_argument("-l", "--lumi", dest="lumi", help="integrated luminosity for data taking", metavar="LUMI")
+parser.add_argument("-j", "--json", dest="json", help="json file for certified run:lumis", metavar="JSON")
+parser.add_argument("-d", "--dir", dest="dir", help="output directory", metavar="DIR")
+parser.add_argument("-p", "--pdf", dest="pdf", help="option to produce pdf uncertainties", metavar="PDF")
 
 
-(options, args) = parser.parse_args()
+options = parser.parse_args()
 dopdf = int(options.pdf)==1
 
 # Here we get the file name, and adjust it accordingly for EOS, castor, or local directory
 name = options.filename
+amcNLOname = options.filename
+
 if '/store' in name:
 	name = 'root://eoscms//eos/cms'+name
 if '/castor/cern.ch' in name:
@@ -443,6 +444,7 @@ def GetRunLumiEventListNew(fileName):
 def GetRunLumiEventList(fileName):
 	#n=0
 	#Purpose: parse a met filter event list to get a BAD list of run:lumi:event.  For real data only
+	global options
 	mfile = open(fileName,'r')
 	run=''
 	lumi=''
@@ -2510,7 +2512,6 @@ for n in range(N):
 	Branches['weight_central_2012D'][0] = startingweight*GetPUWeight(t,'Central','2012D')
 	Branches['weight_nopu'][0] = startingweight
 	Branches['weight_topPt'][0]=t.GenParticleTopPtWeight
-	amcNLOname = options.filename
 	if 'amcatnlo' in amcNLOname :
 		Branches['weight_central'][0]*=t.amcNLOWeight
 		Branches['weight_pu_down'][0]*=t.amcNLOWeight
@@ -2645,6 +2646,7 @@ fout.Close()
 # Timing, for debugging and optimization
 print(datetime.now()-startTime)
 
+import os
 print ('mv '+tmpfout+' '+finalfout)
 os.system('mv '+tmpfout+' '+finalfout)
 os.system('rm '+junkfile1)
