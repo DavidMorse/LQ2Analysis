@@ -152,13 +152,13 @@ def GetGoodFiles(edir):
 	def GetSpaceUse():
 		#print 'edir',edir
 		#command =  'cmsLs -R '+edir + '| grep root | grep -v failed'
-		command =  '/afs/cern.ch/project/eos/installation/0.3.84-aquamarine/bin/eos.select find '+edir + '| grep root | grep -v failed'
+		command =  '/afs/cern.ch/project/eos/installation/0.3.121-aquamarine/bin/eos.select find '+edir + '| grep root | grep -v failed'
 		dircont = [ x.replace('\n','') for x in os.popen(command).readlines()]
 		print 'Total files (', len(dircont),') reduced to ',
 		
 		gooddircont = []
 		for d in dircont:
-			# print d
+			#print d
 			isgoodcont = False
 			for mm in mastersubdirs:
 				# print mm
@@ -396,7 +396,8 @@ def MakeJobs(njobs):
 		Nj += 1
 		subber = open(thiseos+'/subber_'+str(Nj)+'.tcsh','w')
 		#subber.write('#!/bin/tcsh\n\nscram project CMSSW CMSSW_5_3_18\ncd CMSSW_5_3_18/src\ncmsenv\ncd -\n\n')
-		subber.write('#!/bin/tcsh\n\nscram project CMSSW CMSSW_7_4_16\ncd CMSSW_7_4_16/src\ncmsenv\ncd -\n\n')
+		#subber.write('#!/bin/tcsh\n\nscram project CMSSW CMSSW_7_4_16\ncd CMSSW_7_4_16/src\ncmsenv\ncd -\n\n')
+		subber.write('#!/bin/tcsh\n\nscram project CMSSW CMSSW_8_0_20\ncd CMSSW_8_0_20/src\ncmsenv\ncd -\n\n')
 		subber.write('\ncp '+thisdir+'/'+pyfile+' .')
 		subber.write('\ncp '+thisdir+'/'+json+' .')
 		subber.write('\ncp '+thisdir+'/*json .')
@@ -503,7 +504,7 @@ if 'Counter' in pyfile:
 			scount = float(scount)
 			OCount += scount
 
-		Ostr = str(SignalType[x]) +' , '+ str(OCount)+'\n'
+		Ostr = str(SignalType[x]) +' , '+ str(int(OCount))+'\n'
 		countlog.write(Ostr)
 	countlog.close()
 	os.system('cat '+thisdir+ '/'+ifile.replace('.','_EventCountLog.'))
@@ -526,7 +527,7 @@ def splithadd(hstring):
 		morefiles = files = [x.replace('\n','') for x in os.popen('find '+a).readlines()]
 		allfiles += morefiles
 
-	fileblocks = listsplit(allfiles,500)
+	fileblocks = listsplit(allfiles,200)
 
 	haddout = hstring.split( ' ' )[1]
 
@@ -540,7 +541,6 @@ def splithadd(hstring):
 		for b in block:
 			HADD += ' '+b
 			rmcoms.append('rm '+b)
-
 		os.system( HADD )
 		if '--forceDelete' in sys.argv:
 			for rmcom in rmcoms:

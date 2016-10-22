@@ -42,7 +42,7 @@ lqtype = 'LQ'
 
 cdir = ''
 
-fullcardfile = 'FinalCardsLQ.txt'
+fullcardfile = 'FinalCardsLQ_one9thPlusTaus.txt'
 
 if 'do_BetaOne' in str(sys.argv):
 	do_BetaOne = 1
@@ -222,7 +222,12 @@ if do_BetaOne == 1:
 		## Estimate the r values with Asymptotic CLs
 		EstimationInformation = [' r < 0.000000']
 		if 'LQ' in lqtype:
-			rmax = float(name[x].replace('LQ_M_',''))/40.#fixme was 10000.0
+			if float(name[x].replace('LQ_M_',''))<900:
+				rmax = float(name[x].replace('LQ_M_',''))/100.#fixme was 10000.0
+			elif float(name[x].replace('LQ_M_',''))<1200:
+				rmax = float(name[x].replace('LQ_M_',''))/10.#fixme was 10000.0
+			else:
+				rmax = float(name[x].replace('LQ_M_',''))/4.#fixme was 10000.0
 		if 'BL' in lqtype:
 			rmax = float(name[x].replace('BLCTau'+ctau+'_M_',''))/40.#fixme was 10000.0
 			if '1000' in ctau: rmax = 50000.0
@@ -232,13 +237,14 @@ if do_BetaOne == 1:
 
 		while 'r < 0.000000' in str(EstimationInformation):
 			ntry += 1
-			print ('combine '+ESTIMATIONMETHOD+' CLSLimits/BetaOne'+cdir+'/confbetaone_'+cdir+'_'+name[x]+'.cfg --rMax '+str(rmax)+'  --rAbsAcc .0000005')
-			EstimationInformation = os.popen('combine '+ESTIMATIONMETHOD+' CLSLimits/BetaOne'+cdir+'/confbetaone_'+cdir+'_'+name[x]+'.cfg --rMax '+str(rmax)+' --rAbsAcc .0005').readlines()
+			rAbsAcc='.00005'
+			print ('combine '+ESTIMATIONMETHOD+' CLSLimits/BetaOne'+cdir+'/confbetaone_'+cdir+'_'+name[x]+'.cfg --rMax '+str(rmax)+'  --rAbsAcc '+rAbsAcc)
+			EstimationInformation = os.popen('combine '+ESTIMATIONMETHOD+' CLSLimits/BetaOne'+cdir+'/confbetaone_'+cdir+'_'+name[x]+'.cfg --rMax '+str(rmax)+' --rAbsAcc '+rAbsAcc).readlines()
 			#print ('combine '+METHOD.replace('SINGLEPOINT',str(rmax)).replace('CONFIGURATION','CLSLimits/BetaOne'+cdir+'/confbetaone_'+cdir+'_'+name[x]+'.cfg'))
 			#EstimationInformation = os.popen('combine '+METHOD.replace('SINGLEPOINT',str(rmax)).replace('CONFIGURATION','CLSLimits/BetaOne'+cdir+'/confbetaone_'+cdir+'_'+name[x]+'.cfg')).readlines()
 
 			
-			if abs(rmax - oldrmax)<.01*rmax:
+			if abs(rmax - oldrmax)<.1*rmax:
 				breaker=True		
 				
 			if breaker ==True:
@@ -256,7 +262,7 @@ if do_BetaOne == 1:
 			oldrmax = float(rmax)
 
 			if effrmax < 0:
-				rmax = 0.7*rmax
+				rmax = 0.6*rmax
 			else:
 				rmax = effrmax*2.0
 
@@ -414,7 +420,7 @@ if do_BetaOne == 1:
 		for r in rvalues:
 			strRvalues.append(str(round(r,5)))
 		# print strRvalues
-		
+		"""
 		for r in strRvalues:
 			command = 'combine '+METHOD.replace('SINGLEPOINT',r).replace('CONFIGURATION','confbetaone_'+cdir+'_'+name[x]+'.cfg')
 			strR = r.replace('.','_')
@@ -424,7 +430,7 @@ if do_BetaOne == 1:
 			for nn in range(numdo):
 				if (dobatch):
 					os.system('bsub -o /dev/null -e /dev/null -q '+queue+' -J jobbetaone'+str(nn)+'_R_'+strR+'_'+name[x]+' < ShellScriptsForBatch/subbetaone_'+strR+'_'+cdir+name[x]+'.csh')
-
+	       """
 if do_BetaHalf == 1:
 	masses_betahalf = []
 	for x in range(len(name)):

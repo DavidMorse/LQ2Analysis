@@ -16,11 +16,11 @@ from glob import glob
 #EMuDirectory  = 'NTupleAnalyzer_FullJuly24EMuSwitch_2014_07_25_03_54_54/SummaryFiles'
 #NormalDirectory='NTupleAnalyzer_FullJuly24_2014_07_24_17_24_05/SummaryFiles'
 
-#NormalDirectory = '/store/user/dmorse/leptoQuark/NTupleAnalyzer_Dec10_Spring2015Full_2015_12_10_18_03_45/SummaryFiles'
-NormalDirectory = '/media/data/dmorse/hhNtuples/NTupleAnalyzerHH_treeMaker_HH_2016_08_05_15_17_48/SummaryFiles'
-#NormalDirectory = '/store/user/dmorse/leptoQuark/NTupleAnalyzer_Full20Feb_2016_02_19_11_45_52/SummaryFiles'
+##NormalDirectory = '/store/user/dmorse/leptoQuark/NTupleAnalyzer_Dec10_Spring2015Full_2015_12_10_18_03_45/SummaryFiles'
+NormalDirectory = '/media/dataPlus/dmorse/hhNtuples/NTupleAnalyzerHH_hhMC_2016_09_29_23_19_12/SummaryFiles'
+##NormalDirectory = '/store/user/dmorse/leptoQuark/NTupleAnalyzer_Full20Feb_2016_02_19_11_45_52/SummaryFiles'
 QCDDirectory    = '/store/user/dmorse/leptoQuark/NTupleAnalyzer_Dec10_Spring2015Full_QCDNonIsoQuickTest_2015_12_11_11_39_40/SummaryFiles'
-#EMuDirectory    = '/store/user/dmorse/leptoQuark/NTupleAnalyzer_Dec10_Spring2015Full_EMuSwitch_2015_12_15_00_28_39/SummaryFiles'
+##EMuDirectory    = '/store/user/dmorse/leptoQuark/NTupleAnalyzer_Dec10_Spring2015Full_EMuSwitch_2015_12_15_00_28_39/SummaryFiles'
 EMuDirectory    = '/store/user/dmorse/leptoQuark/NTupleAnalyzer_FullFeb20_EMuSwitch_2016_02_20_14_25_20/SummaryFiles'
 
 #NormalDirectory = 'NTupleAnalyzer_Jan30_76X_FULL_2016_02_06_18_41_13/SummaryFiles'
@@ -33,8 +33,8 @@ TreeName = "PhysicalVariables"
 # Integrated luminosity for normalization
 #lumi =  2318.348
 #lumi = 2690.707
-lumi = 50000.0
-
+#lumi = 40000.0
+lumi = 21780.339
 
 #Muon HLT MC scale factor
 #https://twiki.cern.ch/twiki/bin/view/CMS/MuonReferenceEffsRun2
@@ -81,7 +81,8 @@ NormalWeightEMu = str(lumi)+'*weight_central'+singlemuHLTEMU#+MuIdScaleEMU+MuIso
 NormalWeightEMuNoHLT = str(lumi)+'*weight_central'
 
 # This is the real data trigger condition
-dataHLT = '*(pass_HLTMu45_eta2p1)'
+#dataHLT = '*(pass_HLTMu45_eta2p1)'
+dataHLT = '*(pass_HLT_Mu17_Mu8)'
 
 # This is the set of event filters used
 passfilter =  '*(passDataCert*passPrimaryVertex*(GoodVertexCount>=1))'
@@ -99,9 +100,9 @@ passfilter += '*(passBadMuonTrackList*passBadResTrackList)'#fixme need to remove
 
 # This defines the preselections for the mu-mu, mu-nu, and e-mu samples
 #preselectionmumu = '((Pt_muon1>50)*(Pt_muon2>50)*(Pt_jet1>50)*(Pt_jet2>50)*(St_uujj>300)*(M_uu>50))*(DR_muon1muon2>0.3)'#this is 2015 LQ2preselection
-preselectionmumu = '((Pt_muon1>20)*(Pt_muon2>10)*(Pt_Hjet1>25)*(Pt_Hjet2>25)*(Pt_Zjet1>20)*(Pt_Zjet2>20)*(CISV_bjet1>0.89)*(CISV_bjet2>0.89)*(Charge_muon1*Charge_muon2 < 2))'
-#preselectionmumu = '((Pt_muon1>20)*(Pt_muon2>10)*(Pt_Hjet1>20)*(Pt_Hjet2>20)*(Pt_Zjet1>20)*(Pt_Zjet2>20)*(CISV_bjet1>0.89)*(CISV_bjet2>0.89)*(Charge_muon1*Charge_muon2 < 0)*(DR_bb_H<3.6)*(DR_muon1muon2<3.5)*(DR_uu_bb_H<4)*(DR_uu_jj_Z<5)*(M_uu<105)*(abs(Mbb_H-125)<60)*(Pt_miss<100))'#playing with potential cuts
-#preselectionmumu = '((Pt_muon1>20)*(Pt_muon2>10)*(Pt_Hjet1>20)*(Pt_Hjet2>20)*(Pt_Zjet1>20)*(Pt_Zjet2>20)*(CISV_bjet1>0.89)*(CISV_bjet2>0.89)*(Charge_muon1*Charge_muon2 < 0)*(M_uu<100)*(Pt_miss<90))'#playing with potential cuts
+preselectionmumu = '((Pt_muon1>20)*(Pt_muon2>10)*(Pt_Hjet1>25)*(Pt_Hjet2>25)*(Pt_Zjet1>20)*(Pt_Zjet2>20)*(CISV_bjet1>0.8)*(CISV_bjet2>0.8)*(Charge_muon1*Charge_muon2 < 2))'
+#preselectionmumu = '((Pt_muon1>20)*(Pt_muon2>10)*(Pt_Hjet1>20)*(Pt_Hjet2>20)*(Pt_Zjet1>20)*(Pt_Zjet2>20)*(CISV_bjet1>0.8)*(CISV_bjet2>0.8)*(Charge_muon1*Charge_muon2 < 0)*(DR_bb_H<3.6)*(DR_muon1muon2<3.5)*(DR_uu_bb_H<4)*(DR_uu_jj_Z<5)*(M_uu<105)*(abs(Mbb_H-125)<60)*(Pt_miss<100))'#playing with potential cuts
+#preselectionmumu = '((Pt_muon1>20)*(Pt_muon2>10)*(Pt_Hjet1>20)*(Pt_Hjet2>20)*(Pt_Zjet1>20)*(Pt_Zjet2>20)*(CISV_bjet1>0.8)*(CISV_bjet2>0.8)*(Charge_muon1*Charge_muon2 < 0)*(M_uu<100)*(Pt_miss<90))'#playing with potential cuts
 preselectionmunu = '((Pt_muon1>50)*(Pt_muon2<50.0)*(Pt_miss>55)*(Pt_jet1>200)*(Pt_jet2>50)*(Pt_ele1<50.0)*(St_uvjj>300)*(DPhi_muon1met>0.8)*(DPhi_jet1met>0.5)*(MT_uv>50.0))'
 preselectionemu  = '((Pt_muon1>50)*(Pt_muon2>50)*(Pt_jet1>50)*(Pt_jet2>50)*(St_uujj>300)*(M_uu>50)*(DR_muon1muon2>0.3))'
 
@@ -285,7 +286,7 @@ def main():
 	# of running serially, which speeds things up.
 
 
-	version_name = 'Testing_diHiggs' # scriptflag
+	version_name = 'Testing_diHiggs_Oct5' # scriptflag
 	os.system('mkdir Results_'+version_name) 
 
 	MuMuOptCutFile = 'Results_'+version_name+'/OptLQ_uujjCuts_Smoothed_pol2cutoff.txt' # scriptflag
@@ -448,7 +449,7 @@ def main():
 
 		# Get Scale Factors
 		[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = GetMuMuScaleFactors( NormalWeightMuMu+'*'+preselectionmumu, NormalDirectory, '(M_uu>80)*(M_uu<100)', '(M_uu>100)',1)
-		[[Rw_uvjj,Rw_uvjj_err],[Rtt_uvjj,Rtt_uvjj_err]] = GetMuNuScaleFactors( NormalWeightMuNu+'*'+preselectionmunu, NormalDirectory, '(MT_uv>70)*(MT_uv<150)*(JetCount<3.5)*(((CISV_jet1>0.89)+(CISV_jet2>0.89))<1)', '(MT_uv>70)*(MT_uv<150)*(JetCount>3.5)*(((CISV_jet1>0.89)+(CISV_jet2>0.89))>=1)')#fixme todo varying control sample MT window
+		[[Rw_uvjj,Rw_uvjj_err],[Rtt_uvjj,Rtt_uvjj_err]] = GetMuNuScaleFactors( NormalWeightMuNu+'*'+preselectionmunu, NormalDirectory, '(MT_uv>70)*(MT_uv<150)*(JetCount<3.5)*(((CISV_jet1>0.8)+(CISV_jet2>0.8))<1)', '(MT_uv>70)*(MT_uv<150)*(JetCount>3.5)*(((CISV_jet1>0.8)+(CISV_jet2>0.8))>=1)')#fixme todo varying control sample MT window
 		
 
 		# UUJJ plots at preselection, Note that putting 'TTBarDataDriven' in the name turns on the use of data-driven ttbar e-mu sample in place of MC
@@ -567,13 +568,13 @@ def main():
 		#print lqbinning,stbinning
 		# Get Scale Factors
 		#[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = GetMuMuScaleFactors( NormalWeightMuMu+'*'+preselectionmumu, NormalDirectory, '(M_uu>80)*(M_uu<100)', '(M_uu>100)',1)
-		#[[Rw_uvjj,Rw_uvjj_err],[Rtt_uvjj,Rtt_uvjj_err]] = GetMuNuScaleFactors( NormalWeightMuNu+'*'+preselectionmunu, NormalDirectory, '(MT_uv>70)*(MT_uv<150)*(JetCount<3.5)*(((CISV_jet1>0.89)+(CISV_jet2>0.89))<1)', '(MT_uv>70)*(MT_uv<150)*(JetCount>3.5)*(((CISV_jet1>0.89)+(CISV_jet2>0.89))>=1)')#fixme todo varying control sample MT window
+		#[[Rw_uvjj,Rw_uvjj_err],[Rtt_uvjj,Rtt_uvjj_err]] = GetMuNuScaleFactors( NormalWeightMuNu+'*'+preselectionmunu, NormalDirectory, '(MT_uv>70)*(MT_uv<150)*(JetCount<3.5)*(((CISV_jet1>0.8)+(CISV_jet2>0.8))<1)', '(MT_uv>70)*(MT_uv<150)*(JetCount>3.5)*(((CISV_jet1>0.8)+(CISV_jet2>0.8))>=1)')#fixme todo varying control sample MT window
 		#[[Rw_uvjj,Rw_uvjj_err],[Rtt_uvjj,Rtt_uvjj_err]] = GetMuNuScaleFactors( NormalWeightMuNu+'*'+preselectionmunu, NormalDirectory, '(MT_uv>70)*(MT_uv<110)*(JetCount<3.5)', '(MT_uv>70)*(MT_uv<110)*(JetCount>3.5)')
 		[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]]=[[1.,0.],[1.,0,]]
 		[[Rw_uvjj,Rw_uvjj_err],[Rtt_uvjj,Rtt_uvjj_err]]=[[1.,0.],[1.,0,]]
-		#CSVv2L	0.605
-		#CSVv2M	0.89
-		#CSVv2T	0.97
+		#CSVv2L	0.460
+		#CSVv2M	0.8
+		#CSVv2T	0.935
 
 		#preselectionmumu = preselectionmumu+'*(Charge_muon1<0)*(Charge_muon2<0)'#FIXME checking same sign
 
@@ -612,8 +613,8 @@ def main():
 		##MakeBasicPlot("CISV_jet2","Jet2 CSV score",bjetbinning,preselectionmunu+'*(MT_uv>70)*(MT_uv<150)*(JetCount<3.5)',NormalWeightMuNu,NormalDirectory,'controlzoom_WRegion','uvjj',Rz_uujj, Rw_uvjj,Rtt_uvjj,'',version_name,300)
 		##MakeBasicPlot("CISV_jet1","Jet1 CSV score",bjetbinning,preselectionmunu+'*(MT_uv>70)*(MT_uv<150)*(JetCount>3.5)',NormalWeightMuNu,NormalDirectory,'controlzoom_TTRegion','uvjj',Rz_uujj, Rw_uvjj,Rtt_uvjj,'',version_name,300)
 		##MakeBasicPlot("CISV_jet2","Jet2 CSV score",bjetbinning,preselectionmunu+'*(MT_uv>70)*(MT_uv<150)*(JetCount>3.5)',NormalWeightMuNu,NormalDirectory,'controlzoom_TTRegion','uvjj',Rz_uujj, Rw_uvjj,Rtt_uvjj,'',version_name,300)
-		##MakeBasicPlot("MT_uv","M_{T}^{#mu#nu} [GeV]",bosonzoombinning_uvjj,preselectionmunu+'*(MT_uv>70)*(MT_uv<150)*(JetCount<3.5)*(((CISV_jet1>0.89)+(CISV_jet2>0.89))<1)',NormalWeightMuNu,NormalDirectory,'controlzoom_WRegion','uvjj',Rz_uujj, Rw_uvjj,Rtt_uvjj,'',version_name,300)
-		##MakeBasicPlot("MT_uv","M_{T}^{#mu#nu} [GeV]",bosonzoombinning_uvjj,preselectionmunu+'*(MT_uv>70)*(MT_uv<150)*(JetCount>3.5)*(((CISV_jet1>0.89)+(CISV_jet2>0.89))>=1)',NormalWeightMuNu,NormalDirectory,'controlzoom_TTRegion','uvjj',Rz_uujj, Rw_uvjj,Rtt_uvjj,'',version_name,300)
+		##MakeBasicPlot("MT_uv","M_{T}^{#mu#nu} [GeV]",bosonzoombinning_uvjj,preselectionmunu+'*(MT_uv>70)*(MT_uv<150)*(JetCount<3.5)*(((CISV_jet1>0.8)+(CISV_jet2>0.8))<1)',NormalWeightMuNu,NormalDirectory,'controlzoom_WRegion','uvjj',Rz_uujj, Rw_uvjj,Rtt_uvjj,'',version_name,300)
+		##MakeBasicPlot("MT_uv","M_{T}^{#mu#nu} [GeV]",bosonzoombinning_uvjj,preselectionmunu+'*(MT_uv>70)*(MT_uv<150)*(JetCount>3.5)*(((CISV_jet1>0.8)+(CISV_jet2>0.8))>=1)',NormalWeightMuNu,NormalDirectory,'controlzoom_TTRegion','uvjj',Rz_uujj, Rw_uvjj,Rtt_uvjj,'',version_name,300)
 		#MakeBasicPlot("MT_uv","M_{T}^{#mu#nu} [GeV]",bosonzoombinning_uvjj,preselectionmunu+'*(MT_uv>50)*(MT_uv<130)*(JetCount<3.5)',NormalWeightMuNu,NormalDirectory,'controlzoom_WRegion','uvjj',Rz_uujj, Rw_uvjj,Rtt_uvjj,'',version_name,300)#fixme todo changed 70-110 to 60-120
 		#MakeBasicPlot("MT_uv","M_{T}^{#mu#nu} [GeV]",bosonzoombinning_uvjj,preselectionmunu+'*(MT_uv>50)*(MT_uv<130)*(JetCount>4.5)',NormalWeightMuNu,NormalDirectory,'controlzoom_TTRegion','uvjj',Rz_uujj, Rw_uvjj,Rtt_uvjj,'',version_name,300)#fixme todo changed ttbar from 3.5 to 4.5 and 70-110 to 60-120
 		##MakeBasicPlot("MT_uv","M_{T}^{#mu#nu} [GeV]",bosonslopebinning_uvjj, preselectionmunu,NormalWeightMuNu,NormalDirectory,'controlzoom_SlopeRegion','uvjj',Rz_uujj, Rw_uvjj,Rtt_uvjj,'',version_name,300)
@@ -766,15 +767,15 @@ def main():
 		# Get Scale Factors
 		[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = GetMuMuScaleFactors( NormalWeightMuMu+'*'+preselectionmumu, NormalDirectory, '(M_uu>80)*(M_uu<100)', '(M_uu>100)',1)
 		#[[Rw_uvjj,Rw_uvjj_err],[Rtt_uvjj,Rtt_uvjj_err]] = GetMuNuScaleFactors( NormalWeightMuNu+'*'+preselectionmunu, NormalDirectory, '(MT_uv>70)*(MT_uv<110)*(JetCount<3.5)', '(MT_uv>70)*(MT_uv<110)*(JetCount>3.5)')
-		[[Rw_uvjj,Rw_uvjj_err],[Rtt_uvjj,Rtt_uvjj_err]] = GetMuNuScaleFactors( NormalWeightMuNu+'*'+preselectionmunu, NormalDirectory, '(MT_uv>70)*(MT_uv<150)*(JetCount<3.5)*(((CISV_jet1>0.89)+(CISV_jet2>0.89))<1)', '(MT_uv>70)*(MT_uv<150)*(JetCount>3.5)*(((CISV_jet1>0.89)+(CISV_jet2>0.89))>=1)')#fixme todo varying control sample MT window
+		[[Rw_uvjj,Rw_uvjj_err],[Rtt_uvjj,Rtt_uvjj_err]] = GetMuNuScaleFactors( NormalWeightMuNu+'*'+preselectionmunu, NormalDirectory, '(MT_uv>70)*(MT_uv<150)*(JetCount<3.5)*(((CISV_jet1>0.8)+(CISV_jet2>0.8))<1)', '(MT_uv>70)*(MT_uv<150)*(JetCount>3.5)*(((CISV_jet1>0.8)+(CISV_jet2>0.8))>=1)')#fixme todo varying control sample MT window
 		
 
 		# Here are a few plots which are zoomed-in on control regions. 
 		MakeBasicPlot("M_uu","M^{#mu#mu} [GeV]",[20,80,100],preselectionmumu,NormalWeightMuMu,NormalDirectory,'controlzoomPASTTBarDataDriven_ZRegiontagfree','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,500)
 		# MakeBasicPlot("M_uu","M^{#mu#mu} [GeV]",bosonzoombinning_uujj_Z,preselectionmumu,NormalWeightMuMu,NormalDirectory,'controlzoomPAS_ZRegion','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,500)
 		bosonzoombinning_uvjj = [20,70,110]
-		MakeBasicPlot("MT_uv","M_{T}^{#mu#nu} [GeV]",bosonzoombinning_uvjj,preselectionmunu+'*(MT_uv>70)*(MT_uv<150)*(JetCount<3.5)*(((CISV_jet1>0.89)+(CISV_jet2>0.89))<1)',NormalWeightMuNu,NormalDirectory,'controlzoomPAS_WRegiontagfree','uvjj',Rz_uujj, Rw_uvjj,Rtt_uvjj,'',version_name,500)
-		MakeBasicPlot("MT_uv","M_{T}^{#mu#nu} [GeV]",bosonzoombinning_uvjj,preselectionmunu+'*(MT_uv>70)*(MT_uv<150)*(JetCount>3.5)*(((CISV_jet1>0.89)+(CISV_jet2>0.89))>=1)',NormalWeightMuNu,NormalDirectory,'controlzoomPAS_TTRegiontagfree','uvjj',Rz_uujj, Rw_uvjj,Rtt_uvjj,'',version_name,500)
+		MakeBasicPlot("MT_uv","M_{T}^{#mu#nu} [GeV]",bosonzoombinning_uvjj,preselectionmunu+'*(MT_uv>70)*(MT_uv<150)*(JetCount<3.5)*(((CISV_jet1>0.8)+(CISV_jet2>0.8))<1)',NormalWeightMuNu,NormalDirectory,'controlzoomPAS_WRegiontagfree','uvjj',Rz_uujj, Rw_uvjj,Rtt_uvjj,'',version_name,500)
+		MakeBasicPlot("MT_uv","M_{T}^{#mu#nu} [GeV]",bosonzoombinning_uvjj,preselectionmunu+'*(MT_uv>70)*(MT_uv<150)*(JetCount>3.5)*(((CISV_jet1>0.8)+(CISV_jet2>0.8))>=1)',NormalWeightMuNu,NormalDirectory,'controlzoomPAS_TTRegiontagfree','uvjj',Rz_uujj, Rw_uvjj,Rtt_uvjj,'',version_name,500)
 
 		# The two flags are for regular plots, and tagfree plots (plots that don't say CMS Preliminary - for notes or thesis)
 		for flag in ['','tagfree']:
@@ -914,7 +915,7 @@ def main():
 		doLongLived = True
 		# Get Scale Factors
 		[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = GetMuMuScaleFactors( NormalWeightMuMu+'*'+preselectionmumu, NormalDirectory, '(M_uu>80)*(M_uu<100)', '(M_uu>100)',0)
-		[[Rw_uvjj,Rw_uvjj_err],[Rtt_uvjj,Rtt_uvjj_err]] = GetMuNuScaleFactors( NormalWeightMuNu+'*'+preselectionmunu, NormalDirectory, '(MT_uv>70)*(MT_uv<150)*(JetCount<3.5)*(((CISV_jet1>0.89)+(CISV_jet2>0.89))<1)', '(MT_uv>70)*(MT_uv<150)*(JetCount>3.5)*(((CISV_jet1>0.89)+(CISV_jet2>0.89))>=1)')#fixme todo varying control sample MT window
+		[[Rw_uvjj,Rw_uvjj_err],[Rtt_uvjj,Rtt_uvjj_err]] = GetMuNuScaleFactors( NormalWeightMuNu+'*'+preselectionmunu, NormalDirectory, '(MT_uv>70)*(MT_uv<150)*(JetCount<3.5)*(((CISV_jet1>0.8)+(CISV_jet2>0.8))<1)', '(MT_uv>70)*(MT_uv<150)*(JetCount>3.5)*(((CISV_jet1>0.8)+(CISV_jet2>0.8))>=1)')#fixme todo varying control sample MT window
 		#[[Rw_uvjj,Rw_uvjj_err],[Rtt_uvjj,Rtt_uvjj_err]] = GetMuNuScaleFactors( NormalWeightMuNu+'*'+preselectionmunu, NormalDirectory, '(MT_uv>70)*(MT_uv<110)*(JetCount<3.5)', '(MT_uv>70)*(MT_uv<110)*(JetCount>3.5)')
 		scaleFactors = [Rz_uujj,Rtt_uujj,Rw_uvjj]
 		if not doLongLived :
@@ -977,7 +978,7 @@ import math
 sys.argv.append( '-b' )
 from ROOT import *
 gROOT.ProcessLine("gErrorIgnoreLevel = 2001;")
-TFormula.SetMaxima(100000,1000,1000000)
+#TFormula.SetMaxima(100000,1000,1000000)
 import numpy
 import math
 rnd= TRandom3()
@@ -3747,7 +3748,7 @@ def MakeBasicPlot(recovariable,xlabel,presentationbinning,selection,weight,FileD
 	else:
 	       	setZeroBinErrors_tgraph(hs_rec_Data,hs_rec_Data_tgraph,MCStack,hs_rec_Signal,hs_rec_Signal)
 
-	#hs_rec_Data_tgraph.Draw("ZE0PSAME")
+	hs_rec_Data_tgraph.Draw("ZE0PSAME")
 
 	print 'Legend...  ',
 	# Create Legend
