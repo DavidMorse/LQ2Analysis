@@ -1904,48 +1904,6 @@ def GetLVJJMasses(l1,met,j1,j2):
 	
 	return [pair,pairwithinv,mh]
 
-def GetHHJets(jets,btagScores):
-        #Purpose: select which jets to use for HH analysis, separating bJets from light jets. Note that jets have already been cleaned from muons and electrons in cone of 0.3.
-	EmptyLorentz = TLorentzVector()
-	EmptyLorentz.SetPtEtaPhiM(.01,0,0,0)
-	[bjet1,bjet2,jet1,jet2,jet3]=[EmptyLorentz,EmptyLorentz,EmptyLorentz,EmptyLorentz,EmptyLorentz]
-	#if v == '' : print len(jets)
-	highBtag = -5.0
-	secondBtag = -5.0
-	highBtagCounter = -1
-	secondBtagCounter = -1
-	for i in range(len(btagScores)) :
-		if btagScores[i]>highBtag:
-			highBtag = btagScores[i]
-			highBtagCounter = i
-	for i in range(len(btagScores)) :
-		if  btagScores[i]>secondBtag and btagScores[i]<highBtag:
-			secondBtag = btagScores[i]
-			secondBtagCounter = i
-	[bjet1,bjet2] = [jets[highBtagCounter],jets[secondBtagCounter]]
-	#if v == '' : print 'bjet counters',highBtagCounter,secondBtagCounter
-	gotJet1,gotJet2=False,False
-	[jet1Btag,jet2Btag]=[-5.0,-5.0]
-	for i in range(len(jets)):
-		if i==highBtagCounter or i==secondBtagCounter:
-			continue
-		if not gotJet1:
-			jet1=jets[i]
-			gotJet1=True
-			jet1Btag = btagScores[i]
-			continue
-		if not gotJet2:
-			jet2=jets[i]
-			gotJet2=True
-			jet2Btag = btagScores[i]
-			continue
-		jet3=jets[i]
-		break
-	#if v == '' : 
-	#	print 'pts:',bjet1.Pt(),bjet2.Pt(),jet1.Pt(),jet2.Pt()
-	#	print 'btag scores:', highBtag,secondBtag,jet1Btag,jet2Btag
-	return [bjet1,highBtag,bjet2,secondBtag,jet1,jet2,jet3]
-
 def GetHHJets(jets,btagScores,jetinds):
 	#Purpose: select which jets to use for HH analysis, separating bJets from light jets. Note that jets have already been cleaned from muons and electrons in cone of 0.3.
 	"""
@@ -2002,6 +1960,139 @@ def GetHHJets(jets,btagScores,jetinds):
 	#	print 'pts:',bjet1.Pt(),bjet2.Pt(),jet1.Pt(),jet2.Pt()
 	#	print 'btag scores:', highBtag,secondBtag,jet1Btag,jet2Btag
 	return [bjet1,highBtag,bjet2,secondBtag,jet1,jet2,jet3,indRecoBJet1,indRecoBJet2,indRecoJet1,indRecoJet2,indRecoJet3]
+
+def GetHHJets2(jets,btagScores,muon1,muon2,jetinds):
+		#Purpose: select which jets to use for HH analysis, separating bJets from light jets. Note that jets have already been cleaned from muons and electrons in cone of 0.3.
+	EmptyLorentz = TLorentzVector()
+	EmptyLorentz.SetPtEtaPhiM(.01,0,0,0)
+	[bjet1,bjet2,jet1,jet2,jet3]=[EmptyLorentz,EmptyLorentz,EmptyLorentz,EmptyLorentz,EmptyLorentz]
+	#if v == '' : print len(jets)
+	#highBtag = -5.0
+	#secondBtag = -5.0
+	#highBtagCounter = -1
+	#secondBtagCounter = -1
+	indRecoBJet1 = -1
+	indRecoBJet2 = -1
+	indRecoJet1 = -1
+	indRecoJet2 = -1
+	indRecoJet3 = -1
+
+	
+	jet1index, jet2index, bjet1index, bjet2index, closestZ = -1,-1,-1,-1,999.
+	for i in range(len(jets)-1) :
+		for j in range(i+1,len(jets)) :
+			if i>=j: continue
+			if abs((muon1+muon2+jets[i]+jets[j]).M()-125) < closestZ :
+				closestZ = abs((muon1+muon2+jets[i]+jets[j]).M()-125)
+				jet1index,jet2index = i,j
+				jet1, jet2 = jets[i], jets[j]
+				indRecoJet1, indRecoJet2 = jetinds[i], jetinds[j]
+			#if j+2==len(jets) : break
+	#if v=='': print jet1index,jet2index,(muon1+muon2+jets[jet1index]+jets[jet2index]).M()
+
+	gotbjet1,gotbjet2,jet1Btag,jet2Btag = False,False,0.,0.
+	for i in range(len(jets)):
+		if i==jet1index or i==jet2index: continue
+		if not gotbjet1:
+			bjet1=jets[i]
+			indRecoBJet1=jetinds[i]
+			gotbjet1=True
+			jet1Btag = btagScores[i]
+			bjet1index = i
+			continue
+		if not gotbjet2:
+			bjet2=jets[i]
+			indRecoBJet2=jetinds[i]
+			gotbjet2=True
+			jet2Btag = btagScores[i]
+			bjet2index = i
+			continue
+		break
+
+	#if v == '' :
+	#	print 'pts:',bjet1.Pt(),bjet2.Pt(),jet1.Pt(),jet2.Pt()
+	#	print 'btag scores:', highBtag,secondBtag,jet1Btag,jet2Btag
+	return [bjet1,jet1Btag,bjet2,jet2Btag,jet1,jet2,jet3,indRecoBJet1,indRecoBJet2,indRecoJet1,indRecoJet2,indRecoJet3]
+
+def GetHHJets3(jets,btagScores,jetinds):
+	#Purpose: select which jets to use for HH analysis, separating bJets from light jets. Note that jets have already been cleaned from muons and electrons in cone of 0.3.
+	EmptyLorentz = TLorentzVector()
+	EmptyLorentz.SetPtEtaPhiM(.01,0,0,0)
+	[bjet1,bjet2,jet1,jet2,jet3]=[EmptyLorentz,EmptyLorentz,EmptyLorentz,EmptyLorentz,EmptyLorentz]
+	#if v == '' : print len(jets)
+	highBtag = -20.0
+	secondBtag = -20.0
+	highBtagCounter = -1
+	secondBtagCounter = -1
+	indRecoBJet1 = -1
+	indRecoBJet2 = -1
+	indRecoJet1 = -1
+	indRecoJet2 = -1
+	indRecoJet3 = -1
+
+	"""
+		bjets = []
+		for n in range(len(jets)) :
+		if btagScores[n]>0.605 :
+		bjets.append[n]
+		"""
+	jet1index, jet2index, bjet1index, bjet2index, closestZ, closestH = -1,-1,-1,-1,999.,999.
+	gotBs = False
+	
+	for i in range(len(jets)-1) :
+		for j in range(i+1,len(jets)) :
+			if i>=j: continue
+			if btagScores[i]>0. and btagScores[j]>0. :
+				if abs((jets[i]+jets[j]).M()-125) < closestH :
+					closestH = abs((jets[i]+jets[j]).M()-125)
+					bjet1index,bjet2index = i,j
+					highBtagCounter,secondBtagCounter = i,j
+					bjet1, bjet2 = jets[i], jets[j]
+					highBtag, secondBtag = btagScores[i],btagScores[j]
+					indRecoBJet1, indRecoBJet2 = jetinds[i], jetinds[j]
+					gotBs = True
+	if not gotBs :
+		for i in range(len(btagScores)) :
+			if btagScores[i]>highBtag:
+				highBtag = btagScores[i]
+				highBtagCounter = i
+		for i in range(len(btagScores)) :
+			if  btagScores[i]>secondBtag and btagScores[i]<highBtag:
+				secondBtag = btagScores[i]
+				secondBtagCounter = i
+		#[bjet1,bjet2] = [jets[highBtagCounter],jets[secondBtagCounter]]
+		[bjet1,bjet2,indRecoBJet1,indRecoBJet2] = [jets[highBtagCounter],jets[secondBtagCounter],jetinds[highBtagCounter],jetinds[secondBtagCounter]]
+	#if j+2==len(jets) : break
+	#if v=='': print jet1index,jet2index,(muon1+muon2+jets[jet1index]+jets[jet2index]).M()
+	
+	gotJet1,gotJet2=False,False
+	[jet1Btag,jet2Btag]=[-20.0,-20.0]
+	for i in range(len(jets)):
+		
+		if i==highBtagCounter or i==secondBtagCounter:
+			continue
+		if not gotJet1:
+			jet1=jets[i]
+			indRecoJet1=jetinds[i]
+			gotJet1=True
+			jet1Btag = btagScores[i]
+			continue
+		if not gotJet2:
+			jet2=jets[i]
+			indRecoJet2=jetinds[i]
+			gotJet2=True
+			jet2Btag = btagScores[i]
+			continue
+		jet3=jets[i]
+		indRecoJet3=jetinds[i]
+		break
+	
+	#if v == '' :
+	#	print 'pts:',bjet1.Pt(),bjet2.Pt(),jet1.Pt(),jet2.Pt()
+	#	print 'btag scores:', highBtag,secondBtag,jet1Btag,jet2Btag
+	#return [bjet1,highBtag,bjet2,secondBtag,jet1,jet2,jet3]
+	return [bjet1,highBtag,bjet2,secondBtag,jet1,jet2,jet3,indRecoBJet1,indRecoBJet2,indRecoJet1,indRecoJet2,indRecoJet3]
+
 
 def GetHHJets4(jets,btagScores,muon1,muon2,jetinds):
 	#Purpose: select which jets to use for HH analysis, separating bJets from light jets. Note that jets have already been cleaned from muons and electrons in cone of 0.3.
@@ -2179,250 +2270,6 @@ def GetHHJets5(jets,btagScores,muon1,muon2,jetinds):
 	#if v == '' :
 	#	print 'pts:',bjet1.Pt(),bjet2.Pt(),jet1.Pt(),jet2.Pt()
 	#	print 'btag scores:', highBtag,secondBtag,jet1Btag,jet2Btag
-	return [bjet1,highBtag,bjet2,secondBtag,jet1,jet2,jet3,indRecoBJet1,indRecoBJet2,indRecoJet1,indRecoJet2,indRecoJet3]
-
-
-def GetHHJets2(jets,btagScores,muon1,muon2):
-        #Purpose: select which jets to use for HH analysis, separating bJets from light jets. Note that jets have already been cleaned from muons and electrons in cone of 0.3.
-	EmptyLorentz = TLorentzVector()
-	EmptyLorentz.SetPtEtaPhiM(.01,0,0,0)
-	[bjet1,bjet2,jet1,jet2,jet3]=[EmptyLorentz,EmptyLorentz,EmptyLorentz,EmptyLorentz,EmptyLorentz]
-	#if v == '' : print len(jets)
-	#highBtag = -5.0
-	#secondBtag = -5.0
-	#highBtagCounter = -1
-	#secondBtagCounter = -1
-
-
-	jet1index, jet2index, bjet1index, bjet2index, closestZ = -1,-1,-1,-1,999.
-	for i in range(len(jets)-1) :
-		for j in range(i+1,len(jets)) :
-			if i>=j: continue
-			if abs((muon1+muon2+jets[i]+jets[j]).M()-125) < closestZ :
-				closestZ = abs((muon1+muon2+jets[i]+jets[j]).M()-125)
-				jet1index,jet2index = i,j
-				jet1, jet2 = jets[i], jets[j]
-			#if j+2==len(jets) : break
-	#if v=='': print jet1index,jet2index,(muon1+muon2+jets[jet1index]+jets[jet2index]).M()
-
-	gotbjet1,gotbjet2,jet1Btag,jet2Btag = False,False,0.,0.
-	for i in range(len(jets)):
-		if i==jet1index or i==jet2index: continue
-		if not gotbjet1:
-			bjet1=jets[i]
-			gotbjet1=True
-			jet1Btag = btagScores[i]
-			bjet1index = i
-			continue
-		if not gotbjet2:
-			bjet2=jets[i]
-			gotbjet2=True
-			jet2Btag = btagScores[i]
-			bjet2index = i
-			continue
-		break
-
-	#if v == '' : 
-	#	print 'pts:',bjet1.Pt(),bjet2.Pt(),jet1.Pt(),jet2.Pt()
-	#	print 'btag scores:', highBtag,secondBtag,jet1Btag,jet2Btag
-	return [bjet1,jet1Btag,bjet2,jet2Btag,jet1,jet2,jet3]
-
-def GetHHJets2(jets,btagScores,muon1,muon2,jetinds):
-		#Purpose: select which jets to use for HH analysis, separating bJets from light jets. Note that jets have already been cleaned from muons and electrons in cone of 0.3.
-	EmptyLorentz = TLorentzVector()
-	EmptyLorentz.SetPtEtaPhiM(.01,0,0,0)
-	[bjet1,bjet2,jet1,jet2,jet3]=[EmptyLorentz,EmptyLorentz,EmptyLorentz,EmptyLorentz,EmptyLorentz]
-	#if v == '' : print len(jets)
-	#highBtag = -5.0
-	#secondBtag = -5.0
-	#highBtagCounter = -1
-	#secondBtagCounter = -1
-	indRecoBJet1 = -1
-	indRecoBJet2 = -1
-	indRecoJet1 = -1
-	indRecoJet2 = -1
-	indRecoJet3 = -1
-
-	
-	jet1index, jet2index, bjet1index, bjet2index, closestZ = -1,-1,-1,-1,999.
-	for i in range(len(jets)-1) :
-		for j in range(i+1,len(jets)) :
-			if i>=j: continue
-			if abs((muon1+muon2+jets[i]+jets[j]).M()-125) < closestZ :
-				closestZ = abs((muon1+muon2+jets[i]+jets[j]).M()-125)
-				jet1index,jet2index = i,j
-				jet1, jet2 = jets[i], jets[j]
-				indRecoJet1, indRecoJet2 = jetinds[i], jetinds[j]
-			#if j+2==len(jets) : break
-	#if v=='': print jet1index,jet2index,(muon1+muon2+jets[jet1index]+jets[jet2index]).M()
-
-	gotbjet1,gotbjet2,jet1Btag,jet2Btag = False,False,0.,0.
-	for i in range(len(jets)):
-		if i==jet1index or i==jet2index: continue
-		if not gotbjet1:
-			bjet1=jets[i]
-			indRecoBJet1=jetinds[i]
-			gotbjet1=True
-			jet1Btag = btagScores[i]
-			bjet1index = i
-			continue
-		if not gotbjet2:
-			bjet2=jets[i]
-			indRecoBJet2=jetinds[i]
-			gotbjet2=True
-			jet2Btag = btagScores[i]
-			bjet2index = i
-			continue
-		break
-
-	#if v == '' :
-	#	print 'pts:',bjet1.Pt(),bjet2.Pt(),jet1.Pt(),jet2.Pt()
-	#	print 'btag scores:', highBtag,secondBtag,jet1Btag,jet2Btag
-	return [bjet1,jet1Btag,bjet2,jet2Btag,jet1,jet2,jet3,indRecoBJet1,indRecoBJet2,indRecoJet1,indRecoJet2,indRecoJet3]
-
-def GetHHJets3(jets,btagScores):
-        #Purpose: select which jets to use for HH analysis, separating bJets from light jets. Note that jets have already been cleaned from muons and electrons in cone of 0.3.
-	EmptyLorentz = TLorentzVector()
-	EmptyLorentz.SetPtEtaPhiM(.01,0,0,0)
-	[bjet1,bjet2,jet1,jet2,jet3]=[EmptyLorentz,EmptyLorentz,EmptyLorentz,EmptyLorentz,EmptyLorentz]
-	#if v == '' : print len(jets)
-	highBtag = -5.0
-	secondBtag = -5.0
-	highBtagCounter = -1
-	secondBtagCounter = -1
-	"""
-	bjets = []
-	for n in range(len(jets)) :
-		if btagScores[n]>0.605 :
-			bjets.append[n]
-	"""
-	jet1index, jet2index, bjet1index, bjet2index, closestZ, closestH = -1,-1,-1,-1,999.,999.
-	gotBs = False
-
-	for i in range(len(jets)-1) :
-		for j in range(i+1,len(jets)) :
-			if i>=j: continue
-			if btagScores[i]>0. and btagScores[j]>0. :
-				if abs((jets[i]+jets[j]).M()-125) < closestH :
-					closestH = abs((jets[i]+jets[j]).M()-125)
-					bjet1index,bjet2index = i,j
-					highBtagCounter,secondBtagCounter = i,j
-					bjet1, bjet2 = jets[i], jets[j]
-					highBtag, secondBtag = btagScores[i],btagScores[j]
-					gotBs = True
-	if not gotBs :
-		for i in range(len(btagScores)) :
-			if btagScores[i]>highBtag:
-				highBtag = btagScores[i]
-				highBtagCounter = i
-		for i in range(len(btagScores)) :
-			if  btagScores[i]>secondBtag and btagScores[i]<highBtag:
-				secondBtag = btagScores[i]
-				secondBtagCounter = i
-		[bjet1,bjet2] = [jets[highBtagCounter],jets[secondBtagCounter]]
-			#if j+2==len(jets) : break
-	#if v=='': print jet1index,jet2index,(muon1+muon2+jets[jet1index]+jets[jet2index]).M()
-
-	gotJet1,gotJet2=False,False
-	[jet1Btag,jet2Btag]=[-5.0,-5.0]
-	for i in range(len(jets)):		
-		if i==highBtagCounter or i==secondBtagCounter:
-			continue
-		if not gotJet1:
-			jet1=jets[i]
-			gotJet1=True
-			jet1Btag = btagScores[i]
-			continue
-		if not gotJet2:
-			jet2=jets[i]
-			gotJet2=True
-			jet2Btag = btagScores[i]
-			continue
-		jet3=jets[i]
-		break
-
-	#if v == '' : 
-	#	print 'pts:',bjet1.Pt(),bjet2.Pt(),jet1.Pt(),jet2.Pt()
-	#	print 'btag scores:', highBtag,secondBtag,jet1Btag,jet2Btag
-	return [bjet1,highBtag,bjet2,secondBtag,jet1,jet2,jet3]
-
-def GetHHJets3(jets,btagScores,jetinds):
-	#Purpose: select which jets to use for HH analysis, separating bJets from light jets. Note that jets have already been cleaned from muons and electrons in cone of 0.3.
-	EmptyLorentz = TLorentzVector()
-	EmptyLorentz.SetPtEtaPhiM(.01,0,0,0)
-	[bjet1,bjet2,jet1,jet2,jet3]=[EmptyLorentz,EmptyLorentz,EmptyLorentz,EmptyLorentz,EmptyLorentz]
-	#if v == '' : print len(jets)
-	highBtag = -20.0
-	secondBtag = -20.0
-	highBtagCounter = -1
-	secondBtagCounter = -1
-	indRecoBJet1 = -1
-	indRecoBJet2 = -1
-	indRecoJet1 = -1
-	indRecoJet2 = -1
-	indRecoJet3 = -1
-
-	"""
-		bjets = []
-		for n in range(len(jets)) :
-		if btagScores[n]>0.605 :
-		bjets.append[n]
-		"""
-	jet1index, jet2index, bjet1index, bjet2index, closestZ, closestH = -1,-1,-1,-1,999.,999.
-	gotBs = False
-	
-	for i in range(len(jets)-1) :
-		for j in range(i+1,len(jets)) :
-			if i>=j: continue
-			if btagScores[i]>0. and btagScores[j]>0. :
-				if abs((jets[i]+jets[j]).M()-125) < closestH :
-					closestH = abs((jets[i]+jets[j]).M()-125)
-					bjet1index,bjet2index = i,j
-					highBtagCounter,secondBtagCounter = i,j
-					bjet1, bjet2 = jets[i], jets[j]
-					highBtag, secondBtag = btagScores[i],btagScores[j]
-					indRecoBJet1, indRecoBJet2 = jetinds[i], jetinds[j]
-					gotBs = True
-	if not gotBs :
-		for i in range(len(btagScores)) :
-			if btagScores[i]>highBtag:
-				highBtag = btagScores[i]
-				highBtagCounter = i
-		for i in range(len(btagScores)) :
-			if  btagScores[i]>secondBtag and btagScores[i]<highBtag:
-				secondBtag = btagScores[i]
-				secondBtagCounter = i
-		#[bjet1,bjet2] = [jets[highBtagCounter],jets[secondBtagCounter]]
-		[bjet1,bjet2,indRecoBJet1,indRecoBJet2] = [jets[highBtagCounter],jets[secondBtagCounter],jetinds[highBtagCounter],jetinds[secondBtagCounter]]
-	#if j+2==len(jets) : break
-	#if v=='': print jet1index,jet2index,(muon1+muon2+jets[jet1index]+jets[jet2index]).M()
-	
-	gotJet1,gotJet2=False,False
-	[jet1Btag,jet2Btag]=[-20.0,-20.0]
-	for i in range(len(jets)):
-		
-		if i==highBtagCounter or i==secondBtagCounter:
-			continue
-		if not gotJet1:
-			jet1=jets[i]
-			indRecoJet1=jetinds[i]
-			gotJet1=True
-			jet1Btag = btagScores[i]
-			continue
-		if not gotJet2:
-			jet2=jets[i]
-			indRecoJet2=jetinds[i]
-			gotJet2=True
-			jet2Btag = btagScores[i]
-			continue
-		jet3=jets[i]
-		indRecoJet3=jetinds[i]
-		break
-	
-	#if v == '' :
-	#	print 'pts:',bjet1.Pt(),bjet2.Pt(),jet1.Pt(),jet2.Pt()
-	#	print 'btag scores:', highBtag,secondBtag,jet1Btag,jet2Btag
-	#return [bjet1,highBtag,bjet2,secondBtag,jet1,jet2,jet3]
 	return [bjet1,highBtag,bjet2,secondBtag,jet1,jet2,jet3,indRecoBJet1,indRecoBJet2,indRecoJet1,indRecoJet2,indRecoJet3]
 
 def getCosThetaStar_CS(h1, h2, ebeam = 6500.) :
