@@ -2839,7 +2839,7 @@ for n in range(N):
 	if t.isData == True:
 		Branches['pass_HLTMu45_eta2p1'][0] = PassTrigger(t,["HLT_Mu45_eta2p1_v"],1)         # Data Only
 		Branches['pass_HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_DZ'][0] = PassTrigger(t,["HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v"],1)         # Data Only
-		Branches['pass_HLT_Ele16_Ele12_Ele8_CaloIdL_TrackIdL'][0] = PassTrigger(t,["HLT_Ele16_Ele12_Ele8_CaloIdL_TrackIdL_v"],1)         # Data Only
+		Branches['pass_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ'][0] = PassTrigger(t,["HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v"],1)         # Data Only
 		Branches['pass_HLT_Mu17_Mu8'][0] = 1 if (PassTrigger(t,["HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v"],1) + PassTrigger(t,["HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v"],1))>0 else 0        # Data Only
 		Branches['passTriggerObjectMatching'][0]  = 1*(True in t.MuonHLTSingleMuonMatched)  # Data Only
 		Branches['passBPTX0'][0]                  = 1*(t.isBPTX0)          # Unused, Data only: MC = 0
@@ -2852,10 +2852,10 @@ for n in range(N):
 		Branches['passPhysDeclared'][0]           = 1*(t.isPhysDeclared)
 
 	else:
-		Branches['pass_HLTMu45_eta2p1'][0] = PassTrigger(t,["HLT_Mu45_eta2p1_v"],1)   
-		Branches['pass_HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_DZ'][0] = PassTrigger(t,["HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v"],1)         # Data Only
-		Branches['pass_HLT_Ele16_Ele12_Ele8_CaloIdL_TrackIdL'][0] = PassTrigger(t,["HLT_Ele16_Ele12_Ele8_CaloIdL_TrackIdL_v"],1)         # Data Only
-		Branches['pass_HLT_Mu17_Mu8'][0] = PassTrigger(t,["HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v"],1) + PassTrigger(t,["HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v"],1)          # Data Only
+		Branches['pass_HLTMu45_eta2p1'][0] = 1#PassTrigger(t,["HLT_Mu45_eta2p1_v"],1)   
+		Branches['pass_HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_DZ'][0] = 1#PassTrigger(t,["HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v"],1)         # Data Only
+		Branches['pass_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ'][0] = 1#PassTrigger(t,["HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v"],1)         # Data Only
+		Branches['pass_HLT_Mu17_Mu8'][0] = 1#PassTrigger(t,["HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v"],1) + PassTrigger(t,["HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v"],1)          # Data Only
 
 		Branches['passTriggerObjectMatching'][0]  = 1
 		Branches['passBPTX0'][0]                  = 1
