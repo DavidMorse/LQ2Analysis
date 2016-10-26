@@ -21,9 +21,9 @@ global preselectionmumu
 ##EMuDirectory    = '/store/user/dmorse/leptoQuark/NTupleAnalyzer_Dec10_Spring2015Full_EMuSwitch_2015_12_15_00_28_39/SummaryFiles'
 #EMuDirectory    = 'NTupleAnalyzer_FullFeb20_EMuSwitch_2016_02_20_14_25_20/SummaryFiles'
 
-NormalDirectory = 'NTupleAnalyzer_treeMaker_Spring2016_2015PU_2016_09_08_10_52_47/SummaryFiles'
-QCDDirectory    = 'NTupleAnalyzer_treeMaker_Spring2016BG_QCDNonIsoQuickTest_2016_09_05_13_18_36/SummaryFiles'
-EMuDirectory    = 'NTupleAnalyzer_treeMaker_Spring2016_2015PU_EMuSwitch_2016_09_09_11_20_31/SummaryFiles'
+NormalDirectory = 'NTupleAnalyzer_Full2016_2016_10_18_15_14_53/SummaryFiles'
+QCDDirectory    = 'NTupleAnalyzer_Full2016QCDNonIsoQuickTest_2016_10_19_13_53_24/SummaryFiles'
+EMuDirectory    = 'NTupleAnalyzer_Full2016EMuSwitch_2016_10_18_15_15_41/SummaryFiles'
 
 # The name of the main ttree (ntuple structure)
 TreeName = "PhysicalVariables"
@@ -31,8 +31,8 @@ TreeName = "PhysicalVariables"
 # Integrated luminosity for normalization
 #lumi =  2318.348
 #lumi = 2690.707
-#lumi = 21760.376
-lumi=19456.249#Mu45_eta2p1 was prescaled at some point?????
+lumi = 27214.399
+#lumi=19456.249#Mu45_eta2p1 was prescaled at some point?????
 
 
 #Muon HLT MC scale factor
@@ -42,6 +42,10 @@ lumi=19456.249#Mu45_eta2p1 was prescaled at some point?????
 # This is for the case of one muon
 #2012#singlemuHLT =  '*( 0.93*(abs(Eta_muon1)<=0.9) + 0.83*(abs(Eta_muon1)>0.9)*(abs(Eta_muon1)<=1.2) + 0.80*(abs(Eta_muon1)>1.2)*(abs(Eta_muon1)<=2.1) )'
 singlemuHLT =  '*( 0.9494*(abs(Eta_muon1)<=0.9)*(Pt_muon1>50)*(Pt_muon1<60) + 0.9460*(abs(Eta_muon1)<=0.9)*(Pt_muon1>60) + 0.9030*(abs(Eta_muon1)>0.9)*(abs(Eta_muon1)<=1.2)*(Pt_muon1>50)*(Pt_muon1<60) + 0.8968*(abs(Eta_muon1)>0.9)*(abs(Eta_muon1)<=1.2)*(Pt_muon1>60) + 0.9153*(abs(Eta_muon1)>1.2)*(abs(Eta_muon1)<=2.1)*(Pt_muon1>50)*(Pt_muon1<60) + 0.9175*(abs(Eta_muon1)>1.2)*(abs(Eta_muon1)<=2.1)*(Pt_muon1>60) )'
+
+singlemuHLT =  '*((run_number<=274093)*(0.921920120716095*(abs(Eta_muon1)<=0.9)*(Pt_muon1>52)*(Pt_muon1<60) + 0.9174067378044128*(abs(Eta_muon1)<=0.9)*(Pt_muon1>60)*(Pt_muon1<120) + 0.9156903624534607*(abs(Eta_muon1)<=0.9)*(Pt_muon1>120)*(Pt_muon1<200) + 0.8778318762779236*(abs(Eta_muon1)<=0.9)*(Pt_muon1>200) + 0.6962698698043823*(abs(Eta_muon1)>0.9)*(abs(Eta_muon1)<=1.2)*(Pt_muon1>52)*(Pt_muon1<60) + 0.6839967966079712*(abs(Eta_muon1)>0.9)*(abs(Eta_muon1)<=1.2)*(Pt_muon1>60)*(Pt_muon1<120) + 0.6415411829948425*(abs(Eta_muon1)>0.9)*(abs(Eta_muon1)<=1.2)*(Pt_muon1>120)*(Pt_muon1<200) + 0.6970946192741394*(abs(Eta_muon1)>0.9)*(abs(Eta_muon1)<=1.2)*(Pt_muon1>200) + 0.8551902174949646*(abs(Eta_muon1)>1.2)*(abs(Eta_muon1)<=2.1)*(Pt_muon1>52)*(Pt_muon1<60) + 0.8640838861465454*(abs(Eta_muon1)>1.2)*(abs(Eta_muon1)<=2.1)*(Pt_muon1>60)*(Pt_muon1<120) + 0.7792240381240845*(abs(Eta_muon1)>1.2)*(abs(Eta_muon1)<=2.1)*(Pt_muon1>120)*(Pt_muon1<200) + 0.678192138671875*(abs(Eta_muon1)>1.2)*(abs(Eta_muon1)<=2.1)*(Pt_muon1>200)) + (run_number>=274094)*(0.9340724349021912*(abs(Eta_muon1)<=0.9)*(Pt_muon1>52)*(Pt_muon1<60) + 0.9349773526191711*(abs(Eta_muon1)<=0.9)*(Pt_muon1>60)*(Pt_muon1<120) + 0.9329391121864319*(abs(Eta_muon1)<=0.9)*(Pt_muon1>120)*(Pt_muon1<200) + 0.9137989282608032*(abs(Eta_muon1)<=0.9)*(Pt_muon1>200) + 0.9314379692077637*(abs(Eta_muon1)>0.9)*(abs(Eta_muon1)<=1.2)*(Pt_muon1>52)*(Pt_muon1<60) + 0.9330504536628723*(abs(Eta_muon1)>0.9)*(abs(Eta_muon1)<=1.2)*(Pt_muon1>60)*(Pt_muon1<120) + 0.9075710773468018*(abs(Eta_muon1)>0.9)*(abs(Eta_muon1)<=1.2)*(Pt_muon1>120)*(Pt_muon1<200) + 0.8805744647979736*(abs(Eta_muon1)>0.9)*(abs(Eta_muon1)<=1.2)*(Pt_muon1>200) + 0.8854361772537231*(abs(Eta_muon1)>1.2)*(abs(Eta_muon1)<=2.1)*(Pt_muon1>52)*(Pt_muon1<60) + 0.8886139392852783*(abs(Eta_muon1)>1.2)*(abs(Eta_muon1)<=2.1)*(Pt_muon1>60)*(Pt_muon1<120) + 0.8260555863380432*(abs(Eta_muon1)>1.2)*(abs(Eta_muon1)<=2.1)*(Pt_muon1>120)*(Pt_muon1<200) + 0.7210540175437927*(abs(Eta_muon1)>1.2)*(abs(Eta_muon1)<=2.1)*(Pt_muon1>200)))'
+
+
 # This is for the case of two muons (i.e. the above factors, but for the case where the event has two muons)
 #2012#doublemuHLT =  '*(1.0-(( 1.0 - 0.93*(abs(Eta_muon1)<=0.9) - 0.83*(abs(Eta_muon1)>0.9)*(abs(Eta_muon1)<=1.2) - 0.80*(abs(Eta_muon1)>1.2)*(abs(Eta_muon1)<=2.1) )'
 #2012#doublemuHLT += '*( 1.0 - 0.93*(abs(Eta_muon2)<=0.9) - 0.83*(abs(Eta_muon2)>0.9)*(abs(Eta_muon2)<=1.2) - 0.80*(abs(Eta_muon2)>1.2)*(abs(Eta_muon2)<=2.1) )))'
@@ -49,9 +53,11 @@ singlemuHLT =  '*( 0.9494*(abs(Eta_muon1)<=0.9)*(Pt_muon1>50)*(Pt_muon1<60) + 0.
 #2015#doublemuHLT += '*( 1.0 - 0.9494*(abs(Eta_muon2)<=0.9)*(Pt_muon2>50)*(Pt_muon2<60) - 0.9460*(abs(Eta_muon2)<=0.9)*(Pt_muon2>60) - 0.9030*(abs(Eta_muon2)>0.9)*(abs(Eta_muon2)<=1.2)*(Pt_muon2>50)*(Pt_muon2<60) - 0.8968*(abs(Eta_muon2)>0.9)*(abs(Eta_muon2)<=1.2)*(Pt_muon2>60) - 0.9153*(abs(Eta_muon2)>1.2)*(abs(Eta_muon2)<=2.1)*(Pt_muon2>50)*(Pt_muon2<60) - 0.9175*(abs(Eta_muon2)>1.2)*(abs(Eta_muon2)<=2.1)*(Pt_muon2>60) )))'
 
 #2016, based on 7.6/fb, ICHEP16 dataset
-doublemuHLT =  '*(1.0-(( 1.0 - (run_number<=274093)*(0.9130679368972778*(abs(Eta_muon1)<=0.9)*(Pt_muon1>50)*(Pt_muon1<60) + 0.9128034114837646*(abs(Eta_muon1)<=0.9)*(Pt_muon1>60)*(Pt_muon1<120) + 0.9093019962310791*(abs(Eta_muon1)<=0.9)*(Pt_muon1>120)*(Pt_muon1<200) + 0.8876489996910095*(abs(Eta_muon1)<=0.9)*(Pt_muon1>200) + 0.8885771036148071*(abs(Eta_muon1)>0.9)*(abs(Eta_muon1)<=1.2)*(Pt_muon1>50)*(Pt_muon1<60) + 0.8865549564361572*(abs(Eta_muon1)>0.9)*(abs(Eta_muon1)<=1.2)*(Pt_muon1>60)*(Pt_muon1<120) + 0.8625686764717102*(abs(Eta_muon1)>0.9)*(abs(Eta_muon1)<=1.2)*(Pt_muon1>120)*(Pt_muon1<200) + 0.8157601356506348*(abs(Eta_muon1)>0.9)*(abs(Eta_muon1)<=1.2)*(Pt_muon1>200) + 0.8422430157661438*(abs(Eta_muon1)>1.2)*(abs(Eta_muon1)<=2.1)*(Pt_muon1>50)*(Pt_muon1<60) + 0.8360896110534668*(abs(Eta_muon1)>1.2)*(abs(Eta_muon1)<=2.1)*(Pt_muon1>60)*(Pt_muon1<120) + 0.7579622268676758*(abs(Eta_muon1)>1.2)*(abs(Eta_muon1)<=2.1)*(Pt_muon1>120)*(Pt_muon1<200) + 0.626224160194397*(abs(Eta_muon1)>1.2)*(abs(Eta_muon1)<=2.1)*(Pt_muon1>200)) - (run_number>=274094)*(0.9130679368972778*(abs(Eta_muon1)<=0.9)*(Pt_muon1>50)*(Pt_muon1<60) + 0.9128034114837646*(abs(Eta_muon1)<=0.9)*(Pt_muon1>60)*(Pt_muon1<120) + 0.9093019962310791*(abs(Eta_muon1)<=0.9)*(Pt_muon1>120)*(Pt_muon1<200) + 0.8876489996910095*(abs(Eta_muon1)<=0.9)*(Pt_muon1>200) + 0.8885771036148071*(abs(Eta_muon1)>0.9)*(abs(Eta_muon1)<=1.2)*(Pt_muon1>50)*(Pt_muon1<60) + 0.8865549564361572*(abs(Eta_muon1)>0.9)*(abs(Eta_muon1)<=1.2)*(Pt_muon1>60)*(Pt_muon1<120) + 0.8625686764717102*(abs(Eta_muon1)>0.9)*(abs(Eta_muon1)<=1.2)*(Pt_muon1>120)*(Pt_muon1<200) + 0.8157601356506348*(abs(Eta_muon1)>0.9)*(abs(Eta_muon1)<=1.2)*(Pt_muon1>200) + 0.8422430157661438*(abs(Eta_muon1)>1.2)*(abs(Eta_muon1)<=2.1)*(Pt_muon1>50)*(Pt_muon1<60) + 0.8360896110534668*(abs(Eta_muon1)>1.2)*(abs(Eta_muon1)<=2.1)*(Pt_muon1>60)*(Pt_muon1<120) + 0.7579622268676758*(abs(Eta_muon1)>1.2)*(abs(Eta_muon1)<=2.1)*(Pt_muon1>120)*(Pt_muon1<200) + 0.626224160194397*(abs(Eta_muon1)>1.2)*(abs(Eta_muon1)<=2.1)*(Pt_muon1>200)))'
-doublemuHLT += '*( 1.0 -  (run_number<=274093)*(0.9130679368972778*(abs(Eta_muon2)<=0.9)*(Pt_muon2>50)*(Pt_muon2<60) + 0.9128034114837646*(abs(Eta_muon2)<=0.9)*(Pt_muon2>60)*(Pt_muon2<120) + 0.9093019962310791*(abs(Eta_muon2)<=0.9)*(Pt_muon2>120)*(Pt_muon2<200) + 0.8876489996910095*(abs(Eta_muon2)<=0.9)*(Pt_muon2>200) + 0.8885771036148071*(abs(Eta_muon2)>0.9)*(abs(Eta_muon2)<=1.2)*(Pt_muon2>50)*(Pt_muon2<60) + 0.8865549564361572*(abs(Eta_muon2)>0.9)*(abs(Eta_muon2)<=1.2)*(Pt_muon2>60)*(Pt_muon2<120) + 0.8625686764717102*(abs(Eta_muon2)>0.9)*(abs(Eta_muon2)<=1.2)*(Pt_muon2>120)*(Pt_muon2<200) + 0.8157601356506348*(abs(Eta_muon2)>0.9)*(abs(Eta_muon2)<=1.2)*(Pt_muon2>200) + 0.8422430157661438*(abs(Eta_muon2)>1.2)*(abs(Eta_muon2)<=2.1)*(Pt_muon2>50)*(Pt_muon2<60) + 0.8360896110534668*(abs(Eta_muon2)>1.2)*(abs(Eta_muon2)<=2.1)*(Pt_muon2>60)*(Pt_muon2<120) + 0.7579622268676758*(abs(Eta_muon2)>1.2)*(abs(Eta_muon2)<=2.1)*(Pt_muon2>120)*(Pt_muon2<200) + 0.626224160194397*(abs(Eta_muon2)>1.2)*(abs(Eta_muon2)<=2.1)*(Pt_muon2>200)) - (run_number>=274094)*(0.9130679368972778*(abs(Eta_muon2)<=0.9)*(Pt_muon2>50)*(Pt_muon2<60) + 0.9128034114837646*(abs(Eta_muon2)<=0.9)*(Pt_muon2>60)*(Pt_muon2<120) + 0.9093019962310791*(abs(Eta_muon2)<=0.9)*(Pt_muon2>120)*(Pt_muon2<200) + 0.8876489996910095*(abs(Eta_muon2)<=0.9)*(Pt_muon2>200) + 0.8885771036148071*(abs(Eta_muon2)>0.9)*(abs(Eta_muon2)<=1.2)*(Pt_muon2>50)*(Pt_muon2<60) + 0.8865549564361572*(abs(Eta_muon2)>0.9)*(abs(Eta_muon2)<=1.2)*(Pt_muon2>60)*(Pt_muon2<120) + 0.8625686764717102*(abs(Eta_muon2)>0.9)*(abs(Eta_muon2)<=1.2)*(Pt_muon2>120)*(Pt_muon2<200) + 0.8157601356506348*(abs(Eta_muon2)>0.9)*(abs(Eta_muon2)<=1.2)*(Pt_muon2>200) + 0.8422430157661438*(abs(Eta_muon2)>1.2)*(abs(Eta_muon2)<=2.1)*(Pt_muon2>50)*(Pt_muon2<60) + 0.8360896110534668*(abs(Eta_muon2)>1.2)*(abs(Eta_muon2)<=2.1)*(Pt_muon2>60)*(Pt_muon2<120) + 0.7579622268676758*(abs(Eta_muon2)>1.2)*(abs(Eta_muon2)<=2.1)*(Pt_muon2>120)*(Pt_muon2<200) + 0.626224160194397*(abs(Eta_muon2)>1.2)*(abs(Eta_muon2)<=2.1)*(Pt_muon2>200)))))'
-
+#doublemuHLT =  '*(1.0-(( 1.0 - (run_number<=274093)*(0.9130679368972778*(abs(Eta_muon1)<=0.9)*(Pt_muon1>50)*(Pt_muon1<60) + 0.9128034114837646*(abs(Eta_muon1)<=0.9)*(Pt_muon1>60)*(Pt_muon1<120) + 0.9093019962310791*(abs(Eta_muon1)<=0.9)*(Pt_muon1>120)*(Pt_muon1<200) + 0.8876489996910095*(abs(Eta_muon1)<=0.9)*(Pt_muon1>200) + 0.8885771036148071*(abs(Eta_muon1)>0.9)*(abs(Eta_muon1)<=1.2)*(Pt_muon1>50)*(Pt_muon1<60) + 0.8865549564361572*(abs(Eta_muon1)>0.9)*(abs(Eta_muon1)<=1.2)*(Pt_muon1>60)*(Pt_muon1<120) + 0.8625686764717102*(abs(Eta_muon1)>0.9)*(abs(Eta_muon1)<=1.2)*(Pt_muon1>120)*(Pt_muon1<200) + 0.8157601356506348*(abs(Eta_muon1)>0.9)*(abs(Eta_muon1)<=1.2)*(Pt_muon1>200) + 0.8422430157661438*(abs(Eta_muon1)>1.2)*(abs(Eta_muon1)<=2.1)*(Pt_muon1>50)*(Pt_muon1<60) + 0.8360896110534668*(abs(Eta_muon1)>1.2)*(abs(Eta_muon1)<=2.1)*(Pt_muon1>60)*(Pt_muon1<120) + 0.7579622268676758*(abs(Eta_muon1)>1.2)*(abs(Eta_muon1)<=2.1)*(Pt_muon1>120)*(Pt_muon1<200) + 0.626224160194397*(abs(Eta_muon1)>1.2)*(abs(Eta_muon1)<=2.1)*(Pt_muon1>200)) - (run_number>=274094)*(0.9130679368972778*(abs(Eta_muon1)<=0.9)*(Pt_muon1>50)*(Pt_muon1<60) + 0.9128034114837646*(abs(Eta_muon1)<=0.9)*(Pt_muon1>60)*(Pt_muon1<120) + 0.9093019962310791*(abs(Eta_muon1)<=0.9)*(Pt_muon1>120)*(Pt_muon1<200) + 0.8876489996910095*(abs(Eta_muon1)<=0.9)*(Pt_muon1>200) + 0.8885771036148071*(abs(Eta_muon1)>0.9)*(abs(Eta_muon1)<=1.2)*(Pt_muon1>50)*(Pt_muon1<60) + 0.8865549564361572*(abs(Eta_muon1)>0.9)*(abs(Eta_muon1)<=1.2)*(Pt_muon1>60)*(Pt_muon1<120) + 0.8625686764717102*(abs(Eta_muon1)>0.9)*(abs(Eta_muon1)<=1.2)*(Pt_muon1>120)*(Pt_muon1<200) + 0.8157601356506348*(abs(Eta_muon1)>0.9)*(abs(Eta_muon1)<=1.2)*(Pt_muon1>200) + 0.8422430157661438*(abs(Eta_muon1)>1.2)*(abs(Eta_muon1)<=2.1)*(Pt_muon1>50)*(Pt_muon1<60) + 0.8360896110534668*(abs(Eta_muon1)>1.2)*(abs(Eta_muon1)<=2.1)*(Pt_muon1>60)*(Pt_muon1<120) + 0.7579622268676758*(abs(Eta_muon1)>1.2)*(abs(Eta_muon1)<=2.1)*(Pt_muon1>120)*(Pt_muon1<200) + 0.626224160194397*(abs(Eta_muon1)>1.2)*(abs(Eta_muon1)<=2.1)*(Pt_muon1>200)))'
+#doublemuHLT += '*( 1.0 -  (run_number<=274093)*(0.9130679368972778*(abs(Eta_muon2)<=0.9)*(Pt_muon2>50)*(Pt_muon2<60) + 0.9128034114837646*(abs(Eta_muon2)<=0.9)*(Pt_muon2>60)*(Pt_muon2<120) + 0.9093019962310791*(abs(Eta_muon2)<=0.9)*(Pt_muon2>120)*(Pt_muon2<200) + 0.8876489996910095*(abs(Eta_muon2)<=0.9)*(Pt_muon2>200) + 0.8885771036148071*(abs(Eta_muon2)>0.9)*(abs(Eta_muon2)<=1.2)*(Pt_muon2>50)*(Pt_muon2<60) + 0.8865549564361572*(abs(Eta_muon2)>0.9)*(abs(Eta_muon2)<=1.2)*(Pt_muon2>60)*(Pt_muon2<120) + 0.8625686764717102*(abs(Eta_muon2)>0.9)*(abs(Eta_muon2)<=1.2)*(Pt_muon2>120)*(Pt_muon2<200) + 0.8157601356506348*(abs(Eta_muon2)>0.9)*(abs(Eta_muon2)<=1.2)*(Pt_muon2>200) + 0.8422430157661438*(abs(Eta_muon2)>1.2)*(abs(Eta_muon2)<=2.1)*(Pt_muon2>50)*(Pt_muon2<60) + 0.8360896110534668*(abs(Eta_muon2)>1.2)*(abs(Eta_muon2)<=2.1)*(Pt_muon2>60)*(Pt_muon2<120) + 0.7579622268676758*(abs(Eta_muon2)>1.2)*(abs(Eta_muon2)<=2.1)*(Pt_muon2>120)*(Pt_muon2<200) + 0.626224160194397*(abs(Eta_muon2)>1.2)*(abs(Eta_muon2)<=2.1)*(Pt_muon2>200)) - (run_number>=274094)*(0.9130679368972778*(abs(Eta_muon2)<=0.9)*(Pt_muon2>50)*(Pt_muon2<60) + 0.9128034114837646*(abs(Eta_muon2)<=0.9)*(Pt_muon2>60)*(Pt_muon2<120) + 0.9093019962310791*(abs(Eta_muon2)<=0.9)*(Pt_muon2>120)*(Pt_muon2<200) + 0.8876489996910095*(abs(Eta_muon2)<=0.9)*(Pt_muon2>200) + 0.8885771036148071*(abs(Eta_muon2)>0.9)*(abs(Eta_muon2)<=1.2)*(Pt_muon2>50)*(Pt_muon2<60) + 0.8865549564361572*(abs(Eta_muon2)>0.9)*(abs(Eta_muon2)<=1.2)*(Pt_muon2>60)*(Pt_muon2<120) + 0.8625686764717102*(abs(Eta_muon2)>0.9)*(abs(Eta_muon2)<=1.2)*(Pt_muon2>120)*(Pt_muon2<200) + 0.8157601356506348*(abs(Eta_muon2)>0.9)*(abs(Eta_muon2)<=1.2)*(Pt_muon2>200) + 0.8422430157661438*(abs(Eta_muon2)>1.2)*(abs(Eta_muon2)<=2.1)*(Pt_muon2>50)*(Pt_muon2<60) + 0.8360896110534668*(abs(Eta_muon2)>1.2)*(abs(Eta_muon2)<=2.1)*(Pt_muon2>60)*(Pt_muon2<120) + 0.7579622268676758*(abs(Eta_muon2)>1.2)*(abs(Eta_muon2)<=2.1)*(Pt_muon2>120)*(Pt_muon2<200) + 0.626224160194397*(abs(Eta_muon2)>1.2)*(abs(Eta_muon2)<=2.1)*(Pt_muon2>200)))))'
+#2016, HLT_Mu50 OR HLT_TkMu50
+doublemuHLT =  '*(1.0-(( 1.0 - (run_number<=274093)*(0.921920120716095*(abs(Eta_muon1)<=0.9)*(Pt_muon1>52)*(Pt_muon1<60) + 0.9174067378044128*(abs(Eta_muon1)<=0.9)*(Pt_muon1>60)*(Pt_muon1<120) + 0.9156903624534607*(abs(Eta_muon1)<=0.9)*(Pt_muon1>120)*(Pt_muon1<200) + 0.8778318762779236*(abs(Eta_muon1)<=0.9)*(Pt_muon1>200) + 0.6962698698043823*(abs(Eta_muon1)>0.9)*(abs(Eta_muon1)<=1.2)*(Pt_muon1>52)*(Pt_muon1<60) + 0.6839967966079712*(abs(Eta_muon1)>0.9)*(abs(Eta_muon1)<=1.2)*(Pt_muon1>60)*(Pt_muon1<120) + 0.6415411829948425*(abs(Eta_muon1)>0.9)*(abs(Eta_muon1)<=1.2)*(Pt_muon1>120)*(Pt_muon1<200) + 0.6970946192741394*(abs(Eta_muon1)>0.9)*(abs(Eta_muon1)<=1.2)*(Pt_muon1>200) + 0.8551902174949646*(abs(Eta_muon1)>1.2)*(abs(Eta_muon1)<=2.1)*(Pt_muon1>52)*(Pt_muon1<60) + 0.8640838861465454*(abs(Eta_muon1)>1.2)*(abs(Eta_muon1)<=2.1)*(Pt_muon1>60)*(Pt_muon1<120) + 0.7792240381240845*(abs(Eta_muon1)>1.2)*(abs(Eta_muon1)<=2.1)*(Pt_muon1>120)*(Pt_muon1<200) + 0.678192138671875*(abs(Eta_muon1)>1.2)*(abs(Eta_muon1)<=2.1)*(Pt_muon1>200)) - (run_number>=274094)*(0.9340724349021912*(abs(Eta_muon1)<=0.9)*(Pt_muon1>52)*(Pt_muon1<60) + 0.9349773526191711*(abs(Eta_muon1)<=0.9)*(Pt_muon1>60)*(Pt_muon1<120) + 0.9329391121864319*(abs(Eta_muon1)<=0.9)*(Pt_muon1>120)*(Pt_muon1<200) + 0.9137989282608032*(abs(Eta_muon1)<=0.9)*(Pt_muon1>200) + 0.9314379692077637*(abs(Eta_muon1)>0.9)*(abs(Eta_muon1)<=1.2)*(Pt_muon1>52)*(Pt_muon1<60) + 0.9330504536628723*(abs(Eta_muon1)>0.9)*(abs(Eta_muon1)<=1.2)*(Pt_muon1>60)*(Pt_muon1<120) + 0.9075710773468018*(abs(Eta_muon1)>0.9)*(abs(Eta_muon1)<=1.2)*(Pt_muon1>120)*(Pt_muon1<200) + 0.8805744647979736*(abs(Eta_muon1)>0.9)*(abs(Eta_muon1)<=1.2)*(Pt_muon1>200) + 0.8854361772537231*(abs(Eta_muon1)>1.2)*(abs(Eta_muon1)<=2.1)*(Pt_muon1>52)*(Pt_muon1<60) + 0.8886139392852783*(abs(Eta_muon1)>1.2)*(abs(Eta_muon1)<=2.1)*(Pt_muon1>60)*(Pt_muon1<120) + 0.8260555863380432*(abs(Eta_muon1)>1.2)*(abs(Eta_muon1)<=2.1)*(Pt_muon1>120)*(Pt_muon1<200) + 0.7210540175437927*(abs(Eta_muon1)>1.2)*(abs(Eta_muon1)<=2.1)*(Pt_muon1>200)))'
+doublemuHLT += '*( 1.0 - (run_number<=274093)*(0.921920120716095*(abs(Eta_muon1)<=0.9)*(Pt_muon1>52)*(Pt_muon1<60) + 0.9174067378044128*(abs(Eta_muon1)<=0.9)*(Pt_muon1>60)*(Pt_muon1<120) + 0.9156903624534607*(abs(Eta_muon1)<=0.9)*(Pt_muon1>120)*(Pt_muon1<200) + 0.8778318762779236*(abs(Eta_muon1)<=0.9)*(Pt_muon1>200) + 0.6962698698043823*(abs(Eta_muon1)>0.9)*(abs(Eta_muon1)<=1.2)*(Pt_muon1>52)*(Pt_muon1<60) + 0.6839967966079712*(abs(Eta_muon1)>0.9)*(abs(Eta_muon1)<=1.2)*(Pt_muon1>60)*(Pt_muon1<120) + 0.6415411829948425*(abs(Eta_muon1)>0.9)*(abs(Eta_muon1)<=1.2)*(Pt_muon1>120)*(Pt_muon1<200) + 0.6970946192741394*(abs(Eta_muon1)>0.9)*(abs(Eta_muon1)<=1.2)*(Pt_muon1>200) + 0.8551902174949646*(abs(Eta_muon1)>1.2)*(abs(Eta_muon1)<=2.1)*(Pt_muon1>52)*(Pt_muon1<60) + 0.8640838861465454*(abs(Eta_muon1)>1.2)*(abs(Eta_muon1)<=2.1)*(Pt_muon1>60)*(Pt_muon1<120) + 0.7792240381240845*(abs(Eta_muon1)>1.2)*(abs(Eta_muon1)<=2.1)*(Pt_muon1>120)*(Pt_muon1<200) + 0.678192138671875*(abs(Eta_muon1)>1.2)*(abs(Eta_muon1)<=2.1)*(Pt_muon1>200)) - (run_number>=274094)*(0.9340724349021912*(abs(Eta_muon1)<=0.9)*(Pt_muon1>52)*(Pt_muon1<60) + 0.9349773526191711*(abs(Eta_muon1)<=0.9)*(Pt_muon1>60)*(Pt_muon1<120) + 0.9329391121864319*(abs(Eta_muon1)<=0.9)*(Pt_muon1>120)*(Pt_muon1<200) + 0.9137989282608032*(abs(Eta_muon1)<=0.9)*(Pt_muon1>200) + 0.9314379692077637*(abs(Eta_muon1)>0.9)*(abs(Eta_muon1)<=1.2)*(Pt_muon1>52)*(Pt_muon1<60) + 0.9330504536628723*(abs(Eta_muon1)>0.9)*(abs(Eta_muon1)<=1.2)*(Pt_muon1>60)*(Pt_muon1<120) + 0.9075710773468018*(abs(Eta_muon1)>0.9)*(abs(Eta_muon1)<=1.2)*(Pt_muon1>120)*(Pt_muon1<200) + 0.8805744647979736*(abs(Eta_muon1)>0.9)*(abs(Eta_muon1)<=1.2)*(Pt_muon1>200) + 0.8854361772537231*(abs(Eta_muon1)>1.2)*(abs(Eta_muon1)<=2.1)*(Pt_muon1>52)*(Pt_muon1<60) + 0.8886139392852783*(abs(Eta_muon1)>1.2)*(abs(Eta_muon1)<=2.1)*(Pt_muon1>60)*(Pt_muon1<120) + 0.8260555863380432*(abs(Eta_muon1)>1.2)*(abs(Eta_muon1)<=2.1)*(Pt_muon1>120)*(Pt_muon1<200) + 0.7210540175437927*(abs(Eta_muon1)>1.2)*(abs(Eta_muon1)<=2.1)*(Pt_muon1>200)))))'
 
 
 
@@ -63,8 +69,11 @@ doublemuHLT += '*( 1.0 -  (run_number<=274093)*(0.9130679368972778*(abs(Eta_muon
 #2015#singlemuHLTEMU = '*((IsMuon_muon1*( 0.9494*(abs(Eta_muon1)<=0.9)*(Pt_muon1>50)*(Pt_muon1<60) + 0.9460*(abs(Eta_muon1)<=0.9)*(Pt_muon1>60) + 0.9030*(abs(Eta_muon1)>0.9)*(abs(Eta_muon1)<=1.2)*(Pt_muon1>50)*(Pt_muon1<60) + 0.8968*(abs(Eta_muon1)>0.9)*(abs(Eta_muon1)<=1.2)*(Pt_muon1>60) + 0.9153*(abs(Eta_muon1)>1.2)*(abs(Eta_muon1)<=2.1)*(Pt_muon1>50)*(Pt_muon1<60) + 0.9175*(abs(Eta_muon1)>1.2)*(abs(Eta_muon1)<=2.1)*(Pt_muon1>60) ))'
 #2015#singlemuHLTEMU += '+(IsMuon_muon2*( 0.9494*(abs(Eta_muon2)<=0.9)*(Pt_muon2>50)*(Pt_muon2<60) + 0.9460*(abs(Eta_muon2)<=0.9)*(Pt_muon2>60) + 0.9030*(abs(Eta_muon2)>0.9)*(abs(Eta_muon2)<=1.2)*(Pt_muon2>50)*(Pt_muon2<60) + 0.8968*(abs(Eta_muon2)>0.9)*(abs(Eta_muon2)<=1.2)*(Pt_muon2>60) + 0.9153*(abs(Eta_muon2)>1.2)*(abs(Eta_muon2)<=2.1)*(Pt_muon2>50)*(Pt_muon2<60) + 0.9175*(abs(Eta_muon2)>1.2)*(abs(Eta_muon2)<=2.1)*(Pt_muon2>60) )))'
 
-singlemuHLTEMU = '*((IsMuon_muon1*( (run_number<=274093)*(0.9130679368972778*(abs(Eta_muon1)<=0.9)*(Pt_muon1>50)*(Pt_muon1<60) + 0.9128034114837646*(abs(Eta_muon1)<=0.9)*(Pt_muon1>60)*(Pt_muon1<120) + 0.9093019962310791*(abs(Eta_muon1)<=0.9)*(Pt_muon1>120)*(Pt_muon1<200) + 0.8876489996910095*(abs(Eta_muon1)<=0.9)*(Pt_muon1>200) + 0.8885771036148071*(abs(Eta_muon1)>0.9)*(abs(Eta_muon1)<=1.2)*(Pt_muon1>50)*(Pt_muon1<60) + 0.8865549564361572*(abs(Eta_muon1)>0.9)*(abs(Eta_muon1)<=1.2)*(Pt_muon1>60)*(Pt_muon1<120) + 0.8625686764717102*(abs(Eta_muon1)>0.9)*(abs(Eta_muon1)<=1.2)*(Pt_muon1>120)*(Pt_muon1<200) + 0.8157601356506348*(abs(Eta_muon1)>0.9)*(abs(Eta_muon1)<=1.2)*(Pt_muon1>200) + 0.8422430157661438*(abs(Eta_muon1)>1.2)*(abs(Eta_muon1)<=2.1)*(Pt_muon1>50)*(Pt_muon1<60) + 0.8360896110534668*(abs(Eta_muon1)>1.2)*(abs(Eta_muon1)<=2.1)*(Pt_muon1>60)*(Pt_muon1<120) + 0.7579622268676758*(abs(Eta_muon1)>1.2)*(abs(Eta_muon1)<=2.1)*(Pt_muon1>120)*(Pt_muon1<200) + 0.626224160194397*(abs(Eta_muon1)>1.2)*(abs(Eta_muon1)<=2.1)*(Pt_muon1>200)) + (run_number>=274094)*(0.9130679368972778*(abs(Eta_muon1)<=0.9)*(Pt_muon1>50)*(Pt_muon1<60) + 0.9128034114837646*(abs(Eta_muon1)<=0.9)*(Pt_muon1>60)*(Pt_muon1<120) + 0.9093019962310791*(abs(Eta_muon1)<=0.9)*(Pt_muon1>120)*(Pt_muon1<200) + 0.8876489996910095*(abs(Eta_muon1)<=0.9)*(Pt_muon1>200) + 0.8885771036148071*(abs(Eta_muon1)>0.9)*(abs(Eta_muon1)<=1.2)*(Pt_muon1>50)*(Pt_muon1<60) + 0.8865549564361572*(abs(Eta_muon1)>0.9)*(abs(Eta_muon1)<=1.2)*(Pt_muon1>60)*(Pt_muon1<120) + 0.8625686764717102*(abs(Eta_muon1)>0.9)*(abs(Eta_muon1)<=1.2)*(Pt_muon1>120)*(Pt_muon1<200) + 0.8157601356506348*(abs(Eta_muon1)>0.9)*(abs(Eta_muon1)<=1.2)*(Pt_muon1>200) + 0.8422430157661438*(abs(Eta_muon1)>1.2)*(abs(Eta_muon1)<=2.1)*(Pt_muon1>50)*(Pt_muon1<60) + 0.8360896110534668*(abs(Eta_muon1)>1.2)*(abs(Eta_muon1)<=2.1)*(Pt_muon1>60)*(Pt_muon1<120) + 0.7579622268676758*(abs(Eta_muon1)>1.2)*(abs(Eta_muon1)<=2.1)*(Pt_muon1>120)*(Pt_muon1<200) + 0.626224160194397*(abs(Eta_muon1)>1.2)*(abs(Eta_muon1)<=2.1)*(Pt_muon1>200))))'
-singlemuHLTEMU += '+(IsMuon_muon2*(  (run_number<=274093)*(0.9130679368972778*(abs(Eta_muon1)<=0.9)*(Pt_muon1>50)*(Pt_muon1<60) + 0.9128034114837646*(abs(Eta_muon1)<=0.9)*(Pt_muon1>60)*(Pt_muon1<120) + 0.9093019962310791*(abs(Eta_muon1)<=0.9)*(Pt_muon1>120)*(Pt_muon1<200) + 0.8876489996910095*(abs(Eta_muon1)<=0.9)*(Pt_muon1>200) + 0.8885771036148071*(abs(Eta_muon1)>0.9)*(abs(Eta_muon1)<=1.2)*(Pt_muon1>50)*(Pt_muon1<60) + 0.8865549564361572*(abs(Eta_muon1)>0.9)*(abs(Eta_muon1)<=1.2)*(Pt_muon1>60)*(Pt_muon1<120) + 0.8625686764717102*(abs(Eta_muon1)>0.9)*(abs(Eta_muon1)<=1.2)*(Pt_muon1>120)*(Pt_muon1<200) + 0.8157601356506348*(abs(Eta_muon1)>0.9)*(abs(Eta_muon1)<=1.2)*(Pt_muon1>200) + 0.8422430157661438*(abs(Eta_muon1)>1.2)*(abs(Eta_muon1)<=2.1)*(Pt_muon1>50)*(Pt_muon1<60) + 0.8360896110534668*(abs(Eta_muon1)>1.2)*(abs(Eta_muon1)<=2.1)*(Pt_muon1>60)*(Pt_muon1<120) + 0.7579622268676758*(abs(Eta_muon1)>1.2)*(abs(Eta_muon1)<=2.1)*(Pt_muon1>120)*(Pt_muon1<200) + 0.626224160194397*(abs(Eta_muon1)>1.2)*(abs(Eta_muon1)<=2.1)*(Pt_muon1>200)) + (run_number>=274094)*(0.9130679368972778*(abs(Eta_muon1)<=0.9)*(Pt_muon1>50)*(Pt_muon1<60) + 0.9128034114837646*(abs(Eta_muon1)<=0.9)*(Pt_muon1>60)*(Pt_muon1<120) + 0.9093019962310791*(abs(Eta_muon1)<=0.9)*(Pt_muon1>120)*(Pt_muon1<200) + 0.8876489996910095*(abs(Eta_muon1)<=0.9)*(Pt_muon1>200) + 0.8885771036148071*(abs(Eta_muon1)>0.9)*(abs(Eta_muon1)<=1.2)*(Pt_muon1>50)*(Pt_muon1<60) + 0.8865549564361572*(abs(Eta_muon1)>0.9)*(abs(Eta_muon1)<=1.2)*(Pt_muon1>60)*(Pt_muon1<120) + 0.8625686764717102*(abs(Eta_muon1)>0.9)*(abs(Eta_muon1)<=1.2)*(Pt_muon1>120)*(Pt_muon1<200) + 0.8157601356506348*(abs(Eta_muon1)>0.9)*(abs(Eta_muon1)<=1.2)*(Pt_muon1>200) + 0.8422430157661438*(abs(Eta_muon1)>1.2)*(abs(Eta_muon1)<=2.1)*(Pt_muon1>50)*(Pt_muon1<60) + 0.8360896110534668*(abs(Eta_muon1)>1.2)*(abs(Eta_muon1)<=2.1)*(Pt_muon1>60)*(Pt_muon1<120) + 0.7579622268676758*(abs(Eta_muon1)>1.2)*(abs(Eta_muon1)<=2.1)*(Pt_muon1>120)*(Pt_muon1<200) + 0.626224160194397*(abs(Eta_muon1)>1.2)*(abs(Eta_muon1)<=2.1)*(Pt_muon1>200)))))'
+#singlemuHLTEMU = '*((IsMuon_muon1*( (run_number<=274093)*(0.9130679368972778*(abs(Eta_muon1)<=0.9)*(Pt_muon1>50)*(Pt_muon1<60) + 0.9128034114837646*(abs(Eta_muon1)<=0.9)*(Pt_muon1>60)*(Pt_muon1<120) + 0.9093019962310791*(abs(Eta_muon1)<=0.9)*(Pt_muon1>120)*(Pt_muon1<200) + 0.8876489996910095*(abs(Eta_muon1)<=0.9)*(Pt_muon1>200) + 0.8885771036148071*(abs(Eta_muon1)>0.9)*(abs(Eta_muon1)<=1.2)*(Pt_muon1>50)*(Pt_muon1<60) + 0.8865549564361572*(abs(Eta_muon1)>0.9)*(abs(Eta_muon1)<=1.2)*(Pt_muon1>60)*(Pt_muon1<120) + 0.8625686764717102*(abs(Eta_muon1)>0.9)*(abs(Eta_muon1)<=1.2)*(Pt_muon1>120)*(Pt_muon1<200) + 0.8157601356506348*(abs(Eta_muon1)>0.9)*(abs(Eta_muon1)<=1.2)*(Pt_muon1>200) + 0.8422430157661438*(abs(Eta_muon1)>1.2)*(abs(Eta_muon1)<=2.1)*(Pt_muon1>50)*(Pt_muon1<60) + 0.8360896110534668*(abs(Eta_muon1)>1.2)*(abs(Eta_muon1)<=2.1)*(Pt_muon1>60)*(Pt_muon1<120) + 0.7579622268676758*(abs(Eta_muon1)>1.2)*(abs(Eta_muon1)<=2.1)*(Pt_muon1>120)*(Pt_muon1<200) + 0.626224160194397*(abs(Eta_muon1)>1.2)*(abs(Eta_muon1)<=2.1)*(Pt_muon1>200)) + (run_number>=274094)*(0.9130679368972778*(abs(Eta_muon1)<=0.9)*(Pt_muon1>50)*(Pt_muon1<60) + 0.9128034114837646*(abs(Eta_muon1)<=0.9)*(Pt_muon1>60)*(Pt_muon1<120) + 0.9093019962310791*(abs(Eta_muon1)<=0.9)*(Pt_muon1>120)*(Pt_muon1<200) + 0.8876489996910095*(abs(Eta_muon1)<=0.9)*(Pt_muon1>200) + 0.8885771036148071*(abs(Eta_muon1)>0.9)*(abs(Eta_muon1)<=1.2)*(Pt_muon1>50)*(Pt_muon1<60) + 0.8865549564361572*(abs(Eta_muon1)>0.9)*(abs(Eta_muon1)<=1.2)*(Pt_muon1>60)*(Pt_muon1<120) + 0.8625686764717102*(abs(Eta_muon1)>0.9)*(abs(Eta_muon1)<=1.2)*(Pt_muon1>120)*(Pt_muon1<200) + 0.8157601356506348*(abs(Eta_muon1)>0.9)*(abs(Eta_muon1)<=1.2)*(Pt_muon1>200) + 0.8422430157661438*(abs(Eta_muon1)>1.2)*(abs(Eta_muon1)<=2.1)*(Pt_muon1>50)*(Pt_muon1<60) + 0.8360896110534668*(abs(Eta_muon1)>1.2)*(abs(Eta_muon1)<=2.1)*(Pt_muon1>60)*(Pt_muon1<120) + 0.7579622268676758*(abs(Eta_muon1)>1.2)*(abs(Eta_muon1)<=2.1)*(Pt_muon1>120)*(Pt_muon1<200) + 0.626224160194397*(abs(Eta_muon1)>1.2)*(abs(Eta_muon1)<=2.1)*(Pt_muon1>200))))'
+#singlemuHLTEMU += '+(IsMuon_muon2*(  (run_number<=274093)*(0.9130679368972778*(abs(Eta_muon1)<=0.9)*(Pt_muon1>50)*(Pt_muon1<60) + 0.9128034114837646*(abs(Eta_muon1)<=0.9)*(Pt_muon1>60)*(Pt_muon1<120) + 0.9093019962310791*(abs(Eta_muon1)<=0.9)*(Pt_muon1>120)*(Pt_muon1<200) + 0.8876489996910095*(abs(Eta_muon1)<=0.9)*(Pt_muon1>200) + 0.8885771036148071*(abs(Eta_muon1)>0.9)*(abs(Eta_muon1)<=1.2)*(Pt_muon1>50)*(Pt_muon1<60) + 0.8865549564361572*(abs(Eta_muon1)>0.9)*(abs(Eta_muon1)<=1.2)*(Pt_muon1>60)*(Pt_muon1<120) + 0.8625686764717102*(abs(Eta_muon1)>0.9)*(abs(Eta_muon1)<=1.2)*(Pt_muon1>120)*(Pt_muon1<200) + 0.8157601356506348*(abs(Eta_muon1)>0.9)*(abs(Eta_muon1)<=1.2)*(Pt_muon1>200) + 0.8422430157661438*(abs(Eta_muon1)>1.2)*(abs(Eta_muon1)<=2.1)*(Pt_muon1>50)*(Pt_muon1<60) + 0.8360896110534668*(abs(Eta_muon1)>1.2)*(abs(Eta_muon1)<=2.1)*(Pt_muon1>60)*(Pt_muon1<120) + 0.7579622268676758*(abs(Eta_muon1)>1.2)*(abs(Eta_muon1)<=2.1)*(Pt_muon1>120)*(Pt_muon1<200) + 0.626224160194397*(abs(Eta_muon1)>1.2)*(abs(Eta_muon1)<=2.1)*(Pt_muon1>200)) + (run_number>=274094)*(0.9130679368972778*(abs(Eta_muon1)<=0.9)*(Pt_muon1>50)*(Pt_muon1<60) + 0.9128034114837646*(abs(Eta_muon1)<=0.9)*(Pt_muon1>60)*(Pt_muon1<120) + 0.9093019962310791*(abs(Eta_muon1)<=0.9)*(Pt_muon1>120)*(Pt_muon1<200) + 0.8876489996910095*(abs(Eta_muon1)<=0.9)*(Pt_muon1>200) + 0.8885771036148071*(abs(Eta_muon1)>0.9)*(abs(Eta_muon1)<=1.2)*(Pt_muon1>50)*(Pt_muon1<60) + 0.8865549564361572*(abs(Eta_muon1)>0.9)*(abs(Eta_muon1)<=1.2)*(Pt_muon1>60)*(Pt_muon1<120) + 0.8625686764717102*(abs(Eta_muon1)>0.9)*(abs(Eta_muon1)<=1.2)*(Pt_muon1>120)*(Pt_muon1<200) + 0.8157601356506348*(abs(Eta_muon1)>0.9)*(abs(Eta_muon1)<=1.2)*(Pt_muon1>200) + 0.8422430157661438*(abs(Eta_muon1)>1.2)*(abs(Eta_muon1)<=2.1)*(Pt_muon1>50)*(Pt_muon1<60) + 0.8360896110534668*(abs(Eta_muon1)>1.2)*(abs(Eta_muon1)<=2.1)*(Pt_muon1>60)*(Pt_muon1<120) + 0.7579622268676758*(abs(Eta_muon1)>1.2)*(abs(Eta_muon1)<=2.1)*(Pt_muon1>120)*(Pt_muon1<200) + 0.626224160194397*(abs(Eta_muon1)>1.2)*(abs(Eta_muon1)<=2.1)*(Pt_muon1>200)))))'
+
+singlemuHLTEMU = '*((IsMuon_muon1*((run_number<=274093)*(0.921920120716095*(abs(Eta_muon1)<=0.9)*(Pt_muon1>52)*(Pt_muon1<60) + 0.9174067378044128*(abs(Eta_muon1)<=0.9)*(Pt_muon1>60)*(Pt_muon1<120) + 0.9156903624534607*(abs(Eta_muon1)<=0.9)*(Pt_muon1>120)*(Pt_muon1<200) + 0.8778318762779236*(abs(Eta_muon1)<=0.9)*(Pt_muon1>200) + 0.6962698698043823*(abs(Eta_muon1)>0.9)*(abs(Eta_muon1)<=1.2)*(Pt_muon1>52)*(Pt_muon1<60) + 0.6839967966079712*(abs(Eta_muon1)>0.9)*(abs(Eta_muon1)<=1.2)*(Pt_muon1>60)*(Pt_muon1<120) + 0.6415411829948425*(abs(Eta_muon1)>0.9)*(abs(Eta_muon1)<=1.2)*(Pt_muon1>120)*(Pt_muon1<200) + 0.6970946192741394*(abs(Eta_muon1)>0.9)*(abs(Eta_muon1)<=1.2)*(Pt_muon1>200) + 0.8551902174949646*(abs(Eta_muon1)>1.2)*(abs(Eta_muon1)<=2.1)*(Pt_muon1>52)*(Pt_muon1<60) + 0.8640838861465454*(abs(Eta_muon1)>1.2)*(abs(Eta_muon1)<=2.1)*(Pt_muon1>60)*(Pt_muon1<120) + 0.7792240381240845*(abs(Eta_muon1)>1.2)*(abs(Eta_muon1)<=2.1)*(Pt_muon1>120)*(Pt_muon1<200) + 0.678192138671875*(abs(Eta_muon1)>1.2)*(abs(Eta_muon1)<=2.1)*(Pt_muon1>200)) + (run_number>=274094)*(0.9340724349021912*(abs(Eta_muon1)<=0.9)*(Pt_muon1>52)*(Pt_muon1<60) + 0.9349773526191711*(abs(Eta_muon1)<=0.9)*(Pt_muon1>60)*(Pt_muon1<120) + 0.9329391121864319*(abs(Eta_muon1)<=0.9)*(Pt_muon1>120)*(Pt_muon1<200) + 0.9137989282608032*(abs(Eta_muon1)<=0.9)*(Pt_muon1>200) + 0.9314379692077637*(abs(Eta_muon1)>0.9)*(abs(Eta_muon1)<=1.2)*(Pt_muon1>52)*(Pt_muon1<60) + 0.9330504536628723*(abs(Eta_muon1)>0.9)*(abs(Eta_muon1)<=1.2)*(Pt_muon1>60)*(Pt_muon1<120) + 0.9075710773468018*(abs(Eta_muon1)>0.9)*(abs(Eta_muon1)<=1.2)*(Pt_muon1>120)*(Pt_muon1<200) + 0.8805744647979736*(abs(Eta_muon1)>0.9)*(abs(Eta_muon1)<=1.2)*(Pt_muon1>200) + 0.8854361772537231*(abs(Eta_muon1)>1.2)*(abs(Eta_muon1)<=2.1)*(Pt_muon1>52)*(Pt_muon1<60) + 0.8886139392852783*(abs(Eta_muon1)>1.2)*(abs(Eta_muon1)<=2.1)*(Pt_muon1>60)*(Pt_muon1<120) + 0.8260555863380432*(abs(Eta_muon1)>1.2)*(abs(Eta_muon1)<=2.1)*(Pt_muon1>120)*(Pt_muon1<200) + 0.7210540175437927*(abs(Eta_muon1)>1.2)*(abs(Eta_muon1)<=2.1)*(Pt_muon1>200))))'
+singlemuHLTEMU += '+(IsMuon_muon2*((run_number<=274093)*(0.921920120716095*(abs(Eta_muon1)<=0.9)*(Pt_muon1>52)*(Pt_muon1<60) + 0.9174067378044128*(abs(Eta_muon1)<=0.9)*(Pt_muon1>60)*(Pt_muon1<120) + 0.9156903624534607*(abs(Eta_muon1)<=0.9)*(Pt_muon1>120)*(Pt_muon1<200) + 0.8778318762779236*(abs(Eta_muon1)<=0.9)*(Pt_muon1>200) + 0.6962698698043823*(abs(Eta_muon1)>0.9)*(abs(Eta_muon1)<=1.2)*(Pt_muon1>52)*(Pt_muon1<60) + 0.6839967966079712*(abs(Eta_muon1)>0.9)*(abs(Eta_muon1)<=1.2)*(Pt_muon1>60)*(Pt_muon1<120) + 0.6415411829948425*(abs(Eta_muon1)>0.9)*(abs(Eta_muon1)<=1.2)*(Pt_muon1>120)*(Pt_muon1<200) + 0.6970946192741394*(abs(Eta_muon1)>0.9)*(abs(Eta_muon1)<=1.2)*(Pt_muon1>200) + 0.8551902174949646*(abs(Eta_muon1)>1.2)*(abs(Eta_muon1)<=2.1)*(Pt_muon1>52)*(Pt_muon1<60) + 0.8640838861465454*(abs(Eta_muon1)>1.2)*(abs(Eta_muon1)<=2.1)*(Pt_muon1>60)*(Pt_muon1<120) + 0.7792240381240845*(abs(Eta_muon1)>1.2)*(abs(Eta_muon1)<=2.1)*(Pt_muon1>120)*(Pt_muon1<200) + 0.678192138671875*(abs(Eta_muon1)>1.2)*(abs(Eta_muon1)<=2.1)*(Pt_muon1>200)) + (run_number>=274094)*(0.9340724349021912*(abs(Eta_muon1)<=0.9)*(Pt_muon1>52)*(Pt_muon1<60) + 0.9349773526191711*(abs(Eta_muon1)<=0.9)*(Pt_muon1>60)*(Pt_muon1<120) + 0.9329391121864319*(abs(Eta_muon1)<=0.9)*(Pt_muon1>120)*(Pt_muon1<200) + 0.9137989282608032*(abs(Eta_muon1)<=0.9)*(Pt_muon1>200) + 0.9314379692077637*(abs(Eta_muon1)>0.9)*(abs(Eta_muon1)<=1.2)*(Pt_muon1>52)*(Pt_muon1<60) + 0.9330504536628723*(abs(Eta_muon1)>0.9)*(abs(Eta_muon1)<=1.2)*(Pt_muon1>60)*(Pt_muon1<120) + 0.9075710773468018*(abs(Eta_muon1)>0.9)*(abs(Eta_muon1)<=1.2)*(Pt_muon1>120)*(Pt_muon1<200) + 0.8805744647979736*(abs(Eta_muon1)>0.9)*(abs(Eta_muon1)<=1.2)*(Pt_muon1>200) + 0.8854361772537231*(abs(Eta_muon1)>1.2)*(abs(Eta_muon1)<=2.1)*(Pt_muon1>52)*(Pt_muon1<60) + 0.8886139392852783*(abs(Eta_muon1)>1.2)*(abs(Eta_muon1)<=2.1)*(Pt_muon1>60)*(Pt_muon1<120) + 0.8260555863380432*(abs(Eta_muon1)>1.2)*(abs(Eta_muon1)<=2.1)*(Pt_muon1>120)*(Pt_muon1<200) + 0.7210540175437927*(abs(Eta_muon1)>1.2)*(abs(Eta_muon1)<=2.1)*(Pt_muon1>200)))))'
 
 
 
@@ -90,7 +99,8 @@ NormalWeightEMu = str(lumi)+'*weight_central'+singlemuHLTEMU#+MuIdScaleEMU+MuIso
 NormalWeightEMuNoHLT = str(lumi)+'*weight_central'
 
 # This is the real data trigger condition
-dataHLT = '*(pass_HLTMu40_eta2p1)'
+#dataHLT = '*(pass_HLTMu40_eta2p1)'
+dataHLT = '*((pass_HLTMu50+pass_HLTTkMu50)>0)'
 
 # This is the set of event filters used
 passfilter =  '*(passDataCert*passPrimaryVertex*(GoodVertexCount>=1))'
@@ -99,21 +109,22 @@ passfilter =  '*(passDataCert*passPrimaryVertex*(GoodVertexCount>=1))'
 ##passfilter += '*(passEcalDeadCellBE*passBadEESuperCrystal*passHcalLaserEvent*passBPTX0)'
 ##passfilter += '*(passHBHENoiseFilter*passBadEESuperCrystal*passBeamHalo)'
 passfilter += '*(passHBHENoiseFilter)'
-##passfilter += '*(passHBHENoiseIsoFilter)'#fixme add when new ntuples are done, check all met filters
-##passfilter += '*(passBadEESuperCrystal)'
-passfilter += '*(1-passEcalDeadCellTP)'
+#passfilter += '*(passHBHENoiseIsoFilter)'#fixme always 0 for MC and Data
+passfilter += '*(passBadEESuperCrystal)'
+passfilter += '*(passEcalDeadCellTP)'
 ##now from txt lists
-passfilter += '*(passBeamHalo2015)'
-passfilter += '*(passBadEcalSC)'
-#passfilter += '*(passBadMuonTrackList*passBadResTrackList)'#fixme need to remove to check qcd bg in same sign
+passfilter += '*(passBeamHalo2016)'
+#passfilter += '*(passBadEESuperCrystal)'
+passfilter += '*(passBadMuon*passBadChargedHadron)'#fixme need to remove to check qcd bg in same sign
 
 # This defines the preselections for the mu-mu, mu-nu, and e-mu samples
 #preselectionmumu = '((Pt_muon1>45)*(Pt_muon2>45)*(Pt_jet1>125)*(Pt_jet2>45)*(St_uujj>300)*(M_uu>50))*(DR_muon1muon2>0.3)'
 #preselectionmunu = '((Pt_muon1>45)*(Pt_muon2<45.0)*(Pt_miss>55)*(Pt_jet1>125)*(Pt_jet2>45)*(Pt_ele1<45.0)*(St_uvjj>300)*(DPhi_muon1met>0.8)*(DPhi_jet1met>0.5)*(MT_uv>50.0))'
 #preselectionemu  = '((Pt_muon1>45)*(Pt_muon2>45)*(Pt_jet1>125)*(Pt_jet2>45)*(St_uujj>300)*(M_uu>50)*(DR_muon1muon2>0.3))'
-preselectionmumu = '((Pt_muon1>50)*(Pt_muon2>50)*(Pt_jet1>50)*(Pt_jet2>50)*(St_uujj>300)*(M_uu>50))*(DR_muon1muon2>0.3)'#this is 2015 preselection
-preselectionmunu = '((Pt_muon1>50)*(Pt_muon2<50.0)*(Pt_miss>55)*(Pt_jet1>50)*(Pt_jet2>50)*(Pt_ele1<50.0)*(St_uvjj>300)*(DPhi_muon1met>0.8)*(DPhi_jet1met>0.5)*(MT_uv>50.0))'
-preselectionemu  = '((Pt_muon1>50)*(Pt_muon2>50)*(Pt_jet1>50)*(Pt_jet2>50)*(St_uujj>300)*(M_uu>50)*(DR_muon1muon2>0.3))'
+preselectionmumu = '((Pt_muon1>52)*(Pt_muon2>52)*(Pt_jet1>50)*(Pt_jet2>50)*(St_uujj>300)*(M_uu>50))*(DR_muon1muon2>0.3)'#this is 2015 preselection
+preselectionmunu = '((Pt_muon1>52)*(Pt_muon2<52)*(Pt_miss>55)*(Pt_jet1>50)*(Pt_jet2>50)*(Pt_ele1<52.0)*(St_uvjj>300)*(MT_uv>50.0)*(DPhi_muon1met>0.8)*(DPhi_jet1met>0.5))'
+#preselectionmunu = '((Pt_muon1>52)*(Pt_muon2<52)*(Pt_miss>55)*(Pt_jet1>50)*(Pt_jet2>50)*(Pt_ele1<52.0)*(St_uvjj>300)*(MT_uv>50.0))'#fixme removing met dphi cuts
+preselectionemu  = '((Pt_muon1>52)*(Pt_muon2>52)*(Pt_jet1>50)*(Pt_jet2>50)*(St_uujj>300)*(M_uu>50)*(DR_muon1muon2>0.3))'
 
 # Add the filters to the preselections
 preselectionemu  += passfilter
@@ -137,12 +148,12 @@ if useDataDrivenTTbar:
 	#emu_id_eff = 0.5748#v7 JEC
 	#emu_id_eff = 0.8421#2016 MG
 	#emu_id_eff = 0.622805749175#2016 amc@nlo
-	emu_id_eff = 0.6223#15314391
+	emu_id_eff = 0.5958
 #emu_id_eff_err = 0.00305
 #emu_id_eff_err = 0.0046#v7 JEC
 #emu_id_eff_err = 0.00308#2016
 #emu_id_eff_err = 0.0212207465434#2016 amc@nlo
-emu_id_eff_err = 0.0212#144967112
+emu_id_eff_err = 0.0232
 
 # Next are the PDF uncertainties. 
 pdf_MASS   =[ 200, 250, 300 , 350 , 400 , 450 , 500 , 550 , 600 , 650 , 700 , 750 , 800 , 850 , 900 , 950 , 1000 , 1050 , 1100 , 1150 , 1200 , 1250, 1300, 1350, 1400, 1450, 1500, 1550, 1600, 1650, 1700, 1750, 1800, 1850, 1900, 1950, 2000]               
@@ -301,7 +312,7 @@ def main():
 
 
 	#version_name = 'Testing_Feb29' # scriptflag
-	version_name = 'Testing_2016_Sep21' # scriptflag
+	version_name = 'Testing_2016_Oct20' # scriptflag
 	#version_name = 'Testing_Mar29MuMinusMuMinus_TTBarMC'
 	os.system('mkdir Results_'+version_name) 
 
@@ -382,7 +393,7 @@ def main():
 	# The ttbar e-mu data-driven study. You only need to do this once, check the validation output, and use the scale-factor as global variable "emu_id_eff"
 	# The scale-factor should be near 0.5
 	# ====================================================================================================================================================== #
-	if True:
+	if False:
 		# TTBar STudy
 
 		# Some modifications to the ST and LQ mass binning
@@ -543,7 +554,7 @@ def main():
 	# ====================================================================================================================================================== #
 	# This is a basic plotting routine to make Analysis Note style plots with ratio plots. AN Analysis-Note
 	# ====================================================================================================================================================== #
-	if False :
+	if True :
 		global preselectionmumu 
 		# Some modifications to the ST and LQ mass binning
 		bjetbinning = [0,.05]
@@ -571,8 +582,7 @@ def main():
 		#print lqbinning,stbinning
 		# Get Scale Factors
 		[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = GetMuMuScaleFactors( NormalWeightMuMu+'*'+preselectionmumu, NormalDirectory, '(M_uu>80)*(M_uu<100)', '(M_uu>100)*',1)
-		[[Rw_uvjj,Rw_uvjj_err],[Rtt_uvjj,Rtt_uvjj_err]] = GetMuNuScaleFactors( NormalWeightMuNu+'*'+preselectionmunu, NormalDirectory, '(MT_uv>70)*(MT_uv<150)*(JetCount<3.5)*(((CISV_jet1>0.800)+(CISV_jet2>0.800))<1)', '(MT_uv>70)*(MT_uv<150)*(JetCount>3.5)*(((CISV_jet1>0.800)+(CISV_jet2>0.800))>=1)*(0.901114+(1.32145e-05*(Pt_jet1*(CISV_jet1>CISV_jet2)+Pt_jet2*(CISV_jet2>CISV_jet1))))')#fixme todo varying control sample MT window
-		#[[Rw_uvjj,Rw_uvjj_err],[Rtt_uvjj,Rtt_uvjj_err]] = GetMuNuScaleFactors( NormalWeightMuNu+'*'+preselectionmunu, NormalDirectory, '(MT_uv>70)*(MT_uv<110)*(JetCount<3.5)', '(MT_uv>70)*(MT_uv<110)*(JetCount>3.5)')
+		[[Rw_uvjj,Rw_uvjj_err],[Rtt_uvjj,Rtt_uvjj_err]] = GetMuNuScaleFactors( NormalWeightMuNu+'*'+preselectionmunu, NormalDirectory, '(MT_uv>70)*(MT_uv<150)*(JetCount<3.5)*(((CISV_jet1>0.800)+(CISV_jet2>0.800))<1)', '(MT_uv>70)*(MT_uv<150)*(JetCount>3.5)*(((CISV_jet1>0.800)+(CISV_jet2>0.800))>=1)')#*(0.901114+(1.32145e-05*(Pt_jet1*(CISV_jet1>CISV_jet2)+Pt_jet2*(CISV_jet2>CISV_jet1))))')#fixme todo varying control sample MT window
 		#CSVv2L	0.460
 		#CSVv2M	0.800
 		#CSVv2T	0.935
@@ -589,7 +599,7 @@ def main():
 
                 #Signal efficiency*acceptance at final selection
 		#MuMuOptCutFile = 'Results_Testing_Feb21_tmp/OptLQ_uujjCuts_Smoothed_pol2cutoff.txt'
-		MakeEfficiencyPlot(NormalDirectory,NormalWeightMuMu,MuMuOptCutFile,'LQuujj',version_name)
+		#MakeEfficiencyPlot(NormalDirectory,NormalWeightMuMu,MuMuOptCutFile,'LQuujj',version_name)
 
 		# Here are a few plots which are zoomed-in on control regions. 
 		MakeBasicPlot("M_uu","M^{#mu#mu} [GeV]",bosonzoombinning_uujj_Z,preselectionmumu,NormalWeightMuMu,NormalDirectory,'controlzoom_ZRegion_TTBarDataDriven','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
@@ -3024,7 +3034,7 @@ def GetMuNuScaleFactors( selection, FileDirectory, controlregion_1, controlregio
 	wvals = []
 	tvals = []
 
-	for x in range(10000):
+	for x in range(1000):#fixme was 10k
 		variation = (GetScaleFactors(RR(N1),RR(N2),RR(W1),RR(W2),RR(T1),RR(T2),Other1[0],Other2[0]))
 		wvals.append(variation[0])
 		tvals.append(variation[1])
@@ -3715,12 +3725,12 @@ def MakeBasicPlot(recovariable,xlabel,presentationbinning,selection,weight,FileD
  
 	if  'PAS' in tagname and 'tagfree' not in tagname:
 		#l1.DrawLatex(0.18,0.94,"CMS #it{Preliminary}      "+sqrts+", 19.7 fb^{-1}")
-		l1.DrawLatex(0.13,0.94,"#it{Preliminary}                                       19.5 fb^{-1} (13 TeV)")
+		l1.DrawLatex(0.13,0.94,"#it{Preliminary}                                       27.2 fb^{-1} (13 TeV)")
 		#l1.DrawLatex(0.64,0.94,"5 fb^{-1} (13 TeV)")
 		l2.DrawLatex(0.15,0.84,"CMS")
 	else:
 		#l1.DrawLatex(0.18,0.94,"                          "+sqrts+", 225.57 pb^{-1}")
-		l1.DrawLatex(0.13,0.94,"#it{Preliminary}                                       19.5 fb^{-1} (13 TeV)")
+		l1.DrawLatex(0.13,0.94,"#it{Preliminary}                                       27.2 fb^{-1} (13 TeV)")
 		l2.DrawLatex(0.15,0.84,"CMS")
 
 
@@ -4136,11 +4146,11 @@ def MakeBasicPlotQCD(recovariable,xlabel,presentationbinning,selection,qcdselect
 	# l2.DrawLatex(0.15,0.83,"CMS #it{Preliminary}")
 	if  'PAS' in tagname and 'tagfree' not in tagname:
 		#l2.DrawLatex(0.18,0.94,"CMS #it{Preliminary}      "+sqrts+", 19.7 fb^{-1}")
-		l1.DrawLatex(0.13,0.94,"#it{Preliminary}                                 19.5 fb^{-1} (13 TeV)")
+		l1.DrawLatex(0.13,0.94,"#it{Preliminary}                                 27.2 fb^{-1} (13 TeV)")
 		l2.DrawLatex(0.15,0.84,"CMS")
 	else:
 		#l2.DrawLatex(0.18,0.94,"                          "+sqrts+", 19.7 fb^{-1}")
-		l1.DrawLatex(0.13,0.94,"#it{Preliminary}                                 19.5 fb^{-1} (13 TeV)")
+		l1.DrawLatex(0.13,0.94,"#it{Preliminary}                                 27.2 fb^{-1} (13 TeV)")
 		l2.DrawLatex(0.15,0.84,"CMS")
 	gPad.RedrawAxis()
 
@@ -4443,11 +4453,11 @@ def MakeBasicPlotEMu(recovariable,xlabel,presentationbinning,selection,weight,Fi
 	# l2.DrawLatex(0.15,0.83,"CMS #it{Preliminary} ")
 	if  'PAS' in tagname:# and 'tagfree' not in tagname:
 		#l2.DrawLatex(0.18,0.94,"CMS #it{Preliminary}      "+sqrts+", 19.7 fb^{-1}")
-		l1.DrawLatex(0.13,0.94,"#it{Preliminary}                             19.5 fb^{-1} (13 TeV)")
+		l1.DrawLatex(0.13,0.94,"#it{Preliminary}                             27.2 fb^{-1} (13 TeV)")
 		l2.DrawLatex(0.15,0.84,"CMS")
 	else:
 		#l2.DrawLatex(0.18,0.94,"                          "+sqrts+", 19.7 fb^{-1}")
-		l1.DrawLatex(0.13,0.94,"#it{Preliminary}                                      19.5 fb^{-1} (13 TeV)")
+		l1.DrawLatex(0.13,0.94,"#it{Preliminary}                                      27.2 fb^{-1} (13 TeV)")
 		l2.DrawLatex(0.15,0.84,"CMS")
 
 	gPad.RedrawAxis()

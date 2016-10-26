@@ -146,7 +146,8 @@ _kinematicvariables += ['CISV_jet1','CISV_jet2']
 _kinematicvariables += ['PULoosej1','PUMediumj1','PUTightj1']
 _kinematicvariables += ['PULoosej2','PUMediumj2','PUTightj2']
 
-_weights = ['scaleWeight_Up','scaleWeight_Down','scaleWeight_R1_F1','scaleWeight_R1_F2','scaleWeight_R1_F0p5','scaleWeight_R2_F1','scaleWeight_R2_F2','scaleWeight_R2_F0p5','scaleWeight_R0p5_F1','scaleWeight_R0p5_F2','scaleWeight_R0p5_F0p5','scaleWeight_R2_F2','weight_amcNLO','weight_nopu','weight_central', 'weight_pu_up', 'weight_pu_down','weight_central_2012D','weight_topPt']
+#_weights = ['scaleWeight_Up','scaleWeight_Down','scaleWeight_R1_F1','scaleWeight_R1_F2','scaleWeight_R1_F0p5','scaleWeight_R2_F1','scaleWeight_R2_F2','scaleWeight_R2_F0p5','scaleWeight_R0p5_F1','scaleWeight_R0p5_F2','scaleWeight_R0p5_F0p5','scaleWeight_R2_F2','weight_amcNLO','weight_nopu','weight_central', 'weight_pu_up', 'weight_pu_down','weight_central_2012D','weight_topPt']
+_weights = ['scaleWeight_Up','scaleWeight_Down','scaleWeight_R1_F1','scaleWeight_R1_F2','scaleWeight_R1_F0p5','scaleWeight_R2_F1','scaleWeight_R2_F2','scaleWeight_R2_F0p5','scaleWeight_R0p5_F1','scaleWeight_R0p5_F2','scaleWeight_R0p5_F0p5','scaleWeight_R2_F2','weight_amcNLO','weight_nopu','weight_central', 'weight_pu_up', 'weight_pu_down','weight_topPt']
 _flagDoubles = ['run_number','event_number','lumi_number']
 _flags = ['pass_HLTIsoMu27','pass_HLTMu45_eta2p1','pass_HLTMu50','pass_HLTTkMu50','GoodVertexCount']
 _flags += ['passPrimaryVertex','passBeamScraping','passHBHENoiseFilter','passHBHENoiseIsoFilter','passBPTX0','passBeamHalo','passTrackingFailure','passTriggerObjectMatching','passDataCert']
@@ -186,7 +187,7 @@ def GetPURescalingFactors(puversion):
 
 
 
-    # This is the standard (all of 2012) pileup scenario
+    # This is the standard (all of 2016) pileup scenario
 	if puversion =='Basic':
 		f_pu_up = TFile("PU_Up.root","read")
 		h_pu_up = f_pu_up.Get('pileup')
@@ -199,16 +200,13 @@ def GetPURescalingFactors(puversion):
 		#h_pu_central = TFile("PU_Central.root",'read').Get('pileup')
 
 	# This is just for 2012D. It was used for some studies. Not that important.
-	if puversion =='2012D':
-		f_pu_up = TFile("PU_Up_2012D.root","read")
-		h_pu_up = f_pu_up.Get('pileup')
-		f_pu_down = TFile("PU_Down_2012D.root","read")
-		h_pu_down = f_pu_down.Get('pileup')
-		f_pu_central = TFile("PU_Central_2012D.root","read")
-		h_pu_central = f_pu_central.Get('pileup')
-		#h_pu_up = TFile.Open("PU_Up_2012D.root").Get('pileup')
-		#h_pu_down = TFile.Open("PU_Down_2012D.root",'read').Get('pileup')
-		#h_pu_central = TFile.Open("PU_Central_2012D.root",'read').Get('pileup')
+	#if puversion =='2012D':
+	#	f_pu_up = TFile("PU_Up_2012D.root","read")
+	#	h_pu_up = f_pu_up.Get('pileup')
+	#	f_pu_down = TFile("PU_Down_2012D.root","read")
+	#	h_pu_down = f_pu_down.Get('pileup')
+	#	f_pu_central = TFile("PU_Central_2012D.root","read")
+	#	h_pu_central = f_pu_central.Get('pileup')
 
 	# Arrays for the central and up/down variation weights.
 	bins_pu_central = []
@@ -255,7 +253,7 @@ def GetPURescalingFactors(puversion):
 
 # Use the above function to get the pu weights
 [CentralWeights,UpperWeights,LowerWeights] =GetPURescalingFactors('Basic')
-[CentralWeights_2012D,UpperWeights_2012D,LowerWeights_2012D] =GetPURescalingFactors('2012D')
+#[CentralWeights_2012D,UpperWeights_2012D,LowerWeights_2012D] =GetPURescalingFactors('2012D')
 
 
 
@@ -628,12 +626,12 @@ def GetPUWeight(T,version,puversion):
 			puweights=LowerWeights
 
 	# Also possible to do just for 2012D, for cross-checks. 
-	if puversion=='2012D':
-		puweights = CentralWeights_2012D
-		if version=='SysUp':
-			puweights=UpperWeights_2012D
-		if version=='SysDown':
-			puweights=LowerWeights_2012D
+	#if puversion=='2012D':
+	#	puweights = CentralWeights_2012D
+	#	if version=='SysUp':
+	#		puweights=UpperWeights_2012D
+	#	if version=='SysDown':
+	#		puweights=LowerWeights_2012D
 
 
 	# Make sure there exists a weight for the number of interactions given, 
@@ -1982,14 +1980,14 @@ for n in range(N):
 	Branches['weight_central'][0] = startingweight*GetPUWeight(t,'Central','Basic')
 	Branches['weight_pu_down'][0] = startingweight*GetPUWeight(t,'SysDown','Basic')
 	Branches['weight_pu_up'][0] = startingweight*GetPUWeight(t,'SysUp','Basic')
-	Branches['weight_central_2012D'][0] = startingweight*GetPUWeight(t,'Central','2012D')
+	#Branches['weight_central_2012D'][0] = startingweight*GetPUWeight(t,'Central','2012D')
 	Branches['weight_nopu'][0] = startingweight
 	Branches['weight_topPt'][0]=t.GenParticleTopPtWeight
 	if 'amcatnlo' in amcNLOname :
 		Branches['weight_central'][0]*=t.amcNLOWeight
 		Branches['weight_pu_down'][0]*=t.amcNLOWeight
 		Branches['weight_pu_up'][0]*=t.amcNLOWeight
-		Branches['weight_central_2012D'][0]*=t.amcNLOWeight
+		#Branches['weight_central_2012D'][0]*=t.amcNLOWeight
 		Branches['weight_nopu'][0]*=t.amcNLOWeight
 	Branches['weight_amcNLO'][0]=0#t.amcNLOWeight
 	if len(t.ScaleWeights) > 7 :

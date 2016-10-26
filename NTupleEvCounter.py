@@ -37,7 +37,7 @@ fin = TFile.Open(name,"READ")
 
 hev = fin.Get('LJFilter/EventCount/EventCounter')
 if 'amcatnlo' in name:
-	NORIG = hev.GetBinContent(2)
+	NORIG = hev.GetBinContent(3)
 else:
 	NORIG = hev.GetBinContent(1)
 outname = options.dir+'/'+(name.split('/')[-5]+'__'+name.split('/')[-1].replace('.root','_count.txt'))#changed -2 to -5 to get dataset name instead of 0000
