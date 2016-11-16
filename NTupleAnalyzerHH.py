@@ -81,7 +81,7 @@ junkfile1 = str(randint(100000000,1000000000))+indicator+'junk.root'
 
 # At least one 44 GeV Muon - offline cut is 50
 fj1 = TFile.Open(junkfile1,'RECREATE')
-t1 = to.CopyTree('MuonPt[]>8')#fixme was MuonPt[]>44
+t1 = to.CopyTree('')#fixme was MuonPt[]>44
 # t1 = to.CopyTree('(1)')
 Nm1 = t1.GetEntries()
 
@@ -145,6 +145,8 @@ _kinematicvariables += ['cosThetaStarMu','cosThetaStarEle','cosThetaStarLep']
 _kinematicvariables += ['Pt_Hjet1','Pt_Hjet2','Pt_Zjet1','Pt_Zjet2']
 _kinematicvariables += ['Pt_Hjets','Pt_Zjets','Pt_uu','Pt_ee','Pt_ll']
 _kinematicvariables += ['DR_jj_Z','DR_bb_H']
+_kinematicvariables += ['DR_u1Hj1','DR_u1Hj2','DR_u2Hj1','DR_u2Hj2']
+_kinematicvariables += ['DR_u1Zj1','DR_u1Zj2','DR_u2Zj1','DR_u2Zj2']
 _kinematicvariables += ['DR_uu_bb_H','DR_uu_jj_Z','DPhi_uu_bb_H','DPhi_uu_jj_Z']
 _kinematicvariables += ['DR_ee_bb_H','DR_ee_jj_Z','DPhi_ee_bb_H','DPhi_ee_jj_Z']
 _kinematicvariables += ['DR_ll_bb_H','DR_ll_jj_Z','DPhi_ll_bb_H','DPhi_ll_jj_Z']
@@ -567,26 +569,6 @@ def CheckRunLumiCert(r,l):
 				if _l == l:
 					return True
 	return False
-
-
-def GeomFilterCollection(collection_to_clean,good_collection,dRcut,associatedCollection):
-	# Purpose: Take a collection of TLorentzVectors that you want to clean (arg 1)
-	#         by removing all objects within dR of dRcut (arg 3) of any element in
-	#         the collection of other particles (arg 2)
-	#         e.g.  argumments (jets,muons,0.3) gets rid of jets within 0.3 of muons. 
-	#   Added option for associated collection, i.e.
-	output_collection = []
-	associated_output_collection = []
-	for i, c in enumerate(collection_to_clean):
-		isgood = True
-		for g in good_collection:
-			if (c.DeltaR(g))<dRcut:
-				isgood = False
-		if isgood==True:
-			output_collection.append(c)
-			associated_output_collection.append(associatedCollection[i])
-	return [output_collection,associated_output_collection]
-
 def TransMass(p1,p2):
 	# Purpose: Simple calculation of transverse mass between two TLorentzVectors
 	return math.sqrt( 2*p1.Pt()*p2.Pt()*(1-math.cos(p1.DeltaPhi(p2))) )
@@ -1623,13 +1605,6 @@ def LooseIDJets(T,met,variation,isdata):
 	return [jets,jetinds,met,JetFailThreshold,NHFs,NEMFs,CSVscores]
 
 
-def MetVector(T):
-	# Purpose: Creates a TLorentzVector represting the MET. No pseudorapidity, obviously.
-	met = TLorentzVector()
-	met.SetPtEtaPhiM(T.PFMETType01XYCor[0],0,T.PFMETPhiType01XYCor[0],0)
-	return met
-
-
 def GetLLJJMasses(l1,l2,j1,j2):
 	# Purpose: For LLJJ channels, this function returns two L-J Masses, corresponding to the
 	#         pair of L-Js which minimizes the difference between LQ masses in the event
@@ -2324,12 +2299,12 @@ def FullKinematicCalculation(T,variation):
 	[jets,jetinds,met,failthreshold,neutralhadronEF,neutralemEF,btagCSVscores] = LooseIDJets(T,met,variation,T.isData)
 	#jetsTemp = jets
 	_jetCntPreFilter = len(jets)
-	# jets = GeomFilterCollection(jets,muons_forjetsep,0.5)
-	#[jets,btagCSVscores] = GeomFilterCollection(jets,muons,0.3,btagCSVscores)#fixme todo was 0.5 - changing to 0.3 following HH->wwbb. In any case 0.5 is too big now that cone size is 0.4
-	#[jets,btagCSVscores] = GeomFilterCollection(jets,electrons,0.3,btagCSVscores)#fixme todo was 0.5 - changing to 0.3 following HH->wwbb. In any case 0.5 is too big now that cone size is 0.4
-	#[jetsTemp,jetinds] = GeomFilterCollection(jetsTemp,muons,0.3,jetinds)
-	#[jetsTemp,jetinds] = GeomFilterCollection(jetsTemp,electrons,0.3,jetinds)
-	# jets = GeomFilterCollection(jets,taus_forjetsep,0.5)
+	## jets = GeomFilterCollection(jets,muons_forjetsep,0.5)
+	#[jets,btagCSVscores] = GeomFilterCollection(jets,muons,0.3,btagCSVscores)#fixme todo was 0.5 - changing to 0.3 following HH->wwbb. In any case 0.5 is too big now that cone size is 0.4 - put back in!
+	#[jets,btagCSVscores] = GeomFilterCollection(jets,electrons,0.3,btagCSVscores)#fixme todo was 0.5 - changing to 0.3 following HH->wwbb. In any case 0.5 is too big now that cone size is 0.4 - put back in!
+	##[jetsTemp,jetinds] = GeomFilterCollection(jetsTemp,muons,0.3,jetinds)
+	##[jetsTemp,jetinds] = GeomFilterCollection(jetsTemp,electrons,0.3,jetinds)
+	## jets = GeomFilterCollection(jets,taus_forjetsep,0.5)
 	# Empty lorentz vector for bookkeeping
 	EmptyLorentz = TLorentzVector()
 	EmptyLorentz.SetPtEtaPhiM(.01,0,0,0)
@@ -2408,16 +2383,28 @@ def FullKinematicCalculation(T,variation):
 
 	leptons=[]
 	IsMuonEvent,IsElectronEvent = False,False
-	if muons[0].Pt()>=electrons[0].Pt() or electrons[1].Pt()<1:
-		leptons = muons
-		charges = chargesMu
-		trkisos = trkisosMu
-		isMuonEvent=True
-	else:
-		leptons = electrons
-		charges = chargesEle
-		trkisos = trkisosEle
-		isElectronEvent=False
+	if muons[0].Pt()>=electrons[0].Pt() or electrons[1].Pt()<1:#prioritize muons: cases where muon1 pt > ele1 pt, or where there is no 2nd electron
+		if electrons[0]>16 and electrons[1]>8 and muons[1]<8:#single case where first muon pt is higher, but there is only one good muon and 2 valid electrons
+			leptons = electrons
+			charges = chargesEle
+			trkisos = trkisosEle
+			IsElectronEvent=True
+		else:
+			leptons = muons
+			charges = chargesMu
+			trkisos = trkisosMu
+			IsMuonEvent=True
+	else:#cases where ele1 pt > muon1 pt
+		if muons[0]>16 and muons[1]>8 and electrons[1]<8:#single case where first electron pt is higher, but there is only one good electron and 2 valid muons
+			leptons = muons
+			charges = chargesMu
+			trkisos = trkisosMu
+			IsMuonEvent=True
+		else:
+			leptons = electrons
+			charges = chargesEle
+			trkisos = trkisosEle
+			IsElectronEvent=True
 
 
 	# Get kinematic quantities
@@ -2604,6 +2591,14 @@ def FullKinematicCalculation(T,variation):
 	_Mjj_Z_3jet = min(abs((jet1+jet2).M()-91.),abs((jet1+jet3).M()-91.),abs((jet2+jet3).M()-91.))
 	_dRjj_Z = abs(jet1.DeltaR(jet2))
 	_dPhijj_Z = abs(jet1.DeltaPhi(jet2))
+	_dRu1Hj1 = abs(muons[0].DeltaR(bjet1))
+	_dRu1Hj2 = abs(muons[0].DeltaR(bjet2))
+	_dRu1Zj1 = abs(muons[0].DeltaR(jet1))
+	_dRu1Zj2 = abs(muons[0].DeltaR(jet2))
+	_dRu2Hj1 = abs(muons[1].DeltaR(bjet1))
+	_dRu2Hj2 = abs(muons[1].DeltaR(bjet2))
+	_dRu2Zj1 = abs(muons[1].DeltaR(jet1))
+	_dRu2Zj2 = abs(muons[1].DeltaR(jet2))
 	[_Pt_Hjet1,_Pt_Hjet2,_Pt_Zjet1,_Pt_Zjet2] = [bjet1.Pt(),bjet2.Pt(),jet1.Pt(),jet2.Pt()]
 	[_Pt_Hjets,_Pt_Zjets] = [(bjet1+bjet2).Pt(),(jet1+jet2).Pt()]
 	[_Pt_uu,_Pt_ee,_Pt_ll] = [(muons[0]+muons[1]).Pt(),(electrons[0]+electrons[1]).Pt(),(leptons[0]+leptons[1]).Pt()]
@@ -2611,17 +2606,17 @@ def FullKinematicCalculation(T,variation):
 	_dRuubb_H = abs((muons[0]+muons[1]).DeltaR(bjet1+bjet2))
 	_dRuujj_Z = abs((muons[0]+muons[1]).DeltaR(jet1+jet2))
 	_dPHIuubb_H = abs((muons[0]+muons[1]).DeltaPhi(bjet1+bjet2))
-	_dPHIuujj_Z = abs((muons[0]+muons[1]).DeltaR(jet1+jet2))
+	_dPHIuujj_Z = abs((muons[0]+muons[1]).DeltaPhi(jet1+jet2))
 
 	_dReebb_H = abs((electrons[0]+electrons[1]).DeltaR(bjet1+bjet2))
 	_dReejj_Z = abs((electrons[0]+electrons[1]).DeltaR(jet1+jet2))
 	_dPHIeebb_H = abs((electrons[0]+electrons[1]).DeltaPhi(bjet1+bjet2))
-	_dPHIeejj_Z = abs((electrons[0]+electrons[1]).DeltaR(jet1+jet2))
+	_dPHIeejj_Z = abs((electrons[0]+electrons[1]).DeltaPhi(jet1+jet2))
 
 	_dRllbb_H = abs((leptons[0]+leptons[1]).DeltaR(bjet1+bjet2))
 	_dRlljj_Z = abs((leptons[0]+leptons[1]).DeltaR(jet1+jet2))
 	_dPHIllbb_H = abs((leptons[0]+leptons[1]).DeltaPhi(bjet1+bjet2))
-	_dPHIlljj_Z = abs((leptons[0]+leptons[1]).DeltaR(jet1+jet2))
+	_dPHIlljj_Z = abs((leptons[0]+leptons[1]).DeltaPhi(jet1+jet2))
 
 	_minDRuj = abs(min(muons[0].DeltaR(jet1),muons[0].DeltaR(jet2),muons[1].DeltaR(jet1),muons[1].DeltaR(jet2)))
 	_minDRej = abs(min(electrons[0].DeltaR(jet1),electrons[0].DeltaR(jet2),electrons[1].DeltaR(jet1),electrons[1].DeltaR(jet2)))
@@ -2733,6 +2728,8 @@ def FullKinematicCalculation(T,variation):
 	toreturn += [_Pt_Hjet1,_Pt_Hjet2,_Pt_Zjet1,_Pt_Zjet2]
 	toreturn += [_Pt_Hjets,_Pt_Zjets,_Pt_uu,_Pt_ee,_Pt_ll]
 	toreturn += [_dRjj_Z,_dRbb_H]
+	toreturn += [_dRu1Hj1,_dRu1Hj2,_dRu2Hj1,_dRu2Hj2]
+	toreturn += [_dRu1Zj1,_dRu1Zj2,_dRu2Zj1,_dRu2Zj2]
 	toreturn += [_dRuubb_H,_dRuujj_Z,_dPHIuubb_H,_dPHIuujj_Z]
 	toreturn += [_dReebb_H,_dReejj_Z,_dPHIeebb_H,_dPHIeejj_Z]
 	toreturn += [_dRllbb_H,_dRlljj_Z,_dPHIllbb_H,_dPHIlljj_Z]
@@ -2759,6 +2756,30 @@ def FullKinematicCalculation(T,variation):
 	return toreturn
 
 
+def GeomFilterCollection(collection_to_clean,good_collection,dRcut,associatedCollection):
+	# Purpose: Take a collection of TLorentzVectors that you want to clean (arg 1)
+	#         by removing all objects within dR of dRcut (arg 3) of any element in
+	#         the collection of other particles (arg 2)
+	#         e.g.  argumments (jets,muons,0.3) gets rid of jets within 0.3 of muons. 
+	#   Added option for associated collection, i.e.
+	output_collection = []
+	associated_output_collection = []
+	for i, c in enumerate(collection_to_clean):
+		isgood = True
+		for g in good_collection:
+			if (c.DeltaR(g))<dRcut:
+				isgood = False
+		if isgood==True:
+			output_collection.append(c)
+			associated_output_collection.append(associatedCollection[i])
+	return [output_collection,associated_output_collection]
+
+
+def MetVector(T):
+	# Purpose: Creates a TLorentzVector represting the MET. No pseudorapidity, obviously.
+	met = TLorentzVector()
+	met.SetPtEtaPhiM(T.PFMETType01XYCor[0],0,T.PFMETPhiType01XYCor[0],0)
+	return met
 
 ##########################################################################################
 #################    BELOW IS THE ACTUAL LOOP OVER ENTRIES         #######################
@@ -2769,7 +2790,7 @@ startTime = datetime.now()
 lumisection = array.array("L",[0])
 t.SetBranchAddress("ls",lumisection)
 for n in range(N):
-#for n in range(20):
+#for n in range(1000):
 
 	# This is the loop over events. Due to the heavy use of functions and automation of 
 	# systematic variations, this loop is very small. It should not really be editted, 
@@ -2780,7 +2801,7 @@ for n in range(N):
 	t.GetEntry(n)
 	# if n > 1000:  # Testing....
 	# 	break
-	if n%1==0:
+	if n%100==0:
 		print 'Processing event',n, 'of', N # where we are in the loop...
 
 	## ===========================  BASIC SETUP  ============================= ##
@@ -2860,7 +2881,6 @@ for n in range(N):
 		Branches['pass_HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_DZ'][0] = 1#PassTrigger(t,["HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v"],1)         # Data Only
 		Branches['pass_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ'][0] = 1#PassTrigger(t,["HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v"],1)         # Data Only
 		Branches['pass_HLT_Mu17_Mu8'][0] = 1#PassTrigger(t,["HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v"],1) + PassTrigger(t,["HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v"],1)          # Data Only
-
 		Branches['passTriggerObjectMatching'][0]  = 1
 		Branches['passBPTX0'][0]                  = 1
 		Branches['passBeamScraping'][0]           = 1
@@ -2908,8 +2928,13 @@ for n in range(N):
 	# that the systematic varied quantity will, and that will throw off systematics calculations later.
 	# Make sure your skim is looser than any selection you will need afterward!
 	
-	if (Branches['Pt_muon1'][0] < 16) and (Branches['Pt_ele1'][0] < 16) : continue
-	if (Branches['Pt_muon2'][0] < 8)  and (Branches['Pt_ele2'][0] < 12) : continue
+
+
+	if (Branches['Pt_lep1'][0] < 17) : continue
+	if (Branches['Pt_lep2'][0] < 8) : continue
+	#if (Branches['Pt_muon1'][0] < 16) and (Branches['Pt_ele1'][0] < 16) : continue
+	#if (Branches['Pt_muon1'][0] > 16) and (Branches['Pt_muon2'][0] < 8): continue
+	#if (Branches['Pt_muon1'][0] < 16) and (Branches['Pt_ele1'][0] > 16) and (Branches['Pt_ele2'][0]  < 8): continue
 
 	#print 'NGenMuonsZ', Branches['NGenMuonsZ'][0], 'NGenElecsZ', Branches['NGenElecsZ'][0]
 	#if (Branches['Pt_muon1'][0] < 16) : continue
@@ -2918,8 +2943,11 @@ for n in range(N):
 
 	#if nonisoswitch != True:
 	#		if (Branches['Pt_muon2'][0] < 45) and (Branches['Pt_miss'][0] < 45): continue
-	if (Branches['Pt_jet1'][0] <  20): continue
-	if (Branches['Pt_jet2'][0] <  20): continue
+	if (Branches['Pt_Hjet1'][0] <  22): continue
+	if (Branches['Pt_Hjet2'][0] <  22): continue
+	if (Branches['Pt_Zjet1'][0] <  18): continue
+	if (Branches['Pt_Zjet2'][0] <  18): continue
+	#
 	#if (Branches['St_uujj'][0] < 260) and (Branches['St_uvjj'][0] < 260): continue
 	#if (Branches['M_uu'][0]    <  45) and (Branches['MT_uv'][0]   <  45): continue
 	
