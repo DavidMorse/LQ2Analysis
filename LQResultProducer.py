@@ -21,9 +21,9 @@ global preselectionmumu
 ##EMuDirectory    = '/store/user/dmorse/leptoQuark/NTupleAnalyzer_Dec10_Spring2015Full_EMuSwitch_2015_12_15_00_28_39/SummaryFiles'
 #EMuDirectory    = 'NTupleAnalyzer_FullFeb20_EMuSwitch_2016_02_20_14_25_20/SummaryFiles'
 
-NormalDirectory = 'NTupleAnalyzer_Full2016_2016_10_18_15_14_53/SummaryFiles'
-QCDDirectory    = 'NTupleAnalyzer_Full2016QCDNonIsoQuickTest_2016_10_19_13_53_24/SummaryFiles'
-EMuDirectory    = 'NTupleAnalyzer_Full2016EMuSwitch_2016_10_18_15_15_41/SummaryFiles'
+NormalDirectory = '/media/dataPlus/dmorse/lqNtuples/NTupleAnalyzer_Full2016_2016_10_18_15_14_53/SummaryFiles'
+QCDDirectory    = '/media/dataPlus/dmorse/lqNtuples/NTupleAnalyzer_Full2016QCDNonIsoQuickTest_2016_10_19_13_53_24/SummaryFiles'
+EMuDirectory    = '/media/dataPlus/dmorse/lqNtuples/NTupleAnalyzer_Full2016EMuSwitch_2016_10_18_15_15_41/SummaryFiles'
 
 # The name of the main ttree (ntuple structure)
 TreeName = "PhysicalVariables"
@@ -31,7 +31,7 @@ TreeName = "PhysicalVariables"
 # Integrated luminosity for normalization
 #lumi =  2318.348
 #lumi = 2690.707
-lumi = 27214.399
+lumi = 27192.225
 #lumi=19456.249#Mu45_eta2p1 was prescaled at some point?????
 
 
@@ -111,11 +111,11 @@ passfilter =  '*(passDataCert*passPrimaryVertex*(GoodVertexCount>=1))'
 passfilter += '*(passHBHENoiseFilter)'
 #passfilter += '*(passHBHENoiseIsoFilter)'#fixme always 0 for MC and Data
 passfilter += '*(passBadEESuperCrystal)'
-passfilter += '*(passEcalDeadCellTP)'
+#fixme#passfilter += '*(passEcalDeadCellTP)'
 ##now from txt lists
-passfilter += '*(passBeamHalo2016)'
+#fixme#passfilter += '*(passBeamHalo2016)'
 #passfilter += '*(passBadEESuperCrystal)'
-passfilter += '*(passBadMuon*passBadChargedHadron)'#fixme need to remove to check qcd bg in same sign
+#fixme#passfilter += '*(passBadMuon*passBadChargedHadron)'#fixme need to remove to check qcd bg in same sign
 
 # This defines the preselections for the mu-mu, mu-nu, and e-mu samples
 #preselectionmumu = '((Pt_muon1>45)*(Pt_muon2>45)*(Pt_jet1>125)*(Pt_jet2>45)*(St_uujj>300)*(M_uu>50))*(DR_muon1muon2>0.3)'
@@ -582,7 +582,8 @@ def main():
 		#print lqbinning,stbinning
 		# Get Scale Factors
 		[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = GetMuMuScaleFactors( NormalWeightMuMu+'*'+preselectionmumu, NormalDirectory, '(M_uu>80)*(M_uu<100)', '(M_uu>100)*',1)
-		[[Rw_uvjj,Rw_uvjj_err],[Rtt_uvjj,Rtt_uvjj_err]] = GetMuNuScaleFactors( NormalWeightMuNu+'*'+preselectionmunu, NormalDirectory, '(MT_uv>70)*(MT_uv<150)*(JetCount<3.5)*(((CISV_jet1>0.800)+(CISV_jet2>0.800))<1)', '(MT_uv>70)*(MT_uv<150)*(JetCount>3.5)*(((CISV_jet1>0.800)+(CISV_jet2>0.800))>=1)')#*(0.901114+(1.32145e-05*(Pt_jet1*(CISV_jet1>CISV_jet2)+Pt_jet2*(CISV_jet2>CISV_jet1))))')#fixme todo varying control sample MT window
+		#[[Rw_uvjj,Rw_uvjj_err],[Rtt_uvjj,Rtt_uvjj_err]] = GetMuNuScaleFactors( NormalWeightMuNu+'*'+preselectionmunu, NormalDirectory, '(MT_uv>70)*(MT_uv<110)*(JetCount<3.5)', '(MT_uv>70)*(MT_uv<110)*(JetCount>3.5)')#*(0.901114+(1.32145e-05*(Pt_jet1*(CISV_jet1>CISV_jet2)+Pt_jet2*(CISV_jet2>CISV_jet1))))')#fixme todo varying control sample MT window
+		[[Rw_uvjj,Rw_uvjj_err],[Rtt_uvjj,Rtt_uvjj_err]] = GetMuNuScaleFactors( NormalWeightMuNu+'*'+preselectionmunu, NormalDirectory, '(MT_uv>70)*(MT_uv<110)*(JetCount<3.5)*(((CISV_jet1>0.800)+(CISV_jet2>0.800))<1)', '(MT_uv>70)*(MT_uv<110)*(JetCount>3.5)*(((CISV_jet1>0.800)+(CISV_jet2>0.800))>=1)*(0.901114+(1.32145e-05*(Pt_jet1*(CISV_jet1>CISV_jet2)+Pt_jet2*(CISV_jet2>CISV_jet1))))')#fixme todo varying control sample MT window
 		#CSVv2L	0.460
 		#CSVv2M	0.800
 		#CSVv2T	0.935
@@ -691,21 +692,20 @@ def main():
 
 
 		# Full Selection Plots
-		for lqmass in [200,250,300,500,550,600,650,800]:
-			MakeBasicPlot("Pt_muon1","p_{T}(#mu_{1}) [GeV]",ptbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'final','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,MuMuOptCutFile,version_name,lqmass)
-			MakeBasicPlot("St_uujj","S_{T}^{#mu#mujj} [GeV]",stbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'final','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,MuMuOptCutFile,version_name,lqmass)
-			MakeBasicPlot("M_uu","M^{#mu#mu} [GeV]",bosonbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'final','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,MuMuOptCutFile,version_name,lqmass)
-			MakeBasicPlot("M_uujj2","M_{#muj}_{2} [GeV]",lqbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'final','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,MuMuOptCutFile,version_name,lqmass)
+		for lqmass in []:#200,250,300,500,550,600,650,800]:
+			MakeBasicPlot("Pt_muon1","p_{T}(#mu_{1}) [GeV]",ptbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'finalTTBarDataDriven','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,MuMuOptCutFile,version_name,lqmass)
+			MakeBasicPlot("St_uujj","S_{T}^{#mu#mujj} [GeV]",stbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'finalTTBarDataDriven','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,MuMuOptCutFile,version_name,lqmass)
+			MakeBasicPlot("M_uu","M^{#mu#mu} [GeV]",bosonbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'finalTTBarDataDriven','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,MuMuOptCutFile,version_name,lqmass)
+			MakeBasicPlot("M_uujj2","M_{#muj}_{2} [GeV]",lqbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'finalTTBarDataDriven','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,MuMuOptCutFile,version_name,lqmass)
+			MakeBasicPlot("Pt_miss","E_{T}^{miss} [GeV]",ptbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'finalTTBarDataDriven','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,MuMuOptCutFile,version_name,lqmass)
+			MakeBasicPlot("CISV_jet1","Jet1 CSV score",bjetbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'finalTTBarDataDriven','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,MuMuOptCutFile,version_name,lqmass)
+			MakeBasicPlot("CISV_jet2","Jet2 CSV score",bjetbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'finalTTBarDataDriven','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,MuMuOptCutFile,version_name,lqmass)
+
+
 			MakeBasicPlot("St_uvjj","S_{T}^{#mu#nujj} [GeV]",stbinning,preselectionmunu,NormalWeightMuNu,NormalDirectory,'final','uvjj',Rz_uujj, Rw_uvjj,Rtt_uvjj,MuNuOptCutFile,version_name,lqmass)#fixme todo turning off all munujj plots for now
 			MakeBasicPlot("MT_uv","M_{T}^{#mu#nu} [GeV]",bosonbinning,preselectionmunu,NormalWeightMuNu,NormalDirectory,'final','uvjj',Rz_uujj, Rw_uvjj,Rtt_uvjj,MuNuOptCutFile,version_name,lqmass)
 			MakeBasicPlot("M_uvjj","M_{#muj} [GeV]",lqbinning,preselectionmunu,NormalWeightMuNu,NormalDirectory,'final','uvjj',Rz_uujj, Rw_uvjj,Rtt_uvjj,MuNuOptCutFile,version_name,lqmass)
-
-                        MakeBasicPlot("St_uujj","S_{T}^{#mu#mujj} [GeV]",stbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'finalTTBarDataDriven','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,MuMuOptCutFile,version_name,lqmass)
-			MakeBasicPlot("M_uu","M^{#mu#mu} [GeV]",bosonbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'finalTTBarDataDriven','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,MuMuOptCutFile,version_name,lqmass)
-			MakeBasicPlot("M_uujj2","M_{#muj}_{2} [GeV]",lqbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'finalTTBarDataDriven','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,MuMuOptCutFile,version_name,lqmass)
-			MakeBasicPlot("Pt_miss","E_{T}^{miss} [GeV]",ptbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'finalTTBarDataDriven','uujj',Rz_uujj, Rw_uvjj,Rtt_uvjj,MuMuOptCutFile,version_name,lqmass)
-			MakeBasicPlot("CISV_jet1","Jet1 CSV score",bjetbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'finalTTBarDataDriven','uujj',Rz_uujj, Rw_uvjj,Rtt_uvjj,MuMuOptCutFile,version_name,lqmass)
-			MakeBasicPlot("CISV_jet2","Jet2 CSV score",bjetbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'finalTTBarDataDriven','uujj',Rz_uujj, Rw_uvjj,Rtt_uvjj,MuMuOptCutFile,version_name,lqmass)
+			MakeBasicPlot("Pt_miss","E_{T}^{miss} [GeV]",ptbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'final','uuvjj',Rz_uujj, Rw_uvjj,Rtt_uvjj,MuNuOptCutFile,version_name,lqmass)
 
 		#fixme todo removing this, its not helpful at the moment
 		#os.system('echo Combining Figures; convert -density 800 Results_'+version_name+'/*png Results_'+version_name+'/AllPlots.pdf')
@@ -1546,7 +1546,9 @@ def setZeroBinErrors(data, bg):
 	nBins = data.GetNbinsX()
 	for bins in range(nBins+2):
 		bin = data.GetBinContent(bins)
-		binBG = bg.GetBinContent(bins)
+		#binBG = bg.GetBinContent(bins)
+		#bin = data.GetY()[bins]
+		binBG = bg.GetStack().Last().GetBinContent(bins)
 		if bin>0 or binBG>0:
 			start=True
 		#if start: print "\n----Bin:"+str(bins)+" bg:"+str(bg.GetStack().Last().GetBinContent(bins))+"\n"
@@ -2752,19 +2754,21 @@ def GetMuMuScaleFactors( selection, FileDirectory, controlregion_1, controlregio
 	s1 = QuickIntegral(t_SingleTop,selection + '*' + controlregion_1,1.0)
 	w1 = QuickIntegral(t_WJetsJBin,selection + '*' + controlregion_1,1.0)
 	v1 = QuickIntegral(t_DiBoson,selection + '*' + controlregion_1,1.0)
+	q1 = QuickIntegral(t_QCDMu,selection   + '*' + controlregion_1,1.0)
 
 	Z2 = QuickIntegral(t_ZJetsJBin,selection + '*' + controlregion_2,1.0)
 	T2 = QuickIntegral(t_TTBarDBin,selection + '*' + controlregion_2,1.0)
 	s2 = QuickIntegral(t_SingleTop,selection + '*' + controlregion_2,1.0)
 	w2 = QuickIntegral(t_WJetsJBin,selection + '*' + controlregion_2,1.0)
 	v2 = QuickIntegral(t_DiBoson,selection + '*' + controlregion_2,1.0)
+	q2 = QuickIntegral(t_QCDMu,selection   + '*' + controlregion_2,1.0)
 
-	Other1 = [ s1[0]+w1[0]+v1[0], math.sqrt( s1[1]*s1[1] + w1[1]*w1[1] + v1[1]*v1[1] ) ]
-	Other2 = [ s2[0]+w2[0]+v2[0], math.sqrt( s2[1]*s2[1] + w2[1]*w2[1] + v2[1]*v2[1] ) ]
+	Other1 = [ s1[0]+w1[0]+v1[0]+q1[0], math.sqrt( s1[1]*s1[1] + w1[1]*w1[1] + v1[1]*v1[1] + q1[1]*q1[1] ) ]
+	Other2 = [ s2[0]+w2[0]+v2[0]+q2[0], math.sqrt( s2[1]*s2[1] + w2[1]*w2[1] + v2[1]*v2[1] + q2[1]*q2[1] ) ]
 	zvals = []
 	tvals = []
 
-	for x in range(10000):
+	for x in range(10000):#normally 10000
 		variation = (GetScaleFactors(RR(N1),RR(N2),RR(Z1),RR(Z2),RR(T1),RR(T2),Other1[0],Other2[0]))
 		zvals.append(variation[0])
 		tvals.append(variation[1])
@@ -2845,17 +2849,17 @@ def GetMuMuScaleFactorsMod( selection, FileDirectory, controlregion_1, controlre
 	s1 = QuickIntegral(t_SingleTop,selection + '*' + controlregion_1,1.0)
 	w1 = QuickIntegral(t_WJetsJBin,selectionMod + '*' + controlregion_1,1.0)
 	v1 = QuickIntegral(t_DiBoson,selection + '*' + controlregion_1,1.0)
+	q1 = QuickIntegral(t_QCD,selection     + '*' + controlregion_1,1.0)
 
 	Z2 = QuickIntegral(t_Z,selectionMod + '*' + controlregion_2,1.0)
 	T2 = QuickIntegral(t_TTBarDBin,selectionMod + '*' + controlregion_2,1.0)
 	s2 = QuickIntegral(t_SingleTop,selection + '*' + controlregion_2,1.0)
 	w2 = QuickIntegral(t_WJetsJBin,selectionMod + '*' + controlregion_2,1.0)
 	v2 = QuickIntegral(t_DiBoson,selection + '*' + controlregion_2,1.0)
+	q2 = QuickIntegral(t_QCD,selection     + '*' + controlregion_2,1.0)
 
-
-
-	Other1 = [ s1[0]+w1[0]+v1[0], math.sqrt( s1[1]*s1[1] + w1[1]*w1[1] + v1[1]*v1[1] ) ]
-	Other2 = [ s2[0]+w2[0]+v2[0], math.sqrt( s2[1]*s2[1] + w2[1]*w2[1] + v2[1]*v2[1] ) ]
+	Other1 = [ s1[0]+w1[0]+v1[0]+q1[0], math.sqrt( s1[1]*s1[1] + w1[1]*w1[1] + v1[1]*v1[1] + q1[1]*q1[1] ) ]
+	Other2 = [ s2[0]+w2[0]+v2[0]+q2[0], math.sqrt( s2[1]*s2[1] + w2[1]*w2[1] + v2[1]*v2[1] + q2[1]*q2[1] ) ]
 	zvals = []
 	tvals = []
 
@@ -2888,7 +2892,8 @@ def GetEMuScaleFactors( selection, FileDirectory):
 	T1 = QuickIntegral(te_TTBarDBin,selection ,1.0)
 	s1 = QuickIntegral(te_SingleTop,selection ,1.0)
 	w1 = QuickIntegral(te_WJetsJBin,selection ,1.0)
-	v1 = QuickIntegral(te_DiBoson,selection ,1.0)
+	v1 = QuickIntegral(te_DiBoson,selection   ,1.0)
+	q1 = QuickIntegral(te_QCDMu,selection     ,1.0)
 
 
 	print 'This is the information for the NOTE table 6:'
@@ -2898,14 +2903,15 @@ def GetEMuScaleFactors( selection, FileDirectory):
 	print ' Stop:',s1 [0]
 	print '    W:',w1[0]
 	print '   VV:',v1[0]
+	print '  QCD:',q1[0]
 
 
 
 	SF=[1.0,0.0]
 
-	SF[0] = (N1[0] - Z1[0] - s1[0] -v1[0] - w1[0])/T1[0]
+	SF[0] = (N1[0] - Z1[0] - s1[0] - v1[0] - w1[0] - q1[0])/T1[0]
 
-	relerror_num  = math.sqrt(N1[1]**2. + Z1[1]**2. + s1[1]**2. + v1[1]**2. + w1[1]**2.)/(N1[0] - Z1[0] - s1[0] -v1[0] - w1[0])
+	relerror_num  = math.sqrt(N1[1]**2. + Z1[1]**2. + s1[1]**2. + v1[1]**2. + w1[1]**2. + q1[1]**2)/(N1[0] - Z1[0] - s1[0] - v1[0] - w1[0] - q1[0])
 	relerror_denom = T1[1]/T1[0]
 	SF[1] = SF[0]*math.sqrt(relerror_num**2.0 + relerror_denom**2.)
 
@@ -2976,15 +2982,17 @@ def GetMuNuScaleFactorsMod( selection, FileDirectory, controlregion_1, controlre
 	s1 = QuickIntegral(t_SingleTop,selection + '*' + controlregion_1,1.0)
 	z1 = QuickIntegral(t_ZJetsJBin,selectionMod + '*' + controlregion_1,1.0)
 	v1 = QuickIntegral(t_DiBoson,selection + '*' + controlregion_1,1.0)
+	q1 = QuickIntegral(t_QCDMu,selection + '*' + controlregion_1,1.0)
 
 	W2 = QuickIntegral(t_W,selectionMod + '*' + controlregion_2,1.0)
 	T2 = QuickIntegral(t_T,selectionMod + '*' + controlregion_2,1.0)
 	s2 = QuickIntegral(t_SingleTop,selection + '*' + controlregion_2,1.0)
 	z2 = QuickIntegral(t_ZJetsJBin,selectionMod + '*' + controlregion_2,1.0)
 	v2 = QuickIntegral(t_DiBoson,selection + '*' + controlregion_2,1.0)
+	q2 = QuickIntegral(t_QCDMu,selection + '*' + controlregion_2,1.0)
 
-	Other1 = [ s1[0]+z1[0]+v1[0], math.sqrt( s1[1]*s1[1] + z1[1]*z1[1] + v1[1]*v1[1] ) ]
-	Other2 = [ s2[0]+z2[0]+v2[0], math.sqrt( s2[1]*s2[1] + z2[1]*z2[1] + v2[1]*v2[1] ) ]
+	Other1 = [ s1[0]+z1[0]+v1[0]+q1[0], math.sqrt( s1[1]*s1[1] + z1[1]*z1[1] + v1[1]*v1[1] + q1[1]*q1[1] ) ]
+	Other2 = [ s2[0]+z2[0]+v2[0]+q2[0], math.sqrt( s2[1]*s2[1] + z2[1]*z2[1] + v2[1]*v2[1] + q1[1]*q1[1] ) ]
 
 	print 'Data:',N1,N2
 	print 'TT:',T1,T2
@@ -3022,15 +3030,17 @@ def GetMuNuScaleFactors( selection, FileDirectory, controlregion_1, controlregio
 	s1 = QuickIntegral(t_SingleTop,selection + '*' + controlregion_1,1.0)
 	z1 = QuickIntegral(t_ZJetsJBin,selection + '*' + controlregion_1,1.0)
 	v1 = QuickIntegral(t_DiBoson,  selection + '*' + controlregion_1,1.0)
+	q1 = QuickIntegral(t_QCDMu,    selection + '*' + controlregion_1,1.0)
 
 	W2 = QuickIntegral(t_WJetsJBin,selection + '*' + controlregion_2,1.0)
 	T2 = QuickIntegral(t_TTBarDBin,selection + '*' + controlregion_2,1.0)
 	s2 = QuickIntegral(t_SingleTop,selection + '*' + controlregion_2,1.0)
 	z2 = QuickIntegral(t_ZJetsJBin,selection + '*' + controlregion_2,1.0)
 	v2 = QuickIntegral(t_DiBoson,  selection + '*' + controlregion_2,1.0)
+	q2 = QuickIntegral(t_QCDMu,    selection + '*' + controlregion_2,1.0)
 
-	Other1 = [ s1[0]+z1[0]+v1[0], math.sqrt( s1[1]*s1[1] + z1[1]*z1[1] + v1[1]*v1[1] ) ]
-	Other2 = [ s2[0]+z2[0]+v2[0], math.sqrt( s2[1]*s2[1] + z2[1]*z2[1] + v2[1]*v2[1] ) ]
+	Other1 = [ s1[0]+z1[0]+v1[0]+q1[0], math.sqrt( s1[1]*s1[1] + z1[1]*z1[1] + v1[1]*v1[1] + q1[1]*q1[1] ) ]
+	Other2 = [ s2[0]+z2[0]+v2[0]+q2[0], math.sqrt( s2[1]*s2[1] + z2[1]*z2[1] + v2[1]*v2[1] + q2[1]*q2[1] ) ]
 	wvals = []
 	tvals = []
 
@@ -3054,8 +3064,8 @@ def GetMuNuScaleFactors( selection, FileDirectory, controlregion_1, controlregio
 	tout = GetStats(tvals)
 
         #Force to pre-calculated values to speed things up
-	#wout = [4.563,0.048,'4.563 +- 0.048']
-	#tout = [1.9,0.037  ,'1.9   +- 0.037']
+	#wout = [0.969,0.036 ,'0.969 +- 0.036']
+	#tout = [0.932,0.029 ,'0.932   +- 0.029']
 	#print 'Using pre-calculated values, rerun if you add more data!'
 
 	print 'MuNu scale factor integrals:'

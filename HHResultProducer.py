@@ -107,7 +107,7 @@ passfilter += '*(passBadMuon*passBadChargedHadron)'#fixme need to remove to chec
 
 # This defines the preselections for the mu-mu, mu-nu, and e-mu samples
 #preselectionmumu = '((Pt_muon1>50)*(Pt_muon2>50)*(Pt_jet1>50)*(Pt_jet2>50)*(St_uujj>300)*(M_uu>50))*(DR_muon1muon2>0.3)'#this is 2015 LQ2preselection
-preselectionmumu = '((Pt_muon1>20)*(Pt_muon2>10)*(Pt_Hjet1>25)*(Pt_Hjet2>25)*(Pt_Zjet1>20)*(Pt_Zjet2>20)*(Charge_muon1*Charge_muon2<0))'#*(Pt_miss<180)*(CISV_bjet1>0.8)*(CISV_bjet2>0.46)*(0.901114+(1.32145e-05*(Pt_Hjet1)))*(0.931535+(1.40704e-05*(Pt_Hjet2)))*(abs(cosThetaStarMu)<0.96))'#*(isMuonEvent>0))'
+preselectionmumu = '((Pt_muon1>20)*(Pt_muon2>10)*(Pt_Hjet1>25)*(Pt_Hjet2>25)*(Pt_Zjet1>20)*(Pt_Zjet2>20)*(Charge_muon1*Charge_muon2<0)*(CISV_bjet1>0.8)*(CISV_bjet2>0.46)*(0.901114+(1.32145e-05*(Pt_Hjet1)))*(0.931535+(1.40704e-05*(Pt_Hjet2)))*(M_uu>10))'#*(DPhi_bb_H<3.0)*(DPhi_jj_Z<3.0)*(DR_uu_bb_H>0.2)*(abs(cosThetaStarMu)<0.96)*(Pt_miss<180))'#*(isMuonEvent>0))'
 #preselectionmumu = '((Pt_muon1>20)*(Pt_muon2>10)*(Pt_Hjet1>25)*(Pt_Hjet2>25)*(Pt_Zjet1>20)*(Pt_Zjet2>20)*(Charge_muon1*Charge_muon2<0)*(Pt_miss<180))'#fixme turned off btags for study
 #preselectionmumu = '((Pt_muon1>20)*(Pt_muon2>10)*(Pt_Hjet1>20)*(Pt_Hjet2>20)*(Pt_Zjet1>20)*(Pt_Zjet2>20)*(CISV_bjet1>0.8)*(CISV_bjet2>0.8)*(Charge_muon1*Charge_muon2 < 0)*(DR_bb_H<3.6)*(DR_muon1muon2<3.5)*(DR_uu_bb_H<4)*(DR_uu_jj_Z<5)*(M_uu<105)*(abs(Mbb_H-125)<60)*(Pt_miss<100))'#playing with potential cuts
 #preselectionmumu = '((Pt_muon1>20)*(Pt_muon2>10)*(Pt_Hjet1>20)*(Pt_Hjet2>20)*(Pt_Zjet1>20)*(Pt_Zjet2>20)*(CISV_bjet1>0.8)*(CISV_bjet2>0.8)*(Charge_muon1*Charge_muon2 < 0)*(M_uu<100)*(Pt_miss<90))'#playing with potential cuts
@@ -3550,7 +3550,7 @@ def MakeBasicPlot(recovariable,xlabel,presentationbinning,selection,weight,FileD
 		hs_rec_DiBoson.Add(hs_rec_SingleTop)
 		hs_rec_DiBoson.Add(hs_rec_QCD)
 		#SM=[hs_rec_SMHiggs,hs_rec_DiBoson,hs_rec_ZJets,hs_rec_TTBar]
-		SM=[hs_rec_SMHiggs,hs_rec_DiBoson,hs_rec_QCD,hs_rec_ZJets,hs_rec_TTBar]
+		SM=[hs_rec_SMHiggs,hs_rec_DiBoson,hs_rec_ZJets,hs_rec_TTBar]
 
 	if channel == 'susy':
 		sig1name = 'LQ, M = 500 GeV'

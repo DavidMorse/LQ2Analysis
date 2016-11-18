@@ -105,7 +105,7 @@ print 'After demand 1 pT42 jet:  ',N
 # systematic variation determined in _variations. One branch for each weight and flag.
 # So branch names will include weight_central, run_number, Pt_muon1, Pt_muon1MESUP, etc.
 
-_kinematicvariables = ['Pt_muon1','Pt_muon2','Pt_ele1','Pt_ele2','Pt_jet1','Pt_jet2','Pt_miss']
+_kinematicvariables =  ['Pt_muon1','Pt_muon2','Pt_ele1','Pt_ele2','Pt_jet1','Pt_jet2','Pt_miss']
 _kinematicvariables += ['Eta_muon1','Eta_muon2','Eta_ele1','Eta_ele2','Eta_jet1','Eta_jet2','Eta_miss']
 _kinematicvariables += ['Phi_muon1','Phi_muon2','Phi_ele1','Phi_ele2','Phi_jet1','Phi_jet2','Phi_miss']
 _kinematicvariables += ['X_miss','Y_miss']
@@ -145,6 +145,7 @@ _kinematicvariables += ['ptHat']
 _kinematicvariables += ['CISV_jet1','CISV_jet2']
 _kinematicvariables += ['PULoosej1','PUMediumj1','PUTightj1']
 _kinematicvariables += ['PULoosej2','PUMediumj2','PUTightj2']
+_kinematicvariables += ['passWptCut']
 
 #_weights = ['scaleWeight_Up','scaleWeight_Down','scaleWeight_R1_F1','scaleWeight_R1_F2','scaleWeight_R1_F0p5','scaleWeight_R2_F1','scaleWeight_R2_F2','scaleWeight_R2_F0p5','scaleWeight_R0p5_F1','scaleWeight_R0p5_F2','scaleWeight_R0p5_F0p5','scaleWeight_R2_F2','weight_amcNLO','weight_nopu','weight_central', 'weight_pu_up', 'weight_pu_down','weight_central_2012D','weight_topPt']
 _weights = ['scaleWeight_Up','scaleWeight_Down','scaleWeight_R1_F1','scaleWeight_R1_F2','scaleWeight_R1_F0p5','scaleWeight_R2_F1','scaleWeight_R2_F2','scaleWeight_R2_F0p5','scaleWeight_R0p5_F1','scaleWeight_R0p5_F2','scaleWeight_R0p5_F0p5','scaleWeight_R2_F2','weight_amcNLO','weight_nopu','weight_central', 'weight_pu_up', 'weight_pu_down','weight_topPt']
@@ -653,9 +654,6 @@ def GetPDFWeights(T):
 	for x in range(len(T.PDFNNPDFWeights)):
 		if(T.PDFNNPDFWeights[x]>-10 and T.PDFNNPDFWeights[x]<10): _allweights.append(T.PDFNNPDFWeights[x])
 	return _allweights
-
-
-
 
 def MuonsFromLQ(T):
 	# Purpose: Testing. Get the muons from LQ decays and find the matching reco muons. 
@@ -1348,15 +1346,6 @@ def LooseIDJets(T,met,variation,isdata):
 	# print met.Pt()
 
 	return [jets,jetinds,met,JetFailThreshold,NHF,NEMF,CSVscores,PUIds]
-
-
-def MetVector(T):
-	# Purpose: Creates a TLorentzVector represting the MET. No pseudorapidity, obviously.
-	met = TLorentzVector()
-	met.SetPtEtaPhiM(T.PFMETType1XYCor[0],0,T.PFMETPhiType1XYCor[0],0)
-	return met
-
-
 def GetLLJJMasses(l1,l2,j1,j2):
 	# Purpose: For LLJJ channels, this function returns two L-J Masses, corresponding to the
 	#         pair of L-Js which minimizes the difference between LQ masses in the event
@@ -1418,51 +1407,6 @@ def GetLLJJMassesRelative(l1,l2,j1,j2):
 		mh = m11          # invariant mass corresponding to leading jet
 	least = min(diff1,diff2)
 	#print '2Jet min:',least,'masses: ',pair[0],pair[1]
-	pair.sort()
-	pair.reverse()
-	pair.append(mh)
-	return pair
-
-def GetLLJJMasses3Jets(l1,l2,j1,j2,j3):
-
-	m11 = (l1+j1).M()
-	m12 = (l1+j2).M()
-	m13 = (l1+j3).M()
-	m21 = (l2+j1).M()
-	m22 = (l2+j2).M()
-	m23 = (l2+j3).M()
-
-	diff1 = abs(m11-m22)
-	diff2 = abs(m11-m23)
-	diff3 = abs(m12-m21)
-	diff4 = abs(m12-m23)
-	diff5 = abs(m13-m21)
-	diff6 = abs(m13-m22)
-
-	least = min(diff1,diff2,diff3,diff4,diff5,diff6)
-	
-	if least == diff1 :
-		pair = [m11,m22] # The invariant mass pair
-		mh = m11 # invariant mass corresponding to leading jet
-	elif least == diff2:
-		pair = [m11,m23] # The invariant mass pair
-		mh = m11 # invariant mass corresponding to leading jet
-	elif least == diff3:
-		pair = [m12,m21] # The invariant mass pair
-		mh = m21 # invariant mass corresponding to leading jet
-	elif least == diff4:
-		pair = [m12,m23] # The invariant mass pair
-		mh = m12 # invariant mass corresponding to leading jet
-	elif least == diff5:
-		pair = [m13,m21] # The invariant mass pair
-		mh = m21 # invariant mass corresponding to leading jet
-	elif least == diff6:
-		pair = [m13,m22] # The invariant mass pair
-		mh = m22 # invariant mass corresponding to leading jet
-        else:
-		pair = [0,0]
-		mh=0
-	#print '3Jet min:',least,'masses: ',pair[0],pair[1]
 	pair.sort()
 	pair.reverse()
 	pair.append(mh)
@@ -1645,6 +1589,9 @@ def FullKinematicCalculation(T,variation):
 	#         This function is repeated for all the sytematic variations inside the event
 	#         loop. The return arguments ABSOLUELY MUST be in the same order they are 
 	#         listed in the branch declarations. Modify with caution.  
+
+	_passWptCut = checkWpt(T,0,100)
+	#print 'passWptCut:',passWptCut
 
         #ptHat
 	_ptHat = T.PtHat
@@ -1933,9 +1880,22 @@ def FullKinematicCalculation(T,variation):
 	toreturn += [_CSVj1,_CSVj2]
 	toreturn += [_PULoosej1,_PUMediumj1,_PUTightj1]
 	toreturn += [_PULoosej2,_PUMediumj2,_PUTightj2]
+	toreturn += [_passWptCut]
 	return toreturn
 
-#fixme Had to move this below FullKinematicCalculation, wouldn't find function otherwise. Why only this one?
+#fixme Had to move these below FullKinematicCalculation, wouldn't find function otherwise. Why only these?
+def checkWpt(T,lowcut, highcut):
+	for n in range(len(T.GenParticlePdgId)):
+		pdg = T.GenParticlePdgId[n]
+		status = T.GenParticleStatus[n]
+		pt = T.GenParticlePt[n]
+		if pdg in [-23,23]:
+			#print n,pdg,pt,status
+			if pt<100: return 1
+			else: return 0
+		else: continue
+	return 1
+
 def GeomFilterCollection(collection_to_clean,good_collection,dRcut):
 	# Purpose: Take a collection of TLorentzVectors that you want to clean (arg 1)
 	#         by removing all objects within dR of dRcut (arg 3) of any element in
@@ -1950,6 +1910,59 @@ def GeomFilterCollection(collection_to_clean,good_collection,dRcut):
 		if isgood==True:
 			output_collection.append(c)
 	return output_collection
+
+def MetVector(T):
+	# Purpose: Creates a TLorentzVector represting the MET. No pseudorapidity, obviously.
+	met = TLorentzVector()
+	met.SetPtEtaPhiM(T.PFMETType1XYCor[0],0,T.PFMETPhiType1XYCor[0],0)
+	return met
+
+
+
+def GetLLJJMasses3Jets(l1,l2,j1,j2,j3):
+
+	m11 = (l1+j1).M()
+	m12 = (l1+j2).M()
+	m13 = (l1+j3).M()
+	m21 = (l2+j1).M()
+	m22 = (l2+j2).M()
+	m23 = (l2+j3).M()
+
+	diff1 = abs(m11-m22)
+	diff2 = abs(m11-m23)
+	diff3 = abs(m12-m21)
+	diff4 = abs(m12-m23)
+	diff5 = abs(m13-m21)
+	diff6 = abs(m13-m22)
+
+	least = min(diff1,diff2,diff3,diff4,diff5,diff6)
+	
+	if least == diff1 :
+		pair = [m11,m22] # The invariant mass pair
+		mh = m11 # invariant mass corresponding to leading jet
+	elif least == diff2:
+		pair = [m11,m23] # The invariant mass pair
+		mh = m11 # invariant mass corresponding to leading jet
+	elif least == diff3:
+		pair = [m12,m21] # The invariant mass pair
+		mh = m21 # invariant mass corresponding to leading jet
+	elif least == diff4:
+		pair = [m12,m23] # The invariant mass pair
+		mh = m12 # invariant mass corresponding to leading jet
+	elif least == diff5:
+		pair = [m13,m21] # The invariant mass pair
+		mh = m21 # invariant mass corresponding to leading jet
+	elif least == diff6:
+		pair = [m13,m22] # The invariant mass pair
+		mh = m22 # invariant mass corresponding to leading jet
+        else:
+		pair = [0,0]
+		mh=0
+	#print '3Jet min:',least,'masses: ',pair[0],pair[1]
+	pair.sort()
+	pair.reverse()
+	pair.append(mh)
+	return pair
 
 
 ##########################################################################################
@@ -2105,7 +2118,8 @@ for n in range(N):
 	if (Branches['Pt_jet2'][0] <  45): continue
 	if (Branches['St_uujj'][0] < 260) and (Branches['St_uvjj'][0] < 260): continue
 	if (Branches['M_uu'][0]    <  45) and (Branches['MT_uv'][0]   <  45): continue
-	
+	#if (Branches['passWptCut'][0]==0): continue #only used for stitching together samples
+
 	# Fill output tree with event
 	tout.Fill()
 

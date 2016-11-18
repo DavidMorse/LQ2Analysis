@@ -108,6 +108,10 @@ print 'After demand 1 pT16 jet:  ',N
 _kinematicvariables = ['Pt_muon1','Pt_muon2','Pt_ele1','Pt_ele2','Pt_lep1','Pt_lep2','Pt_jet1','Pt_jet2','Pt_miss']
 _kinematicvariables += ['Eta_muon1','Eta_muon2','Eta_ele1','Eta_ele2','Eta_lep1','Eta_lep2','Eta_jet1','Eta_jet2','Eta_miss']
 _kinematicvariables += ['Phi_muon1','Phi_muon2','Phi_ele1','Phi_ele2','Phi_lep1','Phi_lep2','Phi_jet1','Phi_jet2','Phi_miss']
+_kinematicvariables += ['Phi_Hjet1','Phi_Hjet2','Phi_Zjet1','Phi_Zjet2',]
+_kinematicvariables += ['Eta_Hjet1','Eta_Hjet2','Eta_Zjet1','Eta_Zjet2',]
+_kinematicvariables += ['Phi_Hjet1_gen','Phi_Hjet2_gen','Phi_Zjet1_gen','Phi_Zjet2_gen',]
+_kinematicvariables += ['Eta_Hjet1_gen','Eta_Hjet2_gen','Eta_Zjet1_gen','Eta_Zjet2_gen',]
 _kinematicvariables += ['X_miss','Y_miss']
 _kinematicvariables += ['TrkIso_muon1','TrkIso_muon2','TrkIso_ele1','TrkIso_ele2','TrkIso_lep1','TrkIso_lep2']
 _kinematicvariables += ['Chi2_muon1','Chi2_muon2']
@@ -147,6 +151,10 @@ _kinematicvariables += ['Pt_Hjets','Pt_Zjets','Pt_uu','Pt_ee','Pt_ll']
 _kinematicvariables += ['DR_jj_Z','DR_bb_H']
 _kinematicvariables += ['DR_u1Hj1','DR_u1Hj2','DR_u2Hj1','DR_u2Hj2']
 _kinematicvariables += ['DR_u1Zj1','DR_u1Zj2','DR_u2Zj1','DR_u2Zj2']
+_kinematicvariables += ['DR_u1Hj1_gen','DR_u1Hj2_gen','DR_u2Hj1_gen','DR_u2Hj2_gen']
+_kinematicvariables += ['DR_u1Zj1_gen','DR_u1Zj2_gen','DR_u2Zj1_gen','DR_u2Zj2_gen']
+_kinematicvariables += ['DR_u1Hj1_genMatched','DR_u1Hj2_genMatched','DR_u2Hj1_genMatched','DR_u2Hj2_genMatched']
+_kinematicvariables += ['DR_u1Zj1_genMatched','DR_u1Zj2_genMatched','DR_u2Zj1_genMatched','DR_u2Zj2_genMatched']
 _kinematicvariables += ['DR_uu_bb_H','DR_uu_jj_Z','DPhi_uu_bb_H','DPhi_uu_jj_Z']
 _kinematicvariables += ['DR_ee_bb_H','DR_ee_jj_Z','DPhi_ee_bb_H','DPhi_ee_jj_Z']
 _kinematicvariables += ['DR_ll_bb_H','DR_ll_jj_Z','DPhi_ll_bb_H','DPhi_ll_jj_Z']
@@ -1067,6 +1075,22 @@ def LeptonsAndJetsFromHH(T):
 		for i in range(len(genjetsZ)) :
 			print 'Z: genpt',genjetsZ[i].Pt(),'recopt',matchedrecojetsZ[i].Pt(),'recoeta',matchedrecojetsZ[i].Eta(),'index',recojetindsZ[i]
 	"""
+	while len(genmuons)<2:
+		genmuons.append(emptyvector)
+	while len(genelectrons)<2:
+		genelectrons.append(emptyvector)
+	while len(genjetsH)<2:
+		genjetsH.append(emptyvector)
+	while len(genjetsZ)<2:
+		genjetsZ.append(emptyvector)
+	while len(matchedrecomuons)<2:
+		matchedrecomuons.append(emptyvector)
+	while len(matchedrecoelectrons)<2:
+		matchedrecoelectrons.append(emptyvector)
+	while len(matchedrecojetsH)<2:
+		matchedrecojetsH.append(emptyvector)
+	while len(matchedrecojetsZ)<2:
+		matchedrecojetsZ.append(emptyvector)
 
 	return([genmuons,matchedrecomuons,recomuoninds,genelectrons,matchedrecoelectrons,recoelectroninds,genjetsH,matchedrecojetsH,recojetindsH,genjetsZ,matchedrecojetsZ,recojetindsZ,onShellZMu,onShellZEle])
 	#return(recojetinds)
@@ -1584,7 +1608,7 @@ def LooseIDJets(T,met,variation,isdata):
 			looseJetID = (NEMF<0.90 and NumNeutralParticle>2 and abs(eta)>2.7 and abs(eta)<=3.0 )
 		else:
 			looseJetID = (NEMF<0.90 and NumNeutralParticle>10 and abs(eta)>3.0 and abs(eta)<5.0 )
-		if _PFJetPt[n]>10 :#fixme todo was pt>30, reduced for HH
+		if _PFJetPt[n]>15 :#fixme todo was pt>30, reduced for HH
 			if looseJetID:
 				j = TLorentzVector()
 				j.SetPtEtaPhiM(_PFJetPt[n],T.PFJetEtaAK4CHS[n],T.PFJetPhiAK4CHS[n],0)
@@ -2380,6 +2404,25 @@ def FullKinematicCalculation(T,variation):
 	_jetInd1=jetInd[0]
 	_jetInd2=jetInd[1]
 
+	[_phiHj1_gen,_phiHj2_gen,_phiZj1_gen,_phiZj2_gen]=[_genJetsH[0].Phi(),_genJetsH[1].Phi(),_genJetsZ[0].Phi(),_genJetsZ[1].Phi()]
+	[_etaHj1_gen,_etaHj2_gen,_etaZj1_gen,_etaZj2_gen]=[_genJetsH[0].Eta(),_genJetsH[1].Eta(),_genJetsZ[0].Eta(),_genJetsZ[1].Eta()]
+	_dRu1Hj1_gen = abs(_genMuonsZ[0].DeltaR(_genJetsH[0]))
+	_dRu1Hj2_gen = abs(_genMuonsZ[0].DeltaR(_genJetsH[1]))
+	_dRu1Zj1_gen = abs(_genMuonsZ[0].DeltaR(_genJetsZ[0]))
+	_dRu1Zj2_gen = abs(_genMuonsZ[0].DeltaR(_genJetsZ[1]))
+	_dRu2Hj1_gen = abs(_genMuonsZ[1].DeltaR(_genJetsH[0]))
+	_dRu2Hj2_gen = abs(_genMuonsZ[1].DeltaR(_genJetsH[1]))
+	_dRu2Zj1_gen = abs(_genMuonsZ[1].DeltaR(_genJetsZ[0]))
+	_dRu2Zj2_gen = abs(_genMuonsZ[1].DeltaR(_genJetsZ[1]))
+	_dRu1Hj1_genMatched = abs(_matchedRecoMuonsZ[0].DeltaR(_matchedRecoJetsH[0]))
+	_dRu1Hj2_genMatched = abs(_matchedRecoMuonsZ[0].DeltaR(_matchedRecoJetsH[1]))
+	_dRu1Zj1_genMatched = abs(_matchedRecoMuonsZ[0].DeltaR(_matchedRecoJetsZ[0]))
+	_dRu1Zj2_genMatched = abs(_matchedRecoMuonsZ[0].DeltaR(_matchedRecoJetsZ[1]))
+	_dRu2Hj1_genMatched = abs(_matchedRecoMuonsZ[1].DeltaR(_matchedRecoJetsH[0]))
+	_dRu2Hj2_genMatched = abs(_matchedRecoMuonsZ[1].DeltaR(_matchedRecoJetsH[1]))
+	_dRu2Zj1_genMatched = abs(_matchedRecoMuonsZ[1].DeltaR(_matchedRecoJetsZ[0]))
+	_dRu2Zj2_genMatched = abs(_matchedRecoMuonsZ[1].DeltaR(_matchedRecoJetsZ[1]))
+
 
 	leptons=[]
 	IsMuonEvent,IsElectronEvent = False,False
@@ -2599,9 +2642,13 @@ def FullKinematicCalculation(T,variation):
 	_dRu2Hj2 = abs(muons[1].DeltaR(bjet2))
 	_dRu2Zj1 = abs(muons[1].DeltaR(jet1))
 	_dRu2Zj2 = abs(muons[1].DeltaR(jet2))
+	
 	[_Pt_Hjet1,_Pt_Hjet2,_Pt_Zjet1,_Pt_Zjet2] = [bjet1.Pt(),bjet2.Pt(),jet1.Pt(),jet2.Pt()]
 	[_Pt_Hjets,_Pt_Zjets] = [(bjet1+bjet2).Pt(),(jet1+jet2).Pt()]
 	[_Pt_uu,_Pt_ee,_Pt_ll] = [(muons[0]+muons[1]).Pt(),(electrons[0]+electrons[1]).Pt(),(leptons[0]+leptons[1]).Pt()]
+
+	[_phiHj1,_phiHj2,_phiZj1,_phiZj2]=[bjet1.Phi(),bjet2.Phi(),jet1.Phi(),jet2.Phi()]
+	[_etaHj1,_etaHj2,_etaZj1,_etaZj2]=[bjet1.Eta(),bjet2.Eta(),jet1.Eta(),jet2.Eta()]
 
 	_dRuubb_H = abs((muons[0]+muons[1]).DeltaR(bjet1+bjet2))
 	_dRuujj_Z = abs((muons[0]+muons[1]).DeltaR(jet1+jet2))
@@ -2689,6 +2736,10 @@ def FullKinematicCalculation(T,variation):
 	toreturn = [_ptmu1,_ptmu2,_ptele1,_ptele2,_ptlep1,_ptlep2,_ptj1,_ptj2,_ptmet]
 	toreturn += [_etamu1,_etamu2,_etaele1,_etaele2,_etalep1,_etalep2,_etaj1,_etaj2,_etamet]
 	toreturn += [_phimu1,_phimu2,_phiele1,_phiele2,_philep1,_philep2,_phij1,_phij2,_phimet]
+	toreturn += [_phiHj1,_phiHj2,_phiZj1,_phiZj2]
+	toreturn += [_etaHj1,_etaHj2,_etaZj1,_etaZj2]
+	toreturn += [_phiHj1_gen,_phiHj2_gen,_phiZj1_gen,_phiZj2_gen]
+	toreturn += [_etaHj1_gen,_etaHj2_gen,_etaZj1_gen,_etaZj2_gen]
 	toreturn += [_xmiss,_ymiss]
 	toreturn += [_isomu1,_isomu2,_isoele1,_isoele2,_isolep1,_isolep2,]
 	
@@ -2730,6 +2781,10 @@ def FullKinematicCalculation(T,variation):
 	toreturn += [_dRjj_Z,_dRbb_H]
 	toreturn += [_dRu1Hj1,_dRu1Hj2,_dRu2Hj1,_dRu2Hj2]
 	toreturn += [_dRu1Zj1,_dRu1Zj2,_dRu2Zj1,_dRu2Zj2]
+	toreturn += [_dRu1Hj1_gen,_dRu1Hj2_gen,_dRu2Hj1_gen,_dRu2Hj2_gen]
+	toreturn += [_dRu1Zj1_gen,_dRu1Zj2_gen,_dRu2Zj1_gen,_dRu2Zj2_gen]
+	toreturn += [_dRu1Hj1_genMatched,_dRu1Hj2_genMatched,_dRu2Hj1_genMatched,_dRu2Hj2_genMatched]
+	toreturn += [_dRu1Zj1_genMatched,_dRu1Zj2_genMatched,_dRu2Zj1_genMatched,_dRu2Zj2_genMatched]
 	toreturn += [_dRuubb_H,_dRuujj_Z,_dPHIuubb_H,_dPHIuujj_Z]
 	toreturn += [_dReebb_H,_dReejj_Z,_dPHIeebb_H,_dPHIeejj_Z]
 	toreturn += [_dRllbb_H,_dRlljj_Z,_dPHIllbb_H,_dPHIlljj_Z]
@@ -2778,7 +2833,7 @@ def GeomFilterCollection(collection_to_clean,good_collection,dRcut,associatedCol
 def MetVector(T):
 	# Purpose: Creates a TLorentzVector represting the MET. No pseudorapidity, obviously.
 	met = TLorentzVector()
-	met.SetPtEtaPhiM(T.PFMETType01XYCor[0],0,T.PFMETPhiType01XYCor[0],0)
+	met.SetPtEtaPhiM(T.PFMETType1XYCor[0],0,T.PFMETPhiType1XYCor[0],0)
 	return met
 
 ##########################################################################################
