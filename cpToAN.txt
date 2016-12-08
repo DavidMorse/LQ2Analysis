@@ -1,5 +1,5 @@
 
-set resultDir = Results_Testing_2016_Sep21
+set resultDir = Results_Testing_2016_Oct20
 
 cp $resultDir/OptimizationLQ_uujj_St_uujj_pol2cutoff.pdf ~/work/leptoQuark/lqpaper/notes/AN-16-337/trunk/Figures/OptPlots/.
 cp $resultDir/OptimizationLQ_uujj_M_uujj2_pol2cutoff.pdf ~/work/leptoQuark/lqpaper/notes/AN-16-337/trunk/Figures/OptPlots/.

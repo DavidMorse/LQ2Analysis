@@ -131,6 +131,7 @@ _kinematicvariables += ['M_uujj1_3jet_rel','M_uujj2_3jet_rel','M_uujjavg_3jet_re
 _kinematicvariables += ['M_uujj1','M_uujj2','M_uujjavg']
 _kinematicvariables += ['M_uujj1_rel','M_uujj2_rel','M_uujjavg_rel']
 _kinematicvariables += ['M_uujj','M_uu4j','M_ee4j','M_ll4j']
+_kinematicvariables += ['M_uuj1','M_uuj2','M_u1j1j2','M_u2j1j2']
 _kinematicvariables += ['M_uu4j_gen','M_uu4j_genMatched']
 _kinematicvariables += ['M_ee4j_gen','M_ee4j_genMatched']
 _kinematicvariables += ['M_ll4j_gen','M_ll4j_genMatched']
@@ -1180,8 +1181,8 @@ def HEEPElectrons(T,_met,variation):
 		Pass *= (T.ElectronPtHeep[n] > 35)
 		Pass *= abs(T.ElectronEta[n])<2.1
 
-		barrel = (abs(T.ElectronSCEta[n]))<1.442
-		endcap = (abs(T.ElectronSCEta[n]))>1.56 
+		barrel = (abs(T.ElectronSCEta[n]))<1.4442
+		endcap = (abs(T.ElectronSCEta[n]))>1.566
 		Pass *= (barrel+endcap)
 
 		if barrel:
@@ -1770,7 +1771,10 @@ def FullKinematicCalculation(T,variation):
 	[_Muujj1, _Muujj2,_MHuujj] = GetLLJJMasses(muons[0],muons[1],jets[0],jets[1])
 
 	_Muujj = (muons[0]+muons[1]+jets[0]+jets[1]).M()
-
+	_Muuj1   = (muons[0]+muons[1]+jets[0]).M()
+	_Muuj2   = (muons[0]+muons[1]+jets[1]).M()
+	_Mu1j1j2 = (muons[0]+jets[0]+jets[1]).M()
+	_Mu2j1j2 = (muons[1]+jets[0]+jets[1]).M()
 
 	if len(electrons)>=1 :
 		_pte1 = electrons[0].Pt()
@@ -1865,6 +1869,7 @@ def FullKinematicCalculation(T,variation):
 	toreturn += [_Muujj1, _Muujj2,_Muujjavg]
 	toreturn += [_Muujj1_rel, _Muujj2_rel,_Muujjavg_rel]
 	toreturn += [_Muujj, _Muu4j, _Mee4j, _Mll4j]
+	toreturn += [_Muuj1,_Muuj2,_Mu1j1j2,_Mu2j1j2]
 	toreturn += [_Muu4j_gen,_Muu4j_genMatched]
 	toreturn += [_Mee4j_gen,_Mee4j_genMatched]
 	toreturn += [_Mll4j_gen,_Mll4j_genMatched]
