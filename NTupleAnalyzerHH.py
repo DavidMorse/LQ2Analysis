@@ -175,6 +175,8 @@ _kinematicvariables += ['jetIndex1','jetIndex2']
 _kinematicvariables += ['ptHat']
 _kinematicvariables += ['CISV_jet1','CISV_jet2']
 _kinematicvariables += ['CISV_bjet1','CISV_bjet2']
+_kinematicvariables += ['CMVA_jet1','CMVA_jet2']
+_kinematicvariables += ['CMVA_bjet1','CMVA_bjet2']
 _kinematicvariables += ['isMuonEvent','isElectronEvent']
 _kinematicvariables += ['Hj1Matched','Hj2Matched','Zj1Matched','Zj2Matched']
 _kinematicvariables += ['Hj1Present','Hj2Present','Zj1Present','Zj2Present']
@@ -1593,7 +1595,7 @@ def LooseIDJets(T,met,variation,isdata):
 	jetinds = []
 	NHFs = []
 	NEMFs = []
-	CSVscores = []
+	CSVscores,bMVAscores = [],[]
 	for n in range(len(_PFJetPt)):
 		looseJetID = False
 		eta = T.PFJetEtaAK4CHS[n]
@@ -1623,13 +1625,14 @@ def LooseIDJets(T,met,variation,isdata):
 				NHFs.append(NHF)
 				NEMFs.append(NEMF)
 				CSVscores.append(T.PFJetCombinedInclusiveSecondaryVertexBTagAK4CHS[n])
+				bMVAscores.append(T.PFJetCombinedMVABTagAK4CHS[n])
 			else:
 				if _PFJetPt[n] > JetFailThreshold:
 					JetFailThreshold = _PFJetPt[n]
 
 	# print met.Pt()
 
-	return [jets,jetinds,met,JetFailThreshold,NHFs,NEMFs,CSVscores]
+	return [jets,jetinds,met,JetFailThreshold,NHFs,NEMFs,CSVscores,bMVAscores]
 
 
 def GetLLJJMasses(l1,l2,j1,j2):
@@ -2097,7 +2100,7 @@ def GetHHJets3(jets,btagScores,jetinds):
 	return [bjet1,highBtag,bjet2,secondBtag,jet1,jet2,jet3,indRecoBJet1,indRecoBJet2,indRecoJet1,indRecoJet2,indRecoJet3]
 
 
-def GetHHJets4(jets,btagScores,muon1,muon2,jetinds):
+def GetHHJets4(jets,btagScoresCSV,btagScoresMVA,muon1,muon2,jetinds):
 	#Purpose: select which jets to use for HH analysis, separating bJets from light jets. Note that jets have already been cleaned from muons and electrons in cone of 0.3.
 	"""
 	if v == '' :
@@ -2109,8 +2112,8 @@ def GetHHJets4(jets,btagScores,muon1,muon2,jetinds):
 	EmptyLorentz.SetPtEtaPhiM(.01,0,0,0)
 	[bjet1,bjet2,jet1,jet2,jet3]=[EmptyLorentz,EmptyLorentz,EmptyLorentz,EmptyLorentz,EmptyLorentz]
 	#if v == '' : print len(jets)
-	highBtag = -20.0
-	secondBtag = -20.0
+	highBtagCSV,highBtag = -20.0,-20.0
+	secondBtagCSV,secondBtag = -20.0,-20.0
 	highBtagCounter = -1
 	secondBtagCounter = -1
 	indRecoBJet1 = -1
@@ -2118,13 +2121,15 @@ def GetHHJets4(jets,btagScores,muon1,muon2,jetinds):
 	indRecoJet1 = -1
 	indRecoJet2 = -1
 	indRecoJet3 = -1
-	for i in range(len(btagScores)) :
-		if btagScores[i]>highBtag:
-			highBtag = btagScores[i]
+	for i in range(len(btagScoresMVA)) :
+		if btagScoresMVA[i]>highBtag:
+			highBtag = btagScoresMVA[i]
+			highBtagCSV = btagScoresCSV[i]
 			highBtagCounter = i
-	for i in range(len(btagScores)) :
-		if  btagScores[i]>secondBtag and btagScores[i]<highBtag:
-			secondBtag = btagScores[i]
+	for i in range(len(btagScoresMVA)) :
+		if  btagScoresMVA[i]>secondBtag and btagScoresMVA[i]<highBtag:
+			secondBtag = btagScoresMVA[i]
+			secondBtagCSV = btagScoresCSV[i]
 			secondBtagCounter = i
 	#[bjet1,bjet2] = [jets[highBtagCounter],jets[secondBtagCounter]]
 	[bjet1,bjet2,indRecoBJet1,indRecoBJet2] = [jets[highBtagCounter],jets[secondBtagCounter],jetinds[highBtagCounter],jetinds[secondBtagCounter]]
@@ -2158,13 +2163,13 @@ def GetHHJets4(jets,btagScores,muon1,muon2,jetinds):
 			jet1=jets[i]
 			indRecoJet1=jetinds[i]
 			gotJet1=True
-			jet1Btag = btagScores[i]
+			jet1Btag = btagScoresMVA[i]
 			continue
 		if not gotJet2:
 			jet2=jets[i]
 			indRecoJet2=jetinds[i]
 			gotJet2=True
-			jet2Btag = btagScores[i]
+			jet2Btag = btagScoresMVA[i]
 			continue
 		jet3=jets[i]
 		indRecoJet3=jetinds[i]
@@ -2173,7 +2178,7 @@ def GetHHJets4(jets,btagScores,muon1,muon2,jetinds):
 	#if v == '' :
 	#	print 'pts:',bjet1.Pt(),bjet2.Pt(),jet1.Pt(),jet2.Pt()
 	#	print 'btag scores:', highBtag,secondBtag,jet1Btag,jet2Btag
-	return [bjet1,highBtag,bjet2,secondBtag,jet1,jet2,jet3,indRecoBJet1,indRecoBJet2,indRecoJet1,indRecoJet2,indRecoJet3]
+	return [bjet1,highBtagCSV,highBtag,bjet2,secondBtagCSV,secondBtag,jet1,jet2,jet3,indRecoBJet1,indRecoBJet2,indRecoJet1,indRecoJet2,indRecoJet3]
 
 def GetHHJets5(jets,btagScores,muon1,muon2,jetinds):
 	#Purpose: select which jets to use for HH analysis, separating bJets from light jets. Note that jets have already been cleaned from muons and electrons in cone of 0.3.
@@ -2326,12 +2331,12 @@ def FullKinematicCalculation(T,variation):
 	#[electrons,electroninds,met] = HEEPElectrons(T,met,variation)
 	[electrons,electroninds,met,trkisosEle,chargesEle] = TightElectrons(T,met,variation,T.isData)
 	# ID Jets and filter from leptons
-	[jets,jetinds,met,failthreshold,neutralhadronEF,neutralemEF,btagCSVscores] = LooseIDJets(T,met,variation,T.isData)
+	[jets,jetinds,met,failthreshold,neutralhadronEF,neutralemEF,btagCSVscores,btagMVAscores] = LooseIDJets(T,met,variation,T.isData)
 	#jetsTemp = jets
 	_jetCntPreFilter = len(jets)
 	## jets = GeomFilterCollection(jets,muons_forjetsep,0.5)
-	[jets,btagCSVscores] = GeomFilterCollection(jets,muons,0.3,btagCSVscores)#fixme todo was 0.5 - changing to 0.3 following HH->wwbb. In any case 0.5 is too big now that cone size is 0.4 - put back in!
-	[jets,btagCSVscores] = GeomFilterCollection(jets,electrons,0.3,btagCSVscores)#fixme todo was 0.5 - changing to 0.3 following HH->wwbb. In any case 0.5 is too big now that cone size is 0.4 - put back in!
+	[jets,btagCSVscores,btagMVAscores] = GeomFilterCollection(jets,muons,0.3,btagCSVscores,btagMVAscores)#fixme todo was 0.5 - changing to 0.3 following HH->wwbb. In any case 0.5 is too big now that cone size is 0.4 - put back in!
+	[jets,btagCSVscores,btagMVAscores] = GeomFilterCollection(jets,electrons,0.3,btagCSVscores,btagMVAscores)#fixme todo was 0.5 - changing to 0.3 following HH->wwbb. In any case 0.5 is too big now that cone size is 0.4 - put back in!
 	##[jetsTemp,jetinds] = GeomFilterCollection(jetsTemp,muons,0.3,jetinds)
 	##[jetsTemp,jetinds] = GeomFilterCollection(jetsTemp,electrons,0.3,jetinds)
 	## jets = GeomFilterCollection(jets,taus_forjetsep,0.5)
@@ -2377,12 +2382,14 @@ def FullKinematicCalculation(T,variation):
 		neutralhadronEF.append(0.0)
 		neutralemEF.append(0.0)
 		btagCSVscores.append(-5.0)
+		btagMVAscores.append(-5.0)
 		jetinds.append(-1)
 	if len(jets) < 2 : 
 		jets.append(EmptyLorentz)
 		neutralhadronEF.append(0.0)
 		neutralemEF.append(0.0)
 		btagCSVscores.append(-5.0)
+		btagMVAscores.append(-5.0)
 		jetinds.append(-1)
 	_ismuon_muon1 = 1.0
 	_ismuon_muon2 = 1.0
@@ -2476,6 +2483,7 @@ def FullKinematicCalculation(T,variation):
 	[_ptmet,_etamet,_phimet] = [met.Pt(),0,met.Phi()]
 	[_xmiss,_ymiss] = [met.Px(),met.Py()]
 	[_CSVj1,_CSVj2] = [btagCSVscores[0],btagCSVscores[1]]
+	[_bMVAj1,_bMVAj2] = [btagMVAscores[0],btagMVAscores[1]]
 
 	_stuujj = ST([muons[0],muons[1],jets[0],jets[1]])
 	_stuvjj = ST([muons[0],met,jets[0],jets[1]])
@@ -2596,8 +2604,8 @@ def FullKinematicCalculation(T,variation):
 	#[bjet1_3,bscore1_3,bjet2_3,bscore2_3,jet1_3,jet2_3,jet3_3] = GetHHJets3(jets,btagCSVscores)
 	
 	#[bjet1,bscore1,bjet2,bscore2,jet1,jet2,jet3,indRecoBJet1,indRecoBJet2,indRecoJet1,indRecoJet2,indRecoJet3] = GetHHJets(jets,btagCSVscores, jetinds)
-	[bjet1,bscore1,bjet2,bscore2,jet1,jet2,jet3,indRecoBJet1,indRecoBJet2,indRecoJet1,indRecoJet2,indRecoJet3] = [EmptyLorentz,-5.0,EmptyLorentz,-5.0,EmptyLorentz,EmptyLorentz,EmptyLorentz,-1,-1,-1,-1,-1]
-	[bjet1,bscore1,bjet2,bscore2,jet1,jet2,jet3,indRecoBJet1,indRecoBJet2,indRecoJet1,indRecoJet2,indRecoJet3] = GetHHJets4(jets,btagCSVscores,muons[0],muons[1],jetinds)
+	[bjet1,bscore1,bscoreMVA1,bjet2,bscore2,bscoreMVA2,jet1,jet2,jet3,indRecoBJet1,indRecoBJet2,indRecoJet1,indRecoJet2,indRecoJet3] = [EmptyLorentz,-5.0,-5.0,EmptyLorentz,-5.0,-5.0,EmptyLorentz,EmptyLorentz,EmptyLorentz,-1,-1,-1,-1,-1]
+	[bjet1,bscore1,bscoreMVA1,bjet2,bscore2,bscoreMVA2,jet1,jet2,jet3,indRecoBJet1,indRecoBJet2,indRecoJet1,indRecoJet2,indRecoJet3] = GetHHJets4(jets,btagCSVscores,btagMVAscores,muons[0],muons[1],jetinds)
 	#[bjet1,bscore1,bjet2,bscore2,jet1,jet2,jet3,indRecoBJet1,indRecoBJet2,indRecoJet1,indRecoJet2,indRecoJet3] = GetHHJets5(jets,btagCSVscores,muons[0],muons[1],jetinds)
 
 	"""
@@ -2653,7 +2661,7 @@ def FullKinematicCalculation(T,variation):
 	
 	_stuu4j = ST([muons[0],muons[1],bjet1,bjet2,jet1,jet2])
 	_stee4j = ST([electrons[0],electrons[1],bjet1,bjet2,jet1,jet2])
-	_stuu4j = ST([leptons[0],leptons[1],bjet1,bjet2,jet1,jet2])
+	_stll4j = ST([leptons[0],leptons[1],bjet1,bjet2,jet1,jet2])
 
 	[_Pt_Hjet1,_Pt_Hjet2,_Pt_Zjet1,_Pt_Zjet2] = [bjet1.Pt(),bjet2.Pt(),jet1.Pt(),jet2.Pt()]
 	[_Pt_Hjets,_Pt_Zjets] = [(bjet1+bjet2).Pt(),(jet1+jet2).Pt()]
@@ -2818,6 +2826,8 @@ def FullKinematicCalculation(T,variation):
 	toreturn += [_ptHat]
 	toreturn += [_CSVj1,_CSVj2]
 	toreturn += [bscore1,bscore2]
+	toreturn += [_bMVAj1,_bMVAj2]
+	toreturn += [bscoreMVA1,bscoreMVA2]
 	toreturn += [_isMuonEvent,_isElectronEvent]
 	toreturn += [_Hj1Matched,_Hj2Matched,_Zj1Matched,_Zj2Matched]
 	toreturn += [_Hj1Present,_Hj2Present,_Zj1Present,_Zj2Present]
@@ -2838,14 +2848,14 @@ def checkWpt(T,lowcut, highcut):
 		else: continue
 	return 1
 
-def GeomFilterCollection(collection_to_clean,good_collection,dRcut,associatedCollection):
+def GeomFilterCollection(collection_to_clean,good_collection,dRcut,associatedCollection1,associatedCollection2):
 	# Purpose: Take a collection of TLorentzVectors that you want to clean (arg 1)
 	#         by removing all objects within dR of dRcut (arg 3) of any element in
 	#         the collection of other particles (arg 2)
 	#         e.g.  argumments (jets,muons,0.3) gets rid of jets within 0.3 of muons. 
 	#   Added option for associated collection, i.e.
 	output_collection = []
-	associated_output_collection = []
+	associated_output_collection1,associated_output_collection2 = [],[]
 	for i, c in enumerate(collection_to_clean):
 		isgood = True
 		for g in good_collection:
@@ -2853,8 +2863,9 @@ def GeomFilterCollection(collection_to_clean,good_collection,dRcut,associatedCol
 				isgood = False
 		if isgood==True:
 			output_collection.append(c)
-			associated_output_collection.append(associatedCollection[i])
-	return [output_collection,associated_output_collection]
+			associated_output_collection1.append(associatedCollection1[i])
+			associated_output_collection2.append(associatedCollection2[i])
+	return [output_collection,associated_output_collection1,associated_output_collection2]
 
 
 def MetVector(T):
