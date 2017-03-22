@@ -36,7 +36,7 @@ TreeName = "PhysicalVariables"
 #lumi = 2690.707
 #lumi = 40000.0
 #lumi = 21780.339
-lumi= 27214.399
+lumi= 35863.308
 
 #HLT_Ele17_Ele12...DZ
 ##lumi=20809.806
@@ -74,20 +74,37 @@ singlemuHLTEMU += '+(IsMuon_muon2*( 0.9494*(abs(Eta_muon2)<=0.9)*(Pt_muon2>50)*(
 
 #Muon ID and Iso MC scale factors
 #https://twiki.cern.ch/twiki/bin/view/CMS/MuonReferenceEffsRun2
-doubleMuIdScale = '*((0.985720157623291*((abs(Eta_muon1)<1.2)*(Pt_muon1>50)*(Pt_muon1<80))+0.9935390949249268*((abs(Eta_muon1)>1.2)*(Pt_muon1>50)*(Pt_muon1<80))+0.990919828414917*((abs(Eta_muon1)<1.2)*(Pt_muon1>80)*(Pt_muon1<140))+1.001926302909851*((abs(Eta_muon1)>1.2)*(Pt_muon1>80)*(Pt_muon1<140))+0.9570706486701965*((abs(Eta_muon1)<1.2)*(Pt_muon1>140))+0.9942596554756165*((abs(Eta_muon1)>1.2)*(Pt_muon1>140)))*(0.985720157623291*((abs(Eta_muon2)<1.2)*(Pt_muon2>50)*(Pt_muon2<80))+0.9935390949249268*((abs(Eta_muon2)>1.2)*(Pt_muon2>50)*(Pt_muon2<80))+0.990919828414917*((abs(Eta_muon2)<1.2)*(Pt_muon2>80)*(Pt_muon2<140))+1.001926302909851*((abs(Eta_muon2)>1.2)*(Pt_muon2>80)*(Pt_muon2<140))+0.9570706486701965*((abs(Eta_muon2)<1.2)*(Pt_muon2>140))+0.9942596554756165*((abs(Eta_muon2)>1.2)*(Pt_muon2>140))))'
-doubleMuIsoScale = '*((0.9997498989105225*((abs(Eta_muon1)<1.2)*(Pt_muon1>50)*(Pt_muon1<80))+1.0002378225326538*((abs(Eta_muon1)>1.2)*(Pt_muon1>50)*(Pt_muon1<80))+0.9987856149673462*((abs(Eta_muon1)<1.2)*(Pt_muon1>80)*(Pt_muon1<140))+1.0010393857955933*((abs(Eta_muon1)>1.2)*(Pt_muon1>80)*(Pt_muon1<140))+0.9964004158973694*((abs(Eta_muon1)<1.2)*(Pt_muon1>140))+0.998447835445404*((abs(Eta_muon1)>1.2)*(Pt_muon1>140)))*(0.9997498989105225*((abs(Eta_muon2)<1.2)*(Pt_muon2>50)*(Pt_muon2<80))+1.0002378225326538*((abs(Eta_muon2)>1.2)*(Pt_muon2>50)*(Pt_muon2<80))+0.9987856149673462*((abs(Eta_muon2)<1.2)*(Pt_muon2>80)*(Pt_muon2<140))+1.0010393857955933*((abs(Eta_muon2)>1.2)*(Pt_muon2>80)*(Pt_muon2<140))+0.9964004158973694*((abs(Eta_muon2)<1.2)*(Pt_muon2>140))+0.998447835445404*((abs(Eta_muon2)>1.2)*(Pt_muon2>140))))'
 
-singleMuIdScale = '*((0.985720157623291*((abs(Eta_muon1)<1.2)*(Pt_muon1>50)*(Pt_muon1<80))+0.9935390949249268*((abs(Eta_muon1)>1.2)*(Pt_muon1>50)*(Pt_muon1<80))+0.990919828414917*((abs(Eta_muon1)<1.2)*(Pt_muon1>80)*(Pt_muon1<140))+1.001926302909851*((abs(Eta_muon1)>1.2)*(Pt_muon1>80)*(Pt_muon1<140))+0.9570706486701965*((abs(Eta_muon1)<1.2)*(Pt_muon1>140))+0.9942596554756165*((abs(Eta_muon1)>1.2)*(Pt_muon1>140))))'
-singleMuIsoScale = '*((0.9997498989105225*((abs(Eta_muon1)<1.2)*(Pt_muon1>50)*(Pt_muon1<80))+1.0002378225326538*((abs(Eta_muon1)>1.2)*(Pt_muon1>50)*(Pt_muon1<80))+0.9987856149673462*((abs(Eta_muon1)<1.2)*(Pt_muon1>80)*(Pt_muon1<140))+1.0010393857955933*((abs(Eta_muon1)>1.2)*(Pt_muon1>80)*(Pt_muon1<140))+0.9964004158973694*((abs(Eta_muon1)<1.2)*(Pt_muon1>140))+0.998447835445404*((abs(Eta_muon1)>1.2)*(Pt_muon1>140))))'
+doubleMuIdScale = '*((0.9813326964101629*(Pt_muon1>50)*(Pt_muon1<55)+0.9811215588407185*(Pt_muon1>55)*(Pt_muon1<60)+0.9888030350742609*(Pt_muon1>60)*(Pt_muon1<120)+1.0179598732419621*(Pt_muon1>120))*(0.9813326964101629*(Pt_muon2>50)*(Pt_muon2<55)+0.9811215588407185*(Pt_muon2>55)*(Pt_muon2<60)+0.9888030350742609*(Pt_muon2>60)*(Pt_muon2<120)+1.0179598732419621*(Pt_muon2>120)))'
 
-MuIdScaleEMU = '*(IsMuon_muon1*(0.985720157623291*((abs(Eta_muon1)<1.2)*(Pt_muon1>50)*(Pt_muon1<80))+0.9935390949249268*((abs(Eta_muon1)>1.2)*(Pt_muon1>50)*(Pt_muon1<80))+0.990919828414917*((abs(Eta_muon1)<1.2)*(Pt_muon1>80)*(Pt_muon1<140))+1.001926302909851*((abs(Eta_muon1)>1.2)*(Pt_muon1>80)*(Pt_muon1<140))+0.9570706486701965*((abs(Eta_muon1)<1.2)*(Pt_muon1>140))+0.9942596554756165*((abs(Eta_muon1)>1.2)*(Pt_muon1>140)))+IsMuon_muon2*(0.985720157623291*((abs(Eta_muon2)<1.2)*(Pt_muon2>50)*(Pt_muon2<80))+0.9935390949249268*((abs(Eta_muon2)>1.2)*(Pt_muon2>50)*(Pt_muon2<80))+0.990919828414917*((abs(Eta_muon2)<1.2)*(Pt_muon2>80)*(Pt_muon2<140))+1.001926302909851*((abs(Eta_muon2)>1.2)*(Pt_muon2>80)*(Pt_muon2<140))+0.9570706486701965*((abs(Eta_muon2)<1.2)*(Pt_muon2>140))+0.9942596554756165*((abs(Eta_muon2)>1.2)*(Pt_muon2>140))))'
-MuIsoScaleEMU = '*(IsMuon_muon1*(0.9997498989105225*((abs(Eta_muon1)<1.2)*(Pt_muon1>50)*(Pt_muon1<80))+1.0002378225326538*((abs(Eta_muon1)>1.2)*(Pt_muon1>50)*(Pt_muon1<80))+0.9987856149673462*((abs(Eta_muon1)<1.2)*(Pt_muon1>80)*(Pt_muon1<140))+1.0010393857955933*((abs(Eta_muon1)>1.2)*(Pt_muon1>80)*(Pt_muon1<140))+0.9964004158973694*((abs(Eta_muon1)<1.2)*(Pt_muon1>140))+0.998447835445404*((abs(Eta_muon1)>1.2)*(Pt_muon1>140)))+IsMuon_muon2*(0.9997498989105225*((abs(Eta_muon2)<1.2)*(Pt_muon2>50)*(Pt_muon2<80))+1.0002378225326538*((abs(Eta_muon2)>1.2)*(Pt_muon2>50)*(Pt_muon2<80))+0.9987856149673462*((abs(Eta_muon2)<1.2)*(Pt_muon2>80)*(Pt_muon2<140))+1.0010393857955933*((abs(Eta_muon2)>1.2)*(Pt_muon2>80)*(Pt_muon2<140))+0.9964004158973694*((abs(Eta_muon2)<1.2)*(Pt_muon2>140))+0.998447835445404*((abs(Eta_muon2)>1.2)*(Pt_muon2>140))))'
+doubleMuIsoScale = '*((0.9985465327438463*(Pt_muon1>50)*(Pt_muon1<55)+0.9988891755735836*(Pt_muon1>55)*(Pt_muon1<60)+0.9989480835906359*(Pt_muon1>60)*(Pt_muon1<120)+1.0006806854046033*(Pt_muon1>120))*(0.9985465327438463*(Pt_muon2>50)*(Pt_muon2<55)+0.9988891755735836*(Pt_muon2>55)*(Pt_muon2<60)+0.9989480835906359*(Pt_muon2>60)*(Pt_muon2<120)+1.0006806854046033*(Pt_muon2>120)))'
+
+
+singleMuIdScale = '*(0.9813326964101629*(Pt_muon1>50)*(Pt_muon1<55)+0.9811215588407185*(Pt_muon1>55)*(Pt_muon1<60)+0.9888030350742609*(Pt_muon1>60)*(Pt_muon1<120)+1.0179598732419621*(Pt_muon1>120))'
+
+singleMuIsoScale = '*(0.9985465327438463*(Pt_muon1>50)*(Pt_muon1<55)+0.9988891755735836*(Pt_muon1>55)*(Pt_muon1<60)+0.9989480835906359*(Pt_muon1>60)*(Pt_muon1<120)+1.0006806854046033*(Pt_muon1>120))'
+
+MuIdScaleEMU = '*(IsMuon_muon1*(0.9813326964101629*(Pt_muon1>50)*(Pt_muon1<55)+0.9811215588407185*(Pt_muon1>55)*(Pt_muon1<60)+0.9888030350742609*(Pt_muon1>60)*(Pt_muon1<120)+1.0179598732419621*(Pt_muon1>120))+IsMuon_muon2*(0.9813326964101629*(Pt_muon2>50)*(Pt_muon2<55)+0.9811215588407185*(Pt_muon2>55)*(Pt_muon2<60)+0.9888030350742609*(Pt_muon2>60)*(Pt_muon2<120)+1.0179598732419621*(Pt_muon2>120)))'
+
+MuIsoScaleEMU = '*(IsMuon_muon1*(0.9985465327438463*(Pt_muon1>50)*(Pt_muon1<55)+0.9988891755735836*(Pt_muon1>55)*(Pt_muon1<60)+0.9989480835906359*(Pt_muon1>60)*(Pt_muon1<120)+1.0006806854046033*(Pt_muon1>120))+IsMuon_muon2*(0.9985465327438463*(Pt_muon2>50)*(Pt_muon2<55)+0.9988891755735836*(Pt_muon2>55)*(Pt_muon2<60)+0.9989480835906359*(Pt_muon2>60)*(Pt_muon2<120)+1.0006806854046033*(Pt_muon2>120)))'
 
 
 # This is the rescaling of the EMu data for the ttbar estimate (2 - Eff_trigger)
 dataHLTEMUADJ = '*(2.0 - 1.0'+singlemuHLTEMU+')'
 
 bTagSF = '*(0.901114+(1.32145e-05*(Pt_Hjet1)))*(0.931535+(1.40704e-05*(Pt_Hjet2)))'
+
+
+#This is for HIP problem https://twiki.cern.ch/twiki/bin/view/CMS/MuonReferenceEffsRun2#Tracking_efficiency_provided_by
+trackerHIP1 = '*(0.982399*(Eta_muon1>-2.4)*(Eta_muon1<-2.1)+0.991747*(Eta_muon1>-2.1)*(Eta_muon1<-1.6)+0.995945*(Eta_muon1>-1.6)*(Eta_muon1<-1.1)+0.993413*(Eta_muon1>-1.1)*(Eta_muon1<-0.6)+0.991461*(Eta_muon1>-0.6)*(Eta_muon1<0)+0.99468*(Eta_muon1>0)*(Eta_muon1<0.6)+0.996666*(Eta_muon1>0.6)*(Eta_muon1<1.1)+0.994934*(Eta_muon1>1.1)*(Eta_muon1<1.6)+0.991187*(Eta_muon1>1.6)*(Eta_muon1<2.1)+0.976812*(Eta_muon1>2.1)*(Eta_muon1<2.4) )'
+trackerHIP2 = '*(0.982399*(Eta_muon2>-2.4)*(Eta_muon2<-2.1)+0.991747*(Eta_muon2>-2.1)*(Eta_muon2<-1.6)+0.995945*(Eta_muon2>-1.6)*(Eta_muon2<-1.1)+0.993413*(Eta_muon2>-1.1)*(Eta_muon2<-0.6)+0.991461*(Eta_muon2>-0.6)*(Eta_muon2<0)+0.99468*(Eta_muon2>0)*(Eta_muon2<0.6)+0.996666*(Eta_muon2>0.6)*(Eta_muon2<1.1)+0.994934*(Eta_muon2>1.1)*(Eta_muon2<1.6)+0.991187*(Eta_muon2>1.6)*(Eta_muon2<2.1)+0.976812*(Eta_muon2>2.1)*(Eta_muon2<2.4) )'
+
+trackerHIPEMU = '*((IsMuon_muon1)*(0.982399*(Eta_muon1>-2.4)*(Eta_muon1<-2.1)+0.991747*(Eta_muon1>-2.1)*(Eta_muon1<-1.6)+0.995945*(Eta_muon1>-1.6)*(Eta_muon1<-1.1)+0.993413*(Eta_muon1>-1.1)*(Eta_muon1<-0.6)+0.991461*(Eta_muon1>-0.6)*(Eta_muon1<0)+0.99468*(Eta_muon1>0)*(Eta_muon1<0.6)+0.996666*(Eta_muon1>0.6)*(Eta_muon1<1.1)+0.994934*(Eta_muon1>1.1)*(Eta_muon1<1.6)+0.991187*(Eta_muon1>1.6)*(Eta_muon1<2.1)+0.976812*(Eta_muon1>2.1)*(Eta_muon1<2.4) )'
+trackerHIPEMU += '+(IsMuon_muon2)*(0.982399*(Eta_muon2>-2.4)*(Eta_muon2<-2.1)+0.991747*(Eta_muon2>-2.1)*(Eta_muon2<-1.6)+0.995945*(Eta_muon2>-1.6)*(Eta_muon2<-1.1)+0.993413*(Eta_muon2>-1.1)*(Eta_muon2<-0.6)+0.991461*(Eta_muon2>-0.6)*(Eta_muon2<0)+0.99468*(Eta_muon2>0)*(Eta_muon2<0.6)+0.996666*(Eta_muon2>0.6)*(Eta_muon2<1.1)+0.994934*(Eta_muon2>1.1)*(Eta_muon2<1.6)+0.991187*(Eta_muon2>1.6)*(Eta_muon2<2.1)+0.976812*(Eta_muon2>2.1)*(Eta_muon2<2.4) ))'
+
+eleRECOScale = '*((1-IsMuon_muon1)*(((Eta_muon1>-2.5)*(Eta_muon1<-2.45)*1.3176)+((Eta_muon1>-2.45)*(Eta_muon1<-2.4)*1.11378)+((Eta_muon1>-2.4)*(Eta_muon1<-2.3)*1.02463)+((Eta_muon1>-2.3)*(Eta_muon1<-2.2)*1.01364)+((Eta_muon1>-2.2)*(Eta_muon1<-2)*1.00728)+((Eta_muon1>-2)*(Eta_muon1<-1.8)*0.994819)+((Eta_muon1>-1.8)*(Eta_muon1<-1.63)*0.994786)+((Eta_muon1>-1.63)*(Eta_muon1<-1.566)*0.991632)+((Eta_muon1>-1.566)*(Eta_muon1<-1.444)*0.963128)+((Eta_muon1>-1.444)*(Eta_muon1<-1.2)*0.989701)+((Eta_muon1>-1.2)*(Eta_muon1<-1)*0.985656)+((Eta_muon1>-1)*(Eta_muon1<-0.6)*0.981595)+((Eta_muon1>-0.6)*(Eta_muon1<-0.4)*0.984678)+((Eta_muon1>-0.4)*(Eta_muon1<-0.2)*0.981614)+((Eta_muon1>-0.2)*(Eta_muon1<0)*0.980433)+((Eta_muon1>0)*(Eta_muon1<0.2)*0.984552)+((Eta_muon1>0.2)*(Eta_muon1<0.4)*0.988764)+((Eta_muon1>0.4)*(Eta_muon1<0.6)*0.987743)+((Eta_muon1>0.6)*(Eta_muon1<1)*0.987743)+((Eta_muon1>1)*(Eta_muon1<1.2)*0.987743)+((Eta_muon1>1.2)*(Eta_muon1<1.444)*0.98768)+((Eta_muon1>1.444)*(Eta_muon1<1.566)*0.967598)+((Eta_muon1>1.566)*(Eta_muon1<1.63)*0.989627)+((Eta_muon1>1.63)*(Eta_muon1<1.8)*0.992761)+((Eta_muon1>1.8)*(Eta_muon1<2)*0.991761)+((Eta_muon1>2)*(Eta_muon1<2.2)*0.99794)+((Eta_muon1>2.2)*(Eta_muon1<2.3)*1.00104)+((Eta_muon1>2.3)*(Eta_muon1<2.4)*0.989507)+((Eta_muon1>2.4)*(Eta_muon1<2.45)*0.970519)+((Eta_muon1>2.45)*(Eta_muon1<2.5)*0.906667))+((1-IsMuon_muon2)*(((Eta_muon2>-2.5)*(Eta_muon2<-2.45)*1.3176)+((Eta_muon2>-2.45)*(Eta_muon2<-2.4)*1.11378)+((Eta_muon2>-2.4)*(Eta_muon2<-2.3)*1.02463)+((Eta_muon2>-2.3)*(Eta_muon2<-2.2)*1.01364)+((Eta_muon2>-2.2)*(Eta_muon2<-2)*1.00728)+((Eta_muon2>-2)*(Eta_muon2<-1.8)*0.994819)+((Eta_muon2>-1.8)*(Eta_muon2<-1.63)*0.994786)+((Eta_muon2>-1.63)*(Eta_muon2<-1.566)*0.991632)+((Eta_muon2>-1.566)*(Eta_muon2<-1.444)*0.963128)+((Eta_muon2>-1.444)*(Eta_muon2<-1.2)*0.989701)+((Eta_muon2>-1.2)*(Eta_muon2<-1)*0.985656)+((Eta_muon2>-1)*(Eta_muon2<-0.6)*0.981595)+((Eta_muon2>-0.6)*(Eta_muon2<-0.4)*0.984678)+((Eta_muon2>-0.4)*(Eta_muon2<-0.2)*0.981614)+((Eta_muon2>-0.2)*(Eta_muon2<0)*0.980433)+((Eta_muon2>0)*(Eta_muon2<0.2)*0.984552)+((Eta_muon2>0.2)*(Eta_muon2<0.4)*0.988764)+((Eta_muon2>0.4)*(Eta_muon2<0.6)*0.987743)+((Eta_muon2>0.6)*(Eta_muon2<1)*0.987743)+((Eta_muon2>1)*(Eta_muon2<1.2)*0.987743)+((Eta_muon2>1.2)*(Eta_muon2<1.444)*0.98768)+((Eta_muon2>1.444)*(Eta_muon2<1.566)*0.967598)+((Eta_muon2>1.566)*(Eta_muon2<1.63)*0.989627)+((Eta_muon2>1.63)*(Eta_muon2<1.8)*0.992761)+((Eta_muon2>1.8)*(Eta_muon2<2)*0.991761)+((Eta_muon2>2)*(Eta_muon2<2.2)*0.99794)+((Eta_muon2>2.2)*(Eta_muon2<2.3)*1.00104)+((Eta_muon2>2.3)*(Eta_muon2<2.4)*0.989507)+((Eta_muon2>2.4)*(Eta_muon2<2.45)*0.970519)+((Eta_muon2>2.45)*(Eta_muon2<2.5)*0.906667))))'
+
+eleHEEPScale = '*((1-IsMuon_muon1)*(((Eta_muon1>-2.5)*(Eta_muon1<-1.566)*0.984)+((Eta_muon1>-1.4442)*(Eta_muon1<-0.5)*0.971)+((Eta_muon1>-0.5)*(Eta_muon1<-0.0)*0.961)+((Eta_muon1>0.0)*(Eta_muon1<0.5)*0.973)+((Eta_muon1>0.5)*(Eta_muon1<1.4442)*0.978)+((Eta_muon1>1.566)*(Eta_muon1<2.5)*0.980))+(1-IsMuon_muon2)*(((Eta_muon2>-2.5)*(Eta_muon2<-1.566)*0.984)+((Eta_muon2>-1.4442)*(Eta_muon2<-0.5)*0.971)+((Eta_muon2>-0.5)*(Eta_muon2<-0.0)*0.961)+((Eta_muon2>0.0)*(Eta_muon2<0.5)*0.973)+((Eta_muon2>0.5)*(Eta_muon2<1.4442)*0.978)+((Eta_muon2>1.566)*(Eta_muon2<2.5)*0.980)))'
 
 # Weights for different MC selections, including integrated luminosity, event weight, and trigger weight
 NormalWeightMuMu = str(lumi)+'*weight_central'+doublemuHLT+bTagSF#+doubleMuIdScale+doubleMuIsoScale #fixme turning off trigger eff. for now
@@ -96,7 +113,6 @@ NormalWeightEMu = str(lumi)+'*weight_central'+singlemuHLTEMU#+MuIdScaleEMU+MuIso
 NormalWeightEMuNoHLT = str(lumi)+'*weight_central'
 
 # This is the real data trigger condition
-#dataHLT = '*(pass_HLTMu45_eta2p1)'
 dataHLT = '*(pass_HLT_Mu17_Mu8)'
 
 # This is the set of event filters used
@@ -106,22 +122,18 @@ passfilter =  '*(passDataCert*passPrimaryVertex*(GoodVertexCount>=1))'
 #passfilter += '*(passEcalDeadCellBE*passBadEESuperCrystal*passHcalLaserEvent*passBPTX0)'
 #passfilter += '*(passHBHENoiseFilter*passBadEESuperCrystal*passBeamHalo)'
 passfilter += '*(passHBHENoiseFilter)'#fixme add back in for new 900gev sample
-#passfilter += '*(passHBHENoiseIsoFilter)'#fixme always 0 for MC and Data
+passfilter += '*(passHBHENoiseIsoFilter)'#fixme always 0 for MC and Data
 passfilter += '*(passBadEESuperCrystal)'#fixme add back in for new 900gev sample
 passfilter += '*(passEcalDeadCellTP)'#fixme add back in for new 900gev sample
-##now from txt lists
 passfilter += '*(passBeamHalo2016)'#fixme add back in for new 900gev sample
-##passfilter += '*(passBadEESuperCrystal)'
+passfilter += '*(passBadEESuperCrystal)'
 passfilter += '*(passBadMuon*passBadChargedHadron)'#fixme need to remove to check qcd bg in same sign
 
 # This defines the preselections for the mu-mu, mu-nu, and e-mu samples
 #preselectionmumu = '((Pt_muon1>20)*(Pt_muon2>10)*(Pt_Hjet1>25)*(Pt_Hjet2>25)*(Pt_Zjet1>20)*(Pt_Zjet2>20)*(Charge_muon1*Charge_muon2<0)*(CISV_bjet1>0.8)*(CISV_bjet2>0.46)*(abs(cosThetaStarMu)<0.935)*(M_uu>10)*(DPhi_bb_H<3.0)*(DPhi_jj_Z<3.0)*(DPhi_uu_jj_Z<2.75)*(Pt_miss<180))'#*(M_uu<140)*(isMuonEvent>0))'
 
 
-preselectionmumu = '((Pt_muon1>20)*(Pt_muon2>10)*(Pt_Hjet1>25)*(Pt_Hjet2>25)*(Pt_Zjet1>20)*(Pt_Zjet2>20)*(Charge_muon1*Charge_muon2<0)*(CISV_bjet1>0.8)*(CISV_bjet2>0.46)*(abs(cosThetaStarMu)<0.9)*(M_uu>10)*(DPhi_uu_jj_Z<2.75)*(Pt_miss<150)*(M_uu<105))'#*(M_uu<140)*(isMuonEvent>0))'
-
-
-
+preselectionmumu = '((Pt_muon1>20)*(Pt_muon2>10)*(Pt_Hjet1>25)*(Pt_Hjet2>25)*(Pt_Zjet1>20)*(Pt_Zjet2>20)*(Charge_muon1*Charge_muon2<0)*(CISV_bjet1>0.8)*(CISV_bjet2>0.46)*(abs(cosThetaStarMu)<0.9)*(M_uu>10)*(DPhi_uu_jj_Z<2.75)*(Pt_miss<150)*(M_uu<105)*(isMuonEvent>0))'
 
 
 #preselectionmumu = '((Pt_muon1>20)*(Pt_muon2>10)*(Pt_Hjet1>25)*(Pt_Hjet2>25)*(Pt_Zjet1>20)*(Pt_Zjet2>20)*(Charge_muon1*Charge_muon2<0)*(Pt_miss<180))'#fixme turned off btags for study
@@ -310,7 +322,7 @@ def main():
 	# of running serially, which speeds things up.
 
 
-	version_name = 'Testing_diHiggs_newNtuples_SF_newCuts' # scriptflag
+	version_name = 'Testing_diHiggs' # scriptflag
 	os.system('mkdir Results_'+version_name) 
 
 	MuMuOptCutFile = 'Results_'+version_name+'/OptHH_resCuts_Smoothed_pol2cutoff.txt' # scriptflag
@@ -1094,35 +1106,35 @@ gStyle.SetNumberContours(NCont)
 ##########################################################################
 
 
-
 def PDF4LHCUncStudy(MuMuOptCutFile,MuNuOptCutFile,versionname):
 	print '\n\n--------------\n--------------\nGetting PDF uncertainties based on PDF4LHC prescription'
 	N_cteq = 53
 	N_nnpdf = 101
-	N_mstw = 51#was 41
-	# N_cteq = 3
-	# N_nnpdf = 0
-	# N_mstw = 0
+	N_mmth = 51
+
 	#cteqweights = ['*(factor_cteq_'+str(n+1)+'/factor_cteq_1)' for n in range(N_cteq)]
 	#nnpdfweights = ['*(factor_nnpdf_'+str(n+1)+'/factor_cteq_1)' for n in range(N_nnpdf)]
-	#mstwweights = ['*(factor_mstw_'+str(n+1)+'/factor_cteq_1)' for n in range(N_mstw)]
+	#mmthweights = ['*(factor_mmth_'+str(n+1)+'/factor_cteq_1)' for n in range(N_mmth)]
 
 
-	cteqweights = ['*(factor_cteq_'+str(n+1+N_cteq)+')' for n in range(N_cteq)]
-	nnpdfweights = ['*(factor_nnpdf_'+str(n+1+N_nnpdf)+')' for n in range(N_nnpdf)]
-	mstwweights = ['*(factor_mstw_'+str(n+1+N_mstw)+')' for n in range(N_mstw)]
+	#cteqweights = ['*(factor_cteq_'+str(n+1+N_cteq)+')' for n in range(N_cteq)]
+	#nnpdfweights = ['*(factor_nnpdf_'+str(n+1+N_nnpdf)+')' for n in range(N_nnpdf)]
+	#mmthweights = ['*(factor_mmth_'+str(n+1+N_mmth)+')' for n in range(N_mmth)]
+	cteqweights = ['*(factor_cteq_'+str(n+1)+')' for n in range(N_cteq)]
+	nnpdfweights = ['*(factor_nnpdf_'+str(n+1)+')' for n in range(N_nnpdf)]
+	mmthweights = ['*(factor_mmth_'+str(n+1)+')' for n in range(N_mmth)]
 
 	#cteqweights = ['*(factor_cteq_'+str(n+1+N_cteq)+'/factor_cteq_'+str(N_cteq+1)+')' for n in range(N_cteq)]
 	#nnpdfweights = ['*(factor_nnpdf_'+str(n+1+N_nnpdf)+'/factor_nnpdf_'+str(N_nnpdf+1)+')' for n in range(N_nnpdf)]
-	#mstwweights = ['*(factor_mstw_'+str(n+1+N_mstw)+'/factor_mstw_'+str(N_mstw+1)+')' for n in range(N_mstw)]
+	#mmthweights = ['*(factor_mmth_'+str(n+1+N_mmth)+'/factor_mmth_'+str(N_mmth+1)+')' for n in range(N_mmth)]
 
 	#cteqweightsSig = ['*(factor_cteq_'+str(n+1)+')' for n in range(N_cteq)]
 	#nnpdfweightsSig = ['*(factor_nnpdf_'+str(n+1)+')' for n in range(N_nnpdf)]
-	#mstwweightsSig = ['*(factor_mstw_'+str(n+1)+')' for n in range(N_mstw)]
+	#mmthweightsSig = ['*(factor_mmth_'+str(n+1)+')' for n in range(N_mmth)]
 
-	cteqweightsSig = ['*(factor_cteq_'+str(n+1)+'/factor_cteq_1)' for n in range(N_cteq)]
-	nnpdfweightsSig = ['*(factor_nnpdf_'+str(n+1)+'/factor_nnpdf_1)' for n in range(N_nnpdf)]
-	mstwweightsSig = ['*(factor_mstw_'+str(n+1)+'/factor_mstw_1)' for n in range(N_mstw)]
+	#cteqweightsSig = ['*(factor_cteq_'+str(n+1)+'/factor_cteq_1)' for n in range(N_cteq)]
+	#nnpdfweightsSig = ['*(factor_nnpdf_'+str(n+1)+'/factor_nnpdf_1)' for n in range(N_nnpdf)]
+	#mmthweightsSig = ['*(factor_mmth_'+str(n+1)+'/factor_mmth_1)' for n in range(N_mmth)]
 
 	ResultList = []
 	ResultDict = {}
@@ -1173,22 +1185,22 @@ def PDF4LHCUncStudy(MuMuOptCutFile,MuNuOptCutFile,versionname):
 		print 'Analyzing',  uncnames[ii], 'in the uujj channel. Systematics are:'
 		result = uncnames[ii]+' = ['
 		ResultDict[uncnames[ii]+'_uujj'] = {}
-		ResultDict[uncnames[ii]+'_uujj']['cteq'] = []
-		ResultDict[uncnames[ii]+'_uujj']['mstw'] = []
+		#ResultDict[uncnames[ii]+'_uujj']['cteq'] = []
+		#ResultDict[uncnames[ii]+'_uujj']['mmth'] = []
 		ResultDict[uncnames[ii]+'_uujj']['nnpdf'] = []		
 		if 'ZJets' in uncnames[ii]:
 			norm_sel = '(M_uu>80)*(M_uu<100)'
 		_tnew = _t.CopyTree(preselectionmumu + '*'+norm_sel)
 		# Get the preselection values for all PDF members
 		presel_central_value = QuickIntegral(_tnew,NormalWeightMuMu,1.0)[0]
-		if 'Signal' in uncnames[ii]:
-			presel_varied_cteq_values = [QuickIntegral(_tnew,NormalWeightMuMu+_fact,1.0)[0] for _fact in cteqweightsSig]#fixme update when names are uniform across samples
-			presel_varied_nnpdf_values = [QuickIntegral(_tnew,NormalWeightMuMu+_fact,1.0)[0] for _fact in nnpdfweightsSig]
-			presel_varied_mstw_values = [QuickIntegral(_tnew,NormalWeightMuMu+_fact,1.0)[0] for _fact in mstwweightsSig]
-		else:
-			presel_varied_cteq_values = [QuickIntegral(_tnew,NormalWeightMuMu+_fact,1.0)[0] for _fact in cteqweights]#fixme update when names are uniform across samples
-			presel_varied_nnpdf_values = [QuickIntegral(_tnew,NormalWeightMuMu+_fact,1.0)[0] for _fact in nnpdfweights]
-			presel_varied_mstw_values = [QuickIntegral(_tnew,NormalWeightMuMu+_fact,1.0)[0] for _fact in mstwweights]
+		#if 'Signal' in uncnames[ii]:
+		#	presel_varied_cteq_values = [QuickIntegral(_tnew,NormalWeightMuMu+_fact,1.0)[0] for _fact in cteqweightsSig]#fixme update when names are uniform across samples
+		#	presel_varied_nnpdf_values = [QuickIntegral(_tnew,NormalWeightMuMu+_fact,1.0)[0] for _fact in nnpdfweightsSig]
+		#	presel_varied_mmth_values = [QuickIntegral(_tnew,NormalWeightMuMu+_fact,1.0)[0] for _fact in mmthweightsSig]
+		#else:
+		#presel_varied_cteq_values = [QuickIntegral(_tnew,NormalWeightMuMu+_fact,1.0)[0] for _fact in cteqweights]#fixme update when names are uniform across samples
+		#presel_varied_mmth_values = [QuickIntegral(_tnew,NormalWeightMuMu+_fact,1.0)[0] for _fact in mmthweights]
+		presel_varied_nnpdf_values = [QuickIntegral(_tnew,NormalWeightMuMu+_fact,1.0)[0] for _fact in nnpdfweights]
 		# Loop over selections
 		for _sel in MuMuSels:
 			#print '   ... using tree',trees[ii][ntree]
@@ -1199,68 +1211,69 @@ def PDF4LHCUncStudy(MuMuOptCutFile,MuNuOptCutFile,versionname):
 				_tnew = _t.CopyTree(preselectionmumu + '*'+norm_sel)
 				# Get the preselection values for all PDF members
 				presel_central_value = QuickIntegral(_tnew,NormalWeightMuMu,1.0)[0]
-				if 'Signal' in uncnames[ii]:
-					presel_varied_cteq_values = [QuickIntegral(_tnew,NormalWeightMuMu+_fact,1.0)[0] for _fact in cteqweightsSig]#fixme update when names are uniform across samples
-					presel_varied_nnpdf_values = [QuickIntegral(_tnew,NormalWeightMuMu+_fact,1.0)[0] for _fact in nnpdfweightsSig]
-					presel_varied_mstw_values = [QuickIntegral(_tnew,NormalWeightMuMu+_fact,1.0)[0] for _fact in mstwweightsSig]
-				else:
-					presel_varied_cteq_values = [QuickIntegral(_tnew,NormalWeightMuMu+_fact,1.0)[0] for _fact in cteqweights]#fixme update when names are uniform across samples
-					presel_varied_nnpdf_values = [QuickIntegral(_tnew,NormalWeightMuMu+_fact,1.0)[0] for _fact in nnpdfweights]
-					presel_varied_mstw_values = [QuickIntegral(_tnew,NormalWeightMuMu+_fact,1.0)[0] for _fact in mstwweights]
+				#if 'Signal' in uncnames[ii]:
+				#	presel_varied_cteq_values = [QuickIntegral(_tnew,NormalWeightMuMu+_fact,1.0)[0] for _fact in cteqweightsSig]#fixme update when names are uniform across samples
+				#	presel_varied_nnpdf_values = [QuickIntegral(_tnew,NormalWeightMuMu+_fact,1.0)[0] for _fact in nnpdfweightsSig]
+				#	presel_varied_mmth_values = [QuickIntegral(_tnew,NormalWeightMuMu+_fact,1.0)[0] for _fact in mmthweightsSig]
+				#else:
+				#presel_varied_cteq_values = [QuickIntegral(_tnew,NormalWeightMuMu+_fact,1.0)[0] for _fact in cteqweights]#fixme update when names are uniform across samples
+				#presel_varied_mmth_values = [QuickIntegral(_tnew,NormalWeightMuMu+_fact,1.0)[0] for _fact in mmthweights]
+				presel_varied_nnpdf_values = [QuickIntegral(_tnew,NormalWeightMuMu+_fact,1.0)[0] for _fact in nnpdfweights]
 
 			# Copy tree to new final selection tree
 			_tnewsel = _t.CopyTree(preselectionmumu+'*'+_sel[1])
-			if _tnewsel.GetEntries()<50 and ResultDict[uncnames[ii]+'_uujj']['cteq'] != []:#fixme changed 100 to 50
-				ResultDict[uncnames[ii]+'_uujj']['cteq'].append(  ResultDict[uncnames[ii]+'_uujj']['cteq'][-1] )
-				ResultDict[uncnames[ii]+'_uujj']['mstw'].append(  ResultDict[uncnames[ii]+'_uujj']['mstw'][-1] )
+			if _tnewsel.GetEntries()<50 and ResultDict[uncnames[ii]+'_uujj']['nnpdf'] != []:#fixme changed 100 to 50
+				#ResultDict[uncnames[ii]+'_uujj']['cteq'].append(  ResultDict[uncnames[ii]+'_uujj']['cteq'][-1] )
+				#ResultDict[uncnames[ii]+'_uujj']['mmth'].append(  ResultDict[uncnames[ii]+'_uujj']['mmth'][-1] )
 				ResultDict[uncnames[ii]+'_uujj']['nnpdf'].append( ResultDict[uncnames[ii]+'_uujj']['nnpdf'][-1] )					
 				continue
 			# Get the final-selection integrals
 			finsel_central_value=QuickIntegral(_tnewsel,NormalWeightMuMu,1.0)[0]
-			if 'Signal' in uncnames[ii]:
-				finsel_varied_cteq_values = [QuickIntegral(_tnewsel,NormalWeightMuMu+_fact,1.0)[0] for _fact in cteqweightsSig]#fixme update when names are uniform across samples
-				finsel_varied_nnpdf_values = [QuickIntegral(_tnewsel,NormalWeightMuMu+_fact,1.0)[0] for _fact in nnpdfweightsSig]
-				finsel_varied_mstw_values = [QuickIntegral(_tnewsel,NormalWeightMuMu+_fact,1.0)[0] for _fact in mstwweightsSig]
-			else:
-				finsel_varied_cteq_values = [QuickIntegral(_tnewsel,NormalWeightMuMu+_fact,1.0)[0] for _fact in cteqweights]#fixme update when names are uniform across samples
-				finsel_varied_nnpdf_values = [QuickIntegral(_tnewsel,NormalWeightMuMu+_fact,1.0)[0] for _fact in nnpdfweights]
-				finsel_varied_mstw_values = [QuickIntegral(_tnewsel,NormalWeightMuMu+_fact,1.0)[0] for _fact in mstwweights]
+			#if 'Signal' in uncnames[ii]:
+			#	finsel_varied_cteq_values = [QuickIntegral(_tnewsel,NormalWeightMuMu+_fact,1.0)[0] for _fact in cteqweightsSig]#fixme update when names are uniform across samples
+			#	finsel_varied_nnpdf_values = [QuickIntegral(_tnewsel,NormalWeightMuMu+_fact,1.0)[0] for _fact in nnpdfweightsSig]
+			#	finsel_varied_mmth_values = [QuickIntegral(_tnewsel,NormalWeightMuMu+_fact,1.0)[0] for _fact in mmthweightsSig]
+			#else:
+				#finsel_varied_cteq_values = [QuickIntegral(_tnewsel,NormalWeightMuMu+_fact,1.0)[0] for _fact in cteqweights]#fixme update when names are uniform across samples
+				#finsel_varied_mmth_values = [QuickIntegral(_tnewsel,NormalWeightMuMu+_fact,1.0)[0] for _fact in mmthweights]
+			finsel_varied_nnpdf_values = [QuickIntegral(_tnewsel,NormalWeightMuMu+_fact,1.0)[0] for _fact in nnpdfweights]
 					
 
 			# Normalize Z and Signal at preselection
 			if 'ZJet' in uncnames[ii] or 'Signal' in uncnames[ii]:
 				finsel_central_value /= presel_central_value
-				finsel_varied_cteq_values = [finsel_varied_cteq_values[jj]/presel_varied_cteq_values[jj] for jj in range(len(presel_varied_cteq_values))]
-				finsel_varied_mstw_values = [finsel_varied_mstw_values[jj]/presel_varied_mstw_values[jj] for jj in range(len(presel_varied_mstw_values))]
+				#finsel_varied_cteq_values = [finsel_varied_cteq_values[jj]/presel_varied_cteq_values[jj] for jj in range(len(presel_varied_cteq_values))]
+				#finsel_varied_mmth_values = [finsel_varied_mmth_values[jj]/presel_varied_mmth_values[jj] for jj in range(len(presel_varied_mmth_values))]
 				finsel_varied_nnpdf_values = [finsel_varied_nnpdf_values[jj]/presel_varied_nnpdf_values[jj] for jj in range(len(presel_varied_nnpdf_values))]
 
 			if finsel_central_value >0.0:
 				# Get the variations w.r.t the central member
-				finsel_varied_cteq_diffs = [abs(x - finsel_central_value)/finsel_central_value for x in  finsel_varied_cteq_values]
-				finsel_varied_mstw_diffs = [abs(x - finsel_central_value)/finsel_central_value for x in  finsel_varied_mstw_values]
+				#finsel_varied_cteq_diffs = [abs(x - finsel_central_value)/finsel_central_value for x in  finsel_varied_cteq_values]
+				#finsel_varied_mmth_diffs = [abs(x - finsel_central_value)/finsel_central_value for x in  finsel_varied_mmth_values]
 				finsel_varied_nnpdf_diffs =[abs(x - finsel_central_value)/finsel_central_value for x in  finsel_varied_nnpdf_values]
 
-				sfinsel_varied_cteq_diffs = [(x - finsel_central_value)/finsel_central_value for x in  finsel_varied_cteq_values]
-				sfinsel_varied_mstw_diffs = [(x - finsel_central_value)/finsel_central_value for x in  finsel_varied_mstw_values]
+				#sfinsel_varied_cteq_diffs = [(x - finsel_central_value)/finsel_central_value for x in  finsel_varied_cteq_values]
+				#sfinsel_varied_mmth_diffs = [(x - finsel_central_value)/finsel_central_value for x in  finsel_varied_mmth_values]
 				sfinsel_varied_nnpdf_diffs =[(x - finsel_central_value)/finsel_central_value for x in  finsel_varied_nnpdf_values]
 
 				# Adjust cteq to 68% CL
-				finsel_varied_cteq_diffs = [xx/1.645  for xx in finsel_varied_cteq_diffs]
-				ResultDict[uncnames[ii]+'_uujj']['cteq'].append(  [100*jj for jj in sfinsel_varied_cteq_diffs])
-				ResultDict[uncnames[ii]+'_uujj']['mstw'].append(  [100*jj for jj in sfinsel_varied_mstw_diffs])
+				#finsel_varied_cteq_diffs = [xx/1.645  for xx in finsel_varied_cteq_diffs]
+				#ResultDict[uncnames[ii]+'_uujj']['cteq'].append(  [100*jj for jj in sfinsel_varied_cteq_diffs])
+				#ResultDict[uncnames[ii]+'_uujj']['mmth'].append(  [100*jj for jj in sfinsel_varied_mmth_diffs])
 				ResultDict[uncnames[ii]+'_uujj']['nnpdf'].append( [100*jj for jj in sfinsel_varied_nnpdf_diffs])
 		
 
 				old_systematic = str(systematic)
-				systematic = str(round(100.0*max( finsel_varied_cteq_diffs + finsel_varied_mstw_diffs + finsel_varied_nnpdf_diffs ),3))
+				#systematic = str(round(100.0*max( finsel_varied_cteq_diffs + finsel_varied_mmth_diffs + finsel_varied_nnpdf_diffs ),3))
+				systematic = str(round(100.0*max(finsel_varied_nnpdf_diffs),3))
 				if float(systematic) < float(old_systematic):
 					systematic = str(old_systematic)
 
 				if float(systematic) > 100.0:
 					systematic = '100.0'
 			else:
-				ResultDict[uncnames[ii]+'_uujj']['cteq'].append(  ResultDict[uncnames[ii]+'_uujj']['cteq'][-1] )
-				ResultDict[uncnames[ii]+'_uujj']['mstw'].append(  ResultDict[uncnames[ii]+'_uujj']['mstw'][-1] )
+				#ResultDict[uncnames[ii]+'_uujj']['cteq'].append(  ResultDict[uncnames[ii]+'_uujj']['cteq'][-1] )
+				#ResultDict[uncnames[ii]+'_uujj']['mmth'].append(  ResultDict[uncnames[ii]+'_uujj']['mmth'][-1] )
 				ResultDict[uncnames[ii]+'_uujj']['nnpdf'].append( ResultDict[uncnames[ii]+'_uujj']['nnpdf'][-1] )		
 			# print ResultDict
 			print systematic+'%'
@@ -1297,7 +1310,7 @@ def PDF4LHCUncStudy(MuMuOptCutFile,MuNuOptCutFile,versionname):
 #		result = uncnames[ii]+' = ['
 #		ResultDict[uncnames[ii]+'_uvjj'] = {}
 #		ResultDict[uncnames[ii]+'_uvjj']['cteq'] = []
-#		ResultDict[uncnames[ii]+'_uvjj']['mstw'] = []
+#		ResultDict[uncnames[ii]+'_uvjj']['mmth'] = []
 #		ResultDict[uncnames[ii]+'_uvjj']['nnpdf'] = []				
 #		result = uncnames[ii]+' = ['
 #		if 'WJets' in uncnames[ii]:
@@ -1309,7 +1322,7 @@ def PDF4LHCUncStudy(MuMuOptCutFile,MuNuOptCutFile,versionname):
 #		presel_central_value = QuickIntegral(_tnew,NormalWeightMuNu,1.0)[0]
 #		presel_varied_cteq_values = [QuickIntegral(_tnew,NormalWeightMuNu+_fact,1.0)[0] for _fact in cteqweights]
 #		presel_varied_nnpdf_values = [QuickIntegral(_tnew,NormalWeightMuNu+_fact,1.0)[0] for _fact in nnpdfweights]
-#		presel_varied_mstw_values = [QuickIntegral(_tnew,NormalWeightMuNu+_fact,1.0)[0] for _fact in mstwweights]
+#		presel_varied_mmth_values = [QuickIntegral(_tnew,NormalWeightMuNu+_fact,1.0)[0] for _fact in mmthweights]
 #		# Loop over selections
 #		for _sel in MuNuSels:
 #			print '   ... using tree',trees[ii][ntree]
@@ -1321,46 +1334,46 @@ def PDF4LHCUncStudy(MuMuOptCutFile,MuNuOptCutFile,versionname):
 #				presel_central_value = QuickIntegral(_tnew,NormalWeightMuNu,1.0)[0]
 #				presel_varied_cteq_values = [QuickIntegral(_tnew,NormalWeightMuNu+_fact,1.0)[0] for _fact in cteqweights]
 #				presel_varied_nnpdf_values = [QuickIntegral(_tnew,NormalWeightMuNu+_fact,1.0)[0] for _fact in nnpdfweights]
-#				presel_varied_mstw_values = [QuickIntegral(_tnew,NormalWeightMuNu+_fact,1.0)[0] for _fact in mstwweights]
+#				presel_varied_mmth_values = [QuickIntegral(_tnew,NormalWeightMuNu+_fact,1.0)[0] for _fact in mmthweights]
 #
 #			# Copy tree to new final selection tree
 #			_tnewsel = _t.CopyTree(preselectionmunu+'*'+_sel)
 #			if _tnewsel.GetEntries()<100  and ResultDict[uncnames[ii]+'_uvjj']['cteq'] != []:
 #				ResultDict[uncnames[ii]+'_uvjj']['cteq'].append(  ResultDict[uncnames[ii]+'_uvjj']['cteq'][-1] )
-#				ResultDict[uncnames[ii]+'_uvjj']['mstw'].append(  ResultDict[uncnames[ii]+'_uvjj']['mstw'][-1] )
+#				ResultDict[uncnames[ii]+'_uvjj']['mmth'].append(  ResultDict[uncnames[ii]+'_uvjj']['mmth'][-1] )
 #				ResultDict[uncnames[ii]+'_uvjj']['nnpdf'].append( ResultDict[uncnames[ii]+'_uvjj']['nnpdf'][-1] )	
 #				continue				
 #			# Get the final-selection integrals
 #			finsel_central_value=QuickIntegral(_tnewsel,NormalWeightMuNu,1.0)[0]
 #			finsel_varied_cteq_values = [QuickIntegral(_tnewsel,NormalWeightMuNu+_fact,1.0)[0] for _fact in cteqweights]
 #			finsel_varied_nnpdf_values = [QuickIntegral(_tnewsel,NormalWeightMuNu+_fact,1.0)[0] for _fact in nnpdfweights]
-#			finsel_varied_mstw_values = [QuickIntegral(_tnewsel,NormalWeightMuNu+_fact,1.0)[0] for _fact in mstwweights]
+#			finsel_varied_mmth_values = [QuickIntegral(_tnewsel,NormalWeightMuNu+_fact,1.0)[0] for _fact in mmthweights]
 #
 #			# Normalize W, TTBar, and Z at preselection
 #			if 'WJet' in uncnames[ii] or 'TTBar' in uncnames[ii] or 'Signal' in uncnames[ii]:
 #				finsel_central_value /= presel_central_value
 #				finsel_varied_cteq_values = [finsel_varied_cteq_values[jj]/presel_varied_cteq_values[jj] for jj in range(len(presel_varied_cteq_values))]
-#				finsel_varied_mstw_values = [finsel_varied_mstw_values[jj]/presel_varied_mstw_values[jj] for jj in range(len(presel_varied_mstw_values))]
+#				finsel_varied_mmth_values = [finsel_varied_mmth_values[jj]/presel_varied_mmth_values[jj] for jj in range(len(presel_varied_mmth_values))]
 #				finsel_varied_nnpdf_values = [finsel_varied_nnpdf_values[jj]/presel_varied_nnpdf_values[jj] for jj in range(len(presel_varied_nnpdf_values))]
 #
 #			if finsel_central_value >0.0:
 #				# Get the variations w.r.t the central memeber
 #				finsel_varied_cteq_diffs = [abs(x - finsel_central_value)/finsel_central_value for x in  finsel_varied_cteq_values]
-#				finsel_varied_mstw_diffs = [abs(x - finsel_central_value)/finsel_central_value for x in  finsel_varied_mstw_values]
+#				finsel_varied_mmth_diffs = [abs(x - finsel_central_value)/finsel_central_value for x in  finsel_varied_mmth_values]
 #				finsel_varied_nnpdf_diffs =[abs(x - finsel_central_value)/finsel_central_value for x in  finsel_varied_nnpdf_values]
 #
 #				sfinsel_varied_cteq_diffs = [(x - finsel_central_value)/finsel_central_value for x in  finsel_varied_cteq_values]
-#				sfinsel_varied_mstw_diffs = [(x - finsel_central_value)/finsel_central_value for x in  finsel_varied_mstw_values]
+#				sfinsel_varied_mmth_diffs = [(x - finsel_central_value)/finsel_central_value for x in  finsel_varied_mmth_values]
 #				sfinsel_varied_nnpdf_diffs =[(x - finsel_central_value)/finsel_central_value for x in  finsel_varied_nnpdf_values]
 #
 #				# Adjust cteq to 68% CL
 #				finsel_varied_cteq_diffs = [xx/1.645  for xx in finsel_varied_cteq_diffs]
 #				ResultDict[uncnames[ii]+'_uvjj']['cteq'].append([100*jj for jj in sfinsel_varied_cteq_diffs])
-#				ResultDict[uncnames[ii]+'_uvjj']['mstw'].append([100*jj for jj in sfinsel_varied_mstw_diffs])
+#				ResultDict[uncnames[ii]+'_uvjj']['mmth'].append([100*jj for jj in sfinsel_varied_mmth_diffs])
 #				ResultDict[uncnames[ii]+'_uvjj']['nnpdf'].append([100*jj for jj in sfinsel_varied_nnpdf_diffs])
 #
 #				old_systematic = str(systematic)
-#				systematic = str(round(100.0*max( finsel_varied_cteq_diffs + finsel_varied_mstw_diffs + finsel_varied_nnpdf_diffs ),3))
+#				systematic = str(round(100.0*max( finsel_varied_cteq_diffs + finsel_varied_mmth_diffs + finsel_varied_nnpdf_diffs ),3))
 #				if float(systematic) < float(old_systematic):
 #					systematic = str(old_systematic)
 #
@@ -1368,7 +1381,7 @@ def PDF4LHCUncStudy(MuMuOptCutFile,MuNuOptCutFile,versionname):
 #					systematic = '100.0'
 #			else:
 #				ResultDict[uncnames[ii]+'_uvjj']['cteq'].append(  ResultDict[uncnames[ii]+'_uvjj']['cteq'][-1] )
-#				ResultDict[uncnames[ii]+'_uvjj']['mstw'].append(  ResultDict[uncnames[ii]+'_uvjj']['mstw'][-1] )
+#				ResultDict[uncnames[ii]+'_uvjj']['mmth'].append(  ResultDict[uncnames[ii]+'_uvjj']['mmth'][-1] )
 #				ResultDict[uncnames[ii]+'_uvjj']['nnpdf'].append( ResultDict[uncnames[ii]+'_uvjj']['nnpdf'][-1] )	
 #			print systematic+'%'
 #			result += systematic+','
@@ -1387,7 +1400,6 @@ def PDF4LHCUncStudy(MuMuOptCutFile,MuNuOptCutFile,versionname):
 	# for result in ResultList:
 	# 	print result
 	# print '\n\n'
-
 
 
 def PDF4LHCPlotsFromResultDict(filename,versionname):
@@ -3547,16 +3559,16 @@ def MakeBasicPlot(recovariable,xlabel,presentationbinning,selection,weight,FileD
 	sig2name = ''
 
 	if channel == 'uujj' or 'HH' in channel:
-		sig1name = 'M_{R}=300 (x100)'#+betamarker
-		sig2name = 'M_{R}=900 (x500)'#+betamarker
+		sig1name = 'M_{R}=300 (1 fb)'#+betamarker
+		sig2name = 'M_{R}=900 (1 fb)'#+betamarker
 		#sig2name = 'LQ, M = 950 GeV, '+betamarker
 		if 'final' not in tagname:
 			hs_rec_Signal=CreateHisto('hs_rec_Signal',sig1name,t_HHres300,recovariable,presentationbinning,selection+'*'+weight,SignalStyle,Label)
 			hs_rec_Signal2=CreateHisto('hs_rec_Signal2',sig2name,t_HHres900,recovariable,presentationbinning,selection+'*'+weight,SignalStyle2,Label)
-			print 'signal1,',sig1name,':',hs_rec_Signal.Integral()*100
-			print 'signal2,',sig2name,':',hs_rec_Signal2.Integral()*500
-			hs_rec_Signal.Scale(100.)
-			hs_rec_Signal2.Scale(500.)
+			print 'signal1,',sig1name,':',hs_rec_Signal.Integral()
+			print 'signal2,',sig2name,':',hs_rec_Signal2.Integral()
+			#hs_rec_Signal.Scale(100.)
+			#hs_rec_Signal2.Scale(500.)
 		if 'final' in tagname:
 			#exec ("_stree = t_LQ"+channel+str(plotmass))
 			exec ("_stree = t_HHres"+str(plotmass))
@@ -3865,12 +3877,12 @@ def MakeBasicPlot(recovariable,xlabel,presentationbinning,selection,weight,FileD
  
 	if  'PAS' in tagname and 'tagfree' not in tagname:
 		#l1.DrawLatex(0.18,0.94,"CMS #it{Preliminary}      "+sqrts+", 19.7 fb^{-1}")
-		l1.DrawLatex(0.13,0.94,"#it{Preliminary}                                        27.2 fb^{-1} (13 TeV)")
+		l1.DrawLatex(0.13,0.94,"#it{Preliminary}                                        35.9 fb^{-1} (13 TeV)")
 		#l1.DrawLatex(0.64,0.94,"5 fb^{-1} (13 TeV)")
 		l2.DrawLatex(0.15,0.84,"CMS")
 	else:
 		#l1.DrawLatex(0.18,0.94,"                          "+sqrts+", 225.57 pb^{-1}")
-		l1.DrawLatex(0.13,0.94,"#it{Preliminary}                                        27.2 fb^{-1} (13 TeV)")
+		l1.DrawLatex(0.13,0.94,"#it{Preliminary}                                        35.9 fb^{-1} (13 TeV)")
 		l2.DrawLatex(0.15,0.84,"CMS")
 
 
@@ -4392,12 +4404,12 @@ def MakeBasicPlot2D(recovariableX,recovariableY,xlabel,ylabel,presentationbinnin
  
 	if  'PAS' in tagname and 'tagfree' not in tagname:
 		#l1.DrawLatex(0.18,0.94,"CMS #it{Preliminary}      "+sqrts+", 19.7 fb^{-1}")
-		l1.DrawLatex(0.12,0.93,"#it{Preliminary}                                       27.2 fb^{-1} (13 TeV)")
+		l1.DrawLatex(0.12,0.93,"#it{Preliminary}                                       35.9 fb^{-1} (13 TeV)")
 		#l1.DrawLatex(0.64,0.94,"5 fb^{-1} (13 TeV)")
 		l2.DrawLatex(0.15,0.86,"CMS")
 	else:
 		#l1.DrawLatex(0.18,0.94,"                          "+sqrts+", 225.57 pb^{-1}")
-		l1.DrawLatex(0.125,0.93,"#it{Preliminary}                                            27.2 fb^{-1} (13 TeV)")
+		l1.DrawLatex(0.125,0.93,"#it{Preliminary}                                            35.9 fb^{-1} (13 TeV)")
 		l2.DrawLatex(0.16,0.855,"CMS")
 
 	gPad.Update()
@@ -4605,11 +4617,11 @@ def MakeBasicPlotQCD(recovariable,xlabel,presentationbinning,selection,qcdselect
 	# l2.DrawLatex(0.15,0.83,"CMS #it{Preliminary}")
 	if  'PAS' in tagname and 'tagfree' not in tagname:
 		#l2.DrawLatex(0.18,0.94,"CMS #it{Preliminary}      "+sqrts+", 19.7 fb^{-1}")
-		l1.DrawLatex(0.13,0.94,"#it{Preliminary}                                     27.2 fb^{-1} (13 TeV)")
+		l1.DrawLatex(0.13,0.94,"#it{Preliminary}                                     35.9 fb^{-1} (13 TeV)")
 		l2.DrawLatex(0.15,0.84,"CMS")
 	else:
 		#l2.DrawLatex(0.18,0.94,"                          "+sqrts+", 19.7 fb^{-1}")
-		l1.DrawLatex(0.13,0.94,"#it{Preliminary}                                     27.2 fb^{-1} (13 TeV)")
+		l1.DrawLatex(0.13,0.94,"#it{Preliminary}                                     35.9 fb^{-1} (13 TeV)")
 		l2.DrawLatex(0.15,0.84,"CMS")
 	gPad.RedrawAxis()
 
@@ -4912,11 +4924,11 @@ def MakeBasicPlotEMu(recovariable,xlabel,presentationbinning,selection,weight,Fi
 	# l2.DrawLatex(0.15,0.83,"CMS #it{Preliminary} ")
 	if  'PAS' in tagname and 'tagfree' not in tagname:
 		#l2.DrawLatex(0.18,0.94,"CMS #it{Preliminary}      "+sqrts+", 19.7 fb^{-1}")
-		l1.DrawLatex(0.13,0.94,"#it{Preliminary}                                     27.2 fb^{-1} (13 TeV)")
+		l1.DrawLatex(0.13,0.94,"#it{Preliminary}                                     35.9 fb^{-1} (13 TeV)")
 		l2.DrawLatex(0.15,0.84,"CMS")
 	else:
 		#l2.DrawLatex(0.18,0.94,"                          "+sqrts+", 19.7 fb^{-1}")
-		l1.DrawLatex(0.13,0.94,"#it{Preliminary}                                     27.2 fb^{-1} (13 TeV)")
+		l1.DrawLatex(0.13,0.94,"#it{Preliminary}                                     35.9 fb^{-1} (13 TeV)")
 		l2.DrawLatex(0.15,0.84,"CMS")
 
 	gPad.RedrawAxis()
