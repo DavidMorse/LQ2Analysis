@@ -53,7 +53,7 @@ wnormSig=[999.,0.]
 wshapeSig=[999.,0.]
 znormSig=[999.,0.]
 zshapeSig=[999.,0.]
-
+gotToBetaHalf=False
 def cardtotex(card):
 	# print '  --------------------------------------------------   '
 	sysnames = []
@@ -65,6 +65,7 @@ def cardtotex(card):
 			mass = line.split('_')[-1].split('.')[0]
 			chan = '$\\mu \\mu jj$'*('BetaHalf' not in line) + '$\\mu \\nu jj$'*('BetaHalf' in line) 
 			texchan = 'uujj'*('BetaHalf' not in line) + 'uvjj'*('BetaHalf'  in line) 
+			if 'BetaHalf' in line: gotToBetaHalf=True
 
 		if 'rate' in line:
 			vals = line.split()
@@ -72,6 +73,7 @@ def cardtotex(card):
 			backgrounds = [float(x) for x in vals[2:]]
 			background_total = sum(backgrounds)
 		if 'lnN' in line:
+			global gotToBetaHalf
 			vals = line.split()
 
 			signalsystemativalue = float(vals[2]) - 1.0
@@ -95,33 +97,39 @@ def cardtotex(card):
 			r_b=float(relative_b)
 			r_s=float(relative_s)
 			sysname = vals[0]
+			sysname = sysname.replace('NORM',' Normalization')
+			if 'SHAPE' in sysname:
+				sysname = sysname.replace('SHAPE','') + ' Shape'
+			sysnames.append(sysname)
 			#if float(mass)>1500 : continue
-			if 'SHAPETT' in sysname:
+			if gotToBetaHalf==True : continue
+			print sysname
+			if 'TT Shape' in sysname:
 				if r_b < ttshape[0]:ttshape[0]=r_b
 				if r_b > ttshape[1]:ttshape[1]=r_b
 				if r_s < ttshapeSig[0]:ttshapeSig[0]=r_s
 				if r_s > ttshapeSig[1]:ttshapeSig[1]=r_s
-			if 'SHAPEW' in sysname:
+			if 'W Shape' in sysname:
 				if r_b < wshape[0]:wshape[0]=r_b
 				if r_b > wshape[1]:wshape[1]=r_b
 				if r_s < wshapeSig[0]:wshapeSig[0]=r_s
 				if r_s > wshapeSig[1]:wshapeSig[1]=r_s
-			if 'SHAPEZ' in sysname:
+			if 'Z Shape' in sysname:
 				if r_b < zshape[0]:zshape[0]=r_b
 				if r_b > zshape[1]:zshape[1]=r_b
 				if r_s < zshapeSig[0]:zshapeSig[0]=r_s
 				if r_s > zshapeSig[1]:zshapeSig[1]=r_s
-			if 'TTNORM' in sysname:
+			if 'TT Normalization' in sysname:
 				if r_b < ttnorm[0]:ttnorm[0]=r_b
 				if r_b > ttnorm[1]:ttnorm[1]=r_b
 				if r_s < ttnormSig[0]:ttnormSig[0]=r_s
 				if r_s > ttnormSig[1]:ttnormSig[1]=r_s
-			if 'WNORM' in sysname:
+			if 'W Normalization' in sysname:
 				if r_b < wnorm[0]:wnorm[0]=r_b
 				if r_b > wnorm[1]:wnorm[1]=r_b
 				if r_s < wnormSig[0]:wnormSig[0]=r_s
 				if r_s > wnormSig[1]:wnormSig[1]=r_s
-			if 'ZNORM' in sysname:
+			if 'Z Normalization' in sysname:
 				if r_b < znorm[0]:znorm[0]=r_b
 				if r_b > znorm[1]:znorm[1]=r_b
 				if r_s < znormSig[0]:znormSig[0]=r_s
@@ -189,10 +197,6 @@ def cardtotex(card):
 				if r_s < pdfSig[0]:pdfSig[0]=r_s
 				if r_s > pdfSig[1]:pdfSig[1]=r_s
 
-			sysname = sysname.replace('NORM',' Normalization')
-			if 'SHAPE' in sysname:
-				sysname = sysname.replace('SHAPE','') + ' Shape'
-			sysnames.append(sysname)
 
 
 
@@ -200,7 +204,7 @@ def cardtotex(card):
 	textable += '\\caption{Systematic uncertainties and their effects on signal ($S$) and background ($B$) in the '+chan+' channel for $M_{LQ}='+mass+'$~GeV final selection. All uncertainties are symmetric.}\n'
 	textable += '\\begin{tabular}{|lcc|}\n\\hline\n'
 
-	textable += 'Systematc & Signal (\%) & Background (\%) \\\\ \\hline \n'
+	textable += 'Systematic & Signal (\%) & Background (\%) \\\\ \\hline \n'
 	textablelines = []
 	for s in range(len(sysnames)):
 		ss = signalsystematics[s]
@@ -256,6 +260,9 @@ print '\n Deliniation of systematics list'
 
 for ii in range(len(totinfo)):
 	print cards[ii][0].replace('\n',''), sysuncs[ii]
+
+for x in [jer,jes,lumi,align,mer,mes,muid,pdf,pu,trig,ttnorm,ttshape,wnorm,wshape,znorm,zshape,jerSig,jesSig,lumiSig,alignSig,merSig,mesSig,muidSig,pdfSig,puSig,trigSig,ttnormSig,ttshapeSig,wnormSig,wshapeSig,znormSig,zshapeSig] :
+	if x[0]==999.0: x[0]=0.0
 
 print 'Range of systematics:'
 print 'systematic, Signal min - max, BACKGROUND min - max'

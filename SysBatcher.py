@@ -20,7 +20,7 @@ tmpnum = 1
 
 
 # Loop over channels and systematic variations
-for c in ['uujj','uvjj']:
+for c in ['uvjj']:
 	for v in _Variations:
 		tmpnum += 1
 		# this will be the new .py file for this channel/variation
@@ -80,14 +80,14 @@ for c in ['uujj','uvjj']:
 		fout = open(ftcsh,'w')
 
 		# Lines for CMSSW setup
-		fout.write('#!/bin/csh\ncmsrel CMSSW_7_4_16\ncd CMSSW_7_4_16/src\ncmsenv\ncd '+pwd+'\n')
+		fout.write('#!/bin/csh\nsetenv SCRAM_ARCH slc6_amd64_gcc530\ncmsrel CMSSW_8_0_24\ncd CMSSW_8_0_24/src\ncmsenv\ncd '+pwd+'\n')
 		# Line for running the .py file
 		fout.write('python '+runfile+'\n\n')
 		# Close tcsh script
 		fout.close()
 		# bsub command
 		os.system('chmod 755 '+ftcsh)
-		bsub =  'bsub -q 1nw -e /dev/null -J '+runfile.split('.')[0]+' < '+ftcsh
+		bsub =  'bsub -q cmscaf1nd -e /dev/null -J '+runfile.split('.')[0]+' < '+ftcsh #was 1nw
 		print bsub
 		# Run bsub command if using "--launch" argument
 		if '--launch' in sys.argv:

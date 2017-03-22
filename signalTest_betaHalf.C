@@ -1,15 +1,15 @@
-#include <TCanvas>
-#include <TH1>
-#include <TH2>
-#include <TH1F>
-#include <TH2F>
-#include <TTree>
-#include <TFile>
-#include <THStack>
+#include "TCanvas.h"
+#include "TH1.h"
+#include "TH2.h"
+#include "TH1F.h"
+#include "TH2F.h"
+#include "TTree.h"
+#include "TFile.h"
+#include "THStack.h"
 #include <sstream>
 #include <string>
 #include <vector>
-#include <pair>
+//#include "pair.h"
 
 void signalTest_betaHalf(){
 
@@ -23,43 +23,43 @@ void signalTest_betaHalf(){
   c1->cd();
   
   
-  TFile f_200("NTupleAnalyzer_Spring15_V01_2015_07_06_08_48_30/SummaryFiles/LQuvjj200.root","READ");
-  TFile f_250("NTupleAnalyzer_Spring15_V01_2015_07_06_08_48_30/SummaryFiles/LQuvjj250.root","READ");
-  TFile f_300("NTupleAnalyzer_Spring15_V01_2015_07_06_08_48_30/SummaryFiles/LQuvjj300.root","READ");
-  TFile f_350("NTupleAnalyzer_Spring15_V01_2015_07_06_08_48_30/SummaryFiles/LQuvjj350.root","READ");
-  TFile f_400("NTupleAnalyzer_Spring15_V01_2015_07_06_08_48_30/SummaryFiles/LQuvjj400.root","READ");
-  TFile f_450("NTupleAnalyzer_Spring15_V01_2015_07_06_08_48_30/SummaryFiles/LQuvjj450.root","READ");
-  TFile f_500("NTupleAnalyzer_Spring15_V01_2015_07_06_08_48_30/SummaryFiles/LQuvjj500.root","READ");
-  TFile f_550("NTupleAnalyzer_Spring15_V01_2015_07_06_08_48_30/SummaryFiles/LQuvjj550.root","READ");
-  TFile f_600("NTupleAnalyzer_Spring15_V01_2015_07_06_08_48_30/SummaryFiles/LQuvjj600.root","READ");
-  TFile f_650("NTupleAnalyzer_Spring15_V01_2015_07_06_08_48_30/SummaryFiles/LQuvjj650.root","READ");
-  TFile f_700("NTupleAnalyzer_Spring15_V01_2015_07_06_08_48_30/SummaryFiles/LQuvjj700.root","READ");
-  TFile f_750("NTupleAnalyzer_Spring15_V01_2015_07_06_08_48_30/SummaryFiles/LQuvjj750.root","READ");
-  TFile f_800("NTupleAnalyzer_Spring15_V01_2015_07_06_08_48_30/SummaryFiles/LQuvjj800.root","READ");
-  TFile f_850("NTupleAnalyzer_Spring15_V01_2015_07_06_08_48_30/SummaryFiles/LQuvjj850.root","READ");
-  TFile f_900("NTupleAnalyzer_Spring15_V01_2015_07_06_08_48_30/SummaryFiles/LQuvjj900.root","READ");
-  TFile f_950("NTupleAnalyzer_Spring15_V01_2015_07_06_08_48_30/SummaryFiles/LQuvjj950.root","READ");
-  TFile f_1000("NTupleAnalyzer_Spring15_V01_2015_07_06_08_48_30/SummaryFiles/LQuvjj1000.root","READ");
-  TFile f_1050("NTupleAnalyzer_Spring15_V01_2015_07_06_08_48_30/SummaryFiles/LQuvjj1050.root","READ");
-  TFile f_1100("NTupleAnalyzer_Spring15_V01_2015_07_06_08_48_30/SummaryFiles/LQuvjj1100.root","READ");
-  TFile f_1150("NTupleAnalyzer_Spring15_V01_2015_07_06_08_48_30/SummaryFiles/LQuvjj1150.root","READ");
-  TFile f_1200("NTupleAnalyzer_Spring15_V01_2015_07_06_08_48_30/SummaryFiles/LQuvjj1200.root","READ");
-  TFile f_1250("NTupleAnalyzer_Spring15_V01_2015_07_06_08_48_30/SummaryFiles/LQuvjj1250.root","READ");
-  TFile f_1300("NTupleAnalyzer_Spring15_V01_2015_07_06_08_48_30/SummaryFiles/LQuvjj1300.root","READ");
-  TFile f_1350("NTupleAnalyzer_Spring15_V01_2015_07_06_08_48_30/SummaryFiles/LQuvjj1350.root","READ");
-  TFile f_1400("NTupleAnalyzer_Spring15_V01_2015_07_06_08_48_30/SummaryFiles/LQuvjj1400.root","READ");
-  TFile f_1450("NTupleAnalyzer_Spring15_V01_2015_07_06_08_48_30/SummaryFiles/LQuvjj1450.root","READ");
-  TFile f_1500("NTupleAnalyzer_Spring15_V01_2015_07_06_08_48_30/SummaryFiles/LQuvjj1500.root","READ");
-  TFile f_1550("NTupleAnalyzer_Spring15_V01_2015_07_06_08_48_30/SummaryFiles/LQuvjj1550.root","READ");
-  TFile f_1600("NTupleAnalyzer_Spring15_V01_2015_07_06_08_48_30/SummaryFiles/LQuvjj1600.root","READ");
-  TFile f_1650("NTupleAnalyzer_Spring15_V01_2015_07_06_08_48_30/SummaryFiles/LQuvjj1650.root","READ");
-  TFile f_1700("NTupleAnalyzer_Spring15_V01_2015_07_06_08_48_30/SummaryFiles/LQuvjj1700.root","READ");
-  TFile f_1750("NTupleAnalyzer_Spring15_V01_2015_07_06_08_48_30/SummaryFiles/LQuvjj1750.root","READ");
-  TFile f_1800("NTupleAnalyzer_Spring15_V01_2015_07_06_08_48_30/SummaryFiles/LQuvjj1800.root","READ");
-  TFile f_1850("NTupleAnalyzer_Spring15_V01_2015_07_06_08_48_30/SummaryFiles/LQuvjj1850.root","READ");
-  TFile f_1900("NTupleAnalyzer_Spring15_V01_2015_07_06_08_48_30/SummaryFiles/LQuvjj1900.root","READ");
-  TFile f_1950("NTupleAnalyzer_Spring15_V01_2015_07_06_08_48_30/SummaryFiles/LQuvjj1950.root","READ");
-  TFile f_2000("NTupleAnalyzer_Spring15_V01_2015_07_06_08_48_30/SummaryFiles/LQuvjj2000.root","READ");
+  TFile f_200("/media/dataPlus/dmorse/lqNtuples/NTupleAnalyzer_Full2016_2016_10_18_15_14_53/SummaryFiles/LQuvjj200.root","READ");
+  TFile f_250("/media/dataPlus/dmorse/lqNtuples/NTupleAnalyzer_Full2016_2016_10_18_15_14_53/SummaryFiles/LQuvjj250.root","READ");
+  TFile f_300("/media/dataPlus/dmorse/lqNtuples/NTupleAnalyzer_Full2016_2016_10_18_15_14_53/SummaryFiles/LQuvjj300.root","READ");
+  TFile f_350("/media/dataPlus/dmorse/lqNtuples/NTupleAnalyzer_Full2016_2016_10_18_15_14_53/SummaryFiles/LQuvjj350.root","READ");
+  TFile f_400("/media/dataPlus/dmorse/lqNtuples/NTupleAnalyzer_Full2016_2016_10_18_15_14_53/SummaryFiles/LQuvjj400.root","READ");
+  TFile f_450("/media/dataPlus/dmorse/lqNtuples/NTupleAnalyzer_Full2016_2016_10_18_15_14_53/SummaryFiles/LQuvjj450.root","READ");
+  TFile f_500("/media/dataPlus/dmorse/lqNtuples/NTupleAnalyzer_Full2016_2016_10_18_15_14_53/SummaryFiles/LQuvjj500.root","READ");
+  TFile f_550("/media/dataPlus/dmorse/lqNtuples/NTupleAnalyzer_Full2016_2016_10_18_15_14_53/SummaryFiles/LQuvjj550.root","READ");
+  TFile f_600("/media/dataPlus/dmorse/lqNtuples/NTupleAnalyzer_Full2016_2016_10_18_15_14_53/SummaryFiles/LQuvjj600.root","READ");
+  TFile f_650("/media/dataPlus/dmorse/lqNtuples/NTupleAnalyzer_Full2016_2016_10_18_15_14_53/SummaryFiles/LQuvjj650.root","READ");
+  TFile f_700("/media/dataPlus/dmorse/lqNtuples/NTupleAnalyzer_Full2016_2016_10_18_15_14_53/SummaryFiles/LQuvjj700.root","READ");
+  TFile f_750("/media/dataPlus/dmorse/lqNtuples/NTupleAnalyzer_Full2016_2016_10_18_15_14_53/SummaryFiles/LQuvjj750.root","READ");
+  TFile f_800("/media/dataPlus/dmorse/lqNtuples/NTupleAnalyzer_Full2016_2016_10_18_15_14_53/SummaryFiles/LQuvjj800.root","READ");
+  TFile f_850("/media/dataPlus/dmorse/lqNtuples/NTupleAnalyzer_Full2016_2016_10_18_15_14_53/SummaryFiles/LQuvjj850.root","READ");
+  TFile f_900("/media/dataPlus/dmorse/lqNtuples/NTupleAnalyzer_Full2016_2016_10_18_15_14_53/SummaryFiles/LQuvjj900.root","READ");
+  TFile f_950("/media/dataPlus/dmorse/lqNtuples/NTupleAnalyzer_Full2016_2016_10_18_15_14_53/SummaryFiles/LQuvjj950.root","READ");
+  TFile f_1000("/media/dataPlus/dmorse/lqNtuples/NTupleAnalyzer_Full2016_2016_10_18_15_14_53/SummaryFiles/LQuvjj1000.root","READ");
+  TFile f_1050("/media/dataPlus/dmorse/lqNtuples/NTupleAnalyzer_Full2016_2016_10_18_15_14_53/SummaryFiles/LQuvjj1050.root","READ");
+  TFile f_1100("/media/dataPlus/dmorse/lqNtuples/NTupleAnalyzer_Full2016_2016_10_18_15_14_53/SummaryFiles/LQuvjj1100.root","READ");
+  TFile f_1150("/media/dataPlus/dmorse/lqNtuples/NTupleAnalyzer_Full2016_2016_10_18_15_14_53/SummaryFiles/LQuvjj1150.root","READ");
+  TFile f_1200("/media/dataPlus/dmorse/lqNtuples/NTupleAnalyzer_Full2016_2016_10_18_15_14_53/SummaryFiles/LQuvjj1200.root","READ");
+  TFile f_1250("/media/dataPlus/dmorse/lqNtuples/NTupleAnalyzer_Full2016_2016_10_18_15_14_53/SummaryFiles/LQuvjj1250.root","READ");
+  TFile f_1300("/media/dataPlus/dmorse/lqNtuples/NTupleAnalyzer_Full2016_2016_10_18_15_14_53/SummaryFiles/LQuvjj1300.root","READ");
+  TFile f_1350("/media/dataPlus/dmorse/lqNtuples/NTupleAnalyzer_Full2016_2016_10_18_15_14_53/SummaryFiles/LQuvjj1350.root","READ");
+  TFile f_1400("/media/dataPlus/dmorse/lqNtuples/NTupleAnalyzer_Full2016_2016_10_18_15_14_53/SummaryFiles/LQuvjj1400.root","READ");
+  TFile f_1450("/media/dataPlus/dmorse/lqNtuples/NTupleAnalyzer_Full2016_2016_10_18_15_14_53/SummaryFiles/LQuvjj1450.root","READ");
+  TFile f_1500("/media/dataPlus/dmorse/lqNtuples/NTupleAnalyzer_Full2016_2016_10_18_15_14_53/SummaryFiles/LQuvjj1500.root","READ");
+  TFile f_1550("/media/dataPlus/dmorse/lqNtuples/NTupleAnalyzer_Full2016_2016_10_18_15_14_53/SummaryFiles/LQuvjj1550.root","READ");
+  TFile f_1600("/media/dataPlus/dmorse/lqNtuples/NTupleAnalyzer_Full2016_2016_10_18_15_14_53/SummaryFiles/LQuvjj1600.root","READ");
+  TFile f_1650("/media/dataPlus/dmorse/lqNtuples/NTupleAnalyzer_Full2016_2016_10_18_15_14_53/SummaryFiles/LQuvjj1650.root","READ");
+  TFile f_1700("/media/dataPlus/dmorse/lqNtuples/NTupleAnalyzer_Full2016_2016_10_18_15_14_53/SummaryFiles/LQuvjj1700.root","READ");
+  TFile f_1750("/media/dataPlus/dmorse/lqNtuples/NTupleAnalyzer_Full2016_2016_10_18_15_14_53/SummaryFiles/LQuvjj1750.root","READ");
+  TFile f_1800("/media/dataPlus/dmorse/lqNtuples/NTupleAnalyzer_Full2016_2016_10_18_15_14_53/SummaryFiles/LQuvjj1800.root","READ");
+  TFile f_1850("/media/dataPlus/dmorse/lqNtuples/NTupleAnalyzer_Full2016_2016_10_18_15_14_53/SummaryFiles/LQuvjj1850.root","READ");
+  TFile f_1900("/media/dataPlus/dmorse/lqNtuples/NTupleAnalyzer_Full2016_2016_10_18_15_14_53/SummaryFiles/LQuvjj1900.root","READ");
+  TFile f_1950("/media/dataPlus/dmorse/lqNtuples/NTupleAnalyzer_Full2016_2016_10_18_15_14_53/SummaryFiles/LQuvjj1950.root","READ");
+  TFile f_2000("/media/dataPlus/dmorse/lqNtuples/NTupleAnalyzer_Full2016_2016_10_18_15_14_53/SummaryFiles/LQuvjj2000.root","READ");
 
   const int nFiles=37;
   
@@ -195,14 +195,14 @@ void signalTest_betaHalf(){
     TString ptjnam1 = "h_PTj1";ptjnam1+=i;
     TString ptjnam2 = "h_PTj2";ptjnam2+=i;
     TString stNam ="h_STuvjj";stNam+=i;
-    h_Muvjj1[i] = new TH1F(nam1,"MT_{uvjj1};MT_{uvjj1};Events",500,0,2500);
+    h_Muvjj1[i] = new TH1F(nam1,"M_{uvjj};M_{uvjj};Events",500,0,2500);
     h_Muvjj2[i] = new TH1F(nam2,"MT_{uvjj2};MT_{uvjj2};Events",500,0,2500);
     h_PTu1[i] = new TH1F(ptnam1,"P_{T}(muon1);P_{T}(muon1);Events",500,0,2500);
     h_PTu2[i] = new TH1F(ptnam2,"P_{T}(muon2);P_{T}(muon2);Events",500,0,2500);
     h_PTj1[i] = new TH1F(ptjnam1,"P_{T}(jet1);P_{T}(jet1);Events",500,0,2500);
     h_PTj2[i] = new TH1F(ptjnam2,"P_{T}(jet2);P_{T}(jet2);Events",500,0,2500);
     h_STuvjj[i] = new TH1F(stNam,"ST_{uvjj};ST_{uvjj};Events",500,0,10000);
-    trees[i]->Project(nam1,"MT_uvjj1","");
+    trees[i]->Project(nam1,"M_uvjj","");
     trees[i]->Project(nam2,"MT_uvjj2","");
     trees[i]->Project(ptnam1,"Pt_muon1","");
     trees[i]->Project(ptnam2,"Pt_muon2","");
@@ -213,7 +213,7 @@ void signalTest_betaHalf(){
   
   for(int i=0;i<nFiles;i++){
     //float weight = xsecs[i]*L_int/nEvents;
-    float weight = 50000./nEvents[i];
+    float weight = 1./nEvents[i];
     h_Muvjj1[i]->Scale(weight,"");
     h_Muvjj2[i]->Scale(weight,"");
     h_PTu1[i]->Scale(weight,"");
@@ -226,7 +226,7 @@ void signalTest_betaHalf(){
  }
   
   h_Muvjj1[nFiles-1]->GetXaxis()->SetRangeUser(0,2400);
-  h_Muvjj1[nFiles-1]->GetYaxis()->SetRangeUser(0,1500);
+  h_Muvjj1[nFiles-1]->GetYaxis()->SetRangeUser(0,.06);
   h_Muvjj1[nFiles-1]->GetYaxis()->SetTitleOffset(1.3);
   h_Muvjj1[nFiles-1]->Draw();
   for(int i=0;i<nFiles-1;i+=2){
@@ -237,7 +237,7 @@ void signalTest_betaHalf(){
     h_Muvjj1[i]->Draw("sames");
     // i++;
   }
-  c1->Print("Plots/MT_uvjj1.pdf");
+  c1->Print("Plots/M_uvjj.png");
   
   h_Muvjj2[nFiles-1]->GetXaxis()->SetRangeUser(0,2400);
   h_Muvjj2[nFiles-1]->GetYaxis()->SetRangeUser(0,1500);

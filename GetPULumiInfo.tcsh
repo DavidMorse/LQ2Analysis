@@ -1,9 +1,9 @@
 #!/bin/tcsh
 
 # Set up CMSSW
-scramv1 p -n CMSSW_8_0_20_PUCALC CMSSW_8_0_20
+scramv1 p -n CMSSW_8_0_26_patch1_PUCALC CMSSW_8_0_26_patch1
 
-cd CMSSW_8_0_20_PUCALC/src
+cd CMSSW_8_0_26_patch1_PUCALC/src
 cmsenv
 #git clone https://github.com/cms-sw/RecoLuminosity-LumiDB.git RecoLuminosity/LumiDB
 #cd RecoLuminosity/LumiDB
@@ -29,20 +29,20 @@ set PUJSON=/afs/cern.ch/cms/CAF/CMSCOMM/COMM_DQM/certification/Collisions16/13Te
 
 pileupCalc.py -i $LumiJSON --inputLumiJSON $PUJSON --calcMode true --minBiasXsec 69200 --maxPileupBin 100 --numPileupBins 100 PU_Central.root
 
-pileupCalc.py -i $LumiJSON --inputLumiJSON $PUJSON --calcMode true --minBiasXsec 72383.2 --maxPileupBin 100 --numPileupBins 100 PU_Up.root
+pileupCalc.py -i $LumiJSON --inputLumiJSON $PUJSON --calcMode true --minBiasXsec 72660 --maxPileupBin 100 --numPileupBins 100 PU_Up.root
 
-pileupCalc.py -i $LumiJSON --inputLumiJSON $PUJSON --calcMode true --minBiasXsec 66016.8 --maxPileupBin 100 --numPileupBins 100 PU_Down.root
+pileupCalc.py -i $LumiJSON --inputLumiJSON $PUJSON --calcMode true --minBiasXsec 65740 --maxPileupBin 100 --numPileupBins 100 PU_Down.root
 
 #echo "(19.712 +/- 0.513)/fb">LumiLog.txt
 #echo "( 2154.493 +/- ....)/pb">LumiLog.txt
-echo "( 21775.376 +/- ....)/pb">LumiLog.txt
+echo "( 35863.308 +/- 932.446)/pb">LumiLog.txt
 
 
 cp $LumiJSON ../../
 cp LumiLog.txt ../../
 cp PU*root ../../
 cd ../../
-rm -r CMSSW_8_0_20_PUCALC
+rm -r CMSSW_8_0_26_patch1_PUCALC
 
 echo "\n ------ Done! ------\n"
 echo "\nPlease find LumiLog at:"

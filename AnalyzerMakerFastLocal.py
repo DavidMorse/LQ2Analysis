@@ -8,6 +8,7 @@ import os # For direcory scanning abilities, etc
 from time import strftime
 import sys
 import random
+import time
 
 print 'Importing root...',
 from ROOT import *
@@ -210,6 +211,7 @@ def GetGoodFiles(edir):
 		print name,goodeval
 		if goodeval == True:
 			files.append([size,name,ident])
+		time.sleep(.0075)#fixme todo Morse added because eos
 
 	checkedfiles = []
 
@@ -397,11 +399,11 @@ def MakeJobs(njobs):
 		subber = open(thiseos+'/subber_'+str(Nj)+'.tcsh','w')
 		#subber.write('#!/bin/tcsh\n\nscram project CMSSW CMSSW_5_3_18\ncd CMSSW_5_3_18/src\ncmsenv\ncd -\n\n')
 		#subber.write('#!/bin/tcsh\n\nscram project CMSSW CMSSW_7_4_16\ncd CMSSW_7_4_16/src\ncmsenv\ncd -\n\n')
-		subber.write('#!/bin/tcsh\n\nscram project CMSSW CMSSW_8_0_20\ncd CMSSW_8_0_20/src\ncmsenv\ncd -\n\n')
+		subber.write('#!/bin/tcsh\n\nscram project CMSSW CMSSW_8_0_26_patch1\ncd CMSSW_8_0_26_patch1/src\ncmsenv\ncd -\n\n')
 		subber.write('\ncp '+thisdir+'/'+pyfile+' .')
 		subber.write('\ncp '+thisdir+'/'+json+' .')
-		subber.write('\ncp '+thisdir+'/*json .')
-		subber.write('\ncp '+thisdir+'/metFilterLists/* .')
+		#subber.write('\ncp '+thisdir+'/*json .')
+		#subber.write('\ncp '+thisdir+'/metFilterLists/* .')
 		subber.write('\ncp '+thisdir+'/PU*root .\n\n')
 
 		# if Nj*njobs>5000:

@@ -91,7 +91,7 @@ def tableentryfromraw(rates, stats, syss,flagsys):
 	for x in range(len(rates)):
 		r += rates[x]
 		sy += (syss[x]*rates[x])**2
-		if rates[x]<0.000001:
+		if rates[x]<0.000001 or stats[x][0]<0.000001:#fixme with neg. weights from amcNLO can have 0 stats but >0 rate!!!! come up with fix!
 			sterr = [0,stats[x][1]*1.14]
 		else:
 			nomerr = math.sqrt(1.0/(1.0*stats[x][0]))*rates[x]

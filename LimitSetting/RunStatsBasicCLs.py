@@ -42,7 +42,7 @@ lqtype = 'LQ'
 
 cdir = ''
 
-fullcardfile = 'FinalCardsLQ_one9thPlusTaus.txt'
+fullcardfile = 'FinalCardsLQ.txt'
 
 if 'do_BetaOne' in str(sys.argv):
 	do_BetaOne = 1
@@ -105,6 +105,7 @@ for x in range(len(sys.argv)):
 	if '--displacedBL' in sys.argv[x]:
 		ctau = sys.argv[x+1]
 		fullcardfile = fullcardfile+ctau+'.txt'
+		print fullcardfile
 
 from ROOT import *
 from array import array
@@ -404,8 +405,8 @@ if do_BetaOne == 1:
 			for line in limitLines:
 				print line
 
-		vstart = round((min(values)/3),15)
-		vstop = round((max(values)*3),15)
+		vstart = round((min(values)/3),14)
+		vstop = round((max(values)*3),14)
 		rvalues = []
 		interval = abs(vstop-vstart)/100.0
 		
@@ -418,7 +419,7 @@ if do_BetaOne == 1:
 			nindex +=1
 		strRvalues = []
 		for r in rvalues:
-			strRvalues.append(str(round(r,5)))
+			strRvalues.append(str(round(r,14)))
 		# print strRvalues
 		"""
 		for r in strRvalues:
@@ -441,7 +442,7 @@ if do_BetaHalf == 1:
 		count = 0
 		# print name[x]
 		for l in mycards:
-			if '.txt' in l and name[x] in l:
+			if '.txt' in l and name[x] in l and str(name[x]+'0') not in l:
 				count = 1
 				for m in masses:
 					if str(m) in l and int(m) not in masses_betahalf:
@@ -470,16 +471,26 @@ if do_BetaHalf == 1:
 		
 		## Estimate the r values with Asymptotic CLs
 		EstimationInformation = [' r < 0.000000']
-		rmax = 10000.0
+		if 'LQ' in lqtype:
+			if float(name[x].replace('LQ_BetaHalf_M_',''))<700:
+				rmax = float(name[x].replace('LQ_BetaHalf_M_',''))/100.#fixme was 10000.0
+			elif float(name[x].replace('LQ_BetaHalf_M_',''))<1000:
+				rmax = float(name[x].replace('LQ_BetaHalf_M_',''))/10.#fixme was 10000.0
+			else:
+				rmax = float(name[x].replace('LQ_BetaHalf_M_',''))/4.#fixme was 10000.0
+		#rmax = 10000.0
 		breaker = False 
 		ntry = 0
 		oldrmax = 100000.0
 
 		while 'r < 0.000000' in str(EstimationInformation):
 			ntry += 1
-			EstimationInformation = os.popen('combine '+ESTIMATIONMETHOD+' CLSLimits/BetaHalf'+cdir+'/confbetahalf_'+cdir+'_'+name[x]+'.cfg --rMax '+str(rmax)+' --rAbsAcc .0000005').readlines()
-			print ('combine '+ESTIMATIONMETHOD+' CLSLimits/BetaHalf'+cdir+'/confbetahalf_'+cdir+'_'+name[x]+'.cfg --rMax '+str(rmax)+' --rAbsAcc .0000005')
-			if abs(rmax - oldrmax)<.01*rmax:
+			#EstimationInformation = os.popen('combine '+ESTIMATIONMETHOD+' CLSLimits/BetaHalf'+cdir+'/confbetahalf_'+cdir+'_'+name[x]+'.cfg --rMax '+str(rmax)+' --rAbsAcc .0000005').readlines()
+			#print ('combine '+ESTIMATIONMETHOD+' CLSLimits/BetaHalf'+cdir+'/confbetahalf_'+cdir+'_'+name[x]+'.cfg --rMax '+str(rmax)+' --rAbsAcc .0000005')
+			rAbsAcc='.000005'
+			print ('combine '+ESTIMATIONMETHOD+' CLSLimits/BetaHalf'+cdir+'/confbetahalf_'+cdir+'_'+name[x]+'.cfg --rMax '+str(rmax)+'  --rAbsAcc '+rAbsAcc)
+			EstimationInformation = os.popen('combine '+ESTIMATIONMETHOD+' CLSLimits/BetaHalf'+cdir+'/confbetahalf_'+cdir+'_'+name[x]+'.cfg --rMax '+str(rmax)+' --rAbsAcc '+rAbsAcc).readlines()
+			if abs(rmax - oldrmax)<.1*rmax:
 				breaker=True		
 
 			if breaker ==True:
@@ -496,7 +507,7 @@ if do_BetaHalf == 1:
 			oldrmax = float(rmax)
 			
 			if effrmax < 0:
-				rmax = 0.7*rmax
+				rmax = 0.6*rmax
 			else:
 				rmax = effrmax*2.0
 			EstimationInformation = [' r < 0.000000']
@@ -532,8 +543,12 @@ if do_BetaHalf == 1:
 					BetaHalf95up.append((line.split('<')[-1]).replace('\n',''))
 		print '='*60
 		
-		vstart = round((min(values)/3),15)
-		vstop = round((max(values)*3),15)
+		vstart = round((min(values)/3),14)
+		while vstart == 0.0 :
+			#print values
+			values.remove(0.0)
+			vstart = round((min(values)/3),14)
+		vstop = round((max(values)*3),14)
 		rvalues = []
 		interval = abs(vstop-vstart)/100.0
 		
@@ -545,9 +560,9 @@ if do_BetaHalf == 1:
 			nindex += 1
 		strRvalues = []
 		for r in rvalues:
-			strRvalues.append(str(round(r,5)))
+			strRvalues.append(str(round(r,14)))
 		# print strRvalues
-		
+		"""
 		for r in strRvalues:
 			command = 'combine '+METHOD.replace('SINGLEPOINT',r).replace('CONFIGURATION','confbetahalf_'+cdir+'_'+name[x]+'.cfg')
 			strR = r.replace('.','_')
@@ -557,7 +572,7 @@ if do_BetaHalf == 1:
 			for nn in range(numdo):
 				if (dobatch):
 					os.system('bsub -o /dev/null -e /dev/null -q '+queue+' -J jobbetahalf'+str(nn)+'_R_'+strR+'_'+name[x]+' < ShellScriptsForBatch/subbetahalf_'+strR+'_'+cdir+name[x]+'.csh')
-					
+		"""			
 		# sys.exit()
 ################################################################################################################
 ################################################################################################################
@@ -594,7 +609,7 @@ if do_combo == 1:
 	combocards = []
 	for x in cardcontent:
 		for y in cards:
-			if y in x:
+			if y in x and y+'0' not in x and '1'+y not in x:
 				fout = open('combocard_'+y+'.cfg','w')
 				x = x.replace('stat_','stat_'+y)
 				fout.write(x)
@@ -609,7 +624,9 @@ if do_combo == 1:
 		pair = ['','']
 		nn = 0
 		for x in combocards:
-			if m in x:
+			#print x
+			if m in x and m+'0' not in x and '1'+m not in x:
+				#print nn,x
 				pair[nn] = x
 				nn += 1
 		if 'BetaHalf' in pair[0]:
@@ -745,11 +762,18 @@ if do_combo == 1:
 			breaker = False 
 			ntry = 0
 			oldrmax = 100000.0
-
+			if 'LQ' in lqtype:
+				if float(name[x].replace('LQ_M_',''))<900:
+					rmax = float(name[x].replace('LQ_M_',''))/10.#fixme was 10000.0
+				elif float(name[x].replace('LQ_M_',''))<1200:
+					rmax = float(name[x].replace('LQ_M_',''))/10.#fixme was 10000.0
+				else:
+					rmax = float(name[x].replace('LQ_M_',''))/4.#fixme was 10000.0
 			while 'r < 0.000000' in str(EstimationInformation0):
 				ntry += 1
-				print 'combine '+ESTIMATIONMETHOD+' '+newcard +' --rMax '+str(rmax)+' --rAbsAcc .0000005'
-				EstimationInformation0 = os.popen('combine '+ESTIMATIONMETHOD+' '+newcard +' --rMax '+str(rmax)+' --rAbsAcc .0000005').readlines()
+				rAbsAcc='.00005'
+				print 'combine '+ESTIMATIONMETHOD+' '+newcard +' --rMax '+str(rmax)+' --rAbsAcc '+rAbsAcc
+				EstimationInformation0 = os.popen('combine '+ESTIMATIONMETHOD+' '+newcard +' --rMax '+str(rmax)+' --rAbsAcc '+rAbsAcc).readlines()
 				if abs(rmax - oldrmax)<.01*rmax:
 					breaker=True				
 				if breaker ==True:
@@ -781,10 +805,17 @@ if do_combo == 1:
 			breaker = False 
 			ntry = 0
 			oldrmax = 100000.0
+			if 'LQ' in lqtype:
+				if float(name[x].replace('LQ_M_',''))<900:
+					rmax = float(name[x].replace('LQ_M_',''))/10.#fixme was 10000.0
+				elif float(name[x].replace('LQ_M_',''))<1200:
+					rmax = float(name[x].replace('LQ_M_',''))/10.#fixme was 10000.0
+				else:
+					rmax = float(name[x].replace('LQ_M_',''))/4.#fixme was 10000.0
 			while 'r < 0.000000' in str(EstimationInformation1):
 				ntry += 1				
-				print 'combine '+ESTIMATIONMETHOD+' '+newcard_BetaOne +' --rMax '+str(rmax)+' --rAbsAcc .0000005'
-				EstimationInformation1 = os.popen('combine '+ESTIMATIONMETHOD+' '+newcard_BetaOne +' --rMax '+str(rmax)+' --rAbsAcc .0000005').readlines()
+				print 'combine '+ESTIMATIONMETHOD+' '+newcard_BetaOne +' --rMax '+str(rmax)+' --rAbsAcc '+rAbsAcc
+				EstimationInformation1 = os.popen('combine '+ESTIMATIONMETHOD+' '+newcard_BetaOne +' --rMax '+str(rmax)+' --rAbsAcc '+rAbsAcc).readlines()
 				
 				if abs(rmax - oldrmax)<.01*rmax:
 					breaker=True
@@ -818,11 +849,18 @@ if do_combo == 1:
 			breaker = False 
 			ntry = 0
 			oldrmax = 100000.0
+			if 'LQ' in lqtype:
+				if float(name[x].replace('LQ_M_',''))<900:
+					rmax = float(name[x].replace('LQ_M_',''))/10.#fixme was 10000.0
+				elif float(name[x].replace('LQ_M_',''))<1200:
+					rmax = float(name[x].replace('LQ_M_',''))/10.#fixme was 10000.0
+				else:
+					rmax = float(name[x].replace('LQ_M_',''))/4.#fixme was 10000.0
 
 			while 'r < 0.000000' in str(EstimationInformation2):
 				ntry += 1
-				print 'combine '+ESTIMATIONMETHOD+' '+newcard_BetaHalf +' --rMax '+str(rmax)+' --rAbsAcc .0000005'
-				EstimationInformation2 = os.popen('combine '+ESTIMATIONMETHOD+' '+newcard_BetaHalf +' --rMax '+str(rmax)+' --rAbsAcc .0000005').readlines()
+				print 'combine '+ESTIMATIONMETHOD+' '+newcard_BetaHalf +' --rMax '+str(rmax)+' --rAbsAcc '+rAbsAcc
+				EstimationInformation2 = os.popen('combine '+ESTIMATIONMETHOD+' '+newcard_BetaHalf +' --rMax '+str(rmax)+' --rAbsAcc '+rAbsAcc).readlines()
 				if abs(rmax - oldrmax)<.01*rmax:
 					breaker=True				
 				if breaker ==True:
@@ -930,17 +968,17 @@ if do_combo == 1:
 			## Asymptotic Information Filled
 			
 			
-			vstart0 = round((min(values0)/2),5)
-			vstop0 = round((max(values0)*2),5)
+			vstart0 = round((min(values0)/2),14)
+			vstop0 = round((max(values0)*2),14)
 			rvalues0 = []
 
 
-			vstart1 = round((min(values1)/2),5)
-			vstop1 = round((max(values1)*2),5)
+			vstart1 = round((min(values1)/2),14)
+			vstop1 = round((max(values1)*2),14)
 			rvalues1 = []
 			
-			vstart2 = round((min(values2)/2),5)
-			vstop2 = round((max(values2)*2),5)
+			vstart2 = round((min(values2)/2),14)
+			vstop2 = round((max(values2)*2),14)
 			rvalues2 = []			
 			
 			nindex0 = 0
@@ -967,7 +1005,7 @@ if do_combo == 1:
 				nindex0 += 1
 			strRvalues0 = []
 			for r in rvalues0:
-				strRvalues0.append(str(round(r,5)))
+				strRvalues0.append(str(round(r,14)))
 			#print strRvalues0
 
 
@@ -977,7 +1015,7 @@ if do_combo == 1:
 				nindex1 += 1
 			strRvalues1 = []
 			for r in rvalues1:
-				strRvalues1.append(str(round(r,5)))
+				strRvalues1.append(str(round(r,14)))
 			#print strRvalues1
 
 			while thisr2<vstop2:
@@ -986,7 +1024,7 @@ if do_combo == 1:
 				nindex2 += 1
 			strRvalues2 = []
 			for r in rvalues2:
-				strRvalues2.append(str(round(r,5)))
+				strRvalues2.append(str(round(r,14)))
 			#print strRvalues2
 			
 
@@ -1067,8 +1105,12 @@ if do_BetaOne == 1:
 
 	print "*"*40 + '\n BETA ONE ASYMPTOTIC CLS RESULTS\n\n' +"*"*40
 	
-	band1sigma = 'Double_t y_1sigma['+str(int(len(masses)*2))+']={'
-	band2sigma = 'Double_t y_2sigma['+str(int(len(masses)*2))+']={'
+	band1sigma = 'Double_t y_1sigma['+str(int(len(masses))*2)+']={'
+	band1sigma1 = 'Double_t y_1sigma_1['+str(int(len(masses)))+']={'
+	band1sigma2 = 'Double_t y_1sigma_2['+str(int(len(masses)))+']={'
+	band2sigma = 'Double_t y_2sigma['+str(int(len(masses))*2)+']={'
+	band2sigma1 = 'Double_t y_2sigma_1['+str(int(len(masses)))+']={'
+	band2sigma2 = 'Double_t y_2sigma_2['+str(int(len(masses)))+']={'
 	excurve = 'Double_t xsUp_expected['+str(int(len(masses)))+'] = {' 
 	obcurve = 'Double_t xsUp_observed['+str(int(len(masses)))+'] = {'  
  	mcurve = 'Double_t mData['+str(int(len(masses)))+'] = {'  
@@ -1116,27 +1158,39 @@ if do_BetaOne == 1:
 		excurve += str(float(med[x])*float(sigma[x])) + ' , ' 
 		obcurve += str(float(ob[x])*float(sigma[x])) + ' , ' 
 		band1sigma += str(float(down1[x])*float(sigma[x])) + ' , ' 
+		band1sigma1 += str(float(down1[x])*float(sigma[x])) + ' , ' 
 		band2sigma += str(float(down2[x])*float(sigma[x])) + ' , ' 
+		band2sigma1 += str(float(down2[x])*float(sigma[x])) + ' , ' 
 		mcurve += str(float(masses[x])) + ' , '
 		scurve += str(float(masses[x])) + ' , '
 
 	for x in range(len(masses)):
 		band1sigma += str(float(up1[-(x+1)])*float(sigma[-(x+1)])) + ' , ' 
 		band2sigma += str(float(up2[-(x+1)])*float(sigma[-(x+1)])) + ' , ' 
+		band1sigma2 += str(float(up1[x])*float(sigma[x])) + ' , ' 
+		band2sigma2 += str(float(up2[x])*float(sigma[x])) + ' , ' 
 		scurve += str(float(masses[-x-1])) + ' , '
 	excurve += '}'
 	obcurve += '}'
 	mcurve += '}'
 	scurve += '}'
 	band1sigma += '}'
+	band1sigma1 += '}'
+	band1sigma2 += '}'
 	band2sigma += '}'
+	band2sigma1 += '}'
+	band2sigma2 += '}'
 	excurve = excurve.replace(' , }',' }; ' )
 	obcurve = obcurve.replace(' , }',' }; ' )
 	mcurve = mcurve.replace(' , }',' }; ' )
 	scurve = scurve.replace(' , }',' }; ' )
 
 	band1sigma = band1sigma.replace(' , }',' }; ' )
+	band1sigma1 = band1sigma1.replace(' , }',' }; ' )
+	band1sigma2 = band1sigma2.replace(' , }',' }; ' )
 	band2sigma = band2sigma.replace(' , }',' }; ' )
+	band2sigma1 = band2sigma1.replace(' , }',' }; ' )
+	band2sigma2 = band2sigma2.replace(' , }',' }; ' )
 	
 	print '\n'
 	print mcurve
@@ -1144,7 +1198,11 @@ if do_BetaOne == 1:
 	print excurve
 	print obcurve
 	print band1sigma
+	print band1sigma1
+	print band1sigma2
 	print band2sigma
+	print band2sigma1
+	print band2sigma2
 	print '\n'
 
 #### BETA HALF CHANNEL
@@ -1154,7 +1212,11 @@ if do_BetaHalf == 1:
 	print "*"*40 + '\n BETA HALF ASYMPTOTIC CLS RESULTS\n' +"*"*40
 	
 	band1sigma = 'Double_t y_1sigma['+str(int(len(masses)*2))+']={'
+	band1sigma1 = 'Double_t y_1sigma_1['+str(int(len(masses)))+']={'
+	band1sigma2 = 'Double_t y_1sigma_2['+str(int(len(masses)))+']={'
 	band2sigma = 'Double_t y_2sigma['+str(int(len(masses)*2))+']={'
+	band2sigma1 = 'Double_t y_2sigma_1['+str(int(len(masses)))+']={'
+	band2sigma2 = 'Double_t y_2sigma_2['+str(int(len(masses)))+']={'
 	excurve = 'Double_t xsUp_expected['+str(int(len(masses)))+'] = {' 
 	obcurve = 'Double_t xsUp_observed['+str(int(len(masses)))+'] = {'  
  	mcurve = 'Double_t mData['+str(int(len(masses)))+'] = {'  
@@ -1179,13 +1241,17 @@ if do_BetaHalf == 1:
 		excurve += str(float(med[x])*float(sigma[x])) + ' , ' 
 		obcurve += str(float(ob[x])*float(sigma[x])) + ' , ' 
 		band1sigma += str(float(down1[x])*float(sigma[x])) + ' , ' 
+		band1sigma1 += str(float(down1[x])*float(sigma[x])) + ' , ' 
 		band2sigma += str(float(down2[x])*float(sigma[x])) + ' , ' 
+		band2sigma1 += str(float(down2[x])*float(sigma[x])) + ' , ' 
 		mcurve += str(float(masses[x])) + ' , '
 		scurve += str(float(masses[x])) + ' , '
 	
 	for x in range(len(masses)):
 		band1sigma += str(float(up1[-(x+1)])*float(sigma[-(x+1)])) + ' , ' 
 		band2sigma += str(float(up2[-(x+1)])*float(sigma[-(x+1)])) + ' , ' 
+		band1sigma2 += str(float(up1[x])*float(sigma[x])) + ' , ' 
+		band2sigma2 += str(float(up2[x])*float(sigma[x])) + ' , ' 
 		scurve += str(float(masses[-x-1])) + ' , '
 
 	excurve += '}'
@@ -1193,13 +1259,21 @@ if do_BetaHalf == 1:
 	mcurve += '}'
 	scurve += '}'		
 	band1sigma += '}'
+	band1sigma1 += '}'
+	band1sigma2 += '}'
 	band2sigma += '}'
+	band2sigma1 += '}'
+	band2sigma2 += '}'
 	excurve = excurve.replace(' , }',' }; ' )
 	obcurve = obcurve.replace(' , }',' }; ' )
 	mcurve = mcurve.replace(' , }',' }; ' )	
 	scurve = scurve.replace(' , }',' }; ' )	
 	band1sigma = band1sigma.replace(' , }',' }; ' )
+	band1sigma1 = band1sigma1.replace(' , }',' }; ' )
+	band1sigma2 = band1sigma2.replace(' , }',' }; ' )
 	band2sigma = band2sigma.replace(' , }',' }; ' )
+	band2sigma1 = band2sigma1.replace(' , }',' }; ' )
+	band2sigma2 = band2sigma2.replace(' , }',' }; ' )
 	
 
 	print '\n'
@@ -1208,7 +1282,11 @@ if do_BetaHalf == 1:
 	print excurve
 	print obcurve
 	print band1sigma
+	print band1sigma1
+	print band1sigma2
 	print band2sigma
+	print band2sigma1
+	print band2sigma2
 	print '\n'
 	
 
@@ -1279,7 +1357,7 @@ if do_combo == 1:
 	
 	def mval(sigma):
 		testm = 150
-		oldtestm = 1300
+		oldtestm = 2000
 		inc = 50
 		dif = 55
 		olddif = 000
@@ -1287,7 +1365,7 @@ if do_combo == 1:
 			testsigma = sigmaval(testm)
 			olddif = dif
 			dif = testsigma -sigma
-			if testm>1200:
+			if testm>1900:
 				break
 			if dif*olddif <= 0.0:
 				inc = -inc/2.3
@@ -1400,7 +1478,7 @@ if do_combo == 1:
 		mlist = []
 		for limit_set in clist:
 			fitted_limits = loggraph(masses,limit_set)
-			goodm = get_simple_intersection(logtheory,fitted_limits,300,1300)
+			goodm = get_simple_intersection(logtheory,fitted_limits,200,2000)
 			mlist.append(str(round(goodm[0],2)))
 		return mlist
 		
