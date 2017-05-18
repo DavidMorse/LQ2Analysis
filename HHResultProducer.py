@@ -23,7 +23,7 @@ NormalDirectory = '/media/dataPlus/dmorse/hhNtuples/NTupleAnalyzerHH_Full2016HH_
 #QCDDirectory    = '/store/user/dmorse/leptoQuark/NTupleAnalyzer_Dec10_Spring2015Full_QCDNonIsoQuickTest_2015_12_11_11_39_40/SummaryFiles'
 ##EMuDirectory    = '/store/user/dmorse/leptoQuark/NTupleAnalyzer_Dec10_Spring2015Full_EMuSwitch_2015_12_15_00_28_39/SummaryFiles'
 #EMuDirectory    = '/store/user/dmorse/leptoQuark/NTupleAnalyzer_FullFeb20_EMuSwitch_2016_02_20_14_25_20/SummaryFiles'
-QCDDirectory = 'qcd'
+QCDDirectory = '/media/dataPlus/dmorse/hhNtuples/NTupleAnalyzerHH_Full2016HH_v236_QCDNonIsoQuickTest_2017_05_15/SummaryFiles'
 EMuDirectory = 'emu'
 
 #NormalDirectory = 'NTupleAnalyzer_Jan30_76X_FULL_2016_02_06_18_41_13/SummaryFiles'
@@ -126,7 +126,7 @@ passfilter += '*(passBadMuon*passBadChargedHadron)'
 #passfilter += '*(noBadMuonsFlag*(1-duplicateMuonsFlag))'
 
 # This defines the preselections for the mu-mu, mu-nu, and e-mu samples
-preselectionmumu = '((Pt_muon1>20)*(Pt_muon2>10)*(Pt_Hjet1>25)*(Pt_Hjet2>25)*(Pt_Zjet1>20)*(Pt_Zjet2>20)*(Charge_muon1*Charge_muon2<0)*(CISV_bjet1>0.8)*(CISV_bjet2>0.46))*(M_uu>10)*(isMuonEvent>0))'
+preselectionmumu = '((Pt_muon1>20)*(Pt_muon2>10)*(Pt_Hjet1>25)*(Pt_Hjet2>25)*(Pt_Zjet1>20)*(Pt_Zjet2>20)*(Charge_muon1*Charge_muon2<0)*(CISV_bjet1>0.8)*(CISV_bjet2>0.46)*(M_uu>12)*(isMuonEvent>0))'
 #preselectionmumu = '((Pt_muon1>20)*(Pt_muon2>10)*(Pt_Hjet1>25)*(Pt_Hjet2>25)*(Pt_Zjet1>20)*(Pt_Zjet2>20)*(Charge_muon1*Charge_muon2<0)*(CISV_bjet1>0.8)*(CISV_bjet2>0.46)*(abs(cosThetaStarMu)<0.9)*(M_uu>10)*(DPhi_uu_jj_Z<2.75)*(Pt_miss<150)*(M_uu<105)*(isMuonEvent>0))'
 
 preselectionmunu = '((Pt_muon1>50)*(Pt_muon2<50.0)*(Pt_miss>55)*(Pt_jet1>200)*(Pt_jet2>50)*(Pt_ele1<50.0)*(St_uvjj>300)*(DPhi_muon1met>0.8)*(DPhi_jet1met>0.5)*(MT_uv>50.0))'
