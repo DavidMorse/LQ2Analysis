@@ -9,6 +9,8 @@ from argparse import ArgumentParser
 tRand = TRandom3()
 from random import randint
 
+import ROOT
+
 ##########################################################################################
 #################      SETUP OPTIONS - File, Normalization, etc    #######################
 ##########################################################################################
@@ -106,6 +108,38 @@ print 'Original events:          ',No
 print 'After demand 1 pT22 jet:  ',N
 
 ##########################################################################################
+#################      Setup BDT discrimator calculation           #######################
+##########################################################################################
+ROOT.TMVA.Tools.Instance()
+# TMVA.Reader
+reader = ROOT.TMVA.Reader("!Color")
+# the order of the variables matters, need to be the same as when training
+_bdtvars = ['abs(cosThetaStarMu)','Mbb_H','abs(cosTheta_hbb)','abs(phi0)','abs(cosTheta_zuu_hzz)','Pt_muon1','Pt_miss','abs(phi1)','abs(phi0_zz)','abs(phi1_zuu)','abs(phi1_zjj)','Pt_muon2','CMVA_bjet1','CMVA_bjet2','DR_bb_H','DR_jj_Z','DR_muon1muon2','M_uu4j']
+_bdtvarnames = {}
+for vth in _bdtvars:
+	_bdtvarnames[vth] = array.array('f',[0])
+	reader.AddVariable(vth, _bdtvarnames[vth])
+# TMVA.Reader booked with BDT_classifier, input is .weights.xml file
+reader.BookMVA("BDT_classifier", "weights_classification/TMVAClassification_BDT_M550.weights.xml")
+
+##########################################################################################
+#################      Setup bjets energy regression calculation   #######################
+##########################################################################################
+RegressionReaderBJet1 = ROOT.TMVA.Reader("!Color")
+RegressionReaderBJet2 = ROOT.TMVA.Reader("!Color")
+_regrvars = ['Jet_pt','Jet_corr','Jet_eta','Jet_mt','Jet_leadTrackPt','Jet_leptonPtRel','Jet_leptonPt','Jet_leptonDeltaR','Jet_totHEF','Jet_neEmEF','Jet_vtxPt','Jet_vtxMass','Jet_vtx3dL','Jet_vtxNtrk','Jet_vtx3deL','nPVs','Jet_PFMET','Jet_METDPhi']
+_regrvarsnamesBjet1 = {}
+_regrvarsnamesBjet2 = {}
+for vth in _regrvars:
+	_regrvarsnamesBjet1[vth] = array.array('f',[0])
+	_regrvarsnamesBjet2[vth] = array.array('f',[0])
+	RegressionReaderBJet1.AddVariable(vth, _regrvarsnamesBjet1[vth])
+	RegressionReaderBJet2.AddVariable(vth, _regrvarsnamesBjet2[vth])
+RegressionReaderBJet1.BookMVA("BDTG method", "weights_classification/BDTG_16plus2_jetGenJet_nu_7_6.weights.xml")
+RegressionReaderBJet2.BookMVA("BDTG method", "weights_classification/BDTG_16plus2_jetGenJet_nu_7_6.weights.xml")
+
+
+##########################################################################################
 #################      PREPARE THE VARIABLES FOR THE OUTPUT TREE   #######################
 ##########################################################################################
 
@@ -160,6 +194,7 @@ _kinematicvariables += ['M_uu4j','M_ee4j','M_ll4j']
 _kinematicvariables += ['Mbb_H','Mjj_Z','Mjj_Z_3jet']
 _kinematicvariables += ['Mbb_H_gen','Mjj_Z_gen']
 _kinematicvariables += ['Mbb_H_genMatched','Mjj_Z_genMatched']
+_kinematicvariables += ['Mbb_H_ori','Muu4j_ori']
 _kinematicvariables += ['cosThetaStarMu','cosThetaStarEle','cosThetaStarLep']
 _kinematicvariables += ['cosThetaStarMu_gen','cosThetaStarEle_gen']
 _kinematicvariables += ['cosThetaStar_gen','cosTheta_hbb_gen','cosTheta_zjj_hzz_gen','cosTheta_zuu_hzz_gen','cosTheta_zj1_hzz_gen','cosTheta_zu1_hzz_gen']
@@ -170,6 +205,7 @@ _kinematicvariables += ['cosThetaStar','cosTheta_hbb','cosTheta_zjj_hzz','cosThe
 _kinematicvariables += ['phi0','phi1']
 _kinematicvariables += ['cosThetaStarZuu_CS','cosTheta_Zuu']
 _kinematicvariables += ['phi0_zz','phi1_zuu','phi1_zjj']
+_kinematicvariables += ['Pt_oriHjet1','Pt_oriHjet2']
 _kinematicvariables += ['Pt_Hjet1','Pt_Hjet2','Pt_Zjet1','Pt_Zjet2']
 _kinematicvariables += ['Pt_Hjets','Pt_Zjets','Pt_uu','Pt_ee','Pt_ll']
 _kinematicvariables += ['DR_jj_Z','DR_bb_H']
@@ -208,6 +244,7 @@ _kinematicvariables += ['M_uu_gen', 'M_uu_genMatched']
 _kinematicvariables += ['bscoreMVA1_genMatched', 'bscoreMVA2_genMatched']
 _kinematicvariables += ['CorHj1j2Avail','CorZj1j2Avail']
 _kinematicvariables += ['passWptCut','passZptCut','WorZSystemPt']
+_kinematicvariables += ['bdt_discrim']
 
 _weights = ['scaleWeight_Up','scaleWeight_Down','scaleWeight_R1_F1','scaleWeight_R1_F2','scaleWeight_R1_F0p5','scaleWeight_R2_F1','scaleWeight_R2_F2','scaleWeight_R2_F0p5','scaleWeight_R0p5_F1','scaleWeight_R0p5_F2','scaleWeight_R0p5_F0p5','scaleWeight_R2_F2','weight_amcNLO','weight_nopu','weight_central', 'weight_pu_up', 'weight_pu_down','weight_central_2012D','weight_topPt']
 _flagDoubles = ['run_number','event_number','lumi_number']
@@ -2065,7 +2102,7 @@ def GetHHJetsOld(jets,btagScoresCSV,btagScoresMVA,muon1,muon2,jetinds, T):
 	#	print 'btag scores:', highBtag,secondBtag,jet1Btag,jet2Btag
 	return [bjet1,highBtagCSV,highBtag,bjet2,secondBtagCSV,secondBtag,jet1,jet2,jet3,indRecoBJet1,indRecoBJet2,indRecoJet1,indRecoJet2,indRecoJet3]
 
-def GetHHJetsNew(jets,btagScoresCSV,btagScoresMVA,muon1,muon2,jetinds, T):
+def GetHHJetsNew(jets,btagScoresCSV,btagScoresMVA,muon1,muon2,jetinds, T, met):
 	#Purpose: select which jets to use for HH analysis, separating bJets from light jets. Note that jets have already been cleaned from muons and electrons in cone of 0.3.
 
 	EmptyLorentz = TLorentzVector()
@@ -2247,7 +2284,98 @@ def GetHHJetsNew(jets,btagScoresCSV,btagScoresMVA,muon1,muon2,jetinds, T):
 	#if v == '' :
 	#	print 'pts:',bjet1.Pt(),bjet2.Pt(),jet1.Pt(),jet2.Pt()
 	#	print 'btag scores:', highBtag,secondBtag,jet1Btag,jet2Btag
-	return [bjet1,highBtagCSV,highBtag,bjet2,secondBtagCSV,secondBtag,jet1,jet2,jet3,indRecoBJet1,indRecoBJet2,indRecoJet1,indRecoJet2,indRecoJet3]
+	
+	regr_corrF1 = regrCalCorrF(RegressionReaderBJet1, _regrvarsnamesBjet1, bjet1, jetinds[highBtagCounter], T, met)
+	regr_corrF2 = regrCalCorrF(RegressionReaderBJet2, _regrvarsnamesBjet2, bjet2, jetinds[secondBtagCounter], T, met)
+	regr_bjet1 = TLorentzVector()
+	regr_bjet2 = TLorentzVector()
+	regr_bjet1.SetPtEtaPhiE(regr_corrF1*bjet1.Pt(), bjet1.Eta(), bjet1.Phi(), regr_corrF1*bjet1.Energy())
+	regr_bjet2.SetPtEtaPhiE(regr_corrF2*bjet2.Pt(), bjet2.Eta(), bjet2.Phi(), regr_corrF2*bjet2.Energy())
+	#if v == '' : print ' regr_corrF1 ', regr_corrF1, ' regr_corrF2 ', regr_corrF2
+	return [bjet1,highBtagCSV,highBtag,bjet2,secondBtagCSV,secondBtag,jet1,jet2,jet3,indRecoBJet1,indRecoBJet2,indRecoJet1,indRecoJet2,indRecoJet3,regr_bjet1,regr_bjet2]
+
+def regrCalCorrF(RegressionReader, _regrvarsnames, bjet, ind_ori, T, met):
+	# see https://github.com/ResonantHbbHgg/bbggTools/blob/master/src/bbggJetRegression.cc#L229
+	_regrvarsnames['Jet_pt'][0]				= bjet.Pt()
+	_regrvarsnames['Jet_corr'][0]			= T.PFJetPtAK4CHS[ind_ori]/T.PFJetPtRawAK4CHS[ind_ori]
+	_regrvarsnames['Jet_eta'][0]			= bjet.Eta()
+	_regrvarsnames['Jet_mt'][0]				= T.PFJetMtAK4CHS[ind_ori]
+	_regrvarsnames['Jet_leadTrackPt'][0]	= T.PFJetLeadTrackPtAK4CHS[ind_ori]
+	_regrvarsnames['Jet_leptonPtRel'][0]	= T.PFJetSoftLepRatioAK4CHS[ind_ori]
+	_regrvarsnames['Jet_leptonPt'][0]		= T.PFJetSoftLepPtAK4CHS[ind_ori]
+	_regrvarsnames['Jet_leptonDeltaR'][0]	= T.PFJetSoftLepDrAK4CHS[ind_ori] # default is 0 ==> ok
+	_regrvarsnames['Jet_totHEF'][0]			= T.PFJetChargedHadronEnergyFractionAK4CHS[ind_ori]+T.PFJetNeutralHadronEnergyFractionAK4CHS[ind_ori]
+	_regrvarsnames['Jet_neEmEF'][0]			= T.PFJetNeutralEmEnergyFractionAK4CHS[ind_ori]
+	_regrvarsnames['Jet_vtxPt'][0]			= math.sqrt(T.PFJetVtxPxAK4CHS[ind_ori]*T.PFJetVtxPxAK4CHS[ind_ori] + T.PFJetVtxPyAK4CHS[ind_ori]*T.PFJetVtxPyAK4CHS[ind_ori])
+	_regrvarsnames['Jet_vtxMass'][0]		= T.PFJetVtxMassAK4CHS[ind_ori]
+	_regrvarsnames['Jet_vtx3dL'][0]			= T.PFJetVtx3DValAK4CHS[ind_ori]
+	_regrvarsnames['Jet_vtxNtrk'][0]		= T.PFJetVtxNtracksAK4CHS[ind_ori]
+	if(T.PFJetVtx3DSigAK4CHS[ind_ori] == 0):
+		_regrvarsnames['Jet_vtx3deL'][0]	= 0
+	else:
+		_regrvarsnames['Jet_vtx3deL'][0]	= T.PFJetVtx3DValAK4CHS[ind_ori]/T.PFJetVtx3DSigAK4CHS[ind_ori]
+	_regrvarsnames['nPVs'][0]				= CountVertices(T)
+	_regrvarsnames['Jet_PFMET'][0]			= T.PFMETType1Cor[0]
+	_regrvarsnames['Jet_METDPhi'][0]		= bjet.DeltaPhi(met) # range from mpi to pi
+
+	# calculate corr factor
+	RegressedValues = RegressionReader.EvaluateRegression("BDTG method")
+	regr_corrF = RegressedValues[0]
+
+#	if v == '' :
+#		print ' Calculation of regression corr factor '
+#		print ' Jet_pt ', _regrvarsnames['Jet_pt'][0]
+#		print ' Jet_corr ', _regrvarsnames['Jet_corr'][0]
+#		print ' Jet_eta ', _regrvarsnames['Jet_eta'][0]
+#		print ' Jet_mt ', _regrvarsnames['Jet_mt'][0]
+#		print ' Jet_leadTrackPt ', _regrvarsnames['Jet_leadTrackPt'][0]
+#		print ' Jet_leptonPtRel ', _regrvarsnames['Jet_leptonPtRel'][0]
+#		print ' Jet_leptonPt ', _regrvarsnames['Jet_leptonPt'][0]
+#		print ' Jet_leptonDeltaR ', _regrvarsnames['Jet_leptonDeltaR'][0]
+#		print ' Jet_totHEF ', _regrvarsnames['Jet_totHEF'][0]
+#		print ' Jet_neEmEF ', _regrvarsnames['Jet_neEmEF'][0]
+#		print ' Jet_vtxPt ', _regrvarsnames['Jet_vtxPt'][0], T.PFJetVtxPxAK4CHS[ind_ori], T.PFJetVtxPyAK4CHS[ind_ori]
+#		print ' Jet_vtxMass ', _regrvarsnames['Jet_vtxMass'][0]
+#		print ' Jet_vtx3dL ', _regrvarsnames['Jet_vtx3dL'][0]
+#		print ' Jet_vtxNtrk ', _regrvarsnames['Jet_vtxNtrk'][0]
+#		print ' Jet_vtx3deL ', _regrvarsnames['Jet_vtx3deL'][0]
+#		print ' nPVs ', _regrvarsnames['nPVs'][0]
+#		print ' Jet_PFMET ', _regrvarsnames['Jet_PFMET'][0]
+#		print ' Jet_METDPhi ', _regrvarsnames['Jet_METDPhi'][0]
+#		print ' regr_corrF ', regr_corrF
+	return regr_corrF
+
+def calBDTdisc(reader, _bdtvarnames,
+			   _cosThetaStarMu, _Mbb_H, _cosTheta_hbb, _phi0, _cosTheta_zuu_hzz, _ptmu1, _ptmet, _phi1, _phi0_zz, _phi1_zuu, _phi1_zjj, _ptmu2, bscoreMVA1, bscoreMVA2, _dRbb_H, _dRjj_Z, _DRuu, _Muu4j, _isMuonEvent, _Pt_Hjet1, _Pt_Hjet2, _Pt_Zjet1, _Pt_Zjet2, _Muu):
+	
+	_bdtvarnames['abs(cosThetaStarMu)'][0]		= math.fabs(_cosThetaStarMu)
+	_bdtvarnames['Mbb_H'][0]					= _Mbb_H
+	_bdtvarnames['abs(cosTheta_hbb)'][0]		= math.fabs(_cosTheta_hbb)
+	_bdtvarnames['abs(phi0)'][0]				= math.fabs(_phi0)
+	_bdtvarnames['abs(cosTheta_zuu_hzz)'][0]	= math.fabs(_cosTheta_zuu_hzz)
+	_bdtvarnames['Pt_muon1'][0]					= _ptmu1
+	_bdtvarnames['Pt_miss'][0]					= _ptmet
+	_bdtvarnames['abs(phi0)'][0]				= math.fabs(_phi1)
+	_bdtvarnames['abs(phi0_zz)'][0]				= math.fabs(_phi0_zz)
+	_bdtvarnames['abs(phi1_zuu)'][0]			= math.fabs(_phi1_zuu)
+	_bdtvarnames['abs(phi1_zjj)'][0]			= math.fabs(_phi1_zjj)
+	_bdtvarnames['Pt_muon2'][0]					= _ptmu2
+	#_bdtvarnames['CISV_bjet1'][0]				= bscore1
+	#_bdtvarnames['CISV_bjet2'][0]				= bscore2
+	_bdtvarnames['CMVA_bjet1'][0]				= bscoreMVA1
+	_bdtvarnames['CMVA_bjet2'][0]				= bscoreMVA2
+	_bdtvarnames['DR_bb_H'][0]					= _dRbb_H
+	_bdtvarnames['DR_jj_Z'][0]					= _dRjj_Z
+	_bdtvarnames['DR_muon1muon2'][0]			= _DRuu
+	_bdtvarnames['M_uu4j'][0]					= _Muu4j
+	# calculate BDT disriminator
+	out_bdtdisc = -999.
+	#if (_isMuonEvent and _ptmu1 > 20 and _ptmu2 > 10 and _Pt_Hjet1 > 20 and _Pt_Hjet2 > 20 and _Pt_Zjet1 > 20 and _Pt_Zjet2 > 20 and _Muu > 10) :
+	if (_ptmu1 > 20 and _ptmu2 > 10 and _Pt_Hjet1 > 20 and _Pt_Hjet2 > 20 and _Pt_Zjet1 > 20 and _Pt_Zjet2 > 20 and _Muu > 10) :
+		out_bdtdisc = reader.EvaluateMVA("BDT_classifier")
+	#if v == '' : print ' out_bdtdisc ', out_bdtdisc
+	return out_bdtdisc
+
 
 def getCosThetaStar_CS(h1, h2, ebeam = 6500.) :
 	#cos theta star angle in the Collins Soper frame
@@ -2782,9 +2910,11 @@ def FullKinematicCalculation(T,variation):
 
 
 	[bjet1,bscore1,bscoreMVA1,bjet2,bscore2,bscoreMVA2,jet1,jet2,jet3,indRecoBJet1,indRecoBJet2,indRecoJet1,indRecoJet2,indRecoJet3] = [EmptyLorentz,-5.0,-5.0,EmptyLorentz,-5.0,-5.0,EmptyLorentz,EmptyLorentz,EmptyLorentz,-1,-1,-1,-1,-1]
+	[unreg_bjet1,unreg_bjet2] = [EmptyLorentz,EmptyLorentz]
 
 	#[bjet1,bscore1,bscoreMVA1,bjet2,bscore2,bscoreMVA2,jet1,jet2,jet3,indRecoBJet1,indRecoBJet2,indRecoJet1,indRecoJet2,indRecoJet3] = GetHHJetsOld(jets,btagCSVscores,btagMVAscores,muons[0],muons[1],jetinds, T)
-	[bjet1,bscore1,bscoreMVA1,bjet2,bscore2,bscoreMVA2,jet1,jet2,jet3,indRecoBJet1,indRecoBJet2,indRecoJet1,indRecoJet2,indRecoJet3] = GetHHJetsNew(jets,btagCSVscores,btagMVAscores,muons[0],muons[1],jetinds, T)
+	#[bjet1,bscore1,bscoreMVA1,bjet2,bscore2,bscoreMVA2,jet1,jet2,jet3,indRecoBJet1,indRecoBJet2,indRecoJet1,indRecoJet2,indRecoJet3,regr_bjet1,regr_bjet2] = GetHHJetsNew(jets,btagCSVscores,btagMVAscores,muons[0],muons[1],jetinds, T, met)
+	[unreg_bjet1,bscore1,bscoreMVA1,unreg_bjet2,bscore2,bscoreMVA2,jet1,jet2,jet3,indRecoBJet1,indRecoBJet2,indRecoJet1,indRecoJet2,indRecoJet3,bjet1,bjet2] = GetHHJetsNew(jets,btagCSVscores,btagMVAscores,muons[0],muons[1],jetinds, T, met)
 
 	"""
 	#if muons[0].Pt()>20 and muons[1].Pt()>10 and variation=='':
@@ -2866,6 +2996,8 @@ def FullKinematicCalculation(T,variation):
 	_Meejj = (electrons[0]+electrons[1]+jet1+jet2).M()
 	_Mlljj = (leptons[0]+leptons[1]+jet1+jet2).M()
 	_Mbb_H = (bjet1+bjet2).M()
+	_Mbb_H_ori = (unreg_bjet1+unreg_bjet2).M()
+	_Muu4j_ori = (muons[0]+muons[1]+unreg_bjet1+unreg_bjet2+jet1+jet2).M()
 	_dRbb_H = abs(bjet1.DeltaR(bjet2))
 	_dPhibb_H = abs(bjet1.DeltaPhi(bjet2))
 	_Mjj_Z = (jet1+jet2).M()
@@ -2885,6 +3017,7 @@ def FullKinematicCalculation(T,variation):
 	_stee4j = ST([electrons[0],electrons[1],bjet1,bjet2,jet1,jet2])
 	_stll4j = ST([leptons[0],leptons[1],bjet1,bjet2,jet1,jet2])
 
+	[_Pt_oriHjet1,_Pt_oriHjet2] = [unreg_bjet1.Pt(),unreg_bjet2.Pt()] # keep only the original bjets pt
 	[_Pt_Hjet1,_Pt_Hjet2,_Pt_Zjet1,_Pt_Zjet2] = [bjet1.Pt(),bjet2.Pt(),jet1.Pt(),jet2.Pt()]
 	[_Pt_Hjets,_Pt_Zjets] = [(bjet1+bjet2).Pt(),(jet1+jet2).Pt()]
 	[_Pt_uu,_Pt_ee,_Pt_ll] = [(muons[0]+muons[1]).Pt(),(electrons[0]+electrons[1]).Pt(),(leptons[0]+leptons[1]).Pt()]
@@ -3025,6 +3158,11 @@ def FullKinematicCalculation(T,variation):
 	_NGenElecsZ = 0
 	_NGenMuonsZ = len(_genMuonsZ)
 	_NGenElecsZ = len(_genElectronsZ)
+	
+	#----- calculate BDT disc here
+	_bdt_discrim = calBDTdisc(reader, _bdtvarnames, _cosThetaStarMu, _Mbb_H, _cosTheta_hbb, _phi0, _cosTheta_zuu_hzz, _ptmu1, _ptmet, _phi1, _phi0_zz, _phi1_zuu, _phi1_zjj, _ptmu2, bscoreMVA1, bscoreMVA2, _dRbb_H, _dRjj_Z, _DRuu, _Muu4j, _isMuonEvent, _Pt_Hjet1, _Pt_Hjet2, _Pt_Zjet1, _Pt_Zjet2, _Muu)
+	#if v == '' : print ' _bdt_discrim ', _bdt_discrim
+	#----- End calculate BDT disc here
 
 	# This MUST have the same structure as _kinematic variables!
 	toreturn = [_ptmu1,_ptmu2,_ptele1,_ptele2,_ptlep1,_ptlep2,_ptj1,_ptj2,_ptmet]
@@ -3074,6 +3212,7 @@ def FullKinematicCalculation(T,variation):
 	toreturn += [_Mbb_H,_Mjj_Z,_Mjj_Z_3jet]
 	toreturn += [_Mbb_H_gen,_Mjj_Z_gen]
 	toreturn += [_Mbb_H_genMatched,_Mjj_Z_genMatched]
+	toreturn += [_Mbb_H_ori,_Muu4j_ori]
 	toreturn += [_cosThetaStarMu,_cosThetaStarEle,_cosThetaStarLep]
 	toreturn += [_cosThetaStarMu_gen,_cosThetaStarEle_gen]
 	toreturn += [_cosThetaStar_gen,_cosTheta_hbb_gen,_cosTheta_zjj_hzz_gen,_cosTheta_zuu_hzz_gen,_cosTheta_zj1_hzz_gen,_cosTheta_zu1_hzz_gen]
@@ -3084,6 +3223,7 @@ def FullKinematicCalculation(T,variation):
 	toreturn += [_phi0, _phi1]
 	toreturn += [_cosThetaStarZuu_CS, _cosTheta_Zuu]
 	toreturn += [_phi0_zz, _phi1_zuu, _phi1_zjj]
+	toreturn += [_Pt_oriHjet1,_Pt_oriHjet2]
 	toreturn += [_Pt_Hjet1,_Pt_Hjet2,_Pt_Zjet1,_Pt_Zjet2]
 	toreturn += [_Pt_Hjets,_Pt_Zjets,_Pt_uu,_Pt_ee,_Pt_ll]
 	toreturn += [_dRjj_Z,_dRbb_H]
@@ -3123,6 +3263,7 @@ def FullKinematicCalculation(T,variation):
 	toreturn += [_bscoreMVA1_genMatched, _bscoreMVA2_genMatched]
 	toreturn += [_CorHj1j2Avail,_CorZj1j2Avail]
 	toreturn += [_passWptCut,_passZptCut,_WorZSystemPt]
+	toreturn += [_bdt_discrim]
 	return toreturn
 
 def checkWorZpt(T,lowcut, highcut, WorZ):
