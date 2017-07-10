@@ -137,7 +137,7 @@ _kinematicvariables += ['St_uujj','St_uvjj']
 _kinematicvariables += ['St_eejj','St_evjj']
 _kinematicvariables += ['St_lljj','St_lvjj']
 _kinematicvariables += ['St_uu4j','St_ee4j','St_ll4j']
-_kinematicvariables += ['M_uu','MT_uv']
+_kinematicvariables += ['M_uu']#,'MT_uv']
 _kinematicvariables += ['M_ee','M_ll']
 _kinematicvariables += ['M_jj']
 _kinematicvariables += ['DR_muon1muon2','DPhi_muon1met','DPhi_jet1met','DPhi_jet2met']
@@ -149,13 +149,13 @@ _kinematicvariables += ['DR_jet1jet2','DPhi_jet1jet2']
 _kinematicvariables += ['DPhi_muon1jet1','DPhi_muon1jet2','DPhi_muon2jet1','DPhi_muon2jet2']
 _kinematicvariables += ['DPhi_ele1jet1','DPhi_ele1jet2','DPhi_ele2jet1','DPhi_ele2jet2']
 _kinematicvariables += ['DPhi_lep1jet1','DPhi_lep1jet2','DPhi_lep2jet1','DPhi_lep2jet2']
-_kinematicvariables += ['M_uujj1_gen','M_uujj2_gen','M_uujjavg_gen']
-_kinematicvariables += ['M_uujj1_genMatched','M_uujj2_genMatched','M_uujjavg_genMatched']
-_kinematicvariables += ['M_uujj1_3jet','M_uujj2_3jet','M_uujjavg_3jet']
-_kinematicvariables += ['M_uujj1_3jet_rel','M_uujj2_3jet_rel','M_uujjavg_3jet_rel']
-_kinematicvariables += ['M_uujj1','M_uujj2','M_uujjavg']
-_kinematicvariables += ['M_uujj1_rel','M_uujj2_rel','M_uujjavg_rel']
-_kinematicvariables += ['M_uujj','M_eejj','M_lljj']
+#_kinematicvariables += ['M_uujj1_gen','M_uujj2_gen','M_uujjavg_gen']
+#_kinematicvariables += ['M_uujj1_genMatched','M_uujj2_genMatched','M_uujjavg_genMatched']
+#_kinematicvariables += ['M_uujj1_3jet','M_uujj2_3jet','M_uujjavg_3jet']
+#_kinematicvariables += ['M_uujj1_3jet_rel','M_uujj2_3jet_rel','M_uujjavg_3jet_rel']
+#_kinematicvariables += ['M_uujj1','M_uujj2','M_uujjavg']
+#_kinematicvariables += ['M_uujj1_rel','M_uujj2_rel','M_uujjavg_rel']
+#_kinematicvariables += ['M_uujj','M_eejj','M_lljj']
 _kinematicvariables += ['M_uu4j','M_ee4j','M_ll4j']
 _kinematicvariables += ['Mbb_H','Mjj_Z','Mjj_Z_3jet']
 _kinematicvariables += ['Mbb_H_gen','Mjj_Z_gen']
@@ -209,13 +209,13 @@ _kinematicvariables += ['bscoreMVA1_genMatched', 'bscoreMVA2_genMatched']
 _kinematicvariables += ['CorHj1j2Avail','CorZj1j2Avail']
 _kinematicvariables += ['passWptCut','passZptCut','WorZSystemPt']
 
-_weights = ['scaleWeight_Up','scaleWeight_Down','scaleWeight_R1_F1','scaleWeight_R1_F2','scaleWeight_R1_F0p5','scaleWeight_R2_F1','scaleWeight_R2_F2','scaleWeight_R2_F0p5','scaleWeight_R0p5_F1','scaleWeight_R0p5_F2','scaleWeight_R0p5_F0p5','scaleWeight_R2_F2','weight_amcNLO','weight_nopu','weight_central', 'weight_pu_up', 'weight_pu_down','weight_central_2012D','weight_topPt']
+_weights = ['scaleWeight_Up','scaleWeight_Down','scaleWeight_R1_F1','scaleWeight_R1_F2','scaleWeight_R1_F0p5','scaleWeight_R2_F1','scaleWeight_R2_F2','scaleWeight_R2_F0p5','scaleWeight_R0p5_F1','scaleWeight_R0p5_F2','scaleWeight_R0p5_F0p5','scaleWeight_R2_F2','weight_amcNLO','weight_nopu','weight_central', 'weight_pu_up', 'weight_pu_down','weight_topPt']
 _flagDoubles = ['run_number','event_number','lumi_number']
 _flags = ['pass_HLTMu45_eta2p1','pass_HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_DZ','pass_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ','pass_HLT_Mu17_Mu8','GoodVertexCount']
 _flags += ['passPrimaryVertex','passHBHENoiseFilter','passHBHENoiseIsoFilter','passBeamHalo','passTriggerObjectMatching','passDataCert']
 _flags += ['passBadEESuperCrystal','passEcalDeadCellTP','passBeamHalo2016','passBadEcalSC','passBadMuon','passBadChargedHadron','badMuonsFlag','duplicateMuonsFlag','noBadMuonsFlag']
-_variations = ['','JESup','JESdown','MESup','MESdown','JERup','JERdown','MER']
-# _variations = ['','JESup','JESdown','MESup','MESdown','EESup','EESdown','JER','MER','EER']
+#_variations = ['','JESup','JESdown','MESup','MESdown','JERup','JERdown','MER']
+_variations = ['','JESup','JESdown','JER','MESup','MESdown','MER','EESup','EESdown','EER']
 if nonisoswitch==True or emuswitch==True or quicktestswitch==True:
 	print 'NOT performing systematics...'
 	_variations = ['']  # For quicker tests
@@ -693,12 +693,12 @@ def GetPUWeight(T,version,puversion):
 			puweights=LowerWeights
 
 	# Also possible to do just for 2012D, for cross-checks. 
-	if puversion=='2012D':
-		puweights = CentralWeights_2012D
-		if version=='SysUp':
-			puweights=UpperWeights_2012D
-		if version=='SysDown':
-			puweights=LowerWeights_2012D
+	#if puversion=='2012D':
+	#	puweights = CentralWeights_2012D
+	#	if version=='SysUp':
+	#		puweights=UpperWeights_2012D
+	#	if version=='SysDown':
+	#		puweights=LowerWeights_2012D
 
 
 	# Make sure there exists a weight for the number of interactions given, 
@@ -1479,35 +1479,37 @@ def HEEPElectrons(T,_met,variation):
 
 	for n in range(len(_ElectronPt)):
 		Pass = True
-		Pass *= (T.ElectronPtHeep[n] > 35)
-		Pass *= abs(T.ElectronEta[n])<2.1
+		Pass *= (_ElectronPt[n] > 35)
+		Pass *= abs(T.ElectronEta[n])<2.4
 
 		barrel = (abs(T.ElectronSCEta[n]))<1.442
-		endcap = (abs(T.ElectronSCEta[n]))>1.56 
+		endcap = (abs(T.ElectronSCEta[n]))>1.566
 		Pass *= (barrel+endcap)
 
 		if barrel:
-			Pass *= bool(T.ElectronHasEcalDrivenSeed[n])
+			Pass *= bool(T.ElectronIsEcalDriven[n])
 			Pass *= T.ElectronDeltaEtaTrkSeedSC[n] < 0.004
 			Pass *= T.ElectronDeltaPhiTrkSC[n] < 0.06
 			Pass *= T.ElectronHoE[n] < 0.05 + 1./T.ElectronSCEnergy[n]
 			Pass *= ((T.ElectronFull5x5E2x5OverE5x5[n] > 0.94) or (T.ElectronFull5x5E1x5OverE5x5[n] > 0.83) )
-			Pass *= (T.ElectronHcalIsoD1DR03[n] + T.ElectronEcalIsoDR03[n]) <  (2.0 + 0.03*_ElectronPt[n] + 0.28*T.ElectronRhoIsoHEEP[n])
-			Pass *= T.ElectronTrkIsoDR03[n] < 5.0
+	                if nonisoswitch != True:
+				Pass *= (T.ElectronHcalIsoD1DR03[n] + T.ElectronEcalIsoDR03[n]) <  (2.0 + 0.03*_ElectronPt[n] + 0.28*T.ElectronRhoIsoHEEP[n])
+			        Pass *= T.ElectronHeep70TrkIso[n] < 5.0
 			Pass *= T.ElectronMissingHits[n] <=1
 			Pass *= T.ElectronLeadVtxDistXY[n]<0.02
 
 		if endcap:
-			Pass *= bool(T.ElectronHasEcalDrivenSeed[n])
+			Pass *= bool(T.ElectronIsEcalDriven[n])
 			Pass *= T.ElectronDeltaEtaTrkSeedSC[n] < 0.006
 			Pass *= T.ElectronDeltaPhiTrkSC[n] < 0.06
 			Pass *= T.ElectronHoE[n] < 0.05 + 5./T.ElectronSCEnergy[n]
 			Pass *= T.ElectronFull5x5SigmaIEtaIEta[n] < 0.03
-			if _ElectronPt[n]<50:
-				Pass *= ((T.ElectronHcalIsoD1DR03[n] + T.ElectronEcalIsoDR03[n]) < (2.5 + 0.28*T.ElectronRhoIsoHEEP[n]))
-			else:
-				Pass *= ((T.ElectronHcalIsoD1DR03[n] + T.ElectronEcalIsoDR03[n]) < (2.5 + 0.03*(_ElectronPt[n]-50.0) + 0.28*T.ElectronRhoIsoHEEP[n]))
-			Pass *= T.ElectronTrkIsoDR03[n] < 5.0
+	                if nonisoswitch != True:
+				if _ElectronPt[n]<50:
+					Pass *= ((T.ElectronHcalIsoD1DR03[n] + T.ElectronEcalIsoDR03[n]) < (2.5 + 0.28*T.ElectronRhoIsoHEEP[n]))
+				else:
+					Pass *= ((T.ElectronHcalIsoD1DR03[n] + T.ElectronEcalIsoDR03[n]) < (2.5 + 0.03*(_ElectronPt[n]-50.0) + 0.28*T.ElectronRhoIsoHEEP[n]))
+				Pass *= T.ElectronHeep70TrkIso[n] < 5.0
 			Pass *= T.ElectronMissingHits[n] <=1
 			Pass *= T.ElectronLeadVtxDistXY[n]<0.05
 
@@ -1617,13 +1619,28 @@ def JERModifiedPt(pt,eta,phi,T,modtype):
 	#if abseta >= 1.7 : jfacs = [  0.13400 , 0.22778 , 0.04900  ]
 	#if abseta >= 2.3 : jfacs = [  0.28800 , 0.48838 , 0.13500  ]
 
-	if abseta >= 0   : jfacs = [  0.061 , 0.084 , 0.038  ]
-	if abseta >= 0.8 : jfacs = [  0.088 , 0.117 , 0.059  ]
-	if abseta >= 1.3 : jfacs = [  0.106 , 0.136 , 0.076  ]
-	if abseta >= 1.9 : jfacs = [  0.126 , 0.220 , 0.032  ]
-	if abseta >= 2.5 : jfacs = [  0.343 , 0.466 , 0.220  ]
-	if abseta >= 3.0 : jfacs = [  0.303 , 0.414 , 0.192  ]
-	if abseta >= 3.2 : jfacs = [  0.320 , 0.606 , 0.034  ]
+	#if abseta >= 0   : jfacs = [  0.061 , 0.084 , 0.038  ]
+	#if abseta >= 0.8 : jfacs = [  0.088 , 0.117 , 0.059  ]
+	#if abseta >= 1.3 : jfacs = [  0.106 , 0.136 , 0.076  ]
+	#if abseta >= 1.9 : jfacs = [  0.126 , 0.220 , 0.032  ]
+	#if abseta >= 2.5 : jfacs = [  0.343 , 0.466 , 0.220  ]
+	#if abseta >= 3.0 : jfacs = [  0.303 , 0.414 , 0.192  ]
+	#if abseta >= 3.2 : jfacs = [  0.320 , 0.606 , 0.034  ]
+
+	#13 TeV 80X (2016, BCD+GH PromtReco) DATA/MC SFs
+	if abseta >= 0   : jfacs = [  0.109 , 0.117 , 0.101  ] 
+	if abseta >= 0.5 : jfacs = [  0.138 , 0.151 , 0.125  ] 
+	if abseta >= 0.8 : jfacs = [  0.114 , 0.127 , 0.101  ] 
+	if abseta >= 1.1 : jfacs = [  0.123 , 0.147 , 0.099  ] 
+	if abseta >= 1.3 : jfacs = [  0.084 , 0.095 , 0.073  ] 
+	if abseta >= 1.7 : jfacs = [  0.082 , 0.117 , 0.047  ] 
+	if abseta >= 1.9 : jfacs = [  0.140 , 0.187 , 0.093  ] 
+	if abseta >= 2.1 : jfacs = [  0.067 , 0.120 , 0.014  ]  
+	if abseta >= 2.3 : jfacs = [  0.177 , 0.218 , 0.136  ] 
+	if abseta >= 2.5 : jfacs = [  0.364 , 0.403 , 0.325  ] 
+	if abseta >= 2.8 : jfacs = [  0.857 , 0.928 , 0.786  ] 
+	if abseta >= 3.0 : jfacs = [  0.328 , 0.350 , 0.306  ]  
+	if abseta >= 3.2 : jfacs = [  0.160 , 0.189 , 0.131  ]  
 
 	if modtype == '':
 		adjustmentfactor = jfacs[0]
@@ -1682,7 +1699,7 @@ def LooseIDJets(T,met,variation,isdata):
 		NumNeutralParticle = T.PFJetNeutralMultiplicityAK4CHS[n]
 		CHM = T.PFJetChargedMultiplicityAK4CHS[n]
 		if abs(eta)<=2.7:
-			looseJetID = (NHF<0.99 and NEMF<0.99 and NumConst>1) and ((abs(eta)<=2.4 and CHF>0 and CHM>0 and CEMF<0.99) or abs(eta)>2.) and abs(eta)<=2.7
+			looseJetID = (NHF<0.99 and NEMF<0.99 and NumConst>1) and ((abs(eta)<=2.4 and CHF>0 and CHM>0 and CEMF<0.99) or abs(eta)>2.4) and abs(eta)<=2.7
 		elif abs(eta)<=3.0:
 			looseJetID = (NHF< 0.98 and NEMF>0.01 and NumNeutralParticle>2 and abs(eta)>2.7 and abs(eta)<=3.0 )
 		else:
@@ -2437,7 +2454,11 @@ def getPhi_ZZ(Zj1, Zj2, mu1, mu2) :
 		vnorm = norm_planes_hi(partons, zz)
 		
 		# Calculate Phi
-		dsignhgg = zuu_vect.Dot(vnorm[1].Cross(vnorm[0]))/(abs(zuu_vect.Dot(vnorm[1].Cross(vnorm[0])))) # zuu_vect here is NOT important
+                #fixme Morse division by zero very small amount of the time
+		if abs(zuu_vect.Dot(vnorm[1].Cross(vnorm[0])))>0:
+			dsignhgg = zuu_vect.Dot(vnorm[1].Cross(vnorm[0]))/(abs(zuu_vect.Dot(vnorm[1].Cross(vnorm[0])))) # zuu_vect here is NOT important
+		else:
+			dsignhgg = 0
 		vPhi.append( dsignhgg*(-1) * math.acos(vnorm[0].Dot(vnorm[1])) )
 		
 		# Define z direction
@@ -2449,7 +2470,11 @@ def getPhi_ZZ(Zj1, Zj2, mu1, mu2) :
 		zz1prime = TVector3((z_vect.Cross(zuu_vect)).Unit())  # zuu_vect here IS important
 		
 		# Calculate Phi1_zuu
-		dsignhgg2 = zuu_vect.Dot(zz1prime.Cross(vnorm[0]))/(abs(zuu_vect.Dot(zz1prime.Cross(vnorm[0]))))  # zuu_vect here is NOT important
+                #fixme Morse division by zero very small amount of the time
+		if abs(zuu_vect.Dot(zz1prime.Cross(vnorm[0])))>0:
+			dsignhgg2 = zuu_vect.Dot(zz1prime.Cross(vnorm[0]))/(abs(zuu_vect.Dot(zz1prime.Cross(vnorm[0]))))  # zuu_vect here is NOT important
+		else:
+			dsignhgg2 = 0
 		vPhi.append( dsignhgg2 * math.acos(zz1prime.Dot(vnorm[0])) )
 		
 		
@@ -2464,7 +2489,10 @@ def getPhi_ZZ(Zj1, Zj2, mu1, mu2) :
 		zz2prime = TVector3((z_vect.Cross(zjj_vect)).Unit())  # zjj_vect here IS important
 		
 		# Calculate Phi1_zjj
-		dsignhgg2 = zjj_vect.Dot(zz2prime.Cross(vnorm[1]))/(abs(zjj_vect.Dot(zz2prime.Cross(vnorm[1]))))  # zjj_vect here is NOT important
+		if abs(zjj_vect.Dot(zz2prime.Cross(vnorm[1])))>0:
+			dsignhgg2 = zjj_vect.Dot(zz2prime.Cross(vnorm[1]))/(abs(zjj_vect.Dot(zz2prime.Cross(vnorm[1]))))  # zjj_vect here is NOT important
+		else:
+			dsignhgg2 = 0
 		vPhi.append( dsignhgg2 * math.acos(zz2prime.Dot(vnorm[1])) )
 
 	return vPhi
@@ -3051,7 +3079,7 @@ def FullKinematicCalculation(T,variation):
 	toreturn += [_steejj,_stevjj]
 	toreturn += [_stlljj,_stlvjj]
 	toreturn += [_stuu4j,_stee4j,_stll4j]
-	toreturn += [_Muu,_MTuv]
+	toreturn += [_Muu]#,_MTuv]
 	toreturn += [_Mee,_Mll]
 	toreturn += [_Mjj]
 	toreturn += [_DRuu,_DPHIuv,_DPHIj1v,_DPHIj2v]
@@ -3063,13 +3091,13 @@ def FullKinematicCalculation(T,variation):
 	toreturn += [_DPhiu1j1,_DPhiu1j2,_DPhiu2j1,_DPhiu2j2]
 	toreturn += [_DPhie1j1,_DPhie1j2,_DPhie2j1,_DPhie2j2]
 	toreturn += [_DPhil1j1,_DPhil1j2,_DPhil2j1,_DPhil2j2]
-	toreturn += [_Muujj1_gen, _Muujj2_gen,_Muujjavg_gen]
-	toreturn += [_Muujj1_genMatched, _Muujj2_genMatched,_Muujjavg_genMatched]
-	toreturn += [_Muujj1_3jet, _Muujj2_3jet,_Muujjavg_3jet]
-	toreturn += [_Muujj1_3jet_rel, _Muujj2_3jet_rel,_Muujjavg_3jet_rel]
-	toreturn += [_Muujj1, _Muujj2,_Muujjavg]
-	toreturn += [_Muujj1_rel, _Muujj2_rel,_Muujjavg_rel]
-	toreturn += [_Muujj, _Meejj, _Mlljj]
+	#toreturn += [_Muujj1_gen, _Muujj2_gen,_Muujjavg_gen]
+	#toreturn += [_Muujj1_genMatched, _Muujj2_genMatched,_Muujjavg_genMatched]
+	#toreturn += [_Muujj1_3jet, _Muujj2_3jet,_Muujjavg_3jet]
+	#toreturn += [_Muujj1_3jet_rel, _Muujj2_3jet_rel,_Muujjavg_3jet_rel]
+	#toreturn += [_Muujj1, _Muujj2,_Muujjavg]
+	#toreturn += [_Muujj1_rel, _Muujj2_rel,_Muujjavg_rel]
+	#toreturn += [_Muujj, _Meejj, _Mlljj]
 	toreturn += [_Muu4j, _Mee4j, _Mll4j]
 	toreturn += [_Mbb_H,_Mjj_Z,_Mjj_Z_3jet]
 	toreturn += [_Mbb_H_gen,_Mjj_Z_gen]
@@ -3310,11 +3338,13 @@ for n in range(N):
 	# that the systematic varied quantity will, and that will throw off systematics calculations later.
 	# Make sure your skim is looser than any selection you will need afterward!
 
-	#if (Branches['Pt_lep1'][0] < 17) : continue
+	#if (Branches['Pt_lep1'][0] < 16) : continue
 	#if (Branches['Pt_lep2'][0] < 8) : continue
-	if (Branches['Pt_muon1'][0] < 16) and (Branches['Pt_ele1'][0] < 16) : continue
-	if (Branches['Pt_muon1'][0] > 16) and (Branches['Pt_muon2'][0] < 8): continue
-	if (Branches['Pt_muon1'][0] < 16) and (Branches['Pt_ele1'][0] > 16) and (Branches['Pt_ele2'][0]  < 8): continue
+	#if (Branches['Pt_muon1'][0] < 16) and (Branches['Pt_ele1'][0] < 16) : continue
+	#if (Branches['Pt_muon1'][0] < 16) and (Branches['Pt_ele1'][0] > 16) and (Branches['Pt_ele2'][0]  < 8): continue
+	#if (Branches['Pt_muon1'][0] > 16) and (Branches['Pt_muon2'][0] < 8) and (Branches['Pt_ele1'][0] < 16 or Branches['Pt_ele2'][0]  < 8): continue
+	if ((Branches['isMuonEvent'][0]==True) and ((Branches['Pt_muon1'][0] < 16) or (Branches['Pt_muon2'][0] < 8))): continue
+	if ((Branches['isElectronEvent'][0]==True) and ((Branches['Pt_ele1'][0] < 16) or (Branches['Pt_ele2'][0] < 11))): continue
 
 	#print 'NGenMuonsZ', Branches['NGenMuonsZ'][0], 'NGenElecsZ', Branches['NGenElecsZ'][0]
 	#if (Branches['Pt_muon1'][0] < 16) : continue
@@ -3323,19 +3353,16 @@ for n in range(N):
 
 	#if nonisoswitch != True:
 	#		if (Branches['Pt_muon2'][0] < 45) and (Branches['Pt_miss'][0] < 45): continue
-	if (Branches['Pt_Hjet1'][0] <  22): continue
-	if (Branches['Pt_Hjet2'][0] <  22): continue
+	if (Branches['Pt_Hjet1'][0] <  18): continue
+	if (Branches['Pt_Hjet2'][0] <  18): continue
 	if (Branches['Pt_Zjet1'][0] <  18): continue
 	if (Branches['Pt_Zjet2'][0] <  18): continue
+	#
+	if (Branches['M_ll'][0] < 10): continue
 	#
 	#if (Branches['St_uujj'][0] < 260) and (Branches['St_uvjj'][0] < 260): continue
 	#if (Branches['M_uu'][0]    <  45) and (Branches['MT_uv'][0]   <  45): continue
 	#if (Branches['passWptCut'][0]==0): continue #only used for stitching together samples
-
-	if 'WJetsToLNu_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8' in name :	
-		if (Branches['passWptCut'][0]==0): continue #only used for stitching together samples
-	if 'DYJetsToLL_M-50_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8' in name :
-		if (Branches['passZptCut'][0]==0): continue #only used for stitching together samples
 
 	# Fill output tree with event
 	tout.Fill()
