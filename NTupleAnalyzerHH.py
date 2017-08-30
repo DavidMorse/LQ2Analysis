@@ -200,7 +200,7 @@ _kinematicvariables += ['M_uu_gen', 'M_uu_genMatched']
 _kinematicvariables += ['bscoreMVA1_genMatched', 'bscoreMVA2_genMatched']
 _kinematicvariables += ['CorHj1j2Avail','CorZj1j2Avail']
 _kinematicvariables += ['passWptCut','passZptCut','WorZSystemPt']
-_kinematicvariables += ['bdt_discrim']
+_kinematicvariables += ['bdt_discrim_M300','bdt_discrim_M550']
 
 _weights = ['scaleWeight_Up','scaleWeight_Down','scaleWeight_R1_F1','scaleWeight_R1_F2','scaleWeight_R1_F0p5','scaleWeight_R2_F1','scaleWeight_R2_F2','scaleWeight_R2_F0p5','scaleWeight_R0p5_F1','scaleWeight_R0p5_F2','scaleWeight_R0p5_F0p5','scaleWeight_R2_F2','weight_amcNLO','weight_nopu','weight_central', 'weight_pu_up', 'weight_pu_down','weight_topPt']
 _flagDoubles = ['run_number','event_number','lumi_number']
@@ -406,15 +406,20 @@ for b in _flags:
 ##########################################################################################
 TMVA.Tools.Instance()
 # TMVA.Reader
-reader = TMVA.Reader("!Color")
+reader_train_M300 = TMVA.Reader("!Color")
+reader_train_M550 = TMVA.Reader("!Color")
+
 # the order of the variables matters, need to be the same as when training
 _bdtvars = ['abs(cosThetaStarMu)','Mbb_H','abs(phi0)','Pt_muon1','Pt_muon2','CMVA_bjet1','DR_bb_H','DR_jj_Z','DR_muon1muon2','M_uu4j','M_uu','Mjj_Z']
 _bdtvarnames = {}
 for vth in _bdtvars:
 	_bdtvarnames[vth] = array.array('f',[0])
-	reader.AddVariable(vth, _bdtvarnames[vth])
+	reader_train_M300.AddVariable(vth, _bdtvarnames[vth])
+	reader_train_M550.AddVariable(vth, _bdtvarnames[vth])
+
 # TMVA.Reader booked with BDT_classifier, input is .weights.xml file
-reader.BookMVA("BDT_classifier", "weights_classification/TMVAClassification_BDT_M300_12vars.weights.xml")
+reader_train_M300.BookMVA("BDT_classifier", "weights_classification/TMVAClassification_BDT_M300_12vars.weights.xml")
+reader_train_M550.BookMVA("BDT_classifier", "weights_classification/TMVAClassification_BDT_M550_12vars.weights.xml")
 
 ##########################################################################################
 #################      Setup bjets energy regression calculation   #######################
@@ -2769,7 +2774,8 @@ def FullKinematicCalculation(T,variation):
 	_NGenElecsZ = len(_genElectronsZ)
 	
 	#----- calculate BDT disc here
-	_bdt_discrim = calculateBDTdiscriminant(reader, _bdtvarnames, _cosThetaStarMu, _Mbb_H, _phi0, _ptmu1, _ptmu2, bscoreMVA1, _dRbb_H, _dRjj_Z, _DRuu, _Muu4j, _Muu, _Mjj_Z, _isMuonEvent, _Pt_Hjet1, _Pt_Hjet2, _Pt_Zjet1, _Pt_Zjet2)
+	_bdt_discrim_M300 = calculateBDTdiscriminant(reader_train_M300, _bdtvarnames, _cosThetaStarMu, _Mbb_H, _phi0, _ptmu1, _ptmu2, bscoreMVA1, _dRbb_H, _dRjj_Z, _DRuu, _Muu4j, _Muu, _Mjj_Z, _isMuonEvent, _Pt_Hjet1, _Pt_Hjet2, _Pt_Zjet1, _Pt_Zjet2)
+	_bdt_discrim_M550 = calculateBDTdiscriminant(reader_train_M550, _bdtvarnames, _cosThetaStarMu, _Mbb_H, _phi0, _ptmu1, _ptmu2, bscoreMVA1, _dRbb_H, _dRjj_Z, _DRuu, _Muu4j, _Muu, _Mjj_Z, _isMuonEvent, _Pt_Hjet1, _Pt_Hjet2, _Pt_Zjet1, _Pt_Zjet2)
 	#if v == '' : print ' _bdt_discrim ', _bdt_discrim
 	#----- End calculate BDT disc here
 
@@ -2861,7 +2867,7 @@ def FullKinematicCalculation(T,variation):
 	toreturn += [_bscoreMVA1_genMatched, _bscoreMVA2_genMatched]
 	toreturn += [_CorHj1j2Avail,_CorZj1j2Avail]
 	toreturn += [_passWptCut,_passZptCut,_WorZSystemPt]
-	toreturn += [_bdt_discrim]
+	toreturn += [_bdt_discrim_M300,_bdt_discrim_M550]
 	return toreturn
 
 def checkWorZpt(T,lowcut, highcut, WorZ):
