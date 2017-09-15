@@ -97,13 +97,13 @@ junkfile2 = str(randint(100000000,1000000000))+indicator+'junk.root'
 
 # At least one 44 GeV jet - offline cut is 50
 fj2 = TFile.Open(junkfile2,'RECREATE')
-t = to.CopyTree('PFJetPtAK4CHS[]>22')#fixme was 44
+t = to.CopyTree('PFJetPtAK4CHS[]>18')#fixme was 44
 N = t.GetEntries()
 
 # Print the reduction status
 print 'Original events:          ',No
 #print 'After demand 1 pT16 muon or electron: ',Nm1
-print 'After demand 1 pT22 jet:  ',N
+print 'After demand 1 pT18 jet:  ',N
 
 ##########################################################################################
 #################      PREPARE THE VARIABLES FOR THE OUTPUT TREE   #######################
@@ -3052,8 +3052,8 @@ for n in range(N):
 	#if (Branches['Pt_muon1'][0] < 16) and (Branches['Pt_ele1'][0] < 16) : continue
 	#if (Branches['Pt_muon1'][0] < 16) and (Branches['Pt_ele1'][0] > 16) and (Branches['Pt_ele2'][0]  < 8): continue
 	#if (Branches['Pt_muon1'][0] > 16) and (Branches['Pt_muon2'][0] < 8) and (Branches['Pt_ele1'][0] < 16 or Branches['Pt_ele2'][0]  < 8): continue
-	if ((Branches['isMuonEvent'][0]==True) and ((Branches['Pt_muon1'][0] < 16) or (Branches['Pt_muon2'][0] < 8))): continue
-	if ((Branches['isElectronEvent'][0]==True) and ((Branches['Pt_ele1'][0] < 16) or (Branches['Pt_ele2'][0] < 11))): continue
+	if ((Branches['isMuonEvent'][0]==True) and ((Branches['Pt_muon1'][0] < 16) or (Branches['Pt_muon2'][0] < 8) or (Branches['M_uu'][0] < 12))): continue
+	if ((Branches['isElectronEvent'][0]==True) and ((Branches['Pt_ele1'][0] < 16) or (Branches['Pt_ele2'][0] < 11) or (Branches['M_ee'][0] < 12))): continue
 
 	#print 'NGenMuonsZ', Branches['NGenMuonsZ'][0], 'NGenElecsZ', Branches['NGenElecsZ'][0]
 	#if (Branches['Pt_muon1'][0] < 16) : continue
@@ -3067,11 +3067,8 @@ for n in range(N):
 	if (Branches['Pt_Zjet1'][0] <  18): continue
 	if (Branches['Pt_Zjet2'][0] <  18): continue
 	#
-	if (Branches['M_ll'][0] < 10): continue
-	#
 	#if (Branches['St_uujj'][0] < 260) and (Branches['St_uvjj'][0] < 260): continue
 	#if (Branches['M_uu'][0]    <  45) and (Branches['MT_uv'][0]   <  45): continue
-	#if (Branches['passWptCut'][0]==0): continue #only used for stitching together samples
 
 	# Fill output tree with event
 	tout.Fill()
