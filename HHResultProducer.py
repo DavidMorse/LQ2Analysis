@@ -2000,7 +2000,7 @@ def QCDStudy(sel_mumu,sel_munu,cutlogmumu,cutlogmunu,weight_mumu,weight_munu,ver
 
 
 	#sys.exit()
-'''
+        """
 	studyvals = []
 	for x in range(10000):#fixme todo changed from 1,000 to 10,000
 		same = RR(Q_ss)
@@ -2023,7 +2023,7 @@ def QCDStudy(sel_mumu,sel_munu,cutlogmumu,cutlogmunu,weight_mumu,weight_munu,ver
 
 	SSNonIsoDataRescale = [isoscale[0]*sameoppscale[0], isoscale[0]*sameoppscale[0]*(math.sqrt( (isoscale[1]/isoscale[0])**2 + (sameoppscale[1]/sameoppscale[0])**2) )    ]
 	print "Thus, in same-sign non-iso data, a factor of:", texentry4(SSNonIsoDataRescale), 'will give the QCD estimate.\n'
-'''
+        """
 	#qcdBinning = [0.001,0.04,0.1,0.25,0.5,1.0,1.5,2.0]
 	qcdBinning=[0.001,0.05,0.1,0.25,0.75,1.5,2.5,5.0]
 
