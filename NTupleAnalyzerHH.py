@@ -185,9 +185,9 @@ _kinematicvariables += ['IsMuon_muon1','IsMuon_muon2']
 _kinematicvariables += ['muonIndex1','muonIndex2']
 _kinematicvariables += ['jetIndex1','jetIndex2']
 _kinematicvariables += ['ptHat']
-_kinematicvariables += ['CISV_jet1','CISV_jet2']
+_kinematicvariables += ['CISV_Zjet1','CISV_Zjet2']
 _kinematicvariables += ['CISV_bjet1','CISV_bjet2']
-_kinematicvariables += ['CMVA_jet1','CMVA_jet2']
+_kinematicvariables += ['CMVA_Zjet1','CMVA_Zjet2']
 _kinematicvariables += ['CMVA_bjet1','CMVA_bjet2']
 _kinematicvariables += ['isMuonEvent','isElectronEvent']
 _kinematicvariables += ['Hj1Matched','Hj2Matched','Zj1Matched','Zj2Matched']
@@ -1204,6 +1204,135 @@ def PropagatePTChangeToMET(met,original_object,varied_object):
 	#         met to compensate for the change in the object.
 	return  met + varied_object - original_object
 
+def LooseIDMuons(T,_met,variation,isdata):
+	# Purpose: Gets the collection of muons passing loose muon ID. 
+	#         Returns muons as TLorentzVectors, and indices corrresponding
+	#         to the surviving muons of the muon collection. 
+	#         Also returns modified MET for systematic variations.
+	muons = []
+	muoninds = []
+	if variation=='MESup':	
+		#_MuonPt = [(pt + pt*(0.05*pt/1000.0)) for pt in T.MuonPt]#original
+		_MuonPt = [(pt + pt*(0.10*pt/1000.0)) for pt in T.MuonPt]#updated to Zprime 13TeV study number
+	elif variation=='MESdown':	
+		#_MuonPt = [(pt - pt*(0.05*pt/1000.0)) for pt in T.MuonPt]
+		_MuonPt = [(pt - pt*(0.10*pt/1000.0)) for pt in T.MuonPt]
+	elif variation=='MER':	
+		_MuonPt = [pt+pt*tRand.Gaus(0.0,  0.01*(pt<=200.0) + (0.04)*(pt>200.0) ) for pt in T.MuonPt]
+	else:	
+		_MuonPt = [pt for pt in T.MuonPt]	
+
+	if (isdata):
+		_MuonPt = [pt for pt in T.MuonPt]	
+
+	trk_isos = []
+	charges = []
+	deltainvpts = []
+
+	chi2 = []
+	pfid = []
+	layers = []
+
+	nequiv = []
+	for n in range(len(T.MuonPt)):
+		#if T.MuonIsGlobal[n] or newntupleswitch==True: #not necessary anymore - global muon requirement encompassed later
+		nequiv.append(n)
+
+	# Loop over muons using the pT array from above
+	for n in range(len(_MuonPt)):
+
+		# Some muon alignment studies use the inverse diff of the high pT and Trk pT values
+		deltainvpt = -1.0	
+		if ( T.MuonTrkPt[nequiv[n]] > 0.0 ) and (_MuonPt[n]>0.0):
+			deltainvpt = ( 1.0/T.MuonTrkPt[nequiv[n]] - 1.0/_MuonPt[n])
+	
+		# For alignment correction studies in MC, the pT is modified according to
+		# parameterizations of the position
+		if alignementcorrswitch == True and isdata==False:
+			if abs(deltainvpt) > 0.0000001:
+				__Pt_mu = _MuonPt[n]
+				__Eta_mu = T.MuonEta[n]
+				__Phi_mu = T.MuonPhi[n]
+				__Charge_mu = T.MuonCharge[nequiv[n]]
+				if (__Pt_mu >200)*(abs(__Eta_mu) < 0.9)      : 
+					_MuonPt[n] =  ( (1.0) / ( -5e-05*__Charge_mu*sin(-1.4514813+__Phi_mu ) + 1.0/__Pt_mu ) ) 
+				deltainvpt = ( 1.0/T.MuonTrkPt[nequiv[n]] - 1.0/_MuonPt[n])
+
+
+		# For the ID, begin by assuming it passes. Veto if it fails any condition
+		# High PT conditions from https://twiki.cern.ch/twiki/bin/view/CMSPublic/SWGuideMuonIdRun2#Short_Term_Medium_Muon_Definitio
+		# NTuple definitions in https://raw.githubusercontent.com/CMSLQ/RootTupleMakerV2/master/src/RootTupleMakerV2_Muons.cc
+		Pass = True
+                #There is an or of requirements, do this by making 2 bools and OR'ing them later
+	        Pass1, Pass2 =  True, True
+
+                # Require Loose muon flag
+	        Pass *= T.MuonIsLooseMuon[n] > 0
+
+	        #fixme these two are equivalent to IsLooseMuon
+		#Pass *= T.MuonIsPF[n]
+	        #Pass *= (T.MuonIsGlobal[n] or T.MuonIsTracker[n])
+
+	        # Require valid fraction of hits
+	        Pass *= T.MuonTrkValidFractionOfHits[n] > 0.49
+
+		# A preliminary pT cut.
+		Pass *= (_MuonPt[n] > 8)#fixme offline cuts are 20(10)
+
+		# Eta requirement 
+		Pass *= abs(T.MuonEta[n])<2.4
+
+	        # Require Global Muon
+                Pass1 *= T.MuonIsGlobal[n]
+
+		# Global Track chi2
+                Pass1 *= T.MuonGlobalChi2[n] < 3
+
+		# combined Quality chi2LocalPosition
+		Pass1 *= T.MuonCombinedQualityChi2LocalPosition[n] < 12
+
+		# combined Quality Track Kink
+		Pass1 *= T.MuonCombinedQualityTrkKink[n] < 20
+
+		# segment Compatibility
+		Pass1 *= T.MuonSegmentCompatibility[n] > 0.303
+
+		# segment Compatibility
+		Pass2 *= T.MuonSegmentCompatibility[n] > 0.451
+
+		Pass *= (Pass1 or Pass2)
+
+		# Isolation condition using combined PF relative isolation - 0.25 for loose (98% efficiency), 0.15 for tight (95% efficiency)
+	        correctedIso = T.MuonPFIsoR04ChargedHadron[n] + max(0.,T.MuonPFIsoR04NeutralHadron[n]+T.MuonPFIsoR04Photon[n]-0.5*T.MuonPFIsoR04PU[n])
+		# Don't apply isolation for QCD studies
+		if nonisoswitch != True:
+			Pass *= correctedIso/_MuonPt[n] < 0.25
+
+		# Propagate MET changes if undergoing systematic variation
+		if (Pass):
+			NewMu = TLorentzVector()
+			OldMu = TLorentzVector()
+			NewMu.SetPtEtaPhiM(_MuonPt[n],T.MuonEta[n],T.MuonPhi[n],0)
+			#NewMu.SetPtEtaPhiM(_MuonPt[n],T.MuonEta[n],T.MuonPhi[n],0)
+			OldMu.SetPtEtaPhiM(T.MuonPt[n],T.MuonEta[n],T.MuonPhi[n],0)
+			#OldMu.SetPtEtaPhiM(T.MuonPt[n],T.MuonEta[n],T.MuonPhi[n],0)
+			_met = PropagatePTChangeToMET(_met,OldMu,NewMu)
+
+			# Append items to retun if the muon is good
+
+			muons.append(NewMu)
+			#trk_isos.append((T.MuonTrackerIsoSumPT[nequiv[n]]/_MuonPt[n]))
+			trk_isos.append((correctedIso/_MuonPt[n]))
+			chi2.append(T.MuonGlobalChi2[nequiv[n]])
+			pfid.append(T.MuonIsPF[nequiv[n]])
+			layers.append(T.MuonTrackLayersWithMeasurement[nequiv[n]])
+			charges.append(T.MuonCharge[n])
+			muoninds.append(n)
+			deltainvpts.append(deltainvpt)
+
+	return [muons,muoninds,_met,trk_isos,charges,deltainvpts,chi2,pfid,layers]
+
+
 def MediumIDMuons(T,_met,variation,isdata):
 	# Purpose: Gets the collection of muons passing medium muon ID. 
 	#         Returns muons as TLorentzVectors, and indices corrresponding
@@ -1303,8 +1432,9 @@ def MediumIDMuons(T,_met,variation,isdata):
 		Pass *= (Pass1 or Pass2)
 
 		# Isolation condition using combined PF relative isolation - 0.25 for loose (98% efficiency), 0.15 for tight (95% efficiency)
+	        correctedIso = T.MuonPFIsoR04ChargedHadron[n] + max(0.,T.MuonPFIsoR04NeutralHadron[n]+T.MuonPFIsoR04Photon[n]-0.5*T.MuonPFIsoR04PU[n])
+		# Don't apply isolation for QCD studies
 		if nonisoswitch != True:
-			correctedIso = T.MuonPFIsoR04ChargedHadron[n] + max(0.,T.MuonPFIsoR04NeutralHadron[n]+T.MuonPFIsoR04Photon[n]-0.5*T.MuonPFIsoR04PU[n])
 			Pass *= correctedIso/_MuonPt[n] < 0.25
 
 		# Propagate MET changes if undergoing systematic variation
@@ -1320,7 +1450,8 @@ def MediumIDMuons(T,_met,variation,isdata):
 			# Append items to retun if the muon is good
 
 			muons.append(NewMu)
-			trk_isos.append((T.MuonTrackerIsoSumPT[nequiv[n]]/_MuonPt[n]))
+			#trk_isos.append((T.MuonTrackerIsoSumPT[nequiv[n]]/_MuonPt[n]))
+			trk_isos.append((correctedIso/_MuonPt[n]))
 			chi2.append(T.MuonGlobalChi2[nequiv[n]])
 			pfid.append(T.MuonIsPF[nequiv[n]])
 			layers.append(T.MuonTrackLayersWithMeasurement[nequiv[n]])
@@ -1783,6 +1914,7 @@ def GetHHJetsNew(jets,btagScoresCSV,btagScoresMVA,muon1,muon2,jetinds, T, met):
 	#if v == '' : print len(jets)
 	highBtagCSV,highBtag = -20.0,-20.0
 	secondBtagCSV,secondBtag = -20.0,-20.0
+	jet1CISV,jet2CISV,jet1CMVA,jet2CMVA = -20.0,-20.0,-20.0,-20.0
 	highBtagCounter = -1
 	secondBtagCounter = -1
 	jet1index,jet2index = -1,-1
@@ -1799,6 +1931,7 @@ def GetHHJetsNew(jets,btagScoresCSV,btagScoresMVA,muon1,muon2,jetinds, T, met):
 	if not gotBs :
 		highBtagCSV,highBtag = -20.0,-20.0
 		secondBtagCSV,secondBtag = -20.0,-20.0
+		jet1CISV,jet2CISV,jet1CMVA,jet2CMVA = -20.0,-20.0,-20.0,-20.0
 		highBtagCounter = -1
 		secondBtagCounter = -1
 		indRecoBJet1 = -1
@@ -1928,6 +2061,8 @@ def GetHHJetsNew(jets,btagScoresCSV,btagScoresMVA,muon1,muon2,jetinds, T, met):
 					jet1index,jet2index = i,j
 					jet1, jet2 = jets[i], jets[j]
 					indRecoJet1, indRecoJet2 = jetinds[i], jetinds[j]
+					jet1CMVA, jet2CMVA = btagScoresMVA[i], btagScoresMVA[j]
+					jet1CISV, jet2CISV = btagScoresCSV[i], btagScoresCSV[j]
 					gotZjs = True
 		#if v == '': print 'Zjet reco ind',indRecoJet1,indRecoJet2,'jets ind',jet1index,jet2index,'M_H_mumujj',(muon1+muon2+jets[jet1index]+jets[jet2index]).M()
 
@@ -1937,6 +2072,8 @@ def GetHHJetsNew(jets,btagScoresCSV,btagScoresMVA,muon1,muon2,jetinds, T, met):
 			jet1=jets[i]
 			indRecoJet1=jetinds[i]
 			jet1index = i
+			jet1CMVA=btagScoresMVA[i]
+			jet1CISV=btagScoresCSV[i]
 			break
 		for i in range(len(jets)):
 			if i==highBtagCounter or i==secondBtagCounter: continue
@@ -1944,6 +2081,8 @@ def GetHHJetsNew(jets,btagScoresCSV,btagScoresMVA,muon1,muon2,jetinds, T, met):
 			jet2=jets[i]
 			indRecoJet2=jetinds[i]
 			jet2index = i
+			jet2CMVA=btagScoresMVA[i]
+			jet2CISV=btagScoresCSV[i]
 			break
 		for i in range(len(jets)):
 			if i==highBtagCounter or i==secondBtagCounter: continue
@@ -1964,7 +2103,7 @@ def GetHHJetsNew(jets,btagScoresCSV,btagScoresMVA,muon1,muon2,jetinds, T, met):
 	regr_bjet1.SetPtEtaPhiE(regr_corrF1*bjet1.Pt(), bjet1.Eta(), bjet1.Phi(), regr_corrF1*bjet1.Energy())
 	regr_bjet2.SetPtEtaPhiE(regr_corrF2*bjet2.Pt(), bjet2.Eta(), bjet2.Phi(), regr_corrF2*bjet2.Energy())
 	#if v == '' : print ' regr_corrF1 ', regr_corrF1, ' regr_corrF2 ', regr_corrF2
-	return [bjet1,highBtagCSV,highBtag,bjet2,secondBtagCSV,secondBtag,jet1,jet2,jet3,indRecoBJet1,indRecoBJet2,indRecoJet1,indRecoJet2,indRecoJet3,regr_bjet1,regr_bjet2]
+	return [bjet1,highBtagCSV,highBtag,bjet2,secondBtagCSV,secondBtag,jet1,jet2,jet3,jet1CISV,jet2CISV,jet1CMVA,jet2CMVA,indRecoBJet1,indRecoBJet2,indRecoJet1,indRecoJet2,indRecoJet3,regr_bjet1,regr_bjet2]
 
 def bjetRegressionCorrectionFactor(RegressionReader, _regrvarsnames, bjet, ind_orig, T, met):
 	# see https://github.com/ResonantHbbHgg/bbggTools/blob/master/src/bbggJetRegression.cc#L229
@@ -2543,7 +2682,7 @@ def FullKinematicCalculation(T,variation):
 
 	#[bjet1,bscore1,bscoreMVA1,bjet2,bscore2,bscoreMVA2,jet1,jet2,jet3,indRecoBJet1,indRecoBJet2,indRecoJet1,indRecoJet2,indRecoJet3] = GetHHJetsOld(jets,btagCSVscores,btagMVAscores,muons[0],muons[1],jetinds, T)
 	#[bjet1,bscore1,bscoreMVA1,bjet2,bscore2,bscoreMVA2,jet1,jet2,jet3,indRecoBJet1,indRecoBJet2,indRecoJet1,indRecoJet2,indRecoJet3,regr_bjet1,regr_bjet2] = GetHHJetsNew(jets,btagCSVscores,btagMVAscores,muons[0],muons[1],jetinds, T, met)
-	[unreg_bjet1,bscore1,bscoreMVA1,unreg_bjet2,bscore2,bscoreMVA2,jet1,jet2,jet3,indRecoBJet1,indRecoBJet2,indRecoJet1,indRecoJet2,indRecoJet3,bjet1,bjet2] = GetHHJetsNew(jets,btagCSVscores,btagMVAscores,muons[0],muons[1],jetinds, T, met)
+	[unreg_bjet1,bscore1,bscoreMVA1,unreg_bjet2,bscore2,bscoreMVA2,jet1,jet2,jet3,_cisv_Zjet1,_cisv_Zjet2,_cmva_Zjet1,_cmva_Zjet2,indRecoBJet1,indRecoBJet2,indRecoJet1,indRecoJet2,indRecoJet3,bjet1,bjet2] = GetHHJetsNew(jets,btagCSVscores,btagMVAscores,muons[0],muons[1],jetinds, T, met)
 
 	"""
 	#if muons[0].Pt()>20 and muons[1].Pt()>10 and variation=='':
@@ -2852,9 +2991,9 @@ def FullKinematicCalculation(T,variation):
 	toreturn += [_muonInd1,_muonInd2]
 	toreturn += [_jetInd1,_jetInd2]
 	toreturn += [_ptHat]
-	toreturn += [_CSVj1,_CSVj2]
+	toreturn += [_cisv_Zjet1,_cisv_Zjet2]
 	toreturn += [bscore1,bscore2]
-	toreturn += [_bMVAj1,_bMVAj2]
+	toreturn += [_cmva_Zjet1,_cmva_Zjet2]
 	toreturn += [bscoreMVA1,bscoreMVA2]
 	toreturn += [_isMuonEvent,_isElectronEvent]
 	toreturn += [_Hj1Matched,_Hj2Matched,_Zj1Matched,_Zj2Matched]
@@ -3006,18 +3145,17 @@ for n in range(N):
 	Branches['GoodVertexCount'][0] = CountVertices(t)
 
 	if t.isData == True:
-		Branches['pass_HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_DZ'][0] = PassTrigger(t,["HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v"],1)         # Data Only
-		Branches['pass_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ'][0] = PassTrigger(t,["HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v"],1)         # Data Only
-		Branches['pass_HLT_Mu17_Mu8'][0] = 1 if (PassTrigger(t,["HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v"],1) + PassTrigger(t,["HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v"],1))>0 else 0        # Data Only
 		Branches['passTriggerObjectMatching'][0]  = 1*(True in t.MuonHLTSingleMuonMatched)  # Data Only
 		Branches['passBadEESuperCrystal'][0]      = 1*(t.passEEBadScFilter) # Used, Data only
 	else:
-		Branches['pass_HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_DZ'][0] = 1#PassTrigger(t,["HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v"],1)         # Data Only
-		Branches['pass_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ'][0] = 1#PassTrigger(t,["HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v"],1)         # Data Only
-		Branches['pass_HLT_Mu17_Mu8'][0] = 1#PassTrigger(t,["HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v"],1) + PassTrigger(t,["HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v"],1)          # Data Only
 		Branches['passTriggerObjectMatching'][0]  = 1
 		Branches['passBadEESuperCrystal'][0]      = 1
 	
+        #Trigger on Data and MC
+	Branches['pass_HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_DZ'][0] = PassTrigger(t,["HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v"],1)
+	Branches['pass_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ'][0] = PassTrigger(t,["HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v"],1)
+	Branches['pass_HLT_Mu17_Mu8'][0] = 1 if (PassTrigger(t,["HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v"],1) + PassTrigger(t,["HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v"],1) + PassTrigger(t,["HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_v"],1) + PassTrigger(t,["HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_v"],1))>0 else 0
+
 	Branches['passPrimaryVertex'][0]          = 1*(t.passGoodVertices)     # checked, data+MC
 	Branches['passHBHENoiseFilter'][0]        = 1*(t.passHBHENoiseFilter) # checked, data+MC
 	Branches['passHBHENoiseIsoFilter'][0]     = 1*(t.passHBHENoiseIsoFilter) # checked, data+MC
@@ -3039,7 +3177,7 @@ for n in range(N):
 
 	# Looping over systematic variations
 	for v in _variations:
-		# All calucations are done here
+		# All calculations are done here
 		calculations = FullKinematicCalculation(t,v)
 		# Now cleverly cast the variables
 		for b in range(len(_kinematicvariables)):
