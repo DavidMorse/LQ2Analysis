@@ -20,6 +20,24 @@ for x in info:
 			card.append(x)
 cards.append(card)
 
+jers=[]
+jess=[]
+lumis=[]
+aligns=[]
+mers=[]
+mess=[]
+muids=[]
+pdfs=[]
+pus=[]
+ttnorms=[]
+ttshapes=[]
+trigs=[]
+wnorms=[]
+wshapes=[]
+znorms=[]
+zshapes=[]
+vvshapes=[]
+
 jer=[999.,0.]
 jes=[999.,0.]
 lumi=[999.,0.]
@@ -36,6 +54,7 @@ wnorm=[999.,0.]
 wshape=[999.,0.]
 znorm=[999.,0.]
 zshape=[999.,0.]
+vvshape=[999.,0.]
 
 jerSig=[999.,0.]
 jesSig=[999.,0.]
@@ -53,6 +72,7 @@ wnormSig=[999.,0.]
 wshapeSig=[999.,0.]
 znormSig=[999.,0.]
 zshapeSig=[999.,0.]
+vvshapeSig=[999.,0.]
 gotToBetaHalf=False
 def cardtotex(card):
 	# print '  --------------------------------------------------   '
@@ -102,101 +122,119 @@ def cardtotex(card):
 				sysname = sysname.replace('SHAPE','') + ' Shape'
 			sysnames.append(sysname)
 			#if float(mass)>1500 : continue
-			if gotToBetaHalf==True : continue
-			print sysname
+			#if gotToBetaHalf==True : continue #== for mumujj, != for munujj, commented out for both
+			#print sysname
 			if 'TT Shape' in sysname:
 				if r_b < ttshape[0]:ttshape[0]=r_b
 				if r_b > ttshape[1]:ttshape[1]=r_b
 				if r_s < ttshapeSig[0]:ttshapeSig[0]=r_s
 				if r_s > ttshapeSig[1]:ttshapeSig[1]=r_s
+				ttshapes.append(r_b)
 			if 'W Shape' in sysname:
 				if r_b < wshape[0]:wshape[0]=r_b
 				if r_b > wshape[1]:wshape[1]=r_b
 				if r_s < wshapeSig[0]:wshapeSig[0]=r_s
 				if r_s > wshapeSig[1]:wshapeSig[1]=r_s
+				wshapes.append(r_b)
 			if 'Z Shape' in sysname:
 				if r_b < zshape[0]:zshape[0]=r_b
 				if r_b > zshape[1]:zshape[1]=r_b
 				if r_s < zshapeSig[0]:zshapeSig[0]=r_s
 				if r_s > zshapeSig[1]:zshapeSig[1]=r_s
+				zshapes.append(r_b)
+			if 'VV Shape' in sysname:
+				if r_b < vvshape[0]:vvshape[0]=r_b
+				if r_b > vvshape[1]:vvshape[1]=r_b
+				if r_s < vvshapeSig[0]:vvshapeSig[0]=r_s
+				if r_s > vvshapeSig[1]:vvshapeSig[1]=r_s
+				vvshapes.append(r_b)
 			if 'TT Normalization' in sysname:
 				if r_b < ttnorm[0]:ttnorm[0]=r_b
 				if r_b > ttnorm[1]:ttnorm[1]=r_b
 				if r_s < ttnormSig[0]:ttnormSig[0]=r_s
 				if r_s > ttnormSig[1]:ttnormSig[1]=r_s
+				ttnorms.append(r_b)
 			if 'W Normalization' in sysname:
 				if r_b < wnorm[0]:wnorm[0]=r_b
 				if r_b > wnorm[1]:wnorm[1]=r_b
 				if r_s < wnormSig[0]:wnormSig[0]=r_s
 				if r_s > wnormSig[1]:wnormSig[1]=r_s
+				wnorms.append(r_b)
 			if 'Z Normalization' in sysname:
 				if r_b < znorm[0]:znorm[0]=r_b
 				if r_b > znorm[1]:znorm[1]=r_b
 				if r_s < znormSig[0]:znormSig[0]=r_s
 				if r_s > znormSig[1]:znormSig[1]=r_s
+				znorms.append(r_b)
 			if sysname == 'MUONIDISO':
 				sysname = 'Muon ID/Iso'
 				if r_b < muid[0]:muid[0]=r_b
 				if r_b > muid[1]:muid[1]=r_b
 				if r_s < muidSig[0]:muidSig[0]=r_s
 				if r_s > muidSig[1]:muidSig[1]=r_s
+				muids.append(r_b)
 			if sysname == 'MUONHLT': 
 				sysname = 'Trigger'
 				if r_b < trig[0]:trig[0]=r_b
 				if r_b > trig[1]:trig[1]=r_b
 				if r_s < trigSig[0]:trigSig[0]=r_s
 				if r_s > trigSig[1]:trigSig[1]=r_s
-			if sysname == 'ALIGN':
-				sysname = 'Misalignment'
-				if r_b < align[0]:align[0]=r_b
-				if r_b > align[1]:align[1]=r_b
-				if r_s < alignSig[0]:alignSig[0]=r_s
-				if r_s > alignSig[1]:alignSig[1]=r_s
-
+				trigs.append(r_b)
+			#if sysname == 'ALIGN':
+			#	sysname = 'Misalignment'
+			#	if r_b < align[0]:align[0]=r_b
+			#	if r_b > align[1]:align[1]=r_b
+			#	if r_s < alignSig[0]:alignSig[0]=r_s
+			#	if r_s > alignSig[1]:alignSig[1]=r_s
+			#	aligns.append(r_b)
 			if sysname == 'JES':
 				sysname = 'Jet Energy Scale'
 				if r_b < jes[0]:jes[0]=r_b
 				if r_b > jes[1]:jes[1]=r_b
 				if r_s < jesSig[0]:jesSig[0]=r_s
 				if r_s > jesSig[1]:jesSig[1]=r_s
+				jess.append(r_b)
 			if sysname == 'JER':
 				sysname = 'Jet Energy Resolution'
 				if r_b < jer[0]:jer[0]=r_b
 				if r_b > jer[1]:jer[1]=r_b
 				if r_s < jerSig[0]:jerSig[0]=r_s
 				if r_s > jerSig[1]:jerSig[1]=r_s
+				jers.append(r_b)
 			if sysname == 'MES':
 				sysname = 'Muon Energy Scale'
 				if r_b < mes[0]:mes[0]=r_b
 				if r_b > mes[1]:mes[1]=r_b
 				if r_s < mesSig[0]:mesSig[0]=r_s
 				if r_s > mesSig[1]:mesSig[1]=r_s
+				mess.append(r_b)
 			if sysname == 'MER':
 				sysname = 'Muon Energy Resolution'
 				if r_b < mer[0]:mer[0]=r_b
 				if r_b > mer[1]:mer[1]=r_b
 				if r_s < merSig[0]:merSig[0]=r_s
 				if r_s > merSig[1]:merSig[1]=r_s
+				mers.append(r_b)
 			if sysname == 'PU':
 				sysname = 'PileUp'
 				if r_b < pu[0]:pu[0]=r_b
 				if r_b > pu[1]:pu[1]=r_b
 				if r_s < puSig[0]:puSig[0]=r_s
 				if r_s > puSig[1]:puSig[1]=r_s
-
+				pus.append(r_b)
 			if sysname == 'LUMI': 
 				sysname = 'Lumi'
 				if r_b < lumi[0]:lumi[0]=r_b
 				if r_b > lumi[1]:lumi[1]=r_b
 				if r_s < lumiSig[0]:lumiSig[0]=r_s
 				if r_s > lumiSig[1]:lumiSig[1]=r_s
-
+				lumis.append(r_b)
 			if sysname == 'PDF': 
 				if r_b < pdf[0]:pdf[0]=r_b
 				if r_b > pdf[1]:pdf[1]=r_b
 				if r_s < pdfSig[0]:pdfSig[0]=r_s
 				if r_s > pdfSig[1]:pdfSig[1]=r_s
-
+				pdfs.append(r_b)
 
 
 
@@ -261,24 +299,33 @@ print '\n Deliniation of systematics list'
 for ii in range(len(totinfo)):
 	print cards[ii][0].replace('\n',''), sysuncs[ii]
 
-for x in [jer,jes,lumi,align,mer,mes,muid,pdf,pu,trig,ttnorm,ttshape,wnorm,wshape,znorm,zshape,jerSig,jesSig,lumiSig,alignSig,merSig,mesSig,muidSig,pdfSig,puSig,trigSig,ttnormSig,ttshapeSig,wnormSig,wshapeSig,znormSig,zshapeSig] :
+for x in [jer,jes,lumi,align,mer,mes,muid,pdf,pu,trig,ttnorm,ttshape,wnorm,wshape,znorm,zshape,vvshape,jerSig,jesSig,lumiSig,alignSig,merSig,mesSig,muidSig,pdfSig,puSig,trigSig,ttnormSig,ttshapeSig,wnormSig,wshapeSig,znormSig,zshapeSig,vvshapeSig] :
 	if x[0]==999.0: x[0]=0.0
 
 print 'Range of systematics:'
-print 'systematic, Signal min - max, BACKGROUND min - max'
-print 'Jet Energy Resolution  ', jerSig[0],'-',jerSig[1],'  ,  ',jer[0],'-',jer[1]
-print 'Jet Energy Scale       ', jesSig[0],'-',jesSig[1],'  ,  ',jes[0],'-',jes[1]
-print 'Lumi                   ', lumiSig[0],'-',lumiSig[1],'  ,  ',lumi[0],'-',lumi[1]
-print 'Misalignment           ', alignSig[0],'-',alignSig[1],'  ,  ',align[0],'-',align[1]
-print 'Muon Energy Resolution ', merSig[0],'-',merSig[1],'  ,  ',mer[0],'-',mer[1]
-print 'Muon Energy Scale      ', mesSig[0],'-',mesSig[1],'  ,  ',mes[0],'-',mes[1]
-print 'Muon ID/Iso            ', muidSig[0],'-',muidSig[1],'  ,  ',muid[0],'-',muid[1]
-print 'PDF                    ', pdfSig[0],'-',pdfSig[1],'  ,  ',pdf[0],'-',pdf[1]
-print 'PileUp                 ', puSig[0],'-',puSig[1],'  ,  ',pu[0],'-',pu[1]
-print 'Trigger                ', trigSig[0],'-',trigSig[1],'  ,  ',trig[0],'-',trig[1]
-print 'TT Normalization       ', ttnormSig[0],'-',ttnormSig[1],'  ,  ',ttnorm[0],'-',ttnorm[1]
-print 'TT Shape               ', ttshapeSig[0],'-',ttshapeSig[1],'  ,  ',ttshape[0],'-',ttshape[1]
-print 'W Normalization        ', wnormSig[0],'-',wnormSig[1],'  ,  ',wnorm[0],'-',wnorm[1]
-print 'W Shape                ', wshapeSig[0],'-',wshapeSig[1],'  ,  ',wshape[0],'-',wshape[1]
-print 'Z Normalization        ', znormSig[0],'-',znormSig[1],'  ,  ',znorm[0],'-',znorm[1]
-print 'Z Shape                ', zshapeSig[0],'-',zshapeSig[1],'  ,  ',zshape[0],'-',zshape[1]
+print '|  systematic  |  Signal min - max  |  BG min - max  |'
+print '|  Jet Energy Resolution  |  ', jerSig[0],'-',jerSig[1],'  |  ',jer[0],'-',jer[1],'  |'
+print '|  Jet Energy Scale       |  ', jesSig[0],'-',jesSig[1],'  |  ',jes[0],'-',jes[1],'  |'
+print '|  Lumi                   |  ', lumiSig[0],'-',lumiSig[1],'  |  ',lumi[0],'-',lumi[1],'  |'
+#print '|  Misalignment           |  ', alignSig[0],'-',alignSig[1],'  |  ',align[0],'-',align[1],'  |'
+print '|  Muon Energy Resolution |  ', merSig[0],'-',merSig[1],'  |  ',mer[0],'-',mer[1],'  |'
+print '|  Muon Energy Scale      |  ', mesSig[0],'-',mesSig[1],'  |  ',mes[0],'-',mes[1],'  |'
+print '|  Muon ID/Iso            |  ', muidSig[0],'-',muidSig[1],'  |  ',muid[0],'-',muid[1],'  |'
+print '|  PDF                    |  ', pdfSig[0],'-',pdfSig[1],'  |  ',pdf[0],'-',pdf[1],'  |'
+print '|  PileUp                 |  ', puSig[0],'-',puSig[1],'  |  ',pu[0],'-',pu[1],'  |'
+print '|  Trigger                |  ', trigSig[0],'-',trigSig[1],'  |  ',trig[0],'-',trig[1],'  |'
+print '|  TT Normalization       |  ', ttnormSig[0],'-',ttnormSig[1],'  |  ',ttnorm[0],'-',ttnorm[1],'  |'
+print '|  TT Shape               |  ', ttshapeSig[0],'-',ttshapeSig[1],'  |  ',ttshape[0],'-',ttshape[1],'  |'
+print '|  W Normalization        |  ', wnormSig[0],'-',wnormSig[1],'  |  ',wnorm[0],'-',wnorm[1],'  |'
+print '|  W Shape                |  ', wshapeSig[0],'-',wshapeSig[1],'  |  ',wshape[0],'-',wshape[1],'  |'
+print '|  Z Normalization        |  ', znormSig[0],'-',znormSig[1],'  |  ',znorm[0],'-',znorm[1],'  |'
+print '|  Z Shape                |  ', zshapeSig[0],'-',zshapeSig[1],'  |  ',zshape[0],'-',zshape[1],'  |'
+print '|  VV Shape               |  ', vvshapeSig[0],'-',vvshapeSig[1],'  |  ',vvshape[0],'-',vvshape[1],'  |'
+
+print '\n\n'
+systos = ['jers','jess','lumis','aligns','mers','mess','muids','pdfs','pus','ttnorms','ttshapes','trigs','wnorms','wshapes','znorms','zshapes','vvshapes']
+i=0
+for x in [jers,jess,lumis,aligns,mers,mess,muids,pdfs,pus,ttnorms,ttshapes,trigs,wnorms,wshapes,znorms,zshapes,vvshapes]:
+	print systos[i],'= ',
+	i=i+1
+	print x

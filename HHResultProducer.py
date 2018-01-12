@@ -99,7 +99,12 @@ MuIsoScaleEMU = '*(IsMuon_muon1*(0.9985465327438463*(Pt_muon1>50)*(Pt_muon1<55)+
 # This is the rescaling of the EMu data for the ttbar estimate (2 - Eff_trigger)
 dataHLTEMUADJ = '*(2.0 - 1.0'+singlemuHLTEMU+')'
 
-bTagSF = '*(0.901114+(1.32145e-05*(Pt_Hjet1)))*(0.931535+(1.40704e-05*(Pt_Hjet2)))'
+
+# btag scale factors: https://twiki.cern.ch/twiki/bin/view/CMS/BTagSFMethods#1c_Event_reweighting_using_scale
+# For case of >=1 btag: w(>= 1|n) = 1 - w(0|n), where  w(0|n) = \prod_{i=1}^n (1-SF_i)
+#bTagSF = '*(0.901114+(1.32145e-05*(Pt_Hjet1)))*(0.931535+(1.40704e-05*(Pt_Hjet2)))'
+#bTagSF = '*(1-(1-(CMVA_bjet1>-0.5884)*0.561694*((1.+(0.31439*Pt_Hjet1))/(1.+(0.17756*Pt_Hjet1))))*(1-(CMVA_jet2>-0.5884)*0.561694*((1.+(0.31439*Pt_Hjet2))/(1.+(0.17756*Pt_Hjet2))))*(1-(CMVA_jet2>-0.5884)*0.561694*((1.+(0.31439*Pt_Zjet1))/(1.+(0.17756*Pt_Zjet1))))*(1-(CMVA_jet2>-0.5884)*0.561694*((1.+(0.31439*Pt_Zjet2))/(1.+(0.17756*Pt_Zjet2)))))'
+bTagSF = '*(1-(1-(CMVA_bjet1>-0.5884)*(0.976111+(-(4.37632e-05*Pt_Hjet1))))*(1-(CMVA_bjet2>-0.5884)*(0.976111+(-(4.37632e-05*Pt_Hjet2))))*(1-(CMVA_jet1>-0.5884)*(0.976111+(-(4.37632e-05*Pt_Zjet1))))*(1-(CMVA_jet2>-0.5884)*(0.976111+(-(4.37632e-05*Pt_Zjet2)))))'
 
 
 #This is for HIP problem https://twiki.cern.ch/twiki/bin/view/CMS/MuonReferenceEffsRun2#Tracking_efficiency_provided_by
@@ -114,7 +119,7 @@ eleRECOScale = '*((1-IsMuon_muon1)*(((Eta_muon1>-2.5)*(Eta_muon1<-2.45)*1.3176)+
 eleHEEPScale = '*((1-IsMuon_muon1)*(((Eta_muon1>-2.5)*(Eta_muon1<-1.566)*0.984)+((Eta_muon1>-1.4442)*(Eta_muon1<-0.5)*0.971)+((Eta_muon1>-0.5)*(Eta_muon1<-0.0)*0.961)+((Eta_muon1>0.0)*(Eta_muon1<0.5)*0.973)+((Eta_muon1>0.5)*(Eta_muon1<1.4442)*0.978)+((Eta_muon1>1.566)*(Eta_muon1<2.5)*0.980))+(1-IsMuon_muon2)*(((Eta_muon2>-2.5)*(Eta_muon2<-1.566)*0.984)+((Eta_muon2>-1.4442)*(Eta_muon2<-0.5)*0.971)+((Eta_muon2>-0.5)*(Eta_muon2<-0.0)*0.961)+((Eta_muon2>0.0)*(Eta_muon2<0.5)*0.973)+((Eta_muon2>0.5)*(Eta_muon2<1.4442)*0.978)+((Eta_muon2>1.566)*(Eta_muon2<2.5)*0.980)))'
 
 # Weights for different MC selections, including integrated luminosity, event weight, and trigger weight
-NormalWeightMuMu = str(lumi)+'*weight_central*weight_topPt'+trackerHIP1+trackerHIP2+doublemuHLT+doubleMuIdAndIsoScale#+bTagSF #fixme turning off trigger eff. for now
+NormalWeightMuMu = str(lumi)+'*weight_central*weight_topPt'+trackerHIP1+trackerHIP2+doublemuHLT+doubleMuIdAndIsoScale+bTagSF #fixme turning off trigger eff. for now
 NormalWeightMuNu = str(lumi)+'*weight_central*weight_topPt'+singlemuHLT+singleMuIdScale+singleMuIsoScale+trackerHIP1
 NormalWeightEMu = str(lumi)+'*weight_central*weight_topPt'+singlemuHLTEMU+MuIdScaleEMU+MuIsoScaleEMU+eleRECOScale+eleHEEPScale+trackerHIPEMU
 NormalWeightEMuNoHLT = str(lumi)+'*weight_central*weight_topPt'+MuIdScaleEMU+MuIsoScaleEMU+eleRECOScale+eleHEEPScale+trackerHIPEMU#fixme do we need scale factors here?
@@ -131,7 +136,10 @@ passfilter += '*(passBadMuon*passBadChargedHadron)'
 #passfilter += '*(noBadMuonsFlag*(1-duplicateMuonsFlag))'
 
 # This defines the preselections for the mu-mu, mu-nu, and e-mu samples
-preselection_nos = '((Pt_muon1>20)*(Pt_muon2>10)*(Pt_Hjet1>20)*(Pt_Hjet2>20)*(Pt_Zjet1>20)*(Pt_Zjet2>20)*(M_uu>12))'
+preselection_nos = '((Pt_muon1>20)*(Pt_muon2>10)*(Pt_Hjet1>20)*(Pt_Hjet2>20)*(Pt_Zjet1>20)*(Pt_Zjet2>20)*(M_uu>12)*(isMuonEvent))'
+#Require at least one loose MVA btag
+btagsel = '*(((CMVA_bjet1>-0.5884)+(CMVA_bjet2>-0.5884)+(CMVA_jet1>-0.5884)+(CMVA_jet2>-0.5884))>0)'
+preselection_nos = preselection_nos+btagsel
 preselectionmumu = preselection_nos + '*(Charge_muon1*Charge_muon2 < 0)'
 #preselectionmumu = '((Pt_muon1>20)*(Pt_muon2>10)*(Pt_Hjet1>25)*(Pt_Hjet2>25)*(Pt_Zjet1>20)*(Pt_Zjet2>20)*(Charge_muon1*Charge_muon2<0)*(CISV_bjet1>0.8)*(CISV_bjet2>0.46)*(abs(cosThetaStarMu)<0.9)*(M_uu>10)*(DPhi_uu_jj_Z<2.75)*(Pt_miss<150)*(M_uu<105)*(isMuonEvent>0))'
 
@@ -277,21 +285,21 @@ dphibinning = [64,0,3.2]
 bdtbinning = [40,-0.7,0.5]
 
 for x in range(40):
-	if ptbinning[-1] < 1500:
+	if ptbinning[-1] < 1000:
        		ptbinning.append(ptbinning[-1]+(ptbinning[-1] - ptbinning[-2])*1.2)
-       	if ptbinning2[-1] < 700:
+       	if ptbinning2[-1] < 500:
        		ptbinning2.append(ptbinning2[-1]+(ptbinning2[-1] - ptbinning2[-2])*1.2)
-       	if metbinning2[-1] < 700:
+       	if metbinning2[-1] < 500:
        		metbinning2.append(metbinning2[-1]+(metbinning2[-1] - metbinning2[-2])*1.2)		
-       	if stbinning[-1] < 3200:
+       	if stbinning[-1] < 2500:
        		stbinning.append(stbinning[-1]+(stbinning[-1] - stbinning[-2])*1.2)
-       	if bosonbinning[-1]<1000:
+       	if bosonbinning[-1]<9000:
        		bosonbinning.append(bosonbinning[-1]+ (bosonbinning[-1] - bosonbinning[-2])*1.2 )
-       	if lqbinning[-1]<2000:
+       	if lqbinning[-1]<1500:
        		lqbinning.append(lqbinning[-1]+(lqbinning[-1] - lqbinning[-2])*1.1)
-       	if bosonzoombinning_uujj_TT[-1] < 900:
+       	if bosonzoombinning_uujj_TT[-1] < 800:
        		bosonzoombinning_uujj_TT.append(bosonzoombinning_uujj_TT[-1] + (bosonzoombinning_uujj_TT[-1] - bosonzoombinning_uujj_TT[-2])*1.25)	       	
-	if metzoombinning_uujj_TT[-1] < 900:
+	if metzoombinning_uujj_TT[-1] < 800:
 	       	metzoombinning_uujj_TT.append(metzoombinning_uujj_TT[-1] + (metzoombinning_uujj_TT[-1] - metzoombinning_uujj_TT[-2])*1.4)		
 vbinning = [50,0,50]
 nbinning = [10,0,10]
@@ -324,7 +332,7 @@ def main():
 	# of running serially, which speeds things up.
 
 
-	version_name = 'Testing_diHiggs' # scriptflag
+	version_name = 'Testing_diHiggs_btag' # scriptflag
 	os.system('mkdir Results_'+version_name) 
 
 	MuMuOptCutFile = 'Results_'+version_name+'/OptHH_resCuts_Smoothed_pol2cutoff.txt' # scriptflag
@@ -610,7 +618,7 @@ def main():
 		print '\n  NormalWeightMuMu plus preselectionmumu  is : ', str(NormalWeightMuMu+'*'+preselectionmumu) , '\n' # AH:
 		#print lqbinning,stbinning
 		# Get Scale Factors
-		[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = GetMuMuScaleFactors( NormalWeightMuMu+'*'+preselectionmumu, NormalDirectory, '(M_uu>80)*(M_uu<100)*(((CISV_jet1>0.5426)+(CISV_jet2>0.5426))<1)', '(M_uu>100)*(Pt_miss>100)',0)
+		[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = GetMuMuScaleFactors( NormalWeightMuMu+'*'+preselectionmumu, NormalDirectory, '(M_uu>80)*(M_uu<100)', '(M_uu>100)*(Pt_miss>100)',0)
 		#[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = [[0.7878836290932162, 0.002600000000000006], [0.8199547022957769, 0.010549999999999738]]
 		# AH: To speed things up when debugging
 		

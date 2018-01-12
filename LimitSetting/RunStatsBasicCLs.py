@@ -1,20 +1,3 @@
-#1100:
-#observed: Limit: r < 0.826408 +/- 0.0112619 @ 95% CL
-#median expected:Limit: r < 0.957764 +/- 0.0139413 @ 95% CL
-#expected+1sigma:Limit: r < 1.34497 +/- 0.0210123 @ 95% CL
-#expected+2sigma:Limit: r < 1.82489 +/- 0.0116509 @ 95% CL
-#expected-1sigma:Limit: r < 0.843578 +/- 0.0188071 @ 95% CL
-#expected-2sigma:
-#
-#
-#-- Asymptotic -- 
-#Observed Limit: r < 0.6758
-#Expected  2.5%: r < 0.3972
-#Expected 16.0%: r < 0.5865
-#Expected 50.0%: r < 0.9416
-#Expected 84.0%: r < 1.5797
-#Expected 97.5%: r < 2.5324
-
 import os
 import sys
 import subprocess
@@ -76,6 +59,8 @@ if '--displacedBL' in sys.argv:
 if '--doFullHybridCLs' in sys.argv:
 	do_fullHybrid = 1
 
+
+
 singlebeta = -1
 
 numdo = 1	
@@ -106,6 +91,9 @@ for x in range(len(sys.argv)):
 		ctau = sys.argv[x+1]
 		fullcardfile = fullcardfile+ctau+'.txt'
 		print fullcardfile
+	if '--cardFile' in sys.argv[x]:
+		fullcardfile = sys.argv[x+1]
+
 
 from ROOT import *
 from array import array
@@ -191,7 +179,6 @@ if do_BetaOne == 1:
 		# print name[x]
 
 		for l in mycards:
-
 			if '.txt' in l and name[x] in l and str(name[x]+'0') not in l:
 				count = 1
 				for m in masses:
@@ -230,7 +217,7 @@ if do_BetaOne == 1:
 			else:
 				rmax = float(name[x].replace('LQ_M_',''))/4.#fixme was 10000.0
 		if 'BL' in lqtype:
-			rmax = float(name[x].replace('BLCTau'+ctau+'_M_',''))/40.#fixme was 10000.0
+			rmax = float(name[x].replace('BLCTau'+ctau+'_M_',''))/60.#fixme was 10000.0
 			if '1000' in ctau: rmax = 50000.0
 		breaker = False
 		ntry = 0 
@@ -762,13 +749,17 @@ if do_combo == 1:
 			breaker = False 
 			ntry = 0
 			oldrmax = 100000.0
+			betaCoruujj = (float(beta)*10)*(float(beta)<.1)+(float(beta))*(float(beta)>.1)*(float(beta)<.2)+1.0*(float(beta)>.2)
+			betaCoruvjj = 1.0*(float(beta)<.75)+(float(beta))*(float(beta)>.75)*(float(beta)<.9)+(float(beta)*10)*(float(beta)>.9)
+			betaCorComb = (float(beta)>0.4)*(float(beta)*10)*(float(beta)<.1)+(float(beta))*(float(beta)>.1)*(float(beta)<.2)+1.0*(float(beta)>.2) + (float(beta)<0.4)* 1.0*(float(beta)<.75)+(float(beta))*(float(beta)>.75)*(float(beta)<.9)+(float(beta)*10)*(float(beta)>.9)
 			if 'LQ' in lqtype:
 				if float(name[x].replace('LQ_M_',''))<900:
-					rmax = float(name[x].replace('LQ_M_',''))/10.#fixme was 10000.0
+					rmax = float(name[x].replace('LQ_M_',''))/10./betaCorComb#fixme was 10000.0
 				elif float(name[x].replace('LQ_M_',''))<1200:
-					rmax = float(name[x].replace('LQ_M_',''))/10.#fixme was 10000.0
+					rmax = float(name[x].replace('LQ_M_',''))/10./betaCorComb#fixme was 10000.0
 				else:
-					rmax = float(name[x].replace('LQ_M_',''))/4.#fixme was 10000.0
+					rmax = float(name[x].replace('LQ_M_',''))/4./betaCorComb#fixme was 10000.0
+			#rmax = 1000.0
 			while 'r < 0.000000' in str(EstimationInformation0):
 				ntry += 1
 				rAbsAcc='.00005'
@@ -807,11 +798,12 @@ if do_combo == 1:
 			oldrmax = 100000.0
 			if 'LQ' in lqtype:
 				if float(name[x].replace('LQ_M_',''))<900:
-					rmax = float(name[x].replace('LQ_M_',''))/10.#fixme was 10000.0
+					rmax = float(name[x].replace('LQ_M_',''))/10./betaCoruujj#fixme was 10000.0
 				elif float(name[x].replace('LQ_M_',''))<1200:
-					rmax = float(name[x].replace('LQ_M_',''))/10.#fixme was 10000.0
+					rmax = float(name[x].replace('LQ_M_',''))/10./betaCoruujj#fixme was 10000.0
 				else:
-					rmax = float(name[x].replace('LQ_M_',''))/4.#fixme was 10000.0
+					rmax = float(name[x].replace('LQ_M_',''))/4./betaCoruujj#fixme was 10000.0
+			#rmax = 1000.0
 			while 'r < 0.000000' in str(EstimationInformation1):
 				ntry += 1				
 				print 'combine '+ESTIMATIONMETHOD+' '+newcard_BetaOne +' --rMax '+str(rmax)+' --rAbsAcc '+rAbsAcc
@@ -851,12 +843,13 @@ if do_combo == 1:
 			oldrmax = 100000.0
 			if 'LQ' in lqtype:
 				if float(name[x].replace('LQ_M_',''))<900:
-					rmax = float(name[x].replace('LQ_M_',''))/10.#fixme was 10000.0
+					rmax = float(name[x].replace('LQ_M_',''))/10./betaCoruvjj#fixme was 10000.0
 				elif float(name[x].replace('LQ_M_',''))<1200:
-					rmax = float(name[x].replace('LQ_M_',''))/10.#fixme was 10000.0
+					rmax = float(name[x].replace('LQ_M_',''))/10./betaCoruvjj#fixme was 10000.0
 				else:
-					rmax = float(name[x].replace('LQ_M_',''))/4.#fixme was 10000.0
+					rmax = float(name[x].replace('LQ_M_',''))/4./betaCoruvjj#fixme was 10000.0
 
+			#rmax = 1000.0
 			while 'r < 0.000000' in str(EstimationInformation2):
 				ntry += 1
 				print 'combine '+ESTIMATIONMETHOD+' '+newcard_BetaHalf +' --rMax '+str(rmax)+' --rAbsAcc '+rAbsAcc
@@ -1101,7 +1094,9 @@ if do_BetaOne == 1:
 	if 'LQ' in lqtype:
 		masses=[200, 250, 300, 350, 400, 450, 500, 550, 600, 650, 700, 750, 800, 850, 900, 950, 1000, 1050, 1100, 1150, 1200, 1250, 1300, 1350, 1400, 1450, 1500, 1550, 1600, 1650, 1700, 1750, 1800, 1850, 1900, 1950, 2000]
 	if 'BL' in lqtype:
+		#masses=[125,150,175,200,300,400,500,600,700,800,900,1000,1100,1200]
 		masses=[200,300,400,500,600,700,800,900,1000,1100,1200]
+		#masses=[200]
 
 	print "*"*40 + '\n BETA ONE ASYMPTOTIC CLS RESULTS\n\n' +"*"*40
 	

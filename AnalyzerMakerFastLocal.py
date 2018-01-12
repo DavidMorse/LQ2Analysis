@@ -153,7 +153,8 @@ def GetGoodFiles(edir):
 	def GetSpaceUse():
 		#print 'edir',edir
 		#command =  'cmsLs -R '+edir + '| grep root | grep -v failed'
-		command =  '/afs/cern.ch/project/eos/installation/0.3.121-aquamarine/bin/eos.select find '+edir + '| grep root | grep -v failed'
+		#command =  '/afs/cern.ch/project/eos/installation/0.3.121-aquamarine/bin/eos.select find '+edir + '| grep root | grep -v failed'
+		command =  'find /eos/cms'+edir + '| grep root | grep -v failed'
 		dircont = [ x.replace('\n','') for x in os.popen(command).readlines()]
 		print 'Total files (', len(dircont),') reduced to ',
 		
@@ -193,7 +194,8 @@ def GetGoodFiles(edir):
 			continue
 		x = x.split()
 		#print x
-		newCommand = '/afs/cern.ch/project/eos/installation/0.3.84-aquamarine/bin/eos.select ls -l '+x[-1]
+		#newCommand = '/afs/cern.ch/project/eos/installation/0.3.84-aquamarine/bin/eos.select ls -l '+x[-1]
+		newCommand = 'ls -l /eos/cms'+x[-1]
 		lsDashL =  os.popen(newCommand).readlines()
 		#print lsDashL[0]
 		pieces = lsDashL[0].split()
@@ -211,7 +213,6 @@ def GetGoodFiles(edir):
 		print name,goodeval
 		if goodeval == True:
 			files.append([size,name,ident])
-		time.sleep(.0075)#fixme todo Morse added because eos
 
 	checkedfiles = []
 
@@ -405,7 +406,7 @@ def MakeJobs(njobs):
 		#subber.write('\ncp '+thisdir+'/*json .')
 		#subber.write('\ncp '+thisdir+'/metFilterLists/* .')
 		subber.write('\ncp '+thisdir+'/PU*root .\n\n')
-		subber.write('\ncp '+thisdir+'/weights_classification/* .\n\n')
+		subber.write('\ncp -r '+thisdir+'/weights_classification .\n\n')
 
 		# if Nj*njobs>5000:
 		# 	continue

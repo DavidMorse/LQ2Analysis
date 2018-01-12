@@ -20,7 +20,7 @@ tmpnum = 1
 
 
 # Loop over channels and systematic variations
-for c in ['uvjj']:
+for c in ['uujj','uvjj']:
 	for v in _Variations:
 		tmpnum += 1
 		# this will be the new .py file for this channel/variation
@@ -80,7 +80,7 @@ for c in ['uvjj']:
 		fout = open(ftcsh,'w')
 
 		# Lines for CMSSW setup
-		fout.write('#!/bin/csh\nsetenv SCRAM_ARCH slc6_amd64_gcc530\ncmsrel CMSSW_8_0_24\ncd CMSSW_8_0_24/src\ncmsenv\ncd '+pwd+'\n')
+		fout.write('#!/bin/csh\nsetenv SCRAM_ARCH slc6_amd64_gcc530\ncmsrel CMSSW_8_0_26_patch1\ncd CMSSW_8_0_26_patch1/src\ncmsenv\ncd '+pwd+'\n')
 		# Line for running the .py file
 		fout.write('python '+runfile+'\n\n')
 		# Close tcsh script

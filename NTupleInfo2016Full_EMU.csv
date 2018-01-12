@@ -1,7 +1,7 @@
 SignalType,Xsections,N_orig,Group,CustomJson,EOSDirectory
 DYJetsToLL_Pt-50To100_,354.3,47590627,ZJetsPtBin,0,/store/group/phys_exotica/leptonsPlusJets/RootNtuple/RunII/dmorse/v2-3-6/
 DYJetsToLL_Pt-100To250_,83.12,29846562,ZJetsPtBin,0,/store/group/phys_exotica/leptonsPlusJets/RootNtuple/RunII/dmorse/v2-3-6/
-DYJetsToLL_Pt-250To400_,3.047,7764635,ZJetsPtBin,0,/store/group/phys_exotica/leptonsPlusJets/RootNtuple/RunII/dmorse/v2-3-6/
+DYJetsToLL_Pt-250To400_,3.047,7783885,ZJetsPtBin,0,/store/group/phys_exotica/leptonsPlusJets/RootNtuple/RunII/dmorse/v2-3-6/
 DYJetsToLL_Pt-400To650_,0.3921,628078,ZJetsPtBin,0,/store/group/phys_exotica/leptonsPlusJets/RootNtuple/RunII/dmorse/v2-3-6/
 DYJetsToLL_Pt-650ToInf_,0.03636,668552,ZJetsPtBin,0,/store/group/phys_exotica/leptonsPlusJets/RootNtuple/RunII/dmorse/v2-3-6/
 DYJetsToLL_M-50_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8,5765.4,81781064,ZJetsPtBin,0,/store/group/phys_exotica/leptonsPlusJets/RootNtuple/RunII/dmorse/v2-3-6/
@@ -17,7 +17,7 @@ WJetsToLNu_Pt-100To250_,630.6,43329358,WJetsPtBin,0,/store/group/phys_exotica/le
 WJetsToLNu_Pt-250To400_,22.1,4395626,WJetsPtBin,0,/store/group/phys_exotica/leptonsPlusJets/RootNtuple/RunII/dmorse/v2-3-6/
 WJetsToLNu_Pt-400To600_,2.67,740953,WJetsPtBin,0,/store/group/phys_exotica/leptonsPlusJets/RootNtuple/RunII/dmorse/v2-3-6/
 WJetsToLNu_Pt-600ToInf_,0.4168,792895,WJetsPtBin,0,/store/group/phys_exotica/leptonsPlusJets/RootNtuple/RunII/dmorse/v2-3-6/
-WJetsToLNu_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8,61526.7,16497028,WJetsIncAmcNlo,0,/store/group/phys_exotica/leptonsPlusJets/RootNtuple/RunII/dmorse/v2-3-6/
+WJetsToLNu_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8,61526.7,16497028,WJetsPtBin,0,/store/group/phys_exotica/leptonsPlusJets/RootNtuple/RunII/dmorse/v2-3-6/
 QCD_Pt-15to20_MuEnrichedPt5_,3.627e+06,4141251,QCDMu,0,/store/group/phys_exotica/leptonsPlusJets/RootNtuple/RunII/dmorse/v2-3-6/
 QCD_Pt-20to30_MuEnrichedPt5_,3.140e+06,31475157,QCDMu,0,/store/group/phys_exotica/leptonsPlusJets/RootNtuple/RunII/dmorse/v2-3-6/
 QCD_Pt-30to50_MuEnrichedPt5_,1.652e+06,29835930,QCDMu,0,/store/group/phys_exotica/leptonsPlusJets/RootNtuple/RunII/dmorse/v2-3-6/
@@ -30,8 +30,8 @@ QCD_Pt-470to600_MuEnrichedPt5_,7.916e+01,19315563,QCDMu,0,/store/group/phys_exot
 QCD_Pt-600to800_MuEnrichedPt5_,2.527e+01,19690275,QCDMu,0,/store/group/phys_exotica/leptonsPlusJets/RootNtuple/RunII/dmorse/v2-3-6/
 QCD_Pt-800to1000_MuEnrichedPt5_,4.732e+00,19767439,QCDMu,0,/store/group/phys_exotica/leptonsPlusJets/RootNtuple/RunII/dmorse/v2-3-6/
 QCD_Pt-1000toInf_MuEnrichedPt5_,1.621e+00,13599938,QCDMu,0,/store/group/phys_exotica/leptonsPlusJets/RootNtuple/RunII/dmorse/v2-3-6/
-TT_TuneCUETP8M2T4_13TeV-powheg-pythia8,831.76,154743838,TTBar_powheg,0,/store/group/phys_exotica/leptonsPlusJets/RootNtuple/RunII/dmorse/v2-3-6/
-TTJets_TuneCUETP8M2T4_13TeV-amcatnloFXFX-pythia8,831.76,14937395,TTBar_amcnlo,0,/store/group/phys_exotica/leptonsPlusJets/RootNtuple/RunII/dmorse/v2-3-6/
+TT_TuneCUETP8M2T4_13TeV-powheg-pythia8,831.76,155235652,TTBar_powheg,0,/store/group/phys_exotica/leptonsPlusJets/RootNtuple/RunII/dmorse/v2-3-6/
+TTJets_TuneCUETP8M2T4_13TeV-amcatnloFXFX-pythia8,831.76,15033980,TTBar_amcnlo,0,/store/group/phys_exotica/leptonsPlusJets/RootNtuple/RunII/dmorse/v2-3-6/
 SingleMuon_Run2016B-03Feb2017,1,1,SingleMuData_2016Bv3,Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt,/store/group/phys_exotica/leptonsPlusJets/RootNtuple/RunII/dmorse/v2-3-6/SingleMuon/
 SingleMuon_Run2016C-03Feb2017,1,1,SingleMuData_2016C,Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt,/store/group/phys_exotica/leptonsPlusJets/RootNtuple/RunII/dmorse/v2-3-6/SingleMuon/
 SingleMuon_Run2016D-03Feb2017,1,1,SingleMuData_2016D,Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt,/store/group/phys_exotica/leptonsPlusJets/RootNtuple/RunII/dmorse/v2-3-6/SingleMuon/

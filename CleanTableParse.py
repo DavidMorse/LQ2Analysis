@@ -91,8 +91,9 @@ def tableentryfromraw(rates, stats, syss,flagsys):
 	for x in range(len(rates)):
 		r += rates[x]
 		sy += (syss[x]*rates[x])**2
-		if rates[x]<0.000001 or stats[x][0]<0.000001:#fixme with neg. weights from amcNLO can have 0 stats but >0 rate!!!! come up with fix!
-			sterr = [0,stats[x][1]*1.14]
+		if rates[x]<0.000001:
+			sterr = [0,stats[x][1]]
+			#sterr = [0,stats[x][1]*1.14]#fixme why multiply by sqrt(2)????
 		else:
 			nomerr = math.sqrt(1.0/(1.0*stats[x][0]))*rates[x]
 			sterr = [nomerr,nomerr]
@@ -147,10 +148,14 @@ def cardtotex(card):
 			backgrounds = [float(x) for x in vals[2:]]
 
 		if texchan == 'uujj':
-			backcols = [['Z+Jets',['ZJets']],['$\\ttbar$',['TTBar']],['Other BG',['WJets','sTop','VV']]]
+			#backcols = [['Z+Jets',['ZJets']],['$\\ttbar$',['TTBar']],['Other BG',['WJets','sTop','VV','QCD']]]
+			#backcols = [['Z+Jets',['ZJets']],['$\\ttbar$',['TTBar']],['W+Jets',['WJets']],['sTop',['sTop']],['VV',['VV']],['QCD',['QCD']]]
+			backcols = [['Z+Jets',['ZJets']],['$\\ttbar$',['TTBar']],['W+Jets',['WJets']],['sTop',['sTop']],['VV',['VV']]]
 
 		if texchan == 'uvjj':
-			backcols = [['W+Jets',['WJets']],['$\\ttbar$',['TTBar']],['Other BG',['ZJets','sTop','VV']]]
+			#backcols = [['W+Jets',['WJets']],['$\\ttbar$',['TTBar']],['Other BG',['ZJets','sTop','VV','QCD']]]
+			#backcols = [['W+Jets',['WJets']],['$\\ttbar$',['TTBar']],['Z+Jets',['ZJets']],['sTop',['sTop']],['VV',['VV']],['QCD',['QCD']]]
+			backcols = [['W+Jets',['WJets']],['$\\ttbar$',['TTBar']],['Z+Jets',['ZJets']],['sTop',['sTop']],['VV',['VV']]]
 
 
 		if 'lnN' in line:
@@ -187,7 +192,7 @@ def cardtotex(card):
 
 	tabhead = '$M_{LQ}$ & Signal & '
 	tabline = mass+' & '+__S+' & '
-
+	
 	for b in backcols:
 		__Bh = b[0]
 		tabhead += __Bh+' & '
@@ -223,8 +228,8 @@ def cardtotex(card):
 	tabhead += 'Data \\\\ \\hline'
 	tabline += data +' \\\\'
 
-	# print tabhead
-	# print tablin
+	#print tabhead
+	#print tabline
 
 
 	return tabhead,tabline
