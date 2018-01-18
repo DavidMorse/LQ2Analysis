@@ -1967,8 +1967,8 @@ def GetHHJetsNew(jets,btagScoresCSV,btagScoresMVA,muon1,muon2,jetinds, T, met):
 
 		for i in range(len(btagScoresMVA)) :
 			#if T.PFJetPartonFlavourAK4CHS[jetinds[i]] == 21 : continue  # for testing the effect of gluon jets
-			if btagScoresCSV[i] < 0.57 : continue
-			if btagScoresMVA[i] < -0.7 : continue
+			if btagScoresCSV[i] < 0.5426 : continue # 0.5426 is Loose WP
+			if btagScoresMVA[i] < -0.5884 : continue # -0.5884 is Loose WP
 			if i==jet1index or i==jet2index: continue
 			if btagScoresMVA[i]>highBtag:
 				highBtag = btagScoresMVA[i]
@@ -1976,8 +1976,8 @@ def GetHHJetsNew(jets,btagScoresCSV,btagScoresMVA,muon1,muon2,jetinds, T, met):
 				highBtagCounter = i
 		for i in range(len(btagScoresMVA)) :
 			#if T.PFJetPartonFlavourAK4CHS[jetinds[i]] == 21 : continue  # for testing the effect of gluon jets
-			if btagScoresCSV[i] < 0.57 : continue
-			if btagScoresMVA[i] < -0.7 : continue
+			if btagScoresCSV[i] < 0.5426 : continue
+			if btagScoresMVA[i] < -0.5884 : continue
 			if i==jet1index or i==jet2index: continue
 			if i==highBtagCounter: continue
 			if btagScoresMVA[i]>secondBtag :
@@ -2018,12 +2018,12 @@ def GetHHJetsNew(jets,btagScoresCSV,btagScoresMVA,muon1,muon2,jetinds, T, met):
 		closestH = 2200 #2200. #50.
 		for i in range(len(jets)-1) :
 			#if T.PFJetPartonFlavourAK4CHS[jetinds[i]] == 21 : continue  # for testing the effect of gluon jets
-			if btagScoresCSV[i] < 0.06  and abs(-0.853212237358 - btagScoresMVA[i]) < 0.000000000002 : continue
+			if btagScoresCSV[i] < 0.05  and  btagScoresMVA[i] < -0.853 : continue # -0.853 is just above the peak
 			if not T.PFJetPileupMVApassesMediumAK4CHS[jetinds[i]] : continue
 			if i==jet1index or i==jet2index: continue
 			for j in range(i+1,len(jets)) :
 				#if T.PFJetPartonFlavourAK4CHS[jetinds[j]] == 21 : continue  # for testing the effect of gluon jets
-				if btagScoresCSV[j] < 0.06  and abs(-0.853212237358 - btagScoresMVA[j]) < 0.000000000002 : continue
+				if btagScoresCSV[j] < 0.05  and btagScoresMVA[j] < -0.853 : continue
 				if not T.PFJetPileupMVApassesMediumAK4CHS[jetinds[j]] : continue
 				if j==jet1index or j==jet2index: continue
 				if i>=j: continue
