@@ -282,7 +282,7 @@ drbinning = [70,0,7]
 phibinning = [26,-3.1416,3.1416]
 phi0binning = [13,0,3.1416]
 dphibinning = [64,0,3.2]
-bdtbinning = [40,-0.7,0.5]
+bdtbinning = [50,-0.7,0.7]
 
 for x in range(40):
 	if ptbinning[-1] < 1000:
@@ -1699,9 +1699,10 @@ def setZeroBinErrors(data, bg):
 			#data.SetBinErrorOption(TH1.kPoisson)
 	return data
 
-def setZeroBinErrors_tgraph(data_hist,data, bg, sig_hist1, sig_hist2):
+def setZeroBinErrors_tgraph(data_hist,data, bg, sig_hist1, sig_hist2, blinded):
 	start = False
 	nBins = data.GetN()
+	blindstart=0.15
 	for bins in range(nBins):
 		alpha = 1 - 0.6827;
 		N = data.GetY()[bins]
@@ -1716,8 +1717,9 @@ def setZeroBinErrors_tgraph(data_hist,data, bg, sig_hist1, sig_hist2):
 		#if start: print "\n----Bin:"+str(bins)+" bg:"+str(bg.GetStack().Last().GetBinContent(bins))+"\n"
 		if start and (bg.GetStack().Last().GetBinContent(bins+1)>.04 or sig_hist1.GetBinContent(bins+1)>0.04 or sig_hist2.GetBinContent(bins+1)>0.04):#and bin<=10 :#and bg.GetStack().Last().GetBinContent(bins+1)>.05:# and bin!=0:
 		#	data.SetBinErrorOption(TH1.kPoisson)
-			data.SetPointEYlow(bins,N-L)
-			data.SetPointEYhigh(bins,U-N)
+			if blinded==False or (blinded==True and data_hist.GetBinHighEdge(bins)<blindstart):
+				data.SetPointEYlow(bins,N-L)
+				data.SetPointEYhigh(bins,U-N)
 		#if start and bin==0 and bg.GetStack().Last().GetBinContent(bins+1)>.01:
 			#print "\n----------- setting error bars for 0 bin!  Bin:"+str(bins)+" bg:"+str(bg.GetStack().Last().GetBinContent(bins))+"\n"
 			#data.SetBinError(bins,1.84102164458)
@@ -3655,16 +3657,18 @@ def MakeBasicPlot(recovariable,xlabel,presentationbinning,selection,weight,FileD
 
 	if 'PAS' not in tagname:
 		c1 = TCanvas("c1","",800,800)
-		pad1 = TPad( 'pad1', 'pad1', 0.0, 0.4, 1.0, 1.0 )#divide canvas into pads
-		pad2 = TPad( 'pad2', 'pad2', 0.0, 0.26, 1.0, 0.4 )
-		pad3 = TPad( 'pad3', 'pad3', 0.0, 0.0, 1.0, 0.26 )
+		#pad1 = TPad( 'pad1', 'pad1', 0.0, 0.4, 1.0, 1.0 )#divide canvas into pads
+		#pad2 = TPad( 'pad2', 'pad2', 0.0, 0.26, 1.0, 0.4 )
+		#pad3 = TPad( 'pad3', 'pad3', 0.0, 0.0, 1.0, 0.26 )
+		pad1 = TPad( 'pad1', 'pad1', 0.0, 0.3, 1.0, 1.0 )#divide canvas into pads
+		pad3 = TPad( 'pad3', 'pad3', 0.0, 0.0, 1.0, 0.3 )
 		pad1.Draw()
-		pad2.Draw()
+		#pad2.Draw()
 		pad3.Draw()
 		pad1.SetBottomMargin(0.0)		
-		pad2.SetTopMargin(0.0)
+		#pad2.SetTopMargin(0.0)
 		pad3.SetTopMargin(0.0)
-		pad2.SetBottomMargin(0.0)
+		#pad2.SetBottomMargin(0.0)
 		pad3.SetBottomMargin(0.43)
 	else:
 		# if 'final' not in tagname:
@@ -4149,10 +4153,12 @@ def MakeBasicPlot(recovariable,xlabel,presentationbinning,selection,weight,FileD
 	#setZeroBinErrors(hs_rec_Data,MCStack)
 	#hs_rec_Data.Draw("E0PSAME")
 	hs_rec_Data_tgraph = TGraphAsymmErrors(hs_rec_Data)
+	blinded=False
+	if 'bdt' in tagname: blinded=True
 	if 'final' not in tagname:
-		setZeroBinErrors_tgraph(hs_rec_Data,hs_rec_Data_tgraph,MCStack,hs_rec_Signal,hs_rec_Signal2)
+		setZeroBinErrors_tgraph(hs_rec_Data,hs_rec_Data_tgraph,MCStack,hs_rec_Signal,hs_rec_Signal2,blinded)
 	else:
-	       	setZeroBinErrors_tgraph(hs_rec_Data,hs_rec_Data_tgraph,MCStack,hs_rec_Signal,hs_rec_Signal)
+	       	setZeroBinErrors_tgraph(hs_rec_Data,hs_rec_Data_tgraph,MCStack,hs_rec_Signal,hs_rec_Signal,blinded)
 
 	hs_rec_Data_tgraph.Draw("ZE0PSAME")
 
@@ -4214,12 +4220,12 @@ def MakeBasicPlot(recovariable,xlabel,presentationbinning,selection,weight,FileD
  
 	if  'PAS' in tagname and 'tagfree' not in tagname:
 		#l1.DrawLatex(0.18,0.94,"CMS #it{Preliminary}      "+sqrts+", 19.7 fb^{-1}")
-		l1.DrawLatex(0.13,0.94,"#it{Preliminary}                                        35.9 fb^{-1} (13 TeV)")
+		l1.DrawLatex(0.13,0.94,"#it{Preliminary}                                35.9 fb^{-1} (13 TeV)")
 		#l1.DrawLatex(0.64,0.94,"5 fb^{-1} (13 TeV)")
 		l2.DrawLatex(0.15,0.84,"CMS")
 	else:
 		#l1.DrawLatex(0.18,0.94,"                          "+sqrts+", 225.57 pb^{-1}")
-		l1.DrawLatex(0.13,0.94,"#it{Preliminary}                                        35.9 fb^{-1} (13 TeV)")
+		l1.DrawLatex(0.12,0.94,"#it{Preliminary}                           35.9 fb^{-1} (13 TeV)")
 		l2.DrawLatex(0.15,0.84,"CMS")
 
 
@@ -4249,9 +4255,9 @@ def MakeBasicPlot(recovariable,xlabel,presentationbinning,selection,weight,FileD
 	resstring = ''
 	if 'PAS' not in tagname:
 
-		pad2.cd()
+		pad3.cd()
 		# pad2.SetLogy()
-		pad2.SetGrid()
+		pad3.SetGrid()
 
 		RatHistDen =CreateHisto('RatHisDen','RatHistDen',t_DoubleMuData,recovariable,presentationbinning,'0',DataRecoStyle,Label)
 
@@ -4281,15 +4287,15 @@ def MakeBasicPlot(recovariable,xlabel,presentationbinning,selection,weight,FileD
 		RatHistNum.GetYaxis().SetNdivisions(308,True)
 
 		RatHistNum.GetXaxis().SetTitleSize(0.);
-		RatHistNum.GetYaxis().SetTitleSize(.20);
+		RatHistNum.GetYaxis().SetTitleSize(.12);
 		RatHistNum.GetXaxis().CenterTitle();
 		RatHistNum.GetYaxis().CenterTitle();		
-		RatHistNum.GetXaxis().SetTitleOffset(.28);
-		RatHistNum.GetYaxis().SetTitleOffset(.18);
-		RatHistNum.GetYaxis().SetLabelSize(.15);
+		RatHistNum.GetXaxis().SetTitleOffset(.3);
+		RatHistNum.GetYaxis().SetTitleOffset(.4);
+		RatHistNum.GetYaxis().SetLabelSize(.1);
 		RatHistNum.GetXaxis().SetLabelSize(.09);
 
-		#blind(RatHistNum)#fixme
+		if blinded: blind(RatHistNum)#fixme
 		RatHistNum.Draw()
 
 	
@@ -4310,7 +4316,7 @@ def MakeBasicPlot(recovariable,xlabel,presentationbinning,selection,weight,FileD
 		unity=TLine(RatHistNum.GetXaxis().GetXmin(), 1.0 , RatHistNum.GetXaxis().GetXmax(),1.0)
 		unity.Draw("SAME")	
 
-
+		"""
 		pad3.cd()
 		# pad2.SetLogy()
 		pad3.SetGrid()
@@ -4358,7 +4364,7 @@ def MakeBasicPlot(recovariable,xlabel,presentationbinning,selection,weight,FileD
 		# chiplot.GetXaxis().SetTitle('');
 		chiplot.GetYaxis().SetTitle('#chi (Data,MC)');
 		# chiplot.GetXaxis().SetTitle('#chi (Data,MC)');
-
+		
 
 		chiplot.GetXaxis().SetTitleSize(.14);
 		chiplot.GetYaxis().SetTitleSize(.10);
@@ -4369,7 +4375,7 @@ def MakeBasicPlot(recovariable,xlabel,presentationbinning,selection,weight,FileD
 		chiplot.GetYaxis().SetLabelSize(.09);
 		chiplot.GetXaxis().SetLabelSize(.09);
 
-		#blind(chiplot)
+		if blinded :blind(chiplot)
 		chiplot.Draw('EP')
 		zero=TLine(RatHistNum.GetXaxis().GetXmin(), 0.0 , RatHistNum.GetXaxis().GetXmax(),0.0)
 		plus2=TLine(RatHistNum.GetXaxis().GetXmin(), 2.0 , RatHistNum.GetXaxis().GetXmax(),2.0)
@@ -4380,7 +4386,7 @@ def MakeBasicPlot(recovariable,xlabel,presentationbinning,selection,weight,FileD
 		plus2.Draw("SAME")
 		minus2.Draw("SAME")
 		zero.Draw("SAME")	
-
+		"""
 
 
 	if 'PAS' in tagname and 'final' in tagname and False:
@@ -4741,12 +4747,12 @@ def MakeBasicPlot2D(recovariableX,recovariableY,xlabel,ylabel,presentationbinnin
  
 	if  'PAS' in tagname and 'tagfree' not in tagname:
 		#l1.DrawLatex(0.18,0.94,"CMS #it{Preliminary}      "+sqrts+", 19.7 fb^{-1}")
-		l1.DrawLatex(0.12,0.93,"#it{Preliminary}                                       35.9 fb^{-1} (13 TeV)")
+		l1.DrawLatex(0.12,0.93,"#it{Preliminary}                              35.9 fb^{-1} (13 TeV)")
 		#l1.DrawLatex(0.64,0.94,"5 fb^{-1} (13 TeV)")
 		l2.DrawLatex(0.15,0.86,"CMS")
 	else:
 		#l1.DrawLatex(0.18,0.94,"                          "+sqrts+", 225.57 pb^{-1}")
-		l1.DrawLatex(0.125,0.93,"#it{Preliminary}                                            35.9 fb^{-1} (13 TeV)")
+		l1.DrawLatex(0.1,0.93,"#it{Preliminary}                          35.9 fb^{-1} (13 TeV)")
 		l2.DrawLatex(0.16,0.855,"CMS")
 
 	gPad.Update()
@@ -4955,11 +4961,11 @@ def MakeBasicPlotQCD(recovariable,xlabel,presentationbinning,selection,qcdselect
 	# l2.DrawLatex(0.15,0.83,"CMS #it{Preliminary}")
 	if  'PAS' in tagname and 'tagfree' not in tagname:
 		#l2.DrawLatex(0.18,0.94,"CMS #it{Preliminary}      "+sqrts+", 19.7 fb^{-1}")
-		l1.DrawLatex(0.13,0.94,"#it{Preliminary}                                     35.9 fb^{-1} (13 TeV)")
+		l1.DrawLatex(0.13,0.94,"#it{Preliminary}                            35.9 fb^{-1} (13 TeV)")
 		l2.DrawLatex(0.15,0.84,"CMS")
 	else:
 		#l2.DrawLatex(0.18,0.94,"                          "+sqrts+", 19.7 fb^{-1}")
-		l1.DrawLatex(0.13,0.94,"#it{Preliminary}                                     35.9 fb^{-1} (13 TeV)")
+		l1.DrawLatex(0.13,0.94,"#it{Preliminary}                            35.9 fb^{-1} (13 TeV)")
 		l2.DrawLatex(0.15,0.84,"CMS")
 	gPad.RedrawAxis()
 
@@ -5262,11 +5268,11 @@ def MakeBasicPlotEMu(recovariable,xlabel,presentationbinning,selection,weight,Fi
 	# l2.DrawLatex(0.15,0.83,"CMS #it{Preliminary} ")
 	if  'PAS' in tagname and 'tagfree' not in tagname:
 		#l2.DrawLatex(0.18,0.94,"CMS #it{Preliminary}      "+sqrts+", 19.7 fb^{-1}")
-		l1.DrawLatex(0.13,0.94,"#it{Preliminary}                                     35.9 fb^{-1} (13 TeV)")
+		l1.DrawLatex(0.13,0.94,"#it{Preliminary}                            35.9 fb^{-1} (13 TeV)")
 		l2.DrawLatex(0.15,0.84,"CMS")
 	else:
 		#l2.DrawLatex(0.18,0.94,"                          "+sqrts+", 19.7 fb^{-1}")
-		l1.DrawLatex(0.13,0.94,"#it{Preliminary}                                     35.9 fb^{-1} (13 TeV)")
+		l1.DrawLatex(0.13,0.94,"#it{Preliminary}                            35.9 fb^{-1} (13 TeV)")
 		l2.DrawLatex(0.15,0.84,"CMS")
 
 	gPad.RedrawAxis()
@@ -6055,9 +6061,11 @@ def ShapeSystematic(channel,normalWeight,presel,cutFile):
 	#shapesysvar_uujj_ttjets =  [33.0, 33.01, 35.65, 35.19, 35.24, 36.16, 37.41, 39.09, 40.03, 40.9, 41.67, 42.47, 43.18, 43.87, 44.21, 44.56, 45.91, 47.12, 47.9, 48.52, 49.2, 47.6, 47.23, 47.62, 47.73, 45.32, 43.66, 44.82, 45.28, 44.54, 45.37, 45.37, 45.37, 47.85, 47.85, 47.85, 47.85, 47.85, 47.85, 47.85]
 
 def blind(h):
+	blindstart=0.15
 	for bin in range(h.GetNbinsX()):
-		h.SetBinContent(bin+1,1.0)
-		h.SetBinError(bin+1,0.0)
+		if h.GetBinLowEdge(bin+1)>blindstart:
+			h.SetBinContent(bin+1,1.0)
+			h.SetBinError(bin+1,0.0)
 	h.SetMarkerSize(0.0)
 	h.SetLineWidth(0)
 
