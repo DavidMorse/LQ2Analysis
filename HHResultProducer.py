@@ -17,8 +17,8 @@ from glob import glob
 #NormalDirectory='NTupleAnalyzer_FullJuly24_2014_07_24_17_24_05/SummaryFiles'
 
 #NormalDirectory = '/media/dataPlus/dmorse/hhNtuples/NTupleAnalyzerHH_Full2016HH_2016_11_25/SummaryFiles'
-NormalDirectory = '/media/dataPlus/dmorse/hhNtuples/NTupleAnalyzerHH_full2016_sig_2017_09_15/SummaryFiles'
-QCDDirectory = '/media/dataPlus/dmorse/hhNtuples/NTupleAnalyzerHH_Full2016HH_v236_QCDNonIsoQuickTest_2017_05_15/SummaryFiles'
+NormalDirectory = '/media/dataPlus/dmorse/hhNtuples/NTupleAnalyzerHH_hhFull_QuickTest_2018_01_15/SummaryFiles'
+QCDDirectory = '/media/dataPlus/dmorse/hhNtuples/NTupleAnalyzerHH_hhFull_QCDNonIsoQuickTest_2018_01_15/SummaryFiles'
 EMuDirectory = 'emu'
 
 #NormalDirectory = 'NTupleAnalyzer_Jan30_76X_FULL_2016_02_06_18_41_13/SummaryFiles'
@@ -104,7 +104,7 @@ dataHLTEMUADJ = '*(2.0 - 1.0'+singlemuHLTEMU+')'
 # For case of >=1 btag: w(>= 1|n) = 1 - w(0|n), where  w(0|n) = \prod_{i=1}^n (1-SF_i)
 #bTagSF = '*(0.901114+(1.32145e-05*(Pt_Hjet1)))*(0.931535+(1.40704e-05*(Pt_Hjet2)))'
 #bTagSF = '*(1-(1-(CMVA_bjet1>-0.5884)*0.561694*((1.+(0.31439*Pt_Hjet1))/(1.+(0.17756*Pt_Hjet1))))*(1-(CMVA_jet2>-0.5884)*0.561694*((1.+(0.31439*Pt_Hjet2))/(1.+(0.17756*Pt_Hjet2))))*(1-(CMVA_jet2>-0.5884)*0.561694*((1.+(0.31439*Pt_Zjet1))/(1.+(0.17756*Pt_Zjet1))))*(1-(CMVA_jet2>-0.5884)*0.561694*((1.+(0.31439*Pt_Zjet2))/(1.+(0.17756*Pt_Zjet2)))))'
-bTagSF = '*(1-(1-(CMVA_bjet1>-0.5884)*(0.976111+(-(4.37632e-05*Pt_Hjet1))))*(1-(CMVA_bjet2>-0.5884)*(0.976111+(-(4.37632e-05*Pt_Hjet2))))*(1-(CMVA_jet1>-0.5884)*(0.976111+(-(4.37632e-05*Pt_Zjet1))))*(1-(CMVA_jet2>-0.5884)*(0.976111+(-(4.37632e-05*Pt_Zjet2)))))'
+bTagSF = '*(1-(1-(CMVA_bjet1>-0.5884)*(0.976111+(-(4.37632e-05*Pt_Hjet1))))*(1-(CMVA_bjet2>-0.5884)*(0.976111+(-(4.37632e-05*Pt_Hjet2))))*(1-(CMVA_Zjet1>-0.5884)*(0.976111+(-(4.37632e-05*Pt_Zjet1))))*(1-(CMVA_Zjet2>-0.5884)*(0.976111+(-(4.37632e-05*Pt_Zjet2)))))'
 
 
 #This is for HIP problem https://twiki.cern.ch/twiki/bin/view/CMS/MuonReferenceEffsRun2#Tracking_efficiency_provided_by
@@ -138,7 +138,7 @@ passfilter += '*(passBadMuon*passBadChargedHadron)'
 # This defines the preselections for the mu-mu, mu-nu, and e-mu samples
 preselection_nos = '((Pt_muon1>20)*(Pt_muon2>10)*(Pt_Hjet1>20)*(Pt_Hjet2>20)*(Pt_Zjet1>20)*(Pt_Zjet2>20)*(M_uu>12)*(isMuonEvent))'
 #Require at least one loose MVA btag
-btagsel = '*(((CMVA_bjet1>-0.5884)+(CMVA_bjet2>-0.5884)+(CMVA_jet1>-0.5884)+(CMVA_jet2>-0.5884))>0)'
+btagsel = '*(((CMVA_bjet1>-0.5884)+(CMVA_bjet2>-0.5884)+(CMVA_Zjet1>-0.5884)+(CMVA_Zjet2>-0.5884))>0)'
 preselection_nos = preselection_nos+btagsel
 preselectionmumu = preselection_nos + '*(Charge_muon1*Charge_muon2 < 0)'
 #preselectionmumu = '((Pt_muon1>20)*(Pt_muon2>10)*(Pt_Hjet1>25)*(Pt_Hjet2>25)*(Pt_Zjet1>20)*(Pt_Zjet2>20)*(Charge_muon1*Charge_muon2<0)*(CISV_bjet1>0.8)*(CISV_bjet2>0.46)*(abs(cosThetaStarMu)<0.9)*(M_uu>10)*(DPhi_uu_jj_Z<2.75)*(Pt_miss<150)*(M_uu<105)*(isMuonEvent>0))'
@@ -516,7 +516,7 @@ def main():
 		MakeBasicPlot("MuonCount","N_{#mu}",nbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard_TTBarDataDriven','displaced',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,500)
 
 		# Full Selection Plots
-		for lqmass in [200,300,400,500,600,700,800,900,1000]:
+		for lqmass in [200,300,400,500,600,750,800,900,1000]:
 			MakeBasicPlot("Pt_muon1","p_{T}(#mu_{1}) [GeV]",ptbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'finalTTBarDataDriven','displaced',Rz_uujj, Rw_uvjj,Rtt_uujj,MuMuOptCutFile,version_name,lqmass)
 			MakeBasicPlot("Pt_muon2","p_{T}(#mu_{2}) [GeV]",ptbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'finalTTBarDataDriven','displaced',Rz_uujj, Rw_uvjj,Rtt_uujj,MuMuOptCutFile,version_name,lqmass)
                         MakeBasicPlot("St_uujj","S_{T}^{#mu#mujj} [GeV]",stbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'finalTTBarDataDriven','displaced',Rz_uujj, Rw_uvjj,Rtt_uujj,MuMuOptCutFile,version_name,lqmass)
@@ -682,8 +682,24 @@ def main():
 		# UUJJ plots at preselection, Note that putting 'TTBarDataDriven' in the name turns on the use of data-driven ttbar e-mu sample in place of MC
 		# putting 'QCDDataDriven' will also turns on the use of data-driven QCD if not already set at default
 		
+		MakeBasicPlot("bdt_discrim_M260","BDT output at M260",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
+		MakeBasicPlot("bdt_discrim_M270","BDT output at M270",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
 		MakeBasicPlot("bdt_discrim_M300","BDT output at M300",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
+		MakeBasicPlot("bdt_discrim_M350","BDT output at M350",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
+		MakeBasicPlot("bdt_discrim_M400","BDT output at M400",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
+		MakeBasicPlot("bdt_discrim_M450","BDT output at M450",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
+		MakeBasicPlot("bdt_discrim_M500","BDT output at M500",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
 		MakeBasicPlot("bdt_discrim_M550","BDT output at M550",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
+		MakeBasicPlot("bdt_discrim_M600","BDT output at M600",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
+		MakeBasicPlot("bdt_discrim_M650","BDT output at M650",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
+		MakeBasicPlot("bdt_discrim_M750","BDT output at M750",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
+		MakeBasicPlot("bdt_discrim_M800","BDT output at M800",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
+		MakeBasicPlot("bdt_discrim_M900","BDT output at M900",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
+		MakeBasicPlot("bdt_discrim_M1000","BDT output at M1000",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
+		MakeBasicPlot("bdt_discrims2_M300","BDT output (no 6-object mass) at M300",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
+		MakeBasicPlot("bdt_discrims2_M550","BDT output (no 6-object mass) at M550",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
+		MakeBasicPlot("bdt_discrims3_low","BDT output combined M260-350",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
+		MakeBasicPlot("bdt_discrims3_high","BDT output combined M400-1000",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
 		MakeBasicPlot("cosTheta_hbb","cos(#Theta) (H->bb)",costhetastarbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
 		MakeBasicPlot("cosTheta_zuu_hzz","cos(#Theta) (Z->uu, H->ZZ)",costhetastarbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
 		MakeBasicPlot("cosThetaStarMu","cos(#Theta*)",costhetastarbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
@@ -694,7 +710,9 @@ def main():
 		MakeBasicPlot("phi1_zjj","#phi1_zjj",phi0binning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
 		MakeBasicPlot("St_uujj","S_{T}^{#mu#mujj} [GeV]",stbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
 		MakeBasicPlot("CMVA_bjet1","Jet1(H->bb) CMVA score",bjetbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
-		MakeBasicPlot("CMVA_bjet2","Jet2(H->bb) MVA score",bjetbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
+		MakeBasicPlot("CMVA_bjet2","Jet2(H->bb) CMVA score",bjetbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
+		MakeBasicPlot("CMVA_Zjet1","Jet1(Z->jj) CMVA score",bjetbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
+		MakeBasicPlot("CMVA_Zjet2","Jet2(Z->jj) CMVA score",bjetbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
 		#MakeBasicPlot("Pt_jet1","p_{T}(jet_{1}) [GeV]",ptbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
 		#MakeBasicPlot("Pt_jet2","p_{T}(jet_{2}) [GeV]",ptbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
 		MakeBasicPlot("Pt_Hjet1","p_{T}(bjet_{1}) (H) [GeV]",ptbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
@@ -802,8 +820,8 @@ def main():
 
 		#fixme turning off final selection
 		# Full Selection Plots
-#		for lqmass in [260,270,300,350,400,450,500,550,600,650,750,800,900,1000]:
-		for lqmass in [300,900]: # AH
+		for lqmass in [260,270,300,350,400,450,500,550,600,650,750,800,900,1000]:
+		#for lqmass in [300,900]: # AH
 			MakeBasicPlot("bdt_discrim_M300","BDT output at M300",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'final','HHres',Rz_uujj, Rw_uvjj,Rtt_uujj,MuMuOptCutFile,version_name,lqmass)
 			MakeBasicPlot("bdt_discrim_M550","BDT output at M550",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'final','HHres',Rz_uujj, Rw_uvjj,Rtt_uujj,MuMuOptCutFile,version_name,lqmass)
 			MakeBasicPlot("Pt_muon1","p_{T}(#mu_{1}) [GeV]",ptbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'final','HHres',Rz_uujj, Rw_uvjj,Rtt_uujj,MuMuOptCutFile,version_name,lqmass)
@@ -820,6 +838,8 @@ def main():
 			MakeBasicPlot("Pt_miss","E_{T}^{miss} [GeV]",ptbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'final','HHres',Rz_uujj, Rw_uvjj,Rtt_uujj,MuMuOptCutFile,version_name,lqmass)
 			MakeBasicPlot("CMVA_bjet1","Jet1(H->bb) CMVA score",bjetbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'final','HHres',Rz_uujj, Rw_uvjj,Rtt_uujj,MuMuOptCutFile,version_name,lqmass)
 			MakeBasicPlot("CMVA_bjet2","Jet2(H->bb) CMVA score",bjetbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'final','HHres',Rz_uujj, Rw_uvjj,Rtt_uujj,MuMuOptCutFile,version_name,lqmass)
+			MakeBasicPlot("CMVA_Zjet1","Jet1(Z->bb) CMVA score",bjetbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'final','HHres',Rz_uujj, Rw_uvjj,Rtt_uujj,MuMuOptCutFile,version_name,lqmass)
+			MakeBasicPlot("CMVA_Zjet2","Jet2(Z->bb) CMVA score",bjetbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'final','HHres',Rz_uujj, Rw_uvjj,Rtt_uujj,MuMuOptCutFile,version_name,lqmass)
 			MakeBasicPlot("CISV_bjet1","bJet1 CSV score",bjetbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'final','HHres',Rz_uujj, Rw_uvjj,Rtt_uujj,MuMuOptCutFile,version_name,lqmass)
 			MakeBasicPlot("CISV_bjet2","bJet2 CSV score",bjetbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'final','HHres',Rz_uujj, Rw_uvjj,Rtt_uujj,MuMuOptCutFile,version_name,lqmass)
 			MakeBasicPlot("CISV_jet1","Jet1 CSV score",bjetbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'final','HHres',Rz_uujj, Rw_uvjj,Rtt_uvjj,MuMuOptCutFile,version_name,lqmass)
@@ -1954,11 +1974,11 @@ def QCDStudy(sel_mumu,sel_munu,cutlogmumu,cutlogmunu,weight_mumu,weight_munu,ver
 
 	#############################################
 	data_ss_iso = QuickEntries(tn_DoubleMuData,sel_mumu + '*(Charge_muon1*Charge_muon2 > 0)'+               '*((TrkIso_muon1<0.1)*(TrkIso_muon2<0.1))',1.0)
-	zjet_ss_iso = QuickIntegral(tn_ZJetsPtBin,sel_mumu + '*(Charge_muon1*Charge_muon2 > 0)*'+weight_mumu+   '*((TrkIso_muon1<0.1)*(TrkIso_muon2<0.1))'+'*('+str(Rz_uujj)+')',1.0)
-	wjet_ss_iso = QuickIntegral(tn_WJetsPtBin,sel_mumu + '*(Charge_muon1*Charge_muon2 > 0)*'+weight_mumu+   '*((TrkIso_muon1<0.1)*(TrkIso_muon2<0.1))',1.0)
+	zjet_ss_iso = QuickIntegral(tn_ZJetsJBin,sel_mumu + '*(Charge_muon1*Charge_muon2 > 0)*'+weight_mumu+   '*((TrkIso_muon1<0.1)*(TrkIso_muon2<0.1))'+'*('+str(Rz_uujj)+')',1.0)
+	wjet_ss_iso = QuickIntegral(tn_WJetsJBin,sel_mumu + '*(Charge_muon1*Charge_muon2 > 0)*'+weight_mumu+   '*((TrkIso_muon1<0.1)*(TrkIso_muon2<0.1))',1.0)
 	stop_ss_iso = QuickIntegral(tn_SingleTop,sel_mumu + '*(Charge_muon1*Charge_muon2 > 0)*'+weight_mumu+    '*((TrkIso_muon1<0.1)*(TrkIso_muon2<0.1))',1.0)
 	vv_ss_iso   = QuickIntegral(tn_DiBoson,sel_mumu + '*(Charge_muon1*Charge_muon2 > 0)*'+weight_mumu+      '*((TrkIso_muon1<0.1)*(TrkIso_muon2<0.1))',1.0)
-	tt_ss_iso   = QuickIntegral(tn_TTBar_amcnlo,sel_mumu + '*(Charge_muon1*Charge_muon2 > 0)*'+weight_mumu+ '*((TrkIso_muon1<0.1)*(TrkIso_muon2<0.1))'+'*('+str(Rtt_uujj)+')',1.0)
+	tt_ss_iso   = QuickIntegral(tn_TTBarDBin,sel_mumu + '*(Charge_muon1*Charge_muon2 > 0)*'+weight_mumu+ '*((TrkIso_muon1<0.1)*(TrkIso_muon2<0.1))'+'*('+str(Rtt_uujj)+')',1.0)
 	smh_ss_iso  = QuickIntegral(tn_SMHiggs,sel_mumu + '*(Charge_muon1*Charge_muon2 > 0)*'+weight_mumu+      '*((TrkIso_muon1<0.1)*(TrkIso_muon2<0.1))',1.0)
 	qcd_ss_iso_val = data_ss_iso[0]-(zjet_ss_iso[0] + wjet_ss_iso[0] + stop_ss_iso[0] + vv_ss_iso[0] + tt_ss_iso[0] + smh_ss_iso[0])
 	qcd_ss_iso_err = math.sqrt(data_ss_iso[1]**2 + zjet_ss_iso[1]**2 + wjet_ss_iso[1]**2 + stop_ss_iso[1]**2 + vv_ss_iso[1]**2 + tt_ss_iso[1]**2 + smh_ss_iso[1]**2)
@@ -1966,11 +1986,11 @@ def QCDStudy(sel_mumu,sel_munu,cutlogmumu,cutlogmunu,weight_mumu,weight_munu,ver
 	print 'qcd_ss_iso: ', qcd_ss_iso
 
 	data_op_iso = QuickEntries(tn_DoubleMuData,sel_mumu + '*(Charge_muon1*Charge_muon2 < 0)'+               '*((TrkIso_muon1<0.1)*(TrkIso_muon2<0.1))',1.0)
-	zjet_op_iso = QuickIntegral(tn_ZJetsPtBin,sel_mumu + '*(Charge_muon1*Charge_muon2 < 0)*'+weight_mumu+   '*((TrkIso_muon1<0.1)*(TrkIso_muon2<0.1))'+'*('+str(Rz_uujj)+')',1.0)
-	wjet_op_iso = QuickIntegral(tn_WJetsPtBin,sel_mumu + '*(Charge_muon1*Charge_muon2 < 0)*'+weight_mumu+   '*((TrkIso_muon1<0.1)*(TrkIso_muon2<0.1))',1.0)
+	zjet_op_iso = QuickIntegral(tn_ZJetsJBin,sel_mumu + '*(Charge_muon1*Charge_muon2 < 0)*'+weight_mumu+   '*((TrkIso_muon1<0.1)*(TrkIso_muon2<0.1))'+'*('+str(Rz_uujj)+')',1.0)
+	wjet_op_iso = QuickIntegral(tn_WJetsJBin,sel_mumu + '*(Charge_muon1*Charge_muon2 < 0)*'+weight_mumu+   '*((TrkIso_muon1<0.1)*(TrkIso_muon2<0.1))',1.0)
 	stop_op_iso = QuickIntegral(tn_SingleTop,sel_mumu + '*(Charge_muon1*Charge_muon2 < 0)*'+weight_mumu+    '*((TrkIso_muon1<0.1)*(TrkIso_muon2<0.1))',1.0)
 	vv_op_iso   = QuickIntegral(tn_DiBoson,sel_mumu + '*(Charge_muon1*Charge_muon2 < 0)*'+weight_mumu+      '*((TrkIso_muon1<0.1)*(TrkIso_muon2<0.1))',1.0)
-	tt_op_iso   = QuickIntegral(tn_TTBar_amcnlo,sel_mumu + '*(Charge_muon1*Charge_muon2 < 0)*'+weight_mumu+ '*((TrkIso_muon1<0.1)*(TrkIso_muon2<0.1))'+'*('+str(Rtt_uujj)+')',1.0)
+	tt_op_iso   = QuickIntegral(tn_TTBarDBin,sel_mumu + '*(Charge_muon1*Charge_muon2 < 0)*'+weight_mumu+ '*((TrkIso_muon1<0.1)*(TrkIso_muon2<0.1))'+'*('+str(Rtt_uujj)+')',1.0)
 	smh_op_iso  = QuickIntegral(tn_SMHiggs,sel_mumu + '*(Charge_muon1*Charge_muon2 < 0)*'+weight_mumu+      '*((TrkIso_muon1<0.1)*(TrkIso_muon2<0.1))',1.0)
 	qcd_op_iso_val = data_op_iso[0]-(zjet_op_iso[0] + wjet_op_iso[0] + stop_op_iso[0] + vv_op_iso[0] + tt_op_iso[0] + smh_op_iso[0])
 	qcd_op_iso_err = math.sqrt(data_op_iso[1]**2 + zjet_op_iso[1]**2 + wjet_op_iso[1]**2 + stop_op_iso[1]**2 + vv_op_iso[1]**2 + tt_op_iso[1]**2 + smh_op_iso[1]**2)
@@ -1978,11 +1998,11 @@ def QCDStudy(sel_mumu,sel_munu,cutlogmumu,cutlogmunu,weight_mumu,weight_munu,ver
 	print 'qcd_op_iso: ', qcd_op_iso
 
 	data_ss_inv = QuickEntries(tn_DoubleMuData,sel_mumu + '*(Charge_muon1*Charge_muon2 > 0)'+               '*((TrkIso_muon1>0.1) || (TrkIso_muon2>0.1))',1.0)
-	zjet_ss_inv = QuickIntegral(tn_ZJetsPtBin,sel_mumu + '*(Charge_muon1*Charge_muon2 > 0)*'+weight_mumu+   '*((TrkIso_muon1>0.1) || (TrkIso_muon2>0.1))'+'*('+str(Rz_uujj)+')',1.0)
-	wjet_ss_inv = QuickIntegral(tn_WJetsPtBin,sel_mumu + '*(Charge_muon1*Charge_muon2 > 0)*'+weight_mumu+   '*((TrkIso_muon1>0.1) || (TrkIso_muon2>0.1))',1.0)
+	zjet_ss_inv = QuickIntegral(tn_ZJetsJBin,sel_mumu + '*(Charge_muon1*Charge_muon2 > 0)*'+weight_mumu+   '*((TrkIso_muon1>0.1) || (TrkIso_muon2>0.1))'+'*('+str(Rz_uujj)+')',1.0)
+	wjet_ss_inv = QuickIntegral(tn_WJetsJBin,sel_mumu + '*(Charge_muon1*Charge_muon2 > 0)*'+weight_mumu+   '*((TrkIso_muon1>0.1) || (TrkIso_muon2>0.1))',1.0)
 	stop_ss_inv = QuickIntegral(tn_SingleTop,sel_mumu + '*(Charge_muon1*Charge_muon2 > 0)*'+weight_mumu+    '*((TrkIso_muon1>0.1) || (TrkIso_muon2>0.1))',1.0)
 	vv_ss_inv   = QuickIntegral(tn_DiBoson,sel_mumu + '*(Charge_muon1*Charge_muon2 > 0)*'+weight_mumu+      '*((TrkIso_muon1>0.1) || (TrkIso_muon2>0.1))',1.0)
-	tt_ss_inv   = QuickIntegral(tn_TTBar_amcnlo,sel_mumu + '*(Charge_muon1*Charge_muon2 > 0)*'+weight_mumu+ '*((TrkIso_muon1>0.1) || (TrkIso_muon2>0.1))'+'*('+str(Rtt_uujj)+')',1.0)
+	tt_ss_inv   = QuickIntegral(tn_TTBarDBin,sel_mumu + '*(Charge_muon1*Charge_muon2 > 0)*'+weight_mumu+ '*((TrkIso_muon1>0.1) || (TrkIso_muon2>0.1))'+'*('+str(Rtt_uujj)+')',1.0)
 	smh_ss_inv  = QuickIntegral(tn_SMHiggs,sel_mumu + '*(Charge_muon1*Charge_muon2 > 0)*'+weight_mumu+      '*((TrkIso_muon1>0.1) || (TrkIso_muon2>0.1))',1.0)
 	qcd_ss_inv_val = data_ss_inv[0]-(zjet_ss_inv[0] + wjet_ss_inv[0] + stop_ss_inv[0] + vv_ss_inv[0] + tt_ss_inv[0] + smh_ss_inv[0])
 	qcd_ss_inv_err = math.sqrt(data_ss_inv[1]**2 + zjet_ss_inv[1]**2 + wjet_ss_inv[1]**2 + stop_ss_inv[1]**2 + vv_ss_inv[1]**2 + tt_ss_inv[1]**2 + smh_ss_inv[1]**2)
@@ -1990,11 +2010,11 @@ def QCDStudy(sel_mumu,sel_munu,cutlogmumu,cutlogmunu,weight_mumu,weight_munu,ver
 	print 'qcd_ss_inv: ', qcd_ss_inv
 
 	data_op_inv = QuickEntries(tn_DoubleMuData,sel_mumu + '*(Charge_muon1*Charge_muon2 < 0)'+               '*((TrkIso_muon1>0.1) || (TrkIso_muon2>0.1))',1.0)
-	zjet_op_inv = QuickIntegral(tn_ZJetsPtBin,sel_mumu + '*(Charge_muon1*Charge_muon2 < 0)*'+weight_mumu+   '*((TrkIso_muon1>0.1) || (TrkIso_muon2>0.1))'+'*('+str(Rz_uujj)+')',1.0)
-	wjet_op_inv = QuickIntegral(tn_WJetsPtBin,sel_mumu + '*(Charge_muon1*Charge_muon2 < 0)*'+weight_mumu+   '*((TrkIso_muon1>0.1) || (TrkIso_muon2>0.1))',1.0)
+	zjet_op_inv = QuickIntegral(tn_ZJetsJBin,sel_mumu + '*(Charge_muon1*Charge_muon2 < 0)*'+weight_mumu+   '*((TrkIso_muon1>0.1) || (TrkIso_muon2>0.1))'+'*('+str(Rz_uujj)+')',1.0)
+	wjet_op_inv = QuickIntegral(tn_WJetsJBin,sel_mumu + '*(Charge_muon1*Charge_muon2 < 0)*'+weight_mumu+   '*((TrkIso_muon1>0.1) || (TrkIso_muon2>0.1))',1.0)
 	stop_op_inv = QuickIntegral(tn_SingleTop,sel_mumu + '*(Charge_muon1*Charge_muon2 < 0)*'+weight_mumu+    '*((TrkIso_muon1>0.1) || (TrkIso_muon2>0.1))',1.0)
 	vv_op_inv   = QuickIntegral(tn_DiBoson,sel_mumu + '*(Charge_muon1*Charge_muon2 < 0)*'+weight_mumu+      '*((TrkIso_muon1>0.1) || (TrkIso_muon2>0.1))',1.0)
-	tt_op_inv   = QuickIntegral(tn_TTBar_amcnlo,sel_mumu + '*(Charge_muon1*Charge_muon2 < 0)*'+weight_mumu+ '*((TrkIso_muon1>0.1) || (TrkIso_muon2>0.1))'+'*('+str(Rtt_uujj)+')',1.0)
+	tt_op_inv   = QuickIntegral(tn_TTBarDBin,sel_mumu + '*(Charge_muon1*Charge_muon2 < 0)*'+weight_mumu+ '*((TrkIso_muon1>0.1) || (TrkIso_muon2>0.1))'+'*('+str(Rtt_uujj)+')',1.0)
 	smh_op_inv  = QuickIntegral(tn_SMHiggs,sel_mumu + '*(Charge_muon1*Charge_muon2 < 0)*'+weight_mumu+      '*((TrkIso_muon1>0.1) || (TrkIso_muon2>0.1))',1.0)
 	qcd_op_inv_val = data_op_inv[0]-(zjet_op_inv[0] + wjet_op_inv[0] + stop_op_inv[0] + vv_op_inv[0] + tt_op_inv[0] + smh_op_inv[0])
 	qcd_op_inv_err = math.sqrt(data_op_inv[1]**2 + zjet_op_inv[1]**2 + wjet_op_inv[1]**2 + stop_op_inv[1]**2 + vv_op_inv[1]**2 + tt_op_inv[1]**2 + smh_op_inv[1]**2)
@@ -2066,7 +2086,7 @@ def QCDStudy(sel_mumu,sel_munu,cutlogmumu,cutlogmunu,weight_mumu,weight_munu,ver
 		selection = '('+sel_mumu+fsel+')'
 
 		Nss_noniso_data = QuickEntries(tn_DoubleMuData,selection + '*(Charge_muon1*Charge_muon2 > 0)',1.0)
-		Nss_noniso_mc = QuickMultiIntegral([tn_DiBoson,tn_TTBar_amcnlo,tn_WJetsPtBin,tn_ZJetsPtBin,tn_SingleTop,tn_SMHiggs],selection+'*(Charge_muon1*Charge_muon2 > 0)*'+weight_mumu,[1.0,Rtt_uujj,1.0,Rz_uujj,1.0,1.0])
+		Nss_noniso_mc = QuickMultiIntegral([tn_DiBoson,tn_TTBarDBin,tn_WJetsJBin,tn_ZJetsJBin,tn_SingleTop,tn_SMHiggs],selection+'*(Charge_muon1*Charge_muon2 > 0)*'+weight_mumu,[1.0,Rtt_uujj,1.0,Rz_uujj,1.0,1.0])
 		Nss_noniso_qcdest = [Nss_noniso_data[0] - Nss_noniso_mc[0] ,  math.sqrt(Nss_noniso_data[1]**2 + Nss_noniso_mc[1]**2)]
 		N_iso_qcdest = [ Nss_noniso_qcdest[0]*SSNonIsoDataRescale[0], (math.sqrt((Nss_noniso_qcdest[1]/Nss_noniso_qcdest[0])**2 + (SSNonIsoDataRescale[1]/SSNonIsoDataRescale[0])**2))*Nss_noniso_qcdest[0]*SSNonIsoDataRescale[0] ]
 		print 'Nss_noniso_data[0]: ', Nss_noniso_data[0] , 'Nss_noniso_mc[0]: ', Nss_noniso_mc[0]
@@ -2091,8 +2111,8 @@ def QCDStudy(sel_mumu,sel_munu,cutlogmumu,cutlogmunu,weight_mumu,weight_munu,ver
 	Q_noniso = QuickIntegral(tn_QCDMu,sel_low_munu+'*'+weight_munu,1.0)
 	Q_iso = QuickIntegral(tn_QCDMu,sel_low_munu + '*(TrkIso_muon1<0.1)*'+weight_munu,1.0)
 
-	B_noniso = QuickMultiIntegral([tn_DiBoson,tn_TTBar_amcnlo,tn_WJetsPtBin,tn_ZJetsPtBin,tn_SingleTop],sel_low_munu+'*'+weight_munu,[1.0,1.0,1.0,1.0,1.0])
-	B_iso = QuickMultiIntegral([tn_DiBoson,tn_TTBar_amcnlo,tn_WJetsPtBin,tn_ZJetsPtBin,tn_SingleTop],sel_low_munu+'*(TrkIso_muon1<0.1)*'+weight_munu,[1.0,1.0,1.0,1.0,1.0])
+	B_noniso = QuickMultiIntegral([tn_DiBoson,tn_TTBarDBin,tn_WJetsJBin,tn_ZJetsJBin,tn_SingleTop],sel_low_munu+'*'+weight_munu,[1.0,1.0,1.0,1.0,1.0])
+	B_iso = QuickMultiIntegral([tn_DiBoson,tn_TTBarDBin,tn_WJetsJBin,tn_ZJetsJBin,tn_SingleTop],sel_low_munu+'*(TrkIso_muon1<0.1)*'+weight_munu,[1.0,1.0,1.0,1.0,1.0])
 
 	# print '  Data (noniso):',D_noniso
 	# print ' SM BG (noniso):',B_noniso
@@ -3813,10 +3833,10 @@ def MakeBasicPlot(recovariable,xlabel,presentationbinning,selection,weight,FileD
 		hs_rec_TTBar.Scale(emu_id_eff)
 
 	if (useDataDrivenQCD or 'QCDDataDriven' in tagname):
-		hs_ss_rec_WJets=CreateHisto('hs_ss_rec_WJets','W+Jets',tn_WJetsPtBin           ,recovariable,presentationbinning,qcd_sel_weight+'*'+weight+'*('+str(wscale)+')' ,WStackStyle,Label)
+		hs_ss_rec_WJets=CreateHisto('hs_ss_rec_WJets','W+Jets',tn_WJetsJBin           ,recovariable,presentationbinning,qcd_sel_weight+'*'+weight+'*('+str(wscale)+')' ,WStackStyle,Label)
 		hs_ss_rec_DiBoson=CreateHisto('hs_ss_rec_DiBoson','DiBoson',tn_DiBoson         ,recovariable,presentationbinning,qcd_sel_weight+'*'+weight                      ,DiBosonStackStyle,Label)
-		hs_ss_rec_ZJets=CreateHisto('hs_ss_rec_ZJets','Z+Jets',tn_ZJetsPtBin           ,recovariable,presentationbinning,qcd_sel_weight+'*'+weight+'*('+str(zscale)+')' ,ZStackStyle,Label)
-		hs_ss_rec_TTBar=CreateHisto('hs_ss_rec_TTBar','TTBar',tn_TTBar_amcnlo          ,recovariable,presentationbinning,qcd_sel_weight+'*'+weight+'*('+str(ttscale)+')',TTStackStyle,Label)
+		hs_ss_rec_ZJets=CreateHisto('hs_ss_rec_ZJets','Z+Jets',tn_ZJetsJBin           ,recovariable,presentationbinning,qcd_sel_weight+'*'+weight+'*('+str(zscale)+')' ,ZStackStyle,Label)
+		hs_ss_rec_TTBar=CreateHisto('hs_ss_rec_TTBar','TTBar',tn_TTBarDBin          ,recovariable,presentationbinning,qcd_sel_weight+'*'+weight+'*('+str(ttscale)+')',TTStackStyle,Label)
 		hs_ss_rec_SingleTop=CreateHisto('hs_ss_rec_SingleTop','SingleTop' ,tn_SingleTop,recovariable,presentationbinning,qcd_sel_weight+'*'+weight                      ,StopStackStyle,Label)
 		hs_ss_rec_SMHiggs=CreateHisto('hs_ss_rec_SMHiggs','SMHiggs',tn_SMHiggs         ,recovariable,presentationbinning,qcd_sel_weight+'*'+weight                      ,SMHiggsStackStyle,Label)
 		
@@ -4840,12 +4860,12 @@ def MakeBasicPlotQCD(recovariable,xlabel,presentationbinning,selection,qcdselect
 
 	print 'Doing Projections'
 	### Make the plots without variable bins!
-	hs_rec_WJets=CreateHisto('hs_rec_WJets','W+Jets',tn_WJetsPtBin,recovariable,presentationbinning,selection+'*('+str(wscale)+')*'+weight,WStackStyle,Label)
+	hs_rec_WJets=CreateHisto('hs_rec_WJets','W+Jets',tn_WJetsJBin,recovariable,presentationbinning,selection+'*('+str(wscale)+')*'+weight,WStackStyle,Label)
 	#hs_rec_Data=CreateHisto('hs_rec_Data','Data',tn_DoubleMuData,recovariable,presentationbinning,selection+dataHLT,DataRecoStyle,Label) # AH: why do we put HLT here
 	hs_rec_Data=CreateHisto('hs_rec_Data','Data',tn_DoubleMuData,recovariable,presentationbinning,selection,DataRecoStyle,Label)
 	hs_rec_DiBoson=CreateHisto('hs_rec_DiBoson','DiBoson',tn_DiBoson,recovariable,presentationbinning,selection+'*'+weight,DiBosonStackStyle,Label)
-	hs_rec_ZJets=CreateHisto('hs_rec_ZJets','Z+Jets',tn_ZJetsPtBin,recovariable,presentationbinning,selection+'*('+str(zscale)+')*'+weight,ZStackStyle,Label)
-	hs_rec_TTBar=CreateHisto('hs_rec_TTBar','t#bar{t}',tn_TTBar_amcnlo,recovariable,presentationbinning,selection+'*('+str(ttscale)+')*'+weight,TTStackStyle,Label)
+	hs_rec_ZJets=CreateHisto('hs_rec_ZJets','Z+Jets',tn_ZJetsJBin,recovariable,presentationbinning,selection+'*('+str(zscale)+')*'+weight,ZStackStyle,Label)
+	hs_rec_TTBar=CreateHisto('hs_rec_TTBar','t#bar{t}',tn_TTBarDBin,recovariable,presentationbinning,selection+'*('+str(ttscale)+')*'+weight,TTStackStyle,Label)
 	hs_rec_SingleTop=CreateHisto('hs_rec_SingleTop','SingleTop',tn_SingleTop,recovariable,presentationbinning,selection+'*'+weight,StopStackStyle,Label)
 
 	if channel=='uujj':
