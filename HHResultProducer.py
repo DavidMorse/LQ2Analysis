@@ -4286,7 +4286,7 @@ def MakeBasicPlot(recovariable,xlabel,presentationbinning,selection,weight,FileD
 		RatHistNum.GetYaxis().SetTitle('Data/MC');
 		RatHistNum.GetYaxis().SetNdivisions(308,True)
 
-		RatHistNum.GetXaxis().SetTitleSize(0.);
+		RatHistNum.GetXaxis().SetTitleSize(0.12);
 		RatHistNum.GetYaxis().SetTitleSize(.12);
 		RatHistNum.GetXaxis().CenterTitle();
 		RatHistNum.GetYaxis().CenterTitle();		
