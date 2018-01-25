@@ -102,9 +102,9 @@ dataHLTEMUADJ = '*(2.0 - 1.0'+singlemuHLTEMU+')'
 
 # btag scale factors: https://twiki.cern.ch/twiki/bin/view/CMS/BTagSFMethods#1c_Event_reweighting_using_scale
 # For case of >=1 btag: w(>= 1|n) = 1 - w(0|n), where  w(0|n) = \prod_{i=1}^n (1-SF_i)
-#bTagSF = '*(0.901114+(1.32145e-05*(Pt_Hjet1)))*(0.931535+(1.40704e-05*(Pt_Hjet2)))'
-#bTagSF = '*(1-(1-(CMVA_bjet1>-0.5884)*0.561694*((1.+(0.31439*Pt_Hjet1))/(1.+(0.17756*Pt_Hjet1))))*(1-(CMVA_jet2>-0.5884)*0.561694*((1.+(0.31439*Pt_Hjet2))/(1.+(0.17756*Pt_Hjet2))))*(1-(CMVA_jet2>-0.5884)*0.561694*((1.+(0.31439*Pt_Zjet1))/(1.+(0.17756*Pt_Zjet1))))*(1-(CMVA_jet2>-0.5884)*0.561694*((1.+(0.31439*Pt_Zjet2))/(1.+(0.17756*Pt_Zjet2)))))'
-bTagSF = '*(1-(1-(CMVA_bjet1>-0.5884)*(0.976111+(-(4.37632e-05*Pt_Hjet1))))*(1-(CMVA_bjet2>-0.5884)*(0.976111+(-(4.37632e-05*Pt_Hjet2))))*(1-(CMVA_Zjet1>-0.5884)*(0.976111+(-(4.37632e-05*Pt_Zjet1))))*(1-(CMVA_Zjet2>-0.5884)*(0.976111+(-(4.37632e-05*Pt_Zjet2)))))'
+#bTag1SF = '*(0.901114+(1.32145e-05*(Pt_Hjet1)))*(0.931535+(1.40704e-05*(Pt_Hjet2)))'
+#bTag1SF = '*(1-(1-(CMVA_bjet1>-0.5884)*0.561694*((1.+(0.31439*Pt_Hjet1))/(1.+(0.17756*Pt_Hjet1))))*(1-(CMVA_jet2>-0.5884)*0.561694*((1.+(0.31439*Pt_Hjet2))/(1.+(0.17756*Pt_Hjet2))))*(1-(CMVA_jet2>-0.5884)*0.561694*((1.+(0.31439*Pt_Zjet1))/(1.+(0.17756*Pt_Zjet1))))*(1-(CMVA_jet2>-0.5884)*0.561694*((1.+(0.31439*Pt_Zjet2))/(1.+(0.17756*Pt_Zjet2)))))'
+bTag1SF = '*(1-(1-(CMVA_bjet1>-0.5884)*(0.976111+(-(4.37632e-05*Pt_Hjet1))))*(1-(CMVA_bjet2>-0.5884)*(0.976111+(-(4.37632e-05*Pt_Hjet2))))*(1-(CMVA_Zjet1>-0.5884)*(0.976111+(-(4.37632e-05*Pt_Zjet1))))*(1-(CMVA_Zjet2>-0.5884)*(0.976111+(-(4.37632e-05*Pt_Zjet2)))))'
 
 
 #This is for HIP problem https://twiki.cern.ch/twiki/bin/view/CMS/MuonReferenceEffsRun2#Tracking_efficiency_provided_by
@@ -119,7 +119,7 @@ eleRECOScale = '*((1-IsMuon_muon1)*(((Eta_muon1>-2.5)*(Eta_muon1<-2.45)*1.3176)+
 eleHEEPScale = '*((1-IsMuon_muon1)*(((Eta_muon1>-2.5)*(Eta_muon1<-1.566)*0.984)+((Eta_muon1>-1.4442)*(Eta_muon1<-0.5)*0.971)+((Eta_muon1>-0.5)*(Eta_muon1<-0.0)*0.961)+((Eta_muon1>0.0)*(Eta_muon1<0.5)*0.973)+((Eta_muon1>0.5)*(Eta_muon1<1.4442)*0.978)+((Eta_muon1>1.566)*(Eta_muon1<2.5)*0.980))+(1-IsMuon_muon2)*(((Eta_muon2>-2.5)*(Eta_muon2<-1.566)*0.984)+((Eta_muon2>-1.4442)*(Eta_muon2<-0.5)*0.971)+((Eta_muon2>-0.5)*(Eta_muon2<-0.0)*0.961)+((Eta_muon2>0.0)*(Eta_muon2<0.5)*0.973)+((Eta_muon2>0.5)*(Eta_muon2<1.4442)*0.978)+((Eta_muon2>1.566)*(Eta_muon2<2.5)*0.980)))'
 
 # Weights for different MC selections, including integrated luminosity, event weight, and trigger weight
-NormalWeightMuMu = str(lumi)+'*weight_central*weight_topPt'+trackerHIP1+trackerHIP2+doublemuHLT+doubleMuIdAndIsoScale+bTagSF #fixme turning off trigger eff. for now
+NormalWeightMuMu = str(lumi)+'*weight_central*weight_topPt'+trackerHIP1+trackerHIP2+doublemuHLT+doubleMuIdAndIsoScale+bTag1SF
 NormalWeightMuNu = str(lumi)+'*weight_central*weight_topPt'+singlemuHLT+singleMuIdScale+singleMuIsoScale+trackerHIP1
 NormalWeightEMu = str(lumi)+'*weight_central*weight_topPt'+singlemuHLTEMU+MuIdScaleEMU+MuIsoScaleEMU+eleRECOScale+eleHEEPScale+trackerHIPEMU
 NormalWeightEMuNoHLT = str(lumi)+'*weight_central*weight_topPt'+MuIdScaleEMU+MuIsoScaleEMU+eleRECOScale+eleHEEPScale+trackerHIPEMU#fixme do we need scale factors here?
@@ -618,15 +618,11 @@ def main():
 		print '\n  NormalWeightMuMu plus preselectionmumu  is : ', str(NormalWeightMuMu+'*'+preselectionmumu) , '\n' # AH:
 		#print lqbinning,stbinning
 		# Get Scale Factors
-		[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = GetMuMuScaleFactors( NormalWeightMuMu+'*'+preselectionmumu, NormalDirectory, '(M_uu>80)*(M_uu<100)', '(M_uu>100)*(Pt_miss>100)',0)
-		#[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = [[0.7878836290932162, 0.002600000000000006], [0.8199547022957769, 0.010549999999999738]]
+		#[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = GetMuMuScaleFactors( NormalWeightMuMu+'*'+preselectionmumu, NormalDirectory, '(M_uu>80)*(M_uu<100)', '(M_uu>100)*(Pt_miss>100)',0)
+		[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = [[ 0.962831123534 , 0.00557],[1.11543113384 , 0.01273]]
 		# AH: To speed things up when debugging
 		
-		#[[Rw_uvjj,Rw_uvjj_err],[Rtt_uvjj,Rtt_uvjj_err]] = GetMuNuScaleFactors( NormalWeightMuNu+'*'+preselectionmunu, NormalDirectory, '(MT_uv>70)*(MT_uv<150)*(JetCount<3.5)*(((CISV_jet1>0.8)+(CISV_jet2>0.8))<1)', '(MT_uv>70)*(MT_uv<150)*(JetCount>3.5)*(((CISV_jet1>0.8)+(CISV_jet2>0.8))>=1)')#fixme todo varying control sample MT window
-		#[[Rw_uvjj,Rw_uvjj_err],[Rtt_uvjj,Rtt_uvjj_err]] = GetMuNuScaleFactors( NormalWeightMuNu+'*'+preselectionmunu, NormalDirectory, '(MT_uv>70)*(MT_uv<110)*(JetCount<3.5)', '(MT_uv>70)*(MT_uv<110)*(JetCount>3.5)')
-		#[[Rz_uujj,Rz_uujj_err]]=[[1.,0.]]
-		#[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]]=[[1.,0.],[1.,0,]]
-		[[Rw_uvjj,Rw_uvjj_err],[Rtt_uvjj,Rtt_uvjj_err]]=[[1.,0.],[1.,0,]]
+		[[Rw_uvjj,Rw_uvjj_err],[Rtt_uvjj,Rtt_uvjj_err]]=[[1.,0.],[1.,0.]]
 		#CSVv2L	0.460
 		#CSVv2M	0.8
 		#CSVv2T	0.935
@@ -648,10 +644,10 @@ def main():
 		
 
 		# Here are a few plots which are zoomed-in on control regions. 
-		MakeBasicPlot("M_uu","M^{#mu#mu} [GeV]",bosonzoombinning_uujj_Z,preselectionmumu,NormalWeightMuMu,NormalDirectory,'controlzoom_ZRegion','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
-		#MakeBasicPlot("Pt_miss","E_{T}^{miss} [GeV]",metzoombinning_uujj_Z,preselectionmumu+'*(M_uu>80)*(M_uu<100)*(Pt_miss<100)',NormalWeightMuMu,NormalDirectory,'controlzoomZRegion','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
-		MakeBasicPlot("M_uu","M^{#mu#mu} [GeV]",bosonzoombinning_uujj_TT,preselectionmumu+'*(M_uu>100)*(Pt_miss>=100)',NormalWeightMuMu,NormalDirectory,'controlzoom_TTRegion','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
-		#MakeBasicPlot("Pt_miss","E_{T}^{miss} [GeV]",metzoombinning_uujj_TT,preselectionmumu+'*(M_uu>100)*(Pt_miss>=100)',NormalWeightMuMu,NormalDirectory,'controlzoomTTRegion','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
+		MakeBasicPlot("M_uu","M^{#mu#mu} [GeV] (DY control region)",bosonzoombinning_uujj_Z,preselectionmumu,NormalWeightMuMu,NormalDirectory,'controlzoom_ZRegion','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
+		MakeBasicPlot("Pt_miss","E_{T}^{miss} [GeV] (DY control region)",metzoombinning_uujj_Z,preselectionmumu+'*(M_uu>80)*(M_uu<100)*(Pt_miss<100)',NormalWeightMuMu,NormalDirectory,'controlzoomZRegion','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
+		MakeBasicPlot("M_uu","M^{#mu#mu} [GeV] (TT control region)",bosonzoombinning_uujj_TT,preselectionmumu+'*(M_uu>100)*(Pt_miss>=100)',NormalWeightMuMu,NormalDirectory,'controlzoom_TTRegion','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
+		MakeBasicPlot("Pt_miss","E_{T}^{miss} [GeV] (TT control region)",metzoombinning_uujj_TT,preselectionmumu+'*(M_uu>100)*(Pt_miss>=100)',NormalWeightMuMu,NormalDirectory,'controlzoomTTRegion','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
 
 		#Here are some 2D plots
 		"""
@@ -1717,7 +1713,7 @@ def setZeroBinErrors_tgraph(data_hist,data, bg, sig_hist1, sig_hist2, blinded):
 		#if start: print "\n----Bin:"+str(bins)+" bg:"+str(bg.GetStack().Last().GetBinContent(bins))+"\n"
 		if start and (bg.GetStack().Last().GetBinContent(bins+1)>.04 or sig_hist1.GetBinContent(bins+1)>0.04 or sig_hist2.GetBinContent(bins+1)>0.04):#and bin<=10 :#and bg.GetStack().Last().GetBinContent(bins+1)>.05:# and bin!=0:
 		#	data.SetBinErrorOption(TH1.kPoisson)
-			if blinded==False or (blinded==True and data_hist.GetBinHighEdge(bins)<blindstart):
+			if blinded==False :#or (blinded==True and (data_hist.GetBinLowEdge(bins)+data_hist.GetBinWidth(bins))<blindstart):
 				data.SetPointEYlow(bins,N-L)
 				data.SetPointEYhigh(bins,U-N)
 		#if start and bin==0 and bg.GetStack().Last().GetBinContent(bins+1)>.01:
@@ -4152,9 +4148,12 @@ def MakeBasicPlot(recovariable,xlabel,presentationbinning,selection,weight,FileD
 		hs_rec_Signal4.Draw("HISTSAME")
 	#setZeroBinErrors(hs_rec_Data,MCStack)
 	#hs_rec_Data.Draw("E0PSAME")
-	hs_rec_Data_tgraph = TGraphAsymmErrors(hs_rec_Data)
 	blinded=False
-	if 'bdt' in tagname: blinded=True
+	#fixme this blinds the BDTs above 0.15
+	if 'bdt' in recovariable: 
+		blind(hs_rec_Data,1)
+		#blinded=True
+	hs_rec_Data_tgraph = TGraphAsymmErrors(hs_rec_Data)
 	if 'final' not in tagname:
 		setZeroBinErrors_tgraph(hs_rec_Data,hs_rec_Data_tgraph,MCStack,hs_rec_Signal,hs_rec_Signal2,blinded)
 	else:
@@ -4290,12 +4289,12 @@ def MakeBasicPlot(recovariable,xlabel,presentationbinning,selection,weight,FileD
 		RatHistNum.GetYaxis().SetTitleSize(.12);
 		RatHistNum.GetXaxis().CenterTitle();
 		RatHistNum.GetYaxis().CenterTitle();		
-		RatHistNum.GetXaxis().SetTitleOffset(.85);
-		RatHistNum.GetYaxis().SetTitleOffset(.4);
+		RatHistNum.GetXaxis().SetTitleOffset(1.);
+		RatHistNum.GetYaxis().SetTitleOffset(.45);
 		RatHistNum.GetYaxis().SetLabelSize(.1);
 		RatHistNum.GetXaxis().SetLabelSize(.09);
 
-		if blinded: blind(RatHistNum)#fixme
+		if 'bdt' in recovariable: blind(RatHistNum,2)#fixme this is to blind data for BDTs
 		RatHistNum.Draw()
 
 	
@@ -6060,13 +6059,17 @@ def ShapeSystematic(channel,normalWeight,presel,cutFile):
 	#shapesysvar_uujj_wjets =  [17.24, 9.89, 29.31, 24.0, 23.73, 24.28, 24.46, 24.55, 24.32, 25.25, 25.76, 26.19, 25.6, 26.6, 26.98, 28.27, 28.01, 27.78, 27.78, 27.78, 27.78, 27.78, 27.78, 27.78, 27.78, 27.44, 27.44, 28.36, 28.36, 28.36, 28.36, 28.36, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
 	#shapesysvar_uujj_ttjets =  [33.0, 33.01, 35.65, 35.19, 35.24, 36.16, 37.41, 39.09, 40.03, 40.9, 41.67, 42.47, 43.18, 43.87, 44.21, 44.56, 45.91, 47.12, 47.9, 48.52, 49.2, 47.6, 47.23, 47.62, 47.73, 45.32, 43.66, 44.82, 45.28, 44.54, 45.37, 45.37, 45.37, 47.85, 47.85, 47.85, 47.85, 47.85, 47.85, 47.85]
 
-def blind(h):
+def blind(h,pad):
 	blindstart=0.15
 	for bin in range(h.GetNbinsX()):
 		if h.GetBinLowEdge(bin+1)>blindstart:
-			h.SetBinContent(bin+1,1.0)
-			h.SetBinError(bin+1,0.0)
-	h.SetMarkerSize(0.0)
-	h.SetLineWidth(0)
+			if pad==1:
+				h.SetBinContent(bin+1,0.00001)
+				h.SetBinError(bin+1,0.0)
+			if pad==2:
+				h.SetBinContent(bin+1,1.0)
+				h.SetBinError(bin+1,0.0)
+	#h.SetMarkerSize(0.0)
+	#h.SetLineWidth(0)
 
 main()
