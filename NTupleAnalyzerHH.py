@@ -33,15 +33,12 @@ name = options.filename
 amcNLOname = options.filename
 
 if '/store' in name:
-	name = 'root://eoscms//eos/cms'+name
+	#name = 'root://eoscms//eos/cms'+name
+	name = '/eos/cms'+name
 if '/castor/cern.ch' in name:
 	name = 'rfio://'+name
 
-# These are switches based on the tag name. 
-# First is whether to change out a muon with an electron ( for e-mu ttbar samples)
-emuswitch=False
-if "EMuSwitch" in options.dir:
-	emuswitch=True
+# These are switches based on the tag name.
 # Turn of the isolation condition for QCD studies
 nonisoswitch=False
 if "NonIso" in options.dir:
@@ -55,7 +52,6 @@ alignementcorrswitch = False
 if "AlignmentCorr" in options.dir:
 	alignementcorrswitch = True
 
-print 'EMu Switch = ', emuswitch
 print 'NonIso Switch = ', nonisoswitch
 print 'Quick Switch (No Sys) = ', quicktestswitch
 print 'AlignmentCorr Switch = ', alignementcorrswitch
@@ -79,13 +75,14 @@ else:
 # Typical event weight, sigma*lumi/Ngenerated
 startingweight = _TopPtFactor*float(options.crosssection)*float(options.lumi)/float(options.ntotal)
 
-to = fin.Get("rootTupleTree/tree")
-No = to.GetEntries()
+#to = fin.Get("rootTupleTree/tree")
+#No = t.GetEntries()
+t = fin.Get("rootTupleTree/tree")
+N = t.GetEntries()
 
 # Here we are going to pre-skim the file to reduce running time.
 indicator = ((name.split('/'))[-1]).replace('.root','')
 #print indicator
-#junkfile1 = str(randint(100000000,1000000000))+indicator+'junk.root'
 
 # At least one 44 GeV Muon - offline cut is 50
 #fj1 = TFile.Open(junkfile1,'RECREATE')
@@ -93,17 +90,20 @@ indicator = ((name.split('/'))[-1]).replace('.root','')
 # t1 = to.CopyTree('(1)')
 #Nm1 = t1.GetEntries()
 
-junkfile2 = str(randint(100000000,1000000000))+indicator+'junk.root'
+#junkfile2 = str(randint(100000000,1000000000))+indicator+'junk.root'
 
 # At least one 44 GeV jet - offline cut is 50
-fj2 = TFile.Open(junkfile2,'RECREATE')
-t = to.CopyTree('PFJetPtAK4CHS[]>18')#fixme was 44
-N = t.GetEntries()
+#fj2 = TFile.Open(junkfile2,'RECREATE')
+#t = to.CopyTree('PFJetPtAK4CHS[]>18')#fixme was 44
+#N = t.GetEntries()
 
 # Print the reduction status
-print 'Original events:          ',No
+#print 'Original events:          ',No
 #print 'After demand 1 pT16 muon or electron: ',Nm1
-print 'After demand 1 pT18 jet:  ',N
+#print 'After demand 1 pT18 jet:  ',N
+
+print 'Number of events:',N
+
 
 ##########################################################################################
 #################      PREPARE THE VARIABLES FOR THE OUTPUT TREE   #######################
@@ -113,10 +113,10 @@ print 'After demand 1 pT18 jet:  ',N
 # systematic variation determined in _variations. One branch for each weight and flag.
 # So branch names will include weight_central, run_number, Pt_muon1, Pt_muon1MESUP, etc.
 
-_kinematicvariables = ['Pt_muon1','Pt_muon2','Pt_ele1','Pt_ele2','Pt_lep1','Pt_lep2','Pt_jet1','Pt_jet2','Pt_miss']
+_kinematicvariables = ['Pt_muon1','Pt_muon2','Pt_ele1','Pt_ele2','Pt_jet1','Pt_jet2','Pt_miss']
 _kinematicvariables += ['Pt_jet3','Pt_jet4']
-_kinematicvariables += ['Eta_muon1','Eta_muon2','Eta_ele1','Eta_ele2','Eta_lep1','Eta_lep2','Eta_jet1','Eta_jet2','Eta_miss']
-_kinematicvariables += ['Phi_muon1','Phi_muon2','Phi_ele1','Phi_ele2','Phi_lep1','Phi_lep2','Phi_jet1','Phi_jet2','Phi_miss']
+_kinematicvariables += ['Eta_muon1','Eta_muon2','Eta_ele1','Eta_ele2','Eta_jet1','Eta_jet2']
+_kinematicvariables += ['Phi_muon1','Phi_muon2','Phi_ele1','Phi_ele2','Phi_jet1','Phi_jet2','Phi_miss']
 _kinematicvariables += ['Phi_Hjet1','Phi_Hjet2','Phi_Zjet1','Phi_Zjet2']
 _kinematicvariables += ['Eta_Hjet1','Eta_Hjet2','Eta_Zjet1','Eta_Zjet2']
 _kinematicvariables += ['Pt_muon1_gen','Pt_muon2_gen']
@@ -126,33 +126,31 @@ _kinematicvariables += ['Pt_Hjet1_genMatched','Pt_Hjet2_genMatched','Pt_Zjet1_ge
 _kinematicvariables += ['Phi_Hjet1_gen','Phi_Hjet2_gen','Phi_Zjet1_gen','Phi_Zjet2_gen']
 _kinematicvariables += ['Eta_Hjet1_gen','Eta_Hjet2_gen','Eta_Zjet1_gen','Eta_Zjet2_gen']
 _kinematicvariables += ['X_miss','Y_miss']
-_kinematicvariables += ['TrkIso_muon1','TrkIso_muon2','TrkIso_ele1','TrkIso_ele2','TrkIso_lep1','TrkIso_lep2']
+_kinematicvariables += ['TrkIso_muon1','TrkIso_muon2','TrkIso_ele1','TrkIso_ele2']
 _kinematicvariables += ['Chi2_muon1','Chi2_muon2']
 _kinematicvariables += ['PFID_muon1','PFID_muon2']
 _kinematicvariables += ['TrkMeasLayers_muon1','TrkMeasLayers_muon2']
-_kinematicvariables += ['Charge_muon1','Charge_muon2','Charge_ele1','Charge_ele2','Charge_lep1','Charge_lep2']
+_kinematicvariables += ['Charge_muon1','Charge_muon2','Charge_ele1','Charge_ele2']
 _kinematicvariables += ['TrkGlbDpt_muon1','TrkGlbDpt_muon2']
 _kinematicvariables += ['NHEF_jet1','NHEF_jet2','NEMEF_jet1','NEMEF_jet2']
-_kinematicvariables += ['St_uujj','St_eejj','St_lljj']
-_kinematicvariables += ['St_uu4j','St_ee4j','St_ll4j']
-_kinematicvariables += ['M_uu','M_ee','M_ll']
+_kinematicvariables += ['St_uujj','St_eejj']
+_kinematicvariables += ['St_uu4j','St_ee4j']
+_kinematicvariables += ['M_uu','M_ee']
 _kinematicvariables += ['M_jj']
 _kinematicvariables += ['DR_muon1muon2','DPhi_muon1met','DPhi_jet1met','DPhi_jet2met']
 _kinematicvariables += ['DR_ele1ele2','DPhi_ele1met']
 _kinematicvariables += ['DR_muon1jet1','DR_muon1jet2','DR_muon2jet1','DR_muon2jet2']
 _kinematicvariables += ['DR_ele1jet1','DR_ele1jet2','DR_ele2jet1','DR_ele2jet2']
-_kinematicvariables += ['DR_lep1jet1','DR_lep1jet2','DR_lep2jet1','DR_lep2jet2']
 _kinematicvariables += ['DR_jet1jet2','DPhi_jet1jet2']
 _kinematicvariables += ['DPhi_muon1jet1','DPhi_muon1jet2','DPhi_muon2jet1','DPhi_muon2jet2']
 _kinematicvariables += ['DPhi_ele1jet1','DPhi_ele1jet2','DPhi_ele2jet1','DPhi_ele2jet2']
-_kinematicvariables += ['DPhi_lep1jet1','DPhi_lep1jet2','DPhi_lep2jet1','DPhi_lep2jet2']
-_kinematicvariables += ['M_uujj','M_eejj','M_ll4j']
-_kinematicvariables += ['M_uu4j','M_ee4j','M_ll4j']
+_kinematicvariables += ['M_uujj','M_eejj']
+_kinematicvariables += ['M_uu4j','M_ee4j']
 _kinematicvariables += ['Mbb_H','Mjj_Z','Mjj_Z_3jet']
 _kinematicvariables += ['Mbb_H_gen','Mjj_Z_gen']
 _kinematicvariables += ['Mbb_H_genMatched','Mjj_Z_genMatched']
 _kinematicvariables += ['Mbb_H_noReg','Muu4j_noReg']
-_kinematicvariables += ['cosThetaStarMu','cosThetaStarEle','cosThetaStarLep']
+_kinematicvariables += ['cosThetaStarMu','cosThetaStarEle']
 _kinematicvariables += ['cosThetaStarMu_gen','cosThetaStarEle_gen']
 _kinematicvariables += ['cosThetaStar_gen','cosTheta_hbb_gen','cosTheta_zjj_hzz_gen','cosTheta_zuu_hzz_gen','cosTheta_zj1_hzz_gen','cosTheta_zu1_hzz_gen']
 _kinematicvariables += ['phi0_gen','phi1_gen']
@@ -164,7 +162,7 @@ _kinematicvariables += ['cosThetaStarZuu_CS','cosTheta_Zuu']
 _kinematicvariables += ['phi0_zz','phi1_zuu','phi1_zjj']
 _kinematicvariables += ['Pt_Hjet1_noReg','Pt_Hjet2_noReg']
 _kinematicvariables += ['Pt_Hjet1','Pt_Hjet2','Pt_Zjet1','Pt_Zjet2']
-_kinematicvariables += ['Pt_Hjets','Pt_Zjets','Pt_uu','Pt_ee','Pt_ll']
+_kinematicvariables += ['Pt_Hjets','Pt_Zjets','Pt_uu','Pt_ee']
 _kinematicvariables += ['DR_jj_Z','DR_bb_H']
 _kinematicvariables += ['DR_u1Hj1','DR_u1Hj2','DR_u2Hj1','DR_u2Hj2']
 _kinematicvariables += ['DR_u1Zj1','DR_u1Zj2','DR_u2Zj1','DR_u2Zj2']
@@ -174,14 +172,11 @@ _kinematicvariables += ['DR_u1Hj1_genMatched','DR_u1Hj2_genMatched','DR_u2Hj1_ge
 _kinematicvariables += ['DR_u1Zj1_genMatched','DR_u1Zj2_genMatched','DR_u2Zj1_genMatched','DR_u2Zj2_genMatched']
 _kinematicvariables += ['DR_uu_bb_H','DR_uu_jj_Z','DPhi_uu_bb_H','DPhi_uu_jj_Z']
 _kinematicvariables += ['DR_ee_bb_H','DR_ee_jj_Z','DPhi_ee_bb_H','DPhi_ee_jj_Z']
-_kinematicvariables += ['DR_ll_bb_H','DR_ll_jj_Z','DPhi_ll_bb_H','DPhi_ll_jj_Z']
 _kinematicvariables += ['DPhi_jj_Z','DPhi_bb_H']
 _kinematicvariables += ['minDR_muonjet','minDR_electronjet']
 _kinematicvariables += ['M_uu4j_gen','M_uu4j_genMatched']
 _kinematicvariables += ['M_ee4j_gen','M_ee4j_genMatched']
-_kinematicvariables += ['M_ll4j_gen','M_ll4j_genMatched']
 _kinematicvariables += ['jetCntPreFilter','JetCount','MuonCount','ElectronCount','GenJetCount']
-_kinematicvariables += ['IsMuon_muon1','IsMuon_muon2']
 _kinematicvariables += ['muonIndex1','muonIndex2']
 _kinematicvariables += ['jetIndex1','jetIndex2']
 _kinematicvariables += ['ptHat']
@@ -199,12 +194,12 @@ _kinematicvariables += ['M_lljj_gen', 'M_lljj_genMatched']
 _kinematicvariables += ['M_uu_gen', 'M_uu_genMatched']
 _kinematicvariables += ['bscoreMVA1_genMatched', 'bscoreMVA2_genMatched']
 _kinematicvariables += ['CorHj1j2Avail','CorZj1j2Avail']
-_kinematicvariables += ['passWptCut','passZptCut','WorZSystemPt']
+_kinematicvariables += ['WorZSystemPt']
 _kinematicvariables += ['bdt_discrim_M260','bdt_discrim_M270','bdt_discrim_M300','bdt_discrim_M350','bdt_discrim_M400']
 _kinematicvariables += ['bdt_discrim_M450','bdt_discrim_M500','bdt_discrim_M550','bdt_discrim_M600','bdt_discrim_M650']
 _kinematicvariables += ['bdt_discrim_M750','bdt_discrim_M800','bdt_discrim_M900','bdt_discrim_M1000']
 _kinematicvariables += ['bdt_discrims2_M300','bdt_discrims2_M550']
-_kinematicvariables += ['bdt_discrims3_low','bdt_discrims3_hig']
+_kinematicvariables += ['bdt_discrims3_low','bdt_discrims3_high']
 
 _weights = ['scaleWeight_Up','scaleWeight_Down','scaleWeight_R1_F1','scaleWeight_R1_F2','scaleWeight_R1_F0p5','scaleWeight_R2_F1','scaleWeight_R2_F2','scaleWeight_R2_F0p5','scaleWeight_R0p5_F1','scaleWeight_R0p5_F2','scaleWeight_R0p5_F0p5','scaleWeight_R2_F2','weight_amcNLO','weight_nopu','weight_central', 'weight_pu_up', 'weight_pu_down','weight_topPt']
 _flagDoubles = ['run_number','event_number','lumi_number']
@@ -213,7 +208,7 @@ _flags += ['passPrimaryVertex','passHBHENoiseFilter','passHBHENoiseIsoFilter','p
 _flags += ['passBadEESuperCrystal','passEcalDeadCellTP','passBeamHalo2016','passBadEcalSC','passBadMuon','passBadChargedHadron','badMuonsFlag','duplicateMuonsFlag','noBadMuonsFlag']
 #_variations = ['','JESup','JESdown','MESup','MESdown','JERup','JERdown','MER']
 _variations = ['','JESup','JESdown','JER','MESup','MESdown','MER','EESup','EESdown','EER']
-if nonisoswitch==True or emuswitch==True or quicktestswitch==True:
+if nonisoswitch==True or quicktestswitch==True:
 	print 'NOT performing systematics...'
 	_variations = ['']  # For quicker tests
 # _variations = ['']  # For quicker tests
@@ -2019,11 +2014,13 @@ def GetHHJetsNew(jets,btagScoresCSV,btagScoresMVA,muon1,muon2,jetinds, T, met):
 		for i in range(len(jets)-1) :
 			#if T.PFJetPartonFlavourAK4CHS[jetinds[i]] == 21 : continue  # for testing the effect of gluon jets
 			if btagScoresCSV[i] < 0.06  and abs(-0.853212237358 - btagScoresMVA[i]) < 0.000000000002 : continue
+			if jetinds[i]==-1: continue
 			if not T.PFJetPileupMVApassesMediumAK4CHS[jetinds[i]] : continue
 			if i==jet1index or i==jet2index: continue
 			for j in range(i+1,len(jets)) :
 				#if T.PFJetPartonFlavourAK4CHS[jetinds[j]] == 21 : continue  # for testing the effect of gluon jets
 				if btagScoresCSV[j] < 0.06  and abs(-0.853212237358 - btagScoresMVA[j]) < 0.000000000002 : continue
+				if jetinds[j]==-1: continue
 				if not T.PFJetPileupMVApassesMediumAK4CHS[jetinds[j]] : continue
 				if j==jet1index or j==jet2index: continue
 				if i>=j: continue
@@ -2135,6 +2132,7 @@ def GetHHJetsNew(jets,btagScoresCSV,btagScoresMVA,muon1,muon2,jetinds, T, met):
 
 def bjetRegressionCorrectionFactor(RegressionReader, _regrvarsnames, bjet, ind_orig, T, met):
 	# see https://github.com/ResonantHbbHgg/bbggTools/blob/master/src/bbggJetRegression.cc#L229
+	if ind_orig==-1: return 1.0 #Case where there are no jets in the event
 	_regrvarsnames['Jet_pt'][0]				= bjet.Pt()
 	_regrvarsnames['Jet_corr'][0]			= T.PFJetPtAK4CHS[ind_orig]/T.PFJetPtRawAK4CHS[ind_orig]
 	_regrvarsnames['Jet_eta'][0]			= bjet.Eta()
@@ -2184,33 +2182,32 @@ def bjetRegressionCorrectionFactor(RegressionReader, _regrvarsnames, bjet, ind_o
 #		print ' regr_corrF ', regr_corrF
 	return regr_corrF
 
-def calculateBDTdiscriminant(reader, classifierTag, _bdtvarnames, _cosThetaStarMu, _Mbb_H, _phi0, _ptmu1, _ptmu2, bscoreMVA1, _dRbb_H, _dRjj_Z, _DRuu, _Muu4j, _Muu, _Mjj_Z,
-							 _isMuonEvent, _Pt_Hjet1, _Pt_Hjet2, _Pt_Zjet1, _Pt_Zjet2, bscoreMVA2, _bMVAj1, _bMVAj2, _qmu1, _qmu2,
-							 _cosTheta_hbb, _cosTheta_zuu_hzz, _dRuubb_H) :
+def calculateBDTdiscriminant(reader, classifierTag, _bdtvarnames, _cosThetaStarMu, _Mbb_H, _phi0, _ptmu1, _ptmu2, bscoreMVA1, _dRbb_H, _dRjj_Z, _DRuu, _Muu4j, _Muu, _Mjj_Z,_isMuonEvent, _Pt_Hjet1, _Pt_Hjet2, _Pt_Zjet1, _Pt_Zjet2, bscoreMVA2, _bMVAj1, _bMVAj2, _qmu1, _qmu2,_cosTheta_hbb, _cosTheta_zuu_hzz, _dRuubb_H) :
 	
 	if 'abs(cosThetaStarMu)' in _bdtvarnames: _bdtvarnames['abs(cosThetaStarMu)'][0]	= math.fabs(_cosThetaStarMu)
-	if 'Mbb_H'               in _bdtvarnames: _bdtvarnames['Mbb_H'][0]					= _Mbb_H
-	if 'abs(phi0)'           in _bdtvarnames: _bdtvarnames['abs(phi0)'][0]				= math.fabs(_phi0)
-	if 'Pt_muon1'            in _bdtvarnames: _bdtvarnames['Pt_muon1'][0]				= _ptmu1
-	if 'Pt_muon2'            in _bdtvarnames: _bdtvarnames['Pt_muon2'][0]				= _ptmu2
-	if 'CMVA_bjet1'          in _bdtvarnames: _bdtvarnames['CMVA_bjet1'][0]				= bscoreMVA1
-	if 'DR_bb_H'             in _bdtvarnames: _bdtvarnames['DR_bb_H'][0]				= _dRbb_H
-	if 'DR_jj_Z'             in _bdtvarnames: _bdtvarnames['DR_jj_Z'][0]				= _dRjj_Z
-	if 'DR_muon1muon2'       in _bdtvarnames: _bdtvarnames['DR_muon1muon2'][0]			= _DRuu
-	if 'M_uu4j'              in _bdtvarnames: _bdtvarnames['M_uu4j'][0]					= _Muu4j
-	if 'M_uu'                in _bdtvarnames: _bdtvarnames['M_uu'][0]					= _Muu
-	if 'Mjj_Z'               in _bdtvarnames: _bdtvarnames['Mjj_Z'][0]					= _Mjj_Z
+	if 'Mbb_H'               in _bdtvarnames: _bdtvarnames['Mbb_H'][0]			= _Mbb_H
+	if 'abs(phi0)'           in _bdtvarnames: _bdtvarnames['abs(phi0)'][0]		     	= math.fabs(_phi0)
+	if 'Pt_muon1'            in _bdtvarnames: _bdtvarnames['Pt_muon1'][0]	       		= _ptmu1
+	if 'Pt_muon2'            in _bdtvarnames: _bdtvarnames['Pt_muon2'][0]  			= _ptmu2
+	if 'CMVA_bjet1'          in _bdtvarnames: _bdtvarnames['CMVA_bjet1'][0]			= bscoreMVA1
+	if 'DR_bb_H'             in _bdtvarnames: _bdtvarnames['DR_bb_H'][0]		       	= _dRbb_H
+	if 'DR_jj_Z'             in _bdtvarnames: _bdtvarnames['DR_jj_Z'][0]	       		= _dRjj_Z
+	if 'DR_muon1muon2'       in _bdtvarnames: _bdtvarnames['DR_muon1muon2'][0]	       	= _DRuu
+	if 'M_uu4j'              in _bdtvarnames: _bdtvarnames['M_uu4j'][0]            		= _Muu4j
+	if 'M_uu'                in _bdtvarnames: _bdtvarnames['M_uu'][0]      		       	= _Muu
+	if 'Mjj_Z'               in _bdtvarnames: _bdtvarnames['Mjj_Z'][0]    		       	= _Mjj_Z
 	
-	if 'CMVA_bjet2'          in _bdtvarnames: _bdtvarnames['CMVA_bjet2'][0]				= bscoreMVA2
-	if 'cosTheta_hbb'        in _bdtvarnames: _bdtvarnames['cosTheta_hbb'][0]			= _cosTheta_hbb
+	if 'CMVA_bjet2'          in _bdtvarnames: _bdtvarnames['CMVA_bjet2'][0]	       		= bscoreMVA2
+	if 'cosTheta_hbb'        in _bdtvarnames: _bdtvarnames['cosTheta_hbb'][0]	       	= _cosTheta_hbb
 	if 'cosTheta_zuu_hzz'    in _bdtvarnames: _bdtvarnames['cosTheta_zuu_hzz'][0]		= _cosTheta_zuu_hzz
-	if 'DR_uu_bb_H'          in _bdtvarnames: _bdtvarnames['DR_uu_bb_H'][0]				= _dRuubb_H
+	if 'DR_uu_bb_H'          in _bdtvarnames: _bdtvarnames['DR_uu_bb_H'][0]		       	= _dRuubb_H
 	
 	# calculate BDT disriminator
 	out_bdtdisc = -999.
 	# preselections
-	if (_ptmu1 > 20 and _ptmu2 > 10 and _Pt_Hjet1 > 20 and _Pt_Hjet2 > 20 and _Pt_Zjet1 > 20 and _Pt_Zjet2 > 20 and _Muu > 12 and _isMuonEvent and (_qmu1*_qmu2) < 0 and ((bscoreMVA1>-0.5884)+(bscoreMVA2>-0.5884)+(_bMVAj1>-0.5884)+(_bMVAj2>-0.5884)) > 0) :
-		out_bdtdisc = reader.EvaluateMVA(classifierTag)
+	#Removing preselection requirement....BDT will return -999 for events with non-sensible variables
+	#if (_ptmu1 > 20 and _ptmu2 > 10 and _Pt_Hjet1 > 20 and _Pt_Hjet2 > 20 and _Pt_Zjet1 > 20 and _Pt_Zjet2 > 20 and _Muu > 12 and _isMuonEvent and (_qmu1*_qmu2) < 0 and ((bscoreMVA1>-0.5884)+(bscoreMVA2>-0.5884)+(_cmva_Zjet1>-0.5884)+(_cmva_Zjet2>-0.5884)) > 0) :
+	out_bdtdisc = reader.EvaluateMVA(classifierTag)
 	#if v == '' : print ' out_bdtdisc ', out_bdtdisc
 	return out_bdtdisc
 
@@ -2540,17 +2537,20 @@ def FullKinematicCalculation(T,variation):
 		btagCSVscores.append(-5.0)
 		btagMVAscores.append(-5.0)
 		jetinds.append(-1)
-	_ismuon_muon1 = 1.0
-	_ismuon_muon2 = 1.0
-
-	if emuswitch == True:
-		if muons[0].Pt() > electrons[0].Pt():
-			muons[1] = electrons[0]
-			_ismuon_muon2 = 0.0
-		else:
-			muons[1] = muons[0]
-			muons[0] = eletrons[0]
-			_ismuon_muon1=0.0
+	if len(jets) < 3 : 
+		jets.append(EmptyLorentz)
+		neutralhadronEF.append(0.0)
+		neutralemEF.append(0.0)
+		btagCSVscores.append(-5.0)
+		btagMVAscores.append(-5.0)
+		jetinds.append(-1)
+	if len(jets) < 4 : 
+		jets.append(EmptyLorentz)
+		neutralhadronEF.append(0.0)
+		neutralemEF.append(0.0)
+		btagCSVscores.append(-5.0)
+		btagMVAscores.append(-5.0)
+		jetinds.append(-1)
 
 	[_genMuons,_matchedRecoMuons,muonInd] = MuonsFromLQ(T)
 	[_genJets,_matchedRecoJets,jetInd] = JetsFromLQ(T)
@@ -2700,8 +2700,8 @@ def FullKinematicCalculation(T,variation):
 	_DPhil2j1 = abs(leptons[1].DeltaPhi(jets[0]))
 	_DPhil2j2 = abs(leptons[1].DeltaPhi(jets[1]))
 
-	_Muu_gen=0
-	_Muu_genMatched=0
+	_Muu_gen,_Mee_gen=0,0
+	_Muu_genMatched,_Mee_genMatched=0,0
 
 
 	if len(electrons)>=1 :
@@ -2912,20 +2912,30 @@ def FullKinematicCalculation(T,variation):
 	_Mll4j_genMatched = (_matchedRecoJetsZ[0]+_matchedRecoJetsZ[1]+_matchedRecoJetsH[0]+_matchedRecoJetsH[1]+_matchedRecoLeptonsZ[0]+_matchedRecoLeptonsZ[1]).M()
 	
 	#if v == '' : print 'Gen level ZJets:',len(_genJetsZ),'HJets:',len(_genJetsH),'ZMuons:',len(_genMuonsZ),'ZElectrons:',len(_genElectronsZ)
-	if len(_genJetsZ)>=2 and len(_genJetsH)>=2 and len(_genMuonsZ)>=2 and _isMuonEvent:
-		_Mll4j_gen = (_genJetsZ[0]+_genJetsZ[1]+_genJetsH[0]+_genJetsH[1]+_genMuonsZ[0]+_genMuonsZ[1]).M()
+	if  _isMuonEvent:
+		if len(_genMuonsZ)>=2: _Muu_gen = (_genMuonsZ[0]+_genMuonsZ[1]).M()
+		if len(_genJetsZ)>=2  and len(_genJetsH)>=2 and len(_genMuonsZ)>=2:
+			_Muu4j_gen = (_genJetsZ[0]+_genJetsZ[1]+_genJetsH[0]+_genJetsH[1]+_genMuonsZ[0]+_genMuonsZ[1]).M()
+			_Mll4j_gen = (_genJetsZ[0]+_genJetsZ[1]+_genJetsH[0]+_genJetsH[1]+_genMuonsZ[0]+_genMuonsZ[1]).M()
 		didMuon = True
 
-	if len(_genJetsZ)>=2 and len(_genJetsH)>=2 and len(_genElectronsZ)>=2 and not didMuon and _isElectronEvent:
-		_Mee4j_gen = (_genJetsZ[0]+_genJetsZ[1]+_genJetsH[0]+_genJetsH[1]+_genElectronsZ[0]+_genElectronsZ[1]).M()
-		_Mll4j_gen = (_genJetsZ[0]+_genJetsZ[1]+_genJetsH[0]+_genJetsH[1]+_genElectronsZ[0]+_genElectronsZ[1]).M()
+	if  _isElectronEvent:
+		if len(_genElectronsZ)>=2: _Mee_gen = (_genElectronsZ[0]+_genElectronsZ[1]).M()
+		if len(_genJetsZ)>=2 and len(_genJetsH)>=2 and len(_genElectronsZ)>=2 and not didMuon :
+			_Mee4j_gen = (_genJetsZ[0]+_genJetsZ[1]+_genJetsH[0]+_genJetsH[1]+_genElectronsZ[0]+_genElectronsZ[1]).M()
+			_Mll4j_gen = (_genJetsZ[0]+_genJetsZ[1]+_genJetsH[0]+_genJetsH[1]+_genElectronsZ[0]+_genElectronsZ[1]).M()
 
-	if len(_matchedRecoJetsZ)>=2 and len(_matchedRecoJetsH)>=2 and len(_matchedRecoMuonsZ)>=2 and didMuon:
-		_Mll4j_genMatched = (_matchedRecoJetsZ[0]+_matchedRecoJetsZ[1]+_matchedRecoJetsH[0]+_matchedRecoJetsH[1]+_matchedRecoMuonsZ[0]+_matchedRecoMuonsZ[1]).M()
+	if  didMuon:
+		if len(_matchedRecoMuonsZ)>=2 : _Muu_genMatched = (_matchedRecoMuonsZ[0]+_matchedRecoMuonsZ[1]).M()
+		if len(_matchedRecoJetsZ)>=2 and len(_matchedRecoJetsH)>=2 and len(_matchedRecoMuonsZ)>=2 :
+			_Muu4j_genMatched = (_matchedRecoJetsZ[0]+_matchedRecoJetsZ[1]+_matchedRecoJetsH[0]+_matchedRecoJetsH[1]+_matchedRecoMuonsZ[0]+_matchedRecoMuonsZ[1]).M()
+			_Mll4j_genMatched = (_matchedRecoJetsZ[0]+_matchedRecoJetsZ[1]+_matchedRecoJetsH[0]+_matchedRecoJetsH[1]+_matchedRecoMuonsZ[0]+_matchedRecoMuonsZ[1]).M()
 	
-	if len(_matchedRecoJetsZ)>=2 and len(_matchedRecoJetsH)>=2 and len(_matchedRecoElectronsZ)>=2 and not didMuon:
-		_Mee4j_genMatched = (_matchedRecoJetsZ[0]+_matchedRecoJetsZ[1]+_matchedRecoJetsH[0]+_matchedRecoJetsH[1]+_matchedRecoElectronsZ[0]+_matchedRecoElectronsZ[1]).M()
-		_Mll4j_genMatched = (_matchedRecoJetsZ[0]+_matchedRecoJetsZ[1]+_matchedRecoJetsH[0]+_matchedRecoJetsH[1]+_matchedRecoElectronsZ[0]+_matchedRecoElectronsZ[1]).M()
+	if not didMuon:
+		if len(_matchedRecoElectronsZ)>=2 :_Mee_genMatched = (_matchedRecoMuonsZ[0]+_matchedRecoMuonsZ[1]).M()
+		if len(_matchedRecoJetsZ)>=2 and len(_matchedRecoJetsH)>=2 and len(_matchedRecoElectronsZ)>=2 :
+			_Mee4j_genMatched = (_matchedRecoJetsZ[0]+_matchedRecoJetsZ[1]+_matchedRecoJetsH[0]+_matchedRecoJetsH[1]+_matchedRecoElectronsZ[0]+_matchedRecoElectronsZ[1]).M()
+			_Mll4j_genMatched = (_matchedRecoJetsZ[0]+_matchedRecoJetsZ[1]+_matchedRecoJetsH[0]+_matchedRecoJetsH[1]+_matchedRecoElectronsZ[0]+_matchedRecoElectronsZ[1]).M()
 
 
 	_Mjj_Z_gen, _Mbb_H_gen, _Mjj_Z_genMatched, _Mbb_H_genMatched = 0.,0.,0.,0.
@@ -2959,16 +2969,16 @@ def FullKinematicCalculation(T,variation):
 	_bdt_discrims2_M300 = calculateBDTdiscriminant(reader_13vars_set2, "BDT_classifier_13vars_set2_M300", _bdtvarnames_s2, _cosThetaStarMu, _Mbb_H, _phi0, _ptmu1, _ptmu2, bscoreMVA1, _dRbb_H, _dRjj_Z, _DRuu, _Muu4j, _Muu, _Mjj_Z, _isMuonEvent, _Pt_Hjet1, _Pt_Hjet2, _Pt_Zjet1, _Pt_Zjet2, bscoreMVA2, _bMVAj1, _bMVAj2, _qmu1, _qmu2, _cosTheta_hbb, _cosTheta_zuu_hzz, _dRuubb_H)
 	_bdt_discrims2_M550 = calculateBDTdiscriminant(reader_13vars_set2, "BDT_classifier_13vars_set2_M550", _bdtvarnames_s2, _cosThetaStarMu, _Mbb_H, _phi0, _ptmu1, _ptmu2, bscoreMVA1, _dRbb_H, _dRjj_Z, _DRuu, _Muu4j, _Muu, _Mjj_Z, _isMuonEvent, _Pt_Hjet1, _Pt_Hjet2, _Pt_Zjet1, _Pt_Zjet2, bscoreMVA2, _bMVAj1, _bMVAj2, _qmu1, _qmu2, _cosTheta_hbb, _cosTheta_zuu_hzz, _dRuubb_H)
 	
-	[_bdt_discrims3_low,_bdt_discrims3_hig] = [-99.0,-99.0]
+	[_bdt_discrims3_low,_bdt_discrims3_high] = [-99.0,-99.0]
 	_bdt_discrims3_low = calculateBDTdiscriminant(reader_15vars_set3, "BDT_classifier_15vars_set3_Mlow", _bdtvarnames_s3, _cosThetaStarMu, _Mbb_H, _phi0, _ptmu1, _ptmu2, bscoreMVA1, _dRbb_H, _dRjj_Z, _DRuu, _Muu4j, _Muu, _Mjj_Z, _isMuonEvent, _Pt_Hjet1, _Pt_Hjet2, _Pt_Zjet1, _Pt_Zjet2, bscoreMVA2, _bMVAj1, _bMVAj2, _qmu1, _qmu2, _cosTheta_hbb, _cosTheta_zuu_hzz, _dRuubb_H)
-	_bdt_discrims3_hig = calculateBDTdiscriminant(reader_15vars_set3, "BDT_classifier_15vars_set3_Mhig", _bdtvarnames_s3, _cosThetaStarMu, _Mbb_H, _phi0, _ptmu1, _ptmu2, bscoreMVA1, _dRbb_H, _dRjj_Z, _DRuu, _Muu4j, _Muu, _Mjj_Z, _isMuonEvent, _Pt_Hjet1, _Pt_Hjet2, _Pt_Zjet1, _Pt_Zjet2, bscoreMVA2, _bMVAj1, _bMVAj2, _qmu1, _qmu2, _cosTheta_hbb, _cosTheta_zuu_hzz, _dRuubb_H)
+	_bdt_discrims3_high = calculateBDTdiscriminant(reader_15vars_set3, "BDT_classifier_15vars_set3_Mhig", _bdtvarnames_s3, _cosThetaStarMu, _Mbb_H, _phi0, _ptmu1, _ptmu2, bscoreMVA1, _dRbb_H, _dRjj_Z, _DRuu, _Muu4j, _Muu, _Mjj_Z, _isMuonEvent, _Pt_Hjet1, _Pt_Hjet2, _Pt_Zjet1, _Pt_Zjet2, bscoreMVA2, _bMVAj1, _bMVAj2, _qmu1, _qmu2, _cosTheta_hbb, _cosTheta_zuu_hzz, _dRuubb_H)
 	#----- End calculate BDT disc here
 
 	# This MUST have the same structure as _kinematic variables!
-	toreturn = [_ptmu1,_ptmu2,_ptele1,_ptele2,_ptlep1,_ptlep2,_ptj1,_ptj2,_ptmet]
+	toreturn = [_ptmu1,_ptmu2,_ptele1,_ptele2,_ptj1,_ptj2,_ptmet]
 	toreturn += [_ptj3,_ptj4]
-	toreturn += [_etamu1,_etamu2,_etaele1,_etaele2,_etalep1,_etalep2,_etaj1,_etaj2,_etamet]
-	toreturn += [_phimu1,_phimu2,_phiele1,_phiele2,_philep1,_philep2,_phij1,_phij2,_phimet]
+	toreturn += [_etamu1,_etamu2,_etaele1,_etaele2,_etaj1,_etaj2]
+	toreturn += [_phimu1,_phimu2,_phiele1,_phiele2,_phij1,_phij2,_phimet]
 	toreturn += [_phiHj1,_phiHj2,_phiZj1,_phiZj2]
 	toreturn += [_etaHj1,_etaHj2,_etaZj1,_etaZj2]
 	toreturn += [_ptu1_gen,_ptu2_gen]
@@ -2978,33 +2988,31 @@ def FullKinematicCalculation(T,variation):
 	toreturn += [_phiHj1_gen,_phiHj2_gen,_phiZj1_gen,_phiZj2_gen]
 	toreturn += [_etaHj1_gen,_etaHj2_gen,_etaZj1_gen,_etaZj2_gen]
 	toreturn += [_xmiss,_ymiss]
-	toreturn += [_isomu1,_isomu2,_isoele1,_isoele2,_isolep1,_isolep2]
+	toreturn += [_isomu1,_isomu2,_isoele1,_isoele2]
 	toreturn += [_chimu1,_chimu2]
 	toreturn += [_ispfmu1,ispfmu2]
 	toreturn += [_layersmu1,_layersmu2]
-	toreturn += [_qmu1,_qmu2,_qele1,_qele2,_qlep1,_qlep2]
+	toreturn += [_qmu1,_qmu2,_qele1,_qele2]
 	toreturn += [_dptmu1,_dptmu2]
 	toreturn += [_nhefj1,_nhefj2,_nemefj1,_nemefj2]
-	toreturn += [_stuujj,_steejj,_stlljj]
-	toreturn += [_stuu4j,_stee4j,_stll4j]
-	toreturn += [_Muu,_Mee,_Mll]
+	toreturn += [_stuujj,_steejj]
+	toreturn += [_stuu4j,_stee4j]
+	toreturn += [_Muu,_Mee]
 	toreturn += [_Mjj]
 	toreturn += [_DRuu,_DPHIuv,_DPHIj1v,_DPHIj2v]
 	toreturn += [_DRee,_DPHIev]
 	toreturn += [_DRu1j1,_DRu1j2,_DRu2j1,_DRu2j2]
 	toreturn += [_DRe1j1,_DRe1j2,_DRe2j1,_DRe2j2]
-	toreturn += [_DRl1j1,_DRl1j2,_DRl2j1,_DRl2j2]
 	toreturn += [_DRj1j2,_DPhij1j2]
 	toreturn += [_DPhiu1j1,_DPhiu1j2,_DPhiu2j1,_DPhiu2j2]
 	toreturn += [_DPhie1j1,_DPhie1j2,_DPhie2j1,_DPhie2j2]
-	toreturn += [_DPhil1j1,_DPhil1j2,_DPhil2j1,_DPhil2j2]
-	toreturn += [_Muujj, _Meejj, _Mlljj]
-	toreturn += [_Muu4j, _Mee4j, _Mll4j]
+	toreturn += [_Muujj, _Meejj]
+	toreturn += [_Muu4j, _Mee4j]
 	toreturn += [_Mbb_H,_Mjj_Z,_Mjj_Z_3jet]
 	toreturn += [_Mbb_H_gen,_Mjj_Z_gen]
 	toreturn += [_Mbb_H_genMatched,_Mjj_Z_genMatched]
 	toreturn += [_Mbb_H_orig,_Muu4j_orig]
-	toreturn += [_cosThetaStarMu,_cosThetaStarEle,_cosThetaStarLep]
+	toreturn += [_cosThetaStarMu,_cosThetaStarEle]
 	toreturn += [_cosThetaStarMu_gen,_cosThetaStarEle_gen]
 	toreturn += [_cosThetaStar_gen,_cosTheta_hbb_gen,_cosTheta_zjj_hzz_gen,_cosTheta_zuu_hzz_gen,_cosTheta_zj1_hzz_gen,_cosTheta_zu1_hzz_gen]
 	toreturn += [_phi0_gen, _phi1_gen]
@@ -3016,7 +3024,7 @@ def FullKinematicCalculation(T,variation):
 	toreturn += [_phi0_zz, _phi1_zuu, _phi1_zjj]
 	toreturn += [_Pt_origHjet1,_Pt_origHjet2]
 	toreturn += [_Pt_Hjet1,_Pt_Hjet2,_Pt_Zjet1,_Pt_Zjet2]
-	toreturn += [_Pt_Hjets,_Pt_Zjets,_Pt_uu,_Pt_ee,_Pt_ll]
+	toreturn += [_Pt_Hjets,_Pt_Zjets,_Pt_uu,_Pt_ee]
 	toreturn += [_dRjj_Z,_dRbb_H]
 	toreturn += [_dRu1Hj1,_dRu1Hj2,_dRu2Hj1,_dRu2Hj2]
 	toreturn += [_dRu1Zj1,_dRu1Zj2,_dRu2Zj1,_dRu2Zj2]
@@ -3026,14 +3034,11 @@ def FullKinematicCalculation(T,variation):
 	toreturn += [_dRu1Zj1_genMatched,_dRu1Zj2_genMatched,_dRu2Zj1_genMatched,_dRu2Zj2_genMatched]
 	toreturn += [_dRuubb_H,_dRuujj_Z,_dPHIuubb_H,_dPHIuujj_Z]
 	toreturn += [_dReebb_H,_dReejj_Z,_dPHIeebb_H,_dPHIeejj_Z]
-	toreturn += [_dRllbb_H,_dRlljj_Z,_dPHIllbb_H,_dPHIlljj_Z]
 	toreturn += [_dPhijj_Z,_dPhibb_H]
 	toreturn += [_minDRuj,_minDRej]
 	toreturn += [_Muu4j_gen,_Muu4j_genMatched]
 	toreturn += [_Mee4j_gen,_Mee4j_genMatched]
-	toreturn += [_Mll4j_gen,_Mll4j_genMatched]
 	toreturn += [_jetCntPreFilter,_jetcount,_mucount,_elcount,_genjetcount]
-	toreturn += [_ismuon_muon1,_ismuon_muon2]
 	toreturn += [_muonInd1,_muonInd2]
 	toreturn += [_jetInd1,_jetInd2]
 	toreturn += [_ptHat]
@@ -3047,16 +3052,16 @@ def FullKinematicCalculation(T,variation):
 	toreturn += [_NGenMuonsZ, _NGenElecsZ]
 	toreturn += [_Muujj_gen, _Muujj_genMatched]
 	toreturn += [_Meejj_gen, _Meejj_genMatched]
-	toreturn += [_Mlljj_gen, _Mlljj_genMatched]
 	toreturn += [_Muu_gen, _Muu_genMatched]
+	toreturn += [_Mee_gen, _Mee_genMatched]
 	toreturn += [_bscoreMVA1_genMatched, _bscoreMVA2_genMatched]
 	toreturn += [_CorHj1j2Avail,_CorZj1j2Avail]
-	toreturn += [_passWptCut,_passZptCut,_WorZSystemPt]
+	toreturn += [_WorZSystemPt]
 	toreturn += [_bdt_discrim_M260,_bdt_discrim_M270,_bdt_discrim_M300,_bdt_discrim_M350,_bdt_discrim_M400]
 	toreturn += [_bdt_discrim_M450,_bdt_discrim_M500,_bdt_discrim_M550,_bdt_discrim_M600,_bdt_discrim_M650]
 	toreturn += [_bdt_discrim_M750,_bdt_discrim_M800,_bdt_discrim_M900,_bdt_discrim_M1000]
 	toreturn += [_bdt_discrims2_M300,_bdt_discrims2_M550]
-	toreturn += [_bdt_discrims3_low,_bdt_discrims3_hig]
+	toreturn += [_bdt_discrims3_low,_bdt_discrims3_high]
 	return toreturn
 
 def checkWorZpt(T,lowcut, highcut, WorZ):
@@ -3120,7 +3125,6 @@ startTime = datetime.now()
 lumisection = array.array("L",[0])
 t.SetBranchAddress("ls",lumisection)
 for n in range(N):
-
 	# This is the loop over events. Due to the heavy use of functions and automation of 
 	# systematic variations, this loop is very small. It should not really be editted, 
 	# except possibly to add a new flag or weight variable. 
@@ -3278,4 +3282,4 @@ import os
 print ('mv '+tmpfout+' '+finalfout)
 os.system('mv '+tmpfout+' '+finalfout)
 #os.system('rm '+junkfile1)
-os.system('rm '+junkfile2)
+#os.system('rm '+junkfile2)
