@@ -1888,6 +1888,7 @@ def GetHHJetsOld(jets,btagScoresCSV,btagScoresMVA,muon1,muon2,jetinds, T):
 	jet1index, jet2index, closestZ = -1,-1,2200.
 	gotJet1,gotJet2=False,False
 	[jet1Btag,jet2Btag]=[-20.0,-20.0]
+	[jet1CISV,jet2CISV] = [-20.0,-20.0]
 
 	for i in range(len(jets)-1) :
 		if i==highBtagCounter or i==secondBtagCounter: continue
@@ -1900,6 +1901,8 @@ def GetHHJetsOld(jets,btagScoresCSV,btagScoresMVA,muon1,muon2,jetinds, T):
 				jet1index,jet2index = i,j
 				jet1, jet2 = jets[i], jets[j]
 				indRecoJet1, indRecoJet2 = jetinds[i], jetinds[j]
+				jet1Btag, jet2Btag = btagScoresMVA[i], btagScoresMVA[j]
+				jet1CISV, jet2CISV = btagScoresCSV[i], btagScoresCSV[j]
 				gotJet1=True
 				gotJet2=True
 	#if v == '': print 'Zjet reco ind',indRecoJet1,indRecoJet2,'jets ind',jet1index,jet2index,'M_H_mumujj',(muon1+muon2+jets[jet1index]+jets[jet2index]).M()
@@ -1912,12 +1915,14 @@ def GetHHJetsOld(jets,btagScoresCSV,btagScoresMVA,muon1,muon2,jetinds, T):
 			indRecoJet1=jetinds[i]
 			gotJet1=True
 			jet1Btag = btagScoresMVA[i]
+			jet1CISV = btagScoresCSV[i]
 			continue
 		if not gotJet2:
 			jet2=jets[i]
 			indRecoJet2=jetinds[i]
 			gotJet2=True
 			jet2Btag = btagScoresMVA[i]
+			jet2CISV = btagScoresCSV[i]
 			continue
 		jet3=jets[i]
 		indRecoJet3=jetinds[i]
@@ -1926,7 +1931,7 @@ def GetHHJetsOld(jets,btagScoresCSV,btagScoresMVA,muon1,muon2,jetinds, T):
 	#if v == '' :
 	#	print 'pts:',bjet1.Pt(),bjet2.Pt(),jet1.Pt(),jet2.Pt()
 	#	print 'btag scores:', highBtag,secondBtag,jet1Btag,jet2Btag
-	return [bjet1,highBtagCSV,highBtag,bjet2,secondBtagCSV,secondBtag,jet1,jet2,jet3,indRecoBJet1,indRecoBJet2,indRecoJet1,indRecoJet2,indRecoJet3]
+	return [bjet1,highBtagCSV,highBtag,bjet2,secondBtagCSV,secondBtag,jet1,jet2,jet3,jet1CISV,jet2CISV,jet1Btag,jet2Btag,indRecoBJet1,indRecoBJet2,indRecoJet1,indRecoJet2,indRecoJet3,bjet1,bjet2]
 
 def GetHHJetsNew(jets,btagScoresCSV,btagScoresMVA,muon1,muon2,jetinds, T, met):
 	#Purpose: select which jets to use for HH analysis, separating bJets from light jets. Note that jets have already been cleaned from muons and electrons in cone of 0.3.
@@ -1962,8 +1967,7 @@ def GetHHJetsNew(jets,btagScoresCSV,btagScoresMVA,muon1,muon2,jetinds, T, met):
 
 		for i in range(len(btagScoresMVA)) :
 			#if T.PFJetPartonFlavourAK4CHS[jetinds[i]] == 21 : continue  # for testing the effect of gluon jets
-			if btagScoresCSV[i] < 0.57 : continue
-			if btagScoresMVA[i] < -0.7 : continue
+			if btagScoresMVA[i] < -0.5884 : continue # -0.5884 is Loose WP
 			if i==jet1index or i==jet2index: continue
 			if btagScoresMVA[i]>highBtag:
 				highBtag = btagScoresMVA[i]
@@ -1971,8 +1975,7 @@ def GetHHJetsNew(jets,btagScoresCSV,btagScoresMVA,muon1,muon2,jetinds, T, met):
 				highBtagCounter = i
 		for i in range(len(btagScoresMVA)) :
 			#if T.PFJetPartonFlavourAK4CHS[jetinds[i]] == 21 : continue  # for testing the effect of gluon jets
-			if btagScoresCSV[i] < 0.57 : continue
-			if btagScoresMVA[i] < -0.7 : continue
+			if btagScoresMVA[i] < -0.5884 : continue
 			if i==jet1index or i==jet2index: continue
 			if i==highBtagCounter: continue
 			if btagScoresMVA[i]>secondBtag :
@@ -2013,13 +2016,11 @@ def GetHHJetsNew(jets,btagScoresCSV,btagScoresMVA,muon1,muon2,jetinds, T, met):
 		closestH = 2200 #2200. #50.
 		for i in range(len(jets)-1) :
 			#if T.PFJetPartonFlavourAK4CHS[jetinds[i]] == 21 : continue  # for testing the effect of gluon jets
-			if btagScoresCSV[i] < 0.06  and abs(-0.853212237358 - btagScoresMVA[i]) < 0.000000000002 : continue
 			if jetinds[i]==-1: continue
 			if not T.PFJetPileupMVApassesMediumAK4CHS[jetinds[i]] : continue
 			if i==jet1index or i==jet2index: continue
 			for j in range(i+1,len(jets)) :
 				#if T.PFJetPartonFlavourAK4CHS[jetinds[j]] == 21 : continue  # for testing the effect of gluon jets
-				if btagScoresCSV[j] < 0.06  and abs(-0.853212237358 - btagScoresMVA[j]) < 0.000000000002 : continue
 				if jetinds[j]==-1: continue
 				if not T.PFJetPileupMVApassesMediumAK4CHS[jetinds[j]] : continue
 				if j==jet1index or j==jet2index: continue
@@ -2717,6 +2718,7 @@ def FullKinematicCalculation(T,variation):
 
 	#[bjet1,bscore1,bscoreMVA1,bjet2,bscore2,bscoreMVA2,jet1,jet2,jet3,indRecoBJet1,indRecoBJet2,indRecoJet1,indRecoJet2,indRecoJet3] = GetHHJetsOld(jets,btagCSVscores,btagMVAscores,muons[0],muons[1],jetinds, T)
 	#[bjet1,bscore1,bscoreMVA1,bjet2,bscore2,bscoreMVA2,jet1,jet2,jet3,indRecoBJet1,indRecoBJet2,indRecoJet1,indRecoJet2,indRecoJet3,regr_bjet1,regr_bjet2] = GetHHJetsNew(jets,btagCSVscores,btagMVAscores,muons[0],muons[1],jetinds, T, met)
+	#[unreg_bjet1,bscore1,bscoreMVA1,unreg_bjet2,bscore2,bscoreMVA2,jet1,jet2,jet3,_cisv_Zjet1,_cisv_Zjet2,_cmva_Zjet1,_cmva_Zjet2,indRecoBJet1,indRecoBJet2,indRecoJet1,indRecoJet2,indRecoJet3,bjet1,bjet2] = GetHHJetsOld(jets,btagCSVscores,btagMVAscores,muons[0],muons[1],jetinds, T)
 	[unreg_bjet1,bscore1,bscoreMVA1,unreg_bjet2,bscore2,bscoreMVA2,jet1,jet2,jet3,_cisv_Zjet1,_cisv_Zjet2,_cmva_Zjet1,_cmva_Zjet2,indRecoBJet1,indRecoBJet2,indRecoJet1,indRecoJet2,indRecoJet3,bjet1,bjet2] = GetHHJetsNew(jets,btagCSVscores,btagMVAscores,muons[0],muons[1],jetinds, T, met)
 
 	"""
