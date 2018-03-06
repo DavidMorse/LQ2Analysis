@@ -66,12 +66,12 @@ fin = TFile.Open(name,"READ")
 
 hev = fin.Get('LJFilter/EventCount/EventCounter')
 NORIG = hev.GetBinContent(1)
-SumOfTopPtReweights = hev.GetBinContent(4)
-if 'SingleMuon' in name or 'SingleElectron' in name or 'DoubleMuon' in name or 'DoubleEG' in name:
-	_TopPtFactor = 1.0
-else:
-	_TopPtFactor = float(NORIG)/float(SumOfTopPtReweights)
-
+#SumOfTopPtReweights = hev.GetBinContent(4)
+#if 'SingleMuon' in name or 'SingleElectron' in name or 'DoubleMuon' in name or 'DoubleEG' in name:
+#	_TopPtFactor = 1.0
+#else:
+#	_TopPtFactor = float(NORIG)/float(SumOfTopPtReweights)
+_TopPtFactor = 1.0 #removing top-pt reweighting
 # Typical event weight, sigma*lumi/Ngenerated
 startingweight = _TopPtFactor*float(options.crosssection)*float(options.lumi)/float(options.ntotal)
 
