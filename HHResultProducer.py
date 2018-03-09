@@ -9,21 +9,18 @@ from glob import glob
 ##########################################################################
 
 # Directory where root files are kept and the tree you want to get root files from
-# QCDDirectory = '/store/group/phys_exotica/darinb/SharedAnalyzer/NTupleAnalyzer_FullJuly24QCDNonIsoQuickTest_2014_07_25_15_39_48/SummaryFiles'
-# EMuDirectory = '/store/group/phys_exotica/darinb/SharedAnalyzer/NTupleAnalyzer_FullJuly24EMuSwitch_2014_07_25_03_54_54/SummaryFiles'
-# NormalDirectory='/store/group/phys_exotica/darinb/SharedAnalyzer/NTupleAnalyzer_FullJuly24_2014_07_24_17_24_05/SummaryFiles'
-#QCDDirectory  = 'NTupleAnalyzer_FullJuly24QCDNonIsoQuickTest_2014_07_25_15_39_48/SummaryFiles'
-#EMuDirectory  = 'NTupleAnalyzer_FullJuly24EMuSwitch_2014_07_25_03_54_54/SummaryFiles'
-#NormalDirectory='NTupleAnalyzer_FullJuly24_2014_07_24_17_24_05/SummaryFiles'
 
-#NormalDirectory = '/media/dataPlus/dmorse/hhNtuples/NTupleAnalyzerHH_Full2016HH_2016_11_25/SummaryFiles'
-NormalDirectory = '/media/dataPlus/dmorse/hhNtuples/NTupleAnalyzerHH_hhFull_QuickTest_2018_01_15/SummaryFiles'
-QCDDirectory = '/media/dataPlus/dmorse/hhNtuples/NTupleAnalyzerHH_hhFull_QCDNonIsoQuickTest_2018_01_15/SummaryFiles'
-EMuDirectory = 'emu'
+if 'cmsneu' in platform.node():
+	NormalDirectory = '/media/dataPlus/dmorse/hhNtuples/NTupleAnalyzerHH_newBDTs_2018_02_27/SummaryFiles'
+	QCDDirectory = '/media/dataPlus/dmorse/hhNtuples/NTupleAnalyzerHH_newBDTs_QCDNonIsoQuickTest_2018_02_27/SummaryFiles'
+	EMuDirectory = 'emu'
 
-#NormalDirectory = 'NTupleAnalyzer_Jan30_76X_FULL_2016_02_06_18_41_13/SummaryFiles'
-#QCDDirectory    = '/store/user/dmorse/leptoQuark/NTupleAnalyzer_Dec10_Spring2015Full_QCDNonIsoQuickTest_2015_12_11_11_39_40/SummaryFiles'
-#EMuDirectory    = 'NTupleAnalyzer_Jan30_76X_EMuSwitch_2016_02_08_11_57_48/SummaryFiles'
+else:
+	print 'Have to run on cmsneu!'
+	exit()
+	NormalDirectory = 'norm'
+	QCDDirectory = 'qcd'
+	EMuDirectory = 'emu'
 
 # The name of the main ttree (ntuple structure)
 TreeName = "PhysicalVariables"
