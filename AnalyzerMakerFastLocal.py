@@ -195,7 +195,7 @@ def GetGoodFiles(edir):
 		x = x.split()
 		#print x
 		#newCommand = '/afs/cern.ch/project/eos/installation/0.3.84-aquamarine/bin/eos.select ls -l '+x[-1]
-		newCommand = 'ls -l /eos/cms'+x[-1]
+		newCommand = 'ls -l '+x[-1]
 		lsDashL =  os.popen(newCommand).readlines()
 		#print lsDashL[0]
 		pieces = lsDashL[0].split()
@@ -208,7 +208,7 @@ def GetGoodFiles(edir):
 		#print name
 		ident = identifier(name)
 		# goodeval = IsNotCorruptionTest('root://eoscms//eos/cms/'+name)
-		# goodeval = IsNotCorruptionTest('~/eos/cms'+name)
+		#goodeval = IsNotCorruptionTest('/eos/cms'+name)
 		goodeval = True
 		print name,goodeval
 		if goodeval == True:
