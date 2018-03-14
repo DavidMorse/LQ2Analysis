@@ -1,4 +1,4 @@
-import os, sys, math, random
+import os, sys, math, random, platform
 from glob import glob
 
 
@@ -344,7 +344,7 @@ def main():
 	# of running serially, which speeds things up.
 
 
-	version_name = 'Testing_diHiggs_btag' # scriptflag
+	version_name = 'Testing_diHiggs_btag_newBDT' # scriptflag
 	os.system('mkdir Results_'+version_name) 
 
 	MuMuOptCutFile = 'Results_'+version_name+'/OptHH_resCuts_Smoothed_pol2cutoff.txt' # scriptflag
@@ -630,8 +630,8 @@ def main():
 		print '\n  NormalWeightMuMu plus preselectionmumu  is : ', str(NormalWeightMuMu+'*'+preselectionmumu) , '\n' # AH:
 		#print lqbinning,stbinning
 		# Get Scale Factors
-		#[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = GetMuMuScaleFactors( NormalWeightMuMu+'*'+preselectionmumu, NormalDirectory, '(M_uu>80)*(M_uu<100)', '(M_uu>100)*(Pt_miss>100)',0)
-		[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = [[0.962831123534 , 0.00557],[1.11543113384 , 0.01273]]
+		[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = GetMuMuScaleFactors( NormalWeightMuMu+'*'+preselectionmumu, NormalDirectory, '(M_uu>80)*(M_uu<100)', '(M_uu>100)*(Pt_miss>100)',0)
+		#[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = [[0.962831123534 , 0.00557],[1.11543113384 , 0.01273]]
 		# AH: To speed things up when debugging
 		
 		[[Rw_uvjj,Rw_uvjj_err],[Rtt_uvjj,Rtt_uvjj_err]]=[[1.,0.],[1.,0.]]
@@ -742,16 +742,16 @@ def main():
 		#MakeBasicPlot("Phi_jet2","#phi(jet_{2}) [GeV]",phibinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
 		MakeBasicPlot("Phi_muon1","#phi(#mu_{1}) [GeV]",phibinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
 		MakeBasicPlot("Phi_muon2","#phi(#mu_{2}) [GeV]",phibinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)	
-		MakeBasicPlot("M_uu4j-Mbb_H+125","M_{X} [GeV]",lqbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
-		MakeBasicPlot("M_uu4j-Mbb_H+125-M_uujj+125","M_{X2} [GeV]",lqbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
+		#MakeBasicPlot("M_uu4j-Mbb_H+125","M_{X} [GeV]",lqbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
+		#MakeBasicPlot("M_uu4j-Mbb_H+125-M_uujj+125","M_{X2} [GeV]",lqbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
 		#MakeBasicPlot("M_jj","M_{jj} [GeV]",bosonbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
 		MakeBasicPlot("M_uu","M^{#mu#mu} [GeV]",bosonbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
 		#MakeBasicPlot("M_uu","M^{#mu#mu} [GeV]",bosonbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standardQCDDataDriven','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
 		MakeBasicPlot("M_ee","M^{ee} [GeV]",bosonbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
 		MakeBasicPlot("Mbb_H","M^{bb} from H [GeV]",bosonbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
-		MakeBasicPlot("Mbb_H-125","(M^{bb}-125) from H [GeV]",MassMinusbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
+		#MakeBasicPlot("Mbb_H-125","(M^{bb}-125) from H [GeV]",MassMinusbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
 		MakeBasicPlot("Mjj_Z","M^{jj} from Z [GeV]",bosonbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
-		MakeBasicPlot("Mjj_Z-91","(M^{jj-91)} from Z [GeV]",MassMinusbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
+		#MakeBasicPlot("Mjj_Z-91","(M^{jj-91)} from Z [GeV]",MassMinusbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
 		#MakeBasicPlot("MH_uujj","M_{#muj} (lead jet combo) [GeV]",lqbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
 		#MakeBasicPlot("M_uujjavg","M_{#muj}_{avg} [GeV]",lqbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
 		#MakeBasicPlot("M_uujj1","M_{#muj}_{1} [GeV]",lqbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
@@ -798,8 +798,8 @@ def main():
 		for lqmass in [260,270,300,350,400,450,500,550,600,650,750,800,900,1000]:
 		#for lqmass in [300,900]: # AH
 			MakeBasicPlot("bdt_discrim_M"+str(lqmass),"BDT output at M"+str(lqmass),bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'final','HHres',Rz_uujj, Rw_uvjj,Rtt_uujj,MuMuOptCutFile,version_name,lqmass)
-			MakeBasicPlot("bdt_discrims2_M300","BDT output (no 6-object mass) at M300",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'final','HHres',Rz_uujj, Rw_uvjj,Rtt_uujj,MuMuOptCutFile,version_name,lqmass)
-			MakeBasicPlot("bdt_discrims2_M550","BDT output (no 6-object mass) at M550",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'final','HHres',Rz_uujj, Rw_uvjj,Rtt_uujj,MuMuOptCutFile,version_name,lqmass)
+			#MakeBasicPlot("bdt_discrims2_M300","BDT output (no 6-object mass) at M300",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'final','HHres',Rz_uujj, Rw_uvjj,Rtt_uujj,MuMuOptCutFile,version_name,lqmass)
+			#MakeBasicPlot("bdt_discrims2_M550","BDT output (no 6-object mass) at M550",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'final','HHres',Rz_uujj, Rw_uvjj,Rtt_uujj,MuMuOptCutFile,version_name,lqmass)
 			MakeBasicPlot("bdt_discrims3_low","BDT output combined M260-350",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'final','HHres',Rz_uujj, Rw_uvjj,Rtt_uujj,MuMuOptCutFile,version_name,lqmass)
 			MakeBasicPlot("bdt_discrims3_high","BDT output combined M400-1000",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'final','HHres',Rz_uujj, Rw_uvjj,Rtt_uujj,MuMuOptCutFile,version_name,lqmass)
 			MakeBasicPlot("Pt_muon1","p_{T}(#mu_{1}) [GeV]",ptbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'final','HHres',Rz_uujj, Rw_uvjj,Rtt_uujj,MuMuOptCutFile,version_name,lqmass)
@@ -3190,10 +3190,10 @@ def GetMuMuScaleFactors( selection, FileDirectory, controlregion_1, controlregio
 		selec_qcd = selection.replace('*(Charge_muon1*Charge_muon2 < 0)', '*(Charge_muon1*Charge_muon2 > 0)*((TrkIso_muon1<0.25)*(TrkIso_muon2<0.25))')
 		
 		ssiso_n1 = QuickEntries(tn_DoubleMuData  ,selec_qcd_data + '*' + controlregion_1,1.0) # + dataHLT ??
-		ssiso_z1 = QuickIntegral(tn_ZJetsPtBin   ,selec_qcd + '*' + controlregion_1,0.7878836290932162) # 0.7878 is initial SF calculated using QCD MC
-		ssiso_t1 = QuickIntegral(tn_TTBar_amcnlo ,selec_qcd + '*' + controlregion_1,0.8199547022957769) # 0.8199 is initial SF calculated using QCD MC
+		ssiso_z1 = QuickIntegral(tn_ZJets        ,selec_qcd + '*' + controlregion_1,0.7878836290932162) # 0.7878 is initial SF calculated using QCD MC
+		ssiso_t1 = QuickIntegral(tn_TTBar        ,selec_qcd + '*' + controlregion_1,0.8199547022957769) # 0.8199 is initial SF calculated using QCD MC
 		ssiso_s1 = QuickIntegral(tn_SingleTop    ,selec_qcd + '*' + controlregion_1,1.0)
-		ssiso_w1 = QuickIntegral(tn_WJetsPtBin   ,selec_qcd + '*' + controlregion_1,1.0)
+		ssiso_w1 = QuickIntegral(tn_WJets        ,selec_qcd + '*' + controlregion_1,1.0)
 		ssiso_v1 = QuickIntegral(tn_DiBoson      ,selec_qcd + '*' + controlregion_1,1.0)
 		ssiso_h1 = QuickIntegral(tn_SMHiggs      ,selec_qcd + '*' + controlregion_1,1.0)
 		dataq1_val = mumu_fbd[0] * (ssiso_n1[0] - (ssiso_z1[0]+ssiso_t1[0]+ssiso_s1[0]+ssiso_w1[0]+ssiso_v1[0]+ssiso_h1[0]))
@@ -3201,10 +3201,10 @@ def GetMuMuScaleFactors( selection, FileDirectory, controlregion_1, controlregio
 		q1 = [dataq1_val,dataq1_err]
 		
 		ssiso_n2 = QuickEntries(tn_DoubleMuData  ,selec_qcd_data + '*' + controlregion_2,1.0) # + dataHLT ??
-		ssiso_z2 = QuickIntegral(tn_ZJetsPtBin   ,selec_qcd + '*' + controlregion_2,0.7878836290932162) # 0.7878 is initial SF calculated using QCD MC
-		ssiso_t2 = QuickIntegral(tn_TTBar_amcnlo ,selec_qcd + '*' + controlregion_2,0.8199547022957769) # 0.8199 is initial SF calculated using QCD MC
+		ssiso_z2 = QuickIntegral(tn_ZJets        ,selec_qcd + '*' + controlregion_2,0.7878836290932162) # 0.7878 is initial SF calculated using QCD MC
+		ssiso_t2 = QuickIntegral(tn_TTBar        ,selec_qcd + '*' + controlregion_2,0.8199547022957769) # 0.8199 is initial SF calculated using QCD MC
 		ssiso_s2 = QuickIntegral(tn_SingleTop    ,selec_qcd + '*' + controlregion_2,1.0)
-		ssiso_w2 = QuickIntegral(tn_WJetsPtBin   ,selec_qcd + '*' + controlregion_2,1.0)
+		ssiso_w2 = QuickIntegral(tn_WJets        ,selec_qcd + '*' + controlregion_2,1.0)
 		ssiso_v2 = QuickIntegral(tn_DiBoson      ,selec_qcd + '*' + controlregion_2,1.0)
 		ssiso_h2 = QuickIntegral(tn_SMHiggs      ,selec_qcd + '*' + controlregion_2,1.0)
 		dataq2_val = mumu_fbd[0] * (ssiso_n2[0] - (ssiso_z2[0]+ssiso_t2[0]+ssiso_s2[0]+ssiso_w2[0]+ssiso_v2[0]+ssiso_h2[0]))
