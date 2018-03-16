@@ -1270,7 +1270,8 @@ def LooseIDMuons(T,_met,variation,isdata):
 
 
 		# For the ID, begin by assuming it passes. Veto if it fails any condition
-		# High PT conditions from https://twiki.cern.ch/twiki/bin/view/CMSPublic/SWGuideMuonIdRun2#Short_Term_Medium_Muon_Definitio
+		# conditions from https://twiki.cern.ch/twiki/bin/view/CMSPublic/SWGuideMuonIdRun2#Short_Term_Medium_Muon_Definitio
+                # https://twiki.cern.ch/twiki/bin/view/CMS/SWGuideMuonIdRun2?rev=31#Short_Term_Instructions_for_Mori
 		# NTuple definitions in https://raw.githubusercontent.com/CMSLQ/RootTupleMakerV2/master/src/RootTupleMakerV2_Muons.cc
 		Pass = True
                 #There is an or of requirements, do this by making 2 bools and OR'ing them later
@@ -1290,7 +1291,7 @@ def LooseIDMuons(T,_met,variation,isdata):
 		Pass *= (_MuonPt[n] > 8)#fixme offline cuts are 20(10)
 
 		# Eta requirement 
-		Pass *= abs(T.MuonEta[n])<2.4
+	        Pass *= abs(T.MuonEta[n])<2.4
 
 	        # Require Global Muon
                 Pass1 *= T.MuonIsGlobal[n]
@@ -1399,7 +1400,7 @@ def MediumIDMuons(T,_met,variation,isdata):
 
 
 		# For the ID, begin by assuming it passes. Veto if it fails any condition
-		# High PT conditions from https://twiki.cern.ch/twiki/bin/view/CMSPublic/SWGuideMuonIdRun2#Short_Term_Medium_Muon_Definitio
+		# High PT conditions from https://twiki.cern.ch/twiki/bin/view/CMSPublic/SWGuideMuonIdRun2
 		# NTuple definitions in https://raw.githubusercontent.com/CMSLQ/RootTupleMakerV2/master/src/RootTupleMakerV2_Muons.cc
 		Pass = True
                 #There is an or of requirements, do this by making 2 bools and OR'ing them later
@@ -1413,7 +1414,8 @@ def MediumIDMuons(T,_met,variation,isdata):
 	        #Pass *= (T.MuonIsGlobal[n] or T.MuonIsTracker[n])
 
 	        # Require valid fraction of hits
-	        Pass *= T.MuonTrkValidFractionOfHits[n] > 0.49
+	        #Pass *= T.MuonTrkValidFractionOfHits[n] > 0.49	 #twiki.cern.ch/twiki/bin/view/CMSPublic/SWGuideMuonIdRun2#Short_Term_Medium_Muon_Definitio
+	        Pass *= T.MuonTrkValidFractionOfHits[n] > 0.8
 
 		# A preliminary pT cut.
 		Pass *= (_MuonPt[n] > 8)#fixme offline cuts are 20(10)
@@ -2422,7 +2424,8 @@ def getPhi_ZZ(Zj1, Zj2, mu1, mu2) :
 			dsignhgg2 = zuu_vect.Dot(zz1prime.Cross(vnorm[0]))/(abs(zuu_vect.Dot(zz1prime.Cross(vnorm[0]))))  # zuu_vect here is NOT important
 		else:
 			dsignhgg2 = 0
-		vPhi.append( dsignhgg2 * math.acos(zz1prime.Dot(vnorm[0])) )
+		print dsignhgg2,zz1prime.Dot(vnorm[0])
+		vPhi.append( dsignhgg2 * math.acos(round(zz1prime.Dot(vnorm[0]),6)) )
 		
 		
 		# Define Zjj direction
