@@ -16,10 +16,10 @@ if 'cmsneu' in platform.node():
 	EMuDirectory = 'emu'
 
 else:
-	print 'Have to run on cmsneu!'
-	exit()
-	NormalDirectory = 'norm'
-	QCDDirectory = 'qcd'
+	#print 'Have to run on cmsneu!'
+	#exit()
+	NormalDirectory = '/eos/cms/store/user/dmorse/diHiggs_HHToZZbb/NTupleAnalyzerHH_newBDTs_2018_02_27/SummaryFiles'
+	QCDDirectory = '/eos/cms/store/user/dmorse/diHiggs_HHToZZbb/NTupleAnalyzerHH_newBDTs_QCDNonIsoQuickTest_2018_02_27/SummaryFiles'
 	EMuDirectory = 'emu'
 
 # The name of the main ttree (ntuple structure)
@@ -130,7 +130,8 @@ passfilter += '*(passBadMuon*passBadChargedHadron)'
 #passfilter += '*(noBadMuonsFlag*(1-duplicateMuonsFlag))'
 
 # This defines the preselections for the mu-mu, mu-nu, and e-mu samples
-preselection_nos = '((Pt_muon1>20)*(Pt_muon2>10)*(Pt_Hjet1>20)*(Pt_Hjet2>20)*(Pt_Zjet1>20)*(Pt_Zjet2>20)*(M_uu>12)*(isMuonEvent))'
+#preselection_nos = '((Pt_muon1>20)*(Pt_muon2>10)*(Pt_Hjet1>20)*(Pt_Hjet2>20)*(Pt_Zjet1>20)*(Pt_Zjet2>20)*(M_uu>12)*(isMuonEvent))'
+preselection_nos = '((Pt_muon1>20)*(Pt_muon2>10)*(Pt_Hjet1>20)*(Pt_Hjet2>20)*(Pt_Zjet1>20)*(Pt_Zjet2>20)*(M_uu>12)*(isMuonEvent)*(1-(run_number==276950)*(lumi_number==22)*(event_number==34039924))*(1-(run_number==1)*(lumi_number==447098)*(event_number==71625048)))'
 #Require at least one loose MVA bTag
 bTagsel1loose = '*(((CMVA_bjet1>-0.5884)+(CMVA_bjet2>-0.5884)+(CMVA_Zjet1>-0.5884)+(CMVA_Zjet2>-0.5884))>0)'
 bTagsel1medium = '*(((CMVA_bjet1>0.4432)+(CMVA_bjet2>0.4432)+(CMVA_Zjet1>0.4432)+(CMVA_Zjet2>0.4432))>0)'
@@ -158,11 +159,11 @@ preselectionmunu += passfilter
 
 
 # Weights for different MC selections, including integrated luminosity, event weight, and trigger weight
-#NormalWeightMuMu = str(lumi)+'*weight_central*weight_topPt'+trackerHIP1+trackerHIP2+doublemuHLT+doubleMuIdAndIsoScale+bTagPreselSF
+#NormalWeightMuMu = str(lumi)+'*weight_central'+trackerHIP1+trackerHIP2+doublemuHLT+doubleMuIdAndIsoScale+bTagPreselSF
 NormalWeightMuMu = str(lumi)+'*weight_central'+trackerHIP1+trackerHIP2+doublemuHLT+doubleMuIdAndIsoScale+bTagPreselSF
-NormalWeightMuNu = str(lumi)+'*weight_central*weight_topPt'+singlemuHLT+singleMuIdScale+singleMuIsoScale+trackerHIP1
-NormalWeightEMu = str(lumi)+'*weight_central*weight_topPt'+singlemuHLTEMU+MuIdScaleEMU+MuIsoScaleEMU+eleRECOScale+eleHEEPScale+trackerHIPEMU
-NormalWeightEMuNoHLT = str(lumi)+'*weight_central*weight_topPt'+MuIdScaleEMU+MuIsoScaleEMU+eleRECOScale+eleHEEPScale+trackerHIPEMU#fixme do we need scale factors here?
+NormalWeightMuNu = str(lumi)+'*weight_central'+singlemuHLT+singleMuIdScale+singleMuIsoScale+trackerHIP1
+NormalWeightEMu = str(lumi)+'*weight_central'+singlemuHLTEMU+MuIdScaleEMU+MuIsoScaleEMU+eleRECOScale+eleHEEPScale+trackerHIPEMU
+NormalWeightEMuNoHLT = str(lumi)+'*weight_central'+MuIdScaleEMU+MuIsoScaleEMU+eleRECOScale+eleHEEPScale+trackerHIPEMU#fixme do we need scale factors here?
 
 ##########################################################################
 ########    HARD CODED RESULTS USED IN ANALYSIS                   ########
@@ -220,19 +221,8 @@ pdf_uujj_ZJets = [0.95,0.95,2.11,2.98,5.09,5.8,6.73,7.41,7.41,7.62,7.69,8.11,8.4
 
 
 # These are the total background uncertainties. They are used just to make some error bands on plots. 
-# totunc_uujj = [3.36, 2.57, 2.79, 3.36, 5.28, 5.67, 6.85, 6.79, 10.29, 10.59, 11.95, 32.6, 14.88, 45.57, 53.55, 53.55, 53.55, 53.55, 53.55 ]
-# totunc_uvjj = [7.36, 7.58, 9.62, 10.52, 11.75, 14.42, 18.26, 24.61, 23.88, 38.78, 27.65, 30.1, 47.37, 53.7, 53.99, 53.99, 53.99, 53.99, 53.99]
-#old#totunc_uujj = [3.8,3.8,3.8, 3.05, 4.2, 5.31, 6.98, 7.68, 10.44, 14.04, 21.9, 27.56, 27.67, 42.04, 32.78, 55.57, 64.98, 64.98, 64.98, 64.98, 64.98, 64.98, 64.98, 64.98, 64.98, 64.98, 64.98, 64.98, 64.98, 64.98, 64.98, 64.98, 64.98, 64.98, 64.98, 64.98, 64.98]
-totunc_uvjj = [7.42,7.42,7.42, 7.65, 9.94, 11.06, 12.39, 15.64, 19.79, 27.6, 32.69, 51.06, 50.28, 39.12, 51.71, 58.42, 60.18, 60.18, 60.18, 60.18, 60.18, 60.18, 60.18, 60.18, 60.18, 60.18, 60.18, 60.18, 60.18, 60.18, 60.18, 60.18, 60.18, 60.18, 60.18, 60.18, 60.18]
 
-
-
-#JECv6#totunc_uujj = [5.95, 5.95, 6.39, 7.71, 10.38, 8.69, 10.52, 10.01, 9.96, 10.13, 10.64, 10.7, 12.05, 12.64, 16.9, 12.79, 20.1, 24.54, 25.32, 26.45, 29.38, 37.44, 34.46, 29.4, 30.79, 35.2, 29.3, 32.44, 25.84, 25.71, 25.51, 25.51, 25.51, 25.51, 25.51, 25.51, 25.51]
-
-#totunc_uujj = [3.19, 4.46, 5.33, 4.58, 5.6, 7.09, 9.84, 9.25, 10.92, 9.68, 16.46, 16.04, 15.71, 20.42, 19.52, 34.73, 25.34, 28.49, 31.98, 62.54, 25.85, 32.57, 31.61, 45.26, 27.38, 32.8, 37.03, 37.03, 37.03, 37.03, 37.03, 37.03, 37.03, 37.03, 37.03, 37.03, 37.03]
-
-#JECv7
-totunc_uujj = [3.13, 4.39, 5.28, 4.48, 5.35, 6.73, 9.86, 9.5, 11.75, 10.44, 17.41, 16.75, 15.75, 20.46, 19.52, 34.74, 25.37, 28.51, 31.97, 62.55, 25.86, 32.56, 31.63, 45.3, 27.41, 32.82, 37.05, 37.05, 37.05, 37.05, 37.05, 37.05, 37.05, 37.05, 37.05, 37.05, 37.05, 3.13, 4.39, 5.28, 4.48, 5.35, 6.73, 9.86, 9.5, 11.75, 10.44, 17.41, 16.75, 15.75, 20.46, 19.52, 34.74, 25.37, 28.51, 31.97, 62.55, 25.86, 32.56, 31.63, 45.3, 27.41, 32.82, 37.05, 37.05, 37.05, 37.05, 37.05, 37.05, 37.05, 37.05, 37.05, 37.05, 37.05]
+totunc_uujj = [10.]
 
 
 
@@ -630,8 +620,8 @@ def main():
 		print '\n  NormalWeightMuMu plus preselectionmumu  is : ', str(NormalWeightMuMu+'*'+preselectionmumu) , '\n' # AH:
 		#print lqbinning,stbinning
 		# Get Scale Factors
-		[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = GetMuMuScaleFactors( NormalWeightMuMu+'*'+preselectionmumu, NormalDirectory, '(M_uu>80)*(M_uu<100)', '(M_uu>100)*(Pt_miss>100)',0)
-		#[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = [[0.962831123534 , 0.00557],[1.11543113384 , 0.01273]]
+		[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = GetMuMuScaleFactors( NormalWeightMuMu+'*'+preselectionmumu, NormalDirectory, '(M_uu>80)*(M_uu<100)*(((CMVA_bjet1>-0.5884)+(CMVA_bjet2>-0.5884)+(CMVA_Zjet1>-0.5884)+(CMVA_Zjet2>-0.5884))==0)*(1-(1-(1-(CMVA_bjet1>-0.5884)*(0.976111+(-(4.37632e-05*Pt_Hjet1))))*(1-(CMVA_bjet2>-0.5884)*(0.976111+(-(4.37632e-05*Pt_Hjet2))))*(1-(CMVA_Zjet1>-0.5884)*(0.976111+(-(4.37632e-05*Pt_Zjet1))))*(1-(CMVA_Zjet2>-0.5884)*(0.976111+(-(4.37632e-05*Pt_Zjet2))))))', '(M_uu>100)*(Pt_miss>100)',0)
+		#[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = [[0.974561303332, 0.00553],[1.11001331611, 0.01308]]
 		# AH: To speed things up when debugging
 		
 		[[Rw_uvjj,Rw_uvjj_err],[Rtt_uvjj,Rtt_uvjj_err]]=[[1.,0.],[1.,0.]]
@@ -689,24 +679,10 @@ def main():
 
 		
 		# UUJJ plots at preselection, Note that putting 'TTBarDataDriven' in the name turns on the use of data-driven ttbar e-mu sample in place of MC
-		# putting 'QCDDataDriven' will also turns on the use of data-driven QCD if not already set at default
 		
-		MakeBasicPlot("bdt_discrim_M260","BDT output at M260",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
-		MakeBasicPlot("bdt_discrim_M270","BDT output at M270",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
-		MakeBasicPlot("bdt_discrim_M300","BDT output at M300",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
-		MakeBasicPlot("bdt_discrim_M350","BDT output at M350",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
-		MakeBasicPlot("bdt_discrim_M400","BDT output at M400",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
-		MakeBasicPlot("bdt_discrim_M450","BDT output at M450",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
-		MakeBasicPlot("bdt_discrim_M500","BDT output at M500",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
-		MakeBasicPlot("bdt_discrim_M550","BDT output at M550",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
-		MakeBasicPlot("bdt_discrim_M600","BDT output at M600",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
-		MakeBasicPlot("bdt_discrim_M650","BDT output at M650",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
-		MakeBasicPlot("bdt_discrim_M750","BDT output at M750",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
-		MakeBasicPlot("bdt_discrim_M800","BDT output at M800",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
-		MakeBasicPlot("bdt_discrim_M900","BDT output at M900",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
-		MakeBasicPlot("bdt_discrim_M1000","BDT output at M1000",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
-		MakeBasicPlot("bdt_discrims2_M300","BDT output (no 6-object mass) at M300",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
-		MakeBasicPlot("bdt_discrims2_M550","BDT output (no 6-object mass) at M550",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,900)
+		# putting 'QCDDataDriven' will also turns on the use of data-driven QCD if not already set at default
+		for lqmass in [260,270,300,350,400,450,500,550,600,650,750,800,900,1000]:
+			MakeBasicPlot("bdt_discrim_M"+str(lqmass),"BDT output at M"+str(lqmass),bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,lqmass)
 		MakeBasicPlot("bdt_discrims3_low","BDT output combined M260-350",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
 		MakeBasicPlot("bdt_discrims3_high","BDT output combined M400-1000",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,900)
 		MakeBasicPlot("cosTheta_hbb","cos(#Theta) (H->bb)",costhetastarbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
@@ -1039,6 +1015,60 @@ def main():
 		ShapeSystematic('uujj',NormalWeightMuMu,preselectionmumu,MuMuOptTestCutFile)
 		#ShapeSystematic('uvjj',NormalWeightMuNu,preselectionmunu,MuNuOptTestCutFile)
 
+	# ====================================================================================================================================================== #
+	# This is for  spurious events
+	# ====================================================================================================================================================== #
+
+	if False:
+		tmpfile = TFile("tmp.root","RECREATE")
+		t_DoubleMuData2 = t_TTBar.CopyTree(preselectionmumu)
+		NN = t_DoubleMuData2.GetEntries()
+		for n in range(NN):
+			if n%1000 ==0:
+				print n,'of',NN
+			t_DoubleMuData2.GetEntry(n)
+			#st = t_DoubleMuData2.St_uujj
+			#if st>5000:
+			#if t_DoubleMuData2.St_uvjj>1505 and t_DoubleMuData2.MT_uv>540 and t_DoubleMuData2.M_uvjj>660 and t_DoubleMuData2.Pt_muon1>800:
+			if t_DoubleMuData2.Pt_miss>145 and t_DoubleMuData2.Pt_miss<160 and  t_DoubleMuData2.Phi_muon2>1.3 and t_DoubleMuData2.Phi_muon2<1.8 and t_DoubleMuData2.bdt_discrim_M260>0.05 and t_DoubleMuData2.bdt_discrim_M260<0.15 and t_DoubleMuData2.bdt_discrims3_low>0.04 and t_DoubleMuData2.bdt_discrims3_low<0.1 and t_DoubleMuData2.cosThetaStarMu>-0.7 and t_DoubleMuData2.cosThetaStarMu<-0.6:			
+				print 'run / lumi / event:',int(t_DoubleMuData2.run_number),'/',int(t_DoubleMuData2.lumi_number),'/',int(t_DoubleMuData2.event_number)
+				print 'Pt_muon1     ',t_DoubleMuData2.Pt_muon1
+				#print 'Pt_muon1_raw ',t_DoubleMuData2.Pt_muon1_noTuneP
+				#if (t_DoubleMuData2.Pt_muon1>0):
+				#	print 'raw/tuneP 1  ',t_DoubleMuData2.Pt_muon1_noTuneP/t_DoubleMuData2.Pt_muon1 
+				#else: print 'raw/tuneP 1  ','n/a'
+				print 'Pt_muon2     ',t_DoubleMuData2.Pt_muon2
+				#print 'Pt_muon2_raw ',t_DoubleMuData2.Pt_muon2_noTuneP
+				#if (t_DoubleMuData2.Pt_muon2>0):
+				#	print 'raw/tuneP 2  ',t_DoubleMuData2.Pt_muon2_noTuneP/t_DoubleMuData2.Pt_muon2
+				#else: print 'raw/tuneP 2  ','n/a'
+				print 'Eta_muon1    ',t_DoubleMuData2.Eta_muon1
+				print 'Eta_muon2    ',t_DoubleMuData2.Eta_muon2
+				print 'Phi_muon1    ',t_DoubleMuData2.Phi_muon1
+				print 'Phi_muon2    ',t_DoubleMuData2.Phi_muon2
+				print 'Pt_Hjet1      ',t_DoubleMuData2.Pt_Hjet1
+				print 'Pt_Hjet2      ',t_DoubleMuData2.Pt_Hjet2
+				print 'Pt_Zjet1      ',t_DoubleMuData2.Pt_Zjet1
+				print 'Pt_Zjet2      ',t_DoubleMuData2.Pt_Zjet2
+				print 'Eta_Hjet1     ',t_DoubleMuData2.Eta_Hjet1
+				print 'Eta_Hjet2     ',t_DoubleMuData2.Eta_Hjet2
+				print 'Phi_Hjet1     ',t_DoubleMuData2.Phi_Hjet1
+				print 'Phi_Hjet2     ',t_DoubleMuData2.Phi_Hjet2
+				print 'Eta_Zjet1     ',t_DoubleMuData2.Eta_Zjet1
+				print 'Eta_Zjet2     ',t_DoubleMuData2.Eta_Zjet2
+				print 'Phi_Zjet1     ',t_DoubleMuData2.Phi_Zjet1
+				print 'Phi_Zjet2     ',t_DoubleMuData2.Phi_Zjet2
+				print 'Pt_miss      ',t_DoubleMuData2.Pt_miss
+				print 'Phi_miss     ',t_DoubleMuData2.Phi_miss
+				print 'M_uu         ',t_DoubleMuData2.M_uu
+				print 'DR_muon1muon2',t_DoubleMuData2.DR_muon1muon2
+				print 'DPhi_muon1met',t_DoubleMuData2.DPhi_muon1met
+				print 'CMVA Hjet1   ',t_DoubleMuData2.CMVA_bjet1
+				print 'CMVA Hjet2   ',t_DoubleMuData2.CMVA_bjet2
+				print 'CMVA Zjet1   ',t_DoubleMuData2.CMVA_Zjet1
+				print 'CMVA Zjet2   ',t_DoubleMuData2.CMVA_Zjet2
+				print 'weight_central',t_DoubleMuData2.weight_central
+
 
 ####################################################################################################################################################
 ####################################################################################################################################################
@@ -1076,25 +1106,25 @@ rnd= TRandom3()
 person = (os.popen('whoami').readlines()[0]).replace("\n",'')
 
 
-if '/store' in NormalDirectory:
-	NormalFiles = [(x.split('/')[-1]).replace('\n','') for x in os.popen('cmsLs '+NormalDirectory+"| grep \".root\" | awk '{print $1}'").readlines()]
-else:
-	NormalFiles = [ff.replace('\n','') for ff in os.popen('ls '+NormalDirectory+"| grep \".root\"").readlines()]
+#if '/store' in NormalDirectory:
+#	NormalFiles = [(x.split('/')[-1]).replace('\n','') for x in os.popen('cmsLs '+NormalDirectory+"| grep \".root\" | awk '{print $1}'").readlines()]
+#else:
+NormalFiles = [ff.replace('\n','') for ff in os.popen('ls '+NormalDirectory+"| grep \".root\"").readlines()]
 
-if '/store' in EMuDirectory:
-	EMuFiles = [(x.split('/')[-1]).replace('\n','') for x in os.popen('cmsLs '+EMuDirectory+"| grep \".root\" | awk '{print $1}'").readlines()]
-else:
-	EMuFiles = [ff.replace('\n','') for ff in os.popen('ls '+EMuDirectory+"| grep \".root\"").readlines()]
+#if '/store' in EMuDirectory:
+#	EMuFiles = [(x.split('/')[-1]).replace('\n','') for x in os.popen('cmsLs '+EMuDirectory+"| grep \".root\" | awk '{print $1}'").readlines()]
+#else:
+EMuFiles = [ff.replace('\n','') for ff in os.popen('ls '+EMuDirectory+"| grep \".root\"").readlines()]
 
-if '/store' in QCDDirectory:	
-	QCDFiles = [(x.split('/')[-1]).replace('\n','') for x in os.popen('cmsLs '+QCDDirectory+"| grep \".root\" | awk '{print $1}'").readlines()]
-else:
-	QCDFiles = [ff.replace('\n','') for ff in os.popen('ls '+QCDDirectory+"| grep \".root\"").readlines()]
+#if '/store' in QCDDirectory:	
+#	QCDFiles = [(x.split('/')[-1]).replace('\n','') for x in os.popen('cmsLs '+QCDDirectory+"| grep \".root\" | awk '{print $1}'").readlines()]
+#else:
+QCDFiles = [ff.replace('\n','') for ff in os.popen('ls '+QCDDirectory+"| grep \".root\"").readlines()]
 
 for f in NormalFiles:
 	_tree = 't_'+f.split('/')[-1].replace(".root","")
 	_treeTmp = _tree+"_tmp"
-	_prefix = '' +'root://eoscms//eos/cms'*('/store' in NormalDirectory)
+	_prefix = ''# +'root://eoscms//eos/cms'*('/store' in NormalDirectory)
 	print(_tree+" = TFile.Open(\""+_prefix+NormalDirectory+"/"+f.replace("\n","")+"\",\"READ\")"+".Get(\""+TreeName+"\")")
 	exec (_treeTmp+" = TFile.Open(\""+_prefix+NormalDirectory+"/"+f.replace("\n","")+"\",\"READ\")")
 	exec (_tree+" = "+_treeTmp+".Get(\""+TreeName+"\")")
@@ -1102,7 +1132,7 @@ for f in NormalFiles:
 for f in EMuFiles:
 	_tree = 'te_'+f.split('/')[-1].replace(".root","")	
 	_treeTmp = _tree+"_tmp"
-	_prefix = '' +'root://eoscms//eos/cms'*('/store' in EMuDirectory)	
+	_prefix = ''# +'root://eoscms//eos/cms'*('/store' in EMuDirectory)	
 	print(_tree+" = TFile.Open(\""+_prefix+EMuDirectory+"/"+f.replace("\n","")+"\",\"READ\")"+".Get(\""+TreeName+"\")")
 	exec (_treeTmp+" = TFile.Open(\""+_prefix+EMuDirectory+"/"+f.replace("\n","")+"\",\"READ\")")
 	exec (_tree+" = "+_treeTmp+".Get(\""+TreeName+"\")")
@@ -1110,7 +1140,7 @@ for f in EMuFiles:
 for f in QCDFiles:
 	_tree = 'tn_'+f.split('/')[-1].replace(".root","")
 	_treeTmp = _tree+"_tmp"
-	_prefix = '' +'root://eoscms//eos/cms'*('/store' in QCDDirectory)	
+	_prefix = ''# +'root://eoscms//eos/cms'*('/store' in QCDDirectory)	
 	print(_tree+" = TFile.Open(\""+_prefix+QCDDirectory+"/"+f.replace("\n","")+"\",\"READ\")"+".Get(\""+TreeName+"\")")
 	exec (_treeTmp+" = TFile.Open(\""+_prefix+QCDDirectory+"/"+f.replace("\n","")+"\",\"READ\")")
 	exec (_tree+" = "+_treeTmp+".Get(\""+TreeName+"\")")
@@ -2728,18 +2758,18 @@ def SysTable(optimlog, selection_uujj,selection_uvjj,NormalDirectory, weight,sys
 
 
 	if sysmethod == 'ZNORMup':   
-		rz *= 1.1#fixme adding this to cover discrepancy between samples
+		#rz *= 1.1#fixme adding this to cover discrepancy between samples
 		rz += _e_rz 
 	if sysmethod == 'ZNORMdown': 
-		rz *= 0.9#fixme adding this to cover discrepancy between samples
+		#rz *= 0.9#fixme adding this to cover discrepancy between samples
 		rz += -_e_rz 
 	if sysmethod == 'WNORMup':     rw += _e_rw
 	if sysmethod == 'WNORMdown':   rw += -_e_rw 
 	if sysmethod == 'TTNORMup':  
-		rt *= 1.1#fixme adding this to cover kinematic dependence of R_uu/eu
+		#rt *= 1.1#fixme adding this to cover kinematic dependence of R_uu/eu
 		rt += _e_rt
 	if sysmethod == 'TTNORMdown':  
-		rt *= 0.9#fixme adding this to cover kinematic dependence of R_uu/eu
+		#rt *= 0.9#fixme adding this to cover kinematic dependence of R_uu/eu
 		rt += -_e_rt 	
 
 	#if sysmethod == 'SHAPETT' : 
@@ -3700,7 +3730,7 @@ def MakeBasicPlot(recovariable,xlabel,presentationbinning,selection,weight,FileD
 	
 	# Create Canvas
 	yaxismin = .13333
-	perc = 0.0
+	perc = totunc_uujj[0]
 	betamarker = '#beta = '
 	isDisplaced=False
 	#if 'cosThetaStar' in recovariable: doLog=False
@@ -3743,10 +3773,10 @@ def MakeBasicPlot(recovariable,xlabel,presentationbinning,selection,weight,FileD
 		c1 = TCanvas("c1","",800,550)		
 		pad1 = TPad( 'pad1', 'pad1', 0.0, 0.0, 1.0, 1.0 )#divide canvas into pads
 		pad1.Draw()
-		perc = 5.0
-		for m in range(len(pdf_MASS)):
-			if str(pdf_MASS[m]) in str(plotmass):
-				perc = syslist[m]
+		#perc = 5.0
+		#for m in range(len(pdf_MASS)):
+		#	if str(pdf_MASS[m]) in str(plotmass):
+		#		perc = syslist[m]
 
 
 		# else:
@@ -4012,63 +4042,8 @@ def MakeBasicPlot(recovariable,xlabel,presentationbinning,selection,weight,FileD
 		hs_rec_DiBoson.SetTitle("Other background")
 		hs_rec_DiBoson.Add(hs_rec_WJets)
 		hs_rec_DiBoson.Add(hs_rec_SingleTop)
-		#hs_rec_DiBoson.Add(hs_rec_QCD)
 		SM=[hs_rec_SMHiggs,hs_rec_DiBoson,hs_rec_QCD,hs_rec_ZJets,hs_rec_TTBar]
 
-	if channel == 'susy':
-		sig1name = 'LQ, M = 500 GeV'
-		sig2name = 'RPV Susy, M = 500 GeV'
-		if 'final' not in tagname:
-			hs_rec_Signal=CreateHisto('hs_rec_Signal',sig1name,t_LQuujj500,recovariable,presentationbinning,selection+'*'+weight,SignalStyle,Label)
-			hs_rec_Signal2=CreateHisto('hs_rec_Signal2',sig2name,t_Susy500,recovariable,presentationbinning,selection+'*'+weight,SignalStyle2,Label)
-		if 'final' in tagname:
-			exec ("_stree = t_LQ"+channel+str(plotmass))
-			hs_rec_Signal=CreateHisto('hs_rec_Signal','LQ, M = '+str(plotmass)+' GeV',_stree,recovariable,presentationbinning,selection+'*'+weight,SignalStyle,Label)
-
-		hs_rec_DiBoson.SetTitle("Other background")
-		hs_rec_DiBoson.Add(hs_rec_WJets)
-		hs_rec_DiBoson.Add(hs_rec_SingleTop)
-		SM=[hs_rec_SMHiggs,hs_rec_DiBoson,hs_rec_TTBar,hs_rec_ZJets]
-
-	if isDisplaced:
-		sig1name = '#tilde{t}, M = 200 GeV, c#tau=0.1 cm'
-		sig2name = '#tilde{t}, M = 500 GeV, c#tau=1 cm'
-		if 'final' not in tagname:
-			hs_rec_Signal=CreateHisto('hs_rec_Signal',sig1name,t_BLCTau1uujj200,recovariable,presentationbinning,selection+'*'+weight,SignalStyle,Label)
-			hs_rec_Signal2=CreateHisto('hs_rec_Signal2',sig2name,t_BLCTau10uujj500,recovariable,presentationbinning,selection+'*'+weight,SignalStyle2,Label)
-			print 'signal1,',sig1name,':',hs_rec_Signal.Integral()
-			print 'signal2,',sig2name,':',hs_rec_Signal2.Integral()
-		if 'final' in tagname:
-			exec ("_stree  = t_BL"+channel+str(plotmass)+'CTau1')
-			exec ("_stree2 = t_BL"+channel+str(plotmass)+'CTau10')
-			exec ("_stree3 = t_BL"+channel+str(plotmass)+'CTau100')
-			exec ("_stree4 = t_BL"+channel+str(plotmass)+'CTau1000')
-			hs_rec_Signal=CreateHisto('hs_rec_Signal','#tilde{t}, M = '+str(plotmass)+' GeV, c#tau=0.1 cm',_stree,recovariable,presentationbinning,selection+'*'+weight,SignalStyle,Label)
-			hs_rec_Signal2=CreateHisto('hs_rec_Signal2','#tilde{t}, M = '+str(plotmass)+' GeV, c#tau=1 cm',_stree2,recovariable,presentationbinning,selection+'*'+weight,SignalStyle2,Label)
-			hs_rec_Signal3=CreateHisto('hs_rec_Signal3','#tilde{t}, M = '+str(plotmass)+' GeV, c#tau=10 cm',_stree3,recovariable,presentationbinning,selection+'*'+weight,SignalStyle3,Label)
-			hs_rec_Signal4=CreateHisto('hs_rec_Signal4','#tilde{t}, M = '+str(plotmass)+' GeV, c#tau=100 cm',_stree4,recovariable,presentationbinning,selection+'*'+weight,SignalStyle4,Label)
-			print 'signal1,',sig1name,':',hs_rec_Signal.Integral()
-
-		hs_rec_DiBoson.SetTitle("Other background")
-		hs_rec_DiBoson.Add(hs_rec_WJets)
-		hs_rec_DiBoson.Add(hs_rec_SingleTop)
-		SM=[hs_rec_DiBoson,hs_rec_TTBar,hs_rec_ZJets]
-
-	if channel == 'uvjj':
-		if 'final' not in tagname:	
-			sig1name = 'LQ, M = 650 GeV, '+betamarker
-			sig2name = 'LQ, M = 950 GeV, '+betamarker
-			hs_rec_Signal=CreateHisto('hs_rec_Signal',sig1name,t_LQuvjj650,recovariable,presentationbinning,selection+'*'+weight,SignalStyle,Label)
-			hs_rec_Signal2=CreateHisto('hs_rec_Signal2',sig2name,t_LQuvjj950,recovariable,presentationbinning,selection+'*'+weight,SignalStyle2,Label)
-		if 'final' in tagname:
-			exec ("_stree = t_LQ"+channel+str(plotmass))
-			hs_rec_Signal=CreateHisto('hs_rec_Signal','LQ, M = '+str(plotmass)+' GeV, '+betamarker,_stree,recovariable,presentationbinning,selection+'*'+weight,SignalStyle,Label)
-	
-		hs_rec_DiBoson.SetTitle("Other background")
-		hs_rec_DiBoson.Add(hs_rec_ZJets)
-		hs_rec_DiBoson.Add(hs_rec_SingleTop)		
-		SM=[hs_rec_DiBoson,hs_rec_TTBar,hs_rec_WJets]
-	
 	sigErr=Double(0.)
 	sigInt = hs_rec_Signal.IntegralAndError(0,-1,sigErr)
 	print 'Signal M='+str(plotmass)+'    :',sigInt,'+-',sigErr
@@ -4221,6 +4196,8 @@ def MakeBasicPlot(recovariable,xlabel,presentationbinning,selection,weight,FileD
  	if 'PAS' in tagname and 'final' in tagname:
 		# sysTop.Draw("F")
 		hs_bgband.Draw("E2SAME")
+	#adding syst band
+	hs_bgband.Draw("E2SAME")
 	if 'final' in tagname and isDisplaced:
 		hs_rec_Signal2.Draw("HISTSAME")
 		hs_rec_Signal3.Draw("HISTSAME")
@@ -4283,6 +4260,8 @@ def MakeBasicPlot(recovariable,xlabel,presentationbinning,selection,weight,FileD
 			#leg.AddEntry(hs_rec_Signal,'LQ, M = '+str(plotmass)+' GeV, '+betamarker,"l")
 			#leg.AddEntry(hs_rec_Signal,'M_{R} = '+str(plotmass)+' GeV',"l") # AH:
 			leg.AddEntry(hs_rec_Signal,'M_{R} = '+str(plotmass)+' GeV (1 pb)',"l") # AH:
+	leg.AddEntry(hs_bgband,'Unc. (stat + syst)')
+
 	leg.Draw()
 
 	sqrts = "#sqrt{s} = 13 TeV";
@@ -4394,6 +4373,16 @@ def MakeBasicPlot(recovariable,xlabel,presentationbinning,selection,weight,FileD
 
 		unity=TLine(RatHistNum.GetXaxis().GetXmin(), 1.0 , RatHistNum.GetXaxis().GetXmax(),1.0)
 		unity.Draw("SAME")	
+
+		#fixme syst errors for presel
+		hs_bgbandRat = hs_bgband.Clone()
+		for c in range(hs_bgbandRat.GetNbinsX()+1):
+			if hs_bgbandRat.GetBinContent(c)>0:
+				newErr = hs_bgbandRat.GetBinError(c)/hs_bgbandRat.GetBinContent(c)
+			else : newErr = hs_bgbandRat.GetBinError(c)
+			hs_bgbandRat.SetBinContent(c,1.0)
+			hs_bgbandRat.SetBinError(c,newErr)
+		hs_bgbandRat.Draw("E2SAMES")
 
 		"""
 		pad3.cd()
