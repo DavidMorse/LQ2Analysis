@@ -104,6 +104,12 @@ bTag1SFloose = '*(1-(1-(CMVA_bjet1>-0.5884)*(0.976111+(-(4.37632e-05*Pt_Hjet1)))
 
 bTag1SFmedium = '*(1-(1-(CMVA_bjet1>-0.5884)*0.600657*((1.+(0.753343*Pt_Hjet1))/(1.+(0.472587*Pt_Hjet1))))*(1-(CMVA_bjet2>-0.5884)*0.600657*((1.+(0.753343*Pt_Hjet2))/(1.+(0.472587*Pt_Hjet2))))*(1-(CMVA_Zjet1>-0.5884)*0.600657*((1.+(0.753343*Pt_Zjet1))/(1.+(0.472587*Pt_Zjet1))))*(1-(CMVA_Zjet2>-0.5884)*0.600657*((1.+(0.753343*Pt_Zjet2))/(1.+(0.472587*Pt_Zjet2)))))'
 
+bTag1SFmediumUp   = '*(1-(1-(CMVA_bjet1>-0.5884)*0.600657*((1.+(0.753343*Pt_Hjet1))/(1.+(0.472587*Pt_Hjet1))))*(1-(CMVA_bjet2>-0.5884)*0.600657*((1.+(0.753343*Pt_Hjet2))/(1.+(0.472587*Pt_Hjet2))))*(1-(CMVA_Zjet1>-0.5884)*0.600657*((1.+(0.753343*Pt_Zjet1))/(1.+(0.472587*Pt_Zjet1))))*(1-(CMVA_Zjet2>-0.5884)*0.600657*((1.+(0.753343*Pt_Zjet2))/(1.+(0.472587*Pt_Zjet2)))))'
+
+bTag1SFmediumDown = '*(1-(1-(CMVA_bjet1>-0.5884)*0.600657*((1.+(0.753343*Pt_Hjet1))/(1.+(0.472587*Pt_Hjet1))))*(1-(CMVA_bjet2>-0.5884)*0.600657*((1.+(0.753343*Pt_Hjet2))/(1.+(0.472587*Pt_Hjet2))))*(1-(CMVA_Zjet1>-0.5884)*0.600657*((1.+(0.753343*Pt_Zjet1))/(1.+(0.472587*Pt_Zjet1))))*(1-(CMVA_Zjet2>-0.5884)*0.600657*((1.+(0.753343*Pt_Zjet2))/(1.+(0.472587*Pt_Zjet2)))))'
+
+
+
 # For case of >=2 bTag: w(>= 2|n) = 1 - w(0|n) - w(1|n), where  w(1|n) = \sum_{j=1}^n [ \prod_{i=1, i!=j}^n (1-SF_i) ]*SF_j
 bTag2SFloose = '*(1-(1-(CMVA_bjet1>-0.5884)*(0.976111+(-(4.37632e-05*Pt_Hjet1))))*(1-(CMVA_bjet2>-0.5884)*(0.976111+(-(4.37632e-05*Pt_Hjet2))))*(1-(CMVA_Zjet1>-0.5884)*(0.976111+(-(4.37632e-05*Pt_Zjet1))))*(1-(CMVA_Zjet2>-0.5884)*(0.976111+(-(4.37632e-05*Pt_Zjet2))))-((CMVA_bjet1>-0.5884)*(0.976111+(-(4.37632e-05*Pt_Hjet1))))*(1-(CMVA_bjet2>-0.5884)*(0.976111+(-(4.37632e-05*Pt_Hjet2))))*(1-(CMVA_Zjet1>-0.5884)*(0.976111+(-(4.37632e-05*Pt_Zjet1))))*(1-(CMVA_Zjet2>-0.5884)*(0.976111+(-(4.37632e-05*Pt_Zjet2))))-(1-(CMVA_bjet1>-0.5884)*(0.976111+(-(4.37632e-05*Pt_Hjet1))))*((CMVA_bjet2>-0.5884)*(0.976111+(-(4.37632e-05*Pt_Hjet2))))*(1-(CMVA_Zjet1>-0.5884)*(0.976111+(-(4.37632e-05*Pt_Zjet1))))*(1-(CMVA_Zjet2>-0.5884)*(0.976111+(-(4.37632e-05*Pt_Zjet2))))-(1-(CMVA_bjet1>-0.5884)*(0.976111+(-(4.37632e-05*Pt_Hjet1))))*(1-(CMVA_bjet2>-0.5884)*(0.976111+(-(4.37632e-05*Pt_Hjet2))))*((CMVA_Zjet1>-0.5884)*(0.976111+(-(4.37632e-05*Pt_Zjet1))))*(1-(CMVA_Zjet2>-0.5884)*(0.976111+(-(4.37632e-05*Pt_Zjet2))))-(1-(CMVA_bjet1>-0.5884)*(0.976111+(-(4.37632e-05*Pt_Hjet1))))*(1-(CMVA_bjet2>-0.5884)*(0.976111+(-(4.37632e-05*Pt_Hjet2))))*(1-(CMVA_Zjet1>-0.5884)*(0.976111+(-(4.37632e-05*Pt_Zjet1))))*((CMVA_Zjet2>-0.5884)*(0.976111+(-(4.37632e-05*Pt_Zjet2)))))'
 
@@ -143,6 +149,8 @@ bTagFinalsel = bTagsel1medium
 
 bTagPreselSF = bTag1SFloose
 bTagFinalSF  = bTag1SFmedium
+bTagFinalSFup    = bTag1SFmediumUp
+bTagFinalSFdown  = bTag1SFmediumDown
 
 
 preselection_nos = preselection_nos+bTagPresel
@@ -2693,26 +2701,55 @@ def ModSelection(selection,sysmethod,channel_log):
 	if 'weight' in selection:
 
 		if sysmethod == 'LUMIup':
-			selection = '(1.027)*'+selection
+			selection = '(1.025)*'+selection
 		if sysmethod == 'LUMIdown':
-			selection = '(0.973)*'+selection
+			selection = '(0.975)*'+selection
 
-		if sysmethod == 'MUONIDISO':
+		if sysmethod == 'MUONIDISOup':
 			if 'uujj' in channel_log: 
 				selection = '(1.04)*'+selection
 			if 'uvjj' in channel_log: 
 				selection = '(1.02)*'+selection
 
-		if sysmethod == 'MUONHLT':
+		if sysmethod == 'MUONIDISOdown':
 			if 'uujj' in channel_log: 
-				selection = '(1.005)*'+selection
+				selection = '(0.96)*'+selection
+			if 'uvjj' in channel_log: 
+				selection = '(0.98)*'+selection
+
+		if sysmethod == 'MUONHLTup':
+			if 'uujj' in channel_log: 
+				selection = '(1.01)*'+selection
 			if 'uvjj' in channel_log: 
 				selection = '(1.015)*'+selection
+
+		if sysmethod == 'MUONHLTdown':
+			if 'uujj' in channel_log: 
+				selection = '(0.99)*'+selection
+			if 'uvjj' in channel_log: 
+				selection = '(0.985)*'+selection
 
 		if sysmethod == 'PUup':
 			selection = selection.replace('weight_central','weight_pu_up')
 		if sysmethod == 'PUdown':
 			selection = selection.replace('weight_central','weight_pu_down')
+
+		if sysmethod == 'HIPup ':#Per-muon uncertainty: 0.5% (pT < 300 GeV), 1% (pT > 300 GeV)
+			if 'uujj' in channel_log: 
+				selection = '((1.005*(Pt_muon1<300)+1.01*(Pt_muon1>300))*(1.005*(Pt_muon2<300)+1.01*(Pt_muon2>300)))*'+selection
+			if 'uvjj' in channel_log: 
+				selection = '(1.005*(Pt_muon1<300)+1.01*(Pt_muon1>300))*'+selection
+		if sysmethod == 'HIPdown':
+			if 'uujj' in channel_log: 
+				selection = '((0.995*(Pt_muon1<300)+0.99*(Pt_muon1>300))*(0.995*(Pt_muon2<300)+0.99*(Pt_muon2>300)))*'+selection
+			if 'uvjj' in channel_log: 
+				selection = '(0.995*(Pt_muon1<300)+0.99*(Pt_muon1>300))*'+selection
+		if sysmethod == 'BTAGup':
+			if 'uujj' in channel_log: 
+				selection = selection.replace(bTagFinalSF,bTagFinalSFup)
+		if sysmethod == 'BTAGdown':
+			if 'uujj' in channel_log: 
+				selection = selection.replace(bTagFinalSF,bTagFinalSFdown)
 
 	return selection
 
@@ -3065,7 +3102,7 @@ def FullAnalysis(optimlog,selection_uujj,selection_uvjj,NormalDirectory,weight,u
 	TTDD = False
 	if usedd=='TTBarDataDriven':
 		TTDD=True
-	#_Variations = ['','JESup','JESdown','MESup','MESdown','JERup','JERdown','MER','LUMIup','LUMIdown','PUup','PUdown','ZNORMup','ZNORMdown','WNORMup','WNORMdown','TTNORMup','TTNORMdown','SHAPETT','SHAPEZ','SHAPEW','MUONIDISO','MUONHLT','ALIGN','PDF']
+	_Variations = ['','JESup','JESdown','MESup','MESdown','JERup','JERdown','MER','LUMIup','LUMIdown','PUup','PUdown','ZNORMup','ZNORMdown','WNORMup','WNORMdown','TTNORMup','TTNORMdown','MUONIDISOup','MUONIDISOdown','HIPup','HIPdown','MUONHLTup','MUONHLTdown','BTAGup','BTAGdown','PDF','SHAPETT','SHAPEZ','SHAPEW']
 	#_Variations = ['','JESup','JESdown'] # AH:
 	_Variations = [''] # AH:
 	for v in _Variations:
