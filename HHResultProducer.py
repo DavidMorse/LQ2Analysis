@@ -195,6 +195,11 @@ useDataDrivenQCD = True
 #mumu_fbd = [1.2784, 0.0036]
 mumu_fbd = [1.1638, 0.0077] # Feb 2018
 
+# tt, z initial SF calculated using QCD MC (Jan 2018)
+Rz_qcdMC = [0.962831123534, 0.0]
+Rtt_qcdMC = [1.11543113384, 0.0]
+
+
 # Next are the PDF uncertainties. 
 pdf_MASS   =[ 200, 250, 300 , 350 , 400 , 450 , 500 , 550 , 600 , 650 , 700 , 750 , 800 , 850 , 900 , 950 , 1000 , 1050 , 1100 , 1150 , 1200 , 1250, 1300, 1350, 1400, 1450, 1500, 1550, 1600, 1650, 1700, 1750, 1800, 1850, 1900, 1950, 2000]               
 pdf_MASS_displaced = [ 200, 300, 400, 500, 800, 900, 1000, 1100, 1200 ]
@@ -1952,7 +1957,7 @@ def QCDStudy(sel_mumu,sel_munu,cutlogmumu,cutlogmunu,weight_mumu,weight_munu,ver
 #	[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = GetMuMuScaleFactors( weight_mumu+'*'+sel_mumu, NormalDirectory, '(M_uu>80)*(M_uu<100)*(((CISV_jet1>0.5426)+(CISV_jet2>0.5426))<1)', '(M_uu>100)*(Pt_miss>100)',0)
 #	print [[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]]
 	#[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = [[0.7878836290932162, 0.002600000000000006], [0.8199547022957769, 0.010549999999999738]] #values from Dec 2017
-	[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = [[0.962831123534, 0.00557], [1.11543113384, 0.01273]] #values from Jan 2018 (initial SF calculated using QCD MC)
+	[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = [Rz_qcdMC, Rtt_qcdMC] #initial SF calculated using QCD MC
 	
 	print '\n\n--------------\n--------------\nPerforming QCD Study'
 	#################################
@@ -3276,8 +3281,8 @@ def GetMuMuScaleFactors( selection, FileDirectory, controlregion_1, controlregio
 		
 		#---- using QCD noniso directory
 		ssiso_n1 = QuickEntries(tn_DoubleMuData  ,selec_qcd_data + '*' + controlregion_1,1.0) # + dataHLT ??
-		ssiso_z1 = QuickIntegral(tn_ZJets        ,selec_qcd + '*' + controlregion_1,0.962831123534) # 0.9628 is initial SF cal using QCD MC (Jan 2018)
-		ssiso_t1 = QuickIntegral(tn_TTBar        ,selec_qcd + '*' + controlregion_1,1.11543113384) # 1.1154 is initial SF cal using QCD MC (Jan 2018)
+		ssiso_z1 = QuickIntegral(tn_ZJets        ,selec_qcd + '*' + controlregion_1,Rz_qcdMC[0]) # initial SF cal using QCD MC
+		ssiso_t1 = QuickIntegral(tn_TTBar        ,selec_qcd + '*' + controlregion_1,Rtt_qcdMC[0]) # initial SF cal using QCD MC
 		ssiso_s1 = QuickIntegral(tn_SingleTop    ,selec_qcd + '*' + controlregion_1,1.0)
 		ssiso_w1 = QuickIntegral(tn_WJets        ,selec_qcd + '*' + controlregion_1,1.0)
 		ssiso_v1 = QuickIntegral(tn_DiBoson      ,selec_qcd + '*' + controlregion_1,1.0)
@@ -3287,8 +3292,8 @@ def GetMuMuScaleFactors( selection, FileDirectory, controlregion_1, controlregio
 		q1 = [dataq1_val,dataq1_err]
 		
 		ssiso_n2 = QuickEntries(tn_DoubleMuData  ,selec_qcd_data + '*' + controlregion_2,1.0) # + dataHLT ??
-		ssiso_z2 = QuickIntegral(tn_ZJets        ,selec_qcd + '*' + controlregion_2,0.962831123534) # 0.9628 is initial SF cal using QCD MC (Jan 2018)
-		ssiso_t2 = QuickIntegral(tn_TTBar        ,selec_qcd + '*' + controlregion_2,1.11543113384) # 1.1154 is initial SF cal using QCD MC (Jan 2018)
+		ssiso_z2 = QuickIntegral(tn_ZJets        ,selec_qcd + '*' + controlregion_2,Rz_qcdMC[0]) # initial SF cal using QCD MC
+		ssiso_t2 = QuickIntegral(tn_TTBar        ,selec_qcd + '*' + controlregion_2,Rtt_qcdMC[0]) # initial SF cal using QCD MC
 		ssiso_s2 = QuickIntegral(tn_SingleTop    ,selec_qcd + '*' + controlregion_2,1.0)
 		ssiso_w2 = QuickIntegral(tn_WJets        ,selec_qcd + '*' + controlregion_2,1.0)
 		ssiso_v2 = QuickIntegral(tn_DiBoson      ,selec_qcd + '*' + controlregion_2,1.0)
@@ -3299,8 +3304,8 @@ def GetMuMuScaleFactors( selection, FileDirectory, controlregion_1, controlregio
 
 #		#---- using Normal directory
 #		ssiso_n1 = QuickEntries(t_DoubleMuData  ,selec_qcd_data + '*' + controlregion_1,1.0) # + dataHLT ??
-#		ssiso_z1 = QuickIntegral(t_ZJets        ,selec_qcd + '*' + controlregion_1,0.962831123534) # 0.9628 is initial SF cal using QCD MC (Jan 2018)
-#		ssiso_t1 = QuickIntegral(t_TTBar        ,selec_qcd + '*' + controlregion_1,1.11543113384) # 1.1154 is initial SF cal using QCD MC (Jan 2018)
+#		ssiso_z1 = QuickIntegral(t_ZJets        ,selec_qcd + '*' + controlregion_1,Rz_qcdMC[0]) # initial SF cal using QCD MC
+#		ssiso_t1 = QuickIntegral(t_TTBar        ,selec_qcd + '*' + controlregion_1,Rtt_qcdMC[0]) # initial SF cal using QCD MC
 #		ssiso_s1 = QuickIntegral(t_SingleTop    ,selec_qcd + '*' + controlregion_1,1.0)
 #		ssiso_w1 = QuickIntegral(t_WJets        ,selec_qcd + '*' + controlregion_1,1.0)
 #		ssiso_v1 = QuickIntegral(t_DiBoson      ,selec_qcd + '*' + controlregion_1,1.0)
@@ -3310,8 +3315,8 @@ def GetMuMuScaleFactors( selection, FileDirectory, controlregion_1, controlregio
 #		q1 = [dataq1_val,dataq1_err]
 #		
 #		ssiso_n2 = QuickEntries(t_DoubleMuData  ,selec_qcd_data + '*' + controlregion_2,1.0) # + dataHLT ??
-#		ssiso_z2 = QuickIntegral(t_ZJets        ,selec_qcd + '*' + controlregion_2,0.962831123534) # 0.9628 is initial SF cal using QCD MC (Jan 2018)
-#		ssiso_t2 = QuickIntegral(t_TTBar        ,selec_qcd + '*' + controlregion_2,1.11543113384) # 1.1154 is initial SF cal using QCD MC (Jan 2018)
+#		ssiso_z2 = QuickIntegral(t_ZJets        ,selec_qcd + '*' + controlregion_2,Rz_qcdMC[0]) # initial SF cal using QCD MC
+#		ssiso_t2 = QuickIntegral(t_TTBar        ,selec_qcd + '*' + controlregion_2,Rtt_qcdMC[0]) # initial SF cal using QCD MC
 #		ssiso_s2 = QuickIntegral(t_SingleTop    ,selec_qcd + '*' + controlregion_2,1.0)
 #		ssiso_w2 = QuickIntegral(t_WJets        ,selec_qcd + '*' + controlregion_2,1.0)
 #		ssiso_v2 = QuickIntegral(t_DiBoson      ,selec_qcd + '*' + controlregion_2,1.0)
