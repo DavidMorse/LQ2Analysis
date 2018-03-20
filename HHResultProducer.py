@@ -192,7 +192,13 @@ emu_id_eff_err = 0.0027#v7 JEC
 
 # QCD data-driven scale factor
 useDataDrivenQCD = True
-mumu_fbd = [1.2784, 0.0036]
+#mumu_fbd = [1.2784, 0.0036]
+mumu_fbd = [1.1638, 0.0077] # Feb 2018
+
+# tt, z initial SF calculated using QCD MC (Jan 2018)
+Rz_qcdMC = [0.962831123534, 0.0]
+Rtt_qcdMC = [1.11543113384, 0.0]
+
 
 # Next are the PDF uncertainties. 
 pdf_MASS   =[ 200, 250, 300 , 350 , 400 , 450 , 500 , 550 , 600 , 650 , 700 , 750 , 800 , 850 , 900 , 950 , 1000 , 1050 , 1100 , 1150 , 1200 , 1250, 1300, 1350, 1400, 1450, 1500, 1550, 1600, 1650, 1700, 1750, 1800, 1850, 1900, 1950, 2000]               
@@ -917,8 +923,8 @@ def main():
 		finalWeightMuMu = NormalWeightMuMu.replace(bTagPreselSF,bTagFinalSF)
 		#finalSelectionmumu = preselectionmumu.replace(bTagsel1loose,bTagsel2loose)
 		#finalWeightMuMu = NormalWeightMuMu.replace(bTag1SF,bTag2SF)
-		#FullAnalysis(MuMuOptCutFile, preselectionmumu,preselectionmunu,NormalDirectory,NormalWeightMuMu,'normal')  # scriptflag #preselection (1 loose bTag)
-		FullAnalysis(MuMuOptCutFile, finalSelectionmumu,preselectionmunu,NormalDirectory,finalWeightMuMu,'normal')  # scriptflag #final selection
+		#FullAnalysis(MuMuOptCutFile, preselectionmumu,preselectionmumu,preselectionmunu,NormalDirectory,NormalWeightMuMu,NormalWeightMuMu'normal')  # scriptflag #preselection (1 loose bTag)
+		FullAnalysis(MuMuOptCutFile, preselectionmumu,finalSelectionmumu,preselectionmunu,NormalDirectory,NormalWeightMuMu,finalWeightMuMu,'normal')  # scriptflag #final selection
 
 	if False :
 		uujjcardfiles = MuMuOptCutFile.replace('.txt','_systable*.txt')
@@ -1953,7 +1959,8 @@ def QCDStudy(sel_mumu,sel_munu,cutlogmumu,cutlogmunu,weight_mumu,weight_munu,ver
 	print 'get scal factors'
 #	[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = GetMuMuScaleFactors( weight_mumu+'*'+sel_mumu, NormalDirectory, '(M_uu>80)*(M_uu<100)*(((CISV_jet1>0.5426)+(CISV_jet2>0.5426))<1)', '(M_uu>100)*(Pt_miss>100)',0)
 #	print [[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]]
-	[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = [[0.7878836290932162, 0.002600000000000006], [0.8199547022957769, 0.010549999999999738]]
+	#[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = [[0.7878836290932162, 0.002600000000000006], [0.8199547022957769, 0.010549999999999738]] #values from Dec 2017
+	[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = [Rz_qcdMC, Rtt_qcdMC] #initial SF calculated using QCD MC
 	
 	print '\n\n--------------\n--------------\nPerforming QCD Study'
 	#################################
@@ -2440,7 +2447,7 @@ def QuickTableTTDD(optimlog, selection, weight,rz,rw,rt,num):
 
 		nline += 1
 
-def QuickSysTableLine(treestruc,selection,scalefacs,fsys,chan,rglobals,rglobalb,plotmass,sysmethod):
+def QuickSysTableLine(treestruc,selection,inp_weight,scalefacs,fsys,chan,rglobals,rglobalb,plotmass,sysmethod):
 	[_stree,_dtree,_btrees] = treestruc
 #	old_s = QuickSysIntegral(_stree,selection,scalefacs[0],rglobals)
 #	old_bs = [QuickSysIntegral(_btrees[b],selection,scalefacs[1][b],rglobalb) for b in range(len(_btrees))]
@@ -2464,23 +2471,30 @@ def QuickSysTableLine(treestruc,selection,scalefacs,fsys,chan,rglobals,rglobalb,
 #		recovariableFileName = 'bdt_discrims3_low'
 
 	recovariableFileName = 'bdt_discrim_M' + plotmass
-	recovariable = recovariableFileName + sysmethod
-	print '\n AH: I am in QuickSysTableLine(): plotmass is ', plotmass, ' discriminant is ', recovariable, '\n'
+	_nonWeightVary = ['JESup','JESdown','MESup','MESdown','JERup','JERdown','MER'] # AH: this is just a holder to specify the variations that need the corresponding branches
+	recovariable = recovariableFileName
+	for vary in _nonWeightVary:
+		if sysmethod == vary:
+			recovariable += sysmethod
+	print '\n AH: I am in QuickSysTableLine(): plotmass is ', plotmass, ' discriminant is ', recovariable, 'recovariableFileName ', recovariableFileName,'\n'
 	presentationbinning = [100,-0.7,0.7]
 	DataRecoStyle=[0,20,1.5,1,1]
 	Label=["tmp","Events / bin"]
 	
 	# AH: Todo: I have to check this again !
-	selec_1 = selection[1:selection.find("weight_central")-11] # AH: fixme: if using PU_syst the string "weight_central" will not appear here ! >> use "weight_" instead ?
-	weight = selection[selection.find("weight_central")-10:len(selection)]
-	selec_2 = weight[weight.find('Pt_muon1')-2:len(weight)-1]
-	weight_new = weight[0:weight.find('Pt_muon1')-3]
-	selec_new = selec_1 + '*' + selec_2
-	print '\n AH: I am in QuickSysTableLine(): selection is ', selection, '\n'
-	#print '\n AH: I am in QuickSysTableLine(): selec_1 is ', selec_1, '\n'
-	#print '\n AH: I am in QuickSysTableLine(): selec_2 is ', selec_2, '\n'
-	print '\n AH: I am in QuickSysTableLine(): selec_new is ', selec_new, '\n'
-	print '\n AH: I am in QuickSysTableLine(): weight_new is ', weight_new, '\n'
+	#selec_1 = selection[1:selection.find("weight_")-11] # AH: fixme: if using PU_syst the string "weight_central" will not appear here ! >> use "weight_" instead ?
+	#weight = selection[selection.find("weight_")-10:len(selection)]
+	#selec_2 = weight[weight.find('Pt_muon1')-2:len(weight)-1]
+	#weight_new = weight[0:weight.find('Pt_muon1')-3]
+	#selec_new = selec_1 + '*' + selec_2
+	#print '\n AH: I am in QuickSysTableLine(): selection is ', selection, '\n'
+	##print '\n AH: I am in QuickSysTableLine(): selec_1 is ', selec_1, '\n'
+	##print '\n AH: I am in QuickSysTableLine(): selec_2 is ', selec_2, '\n'
+
+	selec_new = selection
+	weight_new = inp_weight
+	print '\n AH: I am in QuickSysTableLine(): selec_new is \n', selec_new, '\n'
+	print '\n AH: I am in QuickSysTableLine(): weight_new is \n', weight_new, '\n'
 	
 	hs_rec_Data=CreateHisto('hs_rec_Data','Data',_dtree,recovariable,presentationbinning,selec_new+dataHLT,DataRecoStyle,Label)
 	hs_rec_Signal=CreateHisto('hs_rec_Signal','M_{R} = '+str(plotmass)+' GeV, ',_stree,recovariable,presentationbinning,selec_new+'*('+str(scalefacs[0]*rglobals)+')*'+weight_new,DataRecoStyle,Label)
@@ -2493,7 +2507,7 @@ def QuickSysTableLine(treestruc,selection,scalefacs,fsys,chan,rglobals,rglobalb,
 	print 'Doing WJets:'
 	hs_rec_WJets=CreateHisto('hs_rec_WJets','W+Jets',_btrees[2],recovariable,presentationbinning,selec_new+'*('+str(scalefacs[1][2]*rglobalb)+')*'+weight_new,DataRecoStyle,Label)
 	print 'Doing SingleTop:'
-	hs_rec_SingleTop=CreateHisto('hs_rec_SingleTop','SingleTop',_btrees[3],recovariable,presentationbinning,selec_new+'*'+weight_new,DataRecoStyle,Label) ## AH: fix me : add rglobalb
+	hs_rec_SingleTop=CreateHisto('hs_rec_SingleTop','SingleTop',_btrees[3],recovariable,presentationbinning,selec_new+'*'+weight_new,DataRecoStyle,Label) ## AH: fixme : add rglobalb
 	print 'Doing DiBoson:'
 	hs_rec_DiBoson=CreateHisto('hs_rec_DiBoson','DiBoson',_btrees[4],recovariable,presentationbinning,selec_new+'*'+weight_new,DataRecoStyle,Label)
 	print 'Doing SMHiggs:'
@@ -2553,6 +2567,10 @@ def QuickSysTableLine(treestruc,selection,scalefacs,fsys,chan,rglobals,rglobalb,
 		hs_rec_SMHiggs.Write("SMH")
 	else:
 		outHistRootFile = TFile(channel+str(plotmass)+'_'+recovariableFileName+'_13TeV_new.root', "UPDATE")
+		dirValid = outHistRootFile.cd(channel+'uujj')
+		if (not dirValid):
+			dirThis = outHistRootFile.mkdir(channel+'uujj')
+			dirThis.cd()
 		outHistRootFile.cd(channel+'uujj')
 		sysmethod = sysmethod.replace('up','Up')
 		sysmethod = sysmethod.replace('down','Down')
@@ -2596,7 +2614,7 @@ def QuickSysTableLine(treestruc,selection,scalefacs,fsys,chan,rglobals,rglobalb,
 		sysline += ' , '
 	sysline = sysline[0:-2]+' ]'
 
-	print selection.replace('\n','')
+	#print selection.replace('\n','')
 	print ' '
 
 	f = open(fsys,'a')
@@ -2673,9 +2691,10 @@ def ModSelection(selection,sysmethod,channel_log):
 	# _kinematicvariables += ['M_eejj1','M_eejj2','MT_evjj1','MT_evjj2','M_evjj','MT_evjj']
 	# _kinematicvariables += ['JetCount','MuonCount','ElectronCount','GenJetCount']
 	_kinematicvariables += ['Pt_Hjet1','Pt_Hjet2','Pt_Zjet1','Pt_Zjet2','CISV_bjet1','CISV_bjet2','CMVA_bjet1','CMVA_bjet2']
+	_kinematicvariables += ['CMVA_Zjet1','CMVA_Zjet2']
 
-	_weights = ['weight_nopu','weight_central', 'weight_pu_up', 'weight_pu_down']
-	_variations = ['','JESup','JESdown','MESup','MESdown','JERup','JERdown','MER']	
+	_weights = ['weight_nopu','weight_central', 'weight_pu_up', 'weight_pu_down'] # AH: this is not used, can be commented out?
+	_variations = ['','JESup','JESdown','MESup','MESdown','JERup','JERdown','MER'] # AH: this is just a holder to specify the variations that need the corresponding branches
 	selsplit = []
 	selchars = ''
 	alphabet = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_'
@@ -2709,25 +2728,25 @@ def ModSelection(selection,sysmethod,channel_log):
 			selection = '(0.975)*'+selection
 
 		if sysmethod == 'MUONIDISOup':
-			if 'uujj' in channel_log: 
+			if 'uujj' in channel_log or 'HH' in channel_log:
 				selection = '(1.04)*'+selection
 			if 'uvjj' in channel_log: 
 				selection = '(1.02)*'+selection
 
 		if sysmethod == 'MUONIDISOdown':
-			if 'uujj' in channel_log: 
+			if 'uujj' in channel_log or 'HH' in channel_log:
 				selection = '(0.96)*'+selection
 			if 'uvjj' in channel_log: 
 				selection = '(0.98)*'+selection
 
 		if sysmethod == 'MUONHLTup':
-			if 'uujj' in channel_log: 
+			if 'uujj' in channel_log or 'HH' in channel_log:
 				selection = '(1.01)*'+selection
 			if 'uvjj' in channel_log: 
 				selection = '(1.015)*'+selection
 
 		if sysmethod == 'MUONHLTdown':
-			if 'uujj' in channel_log: 
+			if 'uujj' in channel_log or 'HH' in channel_log:
 				selection = '(0.99)*'+selection
 			if 'uvjj' in channel_log: 
 				selection = '(0.985)*'+selection
@@ -2738,20 +2757,20 @@ def ModSelection(selection,sysmethod,channel_log):
 			selection = selection.replace('weight_central','weight_pu_down')
 
 		if sysmethod == 'HIPup ':#Per-muon uncertainty: 0.5% (pT < 300 GeV), 1% (pT > 300 GeV)
-			if 'uujj' in channel_log: 
+			if 'uujj' in channel_log or 'HH' in channel_log:
 				selection = '((1.005*(Pt_muon1<300)+1.01*(Pt_muon1>300))*(1.005*(Pt_muon2<300)+1.01*(Pt_muon2>300)))*'+selection
 			if 'uvjj' in channel_log: 
 				selection = '(1.005*(Pt_muon1<300)+1.01*(Pt_muon1>300))*'+selection
 		if sysmethod == 'HIPdown':
-			if 'uujj' in channel_log: 
+			if 'uujj' in channel_log or 'HH' in channel_log:
 				selection = '((0.995*(Pt_muon1<300)+0.99*(Pt_muon1>300))*(0.995*(Pt_muon2<300)+0.99*(Pt_muon2>300)))*'+selection
 			if 'uvjj' in channel_log: 
 				selection = '(0.995*(Pt_muon1<300)+0.99*(Pt_muon1>300))*'+selection
 		if sysmethod == 'BTAGup':
-			if 'uujj' in channel_log: 
+			if 'uujj' in channel_log or 'HH' in channel_log:
 				selection = selection.replace(bTagFinalSF,bTagFinalSFup)
 		if sysmethod == 'BTAGdown':
-			if 'uujj' in channel_log: 
+			if 'uujj' in channel_log or 'HH' in channel_log:
 				selection = selection.replace(bTagFinalSF,bTagFinalSFdown)
 
 		if sysmethod == 'QCDscaleR1F2':
@@ -2781,16 +2800,20 @@ def ModSelection(selection,sysmethod,channel_log):
 	return selection
 
 
-def SysTable(optimlog, selection_uujj,selection_uvjj,NormalDirectory, weight,sysmethod):
+def SysTable(optimlog, PreSelection_uujj, selection_uujj,selection_uvjj,NormalDirectory, NormalWeight, weight,sysmethod):
 	print '\n AH: I am in SysTable(): selection_uujj is ', selection_uujj, '\n'
-	selection_uujj = selection_uujj+'*'+weight
-	selection_uvjj = selection_uvjj+'*'+weight
-	selection_uujj = ModSelection(selection_uujj,sysmethod,optimlog)
+	#AH:selection_uujj = selection_uujj+'*'+weight
+	#AH:selection_uvjj = selection_uvjj+'*'+weight
+	NormalWeight      = ModSelection(NormalWeight,sysmethod,optimlog)
+	PreSelection_uujj = ModSelection(PreSelection_uujj,sysmethod,optimlog)
+	weight            = ModSelection(weight,sysmethod,optimlog)
+	selection_uujj    = ModSelection(selection_uujj,sysmethod,optimlog)
 	selection_uvjj = ModSelection(selection_uvjj,sysmethod,optimlog)
-	#print '\n AH: I am in SysTable(): after ModSelection, selection_uujj is ', selection_uujj, '\n'
+	print '\n AH: I am in SysTable(): after ModSelection, selection_uujj is ', selection_uujj, '\n'
+	print '\n AH: I am in SysTable(): after ModSelection, weight is ', weight, '\n'
 	
-	#[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = GetMuMuScaleFactors( selection_uujj, NormalDirectory, '(M_uu>80)*(M_uu<100)', '(M_uu>100)*(Pt_miss>100)',0)
-	[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = [[0.962831123534 , 0.00557],[1.11543113384 , 0.01273]]
+	[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = GetMuMuScaleFactors( PreSelection_uujj+'*'+NormalWeight, NormalDirectory, '(M_uu>80)*(M_uu<100)', '(M_uu>100)*(Pt_miss>100)',0)
+	#[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = [[1.0 , 0.001],[1.0 , 0.01]]
 	# AH: To speed things up when debugging
 	
 	#[[Rw_uvjj,Rw_uvjj_err],[Rtt_uvjj,Rtt_uvjj_err]] = GetMuNuScaleFactors( selection_uvjj, NormalDirectory, '(MT_uv>70)*(MT_uv<110)*(JetCount<3.5)', '(MT_uv>70)*(MT_uv<110)*(JetCount>3.5)')
@@ -2890,7 +2913,7 @@ def SysTable(optimlog, selection_uujj,selection_uvjj,NormalDirectory, weight,sys
 
 
 		if sysmethod == 'ALIGN':
-			if 'uujj' in optimlog:
+			if 'uujj' in optimlog or 'HH' in optimlog:
 				rglobals = 1.0 + alignmentcorrs[0]*.01
 				rglobalb = 1.0 + alignmentcorrs[1]*.01
 			if 'uvjj' in optimlog:
@@ -2907,7 +2930,7 @@ def SysTable(optimlog, selection_uujj,selection_uvjj,NormalDirectory, weight,sys
 		_rz = rz
 
 		if sysmethod == 'SHAPETT':#fixme added this for 2015 method
-			if 'uujj' in optimlog:
+			if 'uujj' in optimlog or 'HH' in optimlog:
 				_rt *= (1.0+shapesysvar_uujj_ttjets[nalign]*0.01)
 			if 'uvjj' in optimlog:
 				_rt *= (1.0+shapesysvar_uvjj_ttjets[nalign]*0.01)
@@ -2919,7 +2942,7 @@ def SysTable(optimlog, selection_uujj,selection_uvjj,NormalDirectory, weight,sys
 			_rw *= (1.0+shapesysvar_uvjj_wjets[nalign]*0.01)
 
 		if 'PDF'  in sysmethod:
-			if 'uujj' in optimlog:
+			if 'uujj' in optimlog or 'HH' in optimlog:
 				_rt *= (1.0+pdf_uujj_TTBar[nalign]*0.01)
 				_rw *= (1.0+pdf_uujj_WJets[nalign]*0.01)
 				_rz *= (1.0+pdf_uujj_ZJets[nalign]*0.01)
@@ -2952,7 +2975,7 @@ def SysTable(optimlog, selection_uujj,selection_uvjj,NormalDirectory, weight,sys
 		print '\n AH: I am in SysTable(): rglobals is ', rglobals, '\n'
 		print '\n AH: I am in SysTable(): rglobalb is ', rglobalb, '\n'
 		print '\n AH: I am in SysTable(): scalefacs is ', scalefacs, '\n'
-		QuickSysTableLine(treefeed,this_sel,scalefacs,sysfile,chan,rglobals,rglobalb,mass,sysmethod)
+		QuickSysTableLine(treefeed,this_sel,weight,scalefacs,sysfile,chan,rglobals,rglobalb,mass,sysmethod)
 		# break
 
 
@@ -3123,16 +3146,17 @@ def SysTableTTDD(optimlog, selection_uujj,selection_uvjj,NormalDirectory, weight
 		QuickSysTableLineTTDD(treefeed,selections,scalefacs,sysfile,chan,rglobals,rglobalb)
 		# break
 
-def FullAnalysis(optimlog,selection_uujj,selection_uvjj,NormalDirectory,weight,usedd):
+def FullAnalysis(optimlog,PreSelection_uujj,selection_uujj,selection_uvjj,NormalDirectory,NormalWeight,weight,usedd):
 	#print '\n AH: I am in FullAnalysis(): optimlog is ', optimlog, '\n'
 	#print '\n AH: I am in FullAnalysis(): selection_uujj is ', selection_uujj, '\n'
 	TTDD = False
 	if usedd=='TTBarDataDriven':
 		TTDD=True
+
 	_Variations = ['','JESup','JESdown','MESup','MESdown','JERup','JERdown','MER','LUMIup','LUMIdown','PUup','PUdown','ZNORMup','ZNORMdown','WNORMup','WNORMdown','TTNORMup','TTNORMdown','MUONIDISOup','MUONIDISOdown','HIPup','HIPdown','MUONHLTup','MUONHLTdown','BTAGup','BTAGdown','PDF','SHAPETT','SHAPEZ','SHAPEW','QCDscaleR1F2','QCDscaleR2F1','QCDscaleR2F2','QCDscaleR1F0p5','QCDscaleR0p5F1','QCDscaleR0p5F0p5']
 
-	#_Variations = ['','JESup','JESdown'] # AH:
 	_Variations = [''] # AH:
+
 	for v in _Variations:
 		print ' -'*50
 		print 'Processing table for variation: ',v
@@ -3142,7 +3166,7 @@ def FullAnalysis(optimlog,selection_uujj,selection_uvjj,NormalDirectory,weight,u
 		if TTDD:
 			SysTableTTDD(optimlog, selection_uujj, selection_uvjj,NormalDirectory, weight,v)
 		else:
-			SysTable(optimlog, selection_uujj, selection_uvjj,NormalDirectory, weight,v)
+			SysTable(optimlog, PreSelection_uujj, selection_uujj, selection_uvjj,NormalDirectory, NormalWeight, weight,v)
 
 
 
@@ -3281,12 +3305,14 @@ def GetMuMuScaleFactors( selection, FileDirectory, controlregion_1, controlregio
 		q2 = QuickIntegral(t_QCDMu,selection   + '*' + controlregion_2,1.0)
 	else:
 		print ' using QCD data-driven when calculate MuMu scale factors'
+		print ' QCD fake rate is ', mumu_fbd
 		selec_qcd_data = selection_data.replace('*(Charge_muon1*Charge_muon2 < 0)', '*(Charge_muon1*Charge_muon2 > 0)*((TrkIso_muon1<0.25)*(TrkIso_muon2<0.25))')
 		selec_qcd = selection.replace('*(Charge_muon1*Charge_muon2 < 0)', '*(Charge_muon1*Charge_muon2 > 0)*((TrkIso_muon1<0.25)*(TrkIso_muon2<0.25))')
 		
+		#---- using QCD noniso directory
 		ssiso_n1 = QuickEntries(tn_DoubleMuData  ,selec_qcd_data + '*' + controlregion_1,1.0) # + dataHLT ??
-		ssiso_z1 = QuickIntegral(tn_ZJets        ,selec_qcd + '*' + controlregion_1,0.7878836290932162) # 0.7878 is initial SF calculated using QCD MC
-		ssiso_t1 = QuickIntegral(tn_TTBar        ,selec_qcd + '*' + controlregion_1,0.8199547022957769) # 0.8199 is initial SF calculated using QCD MC
+		ssiso_z1 = QuickIntegral(tn_ZJets        ,selec_qcd + '*' + controlregion_1,Rz_qcdMC[0]) # initial SF cal using QCD MC
+		ssiso_t1 = QuickIntegral(tn_TTBar        ,selec_qcd + '*' + controlregion_1,Rtt_qcdMC[0]) # initial SF cal using QCD MC
 		ssiso_s1 = QuickIntegral(tn_SingleTop    ,selec_qcd + '*' + controlregion_1,1.0)
 		ssiso_w1 = QuickIntegral(tn_WJets        ,selec_qcd + '*' + controlregion_1,1.0)
 		ssiso_v1 = QuickIntegral(tn_DiBoson      ,selec_qcd + '*' + controlregion_1,1.0)
@@ -3296,8 +3322,8 @@ def GetMuMuScaleFactors( selection, FileDirectory, controlregion_1, controlregio
 		q1 = [dataq1_val,dataq1_err]
 		
 		ssiso_n2 = QuickEntries(tn_DoubleMuData  ,selec_qcd_data + '*' + controlregion_2,1.0) # + dataHLT ??
-		ssiso_z2 = QuickIntegral(tn_ZJets        ,selec_qcd + '*' + controlregion_2,0.7878836290932162) # 0.7878 is initial SF calculated using QCD MC
-		ssiso_t2 = QuickIntegral(tn_TTBar        ,selec_qcd + '*' + controlregion_2,0.8199547022957769) # 0.8199 is initial SF calculated using QCD MC
+		ssiso_z2 = QuickIntegral(tn_ZJets        ,selec_qcd + '*' + controlregion_2,Rz_qcdMC[0]) # initial SF cal using QCD MC
+		ssiso_t2 = QuickIntegral(tn_TTBar        ,selec_qcd + '*' + controlregion_2,Rtt_qcdMC[0]) # initial SF cal using QCD MC
 		ssiso_s2 = QuickIntegral(tn_SingleTop    ,selec_qcd + '*' + controlregion_2,1.0)
 		ssiso_w2 = QuickIntegral(tn_WJets        ,selec_qcd + '*' + controlregion_2,1.0)
 		ssiso_v2 = QuickIntegral(tn_DiBoson      ,selec_qcd + '*' + controlregion_2,1.0)
@@ -3305,6 +3331,29 @@ def GetMuMuScaleFactors( selection, FileDirectory, controlregion_1, controlregio
 		dataq2_val = mumu_fbd[0] * (ssiso_n2[0] - (ssiso_z2[0]+ssiso_t2[0]+ssiso_s2[0]+ssiso_w2[0]+ssiso_v2[0]+ssiso_h2[0]))
 		dataq2_err = mumu_fbd[0] * math.sqrt(ssiso_n2[0]**2 + ssiso_z2[0]**2 + ssiso_t2[0]**2 + ssiso_s2[0]**2 + ssiso_w2[0]**2 + ssiso_v2[0]**2 + ssiso_h2[0]**2)
 		q2 = [dataq2_val,dataq2_err]
+
+#		#---- using Normal directory
+#		ssiso_n1 = QuickEntries(t_DoubleMuData  ,selec_qcd_data + '*' + controlregion_1,1.0) # + dataHLT ??
+#		ssiso_z1 = QuickIntegral(t_ZJets        ,selec_qcd + '*' + controlregion_1,Rz_qcdMC[0]) # initial SF cal using QCD MC
+#		ssiso_t1 = QuickIntegral(t_TTBar        ,selec_qcd + '*' + controlregion_1,Rtt_qcdMC[0]) # initial SF cal using QCD MC
+#		ssiso_s1 = QuickIntegral(t_SingleTop    ,selec_qcd + '*' + controlregion_1,1.0)
+#		ssiso_w1 = QuickIntegral(t_WJets        ,selec_qcd + '*' + controlregion_1,1.0)
+#		ssiso_v1 = QuickIntegral(t_DiBoson      ,selec_qcd + '*' + controlregion_1,1.0)
+#		ssiso_h1 = QuickIntegral(t_SMHiggs      ,selec_qcd + '*' + controlregion_1,1.0)
+#		dataq1_val = mumu_fbd[0] * (ssiso_n1[0] - (ssiso_z1[0]+ssiso_t1[0]+ssiso_s1[0]+ssiso_w1[0]+ssiso_v1[0]+ssiso_h1[0]))
+#		dataq1_err = mumu_fbd[0] * math.sqrt(ssiso_n1[0]**2 + ssiso_z1[0]**2 + ssiso_t1[0]**2 + ssiso_s1[0]**2 + ssiso_w1[0]**2 + ssiso_v1[0]**2 + ssiso_h1[0]**2)
+#		q1 = [dataq1_val,dataq1_err]
+#		
+#		ssiso_n2 = QuickEntries(t_DoubleMuData  ,selec_qcd_data + '*' + controlregion_2,1.0) # + dataHLT ??
+#		ssiso_z2 = QuickIntegral(t_ZJets        ,selec_qcd + '*' + controlregion_2,Rz_qcdMC[0]) # initial SF cal using QCD MC
+#		ssiso_t2 = QuickIntegral(t_TTBar        ,selec_qcd + '*' + controlregion_2,Rtt_qcdMC[0]) # initial SF cal using QCD MC
+#		ssiso_s2 = QuickIntegral(t_SingleTop    ,selec_qcd + '*' + controlregion_2,1.0)
+#		ssiso_w2 = QuickIntegral(t_WJets        ,selec_qcd + '*' + controlregion_2,1.0)
+#		ssiso_v2 = QuickIntegral(t_DiBoson      ,selec_qcd + '*' + controlregion_2,1.0)
+#		ssiso_h2 = QuickIntegral(t_SMHiggs      ,selec_qcd + '*' + controlregion_2,1.0)
+#		dataq2_val = mumu_fbd[0] * (ssiso_n2[0] - (ssiso_z2[0]+ssiso_t2[0]+ssiso_s2[0]+ssiso_w2[0]+ssiso_v2[0]+ssiso_h2[0]))
+#		dataq2_err = mumu_fbd[0] * math.sqrt(ssiso_n2[0]**2 + ssiso_z2[0]**2 + ssiso_t2[0]**2 + ssiso_s2[0]**2 + ssiso_w2[0]**2 + ssiso_v2[0]**2 + ssiso_h2[0]**2)
+#		q2 = [dataq2_val,dataq2_err]
 
 
 	Other1 = [ s1[0]+w1[0]+v1[0]+q1[0]+H1[0], math.sqrt( s1[1]*s1[1] + w1[1]*w1[1] + v1[1]*v1[1] + q1[1]*q1[1] + H1[1]*H1[1]) ]
@@ -5010,11 +5059,15 @@ def MakeBasicPlotQCD(recovariable,xlabel,presentationbinning,selection,qcdselect
 	hs_rec_SMHiggs  =CreateHisto('hs_rec_SMHiggs','SM Higgs',tn_SMHiggs,recovariable,presentationbinning,selection+'*'+weight,SMHiggsStackStyle,Label)
 	
 	if channel=='uujj':
+		#print ' qcdselection :', qcdselection
 		if 'weight' in qcdselection:
+			# here we plot QCD MC in the ss region. 'weight_central' is present.
 			hs_rec_QCD=CreateHisto('hs_rec_QCD','QCD #mu-enriched',tn_QCDMu,recovariable,presentationbinning,qcdselection,QCDStackStyle,Label)
 		if 'weight' not in qcdselection:
 			#hs_rec_QCD=CreateHisto('hs_rec_QCD','QCD #mu-enriched',tn_DoubleMuData,recovariable,presentationbinning,qcdselection,QCDStackStyle,Label)
-			hs_rec_QCD=CreateHisto('hs_rec_QCD','QCD #mu-enriched',tn_DoubleMuData,recovariable,presentationbinning,qcdselection+'*('+str(qcdrescale)+')',QCDStackStyle,Label)#fixme todo adding ss non-iso scale factor # AH: but other BGs should be subtracted before scaling
+			# here we plot QCD datadriven in the ss region, so we need special treatment to scale data
+			# fixme todo adding ss non-iso scale factor # AH: but other BGs should be subtracted before scaling ? >> we can have a SF that applies to Data directly?
+			hs_rec_QCD=CreateHisto('hs_rec_QCD','QCD #mu-enriched',tn_DoubleMuData,recovariable,presentationbinning,qcdselection+'*('+str(qcdrescale)+')',QCDStackStyle,Label)
 
 	if channel=='uvjj':
 		hs_rec_QCD=CreateHisto('hs_rec_QCD','QCD #mu-enriched',tn_QCDMu,recovariable,presentationbinning,qcdselection+'*('+str(qcdrescale)+')',QCDStackStyle,Label)
