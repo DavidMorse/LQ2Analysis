@@ -1014,13 +1014,16 @@ def main():
 	# ====================================================================================================================================================== #
 
 	if False :
-		MuMuOptTestCutFile = 'Results_'+version_name+'/OptLQ_uujjCuts_Smoothed_pol2cutoff_1150On.txt'
-		MuNuOptTestCutFile = 'Results_'+version_name+'/OptLQ_uvjjCuts_Smoothed_pol2cutoff.txt'
+		#MuMuOptTestCutFile = 'Results_'+version_name+'/OptLQ_uujjCuts_Smoothed_pol2cutoff_1150On.txt'
+		#MuNuOptTestCutFile = 'Results_'+version_name+'/OptLQ_uvjjCuts_Smoothed_pol2cutoff.txt'
 		# Get Scale Factors
 		#[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = GetMuMuScaleFactors( NormalWeightMuMu+'*'+preselectionmumu, NormalDirectory, '(M_uu>80)*(M_uu<100)', '(M_uu>100)',0)
 		#[[Rw_uvjj,Rw_uvjj_err],[Rtt_uvjj,Rtt_uvjj_err]] = GetMuNuScaleFactors( NormalWeightMuNu+'*'+preselectionmunu, NormalDirectory, '(MT_uv>100)*(MT_uv<200)*(JetCount<3.5)*(((CISV_jet1>0.97)+(CISV_jet2>0.97))<1)', '(MT_uv>100)*(MT_uv<200)*(JetCount>3.5)*(((CISV_jet1>0.97)+(CISV_jet2>0.97))>=1)')#fixme todo varying control sample MT window
 		
-		ShapeSystematic('uujj',NormalWeightMuMu,preselectionmumu,MuMuOptTestCutFile)
+		finalSelectionmumu = preselectionmumu.replace(bTagPresel,bTagFinalsel)
+		finalWeightMuMu = NormalWeightMuMu.replace(bTagPreselSF,bTagFinalSF)
+	
+		ShapeSystematic('uujj',NormalWeightMuMu,preselectionmumu,finalWeightMuMu,finalSelectionmumu)
 		#ShapeSystematic('uvjj',NormalWeightMuNu,preselectionmunu,MuNuOptTestCutFile)
 
 	# ====================================================================================================================================================== #
@@ -2751,6 +2754,30 @@ def ModSelection(selection,sysmethod,channel_log):
 			if 'uujj' in channel_log: 
 				selection = selection.replace(bTagFinalSF,bTagFinalSFdown)
 
+		if sysmethod == 'QCDscaleR1F2':
+			if 'uujj' in channel_log: 
+				selection = selection+'*scaleWeight_R1_F2'
+
+		if sysmethod == 'QCDscaleR2F1':
+			if 'uujj' in channel_log: 
+				selection = selection+'*scaleWeight_R2_F1'
+
+		if sysmethod == 'QCDscaleR2F2':
+			if 'uujj' in channel_log: 
+				selection = selection+'*scaleWeight_Up'
+
+		if sysmethod == 'QCDscaleR1F0p5':
+			if 'uujj' in channel_log: 
+				selection = selection+'*scaleWeight_R1_F0p5'
+
+		if sysmethod == 'QCDscaleR0p5F1':
+			if 'uujj' in channel_log: 
+				selection = selection+'*scaleWeight_R0p5_F1'
+
+		if sysmethod == 'QCDscaleR0p5F0p5':
+			if 'uujj' in channel_log: 
+				selection = selection+'*scaleWeight_R0p5_F0p5'
+
 	return selection
 
 
@@ -3102,7 +3129,8 @@ def FullAnalysis(optimlog,selection_uujj,selection_uvjj,NormalDirectory,weight,u
 	TTDD = False
 	if usedd=='TTBarDataDriven':
 		TTDD=True
-	_Variations = ['','JESup','JESdown','MESup','MESdown','JERup','JERdown','MER','LUMIup','LUMIdown','PUup','PUdown','ZNORMup','ZNORMdown','WNORMup','WNORMdown','TTNORMup','TTNORMdown','MUONIDISOup','MUONIDISOdown','HIPup','HIPdown','MUONHLTup','MUONHLTdown','BTAGup','BTAGdown','PDF','SHAPETT','SHAPEZ','SHAPEW']
+	_Variations = ['','JESup','JESdown','MESup','MESdown','JERup','JERdown','MER','LUMIup','LUMIdown','PUup','PUdown','ZNORMup','ZNORMdown','WNORMup','WNORMdown','TTNORMup','TTNORMdown','MUONIDISOup','MUONIDISOdown','HIPup','HIPdown','MUONHLTup','MUONHLTdown','BTAGup','BTAGdown','PDF','SHAPETT','SHAPEZ','SHAPEW','QCDscaleR1F2','QCDscaleR2F1','QCDscaleR2F2','QCDscaleR1F0p5','QCDscaleR0p5F1','QCDscaleR0p5F0p5']
+
 	#_Variations = ['','JESup','JESdown'] # AH:
 	_Variations = [''] # AH:
 	for v in _Variations:
@@ -6061,19 +6089,21 @@ def FixFinalCards(cardsets):
 	fout.close()
 	return f
 
-def ShapeSystematic(channel,normalWeight,presel,cutFile):
+def ShapeSystematic(channel,normalWeight,presel,finalWeight,finalSel):
 	print '\n\n--------------\n--------------\nRunning shape systematics for',channel,'channel.  This will take some time, be patient....'
 	NoSelection = ['1.0','No selection!']
 	Selection = [normalWeight,'Weight only']
 	PreSelection = [normalWeight+'*'+presel,'Preselection']
-	Sels = [NoSelection,Selection,PreSelection]
+	FinalSelection = [finalWeight+'*'+finalSel,'Final Selection']
+	Sels = [PreSelection,FinalSelection]
+	"""
 	for line in open(cutFile,'r'):
 		if '=' in line:
 			cutChannel = line.split('=')[0]
 			cutSel = normalWeight+'*'+presel+'*'+line.split('=')[-1].replace('\n','').replace(' ','')
 			#print cutLine
 			Sels.append([cutSel, cutChannel])
-	
+	"""
 	#scaleWeights = ['scaleWeight_Up','scaleWeight_Down']
 	scaleWeights = ['scaleWeight_R1_F2','scaleWeight_R1_F0p5','scaleWeight_R2_F1','scaleWeight_Up','scaleWeight_R2_F0p5','scaleWeight_R0p5_F1','scaleWeight_R0p5_F2','scaleWeight_R0p5_F0p5']
 	ZpercsUp =  []
@@ -6092,12 +6122,14 @@ def ShapeSystematic(channel,normalWeight,presel,cutFile):
 	Rtt_uujj_err_diff = dict((x,0.) for x in scaleWeights)
 
 	#Get un-modified presel scale factors
-	[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = GetMuMuScaleFactors( NormalWeightMuMu+'*'+preselectionmumu, NormalDirectory, '(M_uu>80)*(M_uu<100)', '(M_uu>100)',0)
+	#[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = GetMuMuScaleFactors( NormalWeightMuMu+'*'+preselectionmumu, NormalDirectory, '(M_uu>80)*(M_uu<100)', '(M_uu>100)*(Pt_miss>100)',0)
+	[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = [[0.974561303332, 0.00553],[1.11001331611, 0.01308]]
+
 	#[[Rw_uvjj,Rw_uvjj_err],[Rtt_uvjj,Rtt_uvjj_err]] = GetMuNuScaleFactors( NormalWeightMuNu+'*'+preselectionmunu, NormalDirectory, '(MT_uv>100)*(MT_uv<200)*(JetCount<3.5)*(((CISV_jet1>0.97)+(CISV_jet2>0.97))<1)', '(MT_uv>100)*(MT_uv<200)*(JetCount>3.5)*(((CISV_jet1>0.97)+(CISV_jet2>0.97))>=1)')#fixme todo varying control sample MT window
 
 	#Get presel scale factors for each weight
 	for weight in scaleWeights:
-		[[Rz_uujj_diff[weight],Rz_uujj_err_diff[weight]],[Rtt_uujj_diff[weight],Rtt_uujj_err_diff[weight]]] = GetMuMuScaleFactors(NormalWeightMuMu+'*'+preselectionmumu+'*'+weight, NormalDirectory, '(M_uu>80)*(M_uu<100)', '(M_uu>100)',0)
+		[[Rz_uujj_diff[weight],Rz_uujj_err_diff[weight]],[Rtt_uujj_diff[weight],Rtt_uujj_err_diff[weight]]] = GetMuMuScaleFactors(NormalWeightMuMu+'*'+preselectionmumu+'*'+weight, NormalDirectory, '(M_uu>80)*(M_uu<100)', '(M_uu>100)*(Pt_miss>100)',0)
 
 	for selection in Sels :
 		print '  ',selection[1]
@@ -6109,40 +6141,40 @@ def ShapeSystematic(channel,normalWeight,presel,cutFile):
 			print '     ',weight
 			thisSel = selection[0]+'*'+weight
 
-			Z  = QuickIntegral(t_ZJets,selection[0]+'*'+str(Rz_uujj),1.0)
-			W  = QuickIntegral(t_WJets,selection[0],1.0)
+			Z  = [0,0]#QuickIntegral(t_ZJets,selection[0]+'*'+str(Rz_uujj),1.0)
+			#W  = QuickIntegral(t_WJets,selection[0],1.0)
 			tt = QuickIntegral(t_TTBar,selection[0]+'*'+str(Rtt_uujj),1.0)
 
-			Z_diff  = QuickIntegral(t_ZJets,thisSel+'*'+str(Rz_uujj_diff[weight]),1.0)
-			W_diff  = QuickIntegral(t_WJets,thisSel,1.0)
+			Z_diff  = [0,0]#QuickIntegral(t_ZJets,thisSel+'*'+str(Rz_uujj_diff[weight]),1.0)
+			#W_diff  = QuickIntegral(t_WJets,thisSel,1.0)
 			tt_diff = QuickIntegral(t_TTBar,thisSel+'*'+str(Rtt_uujj_diff[weight]),1.0)
 
 			if Z[0]>0 : 
 				Zperc =  [100*(abs(Z_diff[0]-Z[0])/Z[0]),100*math.sqrt((math.sqrt(Z_diff[1]*Z_diff[1]+Z[1]*Z[1])/(Z[0]*Z[0]))+
 								       ((Z_diff[0]-Z[0])*(Z_diff[0]-Z[0])*Z[1]*Z[1]/(Z[0]*Z[0]*Z[0]*Z[0])))]
 			else : ZPerc=[0.,0.]
-			if W[0]>0 : 
-				Wperc =  [100*(abs(W_diff[0]-W[0])/W[0]),100*math.sqrt((math.sqrt(W_diff[1]*W_diff[1]+W[1]*W[1])/(W[0]*W[0]))+
-								       ((W_diff[0]-W[0])*(W_diff[0]-W[0])*W[1]*W[1]/(W[0]*W[0]*W[0]*W[0])))]
-			else : Wperc=[0.,0.]
+			#if W[0]>0 : 
+			#	Wperc =  [100*(abs(W_diff[0]-W[0])/W[0]),100*math.sqrt((math.sqrt(W_diff[1]*W_diff[1]+W[1]*W[1])/(W[0]*W[0]))+
+			#					       ((W_diff[0]-W[0])*(W_diff[0]-W[0])*W[1]*W[1]/(W[0]*W[0]*W[0]*W[0])))]
+			#else : Wperc=[0.,0.]
 			if tt[0]>0 : 
 				TTperc =  [100*(abs(tt_diff[0]-tt[0])/tt[0]),100*math.sqrt((math.sqrt(tt_diff[1]*tt_diff[1]+tt[1]*tt[1])/(tt[0]*tt[0]))+
 									   ((tt_diff[0]-tt[0])*(tt_diff[0]-tt[0])*tt[1]*tt[1]/(tt[0]*tt[0]*tt[0]*tt[0])))]
 			else : TTperc=[0.,0.]
 		
 			print '        Z:',Zperc
-			print '        W:',Wperc
+			#print '        W:',Wperc
 			print '       tt:',TTperc
 			if Zperc[0]>maxZ[0]  : maxZ = Zperc
-			if Wperc[0]>maxW[0]  : maxW = Wperc
+			#if Wperc[0]>maxW[0]  : maxW = Wperc
 			if TTperc[0]>maxTT[0]: maxTT=TTperc
 			if scaleWeights[-1] in weight:		
 				print ' Final  Z:',maxZ
-				print ' Final  W:',maxW
+				#print ' Final  W:',maxW
 				print ' Final tt:',maxTT
 	
 		shapesysvar_Zjets.append (round(maxZ[0],2))
-		shapesysvar_Wjets.append (round(maxW[0],2))
+		#shapesysvar_Wjets.append (round(maxW[0],2))
 		shapesysvar_TTjets.append(round(maxTT[0],2))
 		
 	print '\n\n--------------\n--------------\nFinal systematics:'
@@ -6150,12 +6182,12 @@ def ShapeSystematic(channel,normalWeight,presel,cutFile):
 	sys.stdout.write(channel)
         sys.stdout.write('_zjets = ')
         sys.stdout.write(shapesysvar_Zjets)
-
+	"""
 	sys.stdout.write('shapesysvar')
         sys.stdout.write(channel)
         sys.stdout.write('_wjets = ')
         sys.stdout.write(shapesysvar_Wjets)
-
+	"""
 	sys.stdout.write('shapesysvar')
         sys.stdout.write(channel)
         sys.stdout.write('ttjets = ')
