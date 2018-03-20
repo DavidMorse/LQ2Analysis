@@ -6194,11 +6194,11 @@ def ShapeSystematic(channel,normalWeight,presel,finalWeight,finalSel):
 			print '     ',weight
 			thisSel = selection[0]+'*'+weight
 
-			Z  = [0,0]#QuickIntegral(t_ZJets,selection[0]+'*'+str(Rz_uujj),1.0)
+			Z  = QuickIntegral(t_ZJets,selection[0]+'*'+str(Rz_uujj),1.0)
 			#W  = QuickIntegral(t_WJets,selection[0],1.0)
 			tt = QuickIntegral(t_TTBar,selection[0]+'*'+str(Rtt_uujj),1.0)
 
-			Z_diff  = [0,0]#QuickIntegral(t_ZJets,thisSel+'*'+str(Rz_uujj_diff[weight]),1.0)
+			Z_diff  = QuickIntegral(t_ZJets,thisSel+'*'+str(Rz_uujj_diff[weight]),1.0)
 			#W_diff  = QuickIntegral(t_WJets,thisSel,1.0)
 			tt_diff = QuickIntegral(t_TTBar,thisSel+'*'+str(Rtt_uujj_diff[weight]),1.0)
 
