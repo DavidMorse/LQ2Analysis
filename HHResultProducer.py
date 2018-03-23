@@ -59,6 +59,9 @@ singlemuHLT =  '*( 0.9494*(abs(Eta_muon1)<=0.9)*(Pt_muon1>50)*(Pt_muon1<60) + 0.
 #2015 values, taken from AN2016_021_v6.pdf
 doublemuHLT = '*((abs(Eta_muon1)<=0.9)*(0.9490*(abs(Eta_muon2)<=0.9)+0.9490*(abs(Eta_muon2)>0.9)*(abs(Eta_muon2)<=1.4)+0.9376*(abs(Eta_muon2)>1.4)*(abs(Eta_muon2)<=2.1)+0.9207*(abs(Eta_muon2)>2.1)*(abs(Eta_muon2)<=2.4))+(abs(Eta_muon1)>0.9)*(abs(Eta_muon1)<=1.4)*(0.9628*(abs(Eta_muon2)<=0.9)+0.9576*(abs(Eta_muon2)>0.9)*(abs(Eta_muon2)<=1.4)+0.9288*(abs(Eta_muon2)>1.4)*(abs(Eta_muon2)<=2.1)+0.9684*(abs(Eta_muon2)>2.1)*(abs(Eta_muon2)<=2.4))+(abs(Eta_muon1)>1.4)*(abs(Eta_muon1)<=2.1)*(0.9477*(abs(Eta_muon2)<=0.9)+0.9493*(abs(Eta_muon2)>0.9)*(abs(Eta_muon2)<=1.4)+0.9216*(abs(Eta_muon2)>1.4)*(abs(Eta_muon2)<=2.1)+0.9333*(abs(Eta_muon2)>2.1)*(abs(Eta_muon2)<=2.4))+(abs(Eta_muon1)>2.1)*(abs(Eta_muon1)<=2.4)*(0.9420*(abs(Eta_muon2)<=0.9)+0.9142*(abs(Eta_muon2)>0.9)*(abs(Eta_muon2)<=1.4)+0.9470*(abs(Eta_muon2)>1.4)*(abs(Eta_muon2)<=2.1)+0.9252*(abs(Eta_muon2)>2.1)*(abs(Eta_muon2)<=2.4)))'
 
+#No longer using HLT SF
+doublemuHLT = '*1.0'
+
 # This is for the case of the E-mu sample, where one "muon" is replaced by an electron. In that case, we check
 # which muon is a real muon (IsMuon_muon1) and apply the trigger efficiency based on the muon
 #2012#singlemuHLTEMU = '*((IsMuon_muon1*( 0.93*(abs(Eta_muon1)<=0.9) + 0.83*(abs(Eta_muon1)>0.9)*(abs(Eta_muon1)<=1.2) + 0.80*(abs(Eta_muon1)>1.2)*(abs(Eta_muon1)<=2.1) ))'
@@ -73,7 +76,10 @@ singlemuHLTEMU += '+(IsMuon_muon2*( 0.9494*(abs(Eta_muon2)<=0.9)*(Pt_muon2>50)*(
 #doubleMuIdAndIsoScale = '*((0.9837160408450394*(Eta_muon1>-2.4)*(Eta_muon1>-2.1)+0.9945438368059955*(Eta_muon1>-2.1)*(Eta_muon1>-1.6)+0.9970378022168973*(Eta_muon1>-1.6)*(Eta_muon1>-1.2)+0.9956615088416513*(Eta_muon1>-1.2)*(Eta_muon1>-0.9)+0.9978576536660979*(Eta_muon1>-0.9)*(Eta_muon1>-0.3)+0.9924072276003321*(Eta_muon1>-0.0)*(Eta_muon1>-0.2)+0.9966624814619885*(Eta_muon1>-0.2)*(Eta_muon1<0.2)+0.9940334796698915*(Eta_muon1>0.2)*(Eta_muon1<0.3)+0.998044399081353*(Eta_muon1>0.3)*(Eta_muon1<0.9)+0.9952984093114865*(Eta_muon1>0.9)*(Eta_muon1<1.2)+0.9967601541976385*(Eta_muon1>1.2)*(Eta_muon1<1.6)+0.9959660681513732*(Eta_muon1>1.6)*(Eta_muon1<2.1)+0.9858520897236493*(Eta_muon1>2.1)*(Eta_muon1<2.4))*(0.9837160408450394*(Eta_muon1>-2.4)*(Eta_muon1>-2.1)+0.9945438368059955*(Eta_muon1>-2.1)*(Eta_muon1>-1.6)+0.9970378022168973*(Eta_muon1>-1.6)*(Eta_muon1>-1.2)+0.9956615088416513*(Eta_muon1>-1.2)*(Eta_muon1>-0.9)+0.9978576536660979*(Eta_muon1>-0.9)*(Eta_muon1>-0.3)+0.9924072276003321*(Eta_muon1>-0.0)*(Eta_muon1>-0.2)+0.9966624814619885*(Eta_muon1>-0.2)*(Eta_muon1<0.2)+0.9940334796698915*(Eta_muon1>0.2)*(Eta_muon1<0.3)+0.998044399081353*(Eta_muon1>0.3)*(Eta_muon1<0.9)+0.9952984093114865*(Eta_muon1>0.9)*(Eta_muon1<1.2)+0.9967601541976385*(Eta_muon1>1.2)*(Eta_muon1<1.6)+0.9959660681513732*(Eta_muon1>1.6)*(Eta_muon1<2.1)+0.9858520897236493*(Eta_muon1>2.1)*(Eta_muon1<2.4)))'
 
 # AH:
-doubleMuIdAndIsoScale = '*((0.9837*(Eta_muon1>-2.4)*(Eta_muon1<-2.1)+0.9945*(Eta_muon1>-2.1)*(Eta_muon1<-1.6)+0.9970*(Eta_muon1>-1.6)*(Eta_muon1<-1.2)+0.9957*(Eta_muon1>-1.2)*(Eta_muon1<-0.9)+0.9979*(Eta_muon1>-0.9)*(Eta_muon1<-0.3)+0.9924*(Eta_muon1>-0.3)*(Eta_muon1<-0.2)+0.9967*(Eta_muon1>-0.2)*(Eta_muon1<0.2)+0.9940*(Eta_muon1>0.2)*(Eta_muon1<0.3)+0.9980*(Eta_muon1>0.3)*(Eta_muon1<0.9)+0.9953*(Eta_muon1>0.9)*(Eta_muon1<1.2)+0.9968*(Eta_muon1>1.2)*(Eta_muon1<1.6)+0.9960*(Eta_muon1>1.6)*(Eta_muon1<2.1)+0.9859*(Eta_muon1>2.1)*(Eta_muon1<2.4))*(0.9837*(Eta_muon2>-2.4)*(Eta_muon2<-2.1)+0.9945*(Eta_muon2>-2.1)*(Eta_muon2<-1.6)+0.9970*(Eta_muon2>-1.6)*(Eta_muon2<-1.2)+0.9957*(Eta_muon2>-1.2)*(Eta_muon2<-0.9)+0.9979*(Eta_muon2>-0.9)*(Eta_muon2<-0.3)+0.9924*(Eta_muon2>-0.3)*(Eta_muon2<-0.2)+0.9967*(Eta_muon2>-0.2)*(Eta_muon2<0.2)+0.9940*(Eta_muon2>0.2)*(Eta_muon2<0.3)+0.9980*(Eta_muon2>0.3)*(Eta_muon2<0.9)+0.9953*(Eta_muon2>0.9)*(Eta_muon2<1.2)+0.9968*(Eta_muon2>1.2)*(Eta_muon2<1.6)+0.9960*(Eta_muon2>1.6)*(Eta_muon2<2.1)+0.9859*(Eta_muon2>2.1)*(Eta_muon2<2.4)))'
+#doubleMuIdAndIsoScale = '*((0.9837*(Eta_muon1>-2.4)*(Eta_muon1<-2.1)+0.9945*(Eta_muon1>-2.1)*(Eta_muon1<-1.6)+0.9970*(Eta_muon1>-1.6)*(Eta_muon1<-1.2)+0.9957*(Eta_muon1>-1.2)*(Eta_muon1<-0.9)+0.9979*(Eta_muon1>-0.9)*(Eta_muon1<-0.3)+0.9924*(Eta_muon1>-0.3)*(Eta_muon1<-0.2)+0.9967*(Eta_muon1>-0.2)*(Eta_muon1<0.2)+0.9940*(Eta_muon1>0.2)*(Eta_muon1<0.3)+0.9980*(Eta_muon1>0.3)*(Eta_muon1<0.9)+0.9953*(Eta_muon1>0.9)*(Eta_muon1<1.2)+0.9968*(Eta_muon1>1.2)*(Eta_muon1<1.6)+0.9960*(Eta_muon1>1.6)*(Eta_muon1<2.1)+0.9859*(Eta_muon1>2.1)*(Eta_muon1<2.4))*(0.9837*(Eta_muon2>-2.4)*(Eta_muon2<-2.1)+0.9945*(Eta_muon2>-2.1)*(Eta_muon2<-1.6)+0.9970*(Eta_muon2>-1.6)*(Eta_muon2<-1.2)+0.9957*(Eta_muon2>-1.2)*(Eta_muon2<-0.9)+0.9979*(Eta_muon2>-0.9)*(Eta_muon2<-0.3)+0.9924*(Eta_muon2>-0.3)*(Eta_muon2<-0.2)+0.9967*(Eta_muon2>-0.2)*(Eta_muon2<0.2)+0.9940*(Eta_muon2>0.2)*(Eta_muon2<0.3)+0.9980*(Eta_muon2>0.3)*(Eta_muon2<0.9)+0.9953*(Eta_muon2>0.9)*(Eta_muon2<1.2)+0.9968*(Eta_muon2>1.2)*(Eta_muon2<1.6)+0.9960*(Eta_muon2>1.6)*(Eta_muon2<2.1)+0.9859*(Eta_muon2>2.1)*(Eta_muon2<2.4)))'
+
+#DM -Update mixing Medium2016 for BCDEF and Medium for GH
+doubleMuIdAndIsoScale = '*((0.9675*(Eta_muon1>-2.4)*(Eta_muon1<-2.1)+0.9891*(Eta_muon1>-2.1)*(Eta_muon1<-1.6)+0.9941*(Eta_muon1>-1.6)*(Eta_muon1<-1.2)+0.9913*(Eta_muon1>-1.2)*(Eta_muon1<-0.9)+0.9957*(Eta_muon1>-0.9)*(Eta_muon1<-0.3)+0.9848*(Eta_muon1>-0.3)*(Eta_muon1<-0.2)+0.9933*(Eta_muon1>-0.2)*(Eta_muon1<0.2)+0.9881*(Eta_muon1>0.2)*(Eta_muon1<0.3)+0.9961*(Eta_muon1>0.3)*(Eta_muon1<0.9)+0.9906*(Eta_muon1>0.9)*(Eta_muon1<1.2)+0.9935*(Eta_muon1>1.2)*(Eta_muon1<1.6)+0.9919*(Eta_muon1>1.6)*(Eta_muon1<2.1)+0.9717*(Eta_muon1>2.1)*(Eta_muon1<2.4))*(0.9675*(Eta_muon2>-2.4)*(Eta_muon2<-2.1)+0.9891*(Eta_muon2>-2.1)*(Eta_muon2<-1.6)+0.9941*(Eta_muon2>-1.6)*(Eta_muon2<-1.2)+0.9913*(Eta_muon2>-1.2)*(Eta_muon2<-0.9)+0.9957*(Eta_muon2>-0.9)*(Eta_muon2<-0.3)+0.9848*(Eta_muon2>-0.3)*(Eta_muon2<-0.2)+0.9933*(Eta_muon2>-0.2)*(Eta_muon2<0.2)+0.9881*(Eta_muon2>0.2)*(Eta_muon2<0.3)+0.9961*(Eta_muon2>0.3)*(Eta_muon2<0.9)+0.9906*(Eta_muon2>0.9)*(Eta_muon2<1.2)+0.9935*(Eta_muon2>1.2)*(Eta_muon2<1.6)+0.9919*(Eta_muon2>1.6)*(Eta_muon2<2.1)+0.9717*(Eta_muon2>2.1)*(Eta_muon2<2.4)))'
 
 doubleMuIdScale = '*(0.9682423360434217*(Eta_muon1<-2.4)*(Eta_muon1>-2.1)+0.9893833099668479*(Eta_muon1<-2.1)*(Eta_muon1>-1.6)+0.9943077120257308*(Eta_muon1<-1.6)*(Eta_muon1>-1.2)+0.9916914851938796*(Eta_muon1<-1.2)*(Eta_muon1>-0.9)+0.995621634743804*(Eta_muon1<-0.9)*(Eta_muon1>-0.3)+0.9852246225934387*(Eta_muon1<-0.0)*(Eta_muon1>-0.2)+0.9939788646593908*(Eta_muon1<-0.2)*(Eta_muon1>0.2)+0.9885359568100729*(Eta_muon1<0.2)*(Eta_muon1>0.3)+0.9958132831910403*(Eta_muon1<0.3)*(Eta_muon1>0.9)+0.9902529688519877*(Eta_muon1<0.9)*(Eta_muon1>1.2)+0.9934874686188648*(Eta_muon1<1.2)*(Eta_muon1>1.6)+0.9923028170743358*(Eta_muon1<1.6)*(Eta_muon1>2.1)+0.9724438481770842*(Eta_muon1<2.1)*(Eta_muon1>2.4))*(0.9682423360434217*(Eta_muon2<-2.4)*(Eta_muon2>-2.1)+0.9893833099668479*(Eta_muon2<-2.1)*(Eta_muon2>-1.6)+0.9943077120257308*(Eta_muon2<-1.6)*(Eta_muon2>-1.2)+0.9916914851938796*(Eta_muon2<-1.2)*(Eta_muon2>-0.9)+0.995621634743804*(Eta_muon2<-0.9)*(Eta_muon2>-0.3)+0.9852246225934387*(Eta_muon2<-0.0)*(Eta_muon2>-0.2)+0.9939788646593908*(Eta_muon2<-0.2)*(Eta_muon2>0.2)+0.9885359568100729*(Eta_muon2<0.2)*(Eta_muon2>0.3)+0.9958132831910403*(Eta_muon2<0.3)*(Eta_muon2>0.9)+0.9902529688519877*(Eta_muon2<0.9)*(Eta_muon2>1.2)+0.9934874686188648*(Eta_muon2<1.2)*(Eta_muon2>1.6)+0.9923028170743358*(Eta_muon2<1.6)*(Eta_muon2>2.1)+0.9724438481770842*(Eta_muon2<2.1)*(Eta_muon2>2.4))'
 
@@ -137,7 +143,7 @@ passfilter += '*(passBadMuon*passBadChargedHadron)'
 
 # This defines the preselections for the mu-mu, mu-nu, and e-mu samples
 #preselection_nos = '((Pt_muon1>20)*(Pt_muon2>10)*(Pt_Hjet1>20)*(Pt_Hjet2>20)*(Pt_Zjet1>20)*(Pt_Zjet2>20)*(M_uu>12)*(isMuonEvent))'
-preselection_nos = '((Pt_muon1>20)*(Pt_muon2>10)*(Pt_Hjet1>20)*(Pt_Hjet2>20)*(Pt_Zjet1>20)*(Pt_Zjet2>20)*(M_uu>12)*(isMuonEvent)*(1-(run_number==276950)*(lumi_number==22)*(event_number==34039924))*(1-(run_number==1)*(lumi_number==447098)*(event_number==71625048)))'
+preselection_nos = '(*(pass_HLT_Mu17_Mu8)*(Pt_muon1>20)*(Pt_muon2>10)*(Pt_Hjet1>20)*(Pt_Hjet2>20)*(Pt_Zjet1>20)*(Pt_Zjet2>20)*(M_uu>12)*(isMuonEvent)*(1-(run_number==276950)*(lumi_number==22)*(event_number==34039924))*(1-(run_number==1)*(lumi_number==447098)*(event_number==71625048)))'
 #Require at least one loose MVA bTag
 bTagsel1loose = '*(((CMVA_bjet1>-0.5884)+(CMVA_bjet2>-0.5884)+(CMVA_Zjet1>-0.5884)+(CMVA_Zjet2>-0.5884))>0)'
 bTagsel1medium = '*(((CMVA_bjet1>0.4432)+(CMVA_bjet2>0.4432)+(CMVA_Zjet1>0.4432)+(CMVA_Zjet2>0.4432))>0)'
@@ -615,7 +621,7 @@ def main():
 
 		bosonbinning = [0,10,20,30,40,50,60,70,80,90,100,110,120]
 		for x in range(40):
-			if bosonbinning[-1]<1000:
+			if bosonbinning[-1]<750:
 				bosonbinning.append(bosonbinning[-1]+ (bosonbinning[-1] - bosonbinning[-2])*1.2 )	       	
 		bosonbinning = [round(x) for x in bosonbinning]
 
@@ -633,11 +639,20 @@ def main():
 
 		print '\n  NormalWeightMuMu plus preselectionmumu  is : ', str(NormalWeightMuMu+'*'+preselectionmumu) , '\n' # AH:
 		#print lqbinning,stbinning
+
+		#Scale Factor Study
+		if False:
+			#for x in [['*(Pt_muon1<30)','*(Pt_miss>90)'],['*(Pt_muon1>30)*(Pt_muon1<50)','*(Pt_miss>80)'],['*(Pt_muon1>50)*(Pt_muon1<75)','*(Pt_miss>70)'],['*(Pt_muon1>75)*(Pt_muon1<100)','*(Pt_miss>70)'],['*(Pt_muon1>100)','*(Pt_miss>50)']]:
+			for x in [['*(Pt_muon1>100)*(Pt_muon1<150)','*(Pt_miss>80)'],['*(Pt_muon1>150)*(Pt_muon1<200)',''],['*(Pt_muon1>200)','']]:
+				print '--------------\n'
+				print x
+				[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = GetMuMuScaleFactors( NormalWeightMuMu+'*'+preselectionmumu, NormalDirectory, '(M_uu>80)*(M_uu<100)'+x[0], '(M_uu>100)'+x[1],0)
+			exit()
 		# Get Scale Factors
 		[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = GetMuMuScaleFactors( NormalWeightMuMu+'*'+preselectionmumu, NormalDirectory, '(M_uu>80)*(M_uu<100)', '(M_uu>100)*(Pt_miss>100)',0)
 		#[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = [[0.974561303332, 0.00553],[1.11001331611, 0.01308]]
 		# AH: To speed things up when debugging
-		
+		exit()
 		[[Rw_uvjj,Rw_uvjj_err],[Rtt_uvjj,Rtt_uvjj_err]]=[[1.,0.],[1.,0.]]
 		#CSVv2L	0.460
 		#CSVv2M	0.8
