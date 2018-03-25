@@ -60,7 +60,7 @@ singlemuHLT =  '*( 0.9494*(abs(Eta_muon1)<=0.9)*(Pt_muon1>50)*(Pt_muon1<60) + 0.
 doublemuHLT = '*((abs(Eta_muon1)<=0.9)*(0.9490*(abs(Eta_muon2)<=0.9)+0.9490*(abs(Eta_muon2)>0.9)*(abs(Eta_muon2)<=1.4)+0.9376*(abs(Eta_muon2)>1.4)*(abs(Eta_muon2)<=2.1)+0.9207*(abs(Eta_muon2)>2.1)*(abs(Eta_muon2)<=2.4))+(abs(Eta_muon1)>0.9)*(abs(Eta_muon1)<=1.4)*(0.9628*(abs(Eta_muon2)<=0.9)+0.9576*(abs(Eta_muon2)>0.9)*(abs(Eta_muon2)<=1.4)+0.9288*(abs(Eta_muon2)>1.4)*(abs(Eta_muon2)<=2.1)+0.9684*(abs(Eta_muon2)>2.1)*(abs(Eta_muon2)<=2.4))+(abs(Eta_muon1)>1.4)*(abs(Eta_muon1)<=2.1)*(0.9477*(abs(Eta_muon2)<=0.9)+0.9493*(abs(Eta_muon2)>0.9)*(abs(Eta_muon2)<=1.4)+0.9216*(abs(Eta_muon2)>1.4)*(abs(Eta_muon2)<=2.1)+0.9333*(abs(Eta_muon2)>2.1)*(abs(Eta_muon2)<=2.4))+(abs(Eta_muon1)>2.1)*(abs(Eta_muon1)<=2.4)*(0.9420*(abs(Eta_muon2)<=0.9)+0.9142*(abs(Eta_muon2)>0.9)*(abs(Eta_muon2)<=1.4)+0.9470*(abs(Eta_muon2)>1.4)*(abs(Eta_muon2)<=2.1)+0.9252*(abs(Eta_muon2)>2.1)*(abs(Eta_muon2)<=2.4)))'
 
 #No longer using HLT SF
-doublemuHLT = '*1.0'
+doublemuHLT = '*(1.0)'
 
 # This is for the case of the E-mu sample, where one "muon" is replaced by an electron. In that case, we check
 # which muon is a real muon (IsMuon_muon1) and apply the trigger efficiency based on the muon
@@ -143,7 +143,7 @@ passfilter += '*(passBadMuon*passBadChargedHadron)'
 
 # This defines the preselections for the mu-mu, mu-nu, and e-mu samples
 #preselection_nos = '((Pt_muon1>20)*(Pt_muon2>10)*(Pt_Hjet1>20)*(Pt_Hjet2>20)*(Pt_Zjet1>20)*(Pt_Zjet2>20)*(M_uu>12)*(isMuonEvent))'
-preselection_nos = '(*(pass_HLT_Mu17_Mu8)*(Pt_muon1>20)*(Pt_muon2>10)*(Pt_Hjet1>20)*(Pt_Hjet2>20)*(Pt_Zjet1>20)*(Pt_Zjet2>20)*(M_uu>12)*(isMuonEvent)*(1-(run_number==276950)*(lumi_number==22)*(event_number==34039924))*(1-(run_number==1)*(lumi_number==447098)*(event_number==71625048)))'
+preselection_nos = '((pass_HLT_Mu17_Mu8)*(Pt_muon1>20)*(Pt_muon2>10)*(Pt_Hjet1>20)*(Pt_Hjet2>20)*(Pt_Zjet1>20)*(Pt_Zjet2>20)*(M_uu>12)*(isMuonEvent)*(1-(run_number==276950)*(lumi_number==22)*(event_number==34039924))*(1-(run_number==1)*(lumi_number==447098)*(event_number==71625048)))'
 #Require at least one loose MVA bTag
 bTagsel1loose = '*(((CMVA_bjet1>-0.5884)+(CMVA_bjet2>-0.5884)+(CMVA_Zjet1>-0.5884)+(CMVA_Zjet2>-0.5884))>0)'
 bTagsel1medium = '*(((CMVA_bjet1>0.4432)+(CMVA_bjet2>0.4432)+(CMVA_Zjet1>0.4432)+(CMVA_Zjet2>0.4432))>0)'
