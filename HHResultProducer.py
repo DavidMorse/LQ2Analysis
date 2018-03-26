@@ -642,8 +642,8 @@ def main():
 
 		#Scale Factor Study
 		if False:
-			#for x in [['*(Pt_muon1<30)','*(Pt_miss>90)'],['*(Pt_muon1>30)*(Pt_muon1<50)','*(Pt_miss>80)'],['*(Pt_muon1>50)*(Pt_muon1<75)','*(Pt_miss>70)'],['*(Pt_muon1>75)*(Pt_muon1<100)','*(Pt_miss>70)'],['*(Pt_muon1>100)','*(Pt_miss>50)']]:
-			for x in [['*(Pt_muon1>100)*(Pt_muon1<150)','*(Pt_miss>80)'],['*(Pt_muon1>150)*(Pt_muon1<200)',''],['*(Pt_muon1>200)','']]:
+			for x in [['',''],['*(Pt_muon1<30)','*(Pt_miss>90)'],['*(Pt_muon1>30)*(Pt_muon1<50)','*(Pt_miss>80)'],['*(Pt_muon1>50)*(Pt_muon1<75)','*(Pt_miss>70)'],['*(Pt_muon1>75)*(Pt_muon1<100)','*(Pt_miss>70)'],['*(Pt_muon1>100)','*(Pt_miss>50)']]:
+			#for x in [['*(Pt_muon1>100)*(Pt_muon1<150)','*(Pt_miss>80)'],['*(Pt_muon1>150)*(Pt_muon1<200)',''],['*(Pt_muon1>200)','']]:
 				print '--------------\n'
 				print x
 				[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = GetMuMuScaleFactors( NormalWeightMuMu+'*'+preselectionmumu, NormalDirectory, '(M_uu>80)*(M_uu<100)'+x[0], '(M_uu>100)'+x[1],0)
@@ -2790,27 +2790,27 @@ def ModSelection(selection,sysmethod,channel_log):
 
 		if sysmethod == 'QCDscaleR1F2':
 			if 'uujj' in channel_log: 
-				selection = selection+'*scaleWeight_R1_F2'
+				selection = selection+'*(scaleWeight_R1_F2/scaleWeight_R1_F1)'
 
 		if sysmethod == 'QCDscaleR2F1':
 			if 'uujj' in channel_log: 
-				selection = selection+'*scaleWeight_R2_F1'
+				selection = selection+'*(scaleWeight_R2_F1/scaleWeight_R1_F1)'
 
 		if sysmethod == 'QCDscaleR2F2':
 			if 'uujj' in channel_log: 
-				selection = selection+'*scaleWeight_Up'
+				selection = selection+'*(scaleWeight_Up/scaleWeight_R1_F1)'
 
 		if sysmethod == 'QCDscaleR1F0p5':
 			if 'uujj' in channel_log: 
-				selection = selection+'*scaleWeight_R1_F0p5'
+				selection = selection+'*(scaleWeight_R1_F0p5/scaleWeight_R1_F1)'
 
 		if sysmethod == 'QCDscaleR0p5F1':
 			if 'uujj' in channel_log: 
-				selection = selection+'*scaleWeight_R0p5_F1'
+				selection = selection+'*(scaleWeight_R0p5_F1/scaleWeight_R1_F1)'
 
 		if sysmethod == 'QCDscaleR0p5F0p5':
 			if 'uujj' in channel_log: 
-				selection = selection+'*scaleWeight_R0p5_F0p5'
+				selection = selection+'*(scaleWeight_R0p5_F0p5/scaleWeight_R1_F1)'
 
 	return selection
 
