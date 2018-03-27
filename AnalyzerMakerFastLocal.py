@@ -407,6 +407,7 @@ def MakeJobs(njobs):
 		#subber.write('\ncp '+thisdir+'/metFilterLists/* .')
 		subber.write('\ncp '+thisdir+'/PU*root .\n\n')
 		subber.write('\ncp -r '+thisdir+'/weights_classification .\n\n')
+		subber.write('\ncp '+thisdir+'/cMVAv2_Moriond17_B_H.csv .\n\n')
 
 		# if Nj*njobs>5000:
 		# 	continue

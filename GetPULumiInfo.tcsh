@@ -29,9 +29,9 @@ set PUJSON=/afs/cern.ch/cms/CAF/CMSCOMM/COMM_DQM/certification/Collisions16/13Te
 
 pileupCalc.py -i $LumiJSON --inputLumiJSON $PUJSON --calcMode true --minBiasXsec 69200 --maxPileupBin 100 --numPileupBins 100 PU_Central.root
 
-pileupCalc.py -i $LumiJSON --inputLumiJSON $PUJSON --calcMode true --minBiasXsec 72660 --maxPileupBin 100 --numPileupBins 100 PU_Up.root
+pileupCalc.py -i $LumiJSON --inputLumiJSON $PUJSON --calcMode true --minBiasXsec 72383.2 --maxPileupBin 100 --numPileupBins 100 PU_Up.root
 
-pileupCalc.py -i $LumiJSON --inputLumiJSON $PUJSON --calcMode true --minBiasXsec 65740 --maxPileupBin 100 --numPileupBins 100 PU_Down.root
+pileupCalc.py -i $LumiJSON --inputLumiJSON $PUJSON --calcMode true --minBiasXsec 66016.8 --maxPileupBin 100 --numPileupBins 100 PU_Down.root
 
 #echo "(19.712 +/- 0.513)/fb">LumiLog.txt
 #echo "( 2154.493 +/- ....)/pb">LumiLog.txt
