@@ -108,11 +108,12 @@ dataHLTEMUADJ = '*(2.0 - 1.0'+singlemuHLTEMU+')'
 # For case of >=1 bTag: w(>= 1|n) = 1 - w(0|n), where  w(0|n) = \prod_{i=1}^n (1-SF_i)
 bTag1SFloose = '*(1-(1-(CMVA_bjet1>-0.5884)*(0.976111+(-(4.37632e-05*Pt_Hjet1))))*(1-(CMVA_bjet2>-0.5884)*(0.976111+(-(4.37632e-05*Pt_Hjet2))))*(1-(CMVA_Zjet1>-0.5884)*(0.976111+(-(4.37632e-05*Pt_Zjet1))))*(1-(CMVA_Zjet2>-0.5884)*(0.976111+(-(4.37632e-05*Pt_Zjet2)))))'
 
-bTag1SFmedium = '*(1-(1-(CMVA_bjet1>-0.5884)*0.600657*((1.+(0.753343*Pt_Hjet1))/(1.+(0.472587*Pt_Hjet1))))*(1-(CMVA_bjet2>-0.5884)*0.600657*((1.+(0.753343*Pt_Hjet2))/(1.+(0.472587*Pt_Hjet2))))*(1-(CMVA_Zjet1>-0.5884)*0.600657*((1.+(0.753343*Pt_Zjet1))/(1.+(0.472587*Pt_Zjet1))))*(1-(CMVA_Zjet2>-0.5884)*0.600657*((1.+(0.753343*Pt_Zjet2))/(1.+(0.472587*Pt_Zjet2)))))'
+#bTag1SFmedium = '*(1-(1-(CMVA_bjet1>-0.5884)*0.600657*((1.+(0.753343*Pt_Hjet1))/(1.+(0.472587*Pt_Hjet1))))*(1-(CMVA_bjet2>-0.5884)*0.600657*((1.+(0.753343*Pt_Hjet2))/(1.+(0.472587*Pt_Hjet2))))*(1-(CMVA_Zjet1>-0.5884)*0.600657*((1.+(0.753343*Pt_Zjet1))/(1.+(0.472587*Pt_Zjet1))))*(1-(CMVA_Zjet2>-0.5884)*0.600657*((1.+(0.753343*Pt_Zjet2))/(1.+(0.472587*Pt_Zjet2)))))'
+bTag1SFmedium = '*(1-(1-(CMVA_bjet1>0.4432)*0.600657*((1.+(0.753343*Pt_Hjet1))/(1.+(0.472587*Pt_Hjet1))))*(1-(CMVA_bjet2>0.4432)*0.600657*((1.+(0.753343*Pt_Hjet2))/(1.+(0.472587*Pt_Hjet2))))*(1-(CMVA_Zjet1>0.4432)*0.600657*((1.+(0.753343*Pt_Zjet1))/(1.+(0.472587*Pt_Zjet1))))*(1-(CMVA_Zjet2>0.4432)*0.600657*((1.+(0.753343*Pt_Zjet2))/(1.+(0.472587*Pt_Zjet2)))))'
 
-bTag1SFmediumUp   = '*(1-(1-(CMVA_bjet1>-0.5884)*0.600657*((1.+(0.753343*Pt_Hjet1))/(1.+(0.472587*Pt_Hjet1))))*(1-(CMVA_bjet2>-0.5884)*0.600657*((1.+(0.753343*Pt_Hjet2))/(1.+(0.472587*Pt_Hjet2))))*(1-(CMVA_Zjet1>-0.5884)*0.600657*((1.+(0.753343*Pt_Zjet1))/(1.+(0.472587*Pt_Zjet1))))*(1-(CMVA_Zjet2>-0.5884)*0.600657*((1.+(0.753343*Pt_Zjet2))/(1.+(0.472587*Pt_Zjet2)))))'
+bTag1SFmediumUp   = '*(1-(1-(CMVA_bjet1>0.4432)*(0.600657*((1.+(0.753343*Pt_Hjet1))/(1.+(0.472587*Pt_Hjet1)))+0.016775054857134819*2*(Pt_Hjet1<30)+0.016775054857134819*(Pt_Hjet1>=30)*(Pt_Hjet1<50)+0.013394910842180252*(Pt_Hjet1>=50)*(Pt_Hjet1<70)+0.012854539789259434*(Pt_Hjet1>=70)*(Pt_Hjet1<100)+0.01186173502355814*(Pt_Hjet1>=100)*(Pt_Hjet1<140)+0.012084054760634899*(Pt_Hjet1>=140)*(Pt_Hjet1<200)+0.016997816041111946*(Pt_Hjet1>=200)*(Pt_Hjet1<300)+0.068164065480232239*(Pt_Hjet1>=300)*(Pt_Hjet1<600)+0.068164065480232239*2*(Pt_Hjet1>=600)))*(1-(CMVA_bjet2>0.4432)*(0.600657*((1.+(0.753343*Pt_Hjet2))/(1.+(0.472587*Pt_Hjet2)))+0.016775054857134819*2*(Pt_Hjet2<30)+0.016775054857134819*(Pt_Hjet2>=30)*(Pt_Hjet2<50)+0.013394910842180252*(Pt_Hjet2>=50)*(Pt_Hjet2<70)+0.012854539789259434*(Pt_Hjet2>=70)*(Pt_Hjet2<100)+0.01186173502355814*(Pt_Hjet2>=100)*(Pt_Hjet2<140)+0.012084054760634899*(Pt_Hjet2>=140)*(Pt_Hjet2<200)+0.016997816041111946*(Pt_Hjet2>=200)*(Pt_Hjet2<300)+0.068164065480232239*(Pt_Hjet2>=300)*(Pt_Hjet2<600)+0.068164065480232239*2*(Pt_Hjet2>=600)))*(1-(CMVA_Zjet1>0.4432)*(0.600657*((1.+(0.753343*Pt_Zjet1))/(1.+(0.472587*Pt_Zjet1)))+0.016775054857134819*2*(Pt_Zjet1<30)+0.016775054857134819*(Pt_Zjet1>=30)*(Pt_Zjet1<50)+0.013394910842180252*(Pt_Zjet1>=50)*(Pt_Zjet1<70)+0.012854539789259434*(Pt_Zjet1>=70)*(Pt_Zjet1<100)+0.01186173502355814*(Pt_Zjet1>=100)*(Pt_Zjet1<140)+0.012084054760634899*(Pt_Zjet1>=140)*(Pt_Zjet1<200)+0.016997816041111946*(Pt_Zjet1>=200)*(Pt_Zjet1<300)+0.068164065480232239*(Pt_Zjet1>=300)*(Pt_Zjet1<600)+0.068164065480232239*2*(Pt_Zjet1>=600)))*(1-(CMVA_Zjet2>0.4432)*(0.600657*((1.+(0.753343*Pt_Zjet2))/(1.+(0.472587*Pt_Zjet2)))+0.016775054857134819*2*(Pt_Zjet2<30)+0.016775054857134819*(Pt_Zjet2>=30)*(Pt_Zjet2<50)+0.013394910842180252*(Pt_Zjet2>=50)*(Pt_Zjet2<70)+0.012854539789259434*(Pt_Zjet2>=70)*(Pt_Zjet2<100)+0.01186173502355814*(Pt_Zjet2>=100)*(Pt_Zjet2<140)+0.012084054760634899*(Pt_Zjet2>=140)*(Pt_Zjet2<200)+0.016997816041111946*(Pt_Zjet2>=200)*(Pt_Zjet2<300)+0.068164065480232239*(Pt_Zjet2>=300)*(Pt_Zjet2<600)+0.068164065480232239*2*(Pt_Zjet2>=600))))'
 
-bTag1SFmediumDown = '*(1-(1-(CMVA_bjet1>-0.5884)*0.600657*((1.+(0.753343*Pt_Hjet1))/(1.+(0.472587*Pt_Hjet1))))*(1-(CMVA_bjet2>-0.5884)*0.600657*((1.+(0.753343*Pt_Hjet2))/(1.+(0.472587*Pt_Hjet2))))*(1-(CMVA_Zjet1>-0.5884)*0.600657*((1.+(0.753343*Pt_Zjet1))/(1.+(0.472587*Pt_Zjet1))))*(1-(CMVA_Zjet2>-0.5884)*0.600657*((1.+(0.753343*Pt_Zjet2))/(1.+(0.472587*Pt_Zjet2)))))'
+bTag1SFmediumDown = '*(1-(1-(CMVA_bjet1>0.4432)*(0.600657*((1.+(0.753343*Pt_Hjet1))/(1.+(0.472587*Pt_Hjet1)))-0.016775054857134819*2*(Pt_Hjet1<30)-0.016775054857134819*(Pt_Hjet1>=30)*(Pt_Hjet1<50)-0.013394910842180252*(Pt_Hjet1>=50)*(Pt_Hjet1<70)-0.012854539789259434*(Pt_Hjet1>=70)*(Pt_Hjet1<100)-0.01186173502355814*(Pt_Hjet1>=100)*(Pt_Hjet1<140)-0.012084054760634899*(Pt_Hjet1>=140)*(Pt_Hjet1<200)-0.016997816041111946*(Pt_Hjet1>=200)*(Pt_Hjet1<300)-0.068164065480232239*(Pt_Hjet1>=300)*(Pt_Hjet1<600)-0.068164065480232239*2*(Pt_Hjet1>=600)))*(1-(CMVA_bjet2>0.4432)*(0.600657*((1.+(0.753343*Pt_Hjet2))/(1.+(0.472587*Pt_Hjet2)))-0.016775054857134819*2*(Pt_Hjet2<30)-0.016775054857134819*(Pt_Hjet2>=30)*(Pt_Hjet2<50)-0.013394910842180252*(Pt_Hjet2>=50)*(Pt_Hjet2<70)-0.012854539789259434*(Pt_Hjet2>=70)*(Pt_Hjet2<100)-0.01186173502355814*(Pt_Hjet2>=100)*(Pt_Hjet2<140)-0.012084054760634899*(Pt_Hjet2>=140)*(Pt_Hjet2<200)-0.016997816041111946*(Pt_Hjet2>=200)*(Pt_Hjet2<300)-0.068164065480232239*(Pt_Hjet2>=300)*(Pt_Hjet2<600)-0.068164065480232239*2*(Pt_Hjet2>=600)))*(1-(CMVA_Zjet1>0.4432)*(0.600657*((1.+(0.753343*Pt_Zjet1))/(1.+(0.472587*Pt_Zjet1)))-0.016775054857134819*2*(Pt_Zjet1<30)-0.016775054857134819*(Pt_Zjet1>=30)*(Pt_Zjet1<50)-0.013394910842180252*(Pt_Zjet1>=50)*(Pt_Zjet1<70)-0.012854539789259434*(Pt_Zjet1>=70)*(Pt_Zjet1<100)-0.01186173502355814*(Pt_Zjet1>=100)*(Pt_Zjet1<140)-0.012084054760634899*(Pt_Zjet1>=140)*(Pt_Zjet1<200)-0.016997816041111946*(Pt_Zjet1>=200)*(Pt_Zjet1<300)-0.068164065480232239*(Pt_Zjet1>=300)*(Pt_Zjet1<600)-0.068164065480232239*2*(Pt_Zjet1>=600)))*(1-(CMVA_Zjet2>0.4432)*(0.600657*((1.+(0.753343*Pt_Zjet2))/(1.+(0.472587*Pt_Zjet2)))-0.016775054857134819*2*(Pt_Zjet2<30)-0.016775054857134819*(Pt_Zjet2>=30)*(Pt_Zjet2<50)-0.013394910842180252*(Pt_Zjet2>=50)*(Pt_Zjet2<70)-0.012854539789259434*(Pt_Zjet2>=70)*(Pt_Zjet2<100)-0.01186173502355814*(Pt_Zjet2>=100)*(Pt_Zjet2<140)-0.012084054760634899*(Pt_Zjet2>=140)*(Pt_Zjet2<200)-0.016997816041111946*(Pt_Zjet2>=200)*(Pt_Zjet2<300)-0.068164065480232239*(Pt_Zjet2>=300)*(Pt_Zjet2<600)-0.068164065480232239*2*(Pt_Zjet2>=600))))'
 
 
 
@@ -2789,27 +2790,27 @@ def ModSelection(selection,sysmethod,channel_log):
 				selection = selection.replace(bTagFinalSF,bTagFinalSFdown)
 
 		if sysmethod == 'QCDscaleR1F2':
-			if 'uujj' in channel_log: 
+			if 'uujj' in channel_log or 'HH' in channel_log:
 				selection = selection+'*(scaleWeight_R1_F2/scaleWeight_R1_F1)'
 
 		if sysmethod == 'QCDscaleR2F1':
-			if 'uujj' in channel_log: 
+			if 'uujj' in channel_log or 'HH' in channel_log:
 				selection = selection+'*(scaleWeight_R2_F1/scaleWeight_R1_F1)'
 
 		if sysmethod == 'QCDscaleR2F2':
-			if 'uujj' in channel_log: 
+			if 'uujj' in channel_log or 'HH' in channel_log:
 				selection = selection+'*(scaleWeight_Up/scaleWeight_R1_F1)'
 
 		if sysmethod == 'QCDscaleR1F0p5':
-			if 'uujj' in channel_log: 
+			if 'uujj' in channel_log or 'HH' in channel_log:
 				selection = selection+'*(scaleWeight_R1_F0p5/scaleWeight_R1_F1)'
 
 		if sysmethod == 'QCDscaleR0p5F1':
-			if 'uujj' in channel_log: 
+			if 'uujj' in channel_log or 'HH' in channel_log:
 				selection = selection+'*(scaleWeight_R0p5_F1/scaleWeight_R1_F1)'
 
 		if sysmethod == 'QCDscaleR0p5F0p5':
-			if 'uujj' in channel_log: 
+			if 'uujj' in channel_log or 'HH' in channel_log:
 				selection = selection+'*(scaleWeight_R0p5_F0p5/scaleWeight_R1_F1)'
 
 	return selection
@@ -3170,7 +3171,7 @@ def FullAnalysis(optimlog,PreSelection_uujj,selection_uujj,selection_uvjj,Normal
 
 	_Variations = ['','JESup','JESdown','MESup','MESdown','JERup','JERdown','MER','LUMIup','LUMIdown','PUup','PUdown','ZNORMup','ZNORMdown','WNORMup','WNORMdown','TTNORMup','TTNORMdown','MUONIDISOup','MUONIDISOdown','HIPup','HIPdown','MUONHLTup','MUONHLTdown','BTAGup','BTAGdown','PDF','SHAPETT','SHAPEZ','SHAPEW','QCDscaleR1F2','QCDscaleR2F1','QCDscaleR2F2','QCDscaleR1F0p5','QCDscaleR0p5F1','QCDscaleR0p5F0p5']
 
-	_Variations = [''] # AH:
+	#_Variations = ['']
 
 	for v in _Variations:
 		print ' -'*50
