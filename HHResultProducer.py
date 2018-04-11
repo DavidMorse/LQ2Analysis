@@ -11,8 +11,10 @@ from glob import glob
 # Directory where root files are kept and the tree you want to get root files from
 
 if 'cmsneu' in platform.node():
-	NormalDirectory = '/media/dataPlus/dmorse/hhNtuples/NTupleAnalyzerHH_newBDTs_2018_02_27/SummaryFiles'
-	QCDDirectory = '/media/dataPlus/dmorse/hhNtuples/NTupleAnalyzerHH_newBDTs_QCDNonIsoQuickTest_2018_02_27/SummaryFiles'
+	#NormalDirectory = '/media/dataPlus/dmorse/hhNtuples/NTupleAnalyzerHH_newBDTs_2018_02_27/SummaryFiles'
+	#QCDDirectory = '/media/dataPlus/dmorse/hhNtuples/NTupleAnalyzerHH_newBDTs_QCDNonIsoQuickTest_2018_02_27/SummaryFiles'
+	NormalDirectory = '/media/dataPlus/dmorse/hhNtuples/NTupleAnalyzerHH_hh_bSF_noBtag_QuickTest_2018_03_30_14/SummaryFiles'
+	QCDDirectory = '/media/dataPlus/dmorse/hhNtuples/NTupleAnalyzerHH_hh_bSF_noBtag_QCDNonIsoQuickTest_2018_03_30_14/SummaryFiles'
 	EMuDirectory = 'emu'
 
 else:
@@ -106,19 +108,17 @@ dataHLTEMUADJ = '*(2.0 - 1.0'+singlemuHLTEMU+')'
 # bTag scale factors: https://twiki.cern.ch/twiki/bin/view/CMS/BTagSFMethods#1c_Event_reweighting_using_scale
 
 # For case of >=1 bTag: w(>= 1|n) = 1 - w(0|n), where  w(0|n) = \prod_{i=1}^n (1-SF_i)
-bTag1SFloose = '*(1-(1-(CMVA_bjet1>-0.5884)*(0.976111+(-(4.37632e-05*Pt_Hjet1))))*(1-(CMVA_bjet2>-0.5884)*(0.976111+(-(4.37632e-05*Pt_Hjet2))))*(1-(CMVA_Zjet1>-0.5884)*(0.976111+(-(4.37632e-05*Pt_Zjet1))))*(1-(CMVA_Zjet2>-0.5884)*(0.976111+(-(4.37632e-05*Pt_Zjet2)))))'
+bTag1SFloose = '*(1-(1-(CMVA_bjet1>-0.5884)*Hjet1BsfLoose)*(1-(CMVA_bjet2>-0.5884)*Hjet2BsfLoose)*(1-(CMVA_Zjet1>-0.5884)*Zjet1BsfLoose)*(1-(CMVA_Zjet2>-0.5884)*Zjet2BsfLoose))'
 
 #bTag1SFmedium = '*(1-(1-(CMVA_bjet1>-0.5884)*0.600657*((1.+(0.753343*Pt_Hjet1))/(1.+(0.472587*Pt_Hjet1))))*(1-(CMVA_bjet2>-0.5884)*0.600657*((1.+(0.753343*Pt_Hjet2))/(1.+(0.472587*Pt_Hjet2))))*(1-(CMVA_Zjet1>-0.5884)*0.600657*((1.+(0.753343*Pt_Zjet1))/(1.+(0.472587*Pt_Zjet1))))*(1-(CMVA_Zjet2>-0.5884)*0.600657*((1.+(0.753343*Pt_Zjet2))/(1.+(0.472587*Pt_Zjet2)))))'
-bTag1SFmedium = '*(1-(1-(CMVA_bjet1>0.4432)*0.600657*((1.+(0.753343*Pt_Hjet1))/(1.+(0.472587*Pt_Hjet1))))*(1-(CMVA_bjet2>0.4432)*0.600657*((1.+(0.753343*Pt_Hjet2))/(1.+(0.472587*Pt_Hjet2))))*(1-(CMVA_Zjet1>0.4432)*0.600657*((1.+(0.753343*Pt_Zjet1))/(1.+(0.472587*Pt_Zjet1))))*(1-(CMVA_Zjet2>0.4432)*0.600657*((1.+(0.753343*Pt_Zjet2))/(1.+(0.472587*Pt_Zjet2)))))'
-
-bTag1SFmediumUp   = '*(1-(1-(CMVA_bjet1>0.4432)*(0.600657*((1.+(0.753343*Pt_Hjet1))/(1.+(0.472587*Pt_Hjet1)))+0.016775054857134819*2*(Pt_Hjet1<30)+0.016775054857134819*(Pt_Hjet1>=30)*(Pt_Hjet1<50)+0.013394910842180252*(Pt_Hjet1>=50)*(Pt_Hjet1<70)+0.012854539789259434*(Pt_Hjet1>=70)*(Pt_Hjet1<100)+0.01186173502355814*(Pt_Hjet1>=100)*(Pt_Hjet1<140)+0.012084054760634899*(Pt_Hjet1>=140)*(Pt_Hjet1<200)+0.016997816041111946*(Pt_Hjet1>=200)*(Pt_Hjet1<300)+0.068164065480232239*(Pt_Hjet1>=300)*(Pt_Hjet1<600)+0.068164065480232239*2*(Pt_Hjet1>=600)))*(1-(CMVA_bjet2>0.4432)*(0.600657*((1.+(0.753343*Pt_Hjet2))/(1.+(0.472587*Pt_Hjet2)))+0.016775054857134819*2*(Pt_Hjet2<30)+0.016775054857134819*(Pt_Hjet2>=30)*(Pt_Hjet2<50)+0.013394910842180252*(Pt_Hjet2>=50)*(Pt_Hjet2<70)+0.012854539789259434*(Pt_Hjet2>=70)*(Pt_Hjet2<100)+0.01186173502355814*(Pt_Hjet2>=100)*(Pt_Hjet2<140)+0.012084054760634899*(Pt_Hjet2>=140)*(Pt_Hjet2<200)+0.016997816041111946*(Pt_Hjet2>=200)*(Pt_Hjet2<300)+0.068164065480232239*(Pt_Hjet2>=300)*(Pt_Hjet2<600)+0.068164065480232239*2*(Pt_Hjet2>=600)))*(1-(CMVA_Zjet1>0.4432)*(0.600657*((1.+(0.753343*Pt_Zjet1))/(1.+(0.472587*Pt_Zjet1)))+0.016775054857134819*2*(Pt_Zjet1<30)+0.016775054857134819*(Pt_Zjet1>=30)*(Pt_Zjet1<50)+0.013394910842180252*(Pt_Zjet1>=50)*(Pt_Zjet1<70)+0.012854539789259434*(Pt_Zjet1>=70)*(Pt_Zjet1<100)+0.01186173502355814*(Pt_Zjet1>=100)*(Pt_Zjet1<140)+0.012084054760634899*(Pt_Zjet1>=140)*(Pt_Zjet1<200)+0.016997816041111946*(Pt_Zjet1>=200)*(Pt_Zjet1<300)+0.068164065480232239*(Pt_Zjet1>=300)*(Pt_Zjet1<600)+0.068164065480232239*2*(Pt_Zjet1>=600)))*(1-(CMVA_Zjet2>0.4432)*(0.600657*((1.+(0.753343*Pt_Zjet2))/(1.+(0.472587*Pt_Zjet2)))+0.016775054857134819*2*(Pt_Zjet2<30)+0.016775054857134819*(Pt_Zjet2>=30)*(Pt_Zjet2<50)+0.013394910842180252*(Pt_Zjet2>=50)*(Pt_Zjet2<70)+0.012854539789259434*(Pt_Zjet2>=70)*(Pt_Zjet2<100)+0.01186173502355814*(Pt_Zjet2>=100)*(Pt_Zjet2<140)+0.012084054760634899*(Pt_Zjet2>=140)*(Pt_Zjet2<200)+0.016997816041111946*(Pt_Zjet2>=200)*(Pt_Zjet2<300)+0.068164065480232239*(Pt_Zjet2>=300)*(Pt_Zjet2<600)+0.068164065480232239*2*(Pt_Zjet2>=600))))'
-
-bTag1SFmediumDown = '*(1-(1-(CMVA_bjet1>0.4432)*(0.600657*((1.+(0.753343*Pt_Hjet1))/(1.+(0.472587*Pt_Hjet1)))-0.016775054857134819*2*(Pt_Hjet1<30)-0.016775054857134819*(Pt_Hjet1>=30)*(Pt_Hjet1<50)-0.013394910842180252*(Pt_Hjet1>=50)*(Pt_Hjet1<70)-0.012854539789259434*(Pt_Hjet1>=70)*(Pt_Hjet1<100)-0.01186173502355814*(Pt_Hjet1>=100)*(Pt_Hjet1<140)-0.012084054760634899*(Pt_Hjet1>=140)*(Pt_Hjet1<200)-0.016997816041111946*(Pt_Hjet1>=200)*(Pt_Hjet1<300)-0.068164065480232239*(Pt_Hjet1>=300)*(Pt_Hjet1<600)-0.068164065480232239*2*(Pt_Hjet1>=600)))*(1-(CMVA_bjet2>0.4432)*(0.600657*((1.+(0.753343*Pt_Hjet2))/(1.+(0.472587*Pt_Hjet2)))-0.016775054857134819*2*(Pt_Hjet2<30)-0.016775054857134819*(Pt_Hjet2>=30)*(Pt_Hjet2<50)-0.013394910842180252*(Pt_Hjet2>=50)*(Pt_Hjet2<70)-0.012854539789259434*(Pt_Hjet2>=70)*(Pt_Hjet2<100)-0.01186173502355814*(Pt_Hjet2>=100)*(Pt_Hjet2<140)-0.012084054760634899*(Pt_Hjet2>=140)*(Pt_Hjet2<200)-0.016997816041111946*(Pt_Hjet2>=200)*(Pt_Hjet2<300)-0.068164065480232239*(Pt_Hjet2>=300)*(Pt_Hjet2<600)-0.068164065480232239*2*(Pt_Hjet2>=600)))*(1-(CMVA_Zjet1>0.4432)*(0.600657*((1.+(0.753343*Pt_Zjet1))/(1.+(0.472587*Pt_Zjet1)))-0.016775054857134819*2*(Pt_Zjet1<30)-0.016775054857134819*(Pt_Zjet1>=30)*(Pt_Zjet1<50)-0.013394910842180252*(Pt_Zjet1>=50)*(Pt_Zjet1<70)-0.012854539789259434*(Pt_Zjet1>=70)*(Pt_Zjet1<100)-0.01186173502355814*(Pt_Zjet1>=100)*(Pt_Zjet1<140)-0.012084054760634899*(Pt_Zjet1>=140)*(Pt_Zjet1<200)-0.016997816041111946*(Pt_Zjet1>=200)*(Pt_Zjet1<300)-0.068164065480232239*(Pt_Zjet1>=300)*(Pt_Zjet1<600)-0.068164065480232239*2*(Pt_Zjet1>=600)))*(1-(CMVA_Zjet2>0.4432)*(0.600657*((1.+(0.753343*Pt_Zjet2))/(1.+(0.472587*Pt_Zjet2)))-0.016775054857134819*2*(Pt_Zjet2<30)-0.016775054857134819*(Pt_Zjet2>=30)*(Pt_Zjet2<50)-0.013394910842180252*(Pt_Zjet2>=50)*(Pt_Zjet2<70)-0.012854539789259434*(Pt_Zjet2>=70)*(Pt_Zjet2<100)-0.01186173502355814*(Pt_Zjet2>=100)*(Pt_Zjet2<140)-0.012084054760634899*(Pt_Zjet2>=140)*(Pt_Zjet2<200)-0.016997816041111946*(Pt_Zjet2>=200)*(Pt_Zjet2<300)-0.068164065480232239*(Pt_Zjet2>=300)*(Pt_Zjet2<600)-0.068164065480232239*2*(Pt_Zjet2>=600))))'
+bTag1SFmedium = '*(1-(1-(CMVA_bjet1>0.4432)*Hjet1BsfMedium)*(1-(CMVA_bjet2>0.4432)*Hjet2BsfMedium)*(1-(CMVA_Zjet1>0.4432)*Zjet1BsfMedium)*(1-(CMVA_Zjet2>0.4432)*Zjet2BsfMedium))'
+bTag1SFmediumUp = '*(1-(1-(CMVA_bjet1>0.4432)*Hjet1BsfMediumUp)*(1-(CMVA_bjet2>0.4432)*Hjet2BsfMediumUp)*(1-(CMVA_Zjet1>0.4432)*Zjet1BsfMediumUp)*(1-(CMVA_Zjet2>0.4432)*Zjet2BsfMediumUp))'
+bTag1SFmediumDown = '*(1-(1-(CMVA_bjet1>0.4432)*Hjet1BsfMediumDown)*(1-(CMVA_bjet2>0.4432)*Hjet2BsfMediumDown)*(1-(CMVA_Zjet1>0.4432)*Zjet1BsfMediumDown)*(1-(CMVA_Zjet2>0.4432)*Zjet2BsfMediumDown))'
 
 
 
 # For case of >=2 bTag: w(>= 2|n) = 1 - w(0|n) - w(1|n), where  w(1|n) = \sum_{j=1}^n [ \prod_{i=1, i!=j}^n (1-SF_i) ]*SF_j
-bTag2SFloose = '*(1-(1-(CMVA_bjet1>-0.5884)*(0.976111+(-(4.37632e-05*Pt_Hjet1))))*(1-(CMVA_bjet2>-0.5884)*(0.976111+(-(4.37632e-05*Pt_Hjet2))))*(1-(CMVA_Zjet1>-0.5884)*(0.976111+(-(4.37632e-05*Pt_Zjet1))))*(1-(CMVA_Zjet2>-0.5884)*(0.976111+(-(4.37632e-05*Pt_Zjet2))))-((CMVA_bjet1>-0.5884)*(0.976111+(-(4.37632e-05*Pt_Hjet1))))*(1-(CMVA_bjet2>-0.5884)*(0.976111+(-(4.37632e-05*Pt_Hjet2))))*(1-(CMVA_Zjet1>-0.5884)*(0.976111+(-(4.37632e-05*Pt_Zjet1))))*(1-(CMVA_Zjet2>-0.5884)*(0.976111+(-(4.37632e-05*Pt_Zjet2))))-(1-(CMVA_bjet1>-0.5884)*(0.976111+(-(4.37632e-05*Pt_Hjet1))))*((CMVA_bjet2>-0.5884)*(0.976111+(-(4.37632e-05*Pt_Hjet2))))*(1-(CMVA_Zjet1>-0.5884)*(0.976111+(-(4.37632e-05*Pt_Zjet1))))*(1-(CMVA_Zjet2>-0.5884)*(0.976111+(-(4.37632e-05*Pt_Zjet2))))-(1-(CMVA_bjet1>-0.5884)*(0.976111+(-(4.37632e-05*Pt_Hjet1))))*(1-(CMVA_bjet2>-0.5884)*(0.976111+(-(4.37632e-05*Pt_Hjet2))))*((CMVA_Zjet1>-0.5884)*(0.976111+(-(4.37632e-05*Pt_Zjet1))))*(1-(CMVA_Zjet2>-0.5884)*(0.976111+(-(4.37632e-05*Pt_Zjet2))))-(1-(CMVA_bjet1>-0.5884)*(0.976111+(-(4.37632e-05*Pt_Hjet1))))*(1-(CMVA_bjet2>-0.5884)*(0.976111+(-(4.37632e-05*Pt_Hjet2))))*(1-(CMVA_Zjet1>-0.5884)*(0.976111+(-(4.37632e-05*Pt_Zjet1))))*((CMVA_Zjet2>-0.5884)*(0.976111+(-(4.37632e-05*Pt_Zjet2)))))'
+#bTag2SFloose = '*(1-(1-(CMVA_bjet1>-0.5884)*(0.976111+(-(4.37632e-05*Pt_Hjet1))))*(1-(CMVA_bjet2>-0.5884)*(0.976111+(-(4.37632e-05*Pt_Hjet2))))*(1-(CMVA_Zjet1>-0.5884)*(0.976111+(-(4.37632e-05*Pt_Zjet1))))*(1-(CMVA_Zjet2>-0.5884)*(0.976111+(-(4.37632e-05*Pt_Zjet2))))-((CMVA_bjet1>-0.5884)*(0.976111+(-(4.37632e-05*Pt_Hjet1))))*(1-(CMVA_bjet2>-0.5884)*(0.976111+(-(4.37632e-05*Pt_Hjet2))))*(1-(CMVA_Zjet1>-0.5884)*(0.976111+(-(4.37632e-05*Pt_Zjet1))))*(1-(CMVA_Zjet2>-0.5884)*(0.976111+(-(4.37632e-05*Pt_Zjet2))))-(1-(CMVA_bjet1>-0.5884)*(0.976111+(-(4.37632e-05*Pt_Hjet1))))*((CMVA_bjet2>-0.5884)*(0.976111+(-(4.37632e-05*Pt_Hjet2))))*(1-(CMVA_Zjet1>-0.5884)*(0.976111+(-(4.37632e-05*Pt_Zjet1))))*(1-(CMVA_Zjet2>-0.5884)*(0.976111+(-(4.37632e-05*Pt_Zjet2))))-(1-(CMVA_bjet1>-0.5884)*(0.976111+(-(4.37632e-05*Pt_Hjet1))))*(1-(CMVA_bjet2>-0.5884)*(0.976111+(-(4.37632e-05*Pt_Hjet2))))*((CMVA_Zjet1>-0.5884)*(0.976111+(-(4.37632e-05*Pt_Zjet1))))*(1-(CMVA_Zjet2>-0.5884)*(0.976111+(-(4.37632e-05*Pt_Zjet2))))-(1-(CMVA_bjet1>-0.5884)*(0.976111+(-(4.37632e-05*Pt_Hjet1))))*(1-(CMVA_bjet2>-0.5884)*(0.976111+(-(4.37632e-05*Pt_Hjet2))))*(1-(CMVA_Zjet1>-0.5884)*(0.976111+(-(4.37632e-05*Pt_Zjet1))))*((CMVA_Zjet2>-0.5884)*(0.976111+(-(4.37632e-05*Pt_Zjet2)))))'
 
 #This is for HIP problem https://twiki.cern.ch/twiki/bin/view/CMS/MuonReferenceEffsRun2#Tracking_efficiency_provided_by
 trackerHIP1 = '*(0.991237*(Eta_muon1>-2.4)*(Eta_muon1<-2.1)+0.994853*(Eta_muon1>-2.1)*(Eta_muon1<-1.6)+0.996413*(Eta_muon1>-1.6)*(Eta_muon1<-1.2)+0.997157*(Eta_muon1>-1.2)*(Eta_muon1<-0.9)+0.997512*(Eta_muon1>-0.9)*(Eta_muon1<-0.6)+0.99756*(Eta_muon1>-0.6)*(Eta_muon1<-0.3)+0.996745*(Eta_muon1>-0.3)*(Eta_muon1<-0.2)+0.996996*(Eta_muon1>-0.2)*(Eta_muon1<0.2)+0.99772*(Eta_muon1>0.2)*(Eta_muon1<0.3)+0.998604*(Eta_muon1>0.3)*(Eta_muon1<0.6)+0.998321*(Eta_muon1>0.6)*(Eta_muon1<0.9)+0.997682*(Eta_muon1>0.9)*(Eta_muon1<1.2)+0.995252*(Eta_muon1>1.2)*(Eta_muon1<1.6)+0.994919*(Eta_muon1>1.6)*(Eta_muon1<2.1)+0.987334*(Eta_muon1>2.1)*(Eta_muon1<2.4) )'
@@ -200,7 +200,7 @@ emu_id_eff_err = 0.0027#v7 JEC
 # QCD data-driven scale factor
 useDataDrivenQCD = True
 #mumu_fbd = [1.2784, 0.0036]
-mumu_fbd = [1.1638, 0.0077] # Feb 2018
+mumu_fbd = [1.426, 0.025] # Feb 2018
 
 # tt, z initial SF calculated using QCD MC (Jan 2018)
 Rz_qcdMC = [0.962831123534, 0.0]
@@ -243,7 +243,7 @@ pdf_uujj_ZJets = [0.95,0.95,2.11,2.98,5.09,5.8,6.73,7.41,7.41,7.62,7.69,8.11,8.4
 
 # These are the total background uncertainties. They are used just to make some error bands on plots. 
 
-totunc_uujj = [10.]
+totunc_uujj = [5.]
 
 
 
@@ -355,7 +355,7 @@ def main():
 	# of running serially, which speeds things up.
 
 
-	version_name = 'Testing_diHiggs_btag_newBDT' # scriptflag
+	version_name = 'Testing_diHiggs_btag_newBDT_jetEta' # scriptflag
 	os.system('mkdir Results_'+version_name) 
 
 	MuMuOptCutFile = 'Results_'+version_name+'/OptHH_resCuts_Smoothed_pol2cutoff.txt' # scriptflag
@@ -653,7 +653,7 @@ def main():
 		[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = GetMuMuScaleFactors( NormalWeightMuMu+'*'+preselectionmumu, NormalDirectory, '(M_uu>80)*(M_uu<100)', '(M_uu>100)*(Pt_miss>100)',0)
 		#[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = [[0.974561303332, 0.00553],[1.11001331611, 0.01308]]
 		# AH: To speed things up when debugging
-		exit()
+		
 		[[Rw_uvjj,Rw_uvjj_err],[Rtt_uvjj,Rtt_uvjj_err]]=[[1.,0.],[1.,0.]]
 		#CSVv2L	0.460
 		#CSVv2M	0.8
@@ -723,7 +723,6 @@ def main():
 		MakeBasicPlot("phi1","#phi1",phi0binning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
 		MakeBasicPlot("phi1_zuu","#phi1_zuu",phi0binning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
 		MakeBasicPlot("phi1_zjj","#phi1_zjj",phi0binning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
-		MakeBasicPlot("St_uujj","S_{T}^{#mu#mujj} [GeV]",stbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
 		MakeBasicPlot("CMVA_bjet1","Jet1(H->bb) CMVA score",bjetbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
 		MakeBasicPlot("CMVA_bjet2","Jet2(H->bb) CMVA score",bjetbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
 		MakeBasicPlot("CMVA_Zjet1","Jet1(Z->jj) CMVA score",bjetbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
@@ -740,12 +739,16 @@ def main():
 		MakeBasicPlot("Pt_muon1","p_{T}(#mu_{1}) [GeV]",ptbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
 		MakeBasicPlot("Pt_muon2","p_{T}(#mu_{2}) [GeV]",ptbinning2,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
 		MakeBasicPlot("Pt_miss","E_{T}^{miss} [GeV]",[60,0,600],preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
-		#MakeBasicPlot("Eta_jet1","#eta(jet_{1}) [GeV]",etabinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
-		#MakeBasicPlot("Eta_jet2","#eta(jet_{2}) [GeV]",etabinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
+		MakeBasicPlot("Eta_Hjet1","#eta(bjet_{1}) (H) [GeV]",etabinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
+		MakeBasicPlot("Eta_Hjet2","#eta(bjet_{2}) (Z) [GeV]",etabinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
+		MakeBasicPlot("Eta_Zjet1","#eta(jet_{1}) (H) [GeV]",etabinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
+		MakeBasicPlot("Eta_Zjet2","#eta(jet_{2}) (Z) [GeV]",etabinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)		
 		MakeBasicPlot("Eta_muon1","#eta(#mu_{1}) [GeV]",etabinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
 		MakeBasicPlot("Eta_muon2","#eta(#mu_{2}) [GeV]",etabinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)	
-		#MakeBasicPlot("Phi_jet1","#phi(jet_{1}) [GeV]",phibinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
-		#MakeBasicPlot("Phi_jet2","#phi(jet_{2}) [GeV]",phibinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
+		MakeBasicPlot("Phi_Hjet1","#phi(bjet_{1}) (H) [GeV]",phibinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
+		MakeBasicPlot("Phi_Hjet2","#phi(bjet_{2}) (H) [GeV]",phibinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)	
+		MakeBasicPlot("Phi_Zjet1","#phi(jet_{1}) (Z) [GeV]",phibinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
+		MakeBasicPlot("Phi_Zjet2","#phi(jet_{2}) (Z) [GeV]",phibinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
 		MakeBasicPlot("Phi_muon1","#phi(#mu_{1}) [GeV]",phibinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
 		MakeBasicPlot("Phi_muon2","#phi(#mu_{2}) [GeV]",phibinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)	
 		#MakeBasicPlot("M_uu4j-Mbb_H+125","M_{X} [GeV]",lqbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
