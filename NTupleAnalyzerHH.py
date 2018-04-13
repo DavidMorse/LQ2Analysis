@@ -473,16 +473,16 @@ TMVA.Tools.Instance()
 SignalM = ['260','270','300','350','400', '450', '500', '550', '600','650', '750', '800', '900', '1000']
 
 # TMVA.Reader
-reader_16vars_set1 = TMVA.Reader("!Color")
+reader_25vars_set1 = TMVA.Reader("!Color")
 # the order of the variables matters, need to be the same as when training
-_bdtvars = ['M_uu4j','Mbb_H','Pt_muon2','Pt_Hjet1','DR_bb_H','DR_muon1muon2','CMVA_bjet1','CMVA_bjet2','DR_u1Hj1','DR_u1Hj2','DR_u2Hj1','DR_u1Zj1','DR_uu_bb_H','DR_uu_jj_Z','abs(cosThetaStarMu)','abs(cosTheta_hbb)']
+_bdtvars = ['Mbb_H','M_uu','Pt_muon1','Pt_muon2','Pt_miss','Pt_Hjet1','Pt_uu','Pt_Hjets','DR_bb_H','DR_jj_Z','DR_muon1muon2','DR_u1Hj1','DR_u1Hj2','DR_u2Hj1','DR_u2Hj2','DR_u1Zj1','DR_u1Zj2','DR_u2Zj1','DR_u2Zj2','DR_uu_bb_H','DR_uu_jj_Z','abs(cosThetaStarMu)','abs(cosTheta_hbb)','abs(cosTheta_zuu_hzz)','abs(DPhi_muon1met)']
 _bdtvarnames = {}
 for vth in _bdtvars:
 	_bdtvarnames[vth] = array.array('f',[0])
-	reader_16vars_set1.AddVariable(vth, _bdtvarnames[vth])
+	reader_25vars_set1.AddVariable(vth, _bdtvarnames[vth])
 # TMVA.Reader booked with BDT_classifier, input is .weights.xml file
 for ith in range(len(SignalM)):
-	reader_16vars_set1.BookMVA(str("BDT_classifier_16vars_set1_M" + SignalM[ith]), str("weights_classification/weights_file_16vars_set1/TMVAClassification_BDT_M" + SignalM[ith] + ".weights.xml"))
+	reader_25vars_set1.BookMVA(str("BDT_classifier_25vars_set1_M" + SignalM[ith]), str("weights_classification/weights_file_25vars_set1/TMVAClassification_BDT_M" + SignalM[ith] + ".weights.xml"))
 
 
 # 2nd set of BDTs: combined signal
@@ -2456,29 +2456,39 @@ def bjetRegressionCorrectionFactor(RegressionReader, _regrvarsnames, bjet, ind_o
 #		print ' regr_corrF ', regr_corrF
 	return regr_corrF
 
-def calculateBDTdiscriminant(reader, classifierTag, _bdtvarnames, _cosThetaStarMu, _Mbb_H, _phi0, _ptmu1, _ptmu2, bscoreMVA1, _dRbb_H, _dRjj_Z, _DRuu, _Muu4j, _Muu, _Mjj_Z, _isMuonEvent, _Pt_Hjet1, _Pt_Hjet2, _Pt_Zjet1, _Pt_Zjet2, bscoreMVA2, _cmva_Zjet1, _cmva_Zjet2, _qmu1, _qmu2, _cosTheta_hbb, _cosTheta_zuu_hzz, _dRuubb_H, _dRuujj_Z, _dRu1Hj1, _dRu1Hj2, _dRu2Hj1, _dRu2Hj2, _dRu1Zj1, _dRu1Zj2, _dRu2Zj1, _dRu2Zj2) :
+def calculateBDTdiscriminant(reader, classifierTag, _bdtvarnames, _Muu4j, _Mbb_H, _Mjj_Z, _Muu, _Muujj, _ptmu1, _ptmu2, _ptmet, _Pt_Hjet1, _Pt_Hjet2, _Pt_Zjet1, _Pt_Zjet2, _Pt_uu, _Pt_Hjets, _Pt_Zjets, _dRbb_H, _dRjj_Z, _DRuu, _phi0, _phi1, _phi0_zz, _phi1_zuu, _phi1_zjj, bscoreMVA1, bscoreMVA2, _dRu1Hj1, _dRu1Hj2, _dRu2Hj1, _dRu2Hj2, _dRu1Zj1, _dRu1Zj2, _dRu2Zj1, _dRu2Zj2, _dRuubb_H, _dRuujj_Z, _cosThetaStarMu, _cosTheta_hbb, _cosTheta_zuu_hzz, _cosThetaStar, _cosThetaStarZuu_CS, _cosTheta_Zuu, _etamu1, _etamu2, _phimu1, _phimu2, _DPHIuv, _dPHIuujj_Z, _dPHIuubb_H, _dPhibb_H, _dPhijj_Z) :
 	
-	if 'abs(cosThetaStarMu)'   in _bdtvarnames: _bdtvarnames['abs(cosThetaStarMu)'][0]	 = math.fabs(_cosThetaStarMu)
+	if 'M_uu4j'                in _bdtvarnames: _bdtvarnames['M_uu4j'][0]                = _Muu4j
 	if 'Mbb_H'                 in _bdtvarnames: _bdtvarnames['Mbb_H'][0]			     = _Mbb_H
-	if 'abs(phi0)'             in _bdtvarnames: _bdtvarnames['abs(phi0)'][0]		     = math.fabs(_phi0)
+	if 'Mjj_Z'                 in _bdtvarnames: _bdtvarnames['Mjj_Z'][0]    		     = _Mjj_Z
+	if 'M_uu'                  in _bdtvarnames: _bdtvarnames['M_uu'][0]      		     = _Muu
+	if 'M_uujj'                in _bdtvarnames: _bdtvarnames['M_uujj'][0]	             = _Muujj
+	
 	if 'Pt_muon1'              in _bdtvarnames: _bdtvarnames['Pt_muon1'][0]	       		 = _ptmu1
 	if 'Pt_muon2'              in _bdtvarnames: _bdtvarnames['Pt_muon2'][0]  			 = _ptmu2
-	if 'CMVA_bjet1'            in _bdtvarnames: _bdtvarnames['CMVA_bjet1'][0]			 = bscoreMVA1
+	if 'Pt_miss'               in _bdtvarnames: _bdtvarnames['Pt_miss'][0]               = _ptmet
+	if 'Pt_Hjet1'              in _bdtvarnames: _bdtvarnames['Pt_Hjet1'][0]              = _Pt_Hjet1
+	if 'Pt_Hjet2'              in _bdtvarnames: _bdtvarnames['Pt_Hjet2'][0]              = _Pt_Hjet2
+	if 'Pt_Zjet1'              in _bdtvarnames: _bdtvarnames['Pt_Zjet1'][0]              = _Pt_Zjet1
+	if 'Pt_Zjet2'              in _bdtvarnames: _bdtvarnames['Pt_Zjet2'][0]              = _Pt_Zjet2
+	
+	if 'Pt_uu'                 in _bdtvarnames: _bdtvarnames['Pt_uu'][0]                 = _Pt_uu
+	if 'Pt_Hjets'              in _bdtvarnames: _bdtvarnames['Pt_Hjets'][0]              = _Pt_Hjets
+	if 'Pt_Zjets'              in _bdtvarnames: _bdtvarnames['Pt_Zjets'][0]              = _Pt_Zjets
+
 	if 'DR_bb_H'               in _bdtvarnames: _bdtvarnames['DR_bb_H'][0]		       	 = _dRbb_H
 	if 'DR_jj_Z'               in _bdtvarnames: _bdtvarnames['DR_jj_Z'][0]	       		 = _dRjj_Z
 	if 'DR_muon1muon2'         in _bdtvarnames: _bdtvarnames['DR_muon1muon2'][0]	     = _DRuu
-	if 'M_uu4j'                in _bdtvarnames: _bdtvarnames['M_uu4j'][0]                = _Muu4j
-	if 'M_uu'                  in _bdtvarnames: _bdtvarnames['M_uu'][0]      		     = _Muu
-	if 'Mjj_Z'                 in _bdtvarnames: _bdtvarnames['Mjj_Z'][0]    		     = _Mjj_Z
 	
+	if 'abs(phi0)'             in _bdtvarnames: _bdtvarnames['abs(phi0)'][0]		     = math.fabs(_phi0)
+	if 'abs(phi1)'			   in _bdtvarnames: _bdtvarnames['abs(phi1)'][0]			 = math.fabs(_phi1)
+	if 'abs(phi0_zz)'		   in _bdtvarnames: _bdtvarnames['abs(phi0_zz)'][0]	         = math.fabs(_phi0_zz)
+	if 'abs(phi1_zuu)'         in _bdtvarnames: _bdtvarnames['abs(phi1_zuu)'][0]         = math.fabs(_phi1_zuu)
+	if 'abs(phi1_zjj)'         in _bdtvarnames: _bdtvarnames['abs(phi1_zjj)'][0]         = math.fabs(_phi1_zjj)
+	
+	if 'CMVA_bjet1'            in _bdtvarnames: _bdtvarnames['CMVA_bjet1'][0]			 = bscoreMVA1
 	if 'CMVA_bjet2'            in _bdtvarnames: _bdtvarnames['CMVA_bjet2'][0]	         = bscoreMVA2
-	if 'abs(cosTheta_hbb)'     in _bdtvarnames: _bdtvarnames['abs(cosTheta_hbb)'][0]	 = math.fabs(_cosTheta_hbb)
-	if 'abs(cosTheta_zuu_hzz)' in _bdtvarnames: _bdtvarnames['abs(cosTheta_zuu_hzz)'][0] = math.fabs(_cosTheta_zuu_hzz)
-	if 'DR_uu_bb_H'            in _bdtvarnames: _bdtvarnames['DR_uu_bb_H'][0]		     = _dRuubb_H
 	
-	if 'DR_uu_jj_Z'            in _bdtvarnames: _bdtvarnames['DR_uu_jj_Z'][0]            = _dRuujj_Z
-	if 'Pt_Hjet1'              in _bdtvarnames: _bdtvarnames['Pt_Hjet1'][0]              = _Pt_Hjet1
-	if 'Pt_Hjet2'              in _bdtvarnames: _bdtvarnames['Pt_Hjet2'][0]              = _Pt_Hjet2
 	if 'DR_u1Hj1'              in _bdtvarnames: _bdtvarnames['DR_u1Hj1'][0]              = _dRu1Hj1
 	if 'DR_u1Hj2'              in _bdtvarnames: _bdtvarnames['DR_u1Hj2'][0]              = _dRu1Hj2
 	if 'DR_u2Hj1'              in _bdtvarnames: _bdtvarnames['DR_u2Hj1'][0]              = _dRu2Hj1
@@ -2487,8 +2497,28 @@ def calculateBDTdiscriminant(reader, classifierTag, _bdtvarnames, _cosThetaStarM
 	if 'DR_u1Zj2'              in _bdtvarnames: _bdtvarnames['DR_u1Zj2'][0]              = _dRu1Zj2
 	if 'DR_u2Zj1'              in _bdtvarnames: _bdtvarnames['DR_u2Zj1'][0]              = _dRu2Zj1
 	if 'DR_u2Zj2'              in _bdtvarnames: _bdtvarnames['DR_u2Zj2'][0]              = _dRu2Zj2
-
-
+	
+	if 'DR_uu_bb_H'            in _bdtvarnames: _bdtvarnames['DR_uu_bb_H'][0]		     = _dRuubb_H
+	if 'DR_uu_jj_Z'            in _bdtvarnames: _bdtvarnames['DR_uu_jj_Z'][0]            = _dRuujj_Z
+	
+	if 'abs(cosThetaStarMu)'     in _bdtvarnames: _bdtvarnames['abs(cosThetaStarMu)'][0]	 = math.fabs(_cosThetaStarMu)
+	if 'abs(cosTheta_hbb)'       in _bdtvarnames: _bdtvarnames['abs(cosTheta_hbb)'][0]	     = math.fabs(_cosTheta_hbb)
+	if 'abs(cosTheta_zuu_hzz)'   in _bdtvarnames: _bdtvarnames['abs(cosTheta_zuu_hzz)'][0]   = math.fabs(_cosTheta_zuu_hzz)
+	if 'abs(cosThetaStar)'       in _bdtvarnames: _bdtvarnames['abs(cosThetaStar)'][0]       = math.fabs(_cosThetaStar)
+	if 'abs(cosThetaStarZuu_CS)' in _bdtvarnames: _bdtvarnames['abs(cosThetaStarZuu_CS)'][0] = math.fabs(_cosThetaStarZuu_CS)
+	if 'abs(cosTheta_Zuu)'       in _bdtvarnames: _bdtvarnames['abs(cosTheta_Zuu)'][0]       = math.fabs(_cosTheta_Zuu)
+	
+	if 'abs(Eta_muon1)'		   in _bdtvarnames: _bdtvarnames['abs(Eta_muon1)'][0]        = math.fabs(_etamu1)
+	if 'abs(Eta_muon2)'		   in _bdtvarnames: _bdtvarnames['abs(Eta_muon2)'][0]        = math.fabs(_etamu2)
+	if 'abs(Phi_muon1)'		   in _bdtvarnames: _bdtvarnames['abs(Phi_muon1)'][0]        = math.fabs(_phimu1)
+	if 'abs(Phi_muon2)'		   in _bdtvarnames: _bdtvarnames['abs(Phi_muon2)'][0]        = math.fabs(_phimu2)
+	if 'abs(DPhi_muon1met)'	   in _bdtvarnames: _bdtvarnames['abs(DPhi_muon1met)'][0]    = math.fabs(_DPHIuv)
+	if 'abs(DPhi_uu_jj_Z)'	   in _bdtvarnames: _bdtvarnames['abs(DPhi_uu_jj_Z)'][0]     = math.fabs(_dPHIuujj_Z)
+	if 'abs(DPhi_uu_bb_H)'	   in _bdtvarnames: _bdtvarnames['abs(DPhi_uu_bb_H)'][0]     = math.fabs(_dPHIuubb_H)
+	if 'abs(DPhi_bb_H)'		   in _bdtvarnames: _bdtvarnames['abs(DPhi_bb_H)'][0]        = math.fabs(_dPhibb_H)
+	if 'abs(DPhi_jj_Z)'	       in _bdtvarnames: _bdtvarnames['abs(DPhi_jj_Z)'][0]        = math.fabs(_dPhijj_Z)
+	
+	
 	# calculate BDT disriminator
 	out_bdtdisc = -999.
 	# preselections
@@ -3288,14 +3318,14 @@ def FullKinematicCalculation(T,variation):
 	#----- calculate BDT disc here
 	_bdt_discrims_s1 = [-99.0,-99.0,-99.0,-99.0,-99.0,-99.0,-99.0,-99.0,-99.0,-99.0,-99.0,-99.0,-99.0,-99.0]
 	for kth in range(len(_bdt_discrims_s1)):
-		_bdt_discrims_s1[kth] = calculateBDTdiscriminant(reader_16vars_set1, str("BDT_classifier_16vars_set1_M" + SignalM[kth]), _bdtvarnames, _cosThetaStarMu, _Mbb_H, _phi0, _ptmu1, _ptmu2, bscoreMVA1, _dRbb_H, _dRjj_Z, _DRuu, _Muu4j, _Muu, _Mjj_Z, _isMuonEvent, _Pt_Hjet1, _Pt_Hjet2, _Pt_Zjet1, _Pt_Zjet2, bscoreMVA2, _cmva_Zjet1, _cmva_Zjet2, _qmu1, _qmu2, _cosTheta_hbb, _cosTheta_zuu_hzz, _dRuubb_H, _dRuujj_Z, _dRu1Hj1, _dRu1Hj2, _dRu2Hj1, _dRu2Hj2, _dRu1Zj1, _dRu1Zj2, _dRu2Zj1, _dRu2Zj2)
+		_bdt_discrims_s1[kth] = calculateBDTdiscriminant(reader_25vars_set1, str("BDT_classifier_25vars_set1_M" + SignalM[kth]), _bdtvarnames, _Muu4j, _Mbb_H, _Mjj_Z, _Muu, _Muujj, _ptmu1, _ptmu2, _ptmet, _Pt_Hjet1, _Pt_Hjet2, _Pt_Zjet1, _Pt_Zjet2, _Pt_uu, _Pt_Hjets, _Pt_Zjets, _dRbb_H, _dRjj_Z, _DRuu, _phi0, _phi1, _phi0_zz, _phi1_zuu, _phi1_zjj, bscoreMVA1, bscoreMVA2, _dRu1Hj1, _dRu1Hj2, _dRu2Hj1, _dRu2Hj2, _dRu1Zj1, _dRu1Zj2, _dRu2Zj1, _dRu2Zj2, _dRuubb_H, _dRuujj_Z, _cosThetaStarMu, _cosTheta_hbb, _cosTheta_zuu_hzz, _cosThetaStar, _cosThetaStarZuu_CS, _cosTheta_Zuu, _etamu1, _etamu2, _phimu1, _phimu2, _DPHIuv, _dPHIuujj_Z, _dPHIuubb_H, _dPhibb_H, _dPhijj_Z)
 	[_bdt_discrim_M260, _bdt_discrim_M270, _bdt_discrim_M300, _bdt_discrim_M350, _bdt_discrim_M400, _bdt_discrim_M450, _bdt_discrim_M500, _bdt_discrim_M550, _bdt_discrim_M600, _bdt_discrim_M650, _bdt_discrim_M750, _bdt_discrim_M800, _bdt_discrim_M900, _bdt_discrim_M1000] = _bdt_discrims_s1
 	#if v == '' : print ' _bdt_discrims_s1 ', _bdt_discrims_s1
 	#if v == '' : print ' each bdt         ', _bdt_discrim_M260, _bdt_discrim_M270, _bdt_discrim_M300, _bdt_discrim_M350, _bdt_discrim_M400
 	
 	[_bdt_discrims3_low,_bdt_discrims3_high] = [-99.0,-99.0]
-	_bdt_discrims3_low = calculateBDTdiscriminant(reader_15vars_set3, "BDT_classifier_15vars_set3_Mlow", _bdtvarnames_s3, _cosThetaStarMu, _Mbb_H, _phi0, _ptmu1, _ptmu2, bscoreMVA1, _dRbb_H, _dRjj_Z, _DRuu, _Muu4j, _Muu, _Mjj_Z, _isMuonEvent, _Pt_Hjet1, _Pt_Hjet2, _Pt_Zjet1, _Pt_Zjet2, bscoreMVA2, _cmva_Zjet1, _cmva_Zjet2, _qmu1, _qmu2, _cosTheta_hbb, _cosTheta_zuu_hzz, _dRuubb_H, _dRuujj_Z, _dRu1Hj1, _dRu1Hj2, _dRu2Hj1, _dRu2Hj2, _dRu1Zj1, _dRu1Zj2, _dRu2Zj1, _dRu2Zj2)
-	_bdt_discrims3_high = calculateBDTdiscriminant(reader_15vars_set3, "BDT_classifier_15vars_set3_Mhig", _bdtvarnames_s3, _cosThetaStarMu, _Mbb_H, _phi0, _ptmu1, _ptmu2, bscoreMVA1, _dRbb_H, _dRjj_Z, _DRuu, _Muu4j, _Muu, _Mjj_Z, _isMuonEvent, _Pt_Hjet1, _Pt_Hjet2, _Pt_Zjet1, _Pt_Zjet2, bscoreMVA2, _cmva_Zjet1, _cmva_Zjet2, _qmu1, _qmu2, _cosTheta_hbb, _cosTheta_zuu_hzz, _dRuubb_H, _dRuujj_Z, _dRu1Hj1, _dRu1Hj2, _dRu2Hj1, _dRu2Hj2, _dRu1Zj1, _dRu1Zj2, _dRu2Zj1, _dRu2Zj2)
+	_bdt_discrims3_low = calculateBDTdiscriminant(reader_15vars_set3, "BDT_classifier_15vars_set3_Mlow", _bdtvarnames_s3, _Muu4j, _Mbb_H, _Mjj_Z, _Muu, _Muujj, _ptmu1, _ptmu2, _ptmet, _Pt_Hjet1, _Pt_Hjet2, _Pt_Zjet1, _Pt_Zjet2, _Pt_uu, _Pt_Hjets, _Pt_Zjets, _dRbb_H, _dRjj_Z, _DRuu, _phi0, _phi1, _phi0_zz, _phi1_zuu, _phi1_zjj, bscoreMVA1, bscoreMVA2, _dRu1Hj1, _dRu1Hj2, _dRu2Hj1, _dRu2Hj2, _dRu1Zj1, _dRu1Zj2, _dRu2Zj1, _dRu2Zj2, _dRuubb_H, _dRuujj_Z, _cosThetaStarMu, _cosTheta_hbb, _cosTheta_zuu_hzz, _cosThetaStar, _cosThetaStarZuu_CS, _cosTheta_Zuu, _etamu1, _etamu2, _phimu1, _phimu2, _DPHIuv, _dPHIuujj_Z, _dPHIuubb_H, _dPhibb_H, _dPhijj_Z)
+	_bdt_discrims3_high = calculateBDTdiscriminant(reader_15vars_set3, "BDT_classifier_15vars_set3_Mhig", _bdtvarnames_s3, _Muu4j, _Mbb_H, _Mjj_Z, _Muu, _Muujj, _ptmu1, _ptmu2, _ptmet, _Pt_Hjet1, _Pt_Hjet2, _Pt_Zjet1, _Pt_Zjet2, _Pt_uu, _Pt_Hjets, _Pt_Zjets, _dRbb_H, _dRjj_Z, _DRuu, _phi0, _phi1, _phi0_zz, _phi1_zuu, _phi1_zjj, bscoreMVA1, bscoreMVA2, _dRu1Hj1, _dRu1Hj2, _dRu2Hj1, _dRu2Hj2, _dRu1Zj1, _dRu1Zj2, _dRu2Zj1, _dRu2Zj2, _dRuubb_H, _dRuujj_Z, _cosThetaStarMu, _cosTheta_hbb, _cosTheta_zuu_hzz, _cosThetaStar, _cosThetaStarZuu_CS, _cosTheta_Zuu, _etamu1, _etamu2, _phimu1, _phimu2, _DPHIuv, _dPHIuujj_Z, _dPHIuubb_H, _dPhibb_H, _dPhijj_Z)
 	#----- End calculate BDT disc here
 
 	# This MUST have the same structure as _kinematic variables!
