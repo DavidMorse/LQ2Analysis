@@ -1765,11 +1765,11 @@ def LooseElectrons(T,_met,variation,isdata):
 	        Pass *= T.ElectronPassEGammaIDLoose[n]>0
 
 	        if (barrel):
-			Pass *= abs(ElectronVtxDistXY[])<0.05
-			Pass *= abs(ElectronVtxDistZ[]) <0.10
+			Pass *= abs(T.ElectronVtxDistXY[n])<0.05
+			Pass *= abs(T.ElectronVtxDistZ[n]) <0.10
 		elif (endcap):
-			Pass *= abs(ElectronVtxDistXY[])< 0.10
-			Pass *= abs(ElectronVtxDistZ[]) < 0.20
+			Pass *= abs(T.ElectronVtxDistXY[n])< 0.10
+			Pass *= abs(T.ElectronVtxDistZ[n]) < 0.20
 
 		if (Pass):
 			NewEl = TLorentzVector()
@@ -1827,11 +1827,11 @@ def TightElectrons(T,_met,variation,isdata):
 	        Pass *= T.ElectronPassEGammaIDTight[n]>0
 
         	if (barrel):
-			Pass *= abs(ElectronVtxDistXY[])<0.05
-			Pass *= abs(ElectronVtxDistZ[]) <0.10
+			Pass *= abs(T.ElectronVtxDistXY[n])<0.05
+			Pass *= abs(T.ElectronVtxDistZ[n]) <0.10
 		elif (endcap):
-			Pass *= abs(ElectronVtxDistXY[])< 0.10
-			Pass *= abs(ElectronVtxDistZ[]) < 0.20
+			Pass *= abs(T.ElectronVtxDistXY[n])< 0.10
+			Pass *= abs(T.ElectronVtxDistZ[n]) < 0.20
 
 		if (Pass):
 			NewEl = TLorentzVector()
