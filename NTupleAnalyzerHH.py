@@ -19,11 +19,6 @@ calib = BTagCalibration('cMVAv2', 'cMVAv2_Moriond17_B_H.csv')
 v_sys = getattr(ROOT, 'vector<string>')()
 v_sys.push_back('up')
 v_sys.push_back('down')
-#v_sysLF = getattr(ROOT, 'vector<string>')()
-#v_sysLF.push_back('up_correlated')
-#v_sysLF.push_back('up_uncorrelated')
-#v_sysLF.push_back('down_correlated')
-#v_sysLF.push_back('down_uncorrelated')
 # make a reader instance and load the sf data
 readerLoose = ROOT.BTagCalibrationReader(
     0,              # 0 is for loose op, 1: medium, 2: tight, 3: discr. reshaping
@@ -244,8 +239,6 @@ _kinematicvariables += ['jetCntPreFilter','JetCount','MuonCount','ElectronCount'
 _kinematicvariables += ['muonIndex1','muonIndex2']
 #_kinematicvariables += ['jetIndex1','jetIndex2']
 _kinematicvariables += ['ptHat']
-#_kinematicvariables += ['CISV_Zjet1','CISV_Zjet2']
-#_kinematicvariables += ['CISV_bjet1','CISV_bjet2']
 _kinematicvariables += ['CMVA_Zjet1','CMVA_Zjet2']
 _kinematicvariables += ['CMVA_bjet1','CMVA_bjet2']
 _kinematicvariables += ['Hjet1BsfLoose','Hjet1BsfLooseUp','Hjet1BsfLooseDown']
@@ -1472,9 +1465,18 @@ def MediumIDMuons(T,_met,variation,isdata):
 
 
 		# For the ID, begin by assuming it passes. Veto if it fails any condition
-		# High PT conditions from https://twiki.cern.ch/twiki/bin/view/CMSPublic/SWGuideMuonIdRun2
+		# Conditions from https://twiki.cern.ch/twiki/bin/view/CMSPublic/SWGuideMuonIdRun2
 		# NTuple definitions in https://raw.githubusercontent.com/CMSLQ/RootTupleMakerV2/master/src/RootTupleMakerV2_Muons.cc
 		Pass = True
+		
+		# A preliminary pT cut.
+		Pass *= (_MuonPt[n] > 8)#fixme offline cuts are 20(10)
+
+		# Eta requirement 
+		Pass *= abs(T.MuonEta[n])<2.4
+
+	        #Pass *= T.MuonIsMediumMuon[n]>0  
+	        
                 #There is an or of requirements, do this by making 2 bools and OR'ing them later
 	        Pass1, Pass2 =  True, True
 
@@ -1494,13 +1496,7 @@ def MediumIDMuons(T,_met,variation,isdata):
 				Pass *= T.MuonTrkValidFractionOfHits[n] > 0.8 #Run2016 GH
 		else :
 			Pass *= T.MuonTrkValidFractionOfHits[n] > 0.8 #MC
-			
-		# A preliminary pT cut.
-		Pass *= (_MuonPt[n] > 8)#fixme offline cuts are 20(10)
-
-		# Eta requirement 
-		Pass *= abs(T.MuonEta[n])<2.4
-
+	
 	        # Require Global Muon
                 Pass1 *= T.MuonIsGlobal[n]
 
@@ -1520,12 +1516,16 @@ def MediumIDMuons(T,_met,variation,isdata):
 		Pass2 *= T.MuonSegmentCompatibility[n] > 0.451
 
 		Pass *= (Pass1 or Pass2)
-
+		
 		# Isolation condition using combined PF relative isolation - 0.25 for loose (98% efficiency), 0.15 for tight (95% efficiency)
 	        correctedIso = T.MuonPFIsoR04ChargedHadron[n] + max(0.,T.MuonPFIsoR04NeutralHadron[n]+T.MuonPFIsoR04Photon[n]-0.5*T.MuonPFIsoR04PU[n])
 		# Don't apply isolation for QCD studies
 		if nonisoswitch != True:
 			Pass *= correctedIso/_MuonPt[n] < 0.25
+
+		# Prompt requirement
+		Pass *= abs(T.MuonBestTrackVtxDistXY[n]) < 0.2
+		Pass *= abs(T.MuonBestTrackVtxDistZ[n])  < 0.5
 
 		# Propagate MET changes if undergoing systematic variation
 		if (Pass):
@@ -1729,6 +1729,68 @@ def HEEPElectrons(T,_met,variation):
 	return [electrons,electroninds,_met]
 
 
+def LooseElectrons(T,_met,variation,isdata):
+	# Purpose: Gets the collection of electrons passing Loose Electron ID. 
+	#         Returns electrons as TLorentzVectors, and indices corrresponding
+	#         to the surviving electrons of the electron collection. 
+	#         Also returns modified MET for systematic variations.	
+	#         https://twiki.cern.ch/twiki/bin/view/CMS/CutBasedElectronIdentificationRun2#Recommended_Working_points_for_2
+	electrons = []
+	electroninds = []
+	if variation=='EESup':	
+		_ElectronPt = [pt*1.01 for pt in T.ElectronPt]
+	elif variation=='EESdown':	
+		_ElectronPt = [pt*0.99 for pt in T.ElectronPt]
+	elif variation=='EER':	
+		_ElectronPt = [pt+pt*tRand.Gaus(0.0,0.04) for pt in T.ElectronPt]
+	else:	
+		_ElectronPt = [pt for pt in T.ElectronPt]	
+
+	trk_isos = []
+	charges = []
+	deltainvpts = []
+	chi2 = []
+	pfid = []
+	layers = []
+
+	for n in range(len(_ElectronPt)):
+		Pass = True
+		Pass *= (T.ElectronPt[n] > 12)
+		Pass *= abs(T.ElectronEta[n])<2.5
+
+		barrel = (abs(T.ElectronSCEta[n]))<1.442
+		endcap = (abs(T.ElectronSCEta[n]))>1.56 
+		Pass *= (barrel+endcap)
+
+	        Pass *= T.ElectronPassEGammaIDLoose[n]>0
+
+	        if (barrel):
+			Pass *= abs(ElectronVtxDistXY[])<0.05
+			Pass *= abs(ElectronVtxDistZ[]) <0.10
+		elif (endcap):
+			Pass *= abs(ElectronVtxDistXY[])< 0.10
+			Pass *= abs(ElectronVtxDistZ[]) < 0.20
+
+		if (Pass):
+			NewEl = TLorentzVector()
+			OldEl = TLorentzVector()
+			NewEl.SetPtEtaPhiM(_ElectronPt[n],T.ElectronEta[n],T.ElectronPhi[n],0)
+			OldEl.SetPtEtaPhiM(T.ElectronPt[n],T.ElectronEta[n],T.ElectronPhi[n],0)
+			met = PropagatePTChangeToMET(_met,OldEl,NewEl)
+
+		if (Pass):
+			electrons.append(NewEl)
+			electroninds.append(n)
+			trk_isos.append(T.ElectronTrkIsoDR03[n])
+			charges.append(T.ElectronCharge[n])
+			deltainvpts.append(0.)
+			chi2.append(0.)
+			pfid.append(0.)
+			layers.append(0.)
+
+	return [electrons,electroninds,_met,trk_isos,charges]
+
+
 def TightElectrons(T,_met,variation,isdata):
 	# Purpose: Gets the collection of electrons passing Tight Electron ID. 
 	#         Returns electrons as TLorentzVectors, and indices corrresponding
@@ -1763,6 +1825,13 @@ def TightElectrons(T,_met,variation,isdata):
 		Pass *= (barrel+endcap)
 
 	        Pass *= T.ElectronPassEGammaIDTight[n]>0
+
+        	if (barrel):
+			Pass *= abs(ElectronVtxDistXY[])<0.05
+			Pass *= abs(ElectronVtxDistZ[]) <0.10
+		elif (endcap):
+			Pass *= abs(ElectronVtxDistXY[])< 0.10
+			Pass *= abs(ElectronVtxDistZ[]) < 0.20
 
 		if (Pass):
 			NewEl = TLorentzVector()
@@ -1881,6 +1950,7 @@ def LooseIDJets(T,met,variation,isdata):
 	NEMFs = []
 	CSVscores,bMVAscores = [],[]
 	bTagSFsLoose, bTagSFsMed = [],[] #[central,up,down]
+	bTagSFsLoose_csv, bTagSFsMed_csv = [],[] #[central,up,down]
 	for n in range(len(_PFJetPt)):
 		looseJetID = False
 		eta = T.PFJetEtaAK4CHS[n]
@@ -1892,12 +1962,14 @@ def LooseIDJets(T,met,variation,isdata):
 		NumConst = T.PFJetChargedMultiplicityAK4CHS[n]+T.PFJetNeutralMultiplicityAK4CHS[n]
 		NumNeutralParticle = T.PFJetNeutralMultiplicityAK4CHS[n]
 		CHM = T.PFJetChargedMultiplicityAK4CHS[n]
-		if abs(eta)<=2.7:
-			looseJetID = (NHF<0.99 and NEMF<0.99 and NumConst>1) and ((abs(eta)<=2.4 and CHF>0 and CHM>0 and CEMF<0.99) or abs(eta)>2.4) and abs(eta)<=2.7
-		elif abs(eta)<=3.0:
-			looseJetID = (NHF< 0.98 and NEMF>0.01 and NumNeutralParticle>2 and abs(eta)>2.7 and abs(eta)<=3.0 )
-		else:
-			looseJetID = (NEMF<0.90 and NumNeutralParticle>10 and abs(eta)>3.0 and abs(eta)<5.0 )
+		
+		looseJetID = (abs(eta)<2.4 and NHF<0.99 and NEMF<0.99 and NumConst>1 and CHF>0 and CHM>0 and CEMF<0.99)
+		#if abs(eta)<=2.7:
+		#	looseJetID = (NHF<0.99 and NEMF<0.99 and NumConst>1) and ((abs(eta)<=2.4 and CHF>0 and CHM>0 and CEMF<0.99) or abs(eta)>2.4) and abs(eta)<=2.7
+		#elif abs(eta)<=3.0:
+		#	looseJetID = (NHF< 0.98 and NEMF>0.01 and NumNeutralParticle>2 and abs(eta)>2.7 and abs(eta)<=3.0 )
+		#else:
+		#	looseJetID = (NEMF<0.90 and NumNeutralParticle>10 and abs(eta)>3.0 and abs(eta)<5.0 )
 		if _PFJetPt[n]>18 :#fixme todo was pt>30, reduced for HH
 			if looseJetID:
 				j = TLorentzVector()
@@ -1921,45 +1993,49 @@ def LooseIDJets(T,met,variation,isdata):
 				ptSF=T.PFJetPtAK4CHS[n]
 				etaSF=abs(eta)
 				if etaSF>=2.4: etaSF=2.399
-				sf_loose = readerLoose.eval_auto_bounds(
-					'central',      # systematic (here also 'up'/'down' possible)
-					flavor,                    # jet flavor
-				        etaSF,  # eta
-					ptSF         # pt   
-					)
-				sf_loose_up = readerLoose.eval_auto_bounds(
-					'up',      # systematic (here also 'up'/'down' possible)
-					flavor,                    # jet flavor
-				        etaSF,  # eta
-					ptSF         # pt   
-					)
-				sf_loose_down = readerLoose.eval_auto_bounds(
-					'down',      # systematic (here also 'up'/'down' possible)
-					flavor,                    # jet flavor
-				        etaSF,  # eta
-					ptSF         # pt   
-					)
-				sf_medium = readerMed.eval_auto_bounds(
-					'central',      # systematic (here also 'up'/'down' possible)
-					flavor,                    # jet flavor
-				        etaSF,  # eta
-					ptSF         # pt   
-					)
-				sf_medium_up = readerMed.eval_auto_bounds(
-					'up',      # systematic (here also 'up'/'down' possible)
-					flavor,                    # jet flavor
-				        etaSF,  # eta
-					ptSF         # pt   
-					)
-				sf_medium_down = readerMed.eval_auto_bounds(
-					'down',      # systematic (here also 'up'/'down' possible)
-					flavor,                    # jet flavor
-				        etaSF,  # eta
-					ptSF         # pt   
-					)
+				sf_loose, sf_loose_up, sf_loose_down, sf_medium, sf_medium_up, sf_medium_down=1.,1.,1.,1.,1.,1.
+				if not isdata:
+					sf_loose = readerLoose.eval_auto_bounds(
+						'central',      # systematic (here also 'up'/'down' possible)
+						flavor,                    # jet flavor
+						etaSF,  # eta
+						ptSF         # pt   
+						)
+					sf_loose_up = readerLoose.eval_auto_bounds(
+						'up',      # systematic (here also 'up'/'down' possible)
+						flavor,                    # jet flavor
+						etaSF,  # eta
+						ptSF         # pt   
+						)
+					sf_loose_down = readerLoose.eval_auto_bounds(
+						'down',      # systematic (here also 'up'/'down' possible)
+						flavor,                    # jet flavor
+						etaSF,  # eta
+						ptSF         # pt   
+						)
+					sf_medium = readerMed.eval_auto_bounds(
+						'central',      # systematic (here also 'up'/'down' possible)
+						flavor,                    # jet flavor
+						etaSF,  # eta
+						ptSF         # pt   
+						)
+					sf_medium_up = readerMed.eval_auto_bounds(
+						'up',      # systematic (here also 'up'/'down' possible)
+						flavor,                    # jet flavor
+						etaSF,  # eta
+						ptSF         # pt   
+						)
+					sf_medium_down = readerMed.eval_auto_bounds(
+						'down',      # systematic (here also 'up'/'down' possible)
+						flavor,                    # jet flavor
+						etaSF,  # eta
+						ptSF         # pt   
+						)
 				bTagSFsLoose.append([sf_loose,sf_loose_up,sf_loose_down])
 				bTagSFsMed.append([sf_medium,sf_medium_up,sf_medium_down])
-				
+				sf_loose_csv, sf_loose_csv_up, sf_loose_csv_down, sf_medium_csv, sf_medium_csv_up, sf_medium_csv_down=1.,1.,1.,1.,1.,1.
+				bTagSFsLoose_csv.append([sf_loose_csv,sf_loose_csv_up,sf_loose_csv_down])
+				bTagSFsMed_csv.append([sf_medium_csv,sf_medium_csv_up,sf_medium_csv_down])
 				#if T.PFJetCombinedMVABTagAK4CHS[n]>-0.5884:
 				#	print flavor,abs(T.PFJetEtaAK4CHS[n]),T.PFJetPtAK4CHS[n]
 				#	print 'loose:',sf_loose,sf_loose_up,sf_loose_down
@@ -1971,7 +2047,7 @@ def LooseIDJets(T,met,variation,isdata):
 
 	# print met.Pt()
 
-	return [jets,jetinds,met,JetFailThreshold,NHFs,NEMFs,CSVscores,bMVAscores,bTagSFsLoose,bTagSFsMed]
+	return [jets,jetinds,met,JetFailThreshold,NHFs,NEMFs,CSVscores,bMVAscores,bTagSFsLoose,bTagSFsMed,bTagSFsLoose_csv,bTagSFsMed_csv]
 
 def GetHHJetsOld(jets,btagScoresCSV,btagScoresMVA,muon1,muon2,jetinds, T):
 	#Purpose: select which jets to use for HH analysis, separating bJets from light jets. Note that jets have already been cleaned from muons and electrons in cone of 0.3.
@@ -2059,7 +2135,7 @@ def GetHHJetsOld(jets,btagScoresCSV,btagScoresMVA,muon1,muon2,jetinds, T):
 	#	print 'btag scores:', highBtag,secondBtag,jet1Btag,jet2Btag
 	return [bjet1,highBtagCSV,highBtag,bjet2,secondBtagCSV,secondBtag,jet1,jet2,jet3,jet1CISV,jet2CISV,jet1Btag,jet2Btag,indRecoBJet1,indRecoBJet2,indRecoJet1,indRecoJet2,indRecoJet3,bjet1,bjet2]
 
-def GetHHJetsNew(jets,btagScoresCSV,btagScoresMVA,bTagSFloose,bTagSFmed,muon1,muon2,jetinds, T, met):
+def GetHHJetsNew(jets,btagScoresCSV,btagScoresMVA,bTagSFloose,bTagSFmed,bTagSFloose_csv,bTagSFmed_csv,muon1,muon2,jetinds, T, met):
 	#Purpose: select which jets to use for HH analysis, separating bJets from light jets. Note that jets have already been cleaned from muons and electrons in cone of 0.3.
 
 	EmptyLorentz = TLorentzVector()
@@ -2081,10 +2157,14 @@ def GetHHJetsNew(jets,btagScoresCSV,btagScoresMVA,bTagSFloose,bTagSFmed,muon1,mu
 	closestZ = 2200. #175.
 	gotBs = False
 	gotZjs = False
-	Hjet1BtagSFL,Hjet1BtagSFM=[0.,0.,0.],[0.,0.,0.]
-	Hjet2BtagSFL,Hjet2BtagSFM=[0.,0.,0.],[0.,0.,0.]
-	Zjet1BtagSFL,Zjet1BtagSFM=[0.,0.,0.],[0.,0.,0.]
-	Zjet2BtagSFL,Zjet2BtagSFM=[0.,0.,0.],[0.,0.,0.]
+	Hjet1BtagSFL,Hjet1BtagSFM=[1.,1.,1.],[1.,1.,1.]
+	Hjet2BtagSFL,Hjet2BtagSFM=[1.,1.,1.],[1.,1.,1.]
+	Zjet1BtagSFL,Zjet1BtagSFM=[1.,1.,1.],[1.,1.,1.]
+	Zjet2BtagSFL,Zjet2BtagSFM=[1.,1.,1.],[1.,1.,1.]
+	Hjet1BtagSFL_csv,Hjet1BtagSFM_csv=[1.,1.,1.],[1.,1.,1.]
+	Hjet2BtagSFL_csv,Hjet2BtagSFM_csv=[1.,1.,1.],[1.,1.,1.]
+	Zjet1BtagSFL_csv,Zjet1BtagSFM_csv=[1.,1.,1.],[1.,1.,1.]
+	Zjet2BtagSFL_csv,Zjet2BtagSFM_csv=[1.,1.,1.],[1.,1.,1.]
 	if not gotBs :
 		highBtagCSV,highBtag = -20.0,-20.0
 		secondBtagCSV,secondBtag = -20.0,-20.0
@@ -2093,10 +2173,10 @@ def GetHHJetsNew(jets,btagScoresCSV,btagScoresMVA,bTagSFloose,bTagSFmed,muon1,mu
 		secondBtagCounter = -1
 		indRecoBJet1 = -1
 		indRecoBJet2 = -1
-		Hjet1BtagSFL,Hjet1BtagSFM=[0.,0.,0.],[0.,0.,0.]
-		Hjet2BtagSFL,Hjet2BtagSFM=[0.,0.,0.],[0.,0.,0.]
-		Zjet1BtagSFL,Zjet1BtagSFM=[0.,0.,0.],[0.,0.,0.]
-		Zjet2BtagSFL,Zjet2BtagSFM=[0.,0.,0.],[0.,0.,0.]
+		Hjet1BtagSFL,Hjet1BtagSFM=[1.,1.,1.],[1.,1.,1.]
+		Hjet2BtagSFL,Hjet2BtagSFM=[1.,1.,1.],[1.,1.,1.]
+		Hjet1BtagSFL_csv,Hjet1BtagSFM_csv=[1.,1.,1.],[1.,1.,1.]
+		Hjet2BtagSFL_csv,Hjet2BtagSFM_csv=[1.,1.,1.],[1.,1.,1.]
 
 		for i in range(len(btagScoresMVA)) :
 			#if T.PFJetPartonFlavourAK4CHS[jetinds[i]] == 21 : continue  # for testing the effect of gluon jets
@@ -2120,11 +2200,15 @@ def GetHHJetsNew(jets,btagScoresCSV,btagScoresMVA,bTagSFloose,bTagSFmed,muon1,mu
 			highBtag,highBtagCSV  = btagScoresMVA[highBtagCounter],btagScoresCSV[highBtagCounter]
 			Hjet1BtagSFL=bTagSFloose[highBtagCounter]
 			Hjet1BtagSFM=bTagSFmed[highBtagCounter]
+			Hjet1BtagSFL_csv=bTagSFloose_csv[highBtagCounter]
+			Hjet1BtagSFM_csv=bTagSFmed_csv[highBtagCounter]
 			if secondBtagCounter >= 0 :
 				bjet2,indRecoBJet2 = jets[secondBtagCounter],jetinds[secondBtagCounter]
 				secondBtag,secondBtagCSV = btagScoresMVA[secondBtagCounter],btagScoresCSV[secondBtagCounter]
 				Hjet2BtagSFL=bTagSFloose[secondBtagCounter]
 				Hjet2BtagSFM=bTagSFmed[secondBtagCounter]
+				Hjet2BtagSFL_csv=bTagSFloose_csv[secondBtagCounter]
+				Hjet2BtagSFM_csv=bTagSFmed_csv[secondBtagCounter]
 				gotBs = True
 			else:
 				for j in range(len(btagScoresMVA)) :
@@ -2142,6 +2226,8 @@ def GetHHJetsNew(jets,btagScoresCSV,btagScoresMVA,bTagSFloose,bTagSFmed,muon1,mu
 						secondBtagCSV = btagScoresCSV[j]
 						Hjet2BtagSFL=bTagSFloose[j]
 						Hjet2BtagSFM=bTagSFmed[j]
+						Hjet2BtagSFL_csv=bTagSFloose_csv[j]
+						Hjet2BtagSFM_csv=bTagSFmed_csv[j]
 						gotBs = True
 
 	if not gotBs :
@@ -2151,8 +2237,10 @@ def GetHHJetsNew(jets,btagScoresCSV,btagScoresMVA,bTagSFloose,bTagSFmed,muon1,mu
 		secondBtagCounter = -1
 		indRecoBJet1 = -1
 		indRecoBJet2 = -1
-		Hjet1BtagSFL,Hjet1BtagSFM=[0.,0.,0.],[0.,0.,0.]
-		Hjet2BtagSFL,Hjet2BtagSFM=[0.,0.,0.],[0.,0.,0.]
+		Hjet1BtagSFL,Hjet1BtagSFM=[1.,1.,1.],[1.,1.,1.]
+		Hjet2BtagSFL,Hjet2BtagSFM=[1.,1.,1.],[1.,1.,1.]
+		Hjet1BtagSFL_csv,Hjet1BtagSFM_csv=[1.,1.,1.],[1.,1.,1.]
+		Hjet2BtagSFL_csv,Hjet2BtagSFM_csv=[1.,1.,1.],[1.,1.,1.]
 
 		closestH = 2200 #2200. #50.
 		for i in range(len(jets)-1) :
@@ -2179,6 +2267,10 @@ def GetHHJetsNew(jets,btagScoresCSV,btagScoresMVA,bTagSFloose,bTagSFmed,muon1,mu
 						Hjet1BtagSFM=bTagSFmed[i]
 						Hjet2BtagSFL=bTagSFloose[j]
 						Hjet2BtagSFM=bTagSFmed[j]
+						Hjet1BtagSFL_csv=bTagSFloose_csv[i]
+						Hjet1BtagSFM_csv=bTagSFmed_csv[i]
+						Hjet2BtagSFL_csv=bTagSFloose_csv[j]
+						Hjet2BtagSFM_csv=bTagSFmed_csv[j]
 					else:
 						highBtagCounter,secondBtagCounter = j,i
 						bjet1, bjet2 = jets[j], jets[i]
@@ -2189,6 +2281,10 @@ def GetHHJetsNew(jets,btagScoresCSV,btagScoresMVA,bTagSFloose,bTagSFmed,muon1,mu
 						Hjet1BtagSFM=bTagSFmed[j]
 						Hjet2BtagSFL=bTagSFloose[i]
 						Hjet2BtagSFM=bTagSFmed[i]
+						Hjet1BtagSFL_csv=bTagSFloose_csv[j]
+						Hjet1BtagSFM_csv=bTagSFmed_csv[j]
+						Hjet2BtagSFL_csv=bTagSFloose_csv[i]
+						Hjet2BtagSFM_csv=bTagSFmed_csv[i]
 					gotBs = True
 
 	if not gotBs :
@@ -2198,8 +2294,10 @@ def GetHHJetsNew(jets,btagScoresCSV,btagScoresMVA,bTagSFloose,bTagSFmed,muon1,mu
 		secondBtagCounter = -1
 		indRecoBJet1 = -1
 		indRecoBJet2 = -1
-		Hjet1BtagSFL,Hjet1BtagSFM=[0.,0.,0.],[0.,0.,0.]
-		Hjet2BtagSFL,Hjet2BtagSFM=[0.,0.,0.],[0.,0.,0.]
+		Hjet1BtagSFL,Hjet1BtagSFM=[1.,1.,1.],[1.,1.,1.]
+		Hjet2BtagSFL,Hjet2BtagSFM=[1.,1.,1.],[1.,1.,1.]
+		Hjet1BtagSFL_csv,Hjet1BtagSFM_csv=[1.,1.,1.],[1.,1.,1.]
+		Hjet2BtagSFL_csv,Hjet2BtagSFM_csv=[1.,1.,1.],[1.,1.,1.]
 
 		for i in range(len(btagScoresMVA)) :
 			#if T.PFJetPartonFlavourAK4CHS[jetinds[i]] == 21 : continue  # for testing the effect of gluon jets
@@ -2221,11 +2319,15 @@ def GetHHJetsNew(jets,btagScoresCSV,btagScoresMVA,bTagSFloose,bTagSFmed,muon1,mu
 			highBtag,highBtagCSV  = btagScoresMVA[highBtagCounter],btagScoresCSV[highBtagCounter]
 			Hjet1BtagSFL=bTagSFloose[highBtagCounter]
 			Hjet1BtagSFM=bTagSFmed[highBtagCounter]
+			Hjet1BtagSFL_csv=bTagSFloose_csv[highBtagCounter]
+			Hjet1BtagSFM_csv=bTagSFmed_csv[highBtagCounter]
 		if secondBtagCounter >= 0 :
 			bjet2,indRecoBJet2 = jets[secondBtagCounter],jetinds[secondBtagCounter]
 			secondBtag,secondBtagCSV = btagScoresMVA[secondBtagCounter],btagScoresCSV[secondBtagCounter]
 			Hjet2BtagSFL=bTagSFloose[secondBtagCounter]
 			Hjet2BtagSFM=bTagSFmed[secondBtagCounter]
+			Hjet2BtagSFL_csv=bTagSFloose_csv[secondBtagCounter]
+			Hjet2BtagSFM_csv=bTagSFmed_csv[secondBtagCounter]
 		gotBs = True #  if cannot really find Hjets, just return EmptyVector
 
 	if not gotZjs :
@@ -2248,6 +2350,10 @@ def GetHHJetsNew(jets,btagScoresCSV,btagScoresMVA,bTagSFloose,bTagSFmed,muon1,mu
 					Zjet1BtagSFM=bTagSFmed[i]
 					Zjet2BtagSFL=bTagSFloose[j]
 					Zjet2BtagSFM=bTagSFmed[j]
+					Zjet1BtagSFL_csv=bTagSFloose_csv[i]
+					Zjet1BtagSFM_csv=bTagSFmed_csv[i]
+					Zjet2BtagSFL_csv=bTagSFloose_csv[j]
+					Zjet2BtagSFM_csv=bTagSFmed_csv[j]
 					gotZjs = True
 		#if v == '': print 'Zjet reco ind',indRecoJet1,indRecoJet2,'jets ind',jet1index,jet2index,'M_H_mumujj',(muon1+muon2+jets[jet1index]+jets[jet2index]).M()
 
@@ -2261,6 +2367,8 @@ def GetHHJetsNew(jets,btagScoresCSV,btagScoresMVA,bTagSFloose,bTagSFmed,muon1,mu
 			jet1CISV=btagScoresCSV[i]
 			Zjet1BtagSFL=bTagSFloose[i]
 			Zjet1BtagSFM=bTagSFmed[i]
+			Zjet1BtagSFL_csv=bTagSFloose_csv[i]
+			Zjet1BtagSFM_csv=bTagSFmed_csv[i]
 			break
 		for i in range(len(jets)):
 			if i==highBtagCounter or i==secondBtagCounter: continue
@@ -2272,6 +2380,8 @@ def GetHHJetsNew(jets,btagScoresCSV,btagScoresMVA,bTagSFloose,bTagSFmed,muon1,mu
 			jet2CISV=btagScoresCSV[i]
 			Zjet2BtagSFL=bTagSFloose[i]
 			Zjet2BtagSFM=bTagSFmed[i]
+			Zjet2BtagSFL_csv=bTagSFloose_csv[i]
+			Zjet2BtagSFM_csv=bTagSFmed_csv[i]
 			break
 		for i in range(len(jets)):
 			if i==highBtagCounter or i==secondBtagCounter: continue
@@ -2292,7 +2402,7 @@ def GetHHJetsNew(jets,btagScoresCSV,btagScoresMVA,bTagSFloose,bTagSFmed,muon1,mu
 	regr_bjet1.SetPtEtaPhiE(regr_corrF1*bjet1.Pt(), bjet1.Eta(), bjet1.Phi(), regr_corrF1*bjet1.Energy())
 	regr_bjet2.SetPtEtaPhiE(regr_corrF2*bjet2.Pt(), bjet2.Eta(), bjet2.Phi(), regr_corrF2*bjet2.Energy())
 	#if v == '' : print ' regr_corrF1 ', regr_corrF1, ' regr_corrF2 ', regr_corrF2
-	return [bjet1,highBtagCSV,highBtag,bjet2,secondBtagCSV,secondBtag,jet1,jet2,jet3,jet1CISV,jet2CISV,jet1CMVA,jet2CMVA,indRecoBJet1,indRecoBJet2,indRecoJet1,indRecoJet2,indRecoJet3,regr_bjet1,regr_bjet2,Hjet1BtagSFL,Hjet1BtagSFM,Hjet2BtagSFL,Hjet2BtagSFM,Zjet1BtagSFL,Zjet1BtagSFM,Zjet2BtagSFL,Zjet2BtagSFM,]
+	return [bjet1,highBtagCSV,highBtag,bjet2,secondBtagCSV,secondBtag,jet1,jet2,jet3,jet1CISV,jet2CISV,jet1CMVA,jet2CMVA,indRecoBJet1,indRecoBJet2,indRecoJet1,indRecoJet2,indRecoJet3,regr_bjet1,regr_bjet2,Hjet1BtagSFL,Hjet1BtagSFM,Hjet2BtagSFL,Hjet2BtagSFM,Zjet1BtagSFL,Zjet1BtagSFM,Zjet2BtagSFL,Zjet2BtagSFM,Hjet1BtagSFL_csv,Hjet1BtagSFM_csv,Hjet2BtagSFL_csv,Hjet2BtagSFM_csv,Zjet1BtagSFL_csv,Zjet1BtagSFM_csv,Zjet2BtagSFL_csv,Zjet2BtagSFM_csv]
 
 def bjetRegressionCorrectionFactor(RegressionReader, _regrvarsnames, bjet, ind_orig, T, met):
 	# see https://github.com/ResonantHbbHgg/bbggTools/blob/master/src/bbggJetRegression.cc#L229
@@ -2655,13 +2765,14 @@ def FullKinematicCalculation(T,variation):
 	#[electrons,electroninds,met] = HEEPElectrons(T,met,variation)
 	[electrons,electroninds,met,trkisosEle,chargesEle] = TightElectrons(T,met,variation,T.isData)
 	# ID Jets and filter from leptons
-	[jets,jetinds,met,failthreshold,neutralhadronEF,neutralemEF,btagCSVscores,btagMVAscores,btagSFsLoose,btagSFsMedium] = LooseIDJets(T,met,variation,T.isData)
+	[jets,jetinds,met,failthreshold,neutralhadronEF,neutralemEF,btagCSVscores,btagMVAscores,btagSFsLoose,btagSFsMedium,btagSFsLoose_csv,btagSFsMedium_csv] = LooseIDJets(T,met,variation,T.isData)
 	#jetsTemp = jets
 	_jetCntPreFilter = len(jets)
 	## jets = GeomFilterCollection(jets,muons_forjetsep,0.5)
 	
-	[jets,btagCSVscores,btagMVAscores,btagSFsLoose,btagSFsMedium,jetinds] = GeomFilterCollection(jets,muons,0.3,btagCSVscores,btagMVAscores,btagSFsLoose,btagSFsMedium,jetinds)#fixme todo was 0.5 - changing to 0.3 following HH->wwbb. In any case 0.5 is too big now that cone size is 0.4 - put back in!
-	[jets,btagCSVscores,btagMVAscores,btagSFsLoose,btagSFsMedium,jetinds] = GeomFilterCollection(jets,electrons,0.3,btagCSVscores,btagMVAscores,btagSFsLoose,btagSFsMedium,jetinds)#fixme todo was 0.5 - changing to 0.3 following HH->wwbb. In any case 0.5 is too big now that cone size is 0.4 - put back in!
+	[jets,btagCSVscores,btagMVAscores,btagSFsLoose,btagSFsMedium,btagSFsLoose_csv,btagSFsMedium_csv,jetinds] = GeomFilterCollection(jets,muons,0.3,btagCSVscores,btagMVAscores,btagSFsLoose,btagSFsMedium,btagSFsLoose_csv,btagSFsMedium_csv,jetinds)#fixme todo was 0.5 - changing to 0.3 following HH->wwbb. In any case 0.5 is too big now that cone size is 0.4 - put back in!
+	#FIXME removing filter from electrons for now, since we don't use electron channel
+        [jets,btagCSVscores,btagMVAscores,btagSFsLoose,btagSFsMedium,btagSFsLoose_csv,btagSFsMedium_csv,jetinds] = GeomFilterCollection(jets,electrons,0.3,btagCSVscores,btagMVAscores,btagSFsLoose,btagSFsMedium,btagSFsLoose_csv,btagSFsMedium_csv,jetinds)#fixme todo was 0.5 - changing to 0.3 following HH->wwbb. In any case 0.5 is too big now that cone size is 0.4 - put back in!
 	
 	##[jetsTemp,jetinds] = GeomFilterCollection(jetsTemp,muons,0.3,jetinds)
 	##[jetsTemp,jetinds] = GeomFilterCollection(jetsTemp,electrons,0.3,jetinds)
@@ -2710,8 +2821,10 @@ def FullKinematicCalculation(T,variation):
 		btagCSVscores.append(-5.0)
 		btagMVAscores.append(-5.0)
 		jetinds.append(-1)
-		btagSFsLoose.append([0.,0.,0.])
-		btagSFsMedium.append([0.,0.,0.])
+		btagSFsLoose.append([1.,1.,1.])
+		btagSFsMedium.append([1.,1.,1.])
+		btagSFsLoose_csv.append([1.,1.,1.])
+		btagSFsMedium_csv.append([1.,1.,1.])
 	if len(jets) < 2 : 
 		jets.append(EmptyLorentz)
 		neutralhadronEF.append(0.0)
@@ -2719,8 +2832,10 @@ def FullKinematicCalculation(T,variation):
 		btagCSVscores.append(-5.0)
 		btagMVAscores.append(-5.0)
 		jetinds.append(-1)
-		btagSFsLoose.append([0.,0.,0.])
-		btagSFsMedium.append([0.,0.,0.])
+		btagSFsLoose.append([1.,1.,1.])
+		btagSFsMedium.append([1.,1.,1.])
+		btagSFsLoose_csv.append([1.,1.,1.])
+		btagSFsMedium_csv.append([1.,1.,1.])
 	if len(jets) < 3 : 
 		jets.append(EmptyLorentz)
 		neutralhadronEF.append(0.0)
@@ -2728,8 +2843,10 @@ def FullKinematicCalculation(T,variation):
 		btagCSVscores.append(-5.0)
 		btagMVAscores.append(-5.0)
 		jetinds.append(-1)
-		btagSFsLoose.append([0.,0.,0.])
-		btagSFsMedium.append([0.,0.,0.])
+		btagSFsLoose.append([1.,1.,1.])
+		btagSFsMedium.append([1.,1.,1.])
+		btagSFsLoose_csv.append([1.,1.,1.])
+		btagSFsMedium_csv.append([1.,1.,1.])
 	if len(jets) < 4 : 
 		jets.append(EmptyLorentz)
 		neutralhadronEF.append(0.0)
@@ -2737,8 +2854,10 @@ def FullKinematicCalculation(T,variation):
 		btagCSVscores.append(-5.0)
 		btagMVAscores.append(-5.0)
 		jetinds.append(-1)
-		btagSFsLoose.append([0.,0.,0.])
-		btagSFsMedium.append([0.,0.,0.])
+		btagSFsLoose.append([1.,1.,1.])
+		btagSFsMedium.append([1.,1.,1.])
+		btagSFsLoose_csv.append([1.,1.,1.])
+		btagSFsMedium_csv.append([1.,1.,1.])
 
 	[_genMuons,_matchedRecoMuons,muonInd] = MuonsFromLQ(T)
 	[_genJets,_matchedRecoJets,jetInd] = JetsFromLQ(T)
@@ -2906,7 +3025,7 @@ def FullKinematicCalculation(T,variation):
 	#[bjet1,bscore1,bscoreMVA1,bjet2,bscore2,bscoreMVA2,jet1,jet2,jet3,indRecoBJet1,indRecoBJet2,indRecoJet1,indRecoJet2,indRecoJet3] = GetHHJetsOld(jets,btagCSVscores,btagMVAscores,muons[0],muons[1],jetinds, T)
 	#[bjet1,bscore1,bscoreMVA1,bjet2,bscore2,bscoreMVA2,jet1,jet2,jet3,indRecoBJet1,indRecoBJet2,indRecoJet1,indRecoJet2,indRecoJet3,regr_bjet1,regr_bjet2] = GetHHJetsNew(jets,btagCSVscores,btagMVAscores,muons[0],muons[1],jetinds, T, met)
 	#[unreg_bjet1,bscore1,bscoreMVA1,unreg_bjet2,bscore2,bscoreMVA2,jet1,jet2,jet3,_cisv_Zjet1,_cisv_Zjet2,_cmva_Zjet1,_cmva_Zjet2,indRecoBJet1,indRecoBJet2,indRecoJet1,indRecoJet2,indRecoJet3,bjet1,bjet2] = GetHHJetsOld(jets,btagCSVscores,btagMVAscores,muons[0],muons[1],jetinds, T)
-	[unreg_bjet1,bscore1,bscoreMVA1,unreg_bjet2,bscore2,bscoreMVA2,jet1,jet2,jet3,_cisv_Zjet1,_cisv_Zjet2,_cmva_Zjet1,_cmva_Zjet2,indRecoBJet1,indRecoBJet2,indRecoJet1,indRecoJet2,indRecoJet3,bjet1,bjet2,_Hjet1BtagSFL,_Hjet1BtagSFM,_Hjet2BtagSFL,_Hjet2BtagSFM,_Zjet1BtagSFL,_Zjet1BtagSFM,_Zjet2BtagSFL,_Zjet2BtagSFM] = GetHHJetsNew(jets,btagCSVscores,btagMVAscores,btagSFsLoose,btagSFsMedium,muons[0],muons[1],jetinds, T, met)
+	[unreg_bjet1,bscore1,bscoreMVA1,unreg_bjet2,bscore2,bscoreMVA2,jet1,jet2,jet3,_cisv_Zjet1,_cisv_Zjet2,_cmva_Zjet1,_cmva_Zjet2,indRecoBJet1,indRecoBJet2,indRecoJet1,indRecoJet2,indRecoJet3,bjet1,bjet2,_Hjet1BtagSFL,_Hjet1BtagSFM,_Hjet2BtagSFL,_Hjet2BtagSFM,_Zjet1BtagSFL,_Zjet1BtagSFM,_Zjet2BtagSFL,_Zjet2BtagSFM,_Hjet1BtagSFL_csv,_Hjet1BtagSFM_csv,_Hjet2BtagSFL_csv,_Hjet2BtagSFM_csv,_Zjet1BtagSFL_csv,_Zjet1BtagSFM_csv,_Zjet2BtagSFL_csv,_Zjet2BtagSFM_csv] = GetHHJetsNew(jets,btagCSVscores,btagMVAscores,btagSFsLoose,btagSFsMedium,btagSFsLoose_csv,btagSFsMedium_csv,muons[0],muons[1],jetinds, T, met)
 	
 	[_Hjet1BsfLoose,_Hjet1BsfLooseUp,_Hjet1BsfLooseDown] = _Hjet1BtagSFL
 	[_Hjet1BsfMedium,_Hjet1BsfMediumUp,_Hjet1BsfMediumDown] = _Hjet1BtagSFM
@@ -2917,6 +3036,16 @@ def FullKinematicCalculation(T,variation):
 	[_Zjet1BsfMedium,_Zjet1BsfMediumUp,_Zjet1BsfMediumDown] = _Zjet1BtagSFM
 	[_Zjet2BsfLoose,_Zjet2BsfLooseUp,_Zjet2BsfLooseDown] = _Zjet2BtagSFL
 	[_Zjet2BsfMedium,_Zjet2BsfMediumUp,_Zjet2BsfMediumDown] = _Zjet2BtagSFM
+	
+	[_Hjet1BsfLoose_csv,_Hjet1BsfLooseUp_csv,_Hjet1BsfLooseDown_csv] = _Hjet1BtagSFL_csv
+	[_Hjet1BsfMedium_csv,_Hjet1BsfMediumUp_csv,_Hjet1BsfMediumDown_csv] = _Hjet1BtagSFM_csv
+	[_Hjet2BsfLoose_csv,_Hjet2BsfLooseUp_csv,_Hjet2BsfLooseDown_csv] = _Hjet2BtagSFL_csv
+	[_Hjet2BsfMedium_csv,_Hjet2BsfMediumUp_csv,_Hjet2BsfMediumDown_csv] = _Hjet2BtagSFM_csv
+	
+	[_Zjet1BsfLoose_csv,_Zjet1BsfLooseUp_csv,_Zjet1BsfLooseDown_csv] = _Zjet1BtagSFL_csv
+	[_Zjet1BsfMedium_csv,_Zjet1BsfMediumUp_csv,_Zjet1BsfMediumDown_csv] = _Zjet1BtagSFM_csv
+	[_Zjet2BsfLoose_csv,_Zjet2BsfLooseUp_csv,_Zjet2BsfLooseDown_csv] = _Zjet2BtagSFL_csv
+	[_Zjet2BsfMedium_csv,_Zjet2BsfMediumUp_csv,_Zjet2BsfMediumDown_csv] = _Zjet2BtagSFM_csv
 
 	"""
 	#if muons[0].Pt()>20 and muons[1].Pt()>10 and variation=='':
@@ -3237,8 +3366,6 @@ def FullKinematicCalculation(T,variation):
 	toreturn += [_muonInd1,_muonInd2]
 	#toreturn += [_jetInd1,_jetInd2]
 	toreturn += [_ptHat]
-	#toreturn += [_cisv_Zjet1,_cisv_Zjet2]
-	#toreturn += [bscore1,bscore2]
 	toreturn += [_cmva_Zjet1,_cmva_Zjet2]
 	toreturn += [bscoreMVA1,bscoreMVA2]
 	toreturn += [_Hjet1BsfLoose,_Hjet1BsfLooseUp,_Hjet1BsfLooseDown]
@@ -3291,7 +3418,7 @@ def checkWorZpt(T,lowcut, highcut, WorZ):
 		return 0
 	return 1
 
-def GeomFilterCollection(collection_to_clean,good_collection,dRcut,associatedCollection1,associatedCollection2,associatedCollection3,associatedCollection4,associatedCollection5):
+def GeomFilterCollection(collection_to_clean,good_collection,dRcut,associatedCollection1,associatedCollection2,associatedCollection3,associatedCollection4,associatedCollection5,associatedCollection6,associatedCollection7):
 	# Purpose: Take a collection of TLorentzVectors that you want to clean (arg 1)
 	#         by removing all objects within dR of dRcut (arg 3) of any element in
 	#         the collection of other particles (arg 2)
@@ -3299,7 +3426,8 @@ def GeomFilterCollection(collection_to_clean,good_collection,dRcut,associatedCol
 	#   Added option for associated collection, i.e.
 	output_collection = []
 	associated_output_collection1,associated_output_collection2,associated_output_collection3 = [],[],[]
-	associated_output_collection4,associated_output_collection5 = [],[]
+	associated_output_collection4,associated_output_collection5,associated_output_collection6 = [],[],[]
+	associated_output_collection7 = []
 	for i, c in enumerate(collection_to_clean):
 		isgood = True
 		for g in good_collection:
@@ -3312,13 +3440,15 @@ def GeomFilterCollection(collection_to_clean,good_collection,dRcut,associatedCol
 			associated_output_collection3.append(associatedCollection3[i])
 			associated_output_collection4.append(associatedCollection4[i])
 			associated_output_collection5.append(associatedCollection5[i])
-	return [output_collection,associated_output_collection1,associated_output_collection2,associated_output_collection3,associated_output_collection4,associated_output_collection5]
+			associated_output_collection6.append(associatedCollection6[i])
+			associated_output_collection7.append(associatedCollection7[i])
+	return [output_collection,associated_output_collection1,associated_output_collection2,associated_output_collection3,associated_output_collection4,associated_output_collection5,associated_output_collection6,associated_output_collection7]
 
 
 def MetVector(T):
 	# Purpose: Creates a TLorentzVector represting the MET. No pseudorapidity, obviously.
 	met = TLorentzVector()
-	met.SetPtEtaPhiM(T.PFMETType1XYCor[0],0,T.PFMETPhiType1XYCor[0],0)
+	met.SetPtEtaPhiM(T.PFMETType1Cor[0],0,T.PFMETPhiType1Cor[0],0)
 	return met
 
 ##########################################################################################
@@ -3456,8 +3586,8 @@ for n in range(N):
 	#if (Branches['Pt_muon1'][0] < 16) and (Branches['Pt_ele1'][0] > 16) and (Branches['Pt_ele2'][0]  < 8): continue
 	#if (Branches['Pt_muon1'][0] > 16) and (Branches['Pt_muon2'][0] < 8) and (Branches['Pt_ele1'][0] < 16 or Branches['Pt_ele2'][0]  < 8): continue
 	if ((Branches['isMuonEvent'][0]==True) and ((Branches['Pt_muon1'][0] < 16) or (Branches['Pt_muon2'][0] < 8) or (Branches['M_uu'][0] < 12))): continue
-	if ((Branches['isElectronEvent'][0]==True) and ((Branches['Pt_ele1'][0] < 16) or (Branches['Pt_ele2'][0] < 11) or (Branches['M_ee'][0] < 12))): continue
-	if ((Branches['isMuonEvent'][0]==False)) : continue
+	if ((Branches['isElectronEvent'][0]==True) and ((Branches['Pt_ele1'][0] < 21) or (Branches['Pt_ele2'][0] < 12) or (Branches['M_ee'][0] < 12))): continue
+	#if ((Branches['isMuonEvent'][0]==False)) : continue
 	#print 'NGenMuonsZ', Branches['NGenMuonsZ'][0], 'NGenElecsZ', Branches['NGenElecsZ'][0]
 	#if (Branches['Pt_muon1'][0] < 16) : continue
 	#if (Branches['Pt_muon2'][0] < 8) : continue
