@@ -1475,7 +1475,6 @@ def MediumIDMuons(T,_met,variation,isdata):
 		# Eta requirement 
 		Pass *= abs(T.MuonEta[n])<2.4
 
-	        # Using medium muon flag
 	        Pass *= T.MuonIsMediumMuon[n]>0  
 	        """
                 #There is an or of requirements, do this by making 2 bools and OR'ing them later
@@ -1523,7 +1522,7 @@ def MediumIDMuons(T,_met,variation,isdata):
 		# Don't apply isolation for QCD studies
 		if nonisoswitch != True:
 			Pass *= correctedIso/_MuonPt[n] < 0.25
-		
+
 		# Prompt requirement
 		Pass *= abs(T.MuonBestTrackVtxDistXY[n]) < 0.2
 		Pass *= abs(T.MuonBestTrackVtxDistZ[n])  < 0.5
