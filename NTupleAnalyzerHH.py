@@ -1475,8 +1475,8 @@ def MediumIDMuons(T,_met,variation,isdata):
 		# Eta requirement 
 		Pass *= abs(T.MuonEta[n])<2.4
 
-	        Pass *= T.MuonIsMediumMuon[n]>0  
-	        """
+	        #Pass *= T.MuonIsMediumMuon[n]>0  
+	        
                 #There is an or of requirements, do this by making 2 bools and OR'ing them later
 	        Pass1, Pass2 =  True, True
 
@@ -1516,7 +1516,7 @@ def MediumIDMuons(T,_met,variation,isdata):
 		Pass2 *= T.MuonSegmentCompatibility[n] > 0.451
 
 		Pass *= (Pass1 or Pass2)
-		"""
+		
 		# Isolation condition using combined PF relative isolation - 0.25 for loose (98% efficiency), 0.15 for tight (95% efficiency)
 	        correctedIso = T.MuonPFIsoR04ChargedHadron[n] + max(0.,T.MuonPFIsoR04NeutralHadron[n]+T.MuonPFIsoR04Photon[n]-0.5*T.MuonPFIsoR04PU[n])
 		# Don't apply isolation for QCD studies
@@ -1985,7 +1985,7 @@ def LooseIDJets(T,met,variation,isdata):
 				bMVAscores.append(T.PFJetCombinedMVABTagAK4CHS[n])
 
 				# b-tag SF
-				flavor = abs(T.PFJetHadronFlavourAK4CHS[n])#should be updated to HadronFlavour
+				flavor = abs(T.PFJetHadronFlavourAK4CHS[n])#updated to HadronFlavour
 				#print flavor
 				if flavor in [0,1,2,3,21]: flavor=2
 				if flavor == 4 : flavor=1
