@@ -191,6 +191,7 @@ _kinematicvariables += ['TrkIso_muon1','TrkIso_muon2','TrkIso_ele1','TrkIso_ele2
 _kinematicvariables += ['TrkMeasLayers_muon1','TrkMeasLayers_muon2']
 _kinematicvariables += ['Charge_muon1','Charge_muon2','Charge_ele1','Charge_ele2']
 _kinematicvariables += ['TrkGlbDpt_muon1','TrkGlbDpt_muon2']
+_kinematicvariables += ['medIDmu1','medIDmu2','medID2016mu1','medID2016mu2']
 #_kinematicvariables += ['NHEF_jet1','NHEF_jet2','NEMEF_jet1','NEMEF_jet2']
 #_kinematicvariables += ['St_uujj','St_eejj']
 _kinematicvariables += ['St_uu4j','St_ee4j']
@@ -1437,8 +1438,9 @@ def MediumIDMuons(T,_met,variation,isdata):
 	chi2 = []
 	pfid = []
 	layers = []
-
 	nequiv = []
+	PassMedIDs = []
+	PassMedID2016s = []
 	for n in range(len(T.MuonPt)):
 		#if T.MuonIsGlobal[n] or newntupleswitch==True: #not necessary anymore - global muon requirement encompassed later
 		nequiv.append(n)
@@ -1467,8 +1469,10 @@ def MediumIDMuons(T,_met,variation,isdata):
 		# For the ID, begin by assuming it passes. Veto if it fails any condition
 		# Conditions from https://twiki.cern.ch/twiki/bin/view/CMSPublic/SWGuideMuonIdRun2
 		# NTuple definitions in https://raw.githubusercontent.com/CMSLQ/RootTupleMakerV2/master/src/RootTupleMakerV2_Muons.cc
+	        
 		Pass = True
-		
+	        PassMedID = True
+		PassMedID2016 = True
 		# A preliminary pT cut.
 		Pass *= (_MuonPt[n] > 8)#fixme offline cuts are 20(10)
 
@@ -1495,7 +1499,9 @@ def MediumIDMuons(T,_met,variation,isdata):
 			else: 
 				Pass *= T.MuonTrkValidFractionOfHits[n] > 0.8 #Run2016 GH
 		else :
-			Pass *= T.MuonTrkValidFractionOfHits[n] > 0.8 #MC
+			Pass *= T.MuonTrkValidFractionOfHits[n] > 0.49 #MC
+			PassMedID2016 *= T.MuonTrkValidFractionOfHits[n] > 0.49 #MC
+			PassMedID     *= T.MuonTrkValidFractionOfHits[n] > 0.8 #MC
 	
 	        # Require Global Muon
                 Pass1 *= T.MuonIsGlobal[n]
@@ -1548,8 +1554,9 @@ def MediumIDMuons(T,_met,variation,isdata):
 			charges.append(T.MuonCharge[n])
 			muoninds.append(n)
 			deltainvpts.append(deltainvpt)
-
-	return [muons,muoninds,_met,trk_isos,charges,deltainvpts,chi2,pfid,layers]
+			PassMedIDs.append(PassMedID)
+			PassMedID2016s.append(PassMedID2016)
+	return [muons,muoninds,_met,trk_isos,charges,deltainvpts,chi2,pfid,layers,PassMedIDs,PassMedID2016s]
 
 
 def TightHighPtIDMuons(T,_met,variation,isdata):
@@ -2788,7 +2795,7 @@ def FullKinematicCalculation(T,variation):
 	# MET as a vector
 	met = MetVector(T)
 	# ID Muons,Electrons
-	[muons,goodmuoninds,met,trkisosMu,chargesMu,dpts,chi2,pfid,layers] = MediumIDMuons(T,met,variation,T.isData)
+	[muons,goodmuoninds,met,trkisosMu,chargesMu,dpts,chi2,pfid,layers,passMedIds,passMedId2016s] = MediumIDMuons(T,met,variation,T.isData)
 	#[muons,goodmuoninds,met,trkisosMu,chargesMu,dpts,chi2,pfid,layers] = TightHighPtIDMuons(T,met,variation,T.isData)
 	# muons_forjetsep = MuonsForJetSeparation(T)
 	# taus_forjetsep = TausForJetSeparation(T)
@@ -2826,7 +2833,8 @@ def FullKinematicCalculation(T,variation):
 		chi2.append(-1.0)
 		pfid.append(-1.0)
 		layers.append(-1.0)
-
+		passMedIds.append(0)
+		passMedId2016s.append(0)
 	if len(muons) < 2 : 
 		muons.append(EmptyLorentz)
 		trkisosMu.append(0.0)
@@ -2835,6 +2843,8 @@ def FullKinematicCalculation(T,variation):
 		chi2.append(-1.0)
 		pfid.append(-1.0)
 		layers.append(-1.0)
+		passMedIds.append(0)
+		passMedId2016s.append(0)
 
 	if len(electrons) < 1 : 
 		electrons.append(EmptyLorentz)
@@ -2958,6 +2968,8 @@ def FullKinematicCalculation(T,variation):
 
 
 	# Get kinematic quantities
+	[_passMedIdmu1,_passMedIdmu1,_passMedId2016mu1,_passMedId2016mu1]=[passMedIds[0],passMedIds[1],passMedId2016s[0],passMedId2016s[1]]
+
 	[_ptmu1,_etamu1,_phimu1,_isomu1,_qmu1,_dptmu1] = [muons[0].Pt(),muons[0].Eta(),muons[0].Phi(),trkisosMu[0],chargesMu[0],dpts[0]]
 	[_ptmu2,_etamu2,_phimu2,_isomu2,_qmu2,_dptmu2] = [muons[1].Pt(),muons[1].Eta(),muons[1].Phi(),trkisosMu[1],chargesMu[1],dpts[1]]
 
@@ -3348,6 +3360,7 @@ def FullKinematicCalculation(T,variation):
 	toreturn += [_layersmu1,_layersmu2]
 	toreturn += [_qmu1,_qmu2,_qele1,_qele2]
 	toreturn += [_dptmu1,_dptmu2]
+	toreturn += [_passMedIdmu1,_passMedIdmu1,_passMedId2016mu1,_passMedId2016mu1]
 	#toreturn += [_nhefj1,_nhefj2,_nemefj1,_nemefj2]
 	#toreturn += [_stuujj,_steejj]
 	toreturn += [_stuu4j,_stee4j]
