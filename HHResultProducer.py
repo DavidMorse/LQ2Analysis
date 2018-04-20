@@ -186,8 +186,10 @@ preselectionElectron += passfilter
 preselectionmunu += passfilter
 
 #These are the Z and TTbar control regions, hard-coded to avoid mistakes in multiple functions
-dyControlRegion = '(M_uu>80)*(M_uu<100)'
-ttControlRegion = '(M_uu>100)*(Pt_miss>100)'
+dyControlRegion_Muon = '(M_uu>80)*(M_uu<100)'
+ttControlRegion_Muon = '(M_uu>100)*(Pt_miss>100)'
+dyControlRegion_Electron = '(M_ee>80)*(M_ee<100)'
+ttControlRegion_Electron = '(M_ee>100)*(Pt_miss>100)'
 #dyControlRegion = '(M_uu>86)*(M_uu<96)'
 #ttControlRegion = '((((M_uu>50)*(M_uu<70))+(M_uu>100))>0)*(Pt_miss>100)'
 
@@ -221,15 +223,15 @@ emu_id_eff_err = 0.0027#v7 JEC
 useDataDrivenQCD = True
 #fbd_Muon = [1.2784, 0.0036]
 fbd_Muon     = [1.426, 0.025] # Feb 2018
-fbd_Electron = [1.426, 0.025] # Feb 2018
+fbd_Electron = [1.332, 0.165] # Feb 2018
 
 # tt, z initial SF calculated using QCD MC (Jan 2018)
 Rz_qcdMC = [0.962831123534, 0.0]
 Rtt_qcdMC = [1.11543113384, 0.0]
 
 
-analysisChannel = 'muon'
-#analysisChannel = 'electron'
+#analysisChannel = 'muon'
+analysisChannel = 'electron'
 if (analysisChannel == 'muon'):
 	NormalWeight=NormalWeightMuon
 	preselection_nos=preselection_Muon_nos
@@ -238,6 +240,8 @@ if (analysisChannel == 'muon'):
 	fbd=fbd_Muon
 	charge1 = 'Charge_muon1'
 	charge2 = 'Charge_muon2'
+	dyControlRegion = dyControlRegion_Muon
+	ttControlRegion = ttControlRegion_Muon
 if (analysisChannel == 'electron'):
 	NormalWeight=NormalWeightElectron
 	preselection_nos=preselection_Electron_nos
@@ -246,6 +250,8 @@ if (analysisChannel == 'electron'):
 	fbd=fbd_Electron
 	charge1 = 'Charge_ele1'
 	charge2 = 'Charge_ele2'
+	dyControlRegion = dyControlRegion_Electron
+	ttControlRegion = ttControlRegion_Electron
 
 
 # Next are the PDF uncertainties. 
@@ -522,12 +528,13 @@ def main():
 	# This is the QCD study. It will make a couple plots, and test QCD contamination at final selection. We consider QCD negligible, but is good to test this once!
 	# ====================================================================================================================================================== #
 	if False :
-		qcdselectionMuon = preselection_Muon_nos
-		qcdselectionmunu = preselection_Muon_nos
-		qcdselectionMuon += passfilter # AH: do we need also the passfilters ?
+		
+		qcdselection = preselection_nos
+		qcdselectionmunu = preselection_nos
+		qcdselection += passfilter # AH: do we need also the passfilters ?
 		qcdselectionmunu += passfilter
 		
-		QCDStudy(qcdselectionMuon,qcdselectionmunu,MuonOptCutFile,MuNuOptCutFile,NormalWeight,NormalWeightMuNu,version_name)
+		QCDStudy(qcdselection,qcdselection,MuonOptCutFile,MuNuOptCutFile,NormalWeight,NormalWeightMuNu,version_name)
 
 
 	# ====================================================================================================================================================== #
@@ -2034,6 +2041,17 @@ def QuickSysEntries(tree,selection,scalefac):
 	return str([int(1.0*I*scalefac),int(1.0*I*scalefac)]) 
 
 def QCDStudy(sel_Muon,sel_munu,cutlogMuon,cutlogmunu,weight_Muon,weight_munu,version_name):
+	global analysisChannel
+	if analysisChannel=='muon' : 
+		t_data  = t_DoubleMuData
+		tn_data = tn_DoubleMuData
+		t_QCD   = t_QCDMu
+		tn_QCD  = tn_QCDMu
+	if analysisChannel=='electron' : 
+		t_data  = t_DoubleEleData
+		tn_data = tn_DoubleEleData
+		t_QCD   = t_QCDEle
+		tn_QCD  = tn_QCDEle
 	print 'Get DY & TTbar Data/MC normalization scale factors'
 	[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = GetNormalizationScaleFactors( NormalWeight+'*'+preselection, NormalDirectory, dyControlRegion, ttControlRegion,1)
 	#[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = [[0.7878836290932162, 0.002600000000000006], [0.8199547022957769, 0.010549999999999738]] #values from Dec 2017
@@ -2044,7 +2062,7 @@ def QCDStudy(sel_Muon,sel_munu,cutlogMuon,cutlogmunu,weight_Muon,weight_munu,ver
 	#################################
 	######## DIMUON CHANNEL #########
 	#################################	
-	print '\n------ DIMUON CHANNEL -------\n'
+	print '\n------ DI-'+analysisChannel+' CHANNEL -------\n'
 	#intQCD = QuickIntegral(tn_QCD,sel_Muon+"*"+weight_Muon,1.0)
 	#intQCDReweight = QuickIntegral(tn_QCD,sel_Muon+"*"+weight_Muon+"*(1./pow(ptHat,4.5))",1.0)
 	#ptHatReweight = intQCD[0] / intQCDReweight[0]
@@ -2058,16 +2076,16 @@ def QCDStudy(sel_Muon,sel_munu,cutlogMuon,cutlogmunu,weight_Muon,weight_munu,ver
 	#weight_munu_qcd = weight_munu+"*(1./pow(ptHat,4.5))*"+ptHatReweightStrNu
 	#Q_ss = QuickIntegral(tn_QCD,sel_Muon + '*('+charge1+'*'+charge2+' > 0)*'+weight_Muon_qcd,1.0)	
 	#Q_os = QuickIntegral(tn_QCD,sel_Muon + '*('+charge1+'*'+charge2+' < 0)*'+weight_Muon_qcd,1.0)
-	Q_ss = QuickIntegral(tn_QCDMu,sel_Muon + '*('+charge1+'*'+charge2+' > 0)*'+weight_Muon,1.0)
-	Q_os = QuickIntegral(tn_QCDMu,sel_Muon + '*('+charge1+'*'+charge2+' < 0)*'+weight_Muon,1.0)
+	Q_ss = QuickIntegral(tn_QCD,sel_Muon + '*('+charge1+'*'+charge2+' > 0)*'+weight_Muon,1.0)
+	Q_os = QuickIntegral(tn_QCD,sel_Muon + '*('+charge1+'*'+charge2+' < 0)*'+weight_Muon,1.0)
 	
 	print 'Number of events in QCD MC:'
 	print 'Q_ss:',Q_ss
 	print 'Q_os:',Q_os
 
 	print '\n'
-	#D_ss = QuickIntegral(tn_QCDMu,sel_Muon + '*('+charge1+'*'+charge2+' > 0)*'+weight_Muon,1.0)
-	print 'Test: In normal Iso data, the number of same-sign events is',QuickEntries(t_DoubleMuData,sel_Muon + '*('+charge1+'*'+charge2+' > 0)',1.0)
+	#D_ss = QuickIntegral(tn_QCD,sel_Muon + '*('+charge1+'*'+charge2+' > 0)*'+weight_Muon,1.0)
+	print 'Test: In normal Iso data, the number of same-sign events is',QuickEntries(t_data,sel_Muon + '*('+charge1+'*'+charge2+' > 0)',1.0)
 	print 'Test: In normal Iso MC, the number of same-sign events is'
 	print '        Z:',QuickIntegral(t_ZJets,sel_Muon + '*('+charge1+'*'+charge2+' > 0)*'+weight_Muon+'*('+str(Rz_uujj)+')',1.0)
 	print '        W:',QuickIntegral(t_WJets,sel_Muon + '*('+charge1+'*'+charge2+' > 0)*'+weight_Muon,1.0)
@@ -2075,11 +2093,11 @@ def QCDStudy(sel_Muon,sel_munu,cutlogMuon,cutlogmunu,weight_Muon,weight_munu,ver
 	print '       VV:',QuickIntegral(t_DiBoson,sel_Muon +   '*('+charge1+'*'+charge2+' > 0)*'+weight_Muon,1.0)
 	print '       tt:',QuickIntegral(t_TTBar,sel_Muon + '*('+charge1+'*'+charge2+' > 0)*'+weight_Muon+'*('+str(Rtt_uujj)+')',1.0)
 	print ' SMHigggs:',QuickIntegral(t_SMHiggs,sel_Muon +   '*('+charge1+'*'+charge2+' > 0)*'+weight_Muon,1.0)
-	print '      QCD:',QuickIntegral(t_QCDMu,sel_Muon +     '*('+charge1+'*'+charge2+' > 0)*'+weight_Muon,1.0)
-	#print 'Test: QCD Prediction in SS Isolated (using tn_ sample):', QuickIntegral(tn_QCDMu,sel_Muon + '*('+charge1+'*'+charge2+' > 0)*'+weight_Muon+'*(TrkIso_muon1<0.25)*(TrkIso_muon2<0.25)',1.0)
+	print '      QCD:',QuickIntegral(t_QCD,sel_Muon +     '*('+charge1+'*'+charge2+' > 0)*'+weight_Muon,1.0)
+	#print 'Test: QCD Prediction in SS Isolated (using tn_ sample):', QuickIntegral(tn_QCD,sel_Muon + '*('+charge1+'*'+charge2+' > 0)*'+weight_Muon+'*(TrkIso_muon1<0.25)*(TrkIso_muon2<0.25)',1.0)
 
 	#############################################
-	data_ss_iso = QuickEntries(tn_DoubleMuData,sel_Muon + '*('+charge1+'*'+charge2+' > 0)'+               '*((TrkIso_muon1<0.25)*(TrkIso_muon2<0.25))',1.0)
+	data_ss_iso = QuickEntries(tn_data,sel_Muon + '*('+charge1+'*'+charge2+' > 0)'+               '*((TrkIso_muon1<0.25)*(TrkIso_muon2<0.25))',1.0)
 	zjet_ss_iso = QuickIntegral(tn_ZJets,sel_Muon + '*('+charge1+'*'+charge2+' > 0)*'+weight_Muon+   '*((TrkIso_muon1<0.25)*(TrkIso_muon2<0.25))'+'*('+str(Rz_uujj)+')',1.0)
 	wjet_ss_iso = QuickIntegral(tn_WJets,sel_Muon + '*('+charge1+'*'+charge2+' > 0)*'+weight_Muon+   '*((TrkIso_muon1<0.25)*(TrkIso_muon2<0.25))',1.0)
 	stop_ss_iso = QuickIntegral(tn_SingleTop,sel_Muon + '*('+charge1+'*'+charge2+' > 0)*'+weight_Muon+    '*((TrkIso_muon1<0.25)*(TrkIso_muon2<0.25))',1.0)
@@ -2091,7 +2109,7 @@ def QCDStudy(sel_Muon,sel_munu,cutlogMuon,cutlogmunu,weight_Muon,weight_munu,ver
 	qcd_ss_iso = [qcd_ss_iso_val,qcd_ss_iso_err]
 	print 'qcd_ss_iso: ', qcd_ss_iso
 
-	data_op_iso = QuickEntries(tn_DoubleMuData,sel_Muon + '*('+charge1+'*'+charge2+' < 0)'+               '*((TrkIso_muon1<0.25)*(TrkIso_muon2<0.25))',1.0)
+	data_op_iso = QuickEntries(tn_data,sel_Muon + '*('+charge1+'*'+charge2+' < 0)'+               '*((TrkIso_muon1<0.25)*(TrkIso_muon2<0.25))',1.0)
 	zjet_op_iso = QuickIntegral(tn_ZJets,sel_Muon + '*('+charge1+'*'+charge2+' < 0)*'+weight_Muon+   '*((TrkIso_muon1<0.25)*(TrkIso_muon2<0.25))'+'*('+str(Rz_uujj)+')',1.0)
 	wjet_op_iso = QuickIntegral(tn_WJets,sel_Muon + '*('+charge1+'*'+charge2+' < 0)*'+weight_Muon+   '*((TrkIso_muon1<0.25)*(TrkIso_muon2<0.25))',1.0)
 	stop_op_iso = QuickIntegral(tn_SingleTop,sel_Muon + '*('+charge1+'*'+charge2+' < 0)*'+weight_Muon+    '*((TrkIso_muon1<0.25)*(TrkIso_muon2<0.25))',1.0)
@@ -2103,7 +2121,7 @@ def QCDStudy(sel_Muon,sel_munu,cutlogMuon,cutlogmunu,weight_Muon,weight_munu,ver
 	qcd_op_iso = [qcd_op_iso_val,qcd_op_iso_err]
 	print 'qcd_op_iso: ', qcd_op_iso
 
-	data_ss_inv = QuickEntries(tn_DoubleMuData,sel_Muon + '*('+charge1+'*'+charge2+' > 0)'+               '*((TrkIso_muon1>0.25) || (TrkIso_muon2>0.25))',1.0)
+	data_ss_inv = QuickEntries(tn_data,sel_Muon + '*('+charge1+'*'+charge2+' > 0)'+               '*((TrkIso_muon1>0.25) || (TrkIso_muon2>0.25))',1.0)
 	zjet_ss_inv = QuickIntegral(tn_ZJets,sel_Muon + '*('+charge1+'*'+charge2+' > 0)*'+weight_Muon+   '*((TrkIso_muon1>0.25) || (TrkIso_muon2>0.25))'+'*('+str(Rz_uujj)+')',1.0)
 	wjet_ss_inv = QuickIntegral(tn_WJets,sel_Muon + '*('+charge1+'*'+charge2+' > 0)*'+weight_Muon+   '*((TrkIso_muon1>0.25) || (TrkIso_muon2>0.25))',1.0)
 	stop_ss_inv = QuickIntegral(tn_SingleTop,sel_Muon + '*('+charge1+'*'+charge2+' > 0)*'+weight_Muon+    '*((TrkIso_muon1>0.25) || (TrkIso_muon2>0.25))',1.0)
@@ -2115,7 +2133,7 @@ def QCDStudy(sel_Muon,sel_munu,cutlogMuon,cutlogmunu,weight_Muon,weight_munu,ver
 	qcd_ss_inv = [qcd_ss_inv_val,qcd_ss_inv_err]
 	print 'qcd_ss_inv: ', qcd_ss_inv
 
-	data_op_inv = QuickEntries(tn_DoubleMuData,sel_Muon + '*('+charge1+'*'+charge2+' < 0)'+               '*((TrkIso_muon1>0.25) || (TrkIso_muon2>0.25))',1.0)
+	data_op_inv = QuickEntries(tn_data,sel_Muon + '*('+charge1+'*'+charge2+' < 0)'+               '*((TrkIso_muon1>0.25) || (TrkIso_muon2>0.25))',1.0)
 	zjet_op_inv = QuickIntegral(tn_ZJets,sel_Muon + '*('+charge1+'*'+charge2+' < 0)*'+weight_Muon+   '*((TrkIso_muon1>0.25) || (TrkIso_muon2>0.25))'+'*('+str(Rz_uujj)+')',1.0)
 	wjet_op_inv = QuickIntegral(tn_WJets,sel_Muon + '*('+charge1+'*'+charge2+' < 0)*'+weight_Muon+   '*((TrkIso_muon1>0.25) || (TrkIso_muon2>0.25))',1.0)
 	stop_op_inv = QuickIntegral(tn_SingleTop,sel_Muon + '*('+charge1+'*'+charge2+' < 0)*'+weight_Muon+    '*((TrkIso_muon1>0.25) || (TrkIso_muon2>0.25))',1.0)
@@ -2143,7 +2161,7 @@ def QCDStudy(sel_Muon,sel_munu,cutlogMuon,cutlogmunu,weight_Muon,weight_munu,ver
 	sameoppscale =  GetStats(studyvals)
 	print "\nIn QCD MC, the conversion factor between same-sign muon events and all events is:", texentry4(sameoppscale)
 
-	Q_ssiso = QuickIntegral(tn_QCDMu,sel_Muon+'*(TrkIso_muon1<0.1)*('+charge1+'*'+charge2+' > 0)*'+weight_Muon,1.0)
+	Q_ssiso = QuickIntegral(tn_QCD,sel_Muon+'*(TrkIso_muon1<0.1)*('+charge1+'*'+charge2+' > 0)*'+weight_Muon,1.0)
 	studyvals = []
 	for x in range(10000):#fixme todo changed from 1,000 to 10,000
 		same = RR(Q_ss)
@@ -3352,7 +3370,7 @@ def PrintRuns():
 
 def GetNormalizationScaleFactors( selection, FileDirectory, controlregion_1, controlregion_2, canUseTTDD):
 	global analysisChannel
-	print 'getting Muon scale factors :'
+	print 'getting '+analysisChannel+' scale factors :'
 	# for f in os.popen('ls '+FileDirectory+"| grep \".root\"").readlines():
 	# 	exec('t_'+f.replace(".root\n","")+" = TFile.Open(\""+FileDirectory+"/"+f.replace("\n","")+"\")"+".Get(\""+TreeName+"\")")
 	# print QuickEntries(t_DoubleMuData,selection + '*' + controlregion_1,1.0)
