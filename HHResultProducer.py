@@ -221,13 +221,12 @@ emu_id_eff_err = 0.0027#v7 JEC
 
 # QCD data-driven scale factor
 useDataDrivenQCD = True
-#fbd_Muon = [1.2784, 0.0036]
-fbd_Muon     = [1.426, 0.025] # Feb 2018
+fbd_Muon     = [1.449, 0.03] # Apr 18, 2018
 fbd_Electron = [1.332, 0.165] # Feb 2018
 
-# tt, z initial SF calculated using QCD MC (Jan 2018)
-Rz_qcdMC = [0.962831123534, 0.0]
-Rtt_qcdMC = [1.11543113384, 0.0]
+# tt, z SF calculated using Data with NEW method (Apr 18, 2018)
+Rz_data = [1.152, 0.013]
+Rtt_data = [1.016, 0.062]
 
 
 #analysisChannel = 'muon'
@@ -536,6 +535,9 @@ def main():
 		
 		QCDStudy(qcdselection,qcdselection,MuonOptCutFile,MuNuOptCutFile,NormalWeight,NormalWeightMuNu,version_name)
 
+	if False:
+		[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err],[Fbd_uujj,Fbd_uujj_err]] = GetNormalizationScaleFactorsAndFbd(NormalWeight+'*'+preselection, NormalDirectory, dyControlRegion, ttControlRegion,0)
+		exit()
 
 	# ====================================================================================================================================================== #
 	# This is a testing plot routine for use with the new Displaced SUSY (l+b) samples
@@ -710,7 +712,7 @@ def main():
 			exit()
 		# Get Scale Factors
 		[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = GetNormalizationScaleFactors( NormalWeight+'*'+preselection, NormalDirectory, dyControlRegion, ttControlRegion,0)
-		#[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = [[0.974561303332, 0.00553],[1.11001331611, 0.01308]]
+		#[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = [Rz_data,Rtt_data]
 		# AH: To speed things up when debugging
 
 		[[Rw_uvjj,Rw_uvjj_err],[Rtt_uvjj,Rtt_uvjj_err]]=[[1.,0.],[1.,0.]]
@@ -1812,7 +1814,7 @@ def setZeroBinErrors(data, bg):
 def setZeroBinErrors_tgraph(data_hist,data, bg, sig_hist1, sig_hist2, blinded):
 	start = False
 	nBins = data.GetN()
-	blindstart=0.15
+	blindstart=0.1
 	for bins in range(nBins):
 		alpha = 1 - 0.6827;
 		N = data.GetY()[bins]
@@ -2054,8 +2056,7 @@ def QCDStudy(sel_Muon,sel_munu,cutlogMuon,cutlogmunu,weight_Muon,weight_munu,ver
 		tn_QCD  = tn_QCDEle
 	print 'Get DY & TTbar Data/MC normalization scale factors'
 	[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = GetNormalizationScaleFactors( NormalWeight+'*'+preselection, NormalDirectory, dyControlRegion, ttControlRegion,1)
-	#[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = [[0.7878836290932162, 0.002600000000000006], [0.8199547022957769, 0.010549999999999738]] #values from Dec 2017
-	#[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = [Rz_qcdMC, Rtt_qcdMC] #initial SF calculated using QCD MC
+	#[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = [Rz_data, Rtt_data]
 	print '[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]]=',[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]]
 
 	print '\n\n--------------\n--------------\nPerforming QCD Study'
@@ -2107,7 +2108,18 @@ def QCDStudy(sel_Muon,sel_munu,cutlogMuon,cutlogmunu,weight_Muon,weight_munu,ver
 	qcd_ss_iso_val = data_ss_iso[0]-(zjet_ss_iso[0] + wjet_ss_iso[0] + stop_ss_iso[0] + vv_ss_iso[0] + tt_ss_iso[0] + smh_ss_iso[0])
 	qcd_ss_iso_err = math.sqrt(data_ss_iso[1]**2 + zjet_ss_iso[1]**2 + wjet_ss_iso[1]**2 + stop_ss_iso[1]**2 + vv_ss_iso[1]**2 + tt_ss_iso[1]**2 + smh_ss_iso[1]**2)
 	qcd_ss_iso = [qcd_ss_iso_val,qcd_ss_iso_err]
+	oth_ss_iso = [wjet_ss_iso[0] + stop_ss_iso[0] + vv_ss_iso[0] + smh_ss_iso[0], math.sqrt(wjet_ss_iso[1]**2 + stop_ss_iso[1]**2 + vv_ss_iso[1]**2 + smh_ss_iso[1]**2)]
+	print 'data_ss_iso: ', data_ss_iso
+	print 'zjet_ss_iso: ', zjet_ss_iso
+	print 'tt_ss_iso: ', tt_ss_iso
+	print 'oth_ss_iso: ', oth_ss_iso
+	print '		wjet_ss_iso: ', wjet_ss_iso
+	print '		stop_ss_iso: ', stop_ss_iso
+	print '		vv_ss_iso: ', vv_ss_iso
+	print '		smh_ss_iso: ', smh_ss_iso
 	print 'qcd_ss_iso: ', qcd_ss_iso
+	wjet_ss_iso_ent = QuickEntries(tn_WJets,sel_Muon + '*('+charge1+'*'+charge2+' > 0)*'+weight_Muon+   '*((TrkIso_muon1<0.25)*(TrkIso_muon2<0.25))',1.0)
+	print 'Wjets entries in ss_iso :', wjet_ss_iso_ent
 
 	data_op_iso = QuickEntries(tn_data,sel_Muon + '*('+charge1+'*'+charge2+' < 0)'+               '*((TrkIso_muon1<0.25)*(TrkIso_muon2<0.25))',1.0)
 	zjet_op_iso = QuickIntegral(tn_ZJets,sel_Muon + '*('+charge1+'*'+charge2+' < 0)*'+weight_Muon+   '*((TrkIso_muon1<0.25)*(TrkIso_muon2<0.25))'+'*('+str(Rz_uujj)+')',1.0)
@@ -2119,7 +2131,18 @@ def QCDStudy(sel_Muon,sel_munu,cutlogMuon,cutlogmunu,weight_Muon,weight_munu,ver
 	qcd_op_iso_val = data_op_iso[0]-(zjet_op_iso[0] + wjet_op_iso[0] + stop_op_iso[0] + vv_op_iso[0] + tt_op_iso[0] + smh_op_iso[0])
 	qcd_op_iso_err = math.sqrt(data_op_iso[1]**2 + zjet_op_iso[1]**2 + wjet_op_iso[1]**2 + stop_op_iso[1]**2 + vv_op_iso[1]**2 + tt_op_iso[1]**2 + smh_op_iso[1]**2)
 	qcd_op_iso = [qcd_op_iso_val,qcd_op_iso_err]
+	oth_op_iso = [wjet_op_iso[0] + stop_op_iso[0] + vv_op_iso[0] + smh_op_iso[0], math.sqrt(wjet_op_iso[1]**2 + stop_op_iso[1]**2 + vv_op_iso[1]**2 + smh_op_iso[1]**2)]
+	print 'data_op_iso: ', data_op_iso
+	print 'zjet_op_iso: ', zjet_op_iso
+	print 'tt_op_iso: ', tt_op_iso
+	print 'oth_op_iso: ', oth_op_iso
+	print '		wjet_op_iso: ', wjet_op_iso
+	print '		stop_op_iso: ', stop_op_iso
+	print '		vv_op_iso: ', vv_op_iso
+	print '		smh_op_iso: ', smh_op_iso
 	print 'qcd_op_iso: ', qcd_op_iso
+	wjet_op_iso_ent = QuickEntries(tn_WJets,sel_Muon + '*('+charge1+'*'+charge2+' < 0)*'+weight_Muon+   '*((TrkIso_muon1<0.25)*(TrkIso_muon2<0.25))',1.0)
+	print 'Wjets entries in op_iso :', wjet_op_iso_ent
 
 	data_ss_inv = QuickEntries(tn_data,sel_Muon + '*('+charge1+'*'+charge2+' > 0)'+               '*((TrkIso_muon1>0.25) || (TrkIso_muon2>0.25))',1.0)
 	zjet_ss_inv = QuickIntegral(tn_ZJets,sel_Muon + '*('+charge1+'*'+charge2+' > 0)*'+weight_Muon+   '*((TrkIso_muon1>0.25) || (TrkIso_muon2>0.25))'+'*('+str(Rz_uujj)+')',1.0)
@@ -2131,7 +2154,18 @@ def QCDStudy(sel_Muon,sel_munu,cutlogMuon,cutlogmunu,weight_Muon,weight_munu,ver
 	qcd_ss_inv_val = data_ss_inv[0]-(zjet_ss_inv[0] + wjet_ss_inv[0] + stop_ss_inv[0] + vv_ss_inv[0] + tt_ss_inv[0] + smh_ss_inv[0])
 	qcd_ss_inv_err = math.sqrt(data_ss_inv[1]**2 + zjet_ss_inv[1]**2 + wjet_ss_inv[1]**2 + stop_ss_inv[1]**2 + vv_ss_inv[1]**2 + tt_ss_inv[1]**2 + smh_ss_inv[1]**2)
 	qcd_ss_inv = [qcd_ss_inv_val,qcd_ss_inv_err]
+	oth_ss_inv = [wjet_ss_inv[0] + stop_ss_inv[0] + vv_ss_inv[0] + smh_ss_inv[0], math.sqrt(wjet_ss_inv[1]**2 + stop_ss_inv[1]**2 + vv_ss_inv[1]**2 + smh_ss_inv[1]**2)]
+	print 'data_ss_inv: ', data_ss_inv
+	print 'zjet_ss_inv: ', zjet_ss_inv
+	print 'tt_ss_inv: ', tt_ss_inv
+	print 'oth_ss_inv: ', oth_ss_inv
+	print '		wjet_ss_inv: ', wjet_ss_inv
+	print '		stop_ss_inv: ', stop_ss_inv
+	print '		vv_ss_inv: ', vv_ss_inv
+	print '		smh_ss_inv: ', smh_ss_inv
 	print 'qcd_ss_inv: ', qcd_ss_inv
+	wjet_ss_inv_ent = QuickEntries(tn_WJets,sel_Muon + '*('+charge1+'*'+charge2+' > 0)*'+weight_Muon+   '*((TrkIso_muon1>0.25) || (TrkIso_muon2>0.25))',1.0)
+	print 'Wjets entries in ss_inv :', wjet_ss_inv_ent
 
 	data_op_inv = QuickEntries(tn_data,sel_Muon + '*('+charge1+'*'+charge2+' < 0)'+               '*((TrkIso_muon1>0.25) || (TrkIso_muon2>0.25))',1.0)
 	zjet_op_inv = QuickIntegral(tn_ZJets,sel_Muon + '*('+charge1+'*'+charge2+' < 0)*'+weight_Muon+   '*((TrkIso_muon1>0.25) || (TrkIso_muon2>0.25))'+'*('+str(Rz_uujj)+')',1.0)
@@ -2143,7 +2177,18 @@ def QCDStudy(sel_Muon,sel_munu,cutlogMuon,cutlogmunu,weight_Muon,weight_munu,ver
 	qcd_op_inv_val = data_op_inv[0]-(zjet_op_inv[0] + wjet_op_inv[0] + stop_op_inv[0] + vv_op_inv[0] + tt_op_inv[0] + smh_op_inv[0])
 	qcd_op_inv_err = math.sqrt(data_op_inv[1]**2 + zjet_op_inv[1]**2 + wjet_op_inv[1]**2 + stop_op_inv[1]**2 + vv_op_inv[1]**2 + tt_op_inv[1]**2 + smh_op_inv[1]**2)
 	qcd_op_inv = [qcd_op_inv_val,qcd_op_inv_err]
+	oth_op_inv = [wjet_op_inv[0] + stop_op_inv[0] + vv_op_inv[0] + smh_op_inv[0], math.sqrt(wjet_op_inv[1]**2 + stop_op_inv[1]**2 + vv_op_inv[1]**2 + smh_op_inv[1]**2)]
+	print 'data_op_inv: ', data_op_inv
+	print 'zjet_op_inv: ', zjet_op_inv
+	print 'tt_op_inv: ', tt_op_inv
+	print 'oth_op_inv: ', oth_op_inv
+	print '		wjet_op_inv: ', wjet_op_inv
+	print '		stop_op_inv: ', stop_op_inv
+	print '		vv_op_inv: ', vv_op_inv
+	print '		smh_op_inv: ', smh_op_inv
 	print 'qcd_op_inv: ', qcd_op_inv
+	wjet_op_inv_ent = QuickEntries(tn_WJets,sel_Muon + '*('+charge1+'*'+charge2+' < 0)*'+weight_Muon+   '*((TrkIso_muon1>0.25) || (TrkIso_muon2>0.25))',1.0)
+	print 'Wjets entries in op_inv :', wjet_op_inv_ent
 	
 	f_bd = [(qcd_op_inv[0]/qcd_ss_inv[0]), (qcd_op_inv[0]/qcd_ss_inv[0])* math.sqrt((qcd_op_inv[1]/qcd_op_inv[0])**2 +  (qcd_ss_inv[1]/qcd_ss_inv[0])**2)]
 	data_qcd_op_iso = [(f_bd[0] * qcd_ss_iso[0]), (f_bd[0] * qcd_ss_iso[0])* math.sqrt((f_bd[1]/f_bd[0])**2 +  (qcd_ss_iso[1]/qcd_ss_iso[0])**2) ]
@@ -2614,7 +2659,7 @@ def QuickSysTableLine(treestruc,selection,inp_weight,scalefacs,fsys,chan,rglobal
 	else:
 		#--- using normal directory with ss requirement
 		qcd_sel = selec_new.replace('*('+charge1+'*'+charge2+' < 0)', '*('+charge1+'*'+charge2+' > 0)')
-		hs_rec_QCD=CreateHisto('hs_rec_QCD','QCD'              ,_btrees[5],recovariable,presentationbinning,qcd_sel,DataRecoStyle,Label) # + dataHLT ??
+		hs_rec_QCD=CreateHisto('hs_rec_QCD','QCD'              ,_btrees[5],recovariable,presentationbinning,qcd_sel+dataHLT,DataRecoStyle,Label) # + dataHLT ??
 		print '   Doing 2nd:'
 		hs_ss_rec_TTBar=CreateHisto('hs_ss_rec_TTBar','TTBar'  ,_btrees[0],recovariable,presentationbinning,qcd_sel+'*'+weight_new+'*('+str(scalefacs[1][0]*rglobalb)+')',DataRecoStyle,Label)
 		print '   Doing :'
@@ -2909,7 +2954,7 @@ def SysTable(optimlog, PreSelection_uujj, selection_uujj,selection_uvjj,NormalDi
 	print '\n AH: I am in SysTable(): after ModSelection, weight is ', weight, '\n'
 	
 	[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = GetNormalizationScaleFactors( PreSelection_uujj+'*'+NormalWeight, NormalDirectory, dyControlRegion, ttControlRegion,0)
-	#[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = [[1.0 , 0.001],[1.0 , 0.01]]
+	#[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = [Rz_data, Rtt_data]
 	# AH: To speed things up when debugging
 	
 	#[[Rw_uvjj,Rw_uvjj_err],[Rtt_uvjj,Rtt_uvjj_err]] = GetMuNuScaleFactors( selection_uvjj, NormalDirectory, '(MT_uv>70)*(MT_uv<110)*(JetCount<3.5)', '(MT_uv>70)*(MT_uv<110)*(JetCount>3.5)')
@@ -3275,6 +3320,25 @@ def GetScaleFactors(n1,n2,a1,a2,b1,b2,o1,o2):
 		Rb = (n2 - Ra*a2 - o2)/(b2) 
 	return [Ra, Rb]
 
+def GetScaleFactorsAndFbd(n1,n2,z1,z2,t1,t2,o1,o2,n1c,n2c,z1c,z2c,t1c,t2c,o1c,o2c,nb,zb,tb,ob,nd,zd,td,od):
+	#	print ' I am in GetScaleFactorsAndFbd() '
+	#	print ' printing all input '
+	#	print ' n1  n2  z1  z2  t1  t2  o1  o2  ', n1,n2,z1,z2,t1,t2,o1,o2
+	#	print ' n1c n2c z1c z2c t1c t2c o1c o2c ', n1c,n2c,z1c,z2c,t1c,t2c,o1c,o2c
+	#	print ' nb, zb, tb, ob, nd, zd, td, od  ', nb,zb,tb,ob,nd,zd,td,od
+	
+	fbd = 1.0
+	Rz = 1.0
+	Rt = 1.0
+	for x in range(10):
+		q1c = n1c - Rz*z1c - Rt*t1c - o1c
+		q2c = n2c - Rz*z2c - Rt*t2c - o2c
+		Rz = (n1 - Rt*t1 - fbd*q1c - o1)/(z1)
+		Rt = (n2 - Rz*z2 - fbd*q2c - o2)/(t2)
+		fbd = (nb - Rz*zb - Rt*tb - ob)/(nd - Rz*zd - Rt*td - od)
+		#print 'iter_th', x, 'Rz', Rz, 'Rt', Rt, 'fbd', fbd
+	return [Rz, Rt, fbd]
+
 def GetSimpleScaleFactors(n1,n2,a1,a2,b1,b2,o1,o2):
 	Ra = 1.0
 	Rb = 1.0
@@ -3417,49 +3481,49 @@ def GetNormalizationScaleFactors( selection, FileDirectory, controlregion_1, con
 		selec_qcd = selection.replace('*('+charge1+'*'+charge2+' < 0)', '*('+charge1+'*'+charge2+' > 0)*((TrkIso_muon1<0.25)*(TrkIso_muon2<0.25))')
 		
 		#---- using QCD noniso directory
-		ssiso_n1 = QuickEntries(tn_data          ,selec_qcd_data + '*' + controlregion_1,1.0) # + dataHLT ??
-		ssiso_z1 = QuickIntegral(tn_ZJets        ,selec_qcd + '*' + controlregion_1,Rz_qcdMC[0]) # initial SF cal using QCD MC
-		ssiso_t1 = QuickIntegral(tn_TTBar        ,selec_qcd + '*' + controlregion_1,Rtt_qcdMC[0]) # initial SF cal using QCD MC
+		ssiso_n1 = QuickEntries(tn_data          ,selec_qcd_data + '*' + controlregion_1+dataHLT,1.0) # + dataHLT ??
+		ssiso_z1 = QuickIntegral(tn_ZJets        ,selec_qcd + '*' + controlregion_1,Rz_data[0])
+		ssiso_t1 = QuickIntegral(tn_TTBar        ,selec_qcd + '*' + controlregion_1,Rtt_data[0])
 		ssiso_s1 = QuickIntegral(tn_SingleTop    ,selec_qcd + '*' + controlregion_1,1.0)
 		ssiso_w1 = QuickIntegral(tn_WJets        ,selec_qcd + '*' + controlregion_1,1.0)
 		ssiso_v1 = QuickIntegral(tn_DiBoson      ,selec_qcd + '*' + controlregion_1,1.0)
 		ssiso_h1 = QuickIntegral(tn_SMHiggs      ,selec_qcd + '*' + controlregion_1,1.0)
 		dataq1_val = fbd[0] * (ssiso_n1[0] - (ssiso_z1[0]+ssiso_t1[0]+ssiso_s1[0]+ssiso_w1[0]+ssiso_v1[0]+ssiso_h1[0]))
-		dataq1_err = fbd[0] * math.sqrt(ssiso_n1[0]**2 + ssiso_z1[0]**2 + ssiso_t1[0]**2 + ssiso_s1[0]**2 + ssiso_w1[0]**2 + ssiso_v1[0]**2 + ssiso_h1[0]**2)
+		dataq1_err = fbd[0] * math.sqrt(ssiso_n1[1]**2 + ssiso_z1[1]**2 + ssiso_t1[1]**2 + ssiso_s1[1]**2 + ssiso_w1[1]**2 + ssiso_v1[1]**2 + ssiso_h1[1]**2)
 		q1 = [dataq1_val,dataq1_err]
 		
-		ssiso_n2 = QuickEntries(tn_data          ,selec_qcd_data + '*' + controlregion_2,1.0) # + dataHLT ??
-		ssiso_z2 = QuickIntegral(tn_ZJets        ,selec_qcd + '*' + controlregion_2,Rz_qcdMC[0]) # initial SF cal using QCD MC
-		ssiso_t2 = QuickIntegral(tn_TTBar        ,selec_qcd + '*' + controlregion_2,Rtt_qcdMC[0]) # initial SF cal using QCD MC
+		ssiso_n2 = QuickEntries(tn_data          ,selec_qcd_data + '*' + controlregion_2+dataHLT,1.0) # + dataHLT ??
+		ssiso_z2 = QuickIntegral(tn_ZJets        ,selec_qcd + '*' + controlregion_2,Rz_data[0])
+		ssiso_t2 = QuickIntegral(tn_TTBar        ,selec_qcd + '*' + controlregion_2,Rtt_data[0])
 		ssiso_s2 = QuickIntegral(tn_SingleTop    ,selec_qcd + '*' + controlregion_2,1.0)
 		ssiso_w2 = QuickIntegral(tn_WJets        ,selec_qcd + '*' + controlregion_2,1.0)
 		ssiso_v2 = QuickIntegral(tn_DiBoson      ,selec_qcd + '*' + controlregion_2,1.0)
 		ssiso_h2 = QuickIntegral(tn_SMHiggs      ,selec_qcd + '*' + controlregion_2,1.0)
 		dataq2_val = fbd[0] * (ssiso_n2[0] - (ssiso_z2[0]+ssiso_t2[0]+ssiso_s2[0]+ssiso_w2[0]+ssiso_v2[0]+ssiso_h2[0]))
-		dataq2_err = fbd[0] * math.sqrt(ssiso_n2[0]**2 + ssiso_z2[0]**2 + ssiso_t2[0]**2 + ssiso_s2[0]**2 + ssiso_w2[0]**2 + ssiso_v2[0]**2 + ssiso_h2[0]**2)
+		dataq2_err = fbd[0] * math.sqrt(ssiso_n2[1]**2 + ssiso_z2[1]**2 + ssiso_t2[1]**2 + ssiso_s2[1]**2 + ssiso_w2[1]**2 + ssiso_v2[1]**2 + ssiso_h2[1]**2)
 		q2 = [dataq2_val,dataq2_err]
 
 #		#---- using Normal directory
-#		ssiso_n1 = QuickEntries(t_data          ,selec_qcd_data + '*' + controlregion_1,1.0) # + dataHLT ??
-#		ssiso_z1 = QuickIntegral(t_ZJets        ,selec_qcd + '*' + controlregion_1,Rz_qcdMC[0]) # initial SF cal using QCD MC
-#		ssiso_t1 = QuickIntegral(t_TTBar        ,selec_qcd + '*' + controlregion_1,Rtt_qcdMC[0]) # initial SF cal using QCD MC
+#		ssiso_n1 = QuickEntries(t_data          ,selec_qcd_data + '*' + controlregion_1+dataHLT,1.0) # + dataHLT ??
+#		ssiso_z1 = QuickIntegral(t_ZJets        ,selec_qcd + '*' + controlregion_1,Rz_data[0])
+#		ssiso_t1 = QuickIntegral(t_TTBar        ,selec_qcd + '*' + controlregion_1,Rtt_data[0])
 #		ssiso_s1 = QuickIntegral(t_SingleTop    ,selec_qcd + '*' + controlregion_1,1.0)
 #		ssiso_w1 = QuickIntegral(t_WJets        ,selec_qcd + '*' + controlregion_1,1.0)
 #		ssiso_v1 = QuickIntegral(t_DiBoson      ,selec_qcd + '*' + controlregion_1,1.0)
 #		ssiso_h1 = QuickIntegral(t_SMHiggs      ,selec_qcd + '*' + controlregion_1,1.0)
 #		dataq1_val = fbd[0] * (ssiso_n1[0] - (ssiso_z1[0]+ssiso_t1[0]+ssiso_s1[0]+ssiso_w1[0]+ssiso_v1[0]+ssiso_h1[0]))
-#		dataq1_err = fbd[0] * math.sqrt(ssiso_n1[0]**2 + ssiso_z1[0]**2 + ssiso_t1[0]**2 + ssiso_s1[0]**2 + ssiso_w1[0]**2 + ssiso_v1[0]**2 + ssiso_h1[0]**2)
+#		dataq1_err = fbd[0] * math.sqrt(ssiso_n1[1]**2 + ssiso_z1[1]**2 + ssiso_t1[1]**2 + ssiso_s1[1]**2 + ssiso_w1[1]**2 + ssiso_v1[1]**2 + ssiso_h1[1]**2)
 #		q1 = [dataq1_val,dataq1_err]
 #		
-#		ssiso_n2 = QuickEntries(t_data          ,selec_qcd_data + '*' + controlregion_2,1.0) # + dataHLT ??
-#		ssiso_z2 = QuickIntegral(t_ZJets        ,selec_qcd + '*' + controlregion_2,Rz_qcdMC[0]) # initial SF cal using QCD MC
-#		ssiso_t2 = QuickIntegral(t_TTBar        ,selec_qcd + '*' + controlregion_2,Rtt_qcdMC[0]) # initial SF cal using QCD MC
+#		ssiso_n2 = QuickEntries(t_data          ,selec_qcd_data + '*' + controlregion_2+dataHLT,1.0) # + dataHLT ??
+#		ssiso_z2 = QuickIntegral(t_ZJets        ,selec_qcd + '*' + controlregion_2,Rz_data[0])
+#		ssiso_t2 = QuickIntegral(t_TTBar        ,selec_qcd + '*' + controlregion_2,Rtt_data[0])
 #		ssiso_s2 = QuickIntegral(t_SingleTop    ,selec_qcd + '*' + controlregion_2,1.0)
 #		ssiso_w2 = QuickIntegral(t_WJets        ,selec_qcd + '*' + controlregion_2,1.0)
 #		ssiso_v2 = QuickIntegral(t_DiBoson      ,selec_qcd + '*' + controlregion_2,1.0)
 #		ssiso_h2 = QuickIntegral(t_SMHiggs      ,selec_qcd + '*' + controlregion_2,1.0)
 #		dataq2_val = fbd[0] * (ssiso_n2[0] - (ssiso_z2[0]+ssiso_t2[0]+ssiso_s2[0]+ssiso_w2[0]+ssiso_v2[0]+ssiso_h2[0]))
-#		dataq2_err = fbd[0] * math.sqrt(ssiso_n2[0]**2 + ssiso_z2[0]**2 + ssiso_t2[0]**2 + ssiso_s2[0]**2 + ssiso_w2[0]**2 + ssiso_v2[0]**2 + ssiso_h2[0]**2)
+#		dataq2_err = fbd[0] * math.sqrt(ssiso_n2[1]**2 + ssiso_z2[1]**2 + ssiso_t2[1]**2 + ssiso_s2[1]**2 + ssiso_w2[1]**2 + ssiso_v2[1]**2 + ssiso_h2[1]**2)
 #		q2 = [dataq2_val,dataq2_err]
 
 
@@ -3506,6 +3570,213 @@ def GetNormalizationScaleFactors( selection, FileDirectory, controlregion_1, con
 	print 'Muon: RZ  = ', zout[-1], zout[0], zout[1]
 	print 'Muon: Rtt = ', tout[-1], tout[0], tout[1]
 	return [ [ zout[0], zout[1] ] , [ tout[0],tout[1] ] ]
+
+def GetNormalizationScaleFactorsAndFbd( selection, FileDirectory, controlregion_1, controlregion_2, canUseTTDD):
+	global analysisChannel
+	print 'I am in GetNormalizationScaleFactorsAndFbd()'
+	print 'getting Muon scale factors :'
+	# for f in os.popen('ls '+FileDirectory+"| grep \".root\"").readlines():
+	# 	exec('t_'+f.replace(".root\n","")+" = TFile.Open(\""+FileDirectory+"/"+f.replace("\n","")+"\")"+".Get(\""+TreeName+"\")")
+	# print QuickEntries(t_DoubleMuData,selection + '*' + controlregion_1,1.0)
+	# print QuickIntegral(t_ZJets,selection + '*' + controlregion_1,1.0)
+	# sys.exit()
+	selection_data = selection.split('*(fact')[0]
+	if analysisChannel=='muon'     :
+		t_data  = t_DoubleMuData
+		tn_data = tn_DoubleMuData
+	if analysisChannel=='electron' :
+		t_data  = t_DoubleEleData
+		tn_data = tn_DoubleEleData
+	
+	N1 = QuickEntries(t_data,selection_data + '*' + controlregion_1+dataHLT,1.0)
+	#print selection_data + '*' + controlregion_1+dataHLT
+	N2 = QuickEntries(t_data,selection_data + '*' + controlregion_2+dataHLT,1.0)
+	
+	Z1 = QuickIntegral(t_ZJets,selection + '*' + controlregion_1,1.0)
+	T1 = QuickIntegral(t_TTBar,selection + '*' + controlregion_1,1.0)
+	s1 = QuickIntegral(t_SingleTop,selection + '*' + controlregion_1,1.0)
+	w1 = QuickIntegral(t_WJets,selection + '*' + controlregion_1,1.0)
+	v1 = QuickIntegral(t_DiBoson,selection + '*' + controlregion_1,1.0)
+	H1 = QuickIntegral(t_SMHiggs,selection   + '*' + controlregion_1,1.0)
+	
+	Z2 = QuickIntegral(t_ZJets,selection + '*' + controlregion_2,1.0)
+	T2 = QuickIntegral(t_TTBar,selection + '*' + controlregion_2,1.0)
+	s2 = QuickIntegral(t_SingleTop,selection + '*' + controlregion_2,1.0)
+	w2 = QuickIntegral(t_WJets,selection + '*' + controlregion_2,1.0)
+	v2 = QuickIntegral(t_DiBoson,selection + '*' + controlregion_2,1.0)
+	H2 = QuickIntegral(t_SMHiggs,selection   + '*' + controlregion_2,1.0)
+	
+	O1 = [ s1[0]+w1[0]+v1[0]+H1[0], math.sqrt( s1[1]*s1[1] + w1[1]*w1[1] + v1[1]*v1[1] + H1[1]*H1[1]) ]
+	O2 = [ s2[0]+w2[0]+v2[0]+H2[0], math.sqrt( s2[1]*s2[1] + w2[1]*w2[1] + v2[1]*v2[1] + H2[1]*H2[1]) ]
+	
+	w1ent = QuickEntries(t_WJets,selection + '*' + controlregion_1,1.0)
+	w2ent = QuickEntries(t_WJets,selection + '*' + controlregion_2,1.0)
+	z1ent = QuickEntries(t_ZJets,selection + '*' + controlregion_1,1.0)
+	z2ent = QuickEntries(t_ZJets,selection + '*' + controlregion_2,1.0)
+	
+	if (not useDataDrivenQCD):
+		print ' Please set useDataDrivenQCD to True'
+		exit()
+	else:
+		print ' using QCD data-driven when calculating '+analysisChannel+' scale factors'
+		selec_qcd_data = selection_data.replace('*('+charge1+'*'+charge2+' < 0)', '*('+charge1+'*'+charge2+' > 0)*((TrkIso_muon1<0.25)*(TrkIso_muon2<0.25))')
+		selec_qcd = selection.replace('*('+charge1+'*'+charge2+' < 0)', '*('+charge1+'*'+charge2+' > 0)*((TrkIso_muon1<0.25)*(TrkIso_muon2<0.25))')
+		
+		#---- using QCD noniso directory
+		print ' doing ss iso in region 1 '
+		ssiso_n1 = QuickEntries(tn_data          ,selec_qcd_data + '*' + controlregion_1+dataHLT,1.0) # + dataHLT ??
+		ssiso_z1 = QuickIntegral(tn_ZJets        ,selec_qcd + '*' + controlregion_1,1.0)
+		ssiso_t1 = QuickIntegral(tn_TTBar        ,selec_qcd + '*' + controlregion_1,1.0)
+		ssiso_s1 = QuickIntegral(tn_SingleTop    ,selec_qcd + '*' + controlregion_1,1.0)
+		ssiso_w1 = QuickIntegral(tn_WJets        ,selec_qcd + '*' + controlregion_1,1.0)
+		ssiso_v1 = QuickIntegral(tn_DiBoson      ,selec_qcd + '*' + controlregion_1,1.0)
+		ssiso_h1 = QuickIntegral(tn_SMHiggs      ,selec_qcd + '*' + controlregion_1,1.0)
+		ssiso_o1 = [ssiso_s1[0]+ssiso_w1[0]+ssiso_v1[0]+ssiso_h1[0], math.sqrt(ssiso_s1[1]**2 + ssiso_w1[1]**2 + ssiso_v1[1]**2 + ssiso_h1[1]**2)]
+		#ssiso_q1 = [(ssiso_n1[0] - (ssiso_z1[0]+ssiso_t1[0]+ssiso_o1[0])), math.sqrt(ssiso_n1[1]**2 + ssiso_z1[1]**2 + ssiso_t1[1]**2 + ssiso_o1[1]**2)]
+		
+		print ' doing ss iso in region 2 '
+		ssiso_n2 = QuickEntries(tn_data  ,selec_qcd_data + '*' + controlregion_2+dataHLT,1.0) # + dataHLT ??
+		ssiso_z2 = QuickIntegral(tn_ZJets        ,selec_qcd + '*' + controlregion_2,1.0)
+		ssiso_t2 = QuickIntegral(tn_TTBar        ,selec_qcd + '*' + controlregion_2,1.0)
+		ssiso_s2 = QuickIntegral(tn_SingleTop    ,selec_qcd + '*' + controlregion_2,1.0)
+		ssiso_w2 = QuickIntegral(tn_WJets        ,selec_qcd + '*' + controlregion_2,1.0)
+		ssiso_v2 = QuickIntegral(tn_DiBoson      ,selec_qcd + '*' + controlregion_2,1.0)
+		ssiso_h2 = QuickIntegral(tn_SMHiggs      ,selec_qcd + '*' + controlregion_2,1.0)
+		ssiso_o2 = [ssiso_s2[0]+ssiso_w2[0]+ssiso_v2[0]+ssiso_h2[0], math.sqrt(ssiso_s2[1]**2 + ssiso_w2[1]**2 + ssiso_v2[1]**2 + ssiso_h2[1]**2)]
+		#ssiso_q2 = [(ssiso_n2[0] - (ssiso_z2[0]+ssiso_t2[0]+ssiso_o2[0])), math.sqrt(ssiso_n2[1]**2 + ssiso_z2[1]**2 + ssiso_t2[1]**2 + ssiso_o2[1]**2)]
+		
+		#		#---- using Normal directory
+		#		ssiso_n1 = QuickEntries(t_data          ,selec_qcd_data + '*' + controlregion_1+dataHLT,1.0) # + dataHLT ??
+		#		ssiso_z1 = QuickIntegral(t_ZJets        ,selec_qcd + '*' + controlregion_1,1.0)
+		#		ssiso_t1 = QuickIntegral(t_TTBar        ,selec_qcd + '*' + controlregion_1,1.0)
+		#		ssiso_s1 = QuickIntegral(t_SingleTop    ,selec_qcd + '*' + controlregion_1,1.0)
+		#		ssiso_w1 = QuickIntegral(t_WJets        ,selec_qcd + '*' + controlregion_1,1.0)
+		#		ssiso_v1 = QuickIntegral(t_DiBoson      ,selec_qcd + '*' + controlregion_1,1.0)
+		#		ssiso_h1 = QuickIntegral(t_SMHiggs      ,selec_qcd + '*' + controlregion_1,1.0)
+		#
+		#		ssiso_n2 = QuickEntries(t_data          ,selec_qcd_data + '*' + controlregion_2+dataHLT,1.0) # + dataHLT ??
+		#		ssiso_z2 = QuickIntegral(t_ZJets        ,selec_qcd + '*' + controlregion_2,1.0)
+		#		ssiso_t2 = QuickIntegral(t_TTBar        ,selec_qcd + '*' + controlregion_2,1.0)
+		#		ssiso_s2 = QuickIntegral(t_SingleTop    ,selec_qcd + '*' + controlregion_2,1.0)
+		#		ssiso_w2 = QuickIntegral(t_WJets        ,selec_qcd + '*' + controlregion_2,1.0)
+		#		ssiso_v2 = QuickIntegral(t_DiBoson      ,selec_qcd + '*' + controlregion_2,1.0)
+		#		ssiso_h2 = QuickIntegral(t_SMHiggs      ,selec_qcd + '*' + controlregion_2,1.0)
+		
+		ssiso_w1ent = QuickEntries(tn_WJets        ,selec_qcd + '*' + controlregion_1,1.0)
+		ssiso_w2ent = QuickEntries(tn_WJets        ,selec_qcd + '*' + controlregion_2,1.0)
+		ssiso_z1ent = QuickEntries(tn_ZJets        ,selec_qcd + '*' + controlregion_1,1.0)
+		ssiso_z2ent = QuickEntries(tn_ZJets        ,selec_qcd + '*' + controlregion_2,1.0)
+		
+		print 'ssiso_cr_n:', ssiso_n1, ssiso_n2
+		print 'ssiso_cr_z:', ssiso_z1, ssiso_z2
+		print 'ssiso_cr_t:', ssiso_t1, ssiso_t2
+		print 'ssiso_cr_o:', ssiso_o1, ssiso_o2
+		print '    ssiso_cr_w:', ssiso_w1, ssiso_w2
+		print '   ssiso_cr_vv:', ssiso_v1, ssiso_v2
+		print '   ssiso_cr_st:', ssiso_s1, ssiso_s2
+		print '  ssiso_cr_smh:', ssiso_h1, ssiso_h2
+		#print 'ssiso_cr_q:', ssiso_q1, ssiso_q2
+		print 'Wjets entries in ss iso CR1 CR2 :', ssiso_w1ent, ssiso_w2ent
+		print 'Zjets entries in ss iso CR1 CR2 :', ssiso_z1ent, ssiso_z2ent
+		
+		#----- invert isolation in nominal region for f_bd
+		print ' doing invert iso in nominal region for f_bd '
+		selec_ssinv_data = selection_data.replace('*('+charge1+'*'+charge2+' < 0)', '*('+charge1+'*'+charge2+' > 0)*((TrkIso_muon1>0.25) || (TrkIso_muon2>0.25))')
+		selec_ssinv      =      selection.replace('*('+charge1+'*'+charge2+' < 0)', '*('+charge1+'*'+charge2+' > 0)*((TrkIso_muon1>0.25) || (TrkIso_muon2>0.25))')
+		selec_opinv_data = selection_data.replace('*('+charge1+'*'+charge2+' < 0)', '*('+charge1+'*'+charge2+' < 0)*((TrkIso_muon1>0.25) || (TrkIso_muon2>0.25))')
+		selec_opinv      =      selection.replace('*('+charge1+'*'+charge2+' < 0)', '*('+charge1+'*'+charge2+' < 0)*((TrkIso_muon1>0.25) || (TrkIso_muon2>0.25))')
+		
+		data_ss_inv = QuickEntries(tn_data         ,selec_ssinv_data+dataHLT, 1.0)
+		zjet_ss_inv = QuickIntegral(tn_ZJets       ,selec_ssinv, 1.0)
+		tt_ss_inv   = QuickIntegral(tn_TTBar       ,selec_ssinv, 1.0)
+		wjet_ss_inv = QuickIntegral(tn_WJets       ,selec_ssinv, 1.0)
+		stop_ss_inv = QuickIntegral(tn_SingleTop   ,selec_ssinv, 1.0)
+		vv_ss_inv   = QuickIntegral(tn_DiBoson     ,selec_ssinv, 1.0)
+		smh_ss_inv  = QuickIntegral(tn_SMHiggs     ,selec_ssinv, 1.0)
+		other_ss_inv = [wjet_ss_inv[0] + stop_ss_inv[0] + vv_ss_inv[0] + smh_ss_inv[0], math.sqrt(wjet_ss_inv[1]**2 + stop_ss_inv[1]**2 + vv_ss_inv[1]**2 + smh_ss_inv[1]**2)]
+		
+		data_op_inv = QuickEntries(tn_data         ,selec_opinv_data+dataHLT,1.0)
+		zjet_op_inv = QuickIntegral(tn_ZJets       ,selec_opinv, 1.0)
+		tt_op_inv   = QuickIntegral(tn_TTBar       ,selec_opinv, 1.0)
+		wjet_op_inv = QuickIntegral(tn_WJets       ,selec_opinv, 1.0)
+		stop_op_inv = QuickIntegral(tn_SingleTop   ,selec_opinv, 1.0)
+		vv_op_inv   = QuickIntegral(tn_DiBoson     ,selec_opinv, 1.0)
+		smh_op_inv  = QuickIntegral(tn_SMHiggs     ,selec_opinv, 1.0)
+		other_op_inv = [wjet_op_inv[0] + stop_op_inv[0] + vv_op_inv[0] + smh_op_inv[0], math.sqrt(wjet_op_inv[1]**2 + stop_op_inv[1]**2 + vv_op_inv[1]**2 + smh_op_inv[1]**2)]
+		
+		wjet_ss_inv_ent = QuickEntries(tn_WJets       ,selec_ssinv, 1.0)
+		wjet_op_inv_ent = QuickEntries(tn_WJets       ,selec_opinv, 1.0)
+		zjet_ss_inv_ent = QuickEntries(tn_ZJets       ,selec_ssinv, 1.0)
+		zjet_op_inv_ent = QuickEntries(tn_ZJets       ,selec_opinv, 1.0)
+		
+		print 'data_inv : ss, os:', data_ss_inv , data_op_inv
+		print 'zjet_inv : ss, os:', zjet_ss_inv , zjet_op_inv
+		print 'tt_inv   : ss, os:', tt_ss_inv   , tt_op_inv
+		print 'wjet_inv : ss, os:', wjet_ss_inv , wjet_op_inv
+		print 'stop_inv : ss, os:', stop_ss_inv , stop_op_inv
+		print 'vv_inv   : ss, os:', vv_ss_inv   , vv_op_inv
+		print 'smh_inv  : ss, os:', smh_ss_inv  , smh_op_inv
+		print 'other_inv: ss, os:', other_ss_inv, other_op_inv
+		print 'Wjets entries in the inv iso: ss, os :', wjet_ss_inv_ent, wjet_op_inv_ent
+		print 'Zjets entries in the inv iso: ss, os :', zjet_ss_inv_ent, zjet_op_inv_ent
+		
+		#vals = GetScaleFactorsAndFbd(N1[0],N2[0],Z1[0],Z2[0],T1[0],T2[0],O1[0],O2[0],ssiso_n1[0],ssiso_n2[0],ssiso_z1[0],ssiso_z2[0],ssiso_t1[0],ssiso_t2[0],ssiso_o1[0],ssiso_o2[0],data_op_inv[0],zjet_op_inv[0],tt_op_inv[0],other_op_inv[0],data_ss_inv[0],zjet_ss_inv[0],tt_ss_inv[0],other_ss_inv[0])
+		#print ' vals ', vals
+		
+		print ' Getting avg and uncer of Rz Rt Fbd '
+		zvals = []
+		tvals = []
+		fbdvals = []
+		for x in range(1000):#fixme was 10000
+			variation = (GetScaleFactorsAndFbd(RR(N1),RR(N2),RR(Z1),RR(Z2),RR(T1),RR(T2),RR(O1),RR(O2),RR(ssiso_n1),RR(ssiso_n2),RR(ssiso_z1),RR(ssiso_z2),RR(ssiso_t1),RR(ssiso_t2),RR(ssiso_o1),RR(ssiso_o2),RR(data_op_inv),RR(zjet_op_inv),RR(tt_op_inv),RR(other_op_inv),RR(data_ss_inv),RR(zjet_ss_inv),RR(tt_ss_inv),RR(other_ss_inv)))
+			zvals.append(variation[0])
+			tvals.append(variation[1])
+			fbdvals.append(variation[2])
+		
+		zout   = GetStats(zvals)
+		tout   = GetStats(tvals)
+		fbdout = GetStats(fbdvals)
+#		zout = vals[0]
+#		tout = vals[1]
+#		fbdout = vals[2]
+	
+#	# ttbar force unity
+#	if useDataDrivenTTbar and canUseTTDD:
+#		print 'Using Data-driven TTbar'
+#		tout = [1.0,0.067,'1.000 +- 0.067'] #fixme todo need to understand why 0.067
+#	# Force to pre-calculated values to speed things up
+#	#zout = [3.251,0.059,'3.251 +- 0.059']
+#	#tout = [2.19,0.037,'2.19  +- 0.037']
+#	#print 'Using pre-calculated values, rerun if you add more data!'
+	
+	ssiso_q1 = [(ssiso_n1[0] - (ssiso_z1[0]*zout[0] + ssiso_t1[0]*tout[0] + ssiso_o1[0])), math.sqrt(ssiso_n1[1]**2 + (ssiso_z1[1]*zout[0])**2 + (ssiso_t1[1]*tout[0])**2 + ssiso_o1[1]**2)]
+	dataq1_val = fbdout[0] * ssiso_q1[0]
+	dataq1_err = fbdout[0] * ssiso_q1[1]
+	q1 = [dataq1_val,dataq1_err]
+	
+	ssiso_q2 = [(ssiso_n2[0] - (ssiso_z2[0]*zout[0] + ssiso_t2[0]*tout[0] + ssiso_o2[0])), math.sqrt(ssiso_n2[1]**2 + (ssiso_z2[1]*zout[0])**2 + (ssiso_t2[1]*tout[0])**2 + ssiso_o2[1]**2)]
+	dataq2_val = fbdout[0] * ssiso_q2[0]
+	dataq2_err = fbdout[0] * ssiso_q2[1]
+	q2 = [dataq2_val,dataq2_err]
+	
+	print 'MuMu scale factor integrals: CR1, CR2 '
+	print 'Data:',N1,N2
+	print 'Z:',Z1,Z2
+	print 'TT:',T1,T2
+	print 'Other:',O1,O2
+	print '       W:',w1,w2
+	print '      VV:',v1,v2
+	print '      ST:',s1,s2
+	print '     SMH:',H1,H2
+	print 'QCD:',q1,q2
+	print 'Wjets entries in CR1 CR2 :', w1ent, w2ent
+	print 'Zjets entries in CR1 CR2 :', z1ent, z2ent
+	
+	print '\n'
+	print 'MuMu: RZ  = ', zout[-1], zout[0], zout[1]
+	print 'MuMu: Rtt = ', tout[-1], tout[0], tout[1]
+	print 'MuMu: fbd = ', fbdout[-1], fbdout[0], fbdout[1]
+	return [ [ zout[0], zout[1] ] , [ tout[0], tout[1] ], [ fbdout[0], fbdout[1] ] ]
 
 def GetNormalizationScaleFactorsMod( selection, FileDirectory, controlregion_1, controlregion_2,samp):
 	# for f in os.popen('ls '+FileDirectory+"| grep \".root\"").readlines():
@@ -4117,10 +4388,10 @@ def MakeBasicPlot(recovariable,xlabel,presentationbinning,selection,weight,FileD
 		if (useDataDrivenQCD or 'QCDDataDriven' in tagname):
 #			#--- using qcd directory
 #			t_estQCD = tn_DoubleMuData
-#			qcd_sel_weight = selection.replace('*('+charge1+'*'+charge2+' < 0)', '*('+charge1+'*'+charge2+' > 0)*((TrkIso_muon1<0.25)*(TrkIso_muon2<0.25))') # + dataHLT ??
+#			qcd_sel_weight = selection.replace('*('+charge1+'*'+charge2+' < 0)', '*('+charge1+'*'+charge2+' > 0)*((TrkIso_muon1<0.25)*(TrkIso_muon2<0.25))'+dataHLT) # + dataHLT ??
 			#--- using normal directory with ss requirement
 			t_estQCD = t_DoubleMuData
-			qcd_sel_weight = selection.replace('*('+charge1+'*'+charge2+' < 0)', '*('+charge1+'*'+charge2+' > 0)') # + dataHLT ??
+			qcd_sel_weight = selection.replace('*('+charge1+'*'+charge2+' < 0)', '*('+charge1+'*'+charge2+' > 0)'+dataHLT) # + dataHLT ??
 			print 'Using data-driven for QCD est.'
 		else:
 			t_estQCD = t_QCDMu
@@ -4182,7 +4453,7 @@ def MakeBasicPlot(recovariable,xlabel,presentationbinning,selection,weight,FileD
 		hs_ss_rec_SMHiggs=CreateHisto('hs_ss_rec_SMHiggs','SMHiggs'       ,t_SMHiggs   ,recovariable,presentationbinning,qcd_sel_weight+'*'+weight                      ,SMHiggsStackStyle,Label)
 		
 		
-		print ' Looking at ss iso'
+		print ' Looking at ss iso : Integral : Entries'
 		print 'W:   ', hs_ss_rec_WJets.Integral(), hs_ss_rec_WJets.GetEntries()
 		print 'VV:  ', hs_ss_rec_DiBoson.Integral(), hs_ss_rec_DiBoson.GetEntries()
 		print 'Z:   ', hs_ss_rec_ZJets.Integral(), hs_ss_rec_ZJets.GetEntries()
@@ -4224,8 +4495,15 @@ def MakeBasicPlot(recovariable,xlabel,presentationbinning,selection,weight,FileD
 		#sig2name = 'M_{R}=900 x 1000'#+betamarker # AH:
 		#sig2name = 'LQ, M = 950 GeV, '+betamarker
 		if 'final' not in tagname:
-			hs_rec_Signal=CreateHisto('hs_rec_Signal',sig1name,t_HHres300,recovariable,presentationbinning,selection+'*'+weight,SignalStyle,Label)
-			hs_rec_Signal2=CreateHisto('hs_rec_Signal2',sig2name,t_HHres900,recovariable,presentationbinning,selection+'*'+weight,SignalStyle2,Label)
+			if 'bdt' not in recovariable:
+				hs_rec_Signal=CreateHisto('hs_rec_Signal',sig1name,t_HHres300,recovariable,presentationbinning,selection+'*'+weight,SignalStyle,Label)
+				hs_rec_Signal2=CreateHisto('hs_rec_Signal2',sig2name,t_HHres900,recovariable,presentationbinning,selection+'*'+weight,SignalStyle2,Label)
+			else:
+				exec ("_stree = t_HHres"+str(plotmass))
+				sig1name = 'M_{R} = '+str(plotmass)+' GeV (1 pb)'
+				sig2name = 'M_{R} = 900 GeV (1 pb)'
+				hs_rec_Signal=CreateHisto('hs_rec_Signal',sig1name,_stree,recovariable,presentationbinning,selection+'*'+weight,SignalStyle,Label)
+				hs_rec_Signal2=CreateHisto('hs_rec_Signal2',sig2name,t_HHres900,'bdt_discrim_M900',presentationbinning,selection+'*'+weight,SignalStyle2,Label)
 			print 'signal1,',sig1name,':',hs_rec_Signal.Integral()
 			print 'signal2,',sig2name,':',hs_rec_Signal2.Integral()
 			hs_rec_Signal.Scale(1000.)
@@ -4413,7 +4691,8 @@ def MakeBasicPlot(recovariable,xlabel,presentationbinning,selection,weight,FileD
 	MCStack=BeautifyStack(MCStack,Label)
 	hs_rec_Signal.Draw("HISTSAME")
 	if 'final' not in tagname:
-		hs_rec_Signal2.Draw("HISTSAME")
+		if 'bdt' not in recovariable:
+			hs_rec_Signal2.Draw("HISTSAME")
  	if 'PAS' in tagname and 'final' in tagname:
 		# sysTop.Draw("F")
 		hs_bgband.Draw("E2SAME")
@@ -4468,7 +4747,8 @@ def MakeBasicPlot(recovariable,xlabel,presentationbinning,selection,weight,FileD
 		#leg.AddEntry("", "", "");
 		leg.AddEntry("", "gg#rightarrow R#rightarrow HH#rightarrow bbZZ", "");
 		leg.AddEntry(hs_rec_Signal,sig1name,"l")
-		leg.AddEntry(hs_rec_Signal2,sig2name,"l")
+		if 'bdt' not in recovariable:
+			leg.AddEntry(hs_rec_Signal2,sig2name,"l")
 	else:
 		if 'PAS' in tagname:
 			leg.AddEntry(hs_bgband,'Unc. (stat + syst)')
@@ -6363,7 +6643,7 @@ def ShapeSystematic(channel,normalWeight,presel,finalWeight,finalSel):
 	#shapesysvar_uujj_ttjets =  [33.0, 33.01, 35.65, 35.19, 35.24, 36.16, 37.41, 39.09, 40.03, 40.9, 41.67, 42.47, 43.18, 43.87, 44.21, 44.56, 45.91, 47.12, 47.9, 48.52, 49.2, 47.6, 47.23, 47.62, 47.73, 45.32, 43.66, 44.82, 45.28, 44.54, 45.37, 45.37, 45.37, 47.85, 47.85, 47.85, 47.85, 47.85, 47.85, 47.85]
 
 def blind(h,pad):
-	blindstart=0.15
+	blindstart=0.1
 	for bin in range(h.GetNbinsX()):
 		if h.GetBinLowEdge(bin+1)>blindstart:
 			if pad==1:
