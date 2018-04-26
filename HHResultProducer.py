@@ -196,7 +196,7 @@ ttControlRegion_Electron = '(M_ee>100)*(Pt_miss>100)'
 # Weights for different MC selections, including integrated luminosity, event weight, and trigger weight
 #NormalWeightMuon = str(lumi)+'*weight_central'+trackerHIP1+trackerHIP2+doubleMuonHLT+doubleMuonIdAndIsoScale+bTagPreselSF
 NormalWeightMuon     = str(lumi)+'*weight_central'+trackerHIP1+trackerHIP2+doubleMuonHLT+doubleMuonIdAndIsoScale+bTagPreselSF
-NormalWeightElectron = str(lumi)+'*weight_central'+trackerHIP1+trackerHIP2+doubleElectronHLT+doubleElectronIdAndIsoScale+bTagPreselSF
+NormalWeightElectron = str(lumi)+'*weight_central'+doubleElectronHLT+doubleElectronIdAndIsoScale+bTagPreselSF#+trackerHIP1+trackerHIP2
 NormalWeightMuNu = str(lumi)+'*weight_central'+singleMuonHLT+singleMuonIdScale+singleMuonIsoScale+trackerHIP1
 NormalWeightEMu = str(lumi)+'*weight_central'+singleMuonHLTEMU+MuIdScaleEMU+MuIsoScaleEMU+eleRECOScale+eleHEEPScale+trackerHIPEMU
 NormalWeightEMuNoHLT = str(lumi)+'*weight_central'+MuIdScaleEMU+MuIsoScaleEMU+eleRECOScale+eleHEEPScale+trackerHIPEMU#fixme do we need scale factors here?
@@ -242,6 +242,9 @@ if (analysisChannel == 'muon'):
 	charge2 = 'Charge_muon2'
 	dyControlRegion = dyControlRegion_Muon
 	ttControlRegion = ttControlRegion_Muon
+	ell='u'
+	latexEll='#mu'
+	cosThetaStar="cosThetaStarMu"
 if (analysisChannel == 'electron'):
 	NormalWeight=NormalWeightElectron
 	preselection_nos=preselection_Electron_nos
@@ -252,7 +255,9 @@ if (analysisChannel == 'electron'):
 	charge2 = 'Charge_ele2'
 	dyControlRegion = dyControlRegion_Electron
 	ttControlRegion = ttControlRegion_Electron
-
+	ell='e'
+	latexEll='e'
+	cosThetaStar="cosThetaStarEle"
 
 # Next are the PDF uncertainties. 
 pdf_MASS   =[ 200, 250, 300 , 350 , 400 , 450 , 500 , 550 , 600 , 650 , 700 , 750 , 800 , 850 , 900 , 950 , 1000 , 1050 , 1100 , 1150 , 1200 , 1250, 1300, 1350, 1400, 1450, 1500, 1550, 1600, 1650, 1700, 1750, 1800, 1850, 1900, 1950, 2000]               
@@ -393,7 +398,11 @@ lqbinning = [round(x) for x in lqbinning]
 
 
 def main():
-
+	global analysisChannel
+	global preselection 
+	global ell
+	global latexEll
+	global cosThetaStar
 
 	#######################################################################################
     ######  The output directories, and the files that define final selection cuts  #######
@@ -649,16 +658,6 @@ def main():
 	# This is a basic plotting routine to make Analysis Note style plots with ratio plots. AN Analysis-Note
 	# ====================================================================================================================================================== #
 	if True :
-		global preselection 
-		if analysisChannel=='muon'     :
-			ell='u'
-			latexEll='#mu'
-			cosThetaStar="cosThetaStarMu"
-		if analysisChannel=='electron' :
-			ell='e'
-			latexEll='e'
-			cosThetaStar="cosThetaStarEle"
-
 		# Some modifications to the ST and LQ mass binning
 		bjetbinning = [-1.2,-1.01]
 		for x in range(24):
@@ -737,7 +736,7 @@ def main():
 		# Here are a few plots which are zoomed-in on control regions. 
 		
 		MakeBasicPlot("M_"+ell+ell,"M^{"+latexEll+latexEll+"} [GeV] (DY control region)",bosonzoombinning_uujj_Z,preselection,NormalWeight,NormalDirectory,'controlzoom_ZRegion',ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
-		MakeBasicPlot("Pt_miss","E_{T}^{miss} [GeV] (DY control region)",metzoombinning_uujj_Z,preselection+'*(M_uu>80)*(M_uu<100)',NormalWeight,NormalDirectory,'controlzoomZRegion',ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
+		MakeBasicPlot("Pt_miss","E_{T}^{miss} [GeV] (DY control region)",metzoombinning_uujj_Z,preselection+'*(M_'+ell+ell+'>80)*(M_'+ell+ell+'<100)',NormalWeight,NormalDirectory,'controlzoomZRegion',ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
 		MakeBasicPlot("M_"+ell+ell,"M^{"+latexEll+latexEll+"} [GeV] (TT control region)",bosonzoombinning_uujj_TT,preselection+'*'+ttControlRegion,NormalWeight,NormalDirectory,'controlzoom_TTRegion',ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
 		MakeBasicPlot("Pt_miss","E_{T}^{miss} [GeV] (TT control region)",metzoombinning_uujj_TT,preselection+'*'+ttControlRegion,NormalWeight,NormalDirectory,'controlzoomTTRegion',ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
 		
@@ -928,8 +927,8 @@ def main():
 		
 
 		# Here are a few plots which are zoomed-in on control regions. 
-		MakeBasicPlot("M_uu","M^{#mu#mu} [GeV]",[20,80,100],preselection,NormalWeight,NormalDirectory,'controlzoomPASTTBarDataDriven_ZRegiontagfree','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,500)
-		# MakeBasicPlot("M_uu","M^{#mu#mu} [GeV]",bosonzoombinning_uujj_Z,preselection,NormalWeight,NormalDirectory,'controlzoomPAS_ZRegion','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,500)
+		MakeBasicPlot("M_uu","M^{#mu#mu} [GeV]",[20,80,100],preselection,NormalWeight,NormalDirectory,'controlzoomPASTTBarDataDriven_ZRegiontagfree',ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,500)
+		# MakeBasicPlot("M_uu","M^{#mu#mu} [GeV]",bosonzoombinning_uujj_Z,preselection,NormalWeight,NormalDirectory,'controlzoomPAS_ZRegion',ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,500)
 		bosonzoombinning_uvjj = [20,70,110]
 		MakeBasicPlot("MT_uv","M_{T}^{#mu#nu} [GeV]",bosonzoombinning_uvjj,preselectionmunu+'*(MT_uv>70)*(MT_uv<150)*(JetCount<3.5)*(((CISV_jet1>0.8)+(CISV_jet2>0.8))<1)',NormalWeightMuNu,NormalDirectory,'controlzoomPAS_WRegiontagfree','uvjj',Rz_uujj, Rw_uvjj,Rtt_uvjj,'',version_name,500)
 		MakeBasicPlot("MT_uv","M_{T}^{#mu#nu} [GeV]",bosonzoombinning_uvjj,preselectionmunu+'*(MT_uv>70)*(MT_uv<150)*(JetCount>3.5)*(((CISV_jet1>0.8)+(CISV_jet2>0.8))>=1)',NormalWeightMuNu,NormalDirectory,'controlzoomPAS_TTRegiontagfree','uvjj',Rz_uujj, Rw_uvjj,Rtt_uvjj,'',version_name,500)
@@ -938,27 +937,27 @@ def main():
 		for flag in ['','tagfree']:
 
 			# Preselection plots in the UUJJ channel in the PAS style (no subplot)
-			MakeBasicPlot("Pt_jet1","p_{T}(jet_{1}) [GeV]",ptbinning,preselection,NormalWeight,NormalDirectory,'standardPAS_TTBarDataDriven'+flag,'uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,500)
-			MakeBasicPlot("Pt_jet2","p_{T}(jet_{2}) [GeV]",ptbinning,preselection,NormalWeight,NormalDirectory,'standardPAS_TTBarDataDriven'+flag,'uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,500)
-			MakeBasicPlot("Pt_muon1","p_{T}(#mu_{1}) [GeV]",ptbinning,preselection,NormalWeight,NormalDirectory,'standardPAS_TTBarDataDriven'+flag,'uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,500)
-			MakeBasicPlot("Pt_muon2","p_{T}(#mu_{2}) [GeV]",ptbinning2,preselection,NormalWeight,NormalDirectory,'standardPAS_TTBarDataDriven'+flag,'uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,500)
-			MakeBasicPlot("St_uujj","S_{T}^{#mu#mujj} [GeV]",stbinning,preselection,NormalWeight,NormalDirectory,'standardPAS_TTBarDataDriven'+flag,'uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,500)
-			MakeBasicPlot("M_uu","M^{#mu#mu} [GeV]",bosonbinning,preselection,NormalWeight,NormalDirectory,'standardPAS_TTBarDataDriven'+flag,'uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,500)
-			MakeBasicPlot("MH_uujj","M_{#muj} (lead jet combo) [GeV]",lqbinning,preselection,NormalWeight,NormalDirectory,'standardPAS_TTBarDataDriven'+flag,'uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,500)
-			MakeBasicPlot("M_uujj1","M_{#muj}_{1} [GeV]",lqbinning,preselection,NormalWeight,NormalDirectory,'standardPAS_TTBarDataDriven'+flag,'uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,500)
-			MakeBasicPlot("M_uujj2","M_{#muj}^{min} [GeV]",lqbinning,preselection,NormalWeight,NormalDirectory,'standardPAS_TTBarDataDriven'+flag,'uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,500)
-			MakeBasicPlot("JetCount","N_{jet}",nbinning,preselection,NormalWeight,NormalDirectory,'standardPAS_TTBarDataDriven'+flag,'uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,500)
+			MakeBasicPlot("Pt_jet1","p_{T}(jet_{1}) [GeV]",ptbinning,preselection,NormalWeight,NormalDirectory,'standardPAS_TTBarDataDriven'+flag,ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,500)
+			MakeBasicPlot("Pt_jet2","p_{T}(jet_{2}) [GeV]",ptbinning,preselection,NormalWeight,NormalDirectory,'standardPAS_TTBarDataDriven'+flag,ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,500)
+			MakeBasicPlot("Pt_muon1","p_{T}(#mu_{1}) [GeV]",ptbinning,preselection,NormalWeight,NormalDirectory,'standardPAS_TTBarDataDriven'+flag,ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,500)
+			MakeBasicPlot("Pt_muon2","p_{T}(#mu_{2}) [GeV]",ptbinning2,preselection,NormalWeight,NormalDirectory,'standardPAS_TTBarDataDriven'+flag,ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,500)
+			MakeBasicPlot("St_uujj","S_{T}^{#mu#mujj} [GeV]",stbinning,preselection,NormalWeight,NormalDirectory,'standardPAS_TTBarDataDriven'+flag,ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,500)
+			MakeBasicPlot("M_uu","M^{#mu#mu} [GeV]",bosonbinning,preselection,NormalWeight,NormalDirectory,'standardPAS_TTBarDataDriven'+flag,ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,500)
+			MakeBasicPlot("MH_uujj","M_{#muj} (lead jet combo) [GeV]",lqbinning,preselection,NormalWeight,NormalDirectory,'standardPAS_TTBarDataDriven'+flag,ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,500)
+			MakeBasicPlot("M_uujj1","M_{#muj}_{1} [GeV]",lqbinning,preselection,NormalWeight,NormalDirectory,'standardPAS_TTBarDataDriven'+flag,ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,500)
+			MakeBasicPlot("M_uujj2","M_{#muj}^{min} [GeV]",lqbinning,preselection,NormalWeight,NormalDirectory,'standardPAS_TTBarDataDriven'+flag,ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,500)
+			MakeBasicPlot("JetCount","N_{jet}",nbinning,preselection,NormalWeight,NormalDirectory,'standardPAS_TTBarDataDriven'+flag,ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,500)
 			#fixme todo added version with MC based ttbar background
-			MakeBasicPlot("Pt_jet1","p_{T}(jet_{1}) [GeV]",ptbinning,preselection,NormalWeight,NormalDirectory,'standardPAS'+flag,'uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,500)
-			MakeBasicPlot("Pt_jet2","p_{T}(jet_{2}) [GeV]",ptbinning,preselection,NormalWeight,NormalDirectory,'standardPAS'+flag,'uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,500)
-			MakeBasicPlot("Pt_muon1","p_{T}(#mu_{1}) [GeV]",ptbinning,preselection,NormalWeight,NormalDirectory,'standardPAS'+flag,'uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,500)
-			MakeBasicPlot("Pt_muon2","p_{T}(#mu_{2}) [GeV]",ptbinning2,preselection,NormalWeight,NormalDirectory,'standardPAS'+flag,'uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,500)
-			MakeBasicPlot("St_uujj","S_{T}^{#mu#mujj} [GeV]",stbinning,preselection,NormalWeight,NormalDirectory,'standardPAS'+flag,'uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,500)
-			MakeBasicPlot("M_uu","M^{#mu#mu} [GeV]",bosonbinning,preselection,NormalWeight,NormalDirectory,'standardPAS'+flag,'uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,500)
-			MakeBasicPlot("MH_uujj","M_{#muj} (lead jet combo) [GeV]",lqbinning,preselection,NormalWeight,NormalDirectory,'standardPAS'+flag,'uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,500)
-			MakeBasicPlot("M_uujj1","M_{#muj}_{1} [GeV]",lqbinning,preselection,NormalWeight,NormalDirectory,'standardPAS'+flag,'uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,500)
-			MakeBasicPlot("M_uujj2","M_{#muj}^{min} [GeV]",lqbinning,preselection,NormalWeight,NormalDirectory,'standardPAS'+flag,'uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,500)
-			MakeBasicPlot("JetCount","N_{jet}",nbinning,preselection,NormalWeight,NormalDirectory,'standardPAS'+flag,'uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,500)
+			MakeBasicPlot("Pt_jet1","p_{T}(jet_{1}) [GeV]",ptbinning,preselection,NormalWeight,NormalDirectory,'standardPAS'+flag,ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,500)
+			MakeBasicPlot("Pt_jet2","p_{T}(jet_{2}) [GeV]",ptbinning,preselection,NormalWeight,NormalDirectory,'standardPAS'+flag,ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,500)
+			MakeBasicPlot("Pt_muon1","p_{T}(#mu_{1}) [GeV]",ptbinning,preselection,NormalWeight,NormalDirectory,'standardPAS'+flag,ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,500)
+			MakeBasicPlot("Pt_muon2","p_{T}(#mu_{2}) [GeV]",ptbinning2,preselection,NormalWeight,NormalDirectory,'standardPAS'+flag,ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,500)
+			MakeBasicPlot("St_uujj","S_{T}^{#mu#mujj} [GeV]",stbinning,preselection,NormalWeight,NormalDirectory,'standardPAS'+flag,ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,500)
+			MakeBasicPlot("M_uu","M^{#mu#mu} [GeV]",bosonbinning,preselection,NormalWeight,NormalDirectory,'standardPAS'+flag,ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,500)
+			MakeBasicPlot("MH_uujj","M_{#muj} (lead jet combo) [GeV]",lqbinning,preselection,NormalWeight,NormalDirectory,'standardPAS'+flag,ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,500)
+			MakeBasicPlot("M_uujj1","M_{#muj}_{1} [GeV]",lqbinning,preselection,NormalWeight,NormalDirectory,'standardPAS'+flag,ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,500)
+			MakeBasicPlot("M_uujj2","M_{#muj}^{min} [GeV]",lqbinning,preselection,NormalWeight,NormalDirectory,'standardPAS'+flag,ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,500)
+			MakeBasicPlot("JetCount","N_{jet}",nbinning,preselection,NormalWeight,NormalDirectory,'standardPAS'+flag,ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,500)
 
 			# Preselection plots in the UVJJ channel in the PAS style (no subplot)
 			#fixme removing all uvjj plots for now
@@ -977,13 +976,13 @@ def main():
 			# Full Selection Plots in the PAS style
 			for lqmass in [200,250,300,500,550,600,650,800]:
 			#for lqmass in [500,900]:
-				MakeBasicPlot("St_uujj","S_{T}^{#mu#mujj} [GeV]",stbinning,preselection,NormalWeight,NormalDirectory,'finalTTBarDataDrivenPAS'+flag,'uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,MuonOptCutFile,version_name,lqmass)
-				MakeBasicPlot("M_uu","M^{#mu#mu} [GeV]",bosonbinning,preselection,NormalWeight,NormalDirectory,'finalTTBarDataDrivenPAS'+flag,'uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,MuonOptCutFile,version_name,lqmass)
-				MakeBasicPlot("M_uujj2","M_{#muj}^{min} [GeV]",lqbinning,preselection,NormalWeight,NormalDirectory,'finalTTBarDataDrivenPAS'+flag,'uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,MuonOptCutFile,version_name,lqmass)
+				MakeBasicPlot("St_uujj","S_{T}^{#mu#mujj} [GeV]",stbinning,preselection,NormalWeight,NormalDirectory,'finalTTBarDataDrivenPAS'+flag,ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,MuonOptCutFile,version_name,lqmass)
+				MakeBasicPlot("M_uu","M^{#mu#mu} [GeV]",bosonbinning,preselection,NormalWeight,NormalDirectory,'finalTTBarDataDrivenPAS'+flag,ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,MuonOptCutFile,version_name,lqmass)
+				MakeBasicPlot("M_uujj2","M_{#muj}^{min} [GeV]",lqbinning,preselection,NormalWeight,NormalDirectory,'finalTTBarDataDrivenPAS'+flag,ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,MuonOptCutFile,version_name,lqmass)
 			        #fixme todo added version with MC based ttbar background
-				MakeBasicPlot("St_uujj","S_{T}^{#mu#mujj} [GeV]",stbinning,preselection,NormalWeight,NormalDirectory,'finalPAS'+flag,'uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,MuonOptCutFile,version_name,lqmass)
-				MakeBasicPlot("M_uu","M^{#mu#mu} [GeV]",bosonbinning,preselection,NormalWeight,NormalDirectory,'finalPAS'+flag,'uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,MuonOptCutFile,version_name,lqmass)
-				MakeBasicPlot("M_uujj2","M_{#muj}^{min} [GeV]",lqbinning,preselection,NormalWeight,NormalDirectory,'finalPAS'+flag,'uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,MuonOptCutFile,version_name,lqmass)
+				MakeBasicPlot("St_uujj","S_{T}^{#mu#mujj} [GeV]",stbinning,preselection,NormalWeight,NormalDirectory,'finalPAS'+flag,ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,MuonOptCutFile,version_name,lqmass)
+				MakeBasicPlot("M_uu","M^{#mu#mu} [GeV]",bosonbinning,preselection,NormalWeight,NormalDirectory,'finalPAS'+flag,ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,MuonOptCutFile,version_name,lqmass)
+				MakeBasicPlot("M_uujj2","M_{#muj}^{min} [GeV]",lqbinning,preselection,NormalWeight,NormalDirectory,'finalPAS'+flag,ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,MuonOptCutFile,version_name,lqmass)
 				#
 			        #fixme removing all uvjj plots for now
 				"""
@@ -2181,20 +2180,20 @@ def QCDStudy(sel_Muon,sel_munu,cutlogMuon,cutlogmunu,weight_Muon,weight_munu,ver
 
 	sel_Muon_ss = sel_Muon+'*('+charge1+'*'+charge2+' > 0)'
 	#sel_Muon_ss = sel_Muon+'*('+charge1+'*'+charge2+' > 0)'#fixme todo put same sign back in
-	#MakeBasicPlotQCD("TrkIso_muon1","Tracker Rel Iso Lead Mu  (non-isolated)",[0.001,0.05,0.1,0.2,0.5,1.0,2.0,5.0],sel_Muon_ss,sel_Muon_ss+'*'+weight_Muon,weight_Muon,NormalDirectory,'qcd_nonisotagfree','uujj',1.0,1.0,1.0,version_name,1.0)
-	#MakeBasicPlotQCD("TrkIso_muon2","Tracker Rel Iso Second Mu  (non-isolated)",[0.001,0.05,0.10,0.2,0.5,1.0,2.0,5.0],sel_Muon_ss,sel_Muon_ss+'*'+weight_Muon,weight_Muon,NormalDirectory,'qcd_nonisotagfree','uujj',1.0,1.0,1.0,version_name,1.0)
-	#MakeBasicPlotQCD("TrkIso_muon1","Tracker Rel Iso Lead Mu  (non-isolated)",[0.001,0.05,0.1,0.2,0.5,1.0,1.5,2.0],sel_Muon_ss,sel_Muon_ss+'*'+weight_Muon,weight_Muon,NormalDirectory,'qcd_nonisoPAStagfree','uujj',1.0,1.0,1.0,version_name,1.0)
-	#MakeBasicPlotQCD("TrkIso_muon2","Tracker Rel Iso Second Mu  (non-isolated)",[0.001,0.05,0.10,0.2,0.5,1.0,1.5,2.0],sel_Muon_ss,sel_Muon_ss+'*'+weight_Muon,weight_Muon,NormalDirectory,'qcd_nonisoPAStagfree','uujj',1.0,1.0,1.0,version_name,1.0)
+	#MakeBasicPlotQCD("TrkIso_muon1","Tracker Rel Iso Lead Mu  (non-isolated)",[0.001,0.05,0.1,0.2,0.5,1.0,2.0,5.0],sel_Muon_ss,sel_Muon_ss+'*'+weight_Muon,weight_Muon,NormalDirectory,'qcd_nonisotagfree',ell+ell+'jj',1.0,1.0,1.0,version_name,1.0)
+	#MakeBasicPlotQCD("TrkIso_muon2","Tracker Rel Iso Second Mu  (non-isolated)",[0.001,0.05,0.10,0.2,0.5,1.0,2.0,5.0],sel_Muon_ss,sel_Muon_ss+'*'+weight_Muon,weight_Muon,NormalDirectory,'qcd_nonisotagfree',ell+ell+'jj',1.0,1.0,1.0,version_name,1.0)
+	#MakeBasicPlotQCD("TrkIso_muon1","Tracker Rel Iso Lead Mu  (non-isolated)",[0.001,0.05,0.1,0.2,0.5,1.0,1.5,2.0],sel_Muon_ss,sel_Muon_ss+'*'+weight_Muon,weight_Muon,NormalDirectory,'qcd_nonisoPAStagfree',ell+ell+'jj',1.0,1.0,1.0,version_name,1.0)
+	#MakeBasicPlotQCD("TrkIso_muon2","Tracker Rel Iso Second Mu  (non-isolated)",[0.001,0.05,0.10,0.2,0.5,1.0,1.5,2.0],sel_Muon_ss,sel_Muon_ss+'*'+weight_Muon,weight_Muon,NormalDirectory,'qcd_nonisoPAStagfree',ell+ell+'jj',1.0,1.0,1.0,version_name,1.0)
 	#fixme todo added SSNonIsoDataRescale for data rescale
-	###MakeBasicPlotQCD("TrkIso_muon1","Tracker Rel Iso Lead Mu  (non-isolated)",[0.001,0.02,0.04,0.075,0.1,0.15,0.2,0.4,0.75,1.0,1.5,2.0,3.5],sel_Muon_ss,sel_Muon_ss+'*'+weight_Muon_qcd,weight_Muon,NormalDirectory,'qcd_nonisotagfree','uujj',1.0,1.0,1.0,version_name,1.0)
-	###MakeBasicPlotQCD("TrkIso_muon2","Tracker Rel Iso Second Mu  (non-isolated)",[0.001,0.02,0.04,0.075,0.1,0.15,0.2,0.4,0.75,1.0,1.5,2.0,3.5],sel_Muon_ss,sel_Muon_ss+'*'+weight_Muon_qcd,weight_Muon,NormalDirectory,'qcd_nonisotagfree','uujj',1.0,1.0,1.0,version_name,1.0)
-	MakeBasicPlotQCD("TrkIso_muon1","Tracker Rel Iso Lead Mu SS (non-isolated)",qcdBinning,sel_Muon_ss,sel_Muon_ss+'*'+weight_Muon+'*('+charge1+'*'+charge2+' > 0)',weight_Muon,NormalDirectory,'qcd_nonisotagfree','uujj',Rz_uujj,1.0,Rtt_uujj,version_name,SSNonIsoDataRescale[0])
-	MakeBasicPlotQCD("TrkIso_muon2","Tracker Rel Iso Second Mu SS (non-isolated)",qcdBinning,sel_Muon_ss,sel_Muon_ss+'*'+weight_Muon+'*('+charge1+'*'+charge2+' > 0)',weight_Muon,NormalDirectory,'qcd_nonisotagfree','uujj',Rz_uujj,1.0,Rtt_uujj,version_name,SSNonIsoDataRescale[0])
-	MakeBasicPlotQCD("Pt_muon1","p_{T}(#mu_{1})[GeV] SS (non-isolated)",ptbinning,sel_Muon_ss,sel_Muon_ss+'*'+weight_Muon+'*('+charge1+'*'+charge2+' > 0)',weight_Muon,NormalDirectory,'qcd_nonisotagfree','uujj',Rz_uujj,1.0,Rtt_uujj,version_name,SSNonIsoDataRescale[0])
-	MakeBasicPlotQCD("Pt_muon2","p_{T}(#mu_{2})[GeV] SS (non-isolated)",ptbinning2,sel_Muon_ss,sel_Muon_ss+'*'+weight_Muon+'*('+charge1+'*'+charge2+' > 0)',weight_Muon,NormalDirectory,'qcd_nonisotagfree','uujj',Rz_uujj,1.0,Rtt_uujj,version_name,SSNonIsoDataRescale[0])
+	###MakeBasicPlotQCD("TrkIso_muon1","Tracker Rel Iso Lead Mu  (non-isolated)",[0.001,0.02,0.04,0.075,0.1,0.15,0.2,0.4,0.75,1.0,1.5,2.0,3.5],sel_Muon_ss,sel_Muon_ss+'*'+weight_Muon_qcd,weight_Muon,NormalDirectory,'qcd_nonisotagfree',ell+ell+'jj',1.0,1.0,1.0,version_name,1.0)
+	###MakeBasicPlotQCD("TrkIso_muon2","Tracker Rel Iso Second Mu  (non-isolated)",[0.001,0.02,0.04,0.075,0.1,0.15,0.2,0.4,0.75,1.0,1.5,2.0,3.5],sel_Muon_ss,sel_Muon_ss+'*'+weight_Muon_qcd,weight_Muon,NormalDirectory,'qcd_nonisotagfree',ell+ell+'jj',1.0,1.0,1.0,version_name,1.0)
+	MakeBasicPlotQCD("TrkIso_muon1","Tracker Rel Iso Lead Mu SS (non-isolated)",qcdBinning,sel_Muon_ss,sel_Muon_ss+'*'+weight_Muon+'*('+charge1+'*'+charge2+' > 0)',weight_Muon,NormalDirectory,'qcd_nonisotagfree',ell+ell+'jj',Rz_uujj,1.0,Rtt_uujj,version_name,SSNonIsoDataRescale[0])
+	MakeBasicPlotQCD("TrkIso_muon2","Tracker Rel Iso Second Mu SS (non-isolated)",qcdBinning,sel_Muon_ss,sel_Muon_ss+'*'+weight_Muon+'*('+charge1+'*'+charge2+' > 0)',weight_Muon,NormalDirectory,'qcd_nonisotagfree',ell+ell+'jj',Rz_uujj,1.0,Rtt_uujj,version_name,SSNonIsoDataRescale[0])
+	MakeBasicPlotQCD("Pt_muon1","p_{T}(#mu_{1})[GeV] SS (non-isolated)",ptbinning,sel_Muon_ss,sel_Muon_ss+'*'+weight_Muon+'*('+charge1+'*'+charge2+' > 0)',weight_Muon,NormalDirectory,'qcd_nonisotagfree',ell+ell+'jj',Rz_uujj,1.0,Rtt_uujj,version_name,SSNonIsoDataRescale[0])
+	MakeBasicPlotQCD("Pt_muon2","p_{T}(#mu_{2})[GeV] SS (non-isolated)",ptbinning2,sel_Muon_ss,sel_Muon_ss+'*'+weight_Muon+'*('+charge1+'*'+charge2+' > 0)',weight_Muon,NormalDirectory,'qcd_nonisotagfree',ell+ell+'jj',Rz_uujj,1.0,Rtt_uujj,version_name,SSNonIsoDataRescale[0])
 
-	#MakeBasicPlotQCD("TrkIso_muon1","Tracker Rel Iso Lead Mu  (non-isolated)",[0.001,0.05,0.1,0.2,0.5,1.0,1.5,2.0],sel_Muon_ss,sel_Muon_ss+'*'+weight_Muon,weight_Muon,NormalDirectory,'qcd_nonisoPAStagfree','uujj',1.0,1.0,1.0,version_name,SSNonIsoDataRescale[0])
-	#MakeBasicPlotQCD("TrkIso_muon2","Tracker Rel Iso Second Mu  (non-isolated)",[0.001,0.05,0.10,0.2,0.5,1.0,1.5,2.0],sel_Muon_ss,sel_Muon_ss+'*'+weight_Muon,weight_Muon,NormalDirectory,'qcd_nonisoPAStagfree','uujj',1.0,1.0,1.0,version_name,SSNonIsoDataRescale[0])
+	#MakeBasicPlotQCD("TrkIso_muon1","Tracker Rel Iso Lead Mu  (non-isolated)",[0.001,0.05,0.1,0.2,0.5,1.0,1.5,2.0],sel_Muon_ss,sel_Muon_ss+'*'+weight_Muon,weight_Muon,NormalDirectory,'qcd_nonisoPAStagfree',ell+ell+'jj',1.0,1.0,1.0,version_name,SSNonIsoDataRescale[0])
+	#MakeBasicPlotQCD("TrkIso_muon2","Tracker Rel Iso Second Mu  (non-isolated)",[0.001,0.05,0.10,0.2,0.5,1.0,1.5,2.0],sel_Muon_ss,sel_Muon_ss+'*'+weight_Muon,weight_Muon,NormalDirectory,'qcd_nonisoPAStagfree',ell+ell+'jj',1.0,1.0,1.0,version_name,SSNonIsoDataRescale[0])
 
 """
 	print '\nFor final selections, this gives estimates:\n'
@@ -2202,7 +2201,7 @@ def QCDStudy(sel_Muon,sel_munu,cutlogMuon,cutlogmunu,weight_Muon,weight_munu,ver
 
 	#for plotmass in [ 200, 250, 300 , 350 , 400 , 450 , 500 , 550 , 600 , 650 , 700 , 750 , 800 , 850 , 900 , 950 , 1000 , 1050 , 1100 , 1150 , 1200 , 1250, 1300, 1350, 1400, 1450, 1500, 1550, 1600, 1650, 1700, 1750, 1800, 1850, 1900, 1950, 2000] :
 	for plotmass in [300]:
-		#channel='uujj'
+		#channel=ell+ell+'jj'
 		channel='HHres'
 		fsel = ((os.popen('cat '+cutlogMuon+' | grep '+channel+str(plotmass)).readlines())[0]).replace('\n','')
 		fsel = (fsel.split("="))[-1]
@@ -2649,7 +2648,7 @@ def QuickSysTableLine(treestruc,selection,inp_weight,scalefacs,fsys,chan,rglobal
 	# AH: create output root file to store histogram
 	if sysmethod == '':
 		outHistRootFile = TFile(channel+str(plotmass)+'_'+recovariableFileName+'_13TeV_new.root', "RECREATE")
-		dirThis = outHistRootFile.mkdir(channel+'uujj')
+		dirThis = outHistRootFile.mkdir(channel+ell+ell+'jj')
 		dirThis.cd()
 		print '\n AH: I am in QuickSysTableLine(): sysmethod is ', sysmethod, '\n'
 		hs_rec_Data.Write("data_obs")
@@ -2663,11 +2662,11 @@ def QuickSysTableLine(treestruc,selection,inp_weight,scalefacs,fsys,chan,rglobal
 		hs_rec_SMHiggs.Write("SMH")
 	else:
 		outHistRootFile = TFile(channel+str(plotmass)+'_'+recovariableFileName+'_13TeV_new.root', "UPDATE")
-		dirValid = outHistRootFile.cd(channel+'uujj')
+		dirValid = outHistRootFile.cd(channel+ell+ell+'jj')
 		if (not dirValid):
-			dirThis = outHistRootFile.mkdir(channel+'uujj')
+			dirThis = outHistRootFile.mkdir(channel+ell+ell+'jj')
 			dirThis.cd()
-		outHistRootFile.cd(channel+'uujj')
+		outHistRootFile.cd(channel+ell+ell+'jj')
 		sysmethod = sysmethod.replace('up','Up')
 		sysmethod = sysmethod.replace('down','Down')
 		print '\n AH: I am in QuickSysTableLine(): sysmethod is ', sysmethod, '\n'
@@ -3940,11 +3939,12 @@ def MakeEfficiencyPlot(FileDirectory,weight,cutlog,channel,version_name):
 
 
 def MakeBasicPlot(recovariable,xlabel,presentationbinning,selection,weight,FileDirectory,tagname,channel, zscale, wscale, ttscale,cutlog,version_name,plotmass):
-
 	# Load all root files as trees - e.g. file "DiBoson.root" will give you tree called "t_DiBoson"
 	# for f in os.popen('ls '+FileDirectory+"| grep \".root\"").readlines():
 	# 	exec('t_'+f.replace(".root\n","")+" = TFile.Open(\""+FileDirectory+"/"+f.replace("\n","")+"\")"+".Get(\""+TreeName+"\")")
 	tmpfile = TFile("tmpbin.root","RECREATE")
+	global ell
+	global latexEll
 	print "  Preparing basic histo for "+channel+":"+recovariable+"...  "
 	print '\n AH: I am in MakeBasicPlot(): selection is \n'
 	print selection, '\n'
@@ -3957,6 +3957,7 @@ def MakeBasicPlot(recovariable,xlabel,presentationbinning,selection,weight,FileD
 	#if 'cosThetaStar' in recovariable: doLog=False
 	#else: doLog=True
 	doLog=True
+	syslist=[0]
 	if channel == 'uujj' or channel == 'HHres':
 		syslist = totunc_Muon	
 		betamarker +="1.0"
@@ -4070,6 +4071,10 @@ def MakeBasicPlot(recovariable,xlabel,presentationbinning,selection,weight,FileD
 	t_W = t_WJets
 	t_Z = t_ZJets
 	t_T = t_TTBar
+	if analysisChannel=='muon'     :
+		t_data = t_DoubleMuData
+	if analysisChannel=='electron' :
+		t_data = t_DoubleEleData
 	selectionMod=selection
 	if 'ScaleUp' in tagname:
 		print 'ScaleUp'
@@ -4119,11 +4124,17 @@ def MakeBasicPlot(recovariable,xlabel,presentationbinning,selection,weight,FileD
 #			t_estQCD = tn_DoubleMuData
 #			qcd_sel_weight = selection.replace('*('+charge1+'*'+charge2+' < 0)', '*('+charge1+'*'+charge2+' > 0)*((TrkIso_muon1<0.25)*(TrkIso_muon2<0.25))') # + dataHLT ??
 			#--- using normal directory with ss requirement
-			t_estQCD = t_DoubleMuData
+			if analysisChannel=='muon'     :
+				t_estQCD = t_DoubleMuData
+			if analysisChannel=='electron' :
+				t_estQCD = t_DoubleEleData
 			qcd_sel_weight = selection.replace('*('+charge1+'*'+charge2+' < 0)', '*('+charge1+'*'+charge2+' > 0)') # + dataHLT ??
 			print 'Using data-driven for QCD est.'
 		else:
-			t_estQCD = t_QCDMu
+			if analysisChannel=='muon'     :
+				t_estQCD = t_QCDMu
+			if analysisChannel=='electron' :
+				t_estQCD = t_QCDEle
 			print 'Using QCD MC.'
 
 	print 'Doing Projections'
@@ -4134,7 +4145,7 @@ def MakeBasicPlot(recovariable,xlabel,presentationbinning,selection,weight,FileD
 	print '\n AH: I am in MakeBasicPlot(): dataHLT is ', dataHLT, '\n'
 	### Make the plots without variable bins!
 	hs_rec_WJets=CreateHisto('hs_rec_WJets','W+Jets',t_W,recovariable,presentationbinning,selection+'*('+str(wscale)+')*'+weight,WStackStyle,Label)
-	hs_rec_Data=CreateHisto('hs_rec_Data','Data',t_DoubleMuData,recovariable,presentationbinning,selection+dataHLT,DataRecoStyle,Label)
+	hs_rec_Data=CreateHisto('hs_rec_Data','Data',t_data,recovariable,presentationbinning,selection+dataHLT,DataRecoStyle,Label)
 	hs_rec_DiBoson=CreateHisto('hs_rec_DiBoson','DiBoson',t_DiBoson,recovariable,presentationbinning,selection+'*'+weight,DiBosonStackStyle,Label)
 	hs_rec_ZJets=CreateHisto('hs_rec_ZJets','Z+Jets',t_Z,recovariable,presentationbinning,selection+'*('+str(zscale)+')*'+weight,ZStackStyle,Label)
 	print 'Doing ttbar:'
@@ -4217,7 +4228,7 @@ def MakeBasicPlot(recovariable,xlabel,presentationbinning,selection,weight,FileD
 	sig1name = ''
 	sig2name = ''
 
-	if channel == 'uujj' or 'HH' in channel:
+	if channel == ell+ell+'jj' or 'HH' in channel:
 		sig1name = 'M_{R}=300 (1 pb)'#+betamarker
 		sig2name = 'M_{R}=900 (1 pb)'#+betamarker
 		#sig1name = 'M_{R}=300 x 1000'#+betamarker # AH:
@@ -4456,7 +4467,7 @@ def MakeBasicPlot(recovariable,xlabel,presentationbinning,selection,weight,FileD
 		leg.SetTextSize(.045)
 	leg.AddEntry(hs_rec_Data,"Data","lpe");
 	leg.AddEntry(hs_rec_TTBar,'t#bar{t}' + (' (e #mu est)')*('TTBarDataDriven' in tagname))
-	if channel=='uujj' or 'HH' in channel:
+	if channel==ell+ell+'jj' or 'HH' in channel:
 		leg.AddEntry(hs_rec_ZJets,'Z/^{}#gamma* + jets')
 	if channel=='uvjj':
 		leg.AddEntry(hs_rec_WJets,'W + jets')
@@ -4538,10 +4549,10 @@ def MakeBasicPlot(recovariable,xlabel,presentationbinning,selection,weight,FileD
 		# pad2.SetLogy()
 		pad3.SetGrid()
 
-		RatHistDen =CreateHisto('RatHisDen','RatHistDen',t_DoubleMuData,recovariable,presentationbinning,'0',DataRecoStyle,Label)
+		RatHistDen =CreateHisto('RatHisDen','RatHistDen',t_data,recovariable,presentationbinning,'0',DataRecoStyle,Label)
 
 		RatHistDen.Sumw2()
-		RatHistNum =CreateHisto('RatHisNum','RatHistNum',t_DoubleMuData,recovariable,presentationbinning,'0',DataRecoStyle,Label)
+		RatHistNum =CreateHisto('RatHisNum','RatHistNum',t_data,recovariable,presentationbinning,'0',DataRecoStyle,Label)
 		RatHistNum.Sumw2()
 		for hmc in SM:
 			RatHistDen.Add(hmc)
@@ -4610,7 +4621,7 @@ def MakeBasicPlot(recovariable,xlabel,presentationbinning,selection,weight,FileD
 		# pad2.SetLogy()
 		pad3.SetGrid()
 
-		chiplot =CreateHisto('chiplot','chiplot',t_DoubleMuData,recovariable,presentationbinning,'0',DataRecoStyle,Label)
+		chiplot =CreateHisto('chiplot','chiplot',t_data,recovariable,presentationbinning,'0',DataRecoStyle,Label)
 		chiplot.Sumw2()
 
 		resstring = '( 0.0 '
@@ -4684,10 +4695,10 @@ def MakeBasicPlot(recovariable,xlabel,presentationbinning,selection,weight,FileD
 		pad3.SetLogy()
 		pad3.SetGrid()
 
-		RatHistDen =CreateHisto('RatHisDen','RatHistDen',t_DoubleMuData,recovariable,presentationbinning,'0',DataRecoStyle,Label)
+		RatHistDen =CreateHisto('RatHisDen','RatHistDen',t_data,recovariable,presentationbinning,'0',DataRecoStyle,Label)
 
 		RatHistDen.Sumw2()
-		RatHistNum =CreateHisto('RatHisNum','RatHistNum',t_DoubleMuData,recovariable,presentationbinning,'0',DataRecoStyle,Label)
+		RatHistNum =CreateHisto('RatHisNum','RatHistNum',t_data,recovariable,presentationbinning,'0',DataRecoStyle,Label)
 		RatHistNum.Sumw2()
 		for hmc in SM:
 			RatHistDen.Add(hmc)
@@ -4924,7 +4935,7 @@ def MakeBasicPlot2D(recovariableX,recovariableY,xlabel,ylabel,presentationbinnin
 
 	sig1name = ''
 
-	if channel == 'uujj':
+	if channel == ell+ell+'jj':
 		sig1name = '#splitline{gg#rightarrow R#rightarrow HH#rightarrow bbZZ}{M_{R}='+str(plotmass)+'}'#+betamarker
 		if 'final' not in tagname:
 			exec ("_stree = t_HHres"+str(plotmass))
@@ -5093,7 +5104,7 @@ def MakeBasicPlotQCD(recovariable,xlabel,presentationbinning,selection,qcdselect
 	# pad1 = TPad( 'pad1', 'pad1', 0.0, 0.47, 1.0, 1.0 )#divide canvas into pads
 	# pad2 = TPad( 'pad2', 'pad2', 0.0, 0.25, 1.0, 0.44 )
 	# pad3 = TPad( 'pad3', 'pad3', 0.0, 0.03, 1.0, 0.22 )
-	# if tagname == 'uujj':
+	# if tagname == ell+ell+'jj':
 	# 	pad1.SetLogx()
 	# 	pad2.SetLogx()
 	# 	pad3.SetLogx()
@@ -5169,7 +5180,7 @@ def MakeBasicPlotQCD(recovariable,xlabel,presentationbinning,selection,qcdselect
 	hs_rec_SingleTop=CreateHisto('hs_rec_SingleTop','SingleTop',tn_SingleTop,recovariable,presentationbinning,selection+'*'+weight,StopStackStyle,Label)
 	hs_rec_SMHiggs  =CreateHisto('hs_rec_SMHiggs','SM Higgs',tn_SMHiggs,recovariable,presentationbinning,selection+'*'+weight,SMHiggsStackStyle,Label)
 	
-	if channel=='uujj':
+	if channel==ell+ell+'jj':
 		#print ' qcdselection :', qcdselection
 		if 'weight' in qcdselection:
 			# here we plot QCD MC in the ss region. 'weight_central' is present.
@@ -5183,7 +5194,7 @@ def MakeBasicPlotQCD(recovariable,xlabel,presentationbinning,selection,qcdselect
 	if channel=='uvjj':
 		hs_rec_QCD=CreateHisto('hs_rec_QCD','QCD #mu-enriched',tn_QCDMu,recovariable,presentationbinning,qcdselection+'*('+str(qcdrescale)+')',QCDStackStyle,Label)
 	
-	if channel == 'uujj':
+	if channel == ell+ell+'jj':
 		
 		hs_rec_DiBoson.SetTitle("Other background")
 		hs_rec_DiBoson.Add(hs_rec_WJets)
@@ -5231,7 +5242,7 @@ def MakeBasicPlotQCD(recovariable,xlabel,presentationbinning,selection,qcdselect
 	leg.SetBorderSize(0);
 	leg.SetTextSize(.04)
 	leg.AddEntry(hs_rec_Data,"Data");
-	if channel=='uujj':
+	if channel==ell+ell+'jj':
 		leg.AddEntry(hs_rec_ZJets,'Z/^{}#gamma* + jets')
 	if channel=='uvjj':
 		leg.AddEntry(hs_rec_WJets,'W + jets')
@@ -5492,7 +5503,7 @@ def MakeBasicPlotEMu(recovariable,xlabel,presentationbinning,selection,weight,Fi
 	sig1name = ''
 	sig2name = ''
 
-	if channel == 'uujj':
+	if channel == ell+ell+'jj':
 		hs_rec_DiBoson.SetTitle("Other background")
 		hs_rec_DiBoson.Add(hs_rec_WJets)
 		hs_rec_DiBoson.Add(hs_rec_SingleTop)
@@ -5539,9 +5550,9 @@ def MakeBasicPlotEMu(recovariable,xlabel,presentationbinning,selection,weight,Fi
 	leg.SetBorderSize(0);
 	leg.SetTextSize(.04)
 	leg.AddEntry(hs_rec_Data,"e#mu Data");
-	if channel=='uujj':
+	if channel==ell+ell+'jj':
 		leg.AddEntry(hs_rec_ZJets,'Z/^{}#gamma* + jets')
-	if channel=='uujj':
+	if channel==ell+ell+'jj':
 		leg.AddEntry(hs_rec_WJets,'W + jets')
 	leg.AddEntry(hs_rec_TTBar,'t#bar{t} MC')
 	leg.AddEntry(hs_rec_DiBoson,'Other background')
@@ -6089,7 +6100,7 @@ def CompareMeanSys(m,s1,s2):
 
 def ParseFinalCards(cardcoll):
 	print '\n AH: I am in ParseFinalCards(): cardcoll is ', cardcoll, '\n'
-	chan = '' + 'uujj'*('uujj' in cardcoll)+ 'uvjj'*('uvjj' in cardcoll) + 'HH_res'*('HH_res' in cardcoll)
+	chan = '' + ell+ell+'jj'*(ell+ell+'jj' in cardcoll)+ 'uvjj'*('uvjj' in cardcoll) + 'HH_res'*('HH_res' in cardcoll)
 	print '\n AH: I am in ParseFinalCards(): chan is ', chan, '\n'
 	tables = glob(cardcoll)
 	print '\n AH: I am in ParseFinalCards(): tables is ', tables, '\n'
@@ -6247,7 +6258,7 @@ def FixFinalCards(cardsets):
 	fout = open(f,'w')
 	for c in cardsets:
 		for line in open(c,'r'):
-			line = line.replace('uujj','_M_')
+			line = line.replace(ell+ell+'jj','_M_')
 			line = line.replace('uvjj','_BetaHalf_M_')
 			fout.write(line)
 	fout.close()
