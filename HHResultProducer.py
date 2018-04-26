@@ -229,8 +229,8 @@ Rz_data = [1.152, 0.013]
 Rtt_data = [1.016, 0.062]
 
 
-#analysisChannel = 'muon'
-analysisChannel = 'electron'
+analysisChannel = 'muon'
+#analysisChannel = 'electron'
 if (analysisChannel == 'muon'):
 	NormalWeight=NormalWeightMuon
 	preselection_nos=preselection_Muon_nos
