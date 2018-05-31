@@ -117,20 +117,24 @@ print 'AlignmentCorr Switch = ', alignementcorrswitch
 
 # Get the file, tree, and number of entries
 print name
-#newntupleswitch = True#'V00-03-18' in name
-#if newntupleswitch == True:
-#	print 'Detected V00-03-18 ntuple - making small tweaks to handle this!'
 
 fin = TFile.Open(name,"READ")
 
 hev = fin.Get('LJFilter/EventCount/EventCounter')
 NORIG = hev.GetBinContent(1)
-#SumOfTopPtReweights = hev.GetBinContent(4)
+topPtReweightSwitch = False
+if "TopPtReweight" in options.dir:
+	topPtReweightSwitch = True
+SumOfTopPtReweights = 1.0
+_TopPtFactor = 1.0
+#apply top pt-reweighting only if requested
+if topPtReweightSwitch:
+	SumOfTopPtReweights = hev.GetBinContent(4)
+	_TopPtFactor = float(NORIG)/float(SumOfTopPtReweights)
 #if 'SingleMuon' in name or 'SingleElectron' in name or 'DoubleMuon' in name or 'DoubleEG' in name:
 #	_TopPtFactor = 1.0
 #else:
 #	_TopPtFactor = float(NORIG)/float(SumOfTopPtReweights)
-_TopPtFactor = 1.0 #removing top-pt reweighting
 # Typical event weight, sigma*lumi/Ngenerated
 startingweight = _TopPtFactor*float(options.crosssection)*float(options.lumi)/float(options.ntotal)
 
@@ -212,14 +216,22 @@ _kinematicvariables += ['Mbb_H_genMatched','Mjj_Z_genMatched']
 _kinematicvariables += ['Mbb_H_noReg','Muu4j_noReg']
 _kinematicvariables += ['cosThetaStarMu','cosThetaStarEle']
 _kinematicvariables += ['cosThetaStarMu_gen','cosThetaStarEle_gen']
-_kinematicvariables += ['cosThetaStar_gen','cosTheta_hbb_gen','cosTheta_zjj_hzz_gen','cosTheta_zuu_hzz_gen','cosTheta_zj1_hzz_gen','cosTheta_zu1_hzz_gen']
-_kinematicvariables += ['phi0_gen','phi1_gen']
+_kinematicvariables += ['cosThetaStar_uu_gen','cosTheta_hbb_uu_gen','cosTheta_zjj_hzz_uu_gen','cosTheta_zuu_hzz_uu_gen','cosTheta_zj1_hzz_uu_gen','cosTheta_zu1_hzz_uu_gen']
+_kinematicvariables += ['cosThetaStar_ee_gen','cosTheta_hbb_ee_gen','cosTheta_zjj_hzz_ee_gen','cosTheta_zee_hzz_ee_gen','cosTheta_zj1_hzz_ee_gen','cosTheta_ze1_hzz_ee_gen']
+_kinematicvariables += ['phi0_uu_gen','phi1_uu_gen']
+_kinematicvariables += ['phi0_ee_gen','phi1_ee_gen']
 _kinematicvariables += ['cosThetaStarZuu_CS_gen','cosTheta_Zuu_gen']
-_kinematicvariables += ['phi0_zz_gen','phi1_zuu_gen','phi1_zjj_gen']
-_kinematicvariables += ['cosThetaStar','cosTheta_hbb','cosTheta_zjj_hzz','cosTheta_zuu_hzz','cosTheta_zj1_hzz','cosTheta_zu1_hzz']
-_kinematicvariables += ['phi0','phi1']
+_kinematicvariables += ['cosThetaStarZee_CS_gen','cosTheta_Zee_gen']
+_kinematicvariables += ['phi0_zz_uu_gen','phi1_zuu_gen','phi1_zjj_uu_gen']
+_kinematicvariables += ['phi0_zz_ee_gen','phi1_zuu_gen','phi1_zjj_ee_gen']
+_kinematicvariables += ['cosThetaStar_uu','cosTheta_hbb_uu','cosTheta_zjj_hzz_uu','cosTheta_zuu_hzz','cosTheta_zj1_hzz_uu','cosTheta_zu1_hzz']
+_kinematicvariables += ['cosThetaStar_ee','cosTheta_hbb_ee','cosTheta_zjj_hzz_ee','cosTheta_zee_hzz','cosTheta_zj1_hzz_ee','cosTheta_ze1_hzz']
+_kinematicvariables += ['phi0_uu','phi1_uu']
+_kinematicvariables += ['phi0_ee','phi1_ee']
 _kinematicvariables += ['cosThetaStarZuu_CS','cosTheta_Zuu']
-_kinematicvariables += ['phi0_zz','phi1_zuu','phi1_zjj']
+_kinematicvariables += ['cosThetaStarZee_CS','cosTheta_Zee']
+_kinematicvariables += ['phi0_zz_uu','phi1_zuu','phi1_zjj_uu']
+_kinematicvariables += ['phi0_zz_ee','phi1_zee','phi1_zjj_ee']
 _kinematicvariables += ['Pt_Hjet1_noReg','Pt_Hjet2_noReg']
 _kinematicvariables += ['Pt_Hjet1','Pt_Hjet2','Pt_Zjet1','Pt_Zjet2']
 _kinematicvariables += ['Pt_Hjets','Pt_Zjets','Pt_uu','Pt_ee']
@@ -230,6 +242,12 @@ _kinematicvariables += ['DR_u1Hj1_gen','DR_u1Hj2_gen','DR_u2Hj1_gen','DR_u2Hj2_g
 _kinematicvariables += ['DR_u1Zj1_gen','DR_u1Zj2_gen','DR_u2Zj1_gen','DR_u2Zj2_gen']
 _kinematicvariables += ['DR_u1Hj1_genMatched','DR_u1Hj2_genMatched','DR_u2Hj1_genMatched','DR_u2Hj2_genMatched']
 _kinematicvariables += ['DR_u1Zj1_genMatched','DR_u1Zj2_genMatched','DR_u2Zj1_genMatched','DR_u2Zj2_genMatched']
+_kinematicvariables += ['DR_e1Hj1','DR_e1Hj2','DR_e2Hj1','DR_e2Hj2']
+_kinematicvariables += ['DR_e1Zj1','DR_e1Zj2','DR_e2Zj1','DR_e2Zj2']
+_kinematicvariables += ['DR_e1Hj1_gen','DR_e1Hj2_gen','DR_e2Hj1_gen','DR_e2Hj2_gen']
+_kinematicvariables += ['DR_e1Zj1_gen','DR_e1Zj2_gen','DR_e2Zj1_gen','DR_e2Zj2_gen']
+_kinematicvariables += ['DR_e1Hj1_genMatched','DR_e1Hj2_genMatched','DR_e2Hj1_genMatched','DR_e2Hj2_genMatched']
+_kinematicvariables += ['DR_e1Zj1_genMatched','DR_e1Zj2_genMatched','DR_e2Zj1_genMatched','DR_e2Zj2_genMatched']
 _kinematicvariables += ['DR_uu_bb_H','DR_uu_jj_Z','DPhi_uu_bb_H','DPhi_uu_jj_Z']
 _kinematicvariables += ['DR_ee_bb_H','DR_ee_jj_Z','DPhi_ee_bb_H','DPhi_ee_jj_Z']
 _kinematicvariables += ['DPhi_jj_Z','DPhi_bb_H']
@@ -250,7 +268,13 @@ _kinematicvariables += ['Zjet1BsfLoose','Zjet1BsfLooseUp','Zjet1BsfLooseDown']
 _kinematicvariables += ['Zjet1BsfMedium','Zjet1BsfMediumUp','Zjet1BsfMediumDown']
 _kinematicvariables += ['Zjet2BsfLoose','Zjet2BsfLooseUp','Zjet2BsfLooseDown']
 _kinematicvariables += ['Zjet2BsfMedium','Zjet2BsfMediumUp','Zjet2BsfMediumDown']
+_kinematicvariables += ['ele1IDandIsoSF','ele2IDandIsoSF']
+_kinematicvariables += ['ele1IDandIsoSFup','ele2IDandIsoSFup']
+_kinematicvariables += ['ele1IDandIsoSFdown','ele2IDandIsoSFdown']
+_kinematicvariables += ['ele1hltSF','ele1hltSFUp','ele1hltSFDown']
+_kinematicvariables += ['ele2hltSF','ele2hltSFUp','ele2hltSFDown']
 _kinematicvariables += ['isMuonEvent','isElectronEvent']
+_kinematicvariables += ['isElectronEvent_gen','isMuonEvent_gen','isTauEvent_gen']
 _kinematicvariables += ['Hj1Matched','Hj2Matched','Zj1Matched','Zj2Matched']
 _kinematicvariables += ['Hj1Present','Hj2Present','Zj1Present','Zj2Present']
 _kinematicvariables += ['NGenMuonsZ', 'NGenElecsZ']
@@ -935,6 +959,44 @@ def JetsFromLQ(T):
 	return([genjets,matchedrecojets,recojetinds])
 	#return(recojetinds)
 
+def getLeptonEventFlavorGEN(T):
+	
+	isEleEvent,isMuEvent,isTauEvent=False,False,False
+	#get Zs from H, figure out lepton flavor e,mu,tau at gen level
+	#gotIt=False
+	for n in range(len(T.GenParticlePdgId)):
+		#if gotIt==True: continue
+		pdg = T.GenParticlePdgId[n]
+		#if pdg in [-15,-13,-11,11,13,15]:
+		#	print n,T.GenParticlePdgId[n],T.GenParticleStatus[n],T.GenParticleMass[n],T.GenParticlePdgId[T.GenParticleMotherIndex[n]],T.GenParticleNumDaught[n],bool(T.GenParticleIsLastCopy[n])
+		motherIndex = T.GenParticleMotherIndex[n]
+		motherid = T.GenParticlePdgId[motherIndex]
+		#if motherid in [-15,15]:
+		#	print n,T.GenParticlePdgId[n],T.GenParticleStatus[n],T.GenParticleMass[n],T.GenParticlePdgId[T.GenParticleMotherIndex[n]],T.GenParticleNumDaught[n],bool(T.GenParticleIsLastCopy[n])
+
+		if pdg not in [-15,-13,-11,11,13,15]:
+			continue
+		if motherid in [23]:
+		#if motherid in [-23,23]:
+		#	grandmotherid = 0
+		#       grandmotherIndex = T.GenParticleMotherIndex[motherIndex]
+		#	if grandmotherIndex>-1:
+		#       grandmotherid = T.GenParticlePdgId[motherIndex]
+		#		print pdg,motherid,grandmotherid
+		#	if grandmotherid not in [-25,25]: continue
+		#print n,T.GenParticlePdgId[n],T.GenParticleStatus[n],T.GenParticleMass[n],T.GenParticlePdgId[T.GenParticleMotherIndex[n]],grandmotherid,T.GenParticleNumDaught[n],bool(T.GenParticleIsLastCopy[n])
+			if pdg in [-11,11]: 
+				isEleEvent=True
+				return [isEleEvent,isMuEvent,isTauEvent]
+			if pdg in [-13,13]: 
+				isMuEvent=True
+				return [isEleEvent,isMuEvent,isTauEvent]
+			if pdg in [-15,15]: 
+				isTauEvent=True
+				return [isEleEvent,isMuEvent,isTauEvent]
+			#if (isEleEvent or isMuEvent or isTauEvent) : gotIt=True
+	return [isEleEvent,isMuEvent,isTauEvent]
+
 def LeptonsAndJetsFromHH(T):
 	# Purpose: Testing. HH. Get the muons from Z decays (on and off shell) and find the matching reco muons. 
 	#         Return TLorentzVectors of the gen and reco muons, and the indices for
@@ -947,6 +1009,7 @@ def LeptonsAndJetsFromHH(T):
 	recoelectroninds = []
 	onShellZMu=False
 	onShellZEle=False
+
 	for n in range(len(T.MuonPt)):
 		m = TLorentzVector()
 		m.SetPtEtaPhiM(T.MuonPt[n],T.MuonEta[n],T.MuonPhi[n],0)
@@ -1311,7 +1374,7 @@ def LooseIDMuons(T,_met,variation,isdata):
 
 	nequiv = []
 	for n in range(len(T.MuonPt)):
-		#if T.MuonIsGlobal[n] or newntupleswitch==True: #not necessary anymore - global muon requirement encompassed later
+		#if T.MuonIsGlobal[n]: #not necessary anymore - global muon requirement encompassed later
 		nequiv.append(n)
 
 	# Loop over muons using the pT array from above
@@ -1442,7 +1505,7 @@ def MediumIDMuons(T,_met,variation,isdata):
 	PassMedIDs = []
 	PassMedID2016s = []
 	for n in range(len(T.MuonPt)):
-		#if T.MuonIsGlobal[n] or newntupleswitch==True: #not necessary anymore - global muon requirement encompassed later
+		#if T.MuonIsGlobal[n]: #not necessary anymore - global muon requirement encompassed later
 		nequiv.append(n)
 
 	# Loop over muons using the pT array from above
@@ -1474,7 +1537,7 @@ def MediumIDMuons(T,_met,variation,isdata):
 	        PassMedID = True
 		PassMedID2016 = True
 		# A preliminary pT cut.
-		Pass *= (_MuonPt[n] > 8)#fixme offline cuts are 20(10)
+		Pass *= (_MuonPt[n] > 10)#fixme offline cuts are 20(10)
 
 		# Eta requirement 
 		Pass *= abs(T.MuonEta[n])<2.4
@@ -1590,7 +1653,7 @@ def TightHighPtIDMuons(T,_met,variation,isdata):
 
 	nequiv = []
 	for n in range(len(T.MuonPt)):
-		#if T.MuonIsGlobal[n] or newntupleswitch==True: #not necessary anymore - global muon requirement encompassed later
+		#if T.MuonIsGlobal[n]: #not necessary anymore - global muon requirement encompassed later
 		nequiv.append(n)
 
 	# Loop over muons using the pT array from above
@@ -1736,6 +1799,128 @@ def HEEPElectrons(T,_met,variation):
 	return [electrons,electroninds,_met]
 
 
+def mvaWP90Electrons(T,_met,variation,isdata):
+	# Purpose: Gets the collection of electrons passing Loose Electron ID. 
+	#         Returns electrons as TLorentzVectors, and indices corrresponding
+	#         to the surviving electrons of the electron collection. 
+	#         Also returns modified MET for systematic variations.	
+	#         https://twiki.cern.ch/twiki/bin/view/CMS/CutBasedElectronIdentificationRun2#Recommended_Working_points_for_2
+	electrons = []
+	electroninds = []
+	if variation=='EESup':	
+		_ElectronPt = [pt*1.02 for pt in T.ElectronPt]
+	elif variation=='EESdown':	
+		_ElectronPt = [pt*0.98 for pt in T.ElectronPt]
+	elif variation=='EER':	
+		_ElectronPt = [pt+pt*tRand.Gaus(0.0,0.04) for pt in T.ElectronPt]
+	else:	
+		_ElectronPt = [pt for pt in T.ElectronPt]	
+
+	trk_isos = []
+	charges = []
+	deltainvpts = []
+	chi2 = []
+	pfid = []
+	layers = []
+	_idIsoSFs=[]
+	_idIsoSFsUp=[]
+	_idIsoSFsDown=[]
+	_hlt1SFs=[]
+	_hlt1SFsUp=[]
+	_hlt1SFsDown=[]
+	_hlt2SFs=[]
+	_hlt2SFsUp=[]
+	_hlt2SFsDown=[]
+
+	for n in range(len(_ElectronPt)):
+		Pass = True
+		Pass *= (T.ElectronPt[n] > 12)
+		Pass *= abs(T.ElectronEta[n])<2.5
+
+		barrel = (abs(T.ElectronSCEta[n]))<1.442
+		endcap = (abs(T.ElectronSCEta[n]))>1.56 
+		Pass *= (barrel+endcap)
+
+	        Pass *= T.ElectronPassMVAIDWP90[n]>0
+
+	        if (barrel):
+			Pass *= abs(T.ElectronVtxDistXY[n])<0.05
+			Pass *= abs(T.ElectronVtxDistZ[n]) <0.10
+		elif (endcap):
+			Pass *= abs(T.ElectronVtxDistXY[n])< 0.10
+			Pass *= abs(T.ElectronVtxDistZ[n]) < 0.20
+
+	        ecal_energy_inverse = 1.0/T.ElectronEcalEnergy[n]
+		eSCoverP = T.ElectronESuperClusterOverP[n]
+
+                #HLT-safe cuts, except iso which is in nonisoswitch below
+        	if (barrel):
+			Pass *= T.ElectronFull5x5SigmaIEtaIEta[n]<0.011
+	                Pass *= abs(T.ElectronDeltaEtaTrkSeedSC[n])<0.004
+		        Pass *= abs(T.ElectronDeltaPhiTrkSC[n])<0.020
+		        Pass *= T.ElectronHoE[n]<0.060
+		        Pass *= abs(1.0 - eSCoverP)*ecal_energy_inverse<0.013
+		        #Pass *= T.ElectronNormalizedChi2[n]<
+        	elif (endcap):
+			Pass *= T.ElectronFull5x5SigmaIEtaIEta[n]<0.031
+	                #Pass *= abs(T.ElectronDeltaEtaTrkSeedSC[n])<0.004
+		        #Pass *= abs(T.ElectronDeltaPhiTrkSC[n])<0.020
+		        Pass *= T.ElectronHoE[n]<0.065
+		        Pass *= abs(1.0 - eSCoverP)*ecal_energy_inverse<0.013
+		        Pass *= T.ElectronNormalizedChi2[n]<3.0
+
+		#Isolation
+		chad = T.ElectronPFChargedHadronIso03[n]
+		nhad = T.ElectronPFNeutralHadronIso03[n]
+		pho  = T.ElectronPFPhotonIso03[n]
+
+		eA = getElectronEffectiveArea(T.ElectronEta[n])
+		iso = chad + max(0.0, nhad + pho - T.ElectronRhoIsoHEEP[n]*eA)
+		iso = iso/_ElectronPt[n]
+		# Don't apply isolation for QCD studies
+		if nonisoswitch != True:
+			if (barrel):
+				Pass *= iso<0.0588
+		                Pass *= ((T.ElectronEcalPFClusterIso[n] - 0.165*T.fixedGridRhoFastjetCentralCalo)/_ElectronPt[n])<0.160
+		                Pass *= ((T.ElectronHcalPFClusterIso[n] - 0.060*T.fixedGridRhoFastjetCentralCalo)/_ElectronPt[n])<0.120
+		                Pass *= (T.ElectronTrkIsoDR03[n]/_ElectronPt[n])<0.08
+			elif (endcap):
+				Pass *= iso<0.0571
+		                Pass *= ((T.ElectronEcalPFClusterIso[n] - 0.132*T.fixedGridRhoFastjetCentralCalo)/_ElectronPt[n])<0.120
+		                Pass *= ((T.ElectronHcalPFClusterIso[n] - 0.131*T.fixedGridRhoFastjetCentralCalo)/_ElectronPt[n])<0.120
+			
+		[_idIsoSF,_idIsoSFUp,_idIsoSFDown,_hlt1SF,_hlt1SFup,_hlt1SFdown,_hlt2SF,_hlt2SFup,_hlt2SFdown] = getSFelectron(_ElectronPt[n],T.ElectronSCEta[n])
+
+		if (Pass):
+			NewEl = TLorentzVector()
+			OldEl = TLorentzVector()
+			NewEl.SetPtEtaPhiM(_ElectronPt[n],T.ElectronSCEta[n],T.ElectronPhi[n],0)
+			OldEl.SetPtEtaPhiM(T.ElectronPt[n],T.ElectronSCEta[n],T.ElectronPhi[n],0)
+			met = PropagatePTChangeToMET(_met,OldEl,NewEl)
+
+		if (Pass):
+			electrons.append(NewEl)
+			electroninds.append(n)
+			trk_isos.append(T.ElectronTrkIsoDR03[n])
+			charges.append(T.ElectronCharge[n])
+			deltainvpts.append(0.)
+			chi2.append(0.)
+			pfid.append(0.)
+			layers.append(0.)
+			_idIsoSFs.append(_idIsoSF)
+			_idIsoSFsUp.append(_idIsoSFUp)
+			_idIsoSFsDown.append(_idIsoSFDown)
+			_hlt1SFs.append(_hlt1SF)
+			_hlt1SFsUp.append(_hlt1SFup)
+			_hlt1SFsDown.append(_hlt1SFdown)
+			_hlt2SFs.append(_hlt2SF)
+			_hlt2SFsUp.append(_hlt2SFup)
+			_hlt2SFsDown.append(_hlt2SFdown)
+
+	return [electrons,electroninds,_met,trk_isos,charges,_idIsoSFs,_idIsoSFsUp,_idIsoSFsDown,_hlt1SFs,_hlt1SFsUp,_hlt1SFsDown,_hlt2SFs,_hlt2SFsUp,_hlt2SFsDown]
+
+
+
 def LooseElectrons(T,_met,variation,isdata):
 	# Purpose: Gets the collection of electrons passing Loose Electron ID. 
 	#         Returns electrons as TLorentzVectors, and indices corrresponding
@@ -1778,6 +1963,48 @@ def LooseElectrons(T,_met,variation,isdata):
 			Pass *= abs(T.ElectronVtxDistXY[n])< 0.10
 			Pass *= abs(T.ElectronVtxDistZ[n]) < 0.20
 
+
+
+	        ecal_energy_inverse = 1.0/T.ElectronEcalEnergy[n]
+		eSCoverP = T.ElectronESuperClusterOverP[n]
+
+		#HLT-safe cuts, except iso which is in nonisoswitch below
+        	if (barrel):
+			Pass *= T.ElectronFull5x5SigmaIEtaIEta[n]<0.011
+	                Pass *= abs(T.ElectronDeltaEtaTrkSeedSC[n])<0.004
+		        Pass *= abs(T.ElectronDeltaPhiTrkSC[n])<0.020
+		        Pass *= T.ElectronHoE[n]<0.060
+		        Pass *= abs(1.0 - eSCoverP)*ecal_energy_inverse<0.013
+		        #Pass *= T.ElectronNormalizedChi2[n]<
+        	elif (endcap):
+			Pass *= T.ElectronFull5x5SigmaIEtaIEta[n]<0.031
+	                #Pass *= abs(T.ElectronDeltaEtaTrkSeedSC[n])<0.004
+		        #Pass *= abs(T.ElectronDeltaPhiTrkSC[n])<0.020
+		        Pass *= T.ElectronHoE[n]<0.065
+		        Pass *= abs(1.0 - eSCoverP)*ecal_energy_inverse<0.013
+		        Pass *= T.ElectronNormalizedChi2[n]<3.0
+
+		#Isolation
+		chad = T.ElectronPFChargedHadronIso03[n]
+		nhad = T.ElectronPFNeutralHadronIso03[n]
+		pho  = T.ElectronPFPhotonIso03[n]
+
+		eA = getElectronEffectiveArea(T.ElectronEta[n])
+		iso = chad + max(0.0, nhad + pho - T.ElectronRhoIsoHEEP[n]*eA)
+		iso = iso/_ElectronPt[n]
+		# Don't apply isolation for QCD studies
+		if nonisoswitch != True:
+			if (barrel):
+				Pass *= iso<0.0588
+		                Pass *= ((T.ElectronEcalPFClusterIso[n] - 0.165*T.fixedGridRhoFastjetCentralCalo)/_ElectronPt[n])<0.160
+		                Pass *= ((T.ElectronHcalPFClusterIso[n] - 0.060*T.fixedGridRhoFastjetCentralCalo)/_ElectronPt[n])<0.120
+		                Pass *= (T.ElectronTrkIsoDR03[n]/_ElectronPt[n])<0.08
+			elif (endcap):
+				Pass *= iso<0.0571
+		                Pass *= ((T.ElectronEcalPFClusterIso[n] - 0.132*T.fixedGridRhoFastjetCentralCalo)/_ElectronPt[n])<0.120
+		                Pass *= ((T.ElectronHcalPFClusterIso[n] - 0.131*T.fixedGridRhoFastjetCentralCalo)/_ElectronPt[n])<0.120
+		                Pass *= (T.ElectronTrkIsoDR03[n]/_ElectronPt[n])<0.08
+
 		if (Pass):
 			NewEl = TLorentzVector()
 			OldEl = TLorentzVector()
@@ -1797,6 +2024,124 @@ def LooseElectrons(T,_met,variation,isdata):
 
 	return [electrons,electroninds,_met,trk_isos,charges]
 
+
+def MediumElectrons(T,_met,variation,isdata):
+	# Purpose: Gets the collection of electrons passing Tight Electron ID. 
+	#         Returns electrons as TLorentzVectors, and indices corrresponding
+	#         to the surviving electrons of the electron collection. 
+	#         Also returns modified MET for systematic variations.	
+	#         https://twiki.cern.ch/twiki/bin/view/CMS/CutBasedElectronIdentificationRun2#Recommended_Working_points_for_2
+	electrons = []
+	electroninds = []
+	if variation=='EESup':	
+		_ElectronPt = [pt*1.01 for pt in T.ElectronPt]
+	elif variation=='EESdown':	
+		_ElectronPt = [pt*0.99 for pt in T.ElectronPt]
+	elif variation=='EER':	
+		_ElectronPt = [pt+pt*tRand.Gaus(0.0,0.04) for pt in T.ElectronPt]
+	else:	
+		_ElectronPt = [pt for pt in T.ElectronPt]	
+
+	trk_isos = []
+	charges = []
+	deltainvpts = []
+	chi2 = []
+	pfid = []
+	layers = []
+
+	for n in range(len(_ElectronPt)):
+		Pass = True
+		Pass *= (_ElectronPt[n] > 15)
+		Pass *= abs(T.ElectronSCEta[n])<2.5
+
+		barrel = (abs(T.ElectronSCEta[n]))<1.442
+		endcap = (abs(T.ElectronSCEta[n]))>1.56 
+		Pass *= (barrel+endcap)>0
+
+	        #Pass *= T.ElectronPassEGammaIDMedium[n]>0
+
+	        ecal_energy_inverse = 1.0/T.ElectronEcalEnergy[n]
+		eSCoverP = T.ElectronESuperClusterOverP[n]
+
+        	if (barrel):
+			Pass *= T.ElectronFull5x5SigmaIEtaIEta[n]<0.00998
+	                Pass *= abs(T.ElectronDeltaEtaTrkSeedSC[n])<0.00311
+		        Pass *= abs(T.ElectronDeltaPhiTrkSC[n])<0.103
+		        Pass *= T.ElectronHoE[n]<0.253
+		        Pass *= abs(1.0 - eSCoverP)*ecal_energy_inverse<0.134
+	                Pass *= T.ElectronMissingHits[n]<=1
+	                Pass *= bool(T.ElectronHasMatchedConvPhot[n])==False
+        	elif (endcap):
+			Pass *= T.ElectronFull5x5SigmaIEtaIEta[n]<0.0298
+	                Pass *= abs(T.ElectronDeltaEtaTrkSeedSC[n])<0.00609
+		        Pass *= abs(T.ElectronDeltaPhiTrkSC[n])<0.045
+		        Pass *= T.ElectronHoE[n]<0.0878
+		        Pass *= abs(1.0 - eSCoverP)*ecal_energy_inverse<0.13
+	                Pass *= T.ElectronMissingHits[n]<=1
+	                Pass *= bool(T.ElectronHasMatchedConvPhot[n])==False
+
+		#HLT-safe cuts, except iso which is in nonisoswitch below
+        	if (barrel):
+			Pass *= T.ElectronFull5x5SigmaIEtaIEta[n]<0.011
+	                Pass *= abs(T.ElectronDeltaEtaTrkSeedSC[n])<0.004
+		        Pass *= abs(T.ElectronDeltaPhiTrkSC[n])<0.020
+		        Pass *= T.ElectronHoE[n]<0.060
+		        Pass *= abs(1.0 - eSCoverP)*ecal_energy_inverse<0.013
+		        #Pass *= T.ElectronNormalizedChi2[n]<
+        	elif (endcap):
+			Pass *= T.ElectronFull5x5SigmaIEtaIEta[n]<0.031
+	                #Pass *= abs(T.ElectronDeltaEtaTrkSeedSC[n])<0.004
+		        #Pass *= abs(T.ElectronDeltaPhiTrkSC[n])<0.020
+		        Pass *= T.ElectronHoE[n]<0.065
+		        Pass *= abs(1.0 - eSCoverP)*ecal_energy_inverse<0.013
+		        Pass *= T.ElectronNormalizedChi2[n]<3.0
+
+		chad = T.ElectronPFChargedHadronIso03[n]
+		nhad = T.ElectronPFNeutralHadronIso03[n]
+		pho  = T.ElectronPFPhotonIso03[n]
+
+		eA = getElectronEffectiveArea(T.ElectronEta[n])
+		iso = chad + max(0.0, nhad + pho - T.ElectronRhoIsoHEEP[n]*eA)
+		iso = iso/_ElectronPt[n]
+		# Don't apply isolation for QCD studies
+		if nonisoswitch != True:
+			if (barrel):
+				Pass *= iso<0.0695
+		                Pass *= ((T.ElectronEcalPFClusterIso[n] - 0.165*T.fixedGridRhoFastjetCentralCalo)/_ElectronPt[n])<0.160
+		                Pass *= ((T.ElectronHcalPFClusterIso[n] - 0.060*T.fixedGridRhoFastjetCentralCalo)/_ElectronPt[n])<0.120
+		                Pass *= (T.ElectronTrkIsoDR03[n]/_ElectronPt[n])<0.08
+			elif (endcap):
+				Pass *= iso<0.0821
+		                Pass *= ((T.ElectronEcalPFClusterIso[n] - 0.132*T.fixedGridRhoFastjetCentralCalo)/_ElectronPt[n])<0.120
+		                Pass *= ((T.ElectronHcalPFClusterIso[n] - 0.131*T.fixedGridRhoFastjetCentralCalo)/_ElectronPt[n])<0.120
+		                Pass *= (T.ElectronTrkIsoDR03[n]/_ElectronPt[n])<0.08
+
+		# impact parameter requirements
+        	if (barrel):
+			Pass *= abs(T.ElectronVtxDistXY[n])<0.05
+			Pass *= abs(T.ElectronVtxDistZ[n]) <0.10
+		elif (endcap):
+			Pass *= abs(T.ElectronVtxDistXY[n])< 0.10
+			Pass *= abs(T.ElectronVtxDistZ[n]) < 0.20
+
+		if (Pass):
+			NewEl = TLorentzVector()
+			OldEl = TLorentzVector()
+			NewEl.SetPtEtaPhiM(_ElectronPt[n],T.ElectronEta[n],T.ElectronPhi[n],0)
+			OldEl.SetPtEtaPhiM(T.ElectronPt[n],T.ElectronEta[n],T.ElectronPhi[n],0)
+			met = PropagatePTChangeToMET(_met,OldEl,NewEl)
+
+		if (Pass):
+			electrons.append(NewEl)
+			electroninds.append(n)
+			trk_isos.append(iso)
+			charges.append(T.ElectronCharge[n])
+			deltainvpts.append(0.)
+			chi2.append(0.)
+			pfid.append(0.)
+			layers.append(0.)
+
+	return [electrons,electroninds,_met,trk_isos,charges]
 
 def TightElectrons(T,_met,variation,isdata):
 	# Purpose: Gets the collection of electrons passing Tight Electron ID. 
@@ -1858,6 +2203,89 @@ def TightElectrons(T,_met,variation,isdata):
 			layers.append(0.)
 
 	return [electrons,electroninds,_met,trk_isos,charges]
+
+def getSFelectron(_pt,_eta):
+	SFbyPt = []
+	pts = [[20.00,22.00],[22.00,25.00],[25.00,30.00],[30.00,35.00],[35.00,40.00],[40.00,50.00],[50.00,60.00],[60.00,70.00],[70.00,80.00],[80.00,100.00],[100.00,120.00],[120.00,200.00]]
+	if _pt<20.00: _pt=20.01
+	if _pt>200.00: _pt=199.99
+	if _eta<-2.50: _eta=-2.499
+	if _eta>2.50: _eta=2.499
+	#idIsoSFbyPt,hlt1SFbyPt,hlt2SFbyPt=1.0,1.0,1.0
+	index=0
+	for x in pts:
+		if _pt>=x[0] and _pt<x[1]:
+			break
+		index=index+1
+	if _eta>-2.50 and _eta<-2.17: idIsoSFbyPt = [[0.879, 0.039],[0.866, 0.129],[0.9, 0.054],[0.933, 0.022],[0.944, 0.018],[0.963, 0.017],[0.967, 0.044],[0.981, 0.033],[1.0, 0.091],[1.02, 0.039],[1.073, 0.089],[1.049, 0.127]]
+	if _eta>-2.17 and _eta<-1.80: idIsoSFbyPt = [[0.853, 0.028],[0.869, 0.025],[0.891, 0.016],[0.916, 0.014],[0.935, 0.009],[0.946, 0.012],[0.957, 0.011],[0.955, 0.054],[0.978, 0.019],[0.968, 0.016],[0.987, 0.022],[1.022, 0.022]]
+	if _eta>-1.80 and _eta<-1.57: idIsoSFbyPt = [[0.905, 0.074],[0.898, 0.024],[0.912, 0.052],[0.919, 0.026],[0.933, 0.004],[0.952, 0.005],[0.962, 0.005],[0.969, 0.045],[0.945, 0.078],[0.989, 0.046],[1.005, 0.077],[0.974, 0.056]]
+	if _eta>-1.57 and _eta<-1.44: idIsoSFbyPt = [[0.832, 0.233],[0.899, 0.39],[0.939, 0.221],[0.948, 0.096],[0.948, 0.009],[0.945, 0.021],[0.947, 0.031],[0.929, 0.052],[0.979, 0.124],[1.022, 0.089],[0.995, 0.047],[1.009, 0.051]]
+	if _eta>-1.44 and _eta<-0.80: idIsoSFbyPt = [[0.921, 0.055],[0.905, 0.032],[0.923, 0.016],[0.94, 0.02],[0.945, 0.005],[0.952, 0.011],[0.951, 0.017],[0.952, 0.009],[0.967, 0.043],[0.971, 0.01],[0.972, 0.053],[0.97, 0.021]]
+	if _eta>-0.80 and _eta<0.00 : idIsoSFbyPt = [[0.921, 0.047],[0.911, 0.034],[0.93, 0.033],[0.943, 0.016],[0.945, 0.004],[0.95, 0.011],[0.952, 0.013],[0.951, 0.009],[0.956, 0.025],[0.978, 0.009],[0.964, 0.02],[0.97, 0.049]]
+	if _eta>0.00  and _eta<0.80 : idIsoSFbyPt = [[0.936, 0.047],[0.943, 0.034],[0.951, 0.033],[0.964, 0.016],[0.966, 0.004],[0.968, 0.011],[0.967, 0.013],[0.973, 0.009],[0.975, 0.025],[0.993, 0.009],[0.992, 0.02],[0.986, 0.049]]
+	if _eta>0.80  and _eta<1.44 : idIsoSFbyPt = [[0.915, 0.055],[0.937, 0.032],[0.936, 0.016],[0.948, 0.02],[0.951, 0.005],[0.957, 0.011],[0.957, 0.017],[0.966, 0.009],[0.964, 0.043],[0.987, 0.01],[0.997, 0.053],[0.991, 0.021]]
+	if _eta>1.44  and _eta<1.57 : idIsoSFbyPt = [[0.855, 0.234],[0.915, 0.39],[0.908, 0.221],[0.938, 0.096],[0.947, 0.009],[0.931, 0.021],[0.942, 0.031],[0.896, 0.052],[0.934, 0.124],[0.984, 0.089],[0.934, 0.046],[1.019, 0.051]]
+	if _eta>1.57  and _eta<1.80 : idIsoSFbyPt = [[0.907, 0.074],[0.906, 0.024],[0.92, 0.052],[0.939, 0.026],[0.949, 0.004],[0.958, 0.005],[0.967, 0.005],[0.975, 0.045],[0.965, 0.078],[0.981, 0.046],[0.983, 0.077],[0.978, 0.056]]
+	if _eta>1.80  and _eta<2.17 : idIsoSFbyPt = [[0.877, 0.028],[0.887, 0.025],[0.902, 0.016],[0.924, 0.014],[0.945, 0.009],[0.957, 0.012],[0.963, 0.011],[0.965, 0.054],[0.978, 0.019],[0.991, 0.016],[1.024, 0.022],[1.0, 0.021]]
+	if _eta>2.17  and _eta<2.50 : idIsoSFbyPt = [[0.823, 0.039],[0.836, 0.129],[0.871, 0.054],[0.903, 0.021],[0.92, 0.018],[0.935, 0.017],[0.949, 0.044],[0.966, 0.033],[0.982, 0.091],[1.003, 0.038],[0.981, 0.089],[1.024, 0.126]]
+
+	if _eta>-2.50 and _eta<-2.17: hlt1SFbyPt = [[0.105,0.114],[0.467,0.048],[0.936,0.01],[0.978,0.003],[0.986,0.005],[0.995,0.013],[0.998,0.007],[0.998,0.057],[0.996,0.012],[1.004,0.018],[1.023,0.04],[0.995,0.008]]
+	if _eta>-2.17 and _eta<-1.80: hlt1SFbyPt = [[0.427,0.321],[0.763,0.047],[0.998,0.012],[1.004,0.004],[1.004,0.004],[1.002,0.002],[1.002,0.003],[0.999,0.014],[1.002,0.011],[1.001,0.006],[1.003,0.008],[0.998,0.004]]
+	if _eta>-1.80 and _eta<-1.57: hlt1SFbyPt = [[0.8,0.207],[0.928,0.083],[0.996,0.016],[0.997,0.011],[1.001,0.009],[1.001,0.002],[1.001,0.003],[0.998,0.002],[1.004,0.014],[0.998,0.005],[0.996,0.007],[1.008,0.017]]
+	if _eta>-1.57 and _eta<-1.44: hlt1SFbyPt = [[1,0.063],[0.94,0.026],[0.997,0.071],[1.003,0.006],[0.995,0.044],[0.994,0.003],[0.994,0.003],[0.997,0.035],[1.048,0.105],[1.011,0.042],[0.969,0.038],[0.963,0.321]]
+	if _eta>-1.44 and _eta<-0.80: hlt1SFbyPt = [[0.733,1.109],[0.914,0.027],[0.991,0.022],[0.994,0.002],[0.992,0.002],[0.992,0.003],[0.991,0.002],[0.99,0.004],[0.987,0.009],[0.991,0.003],[0.99,0.01],[0.988,0.007]]
+	if _eta>-0.80 and _eta<0.00 : hlt1SFbyPt = [[2.429,0.57],[0.998,0.046],[0.999,0.003],[0.993,0.003],[0.993,0.004],[0.99,0.003],[0.99,0.002],[0.99,0.002],[0.991,0.01],[0.992,0.024],[0.992,0.014],[0.989,0.015]]
+	if _eta>0.00  and _eta<0.80 : hlt1SFbyPt = [[1.308,0.57],[0.943,0.046],[0.984,0.003],[0.982,0.003],[0.981,0.004],[0.979,0.003],[0.981,0.002],[0.979,0.002],[0.979,0.01],[0.979,0.024],[0.982,0.014],[0.98,0.015]]
+	if _eta>0.80  and _eta<1.44 : hlt1SFbyPt = [[0.667,1.109],[0.839,0.027],[0.991,0.022],[0.993,0.002],[0.992,0.002],[0.993,0.003],[0.991,0.002],[0.988,0.004],[0.988,0.009],[0.99,0.003],[0.988,0.01],[0.985,0.007]]
+	if _eta>1.44  and _eta<1.57 : hlt1SFbyPt = [[0.702,0.063],[0.85,0.026],[0.995,0.071],[1.001,0.006],[1.003,0.044],[0.998,0.003],[1.003,0.003],[1.014,0.035],[1.006,0.105],[1.017,0.042],[0.993,0.038],[0.971,0.321]]
+	if _eta>1.57  and _eta<1.80 : hlt1SFbyPt = [[0.897,0.205],[0.847,0.083],[1.001,0.016],[1.007,0.011],[1.004,0.009],[1.004,0.002],[1.001,0.003],[1.004,0.002],[1.007,0.014],[0.998,0.005],[1.0,0.007],[1.009,0.017]]
+	if _eta>1.80  and _eta<2.17 : hlt1SFbyPt = [[0.275,0.321],[0.687,0.047],[0.99,0.012],[1.002,0.004],[1.002,0.004],[1.001,0.002],[1.0,0.003],[1.0,0.014],[0.999,0.011],[0.998,0.006],[1.003,0.008],[1.003,0.004]]
+	if _eta>2.17  and _eta<2.50 : hlt1SFbyPt = [[0.101,0.114],[0.422,0.048],[0.901,0.01],[0.965,0.003],[0.983,0.005],[0.99,0.013],[0.998,0.007],[0.993,0.057],[1.0,0.012],[1.006,0.018],[1.024,0.04],[0.99,0.008]]
+
+	if _eta>-2.50 and _eta<-2.17: hlt2SFbyPt = [[0.911,0.021],[0.932,0.007],[0.958,0.008],[0.978,0.004],[0.986,0.005],[0.995,0.013],[0.998,0.007],[0.998,0.057],[0.996,0.012],[1.004,0.018],[1.023,0.04],[0.996,0.008]]
+	if _eta>-2.17 and _eta<-1.80: hlt2SFbyPt = [[0.994,0.022],[1.002,0.027],[1.003,0.011],[1.004,0.004],[1.004,0.004],[1.002,0.002],[1.002,0.003],[0.999,0.014],[1.002,0.011],[1.001,0.006],[1.003,0.008],[0.998,0.004]]
+	if _eta>-1.80 and _eta<-1.57: hlt2SFbyPt = [[0.983,0.119],[0.987,0.036],[1.0,0.013],[0.996,0.011],[1.001,0.008],[1.001,0.002],[1.001,0.003],[0.998,0.002],[1.004,0.014],[0.998,0.005],[0.995,0.007],[1.008,0.017]]
+	if _eta>-1.57 and _eta<-1.44: hlt2SFbyPt = [[1.023,0.02],[1.015,0.037],[1.003,0.026],[1.002,0.006],[0.995,0.045],[0.994,0.003],[0.995,0.003],[0.995,0.035],[1.045,0.105],[1.011,0.041],[0.969,0.038],[0.963,0.321]]
+	if _eta>-1.44 and _eta<-0.80: hlt2SFbyPt = [[0.987,0.035],[0.992,0.007],[0.993,0.018],[0.994,0.002],[0.992,0.001],[0.992,0.003],[0.991,0.002],[0.99,0.004],[0.987,0.009],[0.992,0.003],[0.99,0.01],[0.988,0.007]]
+	if _eta>-0.80 and _eta<0.00 : hlt2SFbyPt = [[0.979,0.012],[0.998,0.02],[0.999,0.004],[0.993,0.002],[0.993,0.004],[0.99,0.003],[0.99,0.002],[0.99,0.002],[0.991,0.01],[0.992,0.024],[0.992,0.014],[0.989,0.015]]
+	if _eta>0.00  and _eta<0.80 : hlt2SFbyPt = [[0.974,0.012],[0.981,0.02],[0.985,0.004],[0.982,0.002],[0.981,0.004],[0.979,0.003],[0.982,0.002],[0.979,0.002],[0.979,0.01],[0.979,0.024],[0.982,0.014],[0.981,0.015]]
+	if _eta>0.80  and _eta<1.44 : hlt2SFbyPt = [[0.987,0.035],[0.98,0.007],[0.995,0.018],[0.993,0.002],[0.992,0.001],[0.993,0.003],[0.991,0.002],[0.988,0.004],[0.988,0.009],[0.99,0.003],[0.988,0.01],[0.984,0.007]]
+	if _eta>1.44  and _eta<1.57 : hlt2SFbyPt = [[0.985,0.02],[1.021,0.037],[1.008,0.026],[1.002,0.006],[1.003,0.045],[0.999,0.003],[1.003,0.003],[1.014,0.035],[1.007,0.105],[1.018,0.042],[0.992,0.039],[0.971,0.321]]
+	if _eta>1.57  and _eta<1.80 : hlt2SFbyPt = [[0.98,0.12],[1.03,0.036],[1.005,0.013],[1.007,0.011],[1.003,0.008],[1.004,0.002],[1.001,0.003],[1.004,0.002],[1.007,0.014],[0.998,0.005],[1.0,0.007],[1.009,0.017]]
+	if _eta>1.80  and _eta<2.17 : hlt2SFbyPt = [[0.983,0.022],[0.995,0.027],[0.996,0.011],[1.01,0.004],[1.002,0.004],[1.001,0.002],[1.0,0.003],[1.0,0.014],[0.999,0.011],[0.998,0.006],[1.004,0.008],[1.003,0.004]]
+	if _eta>2.17  and _eta<2.50 : hlt2SFbyPt = [[0.854,0.02],[0.886,0.007],[0.922,0.008],[0.966,0.004],[0.983,0.005],[0.99,0.013],[0.998,0.007],[0.992,0.057],[1.001,0.012],[1.006,0.018],[1.025,0.04],[0.99,0.008]]
+
+
+	idIsoSFs = idIsoSFbyPt[index]
+	idIsoSF = idIsoSFs[0]
+	idIsoSFup   = idIsoSFs[0]+idIsoSFs[1]
+	idIsoSFdown = max(idIsoSFs[0]-idIsoSFs[1],0.0)
+
+	hlt1SFs = hlt1SFbyPt[index]
+	hlt1SF = hlt1SFs[0]
+	hlt1SFup   = hlt1SFs[0]+hlt1SFs[1]
+	hlt1SFdown = max(hlt1SFs[0]-hlt1SFs[1],0.0)
+
+	hlt2SFs = hlt2SFbyPt[index]
+	hlt2SF = hlt2SFs[0]
+	hlt2SFup   = hlt2SFs[0]+hlt2SFs[1]
+	hlt2SFdown = max(hlt2SFs[0]-hlt2SFs[1],0.0)
+
+	return [idIsoSF,idIsoSFup,idIsoSFdown,hlt1SF,hlt1SFup,hlt1SFdown,hlt2SF,hlt2SFup,hlt2SFdown]
+
+
+def getElectronEffectiveArea(eta):
+	abseta=abs(eta)
+	eA = 1.
+	if abseta>0.0000 and abseta<1.0000 : eA=0.1703
+	if abseta>1.0000 and abseta<1.4790 : eA=0.1715
+	if abseta>1.4790 and abseta<2.0000 : eA=0.1213
+	if abseta>2.0000 and abseta<2.2000 : eA=0.1230
+	if abseta>2.2000 and abseta<2.3000 : eA=0.1635
+	if abseta>2.3000 and abseta<2.4000 : eA=0.1937
+	if abseta>2.4000 and abseta<5.0000 : eA=0.2393
+	return eA
 
 
 
@@ -1977,7 +2405,7 @@ def LooseIDJets(T,met,variation,isdata):
 		#	looseJetID = (NHF< 0.98 and NEMF>0.01 and NumNeutralParticle>2 and abs(eta)>2.7 and abs(eta)<=3.0 )
 		#else:
 		#	looseJetID = (NEMF<0.90 and NumNeutralParticle>10 and abs(eta)>3.0 and abs(eta)<5.0 )
-		if _PFJetPt[n]>18 :#fixme todo was pt>30, reduced for HH
+		if _PFJetPt[n]>20 :#fixme todo was pt>30, reduced for HH
 			if looseJetID:
 				j = TLorentzVector()
 				j.SetPtEtaPhiM(_PFJetPt[n],T.PFJetEtaAK4CHS[n],T.PFJetPhiAK4CHS[n],0)
@@ -2565,11 +2993,11 @@ def HelicityCosTheta2(Booster, Boosted) :
 	Boosted.Boost( BoostVector )
 	return Boosted.CosTheta()
 
-def CosThetaAngles(Hj1, Hj2, Zj1, Zj2, mu1, mu2) :
+def CosThetaAngles(Hj1, Hj2, Zj1, Zj2, ell1, ell2) :
 	bb, zz, diHiggsCandidate = TLorentzVector(), TLorentzVector(), TLorentzVector()
-	zz = Zj1 + Zj2 + mu1 + mu2
+	zz = Zj1 + Zj2 + ell1 + ell2
 	bb = Hj1 + Hj2
-	diHiggsCandidate = Hj1 + Hj2 + Zj1 + Zj2 + mu1 + mu2
+	diHiggsCandidate = Hj1 + Hj2 + Zj1 + Zj2 + ell1 + ell2
 	
 	helicityThetas = []
 	BoostedHgg, HHforBoost = TLorentzVector(), TLorentzVector()
@@ -2594,30 +3022,30 @@ def CosThetaAngles(Hj1, Hj2, Zj1, Zj2, mu1, mu2) :
 	helicityThetas.append( HelicityCosTheta(HzzforBoost, BoostedZjj) ) # CosTheta_zjj_hzz
 	#if v == '': print 'after :', BoostedZjj.Pt(), BoostedZjj.Eta()
 
-	BoostedZuu.SetPtEtaPhiE((mu1 + mu2).Pt(), (mu1 + mu2).Eta(), (mu1 + mu2).Phi(), (mu1 + mu2).Energy())
+	BoostedZuu.SetPtEtaPhiE((ell1 + ell2).Pt(), (ell1 + ell2).Eta(), (ell1 + ell2).Phi(), (ell1 + ell2).Energy())
 	helicityThetas.append( HelicityCosTheta(HzzforBoost, BoostedZuu) ) # CosTheta_zuu_hzz
 
 	BoostedLeadingZj.SetPtEtaPhiE(Zj1.Pt(), Zj1.Eta(), Zj1.Phi(), Zj1.Energy())
 	helicityThetas.append( HelicityCosTheta(HzzforBoost, BoostedLeadingZj) ) # CosTheta_zj1_hzz
 	#if v == '': print 'CosTheta_zz:', helicityThetas[2], 'CosTheta_zz_test', helicityThetas[3]
 	
-	BoostedLeadingZu.SetPtEtaPhiE(mu1.Pt(), mu1.Eta(), mu1.Phi(), mu1.Energy())
+	BoostedLeadingZu.SetPtEtaPhiE(ell1.Pt(), ell1.Eta(), ell1.Phi(), ell1.Energy())
 	helicityThetas.append( HelicityCosTheta(HzzforBoost, BoostedLeadingZu) ) # CosTheta_zu1_hzz
 	
 	return helicityThetas
 
-def CosThetaAngles_ZZ(Zj1, Zj2, mu1, mu2) :
+def CosThetaAngles_ZZ(Zj1, Zj2, ell1, ell2) :
 	zz = TLorentzVector()
-	zz = Zj1 + Zj2 + mu1 + mu2
+	zz = Zj1 + Zj2 + ell1 + ell2
 	zjj = Zj1 + Zj2
-	zmumu = mu1 + mu2
+	zellell = ell1 + ell2
 	
 	helicityThetas = []
 	
 	ZZforBoost, BoostedZuu, BoostedZjj = TLorentzVector(), TLorentzVector(), TLorentzVector()
 	ZZforBoost.SetPtEtaPhiE(zz.Pt(), zz.Eta(), zz.Phi(), zz.Energy())
 	
-	BoostedZuu.SetPtEtaPhiE(zmumu.Pt(), zmumu.Eta(), zmumu.Phi(), zmumu.Energy())
+	BoostedZuu.SetPtEtaPhiE(zellell.Pt(), zellell.Eta(), zellell.Phi(), zellell.Energy())
 	helicityThetas.append( HelicityCosTheta(ZZforBoost, BoostedZuu) ) # CosThetaStar_Zuu
 
 	BoostedZjj.SetPtEtaPhiE(zjj.Pt(), zjj.Eta(), zjj.Phi(), zjj.Energy())
@@ -2647,25 +3075,25 @@ def norm_planes_hi(partons, dihiggs) :
 
 	return vnorm
 
-def getPhi(Hj1, Hj2, Zj1, Zj2, mu1, mu2) :
+def getPhi(Hj1, Hj2, Zj1, Zj2, ell1, ell2) :
 	vPhi = []
-	if (Hj1.Pt()<=0. or Hj2.Pt()<=0. or Zj1.Pt()<=0. or Zj2.Pt()<=0. or mu1.Pt()<=0. or mu2.Pt()<=0.) :
+	if (Hj1.Pt()<=0. or Hj2.Pt()<=0. or Zj1.Pt()<=0. or Zj2.Pt()<=0. or ell1.Pt()<=0. or ell2.Pt()<=0.) :
 		vPhi.append(-3.5)
 		vPhi.append(-3.5)
 	else :
 		zz, diHiggsCandidate = TLorentzVector(), TLorentzVector()
-		zz = Zj1 + Zj2 + mu1 + mu2
-		diHiggsCandidate = Hj1 + Hj2 + Zj1 + Zj2 + mu1 + mu2
+		zz = Zj1 + Zj2 + ell1 + ell2
+		diHiggsCandidate = Hj1 + Hj2 + Zj1 + Zj2 + ell1 + ell2
 		
 		partons = []
-		partons.append(Zj1 + Zj2) #leadingPhoton
-		partons.append(mu1 + mu2) #subleadingPhoton
+		partons.append(Zj1 + Zj2) #leadingLepton
+		partons.append(ell1 + ell2) #subleadingLepton
 		partons.append(Hj1) #leadingJet
 		partons.append(Hj2) #subleadingJet
 		
 		# Define hzz direction
 		hzz = TLorentzVector()
-		hzz = Zj1 + Zj2 + mu1 + mu2
+		hzz = Zj1 + Zj2 + ell1 + ell2
 		
 		boost_H = TVector3( - diHiggsCandidate.BoostVector() )
 		hzz.Boost(boost_H);
@@ -2698,25 +3126,25 @@ def getPhi(Hj1, Hj2, Zj1, Zj2, mu1, mu2) :
 	
 	return vPhi
 
-def getPhi_ZZ(Zj1, Zj2, mu1, mu2) :
+def getPhi_ZZ(Zj1, Zj2, ell1, ell2) :
 	vPhi = []
-	if (Zj1.Pt()<=0. or Zj2.Pt()<=0. or mu1.Pt()<=0. or mu2.Pt()<=0.) :
+	if (Zj1.Pt()<=0. or Zj2.Pt()<=0. or ell1.Pt()<=0. or ell2.Pt()<=0.) :
 		vPhi.append(-3.5)
 		vPhi.append(-3.5)
 		vPhi.append(-3.5)
 	else :
 		zz = TLorentzVector()
-		zz = Zj1 + Zj2 + mu1 + mu2
+		zz = Zj1 + Zj2 + ell1 + ell2
 		
 		partons = []
-		partons.append(mu1) #leadingPhoton
-		partons.append(mu2) #subleadingPhoton
+		partons.append(ell1) #leadingLepton
+		partons.append(ell2) #subleadingLepton
 		partons.append(Zj1) #leadingJet
 		partons.append(Zj2) #subleadingJet
 		
 		# Define Zuu direction
 		zuu = TLorentzVector()
-		zuu = mu1 + mu2
+		zuu = ell1 + ell2
 
 		boost_ZZ = TVector3( - zz.BoostVector() )
 		zuu.Boost(boost_ZZ);
@@ -2800,7 +3228,8 @@ def FullKinematicCalculation(T,variation):
 	# muons_forjetsep = MuonsForJetSeparation(T)
 	# taus_forjetsep = TausForJetSeparation(T)
 	#[electrons,electroninds,met] = HEEPElectrons(T,met,variation)
-	[electrons,electroninds,met,trkisosEle,chargesEle] = TightElectrons(T,met,variation,T.isData)
+	#[electrons,electroninds,met,trkisosEle,chargesEle] = MediumElectrons(T,met,variation,T.isData)
+	[electrons,electroninds,met,trkisosEle,chargesEle,idIsoSFEle,idIsoSFEleUp,idIsoSFEleDown,hlt1SFEle,hlt1SFEleUp,hlt1SFEleDown,hlt2SFEle,hlt2SFEleUp,hlt2SFEleDown] = mvaWP90Electrons(T,met,variation,T.isData)
 	# ID Jets and filter from leptons
 	[jets,jetinds,met,failthreshold,neutralhadronEF,neutralemEF,btagCSVscores,btagMVAscores,btagSFsLoose,btagSFsMedium,btagSFsLoose_csv,btagSFsMedium_csv] = LooseIDJets(T,met,variation,T.isData)
 	#jetsTemp = jets
@@ -2850,10 +3279,28 @@ def FullKinematicCalculation(T,variation):
 		electrons.append(EmptyLorentz)
 		trkisosEle.append(0.0)
 		chargesEle.append(0.0)
+		idIsoSFEle.append(0.0)
+		idIsoSFEleUp.append(0.0)
+		idIsoSFEleDown.append(0.0)
+		hlt1SFEle.append(0.0)
+		hlt1SFEleUp.append(0.0)
+		hlt1SFEleDown.append(0.0)
+		hlt2SFEle.append(0.0)
+		hlt2SFEleUp.append(0.0)
+		hlt2SFEleDown.append(0.0)
 	if len(electrons) < 2 : 
 		electrons.append(EmptyLorentz)	
 		trkisosEle.append(0.0)
 		chargesEle.append(0.0)
+		idIsoSFEle.append(0.0)
+		idIsoSFEleUp.append(0.0)
+		idIsoSFEleDown.append(0.0)
+		hlt1SFEle.append(0.0)
+		hlt1SFEleUp.append(0.0)
+		hlt1SFEleDown.append(0.0)
+		hlt2SFEle.append(0.0)
+		hlt2SFEleUp.append(0.0)
+		hlt2SFEleDown.append(0.0)
 	if len(jets) < 1 : 
 		jets.append(EmptyLorentz)
 		neutralhadronEF.append(0.0)
@@ -2902,6 +3349,7 @@ def FullKinematicCalculation(T,variation):
 	[_genMuons,_matchedRecoMuons,muonInd] = MuonsFromLQ(T)
 	[_genJets,_matchedRecoJets,jetInd] = JetsFromLQ(T)
 	[_genMuonsZ,_matchedRecoMuonsZ,muonIndZ,_genElectronsZ,_matchedRecoElectronsZ,electronIndZ,_genJetsH,_matchedRecoJetsH,jetIndH,_genJetsZ,_matchedRecoJetsZ,jetIndZ,onShellZMu,onShellZEle] = LeptonsAndJetsFromHH(T)
+	[_isElectronEvent_gen,_isMuonEvent_gen,_isTauEvent_gen]=getLeptonEventFlavorGEN(T)
 
 	_muonInd1=muonInd[0]
 	_muonInd2=muonInd[1]
@@ -2909,10 +3357,12 @@ def FullKinematicCalculation(T,variation):
 	_jetInd2=jetInd[1]
 
 	[_ptu1_gen,_ptu2_gen] = [_genMuonsZ[0].Pt(),_genMuonsZ[1].Pt()]
+	[_pte1_gen,_pte2_gen] = [_genElectronsZ[0].Pt(),_genElectronsZ[1].Pt()]
 	[_ptHj1_gen,_ptHj2_gen,_ptZj1_gen,_ptZj2_gen]=[_genJetsH[0].Pt(),_genJetsH[1].Pt(),_genJetsZ[0].Pt(),_genJetsZ[1].Pt()]
 	[_phiHj1_gen,_phiHj2_gen,_phiZj1_gen,_phiZj2_gen]=[_genJetsH[0].Phi(),_genJetsH[1].Phi(),_genJetsZ[0].Phi(),_genJetsZ[1].Phi()]
 	[_etaHj1_gen,_etaHj2_gen,_etaZj1_gen,_etaZj2_gen]=[_genJetsH[0].Eta(),_genJetsH[1].Eta(),_genJetsZ[0].Eta(),_genJetsZ[1].Eta()]
 	[_ptu1_genMatched,_ptu2_genMatched]=[_matchedRecoMuonsZ[0].Pt(),_matchedRecoMuonsZ[1].Pt()]
+	[_pte1_genMatched,_pte2_genMatched]=[_matchedRecoElectronsZ[0].Pt(),_matchedRecoElectronsZ[1].Pt()]
 	[_ptHj1_genMatched,_ptHj2_genMatched]=[_matchedRecoJetsH[0].Pt(),_matchedRecoJetsH[1].Pt()]
 	[_ptZj1_genMatched,_ptZj2_genMatched]=[_matchedRecoJetsZ[0].Pt(),_matchedRecoJetsZ[1].Pt()]
 	_dRu1Hj1_gen = abs(_genMuonsZ[0].DeltaR(_genJetsH[0]))
@@ -2931,41 +3381,77 @@ def FullKinematicCalculation(T,variation):
 	_dRu2Hj2_genMatched = abs(_matchedRecoMuonsZ[1].DeltaR(_matchedRecoJetsH[1]))
 	_dRu2Zj1_genMatched = abs(_matchedRecoMuonsZ[1].DeltaR(_matchedRecoJetsZ[0]))
 	_dRu2Zj2_genMatched = abs(_matchedRecoMuonsZ[1].DeltaR(_matchedRecoJetsZ[1]))
+	_dRe1Hj1_gen = abs(_genElectronsZ[0].DeltaR(_genJetsH[0]))
+	_dRe1Hj2_gen = abs(_genElectronsZ[0].DeltaR(_genJetsH[1]))
+	_dRe1Zj1_gen = abs(_genElectronsZ[0].DeltaR(_genJetsZ[0]))
+	_dRe1Zj2_gen = abs(_genElectronsZ[0].DeltaR(_genJetsZ[1]))
+	_dRe2Hj1_gen = abs(_genElectronsZ[1].DeltaR(_genJetsH[0]))
+	_dRe2Hj2_gen = abs(_genElectronsZ[1].DeltaR(_genJetsH[1]))
+	_dRe2Zj1_gen = abs(_genElectronsZ[1].DeltaR(_genJetsZ[0]))
+	_dRe2Zj2_gen = abs(_genElectronsZ[1].DeltaR(_genJetsZ[1]))
+	_dRe1Hj1_genMatched = abs(_matchedRecoElectronsZ[0].DeltaR(_matchedRecoJetsH[0]))
+	_dRe1Hj2_genMatched = abs(_matchedRecoElectronsZ[0].DeltaR(_matchedRecoJetsH[1]))
+	_dRe1Zj1_genMatched = abs(_matchedRecoElectronsZ[0].DeltaR(_matchedRecoJetsZ[0]))
+	_dRe1Zj2_genMatched = abs(_matchedRecoElectronsZ[0].DeltaR(_matchedRecoJetsZ[1]))
+	_dRe2Hj1_genMatched = abs(_matchedRecoElectronsZ[1].DeltaR(_matchedRecoJetsH[0]))
+	_dRe2Hj2_genMatched = abs(_matchedRecoElectronsZ[1].DeltaR(_matchedRecoJetsH[1]))
+	_dRe2Zj1_genMatched = abs(_matchedRecoElectronsZ[1].DeltaR(_matchedRecoJetsZ[0]))
+	_dRe2Zj2_genMatched = abs(_matchedRecoElectronsZ[1].DeltaR(_matchedRecoJetsZ[1]))
 
 
-	leptons=_genLeptonsZ=_matchedRecoLeptonsZ=[]
+	leptons,_genLeptonsZ,_matchedRecoLeptonsZ=[],[],[]
 	_isMuonEvent,_isElectronEvent = False,False
-	if muons[0].Pt()>=electrons[0].Pt() or electrons[1].Pt()<1:#prioritize muons: cases where muon1 pt > ele1 pt, or where there is no 2nd electron
-		if electrons[0]>16 and electrons[1]>8 and muons[1]<8:#single case where first muon pt is higher, but there is only one good muon and 2 valid electrons
-			leptons = electrons
-			charges = chargesEle
-			trkisos = trkisosEle
-			_genLeptonsZ=_genElectronsZ
-			_matchedRecoLeptonsZ=_matchedRecoElectronsZ
-			_isElectronEvent=True
-		else:
-			leptons = muons
-			charges = chargesMu
-			trkisos = trkisosMu
-			_genLeptonsZ=_genMuonsZ
-			_matchedRecoLeptonsZ=_matchedRecoMuonsZ
-			_isMuonEvent=True
-	else:#cases where ele1 pt > muon1 pt
-		if muons[0]>16 and muons[1]>8 and electrons[1]<8:#single case where first electron pt is higher, but there is only one good electron and 2 valid muons
-			leptons = muons
-			charges = chargesMu
-			trkisos = trkisosMu
-			_genLeptonsZ=_genMuonsZ
-			_matchedRecoLeptonsZ=_matchedRecoMuonsZ
-			_isMuonEvent=True
-		else:
-			leptons = electrons
-			charges = chargesEle
-			trkisos = trkisosEle
-			_genLeptonsZ=_genElectronsZ
-			_matchedRecoLeptonsZ=_matchedRecoElectronsZ
-			_isElectronEvent=True
+	#if muons[0].Pt()>=electrons[0].Pt() or electrons[1].Pt()<1:#prioritize muons: cases where muon1 pt > ele1 pt, or where there is no 2nd electron
+	#	if electrons[0]>16 and electrons[1]>8 and muons[1]<8:#single case where first muon pt is higher, but there is only one good muon and 2 valid electrons
+	#		leptons = electrons
+	#		charges = chargesEle
+	#		trkisos = trkisosEle
+	#		_genLeptonsZ=_genElectronsZ
+	#		_matchedRecoLeptonsZ=_matchedRecoElectronsZ
+	#		_isElectronEvent=True
+	#	else:
+	#		leptons = muons
+	#		charges = chargesMu
+	#		trkisos = trkisosMu
+	#		_genLeptonsZ=_genMuonsZ
+	#		_matchedRecoLeptonsZ=_matchedRecoMuonsZ
+	#		_isMuonEvent=True
+	#else:#cases where ele1 pt > muon1 pt
+	#	if muons[0]>16 and muons[1]>8 and electrons[1]<8:#single case where first electron pt is higher, but there is only one good electron and 2 valid muons
+	#		leptons = muons
+	#		charges = chargesMu
+	#		trkisos = trkisosMu
+	#		_genLeptonsZ=_genMuonsZ
+	#		_matchedRecoLeptonsZ=_matchedRecoMuonsZ
+	#		_isMuonEvent=True
+	#	else:
+	#		leptons = electrons
+	#		charges = chargesEle
+	#		trkisos = trkisosEle
+	#		_genLeptonsZ=_genElectronsZ
+	#		_matchedRecoLeptonsZ=_matchedRecoElectronsZ
+	#		_isElectronEvent=True
 
+	if electrons[0].Pt()>25 and electrons[1].Pt()>15:
+		leptons = electrons
+		charges = chargesEle
+		trkisos = trkisosEle
+		_genLeptonsZ=_genElectronsZ
+		_matchedRecoLeptonsZ=_matchedRecoElectronsZ
+		_isElectronEvent=True
+	if muons[0].Pt()>20 and muons[1].Pt()>10:
+		leptons = muons
+		charges = chargesMu
+		trkisos = trkisosMu
+		_genLeptonsZ=_genMuonsZ
+		_matchedRecoLeptonsZ=_matchedRecoMuonsZ
+		_isMuonEvent=True
+	else:
+		leptons = [EmptyLorentz,EmptyLorentz]
+		charges = [0,0]
+		trkisos = [-999,-999]
+		_genLeptonsZ=[EmptyLorentz,EmptyLorentz]
+		_matchedRecoLeptonsZ=[EmptyLorentz,EmptyLorentz]
 
 	# Get kinematic quantities
 	[_passMedIdmu1,_passMedIdmu1,_passMedId2016mu1,_passMedId2016mu1]=[passMedIds[0],passMedIds[1],passMedId2016s[0],passMedId2016s[1]]
@@ -2979,6 +3465,12 @@ def FullKinematicCalculation(T,variation):
 
 	[_ptele1,_etaele1,_phiele1,_isoele1,_qele1] = [electrons[0].Pt(),electrons[0].Eta(),electrons[0].Phi(),trkisosEle[0],chargesEle[0]]
 	[_ptele2,_etaele2,_phiele2,_isoele2,_qele2] = [electrons[1].Pt(),electrons[1].Eta(),electrons[1].Phi(),trkisosEle[1],chargesEle[1]]
+
+	[_ele1IDandIsoSF,_ele1IDandIsoSFup,_ele1IDandIsoSFdown]=[idIsoSFEle[0],idIsoSFEleUp[0],idIsoSFEleDown[0]]
+	[_ele2IDandIsoSF,_ele2IDandIsoSFup,_ele2IDandIsoSFdown]=[idIsoSFEle[1],idIsoSFEleUp[1],idIsoSFEleDown[1]]
+
+	[_ele1hltSF,_ele1hltSFup,_ele1hltSFdown]=[hlt1SFEle[0],hlt1SFEleUp[0],hlt1SFEleDown[0]]
+	[_ele2hltSF,_ele2hltSFup,_ele2hltSFdown]=[hlt2SFEle[1],hlt2SFEleUp[1],hlt2SFEleDown[1]]
 
 	[_ptlep1,_etalep1,_philep1,_isolep1,_qlep1] = [leptons[0].Pt(),leptons[0].Eta(),leptons[0].Phi(),trkisos[0],charges[0]]
 	[_ptlep2,_etalep2,_philep2,_isolep2,_qlep2] = [leptons[1].Pt(),leptons[1].Eta(),leptons[1].Phi(),trkisos[1],charges[1]]
@@ -3185,7 +3677,15 @@ def FullKinematicCalculation(T,variation):
 	_dRu2Hj2 = abs(muons[1].DeltaR(bjet2))
 	_dRu2Zj1 = abs(muons[1].DeltaR(jet1))
 	_dRu2Zj2 = abs(muons[1].DeltaR(jet2))
-	
+	_dRe1Hj1 = abs(electrons[0].DeltaR(bjet1))
+	_dRe1Hj2 = abs(electrons[0].DeltaR(bjet2))
+	_dRe1Zj1 = abs(electrons[0].DeltaR(jet1))
+	_dRe1Zj2 = abs(electrons[0].DeltaR(jet2))
+	_dRe2Hj1 = abs(electrons[1].DeltaR(bjet1))
+	_dRe2Hj2 = abs(electrons[1].DeltaR(bjet2))
+	_dRe2Zj1 = abs(electrons[1].DeltaR(jet1))
+	_dRe2Zj2 = abs(electrons[1].DeltaR(jet2))
+
 	_stuu4j = ST([muons[0],muons[1],bjet1,bjet2,jet1,jet2])
 	_stee4j = ST([electrons[0],electrons[1],bjet1,bjet2,jet1,jet2])
 	_stll4j = ST([leptons[0],leptons[1],bjet1,bjet2,jet1,jet2]) 
@@ -3225,49 +3725,93 @@ def FullKinematicCalculation(T,variation):
 	_cosThetaStarMu_gen = getCosThetaStar_CS(_genJetsH[0]+_genJetsH[1], _genMuonsZ[0]+_genMuonsZ[1]+_genJetsZ[0]+_genJetsZ[1])
 	_cosThetaStarEle_gen = getCosThetaStar_CS(_genJetsH[0]+_genJetsH[1],_genElectronsZ[0]+_genElectronsZ[1]+_genJetsZ[0]+_genJetsZ[1])
 	
-	cosThetaAngles_gen = CosThetaAngles(_genJetsH[0], _genJetsH[1], _genJetsZ[0], _genJetsZ[1], _genMuonsZ[0], _genMuonsZ[1])
-	_cosThetaStar_gen = cosThetaAngles_gen[0]
-	_cosTheta_hbb_gen = cosThetaAngles_gen[1]
-	_cosTheta_zjj_hzz_gen  = cosThetaAngles_gen[2]
-	_cosTheta_zuu_hzz_gen  = cosThetaAngles_gen[3]
-	_cosTheta_zj1_hzz_gen  = cosThetaAngles_gen[4]
-	_cosTheta_zu1_hzz_gen  = cosThetaAngles_gen[5]
-	cosThetaAngles = CosThetaAngles(bjet1, bjet2, jet1, jet2, muons[0], muons[1])
-	_cosThetaStar = cosThetaAngles[0]
-	_cosTheta_hbb  = cosThetaAngles[1]
-	_cosTheta_zjj_hzz  = cosThetaAngles[2]
-	_cosTheta_zuu_hzz  = cosThetaAngles[3]
-	_cosTheta_zj1_hzz  = cosThetaAngles[4]
-	_cosTheta_zu1_hzz  = cosThetaAngles[5]
-		
-	phiAngles_gen = getPhi(_genJetsH[0], _genJetsH[1], _genJetsZ[0], _genJetsZ[1], _genMuonsZ[0], _genMuonsZ[1])
-	_phi0_gen = phiAngles_gen[0]
-	_phi1_gen = phiAngles_gen[1]
-	phiAngles = getPhi(bjet1, bjet2, jet1, jet2, muons[0], muons[1])
-	_phi0 = phiAngles[0]
-	_phi1 = phiAngles[1]
+	cosThetaAngles_uu_gen = CosThetaAngles(_genJetsH[0], _genJetsH[1], _genJetsZ[0], _genJetsZ[1], _genMuonsZ[0], _genMuonsZ[1])
+	_cosThetaStar_uu_gen = cosThetaAngles_uu_gen[0]
+	_cosTheta_hbb_uu_gen = cosThetaAngles_uu_gen[1]
+	_cosTheta_zjj_hzz_uu_gen  = cosThetaAngles_uu_gen[2]
+	_cosTheta_zuu_hzz_gen  = cosThetaAngles_uu_gen[3]
+	_cosTheta_zj1_hzz_uu_gen  = cosThetaAngles_uu_gen[4]
+	_cosTheta_zu1_hzz_gen  = cosThetaAngles_uu_gen[5]
+	cosThetaAngles_uu = CosThetaAngles(bjet1, bjet2, jet1, jet2, muons[0], muons[1])
+	_cosThetaStar_uu = cosThetaAngles_uu[0]
+	_cosTheta_hbb_uu  = cosThetaAngles_uu[1]
+	_cosTheta_zjj_hzz_uu  = cosThetaAngles_uu[2]
+	_cosTheta_zuu_hzz  = cosThetaAngles_uu[3]
+	_cosTheta_zj1_hzz_uu  = cosThetaAngles_uu[4]
+	_cosTheta_zu1_hzz  = cosThetaAngles_uu[5]
 	
-	### Using the ZZ->lljj system instead of the HH system
+	cosThetaAngles_ee_gen = CosThetaAngles(_genJetsH[0], _genJetsH[1], _genJetsZ[0], _genJetsZ[1], _genElectronsZ[0], _genElectronsZ[1])
+	_cosThetaStar_ee_gen = cosThetaAngles_ee_gen[0]
+	_cosTheta_hbb_ee_gen = cosThetaAngles_ee_gen[1]
+	_cosTheta_zjj_hzz_ee_gen  = cosThetaAngles_ee_gen[2]
+	_cosTheta_zee_hzz_gen  = cosThetaAngles_ee_gen[3]
+	_cosTheta_zj1_hzz_ee_gen  = cosThetaAngles_ee_gen[4]
+	_cosTheta_ze1_hzz_gen  = cosThetaAngles_ee_gen[5]
+	cosThetaAngles_ee = CosThetaAngles(bjet1, bjet2, jet1, jet2, electrons[0], electrons[1])
+	_cosThetaStar_ee = cosThetaAngles_ee[0]
+	_cosTheta_hbb_ee  = cosThetaAngles_ee[1]
+	_cosTheta_zjj_hzz_ee  = cosThetaAngles_ee[2]
+	_cosTheta_zee_hzz  = cosThetaAngles_ee[3]
+	_cosTheta_zj1_hzz_ee  = cosThetaAngles_ee[4]
+	_cosTheta_ze1_hzz  = cosThetaAngles_ee[5]
+		
+	phiAngles_uu_gen = getPhi(_genJetsH[0], _genJetsH[1], _genJetsZ[0], _genJetsZ[1], _genMuonsZ[0], _genMuonsZ[1])
+	_phi0_uu_gen = phiAngles_uu_gen[0]
+	_phi1_uu_gen = phiAngles_uu_gen[1]
+	phiAngles_uu = getPhi(bjet1, bjet2, jet1, jet2, muons[0], muons[1])
+	_phi0_uu = phiAngles_uu[0]
+	_phi1_uu = phiAngles_uu[1]
+		
+	phiAngles_ee_gen = getPhi(_genJetsH[0], _genJetsH[1], _genJetsZ[0], _genJetsZ[1], _genElectronsZ[0], _genElectronsZ[1])
+	_phi0_ee_gen = phiAngles_ee_gen[0]
+	_phi1_ee_gen = phiAngles_ee_gen[1]
+	phiAngles_ee = getPhi(bjet1, bjet2, jet1, jet2, electrons[0], electrons[1])
+	_phi0_ee = phiAngles_ee[0]
+	_phi1_ee = phiAngles_ee[1]
+	
+	### Using the ZZ->uujj system instead of the HH system
 	_cosThetaStarZuu_CS_gen = getCosThetaStar_CS(_genMuonsZ[0]+_genMuonsZ[1], _genJetsZ[0]+_genJetsZ[1])
-	_cosThetaStarZjj_CS_gen = getCosThetaStar_CS(_genJetsZ[0]+_genJetsZ[1], _genMuonsZ[0]+_genMuonsZ[1])
+	_cosThetaStarZjj_CS_uu_gen = getCosThetaStar_CS(_genJetsZ[0]+_genJetsZ[1], _genMuonsZ[0]+_genMuonsZ[1])
 	_cosThetaStarZuu_CS = getCosThetaStar_CS(muons[0]+muons[1], jet1+jet2)
-	_cosThetaStarZjj_CS = getCosThetaStar_CS(jet1+jet2, muons[0]+muons[1])
+	_cosThetaStarZjj_CS_uu = getCosThetaStar_CS(jet1+jet2, muons[0]+muons[1])
 	
-	cosThetaAng_ZZ_gen = CosThetaAngles_ZZ(_genJetsZ[0], _genJetsZ[1], _genMuonsZ[0], _genMuonsZ[1])
-	_cosTheta_Zuu_gen = cosThetaAng_ZZ_gen[0]
-	_cosTheta_Zjj_gen = cosThetaAng_ZZ_gen[1]
-	cosThetaAng_ZZ = CosThetaAngles_ZZ(jet1, jet2, muons[0], muons[1])
-	_cosTheta_Zuu = cosThetaAng_ZZ[0]
-	_cosTheta_Zjj = cosThetaAng_ZZ[1]
+	cosThetaAng_ZZ_uu_gen = CosThetaAngles_ZZ(_genJetsZ[0], _genJetsZ[1], _genMuonsZ[0], _genMuonsZ[1])
+	_cosTheta_Zuu_gen = cosThetaAng_ZZ_uu_gen[0]
+	_cosTheta_Zjj_uu_gen = cosThetaAng_ZZ_uu_gen[1]
+	cosThetaAng_ZZ_uu = CosThetaAngles_ZZ(jet1, jet2, muons[0], muons[1])
+	_cosTheta_Zuu = cosThetaAng_ZZ_uu[0]
+	_cosTheta_Zjj_uu = cosThetaAng_ZZ_uu[1]
 		
-	phiAngles_ZZ_gen = getPhi_ZZ(_genJetsZ[0], _genJetsZ[1], _genMuonsZ[0], _genMuonsZ[1])
-	_phi0_zz_gen  = phiAngles_ZZ_gen[0]
-	_phi1_zuu_gen = phiAngles_ZZ_gen[1]
-	_phi1_zjj_gen = phiAngles_ZZ_gen[2]
-	phiAngles_ZZ = getPhi_ZZ(jet1, jet2, muons[0], muons[1])
-	_phi0_zz  = phiAngles_ZZ[0]
-	_phi1_zuu = phiAngles_ZZ[1]
-	_phi1_zjj = phiAngles_ZZ[2]
+	phiAngles_ZZ_uu_gen = getPhi_ZZ(_genJetsZ[0], _genJetsZ[1], _genMuonsZ[0], _genMuonsZ[1])
+	_phi0_zz_uu_gen = phiAngles_ZZ_uu_gen[0]
+	_phi1_zuu_gen = phiAngles_ZZ_uu_gen[1]
+	_phi1_zjj_uu_gen = phiAngles_ZZ_uu_gen[2]
+	phiAngles_ZZ_uu = getPhi_ZZ(jet1, jet2, muons[0], muons[1])
+	_phi0_zz_uu  = phiAngles_ZZ_uu[0]
+	_phi1_zuu = phiAngles_ZZ_uu[1]
+	_phi1_zjj_uu = phiAngles_ZZ_uu[2]
+	
+	### Using the ZZ->eejj system instead of the HH system
+	_cosThetaStarZee_CS_gen = getCosThetaStar_CS(_genElectronsZ[0]+_genElectronsZ[1], _genJetsZ[0]+_genJetsZ[1])
+	_cosThetaStarZjj_CS_ee_gen = getCosThetaStar_CS(_genJetsZ[0]+_genJetsZ[1], _genElectronsZ[0]+_genElectronsZ[1])
+	_cosThetaStarZee_CS = getCosThetaStar_CS(electrons[0]+electrons[1], jet1+jet2)
+	_cosThetaStarZjj_CS_ee = getCosThetaStar_CS(jet1+jet2, electrons[0]+electrons[1])
+	
+	cosThetaAng_ZZ_ee_gen = CosThetaAngles_ZZ(_genJetsZ[0], _genJetsZ[1], _genElectronsZ[0], _genElectronsZ[1])
+	_cosTheta_Zee_gen = cosThetaAng_ZZ_ee_gen[0]
+	_cosTheta_Zjj_ee_gen = cosThetaAng_ZZ_ee_gen[1]
+	cosThetaAng_ZZ_ee = CosThetaAngles_ZZ(jet1, jet2, electrons[0], electrons[1])
+	_cosTheta_Zee = cosThetaAng_ZZ_ee[0]
+	_cosTheta_Zjj_ee = cosThetaAng_ZZ_ee[1]
+		
+	phiAngles_ZZ_ee_gen = getPhi_ZZ(_genJetsZ[0], _genJetsZ[1], _genElectronsZ[0], _genElectronsZ[1])
+	_phi0_zz_ee_gen = phiAngles_ZZ_ee_gen[0]
+	_phi1_zee_gen = phiAngles_ZZ_ee_gen[1]
+	_phi1_zjj_ee_gen = phiAngles_ZZ_ee_gen[2]
+	phiAngles_ZZ_ee = getPhi_ZZ(jet1, jet2, electrons[0], electrons[1])
+	_phi0_zz_ee  = phiAngles_ZZ_ee[0]
+	_phi1_zee = phiAngles_ZZ_ee[1]
+	_phi1_zjj_ee = phiAngles_ZZ_ee[2]
 	#### AH ####
 
 	didMuon = False
@@ -3330,14 +3874,14 @@ def FullKinematicCalculation(T,variation):
 	#----- calculate BDT disc here
 	_bdt_discrims_s1 = [-99.0,-99.0,-99.0,-99.0,-99.0,-99.0,-99.0,-99.0,-99.0,-99.0,-99.0,-99.0,-99.0,-99.0]
 	for kth in range(len(_bdt_discrims_s1)):
-		_bdt_discrims_s1[kth] = calculateBDTdiscriminant(reader_25vars_set1, str("BDT_classifier_25vars_set1_M" + SignalM[kth]), _bdtvarnames, _Muu4j, _Mbb_H, _Mjj_Z, _Muu, _Muujj, _ptmu1, _ptmu2, _ptmet, _Pt_Hjet1, _Pt_Hjet2, _Pt_Zjet1, _Pt_Zjet2, _Pt_uu, _Pt_Hjets, _Pt_Zjets, _dRbb_H, _dRjj_Z, _DRuu, _phi0, _phi1, _phi0_zz, _phi1_zuu, _phi1_zjj, bscoreMVA1, bscoreMVA2, _dRu1Hj1, _dRu1Hj2, _dRu2Hj1, _dRu2Hj2, _dRu1Zj1, _dRu1Zj2, _dRu2Zj1, _dRu2Zj2, _dRuubb_H, _dRuujj_Z, _cosThetaStarMu, _cosTheta_hbb, _cosTheta_zuu_hzz, _cosThetaStar, _cosThetaStarZuu_CS, _cosTheta_Zuu, _etamu1, _etamu2, _phimu1, _phimu2, _DPHIuv, _dPHIuujj_Z, _dPHIuubb_H, _dPhibb_H, _dPhijj_Z)
+		_bdt_discrims_s1[kth] = calculateBDTdiscriminant(reader_25vars_set1, str("BDT_classifier_25vars_set1_M" + SignalM[kth]), _bdtvarnames, _Muu4j, _Mbb_H, _Mjj_Z, _Muu, _Muujj, _ptmu1, _ptmu2, _ptmet, _Pt_Hjet1, _Pt_Hjet2, _Pt_Zjet1, _Pt_Zjet2, _Pt_uu, _Pt_Hjets, _Pt_Zjets, _dRbb_H, _dRjj_Z, _DRuu, _phi0_uu, _phi1_uu, _phi0_zz_uu, _phi1_zuu, _phi1_zjj_uu, bscoreMVA1, bscoreMVA2, _dRu1Hj1, _dRu1Hj2, _dRu2Hj1, _dRu2Hj2, _dRu1Zj1, _dRu1Zj2, _dRu2Zj1, _dRu2Zj2, _dRuubb_H, _dRuujj_Z, _cosThetaStarMu, _cosTheta_hbb_uu, _cosTheta_zuu_hzz, _cosThetaStar_uu, _cosThetaStarZuu_CS, _cosTheta_Zuu, _etamu1, _etamu2, _phimu1, _phimu2, _DPHIuv, _dPHIuujj_Z, _dPHIuubb_H, _dPhibb_H, _dPhijj_Z)
 	[_bdt_discrim_M260, _bdt_discrim_M270, _bdt_discrim_M300, _bdt_discrim_M350, _bdt_discrim_M400, _bdt_discrim_M450, _bdt_discrim_M500, _bdt_discrim_M550, _bdt_discrim_M600, _bdt_discrim_M650, _bdt_discrim_M750, _bdt_discrim_M800, _bdt_discrim_M900, _bdt_discrim_M1000] = _bdt_discrims_s1
 	#if v == '' : print ' _bdt_discrims_s1 ', _bdt_discrims_s1
 	#if v == '' : print ' each bdt         ', _bdt_discrim_M260, _bdt_discrim_M270, _bdt_discrim_M300, _bdt_discrim_M350, _bdt_discrim_M400
 	
 	[_bdt_discrims3_low,_bdt_discrims3_high] = [-99.0,-99.0]
-	_bdt_discrims3_low = calculateBDTdiscriminant(reader_15vars_set3, "BDT_classifier_15vars_set3_Mlow", _bdtvarnames_s3, _Muu4j, _Mbb_H, _Mjj_Z, _Muu, _Muujj, _ptmu1, _ptmu2, _ptmet, _Pt_Hjet1, _Pt_Hjet2, _Pt_Zjet1, _Pt_Zjet2, _Pt_uu, _Pt_Hjets, _Pt_Zjets, _dRbb_H, _dRjj_Z, _DRuu, _phi0, _phi1, _phi0_zz, _phi1_zuu, _phi1_zjj, bscoreMVA1, bscoreMVA2, _dRu1Hj1, _dRu1Hj2, _dRu2Hj1, _dRu2Hj2, _dRu1Zj1, _dRu1Zj2, _dRu2Zj1, _dRu2Zj2, _dRuubb_H, _dRuujj_Z, _cosThetaStarMu, _cosTheta_hbb, _cosTheta_zuu_hzz, _cosThetaStar, _cosThetaStarZuu_CS, _cosTheta_Zuu, _etamu1, _etamu2, _phimu1, _phimu2, _DPHIuv, _dPHIuujj_Z, _dPHIuubb_H, _dPhibb_H, _dPhijj_Z)
-	_bdt_discrims3_high = calculateBDTdiscriminant(reader_15vars_set3, "BDT_classifier_15vars_set3_Mhig", _bdtvarnames_s3, _Muu4j, _Mbb_H, _Mjj_Z, _Muu, _Muujj, _ptmu1, _ptmu2, _ptmet, _Pt_Hjet1, _Pt_Hjet2, _Pt_Zjet1, _Pt_Zjet2, _Pt_uu, _Pt_Hjets, _Pt_Zjets, _dRbb_H, _dRjj_Z, _DRuu, _phi0, _phi1, _phi0_zz, _phi1_zuu, _phi1_zjj, bscoreMVA1, bscoreMVA2, _dRu1Hj1, _dRu1Hj2, _dRu2Hj1, _dRu2Hj2, _dRu1Zj1, _dRu1Zj2, _dRu2Zj1, _dRu2Zj2, _dRuubb_H, _dRuujj_Z, _cosThetaStarMu, _cosTheta_hbb, _cosTheta_zuu_hzz, _cosThetaStar, _cosThetaStarZuu_CS, _cosTheta_Zuu, _etamu1, _etamu2, _phimu1, _phimu2, _DPHIuv, _dPHIuujj_Z, _dPHIuubb_H, _dPhibb_H, _dPhijj_Z)
+	_bdt_discrims3_low = calculateBDTdiscriminant(reader_15vars_set3, "BDT_classifier_15vars_set3_Mlow", _bdtvarnames_s3, _Muu4j, _Mbb_H, _Mjj_Z, _Muu, _Muujj, _ptmu1, _ptmu2, _ptmet, _Pt_Hjet1, _Pt_Hjet2, _Pt_Zjet1, _Pt_Zjet2, _Pt_uu, _Pt_Hjets, _Pt_Zjets, _dRbb_H, _dRjj_Z, _DRuu, _phi0_uu, _phi1_uu, _phi0_zz_uu, _phi1_zuu, _phi1_zjj_uu, bscoreMVA1, bscoreMVA2, _dRu1Hj1, _dRu1Hj2, _dRu2Hj1, _dRu2Hj2, _dRu1Zj1, _dRu1Zj2, _dRu2Zj1, _dRu2Zj2, _dRuubb_H, _dRuujj_Z, _cosThetaStarMu, _cosTheta_hbb_uu, _cosTheta_zuu_hzz, _cosThetaStar_uu, _cosThetaStarZuu_CS, _cosTheta_Zuu, _etamu1, _etamu2, _phimu1, _phimu2, _DPHIuv, _dPHIuujj_Z, _dPHIuubb_H, _dPhibb_H, _dPhijj_Z)
+	_bdt_discrims3_high = calculateBDTdiscriminant(reader_15vars_set3, "BDT_classifier_15vars_set3_Mhig", _bdtvarnames_s3, _Muu4j, _Mbb_H, _Mjj_Z, _Muu, _Muujj, _ptmu1, _ptmu2, _ptmet, _Pt_Hjet1, _Pt_Hjet2, _Pt_Zjet1, _Pt_Zjet2, _Pt_uu, _Pt_Hjets, _Pt_Zjets, _dRbb_H, _dRjj_Z, _DRuu, _phi0_uu, _phi1_uu, _phi0_zz_uu, _phi1_zuu, _phi1_zjj_uu, bscoreMVA1, bscoreMVA2, _dRu1Hj1, _dRu1Hj2, _dRu2Hj1, _dRu2Hj2, _dRu1Zj1, _dRu1Zj2, _dRu2Zj1, _dRu2Zj2, _dRuubb_H, _dRuujj_Z, _cosThetaStarMu, _cosTheta_hbb_uu, _cosTheta_zuu_hzz, _cosThetaStar_uu, _cosThetaStarZuu_CS, _cosTheta_Zuu, _etamu1, _etamu2, _phimu1, _phimu2, _DPHIuv, _dPHIuujj_Z, _dPHIuubb_H, _dPhibb_H, _dPhijj_Z)
 	#----- End calculate BDT disc here
 
 	# This MUST have the same structure as _kinematic variables!
@@ -3381,14 +3925,22 @@ def FullKinematicCalculation(T,variation):
 	toreturn += [_Mbb_H_orig,_Muu4j_orig]
 	toreturn += [_cosThetaStarMu,_cosThetaStarEle]
 	toreturn += [_cosThetaStarMu_gen,_cosThetaStarEle_gen]
-	toreturn += [_cosThetaStar_gen,_cosTheta_hbb_gen,_cosTheta_zjj_hzz_gen,_cosTheta_zuu_hzz_gen,_cosTheta_zj1_hzz_gen,_cosTheta_zu1_hzz_gen]
-	toreturn += [_phi0_gen, _phi1_gen]
+	toreturn += [_cosThetaStar_uu_gen,_cosTheta_hbb_uu_gen,_cosTheta_zjj_hzz_uu_gen,_cosTheta_zuu_hzz_gen,_cosTheta_zj1_hzz_uu_gen,_cosTheta_zu1_hzz_gen]
+	toreturn += [_cosThetaStar_ee_gen,_cosTheta_hbb_ee_gen,_cosTheta_zjj_hzz_ee_gen,_cosTheta_zee_hzz_gen,_cosTheta_zj1_hzz_ee_gen,_cosTheta_ze1_hzz_gen]
+	toreturn += [_phi0_uu_gen, _phi1_uu_gen]
+	toreturn += [_phi0_ee_gen, _phi1_ee_gen]
 	toreturn += [_cosThetaStarZuu_CS_gen, _cosTheta_Zuu_gen]
-	toreturn += [_phi0_zz_gen, _phi1_zuu_gen, _phi1_zjj_gen]
-	toreturn += [_cosThetaStar,_cosTheta_hbb,_cosTheta_zjj_hzz,_cosTheta_zuu_hzz,_cosTheta_zj1_hzz,_cosTheta_zu1_hzz]
-	toreturn += [_phi0, _phi1]
+	toreturn += [_cosThetaStarZee_CS_gen, _cosTheta_Zee_gen]
+	toreturn += [_phi0_zz_uu_gen, _phi1_zuu_gen, _phi1_zjj_uu_gen]
+	toreturn += [_phi0_zz_ee_gen, _phi1_zee_gen, _phi1_zjj_ee_gen]
+	toreturn += [_cosThetaStar_uu,_cosTheta_hbb_uu,_cosTheta_zjj_hzz_uu,_cosTheta_zuu_hzz,_cosTheta_zj1_hzz_uu,_cosTheta_zu1_hzz]
+	toreturn += [_cosThetaStar_ee,_cosTheta_hbb_ee,_cosTheta_zjj_hzz_ee,_cosTheta_zee_hzz,_cosTheta_zj1_hzz_ee,_cosTheta_ze1_hzz]
+	toreturn += [_phi0_uu, _phi1_uu]
+	toreturn += [_phi0_ee, _phi1_ee]
 	toreturn += [_cosThetaStarZuu_CS, _cosTheta_Zuu]
-	toreturn += [_phi0_zz, _phi1_zuu, _phi1_zjj]
+	toreturn += [_cosThetaStarZee_CS, _cosTheta_Zee]
+	toreturn += [_phi0_zz_uu, _phi1_zuu, _phi1_zjj_uu]
+	toreturn += [_phi0_zz_ee, _phi1_zee, _phi1_zjj_ee]
 	toreturn += [_Pt_origHjet1,_Pt_origHjet2]
 	toreturn += [_Pt_Hjet1,_Pt_Hjet2,_Pt_Zjet1,_Pt_Zjet2]
 	toreturn += [_Pt_Hjets,_Pt_Zjets,_Pt_uu,_Pt_ee]
@@ -3399,6 +3951,12 @@ def FullKinematicCalculation(T,variation):
 	toreturn += [_dRu1Zj1_gen,_dRu1Zj2_gen,_dRu2Zj1_gen,_dRu2Zj2_gen]
 	toreturn += [_dRu1Hj1_genMatched,_dRu1Hj2_genMatched,_dRu2Hj1_genMatched,_dRu2Hj2_genMatched]
 	toreturn += [_dRu1Zj1_genMatched,_dRu1Zj2_genMatched,_dRu2Zj1_genMatched,_dRu2Zj2_genMatched]
+	toreturn += [_dRe1Hj1,_dRe1Hj2,_dRe2Hj1,_dRe2Hj2]
+	toreturn += [_dRe1Zj1,_dRe1Zj2,_dRe2Zj1,_dRe2Zj2]
+	toreturn += [_dRe1Hj1_gen,_dRe1Hj2_gen,_dRe2Hj1_gen,_dRe2Hj2_gen]
+	toreturn += [_dRe1Zj1_gen,_dRe1Zj2_gen,_dRe2Zj1_gen,_dRe2Zj2_gen]
+	toreturn += [_dRe1Hj1_genMatched,_dRe1Hj2_genMatched,_dRe2Hj1_genMatched,_dRe2Hj2_genMatched]
+	toreturn += [_dRe1Zj1_genMatched,_dRe1Zj2_genMatched,_dRe2Zj1_genMatched,_dRe2Zj2_genMatched]
 	toreturn += [_dRuubb_H,_dRuujj_Z,_dPHIuubb_H,_dPHIuujj_Z]
 	toreturn += [_dReebb_H,_dReejj_Z,_dPHIeebb_H,_dPHIeejj_Z]
 	toreturn += [_dPhijj_Z,_dPhibb_H]
@@ -3419,7 +3977,13 @@ def FullKinematicCalculation(T,variation):
 	toreturn += [_Zjet1BsfMedium,_Zjet1BsfMediumUp,_Zjet1BsfMediumDown]
 	toreturn += [_Zjet2BsfLoose,_Zjet2BsfLooseUp,_Zjet2BsfLooseDown]
 	toreturn += [_Zjet2BsfMedium,_Zjet2BsfMediumUp,_Zjet2BsfMediumDown]
+	toreturn += [_ele1IDandIsoSF,_ele2IDandIsoSF]
+	toreturn += [_ele1IDandIsoSFup,_ele2IDandIsoSFup]
+	toreturn += [_ele1IDandIsoSFdown,_ele2IDandIsoSFdown]
+	toreturn += [_ele1hltSF,_ele1hltSFup,_ele1hltSFdown]
+	toreturn += [_ele2hltSF,_ele2hltSFup,_ele2hltSFdown]
 	toreturn += [_isMuonEvent,_isElectronEvent]
+	toreturn += [_isElectronEvent_gen,_isMuonEvent_gen,_isTauEvent_gen]
 	toreturn += [_Hj1Matched,_Hj2Matched,_Zj1Matched,_Zj2Matched]
 	toreturn += [_Hj1Present,_Hj2Present,_Zj1Present,_Zj2Present]
 	toreturn += [_NGenMuonsZ, _NGenElecsZ]
@@ -3628,8 +4192,9 @@ for n in range(N):
 	#if (Branches['Pt_muon1'][0] < 16) and (Branches['Pt_ele1'][0] < 16) : continue
 	#if (Branches['Pt_muon1'][0] < 16) and (Branches['Pt_ele1'][0] > 16) and (Branches['Pt_ele2'][0]  < 8): continue
 	#if (Branches['Pt_muon1'][0] > 16) and (Branches['Pt_muon2'][0] < 8) and (Branches['Pt_ele1'][0] < 16 or Branches['Pt_ele2'][0]  < 8): continue
-	if ((Branches['isMuonEvent'][0]==True) and ((Branches['Pt_muon1'][0] < 16) or (Branches['Pt_muon2'][0] < 8) or (Branches['M_uu'][0] < 12))): continue
-	if ((Branches['isElectronEvent'][0]==True) and ((Branches['Pt_ele1'][0] < 21) or (Branches['Pt_ele2'][0] < 12) or (Branches['M_ee'][0] < 12))): continue
+	if ((Branches['isMuonEvent'][0]==True) and (Branches['isElectronEvent'][0]==False) and ((Branches['Pt_muon1'][0] < 16) or (Branches['Pt_muon2'][0] < 8) or (Branches['M_uu'][0] < 12))): continue
+	if ((Branches['isElectronEvent'][0]==True) and (Branches['isMuonEvent'][0]==False) and ((Branches['Pt_ele1'][0] < 21) or (Branches['Pt_ele2'][0] < 12) or (Branches['M_ee'][0] < 12))): continue
+	if ((Branches['isMuonEvent'][0]==False) and (Branches['isElectronEvent'][0]==False)): continue
 	#if ((Branches['isMuonEvent'][0]==False)) : continue
 	#print 'NGenMuonsZ', Branches['NGenMuonsZ'][0], 'NGenElecsZ', Branches['NGenElecsZ'][0]
 	#if (Branches['Pt_muon1'][0] < 16) : continue
