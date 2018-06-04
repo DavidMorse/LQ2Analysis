@@ -13,8 +13,8 @@ from glob import glob
 if 'cmsneu' in platform.node():
 	#NormalDirectory = '/media/dataPlus/dmorse/hhNtuples/NTupleAnalyzerHH_newBDTs_2018_02_27/SummaryFiles'
 	#QCDDirectory = '/media/dataPlus/dmorse/hhNtuples/NTupleAnalyzerHH_newBDTs_QCDNonIsoQuickTest_2018_02_27/SummaryFiles'
-	NormalDirectory = '/media/dataPlus/dmorse/hhNtuples/NTupleAnalyzerHH_newEleQCD_newFlag_QuickTest_2018_05_23/SummaryFiles'
-	QCDDirectory = '/media/dataPlus/dmorse/hhNtuples/NTupleAnalyzerHH_newEleQCD_newFlag_QCDNONIsoQuickTest_2018_05_23/SummaryFiles'
+	NormalDirectory = '/media/dataPlus/dmorse/hhNtuples/NTupleAnalyzerHH_hhFullV2310_QuickTest_2018_05_29/SummaryFiles'
+	QCDDirectory = '/media/dataPlus/dmorse/hhNtuples/NTupleAnalyzerHH_hhFullV2310_QCDNonIsoQuickTest_2018_05_29/SummaryFiles'
 	EMuDirectory = 'emu'
 
 else:
@@ -162,7 +162,7 @@ passfilter += '*(passBadMuon*passBadChargedHadron)'
 preselection_Muon_nos = '((pass_HLT_Mu17_Mu8)*(Pt_muon1>20)*(Pt_muon2>10)*(Pt_Hjet1>20)*(Pt_Hjet2>20)*(Pt_Zjet1>20)*(Pt_Zjet2>20)*(M_uu>12)*(isMuonEvent))'#*(1-(run_number==276950)*(lumi_number==22)*(event_number==34039924))*(1-(run_number==1)*(lumi_number==447098)*(event_number==71625048)))'
 #preselection_Electron_nos = '((pass_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ)*(Pt_ele1>25)*(Pt_ele2>15)*(Pt_Hjet1>20)*(Pt_Hjet2>20)*(Pt_Zjet1>20)*(Pt_Zjet2>20)*(M_ee>12)*(isElectronEvent))'#*(1-(run_number==276950)*(lumi_number==22)*(event_number==34039924))*(1-(run_number==1)*(lumi_number==447098)*(event_number==71625048)))'
 #removing HLT
-preselection_Electron_nos = '((Pt_ele1>25)*(Pt_ele2>15)*(Pt_Hjet1>20)*(Pt_Hjet2>20)*(Pt_Zjet1>20)*(Pt_Zjet2>20)*(M_ee>12)*(isElectronEvent))'#*(1-(run_number==276950)*(lumi_number==22)*(event_number==34039924))*(1-(run_number==1)*(lumi_number==447098)*(event_number==71625048)))'
+preselection_Electron_nos = '((pass_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ)*(Pt_ele1>25)*(Pt_ele2>15)*(Pt_Hjet1>20)*(Pt_Hjet2>20)*(Pt_Zjet1>20)*(Pt_Zjet2>20)*(M_ee>12)*(isElectronEvent)*(1-isMuonEvent))'#*(1-(run_number==276950)*(lumi_number==22)*(event_number==34039924))*(1-(run_number==1)*(lumi_number==447098)*(event_number==71625048)))'
 #Require at least one loose MVA bTag
 bTagsel1loose = '*(((CMVA_bjet1>-0.5884)+(CMVA_bjet2>-0.5884)+(CMVA_Zjet1>-0.5884)+(CMVA_Zjet2>-0.5884))>0)'
 bTagsel1medium = '*(((CMVA_bjet1>0.4432)+(CMVA_bjet2>0.4432)+(CMVA_Zjet1>0.4432)+(CMVA_Zjet2>0.4432))>0)'
@@ -206,8 +206,8 @@ ttControlRegion_Electron = '(M_ee>100)*(Pt_miss>100)'
 NormalWeightMuon     = str(lumi)+'*weight_central'+trackerHIP1+trackerHIP2+doubleMuonHLT+doubleMuonIdAndIsoScale+bTagPreselSF
 NormalWeightElectron = str(lumi)+'*weight_central'+bTagPreselSF+eleRECOScale+doubleElectronHLTAndId#+doubleElectronHLT+doubleEleMedIdScale+trackerHIP1+trackerHIP2
 NormalWeightMuNu = str(lumi)+'*weight_central'+singleMuonHLT+singleMuonIdScale+singleMuonIsoScale+trackerHIP1
-NormalWeightEMu = str(lumi)+'*weight_central'+singleMuonHLTEMU+MuIdScaleEMU+MuIsoScaleEMU+eleRECOScale+eleHEEPScale+trackerHIPEMU
-NormalWeightEMuNoHLT = str(lumi)+'*weight_central'+MuIdScaleEMU+MuIsoScaleEMU+eleRECOScale+eleHEEPScale+trackerHIPEMU#fixme do we need scale factors here?
+#NormalWeightEMu = str(lumi)+'*weight_central'+singleMuonHLTEMU+MuIdScaleEMU+MuIsoScaleEMU+eleRECOScale+eleHEEPScale+trackerHIPEMU
+#NormalWeightEMuNoHLT = str(lumi)+'*weight_central'+MuIdScaleEMU+MuIsoScaleEMU+eleRECOScale+eleHEEPScale+trackerHIPEMU#fixme do we need scale factors here?
 
 
 ##########################################################################
@@ -230,19 +230,19 @@ emu_id_eff_err = 0.0027#v7 JEC
 # QCD data-driven scale factor
 useDataDrivenQCD = True
 fbd_Muon     = [1.449, 0.03] # Apr 18, 2018
-fbd_Electron = [1.026, 0.119] # Feb 2018
+fbd_Electron = [1.449, 0.1] # Feb 2018
 
 # tt, z SF calculated using Data with NEW method (Apr 18, 2018)
 Rz_data_muon  = [1.152, 0.013]
 Rtt_data_muon = [1.016, 0.062]
-Rz_data_electron  = [1.121, 0.009]
-Rtt_data_electron = [0.908, 0.02]
+Rz_data_electron  = [1.127, 0.011]
+Rtt_data_electron = [0.915, 0.023]
 
 
 analysisChannel = 'muon'
 #analysisChannel = 'electron'
 if (analysisChannel == 'muon'):
-	NormalWeight=NormalWeightMuon
+ 	NormalWeight=NormalWeightMuon
 	preselection_nos=preselection_Muon_nos
 	preselection=preselectionMuon
 	dataHLT=dataHLTMuon
