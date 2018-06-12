@@ -294,7 +294,7 @@ _kinematicvariables += ['bdt_discrims3_low','bdt_discrims3_high']
 #removing weight_amcNLO (always 0 anyway)
 _weights = ['scaleWeight_Up','scaleWeight_Down','scaleWeight_R1_F1','scaleWeight_R1_F2','scaleWeight_R1_F0p5','scaleWeight_R2_F1','scaleWeight_R2_F2','scaleWeight_R2_F0p5','scaleWeight_R0p5_F1','scaleWeight_R0p5_F2','scaleWeight_R0p5_F0p5','scaleWeight_R2_F2','weight_nopu','weight_central', 'weight_pu_up', 'weight_pu_down','weight_topPt']
 _flagDoubles = ['run_number','event_number','lumi_number']
-_flags = ['pass_HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_DZ','pass_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ','pass_HLT_Mu17_Mu8','GoodVertexCount']
+_flags = ['pass_HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_DZ','pass_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ','pass_HLT_Mu17_Mu8','pass_HLT_Ele23_WPLoose_Gsf','pass_HLT_Ele25_WPTight_Gsf','pass_HLT_Ele27_eta2p1_WPLoose_Gsf','pass_HLT_Ele27_WPTight_Gsf','GoodVertexCount']
 _flags += ['passPrimaryVertex','passHBHENoiseFilter','passHBHENoiseIsoFilter','passBeamHalo','passTriggerObjectMatching','passDataCert']
 _flags += ['passBadEESuperCrystal','passEcalDeadCellTP','passBeamHalo2016','passBadEcalSC','passBadMuon','passBadChargedHadron','badMuonsFlag','duplicateMuonsFlag','noBadMuonsFlag']
 #_variations = ['','JESup','JESdown','MESup','MESdown','JERup','JERdown','MER']
@@ -759,6 +759,7 @@ def PassTrigger(T,trigger_identifiers,prescale_threshold):
 	#         considering only triggers with a prescale <= the prescale threshold.	
 	for n in range(len(T.HLTInsideDatasetTriggerNames)):
 		name = T.HLTInsideDatasetTriggerNames[n]
+		#if 'Ele' in name or 'Pho' in name: print name, T.HLTInsideDatasetTriggerPrescales[n]
 		consider_trigger=True
 		for ident in trigger_identifiers:
 			if ident not in name:
@@ -4159,6 +4160,10 @@ for n in range(N):
 	Branches['pass_HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_DZ'][0] = PassTrigger(t,["HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v"],1)
 	Branches['pass_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ'][0] = PassTrigger(t,["HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v"],1)
 	Branches['pass_HLT_Mu17_Mu8'][0] = 1 if (PassTrigger(t,["HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v"],1) + PassTrigger(t,["HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v"],1) + PassTrigger(t,["HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_v"],1) + PassTrigger(t,["HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_v"],1))>0 else 0
+	Branches['pass_HLT_Ele23_WPLoose_Gsf'][0] = PassTrigger(t,["HLT_Ele23_WPLoose_Gsf_v"],1)
+	Branches['pass_HLT_Ele25_WPTight_Gsf'][0] = PassTrigger(t,["HLT_Ele25_WPTight_Gsf_v"],1)
+	Branches['pass_HLT_Ele27_eta2p1_WPLoose_Gsf'][0] = PassTrigger(t,["HLT_Ele27_eta2p1_WPLoose_Gsf_v"],1)
+	Branches['pass_HLT_Ele27_WPTight_Gsf'][0] = PassTrigger(t,["HLT_Ele27_WPTight_Gsf"],1)
 
 	Branches['passPrimaryVertex'][0]          = 1*(t.passGoodVertices)     # checked, data+MC
 	Branches['passHBHENoiseFilter'][0]        = 1*(t.passHBHENoiseFilter) # checked, data+MC
