@@ -1869,6 +1869,8 @@ def mvaWP90Electrons(T,_met,variation,isdata):
 		eSCoverP = T.ElectronESuperClusterOverP[n]
 
                 #HLT-safe cuts, except iso which is in nonisoswitch below
+		#fixme removing hlt-safe cuts for now
+		"""
         	if (barrel):
 			Pass *= T.ElectronFull5x5SigmaIEtaIEta[n]<0.011
 	                Pass *= abs(T.ElectronDeltaEtaTrkSeedSC[n])<0.004
@@ -1883,7 +1885,7 @@ def mvaWP90Electrons(T,_met,variation,isdata):
 		        Pass *= T.ElectronHoE[n]<0.065
 		        Pass *= abs(1.0 - eSCoverP)*ecal_energy_inverse<0.013
 		        Pass *= T.ElectronNormalizedChi2[n]<3.0
-
+		"""
 		#Isolation
 		chad = T.ElectronPFChargedHadronIso03[n]
 		nhad = T.ElectronPFNeutralHadronIso03[n]
@@ -1895,14 +1897,18 @@ def mvaWP90Electrons(T,_met,variation,isdata):
 		# Don't apply isolation for QCD studies
 		if nonisoswitch != True:
 			if (barrel):
-				Pass *= iso<0.0588
-		                Pass *= ((T.ElectronEcalPFClusterIso[n] - 0.165*T.fixedGridRhoFastjetCentralCalo)/_ElectronPt[n])<0.160
-		                Pass *= ((T.ElectronHcalPFClusterIso[n] - 0.060*T.fixedGridRhoFastjetCentralCalo)/_ElectronPt[n])<0.120
-		                Pass *= (T.ElectronTrkIsoDR03[n]/_ElectronPt[n])<0.08
+				#Pass *= iso<0.0588#tight
+				Pass *= iso<0.15#ZH(bb)
+		                #fixme removing hlt-safe cuts for now
+		                #Pass *= ((T.ElectronEcalPFClusterIso[n] - 0.165*T.fixedGridRhoFastjetCentralCalo)/_ElectronPt[n])<0.160
+		                #Pass *= ((T.ElectronHcalPFClusterIso[n] - 0.060*T.fixedGridRhoFastjetCentralCalo)/_ElectronPt[n])<0.120
+		                #Pass *= (T.ElectronTrkIsoDR03[n]/_ElectronPt[n])<0.08
 			elif (endcap):
-				Pass *= iso<0.0571
-		                Pass *= ((T.ElectronEcalPFClusterIso[n] - 0.132*T.fixedGridRhoFastjetCentralCalo)/_ElectronPt[n])<0.120
-		                Pass *= ((T.ElectronHcalPFClusterIso[n] - 0.131*T.fixedGridRhoFastjetCentralCalo)/_ElectronPt[n])<0.120
+				#Pass *= iso<0.0571
+				Pass *= iso<0.15#ZH(bb)
+                                #fixme removing hlt-safe cuts for now
+		                #Pass *= ((T.ElectronEcalPFClusterIso[n] - 0.132*T.fixedGridRhoFastjetCentralCalo)/_ElectronPt[n])<0.120
+		                #Pass *= ((T.ElectronHcalPFClusterIso[n] - 0.131*T.fixedGridRhoFastjetCentralCalo)/_ElectronPt[n])<0.120
 			
 		[_idIsoSF,_idIsoSFUp,_idIsoSFDown,_hlt1SF,_hlt1SFup,_hlt1SFdown,_hlt2SF,_hlt2SFup,_hlt2SFdown] = getSFelectron(_ElectronPt[n],T.ElectronSCEta[n])
 
@@ -1916,7 +1922,7 @@ def mvaWP90Electrons(T,_met,variation,isdata):
 		if (Pass):
 			electrons.append(NewEl)
 			electroninds.append(n)
-			trk_isos.append(T.ElectronTrkIsoDR03[n])
+			trk_isos.append(iso)
 			charges.append(T.ElectronCharge[n])
 			deltainvpts.append(0.)
 			chi2.append(0.)
