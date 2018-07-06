@@ -20,8 +20,8 @@ if 'cmsneu' in platform.node():
 else:
 	print 'Not running on cmsneu!'
 	#exit()
-	NormalDirectory = '/eos/cms/store/user/dmorse/diHiggs_HHToZZbb/NTupleAnalyzerHH_newBDTs_2018_02_27/SummaryFiles'
-	QCDDirectory = '/eos/cms/store/user/dmorse/diHiggs_HHToZZbb/NTupleAnalyzerHH_newBDTs_QCDNonIsoQuickTest_2018_02_27/SummaryFiles'
+	NormalDirectory = '/eos/cms/store/group/phys_higgs/HiggsExo/HH_bbZZ_bbllqq/dmorse/hhTrees/NTupleAnalyzerHH_hhFullV2310_QuickTest_2018_06_11/SummaryFiles'
+	QCDDirectory = '/eos/cms/store/group/phys_higgs/HiggsExo/HH_bbZZ_bbllqq/dmorse/hhTrees/NTupleAnalyzerHH_hhFullV2310_QCDNonIsoQuickTest_2018_05_29/SummaryFiles'
 	EMuDirectory = 'emu'
 
 # The name of the main ttree (ntuple structure)
@@ -230,21 +230,21 @@ emu_id_eff_err = 0.0027#v7 JEC
 # QCD data-driven scale factor
 useDataDrivenQCD = True
 fbd_Muon     = [1.449, 0.03] # Apr 18, 2018
-fbd_Electron = [1.449, 0.1] # Feb 2018
-
+#fbd_Electron = [4.432, 0.277] # Feb 2018
+fbd_Electron = [1.449, 0.03] # setting equal to muon channel for now
 # tt, z SF calculated using Data with NEW method (Apr 18, 2018)
 Rz_data_muon  = [1.152, 0.013]
 Rtt_data_muon = [1.016, 0.062]
-Rz_data_electron  = [1.127, 0.011]
-Rtt_data_electron = [0.915, 0.023]
+Rz_data_electron  = [1.127, 0.01]
+Rtt_data_electron = [0.914, 0.023]
 
 
-analysisChannel = 'muon'
-#analysisChannel = 'electron'
+#analysisChannel = 'muon'
+analysisChannel = 'electron'
 if (analysisChannel == 'muon'):
  	NormalWeight=NormalWeightMuon
 	preselection_nos=preselection_Muon_nos
-	preselection=preselectionMuon
+	preselection=preselectionMuon#+"*((Mbb_H<100 + Mbb_H>150)>0)"
 	dataHLT=dataHLTMuon
 	fbd=fbd_Muon
 	charge1 = 'Charge_muon1'
@@ -558,7 +558,7 @@ def main():
 		
 		QCDStudy(qcdselection,qcdselection,MuonOptCutFile,MuNuOptCutFile,NormalWeight,NormalWeightMuNu,version_name)
 
-	if False:
+	if True:
 		[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err],[Fbd_uujj,Fbd_uujj_err]] = GetNormalizationScaleFactorsAndFbd(NormalWeight+'*'+preselection, NormalDirectory, dyControlRegion, ttControlRegion,0)
 		exit()
 
@@ -672,8 +672,8 @@ def main():
 
 	# ====================================================================================================================================================== #
 	# This is a basic plotting routine to make Analysis Note style plots with ratio plots. AN Analysis-Note
-makeba	# ====================================================================================================================================================== #
-	if True :
+	# ====================================================================================================================================================== #
+	if False :
 		# Some modifications to the ST and LQ mass binning
 		bjetbinning = [-1.2,-1.01]
 		for x in range(24):
@@ -699,6 +699,12 @@ makeba	# =======================================================================
 			if bosonbinning[-1]<750:
 				bosonbinning.append(bosonbinning[-1]+ (bosonbinning[-1] - bosonbinning[-2])*1.2 )	       	
 		bosonbinning = [round(x) for x in bosonbinning]
+
+		mllbinning = [0,10,20,30,40,50,60,70,80,90,100,110,120]
+		for x in range(40):
+			if mllbinning[-1]<400:
+				mllbinning.append(mllbinning[-1]+ (mllbinning[-1] - mllbinning[-2])*1.2 )	       	
+		mllbinning = [round(x) for x in mllbinning]
 
 		binning2D = [0,12]
 		for x in range(100):
@@ -785,14 +791,14 @@ makeba	# =======================================================================
 		# UUJJ plots at preselection, Note that putting 'TTBarDataDriven' in the name turns on the use of data-driven ttbar e-mu sample in place of MC
 		
 		# putting 'QCDDataDriven' will also turns on the use of data-driven QCD if not already set at default
-		for lqmass in [260,270,300,350,400,450,500,550,600,650,750,800,900,1000]:
-			MakeBasicPlot("bdt_discrim_M"+str(lqmass),"BDT output at M"+str(lqmass),bdtbinning,preselection,NormalWeight,NormalDirectory,'standard',ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,lqmass)
-		MakeBasicPlot("bdt_discrims3_low","BDT output combined M260-350",bdtbinning,preselection,NormalWeight,NormalDirectory,'standard',ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
-		MakeBasicPlot("bdt_discrims3_high","BDT output combined M400-1000",bdtbinning,preselection,NormalWeight,NormalDirectory,'standard',ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,900)
+		if "muon" in analysisChannel:
+			for lqmass in [260,270,300,350,400,450,500,550,600,650,750,800,900,1000]:
+				MakeBasicPlot("bdt_discrim_M"+str(lqmass),"BDT output at M"+str(lqmass),bdtbinning,preselection,NormalWeight,NormalDirectory,'standard',ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,lqmass)
+		#MakeBasicPlot("bdt_discrims3_low","BDT output combined M260-350",bdtbinning,preselection,NormalWeight,NormalDirectory,'standard',ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
+		#MakeBasicPlot("bdt_discrims3_high","BDT output combined M400-1000",bdtbinning,preselection,NormalWeight,NormalDirectory,'standard',ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,900)
 		MakeBasicPlot("cosTheta_hbb_"+ell+ell,"cos(#Theta) (H->bb) "+latexEll+latexEll,costhetastarbinning,preselection,NormalWeight,NormalDirectory,'standard',ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
 		MakeBasicPlot("cosTheta_z"+ell+ell+"_hzz","cos(#Theta) (Z->"+latexEll+latexEll+", H->ZZ)",costhetastarbinning,preselection,NormalWeight,NormalDirectory,'standard',ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
-		if ell=='mu': MakeBasicPlot(cosThetaStarMu,"cos(#Theta*) ("+latexEll+")",costhetastarbinning,preselection,NormalWeight,NormalDirectory,'standard',ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
-		if ell=='e': MakeBasicPlot(cosThetaStarEle,"cos(#Theta*) ("+latexEll+")",costhetastarbinning,preselection,NormalWeight,NormalDirectory,'standard',ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
+		MakeBasicPlot(cosThetaStar,"cos(#Theta*) ("+latexEll+")",costhetastarbinning,preselection,NormalWeight,NormalDirectory,'standard',ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
 		MakeBasicPlot("phi0_"+ell+ell,"#phi0_"+latexEll+latexEll,phi0binning,preselection,NormalWeight,NormalDirectory,'standard',ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
 		MakeBasicPlot("phi0_zz_"+ell+ell,"#phi0_zz_"+latexEll+latexEll,phi0binning,preselection,NormalWeight,NormalDirectory,'standard',ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
 		MakeBasicPlot("phi1_"+ell+ell,"#phi1_"+latexEll+latexEll,phi0binning,preselection,NormalWeight,NormalDirectory,'standard',ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
@@ -802,8 +808,6 @@ makeba	# =======================================================================
 		MakeBasicPlot("CMVA_bjet2","Jet2(H->bb) CMVA score",bjetbinning,preselection,NormalWeight,NormalDirectory,'standard',ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
 		MakeBasicPlot("CMVA_Zjet1","Jet1(Z->jj) CMVA score",bjetbinning,preselection,NormalWeight,NormalDirectory,'standard',ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
 		MakeBasicPlot("CMVA_Zjet2","Jet2(Z->jj) CMVA score",bjetbinning,preselection,NormalWeight,NormalDirectory,'standard',ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
-		#MakeBasicPlot("Pt_jet1","p_{T}(jet_{1}) [GeV]",ptbinning,preselection,NormalWeight,NormalDirectory,'standard',ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
-		#MakeBasicPlot("Pt_jet2","p_{T}(jet_{2}) [GeV]",ptbinning,preselection,NormalWeight,NormalDirectory,'standard',ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
 		MakeBasicPlot("Pt_Hjet1","p_{T}(bjet_{1}) (H) [GeV]",ptbinning,preselection,NormalWeight,NormalDirectory,'standard',ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
 		MakeBasicPlot("Pt_Hjet2","p_{T}(bjet_{2}) (H) [GeV]",ptbinning,preselection,NormalWeight,NormalDirectory,'standard',ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
 		MakeBasicPlot("Pt_Zjet1","p_{T}(jet_{1}) (Z) [GeV]",ptbinning,preselection,NormalWeight,NormalDirectory,'standard',ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
@@ -827,25 +831,16 @@ makeba	# =======================================================================
 		MakeBasicPlot("Phi_Zjet1","#phi(jet_{1}) (Z) [GeV]",phibinning,preselection,NormalWeight,NormalDirectory,'standard',ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
 		MakeBasicPlot("Phi_Zjet2","#phi(jet_{2}) (Z) [GeV]",phibinning,preselection,NormalWeight,NormalDirectory,'standard',ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
 		MakeBasicPlot("Phi_muon1","#phi(#mu_{1}) [GeV]",phibinning,preselection,NormalWeight,NormalDirectory,'standard',ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
-		MakeBasicPlot("Phi_muon2","#phi(#mu_{2}) [GeV]",phibinning,preselection,NormalWeight,NormalDirectory,'standard',ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)	
-		#MakeBasicPlot("M_uu4j-Mbb_H+125","M_{X} [GeV]",lqbinning,preselection,NormalWeight,NormalDirectory,'standard',ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
-		#MakeBasicPlot("M_uu4j-Mbb_H+125-M_uujj+125","M_{X2} [GeV]",lqbinning,preselection,NormalWeight,NormalDirectory,'standard',ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
-		#MakeBasicPlot("M_jj","M_{jj} [GeV]",bosonbinning,preselection,NormalWeight,NormalDirectory,'standard',ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
-		MakeBasicPlot("M_"+ell+ell,"M^{"+latexEll+latexEll+"} [GeV]",bosonbinning,preselection,NormalWeight,NormalDirectory,'standard',ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
+		MakeBasicPlot("Phi_muon2","#phi(#mu_{2}) [GeV]",phibinning,preselection,NormalWeight,NormalDirectory,'standard',ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
+		MakeBasicPlot("M_"+ell+ell,"M^{"+latexEll+latexEll+"} [GeV]",mllbinning,preselection,NormalWeight,NormalDirectory,'standard',ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
 		MakeBasicPlot("Mbb_H","M^{bb} from H [GeV]",bosonbinning,preselection,NormalWeight,NormalDirectory,'standard',ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
-		#MakeBasicPlot("Mbb_H-125","(M^{bb}-125) from H [GeV]",MassMinusbinning,preselection,NormalWeight,NormalDirectory,'standard',ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
 		MakeBasicPlot("Mjj_Z","M^{jj} from Z [GeV]",bosonbinning,preselection,NormalWeight,NormalDirectory,'standard',ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
-		#MakeBasicPlot("Mjj_Z-91","(M^{jj-91)} from Z [GeV]",MassMinusbinning,preselection,NormalWeight,NormalDirectory,'standard',ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
-		#MakeBasicPlot("MH_uujj","M_{#muj} (lead jet combo) [GeV]",lqbinning,preselection,NormalWeight,NormalDirectory,'standard',ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
-		#MakeBasicPlot("M_uujjavg","M_{#muj}_{avg} [GeV]",lqbinning,preselection,NormalWeight,NormalDirectory,'standard',ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
-		#MakeBasicPlot("M_uujj1","M_{#muj}_{1} [GeV]",lqbinning,preselection,NormalWeight,NormalDirectory,'standard',ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
-		#MakeBasicPlot("M_uujj2","M_{#muj}_{2} [GeV]",lqbinning,preselection,NormalWeight,NormalDirectory,'standard',ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
 		MakeBasicPlot("M_"+ell+ell+"jj","M_{"+latexEll+latexEll+"jj} [GeV]",lqbinning,preselection,NormalWeight,NormalDirectory,'standard',ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
 		MakeBasicPlot("M_"+ell+ell+"4j","M_{"+latexEll+latexEll+"4j} [GeV]",lqbinning,preselection,NormalWeight,NormalDirectory,'standard',ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
 		MakeBasicPlot("GoodVertexCount","N_{Vertices}",vbinning,preselection,NormalWeight,NormalDirectory,'standard',ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
 		MakeBasicPlot("JetCount","N_{jet}",njetbinning,preselection,NormalWeight,NormalDirectory,'standard',ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
-		MakeBasicPlot("MuonCount","N_{#mu}",nbinning,preselection,NormalWeight,NormalDirectory,'standard',ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)#removing TTBarDataDriven cause this makes weird muon count comparison
-		MakeBasicPlot("ElectronCount","N_{e}",nbinning,preselection,NormalWeight,NormalDirectory,'standard',ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)#removing TTBarDataDriven cause this makes weird muon count comparison
+		MakeBasicPlot("MuonCount","N_{#mu}",nbinning,preselection,NormalWeight,NormalDirectory,'standard',ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
+		MakeBasicPlot("ElectronCount","N_{e}",nbinning,preselection,NormalWeight,NormalDirectory,'standard',ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
 		MakeBasicPlot("DR_muon1muon2","#DeltaR(#mu_{1},#mu_{2})",drbinning,preselection,NormalWeight,NormalDirectory,'standard',ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
 		MakeBasicPlot("DR_ele1ele2","#DeltaR(e_{1},e_{2})",drbinning,preselection,NormalWeight,NormalDirectory,'standard',ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
 		MakeBasicPlot("DR_"+ell+"1Hj1","#DeltaR("+latexEll+"_{1},Hj_{1})",drbinning,preselection,NormalWeight,NormalDirectory,'standard',ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
@@ -872,26 +867,27 @@ makeba	# =======================================================================
 		MakeBasicPlot("Zjet1BsfLoose","Zjet1 Btag SF",[120,0,1.5],preselection,NormalWeight,NormalDirectory,'standard',ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
 		MakeBasicPlot("Zjet2BsfLoose","Zjet2 Btag SF",[120,0,1.5],preselection,NormalWeight,NormalDirectory,'standard',ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
 		MakeBasicPlot("(1-(1-(CMVA_bjet1>-0.5884)*Hjet1BsfLoose)*(1-(CMVA_bjet2>-0.5884)*Hjet2BsfLoose)*(1-(CMVA_Zjet1>-0.5884)*Zjet1BsfLoose)*(1-(CMVA_Zjet2>-0.5884)*Zjet2BsfLoose))","Btag Total SF",[200,0,2],preselection,NormalWeight,NormalDirectory,'standard',ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
-		#if analysisChannel=='electron' : exit()
+		
+                #if analysisChannel=='electron' : exit()
 		#fixme turning off final selection
 		# Full Selection Plots
 		for lqmass in [260,270,300,350,400,450,500,550,600,650,750,800,900,1000]:
 		#for lqmass in [300,900]: # AH
-			MakeBasicPlot("bdt_discrim_M"+str(lqmass),"BDT output at M"+str(lqmass),bdtbinning,preselection,NormalWeight,NormalDirectory,'final',ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,MuonOptCutFile,version_name,lqmass)
+			if analysisChannel=='muon' : 
+				MakeBasicPlot("bdt_discrim_M"+str(lqmass),"BDT output at M"+str(lqmass),bdtbinning,preselection,NormalWeight,NormalDirectory,'final',ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,MuonOptCutFile,version_name,lqmass)
 			#MakeBasicPlot("bdt_discrims2_M300","BDT output (no 6-object mass) at M300",bdtbinning,preselection,NormalWeight,NormalDirectory,'final',ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,MuonOptCutFile,version_name,lqmass)
 			#MakeBasicPlot("bdt_discrims2_M550","BDT output (no 6-object mass) at M550",bdtbinning,preselection,NormalWeight,NormalDirectory,'final',ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,MuonOptCutFile,version_name,lqmass)
-			MakeBasicPlot("bdt_discrims3_low","BDT output combined M260-350",bdtbinning,preselection,NormalWeight,NormalDirectory,'final',ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,MuonOptCutFile,version_name,lqmass)
-			MakeBasicPlot("bdt_discrims3_high","BDT output combined M400-1000",bdtbinning,preselection,NormalWeight,NormalDirectory,'final',ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,MuonOptCutFile,version_name,lqmass)
-			MakeBasicPlot("Pt_muon1","p_{T}(#mu_{1}) [GeV]",ptbinning,preselection,NormalWeight,NormalDirectory,'final',ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,MuonOptCutFile,version_name,lqmass)
-			MakeBasicPlot("St_uujj","S_{T}^{#mu#mujj} [GeV]",stbinning,preselection,NormalWeight,NormalDirectory,'final',ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,MuonOptCutFile,version_name,lqmass)
-			MakeBasicPlot("Pt_uu","M^{#mu#mu} [GeV]",ptbinning,preselection,NormalWeight,NormalDirectory,'final',ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,MuonOptCutFile,version_name,lqmass)
-			MakeBasicPlot("M_uu4j","M_{#mu#mu4j} [GeV]",lqbinning,preselection,NormalWeight,NormalDirectory,'final',ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,MuonOptCutFile,version_name,lqmass)
-			MakeBasicPlot("M_uu","M^{#mu#mu} [GeV]",bosonbinning,preselection,NormalWeight,NormalDirectory,'final',ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,MuonOptCutFile,version_name,lqmass)
+			#MakeBasicPlot("bdt_discrims3_low","BDT output combined M260-350",bdtbinning,preselection,NormalWeight,NormalDirectory,'final',ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,MuonOptCutFile,version_name,lqmass)
+			#MakeBasicPlot("bdt_discrims3_high","BDT output combined M400-1000",bdtbinning,preselection,NormalWeight,NormalDirectory,'final',ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,MuonOptCutFile,version_name,lqmass)
+			MakeBasicPlot("Pt_"+ell+"1","p_{T}("+latexEll+"_{1}) [GeV]",ptbinning,preselection,NormalWeight,NormalDirectory,'final',ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,MuonOptCutFile,version_name,lqmass)
+			MakeBasicPlot("St_"+ell+ell+"jj","S_{T}^{"+latexEll+latexEll+"jj} [GeV]",stbinning,preselection,NormalWeight,NormalDirectory,'final',ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,MuonOptCutFile,version_name,lqmass)
+			MakeBasicPlot("Pt_"+ell+ell,"M^{"+latexEll+latexEll+"} [GeV]",ptbinning,preselection,NormalWeight,NormalDirectory,'final',ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,MuonOptCutFile,version_name,lqmass)
+			MakeBasicPlot("M_"+ell+ell+"4j","M_{"+latexEll+latexEll+"4j} [GeV]",lqbinning,preselection,NormalWeight,NormalDirectory,'final',ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,MuonOptCutFile,version_name,lqmass)
+			MakeBasicPlot("M_"+ell+ell,"M^{"+latexEll+latexEll+"} [GeV]",mllbinning,preselection,NormalWeight,NormalDirectory,'final',ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,MuonOptCutFile,version_name,lqmass)
 			MakeBasicPlot("DR_muon1muon2","#DeltaR(#mu_{1},#mu_{2})",drbinning,preselection,NormalWeight,NormalDirectory,'final',ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,MuonOptCutFile,version_name,lqmass)
+			MakeBasicPlot("DR_ele1ele2","#DeltaR(e_{1},e_{2})",drbinning,preselection,NormalWeight,NormalDirectory,'final',ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,MuonOptCutFile,version_name,lqmass)
 			MakeBasicPlot("DR_bb_H","#DeltaR(b_{1},b_{2}) (H)",drbinning,preselection,NormalWeight,NormalDirectory,'final',ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,MuonOptCutFile,version_name,lqmass)
-			if ell=="mu": MakeBasicPlot("cosThetaStarMu","cos(#Theta*)(#mu)",costhetastarbinning,preselection,NormalWeight,NormalDirectory,'final',ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,MuonOptCutFile,version_name,lqmass)
-			if ell=="e"MakeBasicPlot("cosThetaStarEle","cos(#Theta*)(e)",costhetastarbinning,preselection,NormalWeight,NormalDirectory,'final',ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,MuonOptCutFile,version_name,lqmass)
-			
+			MakeBasicPlot(cosThetaStar,"cos(#Theta*)("+latexEll+")",costhetastarbinning,preselection,NormalWeight,NormalDirectory,'final',ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,MuonOptCutFile,version_name,lqmass)
 			MakeBasicPlot("Pt_miss","E_{T}^{miss} [GeV]",ptbinning,preselection,NormalWeight,NormalDirectory,'final',ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,MuonOptCutFile,version_name,lqmass)
 			MakeBasicPlot("CMVA_bjet1","Jet1(H->bb) CMVA score",bjetbinning,preselection,NormalWeight,NormalDirectory,'final',ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,MuonOptCutFile,version_name,lqmass)
 			MakeBasicPlot("CMVA_bjet2","Jet2(H->bb) CMVA score",bjetbinning,preselection,NormalWeight,NormalDirectory,'final',ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,MuonOptCutFile,version_name,lqmass)
@@ -3593,8 +3589,8 @@ def GetNormalizationScaleFactorsAndFbd( selection, FileDirectory, controlregion_
 	if analysisChannel=='electron' :
 		t_data  = t_DoubleEleData
 		tn_data = tn_DoubleEleData
-		doubleIso         = '(((abs(Eta_ele1)<1.442)*(TrkIso_ele1<0.0695)+(abs(Eta_ele1)>1.56)*(TrkIso_ele1<0.0821))*((abs(Eta_ele2)<1.442)*(TrkIso_ele2<0.0695)+(abs(Eta_ele2)>1.56)*(TrkIso_ele2<0.0821)))'
-		invertedDoubleIso = '((((abs(Eta_ele1)<1.442)*(TrkIso_ele1>0.0695)+(abs(Eta_ele1)>1.56)*(TrkIso_ele1>0.0821)) + ((abs(Eta_ele2)<1.442)*(TrkIso_ele2>0.0695)+(abs(Eta_ele2)>1.56)*(TrkIso_ele2>0.0821)))>0)'
+		doubleIso         = '(((abs(Eta_ele1)<1.442)*(TrkIso_ele1<0.0588)+(abs(Eta_ele1)>1.56)*(TrkIso_ele1<0.0571))*((abs(Eta_ele2)<1.442)*(TrkIso_ele2<0.0588)+(abs(Eta_ele2)>1.56)*(TrkIso_ele2<0.0571)))'
+		invertedDoubleIso = '((((abs(Eta_ele1)<1.442)*(TrkIso_ele1>0.0588)+(abs(Eta_ele1)>1.56)*(TrkIso_ele1>0.0571)) + ((abs(Eta_ele2)<1.442)*(TrkIso_ele2>0.0588)+(abs(Eta_ele2)>1.56)*(TrkIso_ele2>0.0571)))>0)'
 	
 	N1 = QuickEntries(t_data,selection_data + '*' + controlregion_1+dataHLT,1.0)
 	#print selection_data + '*' + controlregion_1+dataHLT
