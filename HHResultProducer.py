@@ -20,7 +20,7 @@ if 'cmsneu' in platform.node():
 else:
 	print 'Not running on cmsneu!'
 	#exit()
-	NormalDirectory = '/eos/cms/store/group/phys_higgs/HiggsExo/HH_bbZZ_bbllqq/dmorse/hhTrees/NTupleAnalyzerHH_hh_newEleBDTs_QuickTest_2018_07_07/SummaryFiles'
+	NormalDirectory = '/eos/cms/store/group/phys_higgs/HiggsExo/HH_bbZZ_bbllqq/dmorse/hhTrees/NTupleAnalyzerHH_FullSyst_2018_08_28/SummaryFiles'
 	QCDDirectory = '/eos/cms/store/group/phys_higgs/HiggsExo/HH_bbZZ_bbllqq/dmorse/hhTrees/NTupleAnalyzerHH_hh_newEleBDTs_QCDNonIsoQuickTest_2018_07_07/SummaryFiles'
 	EMuDirectory = 'emu'
 
@@ -194,7 +194,7 @@ preselectionElectron += passfilter
 preselectionmunu += passfilter
 
 #These are the Z and TTbar control regions, hard-coded to avoid mistakes in multiple functions
-dyControlRegion_Muon = '(M_uu>80)*(M_uu<100)*(((Mbb_H<115) + (Mbb_H>135))>0)'
+dyControlRegion_Muon = '(M_uu>80)*(M_uu<100)'
 ttControlRegion_Muon = '(M_uu>100)*(Pt_miss>100)'
 dyControlRegion_Electron = '(M_ee>80)*(M_ee<100)'
 ttControlRegion_Electron = '(M_ee>100)*(Pt_miss>100)'
