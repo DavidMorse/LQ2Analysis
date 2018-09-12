@@ -124,6 +124,7 @@ hev = fin.Get('LJFilter/EventCount/EventCounter')
 NORIG = hev.GetBinContent(1)
 topPtReweightSwitch = False
 if "TopPtReweight" in options.dir:
+	print 'Aplying top pt reweight systematic!!!!!'
 	topPtReweightSwitch = True
 SumOfTopPtReweights = 1.0
 _TopPtFactor = 1.0
@@ -3312,7 +3313,10 @@ def getPhi(Hj1, Hj2, Zj1, Zj2, ell1, ell2) :
 		
 		# Calculate Phi1
 		dsignhgg2 = hzz_vect.Dot(zzprime.Cross(vnorm[0]))/(abs(hzz_vect.Dot(zzprime.Cross(vnorm[0]))))  # hzz_vect here is not important
-		vPhi.append( dsignhgg2 * math.acos(zzprime.Dot(vnorm[0])) )
+		if -1<=zzprime.Dot(vnorm[0]) and zzprime.Dot(vnorm[0])<=1:
+			vPhi.append( dsignhgg2 * math.acos(zzprime.Dot(vnorm[0])) )
+		else :
+			vPhi.append(-3.5)
 	
 	return vPhi
 
