@@ -286,19 +286,33 @@ _kinematicvariables += ['M_ee_gen', 'M_ee_genMatched']
 _kinematicvariables += ['bscoreMVA1_genMatched', 'bscoreMVA2_genMatched']
 _kinematicvariables += ['CorHj1j2Avail','CorZj1j2Avail']
 _kinematicvariables += ['WorZSystemPt']
-_kinematicvariables += ['uu_bdt_discrim_M260','uu_bdt_discrim_M270','uu_bdt_discrim_M300','uu_bdt_discrim_M350','uu_bdt_discrim_M400']
-_kinematicvariables += ['uu_bdt_discrim_M450','uu_bdt_discrim_M500','uu_bdt_discrim_M550','uu_bdt_discrim_M600','uu_bdt_discrim_M650']
-_kinematicvariables += ['uu_bdt_discrim_M750','uu_bdt_discrim_M800','uu_bdt_discrim_M900','uu_bdt_discrim_M1000']
-_kinematicvariables += ['ee_bdt_discrim_M260','ee_bdt_discrim_M270','ee_bdt_discrim_M300','ee_bdt_discrim_M350','ee_bdt_discrim_M400']
-_kinematicvariables += ['ee_bdt_discrim_M450','ee_bdt_discrim_M500','ee_bdt_discrim_M550','ee_bdt_discrim_M600','ee_bdt_discrim_M650']
-_kinematicvariables += ['ee_bdt_discrim_M750','ee_bdt_discrim_M800','ee_bdt_discrim_M900','ee_bdt_discrim_M1000']
+_kinematicvariables += ['uu_s0_bdt_discrim_M260','uu_s0_bdt_discrim_M270','uu_s0_bdt_discrim_M300','uu_s0_bdt_discrim_M350','uu_s0_bdt_discrim_M400']
+_kinematicvariables += ['uu_s0_bdt_discrim_M450','uu_s0_bdt_discrim_M500','uu_s0_bdt_discrim_M550','uu_s0_bdt_discrim_M600','uu_s0_bdt_discrim_M650']
+_kinematicvariables += ['uu_s0_bdt_discrim_M750','uu_s0_bdt_discrim_M800','uu_s0_bdt_discrim_M900','uu_s0_bdt_discrim_M1000']
+_kinematicvariables += ['ee_s0_bdt_discrim_M260','ee_s0_bdt_discrim_M270','ee_s0_bdt_discrim_M300','ee_s0_bdt_discrim_M350','ee_s0_bdt_discrim_M400']
+_kinematicvariables += ['ee_s0_bdt_discrim_M450','ee_s0_bdt_discrim_M500','ee_s0_bdt_discrim_M550','ee_s0_bdt_discrim_M600','ee_s0_bdt_discrim_M650']
+_kinematicvariables += ['ee_s0_bdt_discrim_M750','ee_s0_bdt_discrim_M800','ee_s0_bdt_discrim_M900','ee_s0_bdt_discrim_M1000']
+_kinematicvariables += ['uu_s2_bdt_discrim_M260','uu_s2_bdt_discrim_M270','uu_s2_bdt_discrim_M300','uu_s2_bdt_discrim_M350','uu_s2_bdt_discrim_M400']
+_kinematicvariables += ['uu_s2_bdt_discrim_M450','uu_s2_bdt_discrim_M500','uu_s2_bdt_discrim_M550','uu_s2_bdt_discrim_M600','uu_s2_bdt_discrim_M650']
+_kinematicvariables += ['uu_s2_bdt_discrim_M750','uu_s2_bdt_discrim_M800','uu_s2_bdt_discrim_M900','uu_s2_bdt_discrim_M1000']
+_kinematicvariables += ['ee_s2_bdt_discrim_M260','ee_s2_bdt_discrim_M270','ee_s2_bdt_discrim_M300','ee_s2_bdt_discrim_M350','ee_s2_bdt_discrim_M400']
+_kinematicvariables += ['ee_s2_bdt_discrim_M450','ee_s2_bdt_discrim_M500','ee_s2_bdt_discrim_M550','ee_s2_bdt_discrim_M600','ee_s2_bdt_discrim_M650']
+_kinematicvariables += ['ee_s2_bdt_discrim_M750','ee_s2_bdt_discrim_M800','ee_s2_bdt_discrim_M900','ee_s2_bdt_discrim_M1000']
+_kinematicvariables += ['uu_s0_bdt_discrim_LowM','ee_s0_bdt_discrim_LowM','uu_s2_bdt_discrim_LowM','ee_s2_bdt_discrim_LowM']
 
-_kinematicvariables_systOnly = ['uu_bdt_discrim_M260','uu_bdt_discrim_M270','uu_bdt_discrim_M300','uu_bdt_discrim_M350','uu_bdt_discrim_M400']
-_kinematicvariables_systOnly += ['uu_bdt_discrim_M450','uu_bdt_discrim_M500','uu_bdt_discrim_M550','uu_bdt_discrim_M600','uu_bdt_discrim_M650']
-_kinematicvariables_systOnly += ['uu_bdt_discrim_M750','uu_bdt_discrim_M800','uu_bdt_discrim_M900','uu_bdt_discrim_M1000']
-_kinematicvariables_systOnly += ['ee_bdt_discrim_M260','ee_bdt_discrim_M270','ee_bdt_discrim_M300','ee_bdt_discrim_M350','ee_bdt_discrim_M400']
-_kinematicvariables_systOnly += ['ee_bdt_discrim_M450','ee_bdt_discrim_M500','ee_bdt_discrim_M550','ee_bdt_discrim_M600','ee_bdt_discrim_M650']
-_kinematicvariables_systOnly += ['ee_bdt_discrim_M750','ee_bdt_discrim_M800','ee_bdt_discrim_M900','ee_bdt_discrim_M1000']
+_kinematicvariables_systOnly = ['uu_s0_bdt_discrim_M260','uu_s0_bdt_discrim_M270','uu_s0_bdt_discrim_M300','uu_s0_bdt_discrim_M350','uu_s0_bdt_discrim_M400']
+_kinematicvariables_systOnly += ['uu_s0_bdt_discrim_M450','uu_s0_bdt_discrim_M500','uu_s0_bdt_discrim_M550','uu_s0_bdt_discrim_M600','uu_s0_bdt_discrim_M650']
+_kinematicvariables_systOnly += ['uu_s0_bdt_discrim_M750','uu_s0_bdt_discrim_M800','uu_s0_bdt_discrim_M900','uu_s0_bdt_discrim_M1000']
+_kinematicvariables_systOnly += ['ee_s0_bdt_discrim_M260','ee_s0_bdt_discrim_M270','ee_s0_bdt_discrim_M300','ee_s0_bdt_discrim_M350','ee_s0_bdt_discrim_M400']
+_kinematicvariables_systOnly += ['ee_s0_bdt_discrim_M450','ee_s0_bdt_discrim_M500','ee_s0_bdt_discrim_M550','ee_s0_bdt_discrim_M600','ee_s0_bdt_discrim_M650']
+_kinematicvariables_systOnly += ['ee_s0_bdt_discrim_M750','ee_s0_bdt_discrim_M800','ee_s0_bdt_discrim_M900','ee_s0_bdt_discrim_M1000']
+_kinematicvariables_systOnly += ['uu_s2_bdt_discrim_M260','uu_s2_bdt_discrim_M270','uu_s2_bdt_discrim_M300','uu_s2_bdt_discrim_M350','uu_s2_bdt_discrim_M400']
+_kinematicvariables_systOnly += ['uu_s2_bdt_discrim_M450','uu_s2_bdt_discrim_M500','uu_s2_bdt_discrim_M550','uu_s2_bdt_discrim_M600','uu_s2_bdt_discrim_M650']
+_kinematicvariables_systOnly += ['uu_s2_bdt_discrim_M750','uu_s2_bdt_discrim_M800','uu_s2_bdt_discrim_M900','uu_s2_bdt_discrim_M1000']
+_kinematicvariables_systOnly += ['ee_s2_bdt_discrim_M260','ee_s2_bdt_discrim_M270','ee_s2_bdt_discrim_M300','ee_s2_bdt_discrim_M350','ee_s2_bdt_discrim_M400']
+_kinematicvariables_systOnly += ['ee_s2_bdt_discrim_M450','ee_s2_bdt_discrim_M500','ee_s2_bdt_discrim_M550','ee_s2_bdt_discrim_M600','ee_s2_bdt_discrim_M650']
+_kinematicvariables_systOnly += ['ee_s2_bdt_discrim_M750','ee_s2_bdt_discrim_M800','ee_s2_bdt_discrim_M900','ee_s2_bdt_discrim_M1000']
+_kinematicvariables_systOnly += ['uu_s0_bdt_discrim_LowM','ee_s0_bdt_discrim_LowM','uu_s2_bdt_discrim_LowM','ee_s2_bdt_discrim_LowM']
 
 #_weights = ['scaleWeight_Up','scaleWeight_Down','scaleWeight_R1_F1','scaleWeight_R1_F2','scaleWeight_R1_F0p5','scaleWeight_R2_F1','scaleWeight_R2_F2','scaleWeight_R2_F0p5','scaleWeight_R0p5_F1','scaleWeight_R0p5_F2','scaleWeight_R0p5_F0p5','scaleWeight_R2_F2','weight_amcNLO','weight_nopu','weight_central', 'weight_pu_up', 'weight_pu_down','weight_topPt']
 #removing weight_amcNLO (always 0 anyway)
@@ -529,7 +543,10 @@ for vth in _bdtvars_uu:
 	reader_25vars_uu.AddVariable(vth, _bdtvarnames_uu[vth])
 # TMVA.Reader booked with BDT_classifier, input is .weights.xml file
 for ith in range(len(SignalM)):
-	reader_25vars_uu.BookMVA(str("BDT_classifier_25vars_uu_M" + SignalM[ith]), str("weights_classification/weights_file_25vars_uu/TMVAClassification_BDT_M" + SignalM[ith] + ".weights.xml"))
+	reader_25vars_uu.BookMVA(str("BDT_classifier_25vars_s0_uu_M" + SignalM[ith]), str("weights_classification/weights_file_25vars_s0_uu/TMVAClassification_BDT_M" + SignalM[ith] + ".weights.xml"))
+	reader_25vars_uu.BookMVA(str("BDT_classifier_25vars_s2_uu_M" + SignalM[ith]), str("weights_classification/weights_file_25vars_s2_uu/TMVAClassification_BDT_M" + SignalM[ith] + ".weights.xml"))
+reader_25vars_uu.BookMVA("BDT_classifier_25vars_s0_uu_LowM", "weights_classification/weights_file_25vars_s0_uu_LowM/TMVAClassification_BDT_LowM.weights.xml")
+reader_25vars_uu.BookMVA("BDT_classifier_25vars_s2_uu_LowM", "weights_classification/weights_file_25vars_s2_uu_LowM/TMVAClassification_BDT_LowM.weights.xml")
 
 #--- eletron BDT
 reader_25vars_ee = TMVA.Reader("!Color")
@@ -539,7 +556,10 @@ for vth in _bdtvars_ee:
 	_bdtvarnames_ee[vth] = array.array('f',[0])
 	reader_25vars_ee.AddVariable(vth, _bdtvarnames_ee[vth])
 for ith in range(len(SignalM)):
-	reader_25vars_ee.BookMVA(str("BDT_classifier_25vars_ee_M" + SignalM[ith]), str("weights_classification/weights_file_25vars_ee/TMVAClassification_BDT_M" + SignalM[ith] + ".weights.xml"))
+	reader_25vars_ee.BookMVA(str("BDT_classifier_25vars_s0_ee_M" + SignalM[ith]), str("weights_classification/weights_file_25vars_s0_ee/TMVAClassification_BDT_M" + SignalM[ith] + ".weights.xml"))
+	reader_25vars_ee.BookMVA(str("BDT_classifier_25vars_s2_ee_M" + SignalM[ith]), str("weights_classification/weights_file_25vars_s2_ee/TMVAClassification_BDT_M" + SignalM[ith] + ".weights.xml"))
+reader_25vars_ee.BookMVA("BDT_classifier_25vars_s0_ee_LowM", "weights_classification/weights_file_25vars_s0_ee_LowM/TMVAClassification_BDT_LowM.weights.xml")
+reader_25vars_ee.BookMVA("BDT_classifier_25vars_s2_ee_LowM", "weights_classification/weights_file_25vars_s2_ee_LowM/TMVAClassification_BDT_LowM.weights.xml")
 
 ##########################################################################################
 #################      Setup bjets energy regression calculation   #######################
@@ -3144,6 +3164,7 @@ def calculateBDTdiscriminant(reader, classifierTag, _bdtvarnames, _Mll4j, _Mbb_H
 	##if Msig <= 300: MET_cut = 40.0
 	##elif Msig <= 600: MET_cut = 75.0
 	##else: MET_cut = 100.0
+	## MET cut is not needed here, TMVA will calculate bdt score (because MET variable is not used) ?, but we will put the cut in analysis level anyway
 
 	if 'DR_muon1muon2' in _bdtvarnames:
 		if (_ptlep1 > 20 and _ptlep2 > 10 and _Pt_Hjet1 > 20 and _Pt_Hjet2 > 20 and _Pt_Zjet1 > 20 and _Pt_Zjet2 > 20 and _Mll > 12) :
@@ -4067,18 +4088,35 @@ def FullKinematicCalculation(T,variation):
 	
 	#----- calculate BDT disc here
 	#-- muon bdt
-	_uu_bdt_discrims = [-99.0,-99.0,-99.0,-99.0,-99.0,-99.0,-99.0,-99.0,-99.0,-99.0,-99.0,-99.0,-99.0,-99.0]
-	for kth in range(len(_uu_bdt_discrims)):
-		_uu_bdt_discrims[kth] = calculateBDTdiscriminant(reader_25vars_uu, str("BDT_classifier_25vars_uu_M" + SignalM[kth]), _bdtvarnames_uu, _Muu4j, _Mbb_H, _Mjj_Z, _Muu, _Muujj, _ptmu1, _ptmu2, _ptmet, _Pt_Hjet1, _Pt_Hjet2, _Pt_Zjet1, _Pt_Zjet2, _Pt_uu, _Pt_Hjets, _Pt_Zjets, _dRbb_H, _dRjj_Z, _DRuu, _phi0_uu, _phi1_uu, _phi0_zz_uu, _phi1_zuu, _phi1_zjj_uu, bscoreMVA1, bscoreMVA2, _dRu1Hj1, _dRu1Hj2, _dRu2Hj1, _dRu2Hj2, _dRu1Zj1, _dRu1Zj2, _dRu2Zj1, _dRu2Zj2, _dRuubb_H, _dRuujj_Z, _cosThetaStarMu, _cosTheta_hbb_uu, _cosTheta_zuu_hzz, _cosThetaStar_uu, _cosThetaStarZuu_CS, _cosTheta_Zuu, _etamu1, _etamu2, _phimu1, _phimu2, _DPHIuv, _dPHIuujj_Z, _dPHIuubb_H, _dPhibb_H, _dPhijj_Z)
-	[_uu_bdt_discrim_M260, _uu_bdt_discrim_M270, _uu_bdt_discrim_M300, _uu_bdt_discrim_M350, _uu_bdt_discrim_M400, _uu_bdt_discrim_M450, _uu_bdt_discrim_M500, _uu_bdt_discrim_M550, _uu_bdt_discrim_M600, _uu_bdt_discrim_M650, _uu_bdt_discrim_M750, _uu_bdt_discrim_M800, _uu_bdt_discrim_M900, _uu_bdt_discrim_M1000] = _uu_bdt_discrims
+	_uu_s0_bdt_discrims = [-99.0,-99.0,-99.0,-99.0,-99.0,-99.0,-99.0,-99.0,-99.0,-99.0,-99.0,-99.0,-99.0,-99.0]
+	for kth in range(len(_uu_s0_bdt_discrims)):
+		_uu_s0_bdt_discrims[kth] = calculateBDTdiscriminant(reader_25vars_uu, str("BDT_classifier_25vars_s0_uu_M" + SignalM[kth]), _bdtvarnames_uu, _Muu4j, _Mbb_H, _Mjj_Z, _Muu, _Muujj, _ptmu1, _ptmu2, _ptmet, _Pt_Hjet1, _Pt_Hjet2, _Pt_Zjet1, _Pt_Zjet2, _Pt_uu, _Pt_Hjets, _Pt_Zjets, _dRbb_H, _dRjj_Z, _DRuu, _phi0_uu, _phi1_uu, _phi0_zz_uu, _phi1_zuu, _phi1_zjj_uu, bscoreMVA1, bscoreMVA2, _dRu1Hj1, _dRu1Hj2, _dRu2Hj1, _dRu2Hj2, _dRu1Zj1, _dRu1Zj2, _dRu2Zj1, _dRu2Zj2, _dRuubb_H, _dRuujj_Z, _cosThetaStarMu, _cosTheta_hbb_uu, _cosTheta_zuu_hzz, _cosThetaStar_uu, _cosThetaStarZuu_CS, _cosTheta_Zuu, _etamu1, _etamu2, _phimu1, _phimu2, _DPHIuv, _dPHIuujj_Z, _dPHIuubb_H, _dPhibb_H, _dPhijj_Z)
+	[_uu_s0_bdt_discrim_M260, _uu_s0_bdt_discrim_M270, _uu_s0_bdt_discrim_M300, _uu_s0_bdt_discrim_M350, _uu_s0_bdt_discrim_M400, _uu_s0_bdt_discrim_M450, _uu_s0_bdt_discrim_M500, _uu_s0_bdt_discrim_M550, _uu_s0_bdt_discrim_M600, _uu_s0_bdt_discrim_M650, _uu_s0_bdt_discrim_M750, _uu_s0_bdt_discrim_M800, _uu_s0_bdt_discrim_M900, _uu_s0_bdt_discrim_M1000] = _uu_s0_bdt_discrims
 	#if v == '' : print ' _uu_bdt_discrims ', _uu_bdt_discrims
 	#if v == '' : print ' each bdt         ', _uu_bdt_discrim_M260, _uu_bdt_discrim_M270, _uu_bdt_discrim_M300, _uu_bdt_discrim_M350, _uu_bdt_discrim_M400
+	_uu_s2_bdt_discrims = [-99.0,-99.0,-99.0,-99.0,-99.0,-99.0,-99.0,-99.0,-99.0,-99.0,-99.0,-99.0,-99.0,-99.0]
+	for kth in range(len(_uu_s2_bdt_discrims)):
+		_uu_s2_bdt_discrims[kth] = calculateBDTdiscriminant(reader_25vars_uu, str("BDT_classifier_25vars_s2_uu_M" + SignalM[kth]), _bdtvarnames_uu, _Muu4j, _Mbb_H, _Mjj_Z, _Muu, _Muujj, _ptmu1, _ptmu2, _ptmet, _Pt_Hjet1, _Pt_Hjet2, _Pt_Zjet1, _Pt_Zjet2, _Pt_uu, _Pt_Hjets, _Pt_Zjets, _dRbb_H, _dRjj_Z, _DRuu, _phi0_uu, _phi1_uu, _phi0_zz_uu, _phi1_zuu, _phi1_zjj_uu, bscoreMVA1, bscoreMVA2, _dRu1Hj1, _dRu1Hj2, _dRu2Hj1, _dRu2Hj2, _dRu1Zj1, _dRu1Zj2, _dRu2Zj1, _dRu2Zj2, _dRuubb_H, _dRuujj_Z, _cosThetaStarMu, _cosTheta_hbb_uu, _cosTheta_zuu_hzz, _cosThetaStar_uu, _cosThetaStarZuu_CS, _cosTheta_Zuu, _etamu1, _etamu2, _phimu1, _phimu2, _DPHIuv, _dPHIuujj_Z, _dPHIuubb_H, _dPhibb_H, _dPhijj_Z)
+	[_uu_s2_bdt_discrim_M260, _uu_s2_bdt_discrim_M270, _uu_s2_bdt_discrim_M300, _uu_s2_bdt_discrim_M350, _uu_s2_bdt_discrim_M400, _uu_s2_bdt_discrim_M450, _uu_s2_bdt_discrim_M500, _uu_s2_bdt_discrim_M550, _uu_s2_bdt_discrim_M600, _uu_s2_bdt_discrim_M650, _uu_s2_bdt_discrim_M750, _uu_s2_bdt_discrim_M800, _uu_s2_bdt_discrim_M900, _uu_s2_bdt_discrim_M1000] = _uu_s2_bdt_discrims
+
+	[_uu_s0_bdt_discrim_LowM, _uu_s2_bdt_discrim_LowM] = [-99.0,-99.0]
+	_uu_s0_bdt_discrim_LowM = calculateBDTdiscriminant(reader_25vars_uu, "BDT_classifier_25vars_s0_uu_LowM", _bdtvarnames_uu, _Muu4j, _Mbb_H, _Mjj_Z, _Muu, _Muujj, _ptmu1, _ptmu2, _ptmet, _Pt_Hjet1, _Pt_Hjet2, _Pt_Zjet1, _Pt_Zjet2, _Pt_uu, _Pt_Hjets, _Pt_Zjets, _dRbb_H, _dRjj_Z, _DRuu, _phi0_uu, _phi1_uu, _phi0_zz_uu, _phi1_zuu, _phi1_zjj_uu, bscoreMVA1, bscoreMVA2, _dRu1Hj1, _dRu1Hj2, _dRu2Hj1, _dRu2Hj2, _dRu1Zj1, _dRu1Zj2, _dRu2Zj1, _dRu2Zj2, _dRuubb_H, _dRuujj_Z, _cosThetaStarMu, _cosTheta_hbb_uu, _cosTheta_zuu_hzz, _cosThetaStar_uu, _cosThetaStarZuu_CS, _cosTheta_Zuu, _etamu1, _etamu2, _phimu1, _phimu2, _DPHIuv, _dPHIuujj_Z, _dPHIuubb_H, _dPhibb_H, _dPhijj_Z)
+	_uu_s2_bdt_discrim_LowM = calculateBDTdiscriminant(reader_25vars_uu, "BDT_classifier_25vars_s2_uu_LowM", _bdtvarnames_uu, _Muu4j, _Mbb_H, _Mjj_Z, _Muu, _Muujj, _ptmu1, _ptmu2, _ptmet, _Pt_Hjet1, _Pt_Hjet2, _Pt_Zjet1, _Pt_Zjet2, _Pt_uu, _Pt_Hjets, _Pt_Zjets, _dRbb_H, _dRjj_Z, _DRuu, _phi0_uu, _phi1_uu, _phi0_zz_uu, _phi1_zuu, _phi1_zjj_uu, bscoreMVA1, bscoreMVA2, _dRu1Hj1, _dRu1Hj2, _dRu2Hj1, _dRu2Hj2, _dRu1Zj1, _dRu1Zj2, _dRu2Zj1, _dRu2Zj2, _dRuubb_H, _dRuujj_Z, _cosThetaStarMu, _cosTheta_hbb_uu, _cosTheta_zuu_hzz, _cosThetaStar_uu, _cosThetaStarZuu_CS, _cosTheta_Zuu, _etamu1, _etamu2, _phimu1, _phimu2, _DPHIuv, _dPHIuujj_Z, _dPHIuubb_H, _dPhibb_H, _dPhijj_Z)
 
 	#-- electron bdt
-	_ee_bdt_discrims = [-99.0,-99.0,-99.0,-99.0,-99.0,-99.0,-99.0,-99.0,-99.0,-99.0,-99.0,-99.0,-99.0,-99.0]
-	for kth in range(len(_ee_bdt_discrims)):
-		_ee_bdt_discrims[kth] = calculateBDTdiscriminant(reader_25vars_ee, str("BDT_classifier_25vars_ee_M" + SignalM[kth]), _bdtvarnames_ee, _Mee4j, _Mbb_H, _Mjj_Z, _Mee, _Meejj, _ptele1, _ptele2, _ptmet, _Pt_Hjet1, _Pt_Hjet2, _Pt_Zjet1, _Pt_Zjet2, _Pt_ee, _Pt_Hjets, _Pt_Zjets, _dRbb_H, _dRjj_Z, _DRee, _phi0_ee, _phi1_ee, _phi0_zz_ee, _phi1_zee, _phi1_zjj_ee, bscoreMVA1, bscoreMVA2, _dRe1Hj1, _dRe1Hj2, _dRe2Hj1, _dRe2Hj2, _dRe1Zj1, _dRe1Zj2, _dRe2Zj1, _dRe2Zj2, _dReebb_H, _dReejj_Z, _cosThetaStarEle, _cosTheta_hbb_ee, _cosTheta_zee_hzz, _cosThetaStar_ee, _cosThetaStarZee_CS, _cosTheta_Zee, _etaele1, _etaele2, _phiele1, _phiele2, _DPHIev, _dPHIeejj_Z, _dPHIeebb_H, _dPhibb_H, _dPhijj_Z)
-	[_ee_bdt_discrim_M260, _ee_bdt_discrim_M270, _ee_bdt_discrim_M300, _ee_bdt_discrim_M350, _ee_bdt_discrim_M400, _ee_bdt_discrim_M450, _ee_bdt_discrim_M500, _ee_bdt_discrim_M550, _ee_bdt_discrim_M600, _ee_bdt_discrim_M650, _ee_bdt_discrim_M750, _ee_bdt_discrim_M800, _ee_bdt_discrim_M900, _ee_bdt_discrim_M1000] = _ee_bdt_discrims
+	_ee_s0_bdt_discrims = [-99.0,-99.0,-99.0,-99.0,-99.0,-99.0,-99.0,-99.0,-99.0,-99.0,-99.0,-99.0,-99.0,-99.0]
+	for kth in range(len(_ee_s0_bdt_discrims)):
+		_ee_s0_bdt_discrims[kth] = calculateBDTdiscriminant(reader_25vars_ee, str("BDT_classifier_25vars_s0_ee_M" + SignalM[kth]), _bdtvarnames_ee, _Mee4j, _Mbb_H, _Mjj_Z, _Mee, _Meejj, _ptele1, _ptele2, _ptmet, _Pt_Hjet1, _Pt_Hjet2, _Pt_Zjet1, _Pt_Zjet2, _Pt_ee, _Pt_Hjets, _Pt_Zjets, _dRbb_H, _dRjj_Z, _DRee, _phi0_ee, _phi1_ee, _phi0_zz_ee, _phi1_zee, _phi1_zjj_ee, bscoreMVA1, bscoreMVA2, _dRe1Hj1, _dRe1Hj2, _dRe2Hj1, _dRe2Hj2, _dRe1Zj1, _dRe1Zj2, _dRe2Zj1, _dRe2Zj2, _dReebb_H, _dReejj_Z, _cosThetaStarEle, _cosTheta_hbb_ee, _cosTheta_zee_hzz, _cosThetaStar_ee, _cosThetaStarZee_CS, _cosTheta_Zee, _etaele1, _etaele2, _phiele1, _phiele2, _DPHIev, _dPHIeejj_Z, _dPHIeebb_H, _dPhibb_H, _dPhijj_Z)
+	[_ee_s0_bdt_discrim_M260, _ee_s0_bdt_discrim_M270, _ee_s0_bdt_discrim_M300, _ee_s0_bdt_discrim_M350, _ee_s0_bdt_discrim_M400, _ee_s0_bdt_discrim_M450, _ee_s0_bdt_discrim_M500, _ee_s0_bdt_discrim_M550, _ee_s0_bdt_discrim_M600, _ee_s0_bdt_discrim_M650, _ee_s0_bdt_discrim_M750, _ee_s0_bdt_discrim_M800, _ee_s0_bdt_discrim_M900, _ee_s0_bdt_discrim_M1000] = _ee_s0_bdt_discrims
+	_ee_s2_bdt_discrims = [-99.0,-99.0,-99.0,-99.0,-99.0,-99.0,-99.0,-99.0,-99.0,-99.0,-99.0,-99.0,-99.0,-99.0]
+	for kth in range(len(_ee_s2_bdt_discrims)):
+		_ee_s2_bdt_discrims[kth] = calculateBDTdiscriminant(reader_25vars_ee, str("BDT_classifier_25vars_s2_ee_M" + SignalM[kth]), _bdtvarnames_ee, _Mee4j, _Mbb_H, _Mjj_Z, _Mee, _Meejj, _ptele1, _ptele2, _ptmet, _Pt_Hjet1, _Pt_Hjet2, _Pt_Zjet1, _Pt_Zjet2, _Pt_ee, _Pt_Hjets, _Pt_Zjets, _dRbb_H, _dRjj_Z, _DRee, _phi0_ee, _phi1_ee, _phi0_zz_ee, _phi1_zee, _phi1_zjj_ee, bscoreMVA1, bscoreMVA2, _dRe1Hj1, _dRe1Hj2, _dRe2Hj1, _dRe2Hj2, _dRe1Zj1, _dRe1Zj2, _dRe2Zj1, _dRe2Zj2, _dReebb_H, _dReejj_Z, _cosThetaStarEle, _cosTheta_hbb_ee, _cosTheta_zee_hzz, _cosThetaStar_ee, _cosThetaStarZee_CS, _cosTheta_Zee, _etaele1, _etaele2, _phiele1, _phiele2, _DPHIev, _dPHIeejj_Z, _dPHIeebb_H, _dPhibb_H, _dPhijj_Z)
+	[_ee_s2_bdt_discrim_M260, _ee_s2_bdt_discrim_M270, _ee_s2_bdt_discrim_M300, _ee_s2_bdt_discrim_M350, _ee_s2_bdt_discrim_M400, _ee_s2_bdt_discrim_M450, _ee_s2_bdt_discrim_M500, _ee_s2_bdt_discrim_M550, _ee_s2_bdt_discrim_M600, _ee_s2_bdt_discrim_M650, _ee_s2_bdt_discrim_M750, _ee_s2_bdt_discrim_M800, _ee_s2_bdt_discrim_M900, _ee_s2_bdt_discrim_M1000] = _ee_s2_bdt_discrims
+
+	[_ee_s0_bdt_discrim_LowM, _ee_s2_bdt_discrim_LowM] = [-99.0,-99.0]
+	_ee_s0_bdt_discrim_LowM = calculateBDTdiscriminant(reader_25vars_ee, "BDT_classifier_25vars_s0_ee_LowM", _bdtvarnames_ee, _Mee4j, _Mbb_H, _Mjj_Z, _Mee, _Meejj, _ptele1, _ptele2, _ptmet, _Pt_Hjet1, _Pt_Hjet2, _Pt_Zjet1, _Pt_Zjet2, _Pt_ee, _Pt_Hjets, _Pt_Zjets, _dRbb_H, _dRjj_Z, _DRee, _phi0_ee, _phi1_ee, _phi0_zz_ee, _phi1_zee, _phi1_zjj_ee, bscoreMVA1, bscoreMVA2, _dRe1Hj1, _dRe1Hj2, _dRe2Hj1, _dRe2Hj2, _dRe1Zj1, _dRe1Zj2, _dRe2Zj1, _dRe2Zj2, _dReebb_H, _dReejj_Z, _cosThetaStarEle, _cosTheta_hbb_ee, _cosTheta_zee_hzz, _cosThetaStar_ee, _cosThetaStarZee_CS, _cosTheta_Zee, _etaele1, _etaele2, _phiele1, _phiele2, _DPHIev, _dPHIeejj_Z, _dPHIeebb_H, _dPhibb_H, _dPhijj_Z)
+	_ee_s2_bdt_discrim_LowM = calculateBDTdiscriminant(reader_25vars_ee, "BDT_classifier_25vars_s2_ee_LowM", _bdtvarnames_ee, _Mee4j, _Mbb_H, _Mjj_Z, _Mee, _Meejj, _ptele1, _ptele2, _ptmet, _Pt_Hjet1, _Pt_Hjet2, _Pt_Zjet1, _Pt_Zjet2, _Pt_ee, _Pt_Hjets, _Pt_Zjets, _dRbb_H, _dRjj_Z, _DRee, _phi0_ee, _phi1_ee, _phi0_zz_ee, _phi1_zee, _phi1_zjj_ee, bscoreMVA1, bscoreMVA2, _dRe1Hj1, _dRe1Hj2, _dRe2Hj1, _dRe2Hj2, _dRe1Zj1, _dRe1Zj2, _dRe2Zj1, _dRe2Zj2, _dReebb_H, _dReejj_Z, _cosThetaStarEle, _cosTheta_hbb_ee, _cosTheta_zee_hzz, _cosThetaStar_ee, _cosThetaStarZee_CS, _cosTheta_Zee, _etaele1, _etaele2, _phiele1, _phiele2, _DPHIev, _dPHIeejj_Z, _dPHIeebb_H, _dPhibb_H, _dPhijj_Z)
+
 	#----- End calculate BDT disc here
 
 	# This MUST have the same structure as _kinematic variables!
@@ -4191,19 +4229,33 @@ def FullKinematicCalculation(T,variation):
 	toreturn += [_bscoreMVA1_genMatched, _bscoreMVA2_genMatched]
 	toreturn += [_CorHj1j2Avail,_CorZj1j2Avail]
 	toreturn += [_WorZSystemPt]
-	toreturn += [_uu_bdt_discrim_M260,_uu_bdt_discrim_M270,_uu_bdt_discrim_M300,_uu_bdt_discrim_M350,_uu_bdt_discrim_M400]
-	toreturn += [_uu_bdt_discrim_M450,_uu_bdt_discrim_M500,_uu_bdt_discrim_M550,_uu_bdt_discrim_M600,_uu_bdt_discrim_M650]
-	toreturn += [_uu_bdt_discrim_M750,_uu_bdt_discrim_M800,_uu_bdt_discrim_M900,_uu_bdt_discrim_M1000]
-	toreturn += [_ee_bdt_discrim_M260,_ee_bdt_discrim_M270,_ee_bdt_discrim_M300,_ee_bdt_discrim_M350,_ee_bdt_discrim_M400]
-	toreturn += [_ee_bdt_discrim_M450,_ee_bdt_discrim_M500,_ee_bdt_discrim_M550,_ee_bdt_discrim_M600,_ee_bdt_discrim_M650]
-	toreturn += [_ee_bdt_discrim_M750,_ee_bdt_discrim_M800,_ee_bdt_discrim_M900,_ee_bdt_discrim_M1000]
+	toreturn += [_uu_s0_bdt_discrim_M260,_uu_s0_bdt_discrim_M270,_uu_s0_bdt_discrim_M300,_uu_s0_bdt_discrim_M350,_uu_s0_bdt_discrim_M400]
+	toreturn += [_uu_s0_bdt_discrim_M450,_uu_s0_bdt_discrim_M500,_uu_s0_bdt_discrim_M550,_uu_s0_bdt_discrim_M600,_uu_s0_bdt_discrim_M650]
+	toreturn += [_uu_s0_bdt_discrim_M750,_uu_s0_bdt_discrim_M800,_uu_s0_bdt_discrim_M900,_uu_s0_bdt_discrim_M1000]
+	toreturn += [_ee_s0_bdt_discrim_M260,_ee_s0_bdt_discrim_M270,_ee_s0_bdt_discrim_M300,_ee_s0_bdt_discrim_M350,_ee_s0_bdt_discrim_M400]
+	toreturn += [_ee_s0_bdt_discrim_M450,_ee_s0_bdt_discrim_M500,_ee_s0_bdt_discrim_M550,_ee_s0_bdt_discrim_M600,_ee_s0_bdt_discrim_M650]
+	toreturn += [_ee_s0_bdt_discrim_M750,_ee_s0_bdt_discrim_M800,_ee_s0_bdt_discrim_M900,_ee_s0_bdt_discrim_M1000]
+	toreturn += [_uu_s2_bdt_discrim_M260,_uu_s2_bdt_discrim_M270,_uu_s2_bdt_discrim_M300,_uu_s2_bdt_discrim_M350,_uu_s2_bdt_discrim_M400]
+	toreturn += [_uu_s2_bdt_discrim_M450,_uu_s2_bdt_discrim_M500,_uu_s2_bdt_discrim_M550,_uu_s2_bdt_discrim_M600,_uu_s2_bdt_discrim_M650]
+	toreturn += [_uu_s2_bdt_discrim_M750,_uu_s2_bdt_discrim_M800,_uu_s2_bdt_discrim_M900,_uu_s2_bdt_discrim_M1000]
+	toreturn += [_ee_s2_bdt_discrim_M260,_ee_s2_bdt_discrim_M270,_ee_s2_bdt_discrim_M300,_ee_s2_bdt_discrim_M350,_ee_s2_bdt_discrim_M400]
+	toreturn += [_ee_s2_bdt_discrim_M450,_ee_s2_bdt_discrim_M500,_ee_s2_bdt_discrim_M550,_ee_s2_bdt_discrim_M600,_ee_s2_bdt_discrim_M650]
+	toreturn += [_ee_s2_bdt_discrim_M750,_ee_s2_bdt_discrim_M800,_ee_s2_bdt_discrim_M900,_ee_s2_bdt_discrim_M1000]
+	toreturn += [_uu_s0_bdt_discrim_LowM,_ee_s0_bdt_discrim_LowM,_uu_s2_bdt_discrim_LowM,_ee_s2_bdt_discrim_LowM]
 
-	toreturn_systOnly = [_uu_bdt_discrim_M260,_uu_bdt_discrim_M270,_uu_bdt_discrim_M300,_uu_bdt_discrim_M350,_uu_bdt_discrim_M400]
-	toreturn_systOnly += [_uu_bdt_discrim_M450,_uu_bdt_discrim_M500,_uu_bdt_discrim_M550,_uu_bdt_discrim_M600,_uu_bdt_discrim_M650]
-	toreturn_systOnly += [_uu_bdt_discrim_M750,_uu_bdt_discrim_M800,_uu_bdt_discrim_M900,_uu_bdt_discrim_M1000]
-	toreturn_systOnly += [_ee_bdt_discrim_M260,_ee_bdt_discrim_M270,_ee_bdt_discrim_M300,_ee_bdt_discrim_M350,_ee_bdt_discrim_M400]
-	toreturn_systOnly += [_ee_bdt_discrim_M450,_ee_bdt_discrim_M500,_ee_bdt_discrim_M550,_ee_bdt_discrim_M600,_ee_bdt_discrim_M650]
-	toreturn_systOnly += [_ee_bdt_discrim_M750,_ee_bdt_discrim_M800,_ee_bdt_discrim_M900,_ee_bdt_discrim_M1000]
+	toreturn_systOnly = [_uu_s0_bdt_discrim_M260,_uu_s0_bdt_discrim_M270,_uu_s0_bdt_discrim_M300,_uu_s0_bdt_discrim_M350,_uu_s0_bdt_discrim_M400]
+	toreturn_systOnly += [_uu_s0_bdt_discrim_M450,_uu_s0_bdt_discrim_M500,_uu_s0_bdt_discrim_M550,_uu_s0_bdt_discrim_M600,_uu_s0_bdt_discrim_M650]
+	toreturn_systOnly += [_uu_s0_bdt_discrim_M750,_uu_s0_bdt_discrim_M800,_uu_s0_bdt_discrim_M900,_uu_s0_bdt_discrim_M1000]
+	toreturn_systOnly += [_ee_s0_bdt_discrim_M260,_ee_s0_bdt_discrim_M270,_ee_s0_bdt_discrim_M300,_ee_s0_bdt_discrim_M350,_ee_s0_bdt_discrim_M400]
+	toreturn_systOnly += [_ee_s0_bdt_discrim_M450,_ee_s0_bdt_discrim_M500,_ee_s0_bdt_discrim_M550,_ee_s0_bdt_discrim_M600,_ee_s0_bdt_discrim_M650]
+	toreturn_systOnly += [_ee_s0_bdt_discrim_M750,_ee_s0_bdt_discrim_M800,_ee_s0_bdt_discrim_M900,_ee_s0_bdt_discrim_M1000]
+	toreturn_systOnly += [_uu_s2_bdt_discrim_M260,_uu_s2_bdt_discrim_M270,_uu_s2_bdt_discrim_M300,_uu_s2_bdt_discrim_M350,_uu_s2_bdt_discrim_M400]
+	toreturn_systOnly += [_uu_s2_bdt_discrim_M450,_uu_s2_bdt_discrim_M500,_uu_s2_bdt_discrim_M550,_uu_s2_bdt_discrim_M600,_uu_s2_bdt_discrim_M650]
+	toreturn_systOnly += [_uu_s2_bdt_discrim_M750,_uu_s2_bdt_discrim_M800,_uu_s2_bdt_discrim_M900,_uu_s2_bdt_discrim_M1000]
+	toreturn_systOnly += [_ee_s2_bdt_discrim_M260,_ee_s2_bdt_discrim_M270,_ee_s2_bdt_discrim_M300,_ee_s2_bdt_discrim_M350,_ee_s2_bdt_discrim_M400]
+	toreturn_systOnly += [_ee_s2_bdt_discrim_M450,_ee_s2_bdt_discrim_M500,_ee_s2_bdt_discrim_M550,_ee_s2_bdt_discrim_M600,_ee_s2_bdt_discrim_M650]
+	toreturn_systOnly += [_ee_s2_bdt_discrim_M750,_ee_s2_bdt_discrim_M800,_ee_s2_bdt_discrim_M900,_ee_s2_bdt_discrim_M1000]
+	toreturn_systOnly += [_uu_s0_bdt_discrim_LowM,_ee_s0_bdt_discrim_LowM,_uu_s2_bdt_discrim_LowM,_ee_s2_bdt_discrim_LowM]
 
 	if v=='': return toreturn
 	else: return toreturn_systOnly
