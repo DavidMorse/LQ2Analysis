@@ -20,7 +20,7 @@ if 'cmsneu' in platform.node():
 else:
 	print 'Not running on cmsneu!'
 	#exit()
-	NormalDirectory = '/eos/cms/store/group/phys_higgs/HiggsExo/HH_bbZZ_bbllqq/dmorse/hhTrees/NTupleAnalyzerHH_FullSyst_2018_08_28/SummaryFiles'
+	NormalDirectory = '/eos/cms/store/group/phys_higgs/HiggsExo/HH_bbZZ_bbllqq/dmorse/hhTrees/NTupleAnalyzerHH_FullSyst_2018_09_20/SummaryFiles'
 	QCDDirectory = '/eos/cms/store/group/phys_higgs/HiggsExo/HH_bbZZ_bbllqq/dmorse/hhTrees/NTupleAnalyzerHH_hh_newEleBDTs_QCDNonIsoQuickTest_2018_07_07/SummaryFiles'
 	EMuDirectory = 'emu'
 
@@ -158,11 +158,13 @@ passfilter += '*(passBadMuon*passBadChargedHadron)'
 #passfilter += '*(noBadMuonsFlag*(1-duplicateMuonsFlag))'
 
 # This defines the preselections for the mu-mu, mu-nu, and e-mu samples
-#preselection_Muon_nos = '((Pt_muon1>20)*(Pt_muon2>10)*(Pt_Hjet1>20)*(Pt_Hjet2>20)*(Pt_Zjet1>20)*(Pt_Zjet2>20)*(M_uu>12)*(isMuonEvent))'
-preselection_Muon_nos = '((pass_HLT_Mu17_Mu8)*(Pt_muon1>20)*(Pt_muon2>10)*(Pt_Hjet1>20)*(Pt_Hjet2>20)*(Pt_Zjet1>20)*(Pt_Zjet2>20)*(M_uu>12)*(isMuonEvent)*(1-isElectronEvent))'#*(1-(run_number==276950)*(lumi_number==22)*(event_number==34039924))*(1-(run_number==1)*(lumi_number==447098)*(event_number==71625048)))'
-#preselection_Electron_nos = '((pass_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ)*(Pt_ele1>25)*(Pt_ele2>15)*(Pt_Hjet1>20)*(Pt_Hjet2>20)*(Pt_Zjet1>20)*(Pt_Zjet2>20)*(M_ee>12)*(isElectronEvent))'#*(1-(run_number==276950)*(lumi_number==22)*(event_number==34039924))*(1-(run_number==1)*(lumi_number==447098)*(event_number==71625048)))'
-#removing HLT
-preselection_Electron_nos = '((pass_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ)*(Pt_ele1>25)*(Pt_ele2>15)*(Pt_Hjet1>20)*(Pt_Hjet2>20)*(Pt_Zjet1>20)*(Pt_Zjet2>20)*(M_ee>12)*(isElectronEvent)*(1-isMuonEvent))'#*(1-(run_number==276950)*(lumi_number==22)*(event_number==34039924))*(1-(run_number==1)*(lumi_number==447098)*(event_number==71625048)))'
+preselection_Muon_nos = '((pass_HLT_Mu17_Mu8)*(Pt_muon1>20)*(Pt_muon2>10)*(Pt_Hjet1>20)*(Pt_Hjet2>20)*(Pt_Zjet1>20)*(Pt_Zjet2>20)*(M_uu>12)*(isMuonEvent)*(1-isElectronEvent))'
+## *(1-(run_number==1)*(lumi_number==1764)*(event_number==293919))*(1-(run_number==1)*(lumi_number==109126)*(event_number==125821776))*(1-(run_number==1)*(lumi_number==8709)*(event_number==10040671))*(1-(run_number==1)*(lumi_number==100356)*(event_number==94956608))*(1-(run_number==1)*(lumi_number==418554)*(event_number==67052368))*(1-(run_number==1)*(lumi_number==304909)*(event_number==48846528))*(1-(run_number==1)*(lumi_number==485391)*(event_number==77759520))*(1-(run_number==1)*(lumi_number==444879)*(event_number==71269656))*(1-(run_number==1)*(lumi_number==96384)*(event_number==111130112))*(1-(run_number==276775)*(lumi_number==271)*(event_number==363882336))*(1-(run_number==282800)*(lumi_number==375)*(event_number==714565824))*(1-(run_number==278406)*(lumi_number==1240)*(event_number==-2110167296))*(1-(run_number==275310)*(lumi_number==530)*(event_number==944183168))
+
+preselection_Electron_nos = '((pass_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ)*(Pt_ele1>25)*(Pt_ele2>15)*(Pt_Hjet1>20)*(Pt_Hjet2>20)*(Pt_Zjet1>20)*(Pt_Zjet2>20)*(M_ee>12)*(isElectronEvent)*(1-isMuonEvent))'
+#*(1-(run_number==1)*(lumi_number==1764)*(event_number==293919))*(1-(run_number==1)*(lumi_number==109126)*(event_number==125821776))*(1-(run_number==1)*(lumi_number==8709)*(event_number==10040671))*(1-(run_number==1)*(lumi_number==100356)*(event_number==94956608))*(1-(run_number==1)*(lumi_number==418554)*(event_number==67052368))*(1-(run_number==1)*(lumi_number==304909)*(event_number==48846528))*(1-(run_number==1)*(lumi_number==485391)*(event_number==77759520))*(1-(run_number==1)*(lumi_number==444879)*(event_number==71269656))*(1-(run_number==1)*(lumi_number==96384)*(event_number==111130112))*(1-(run_number==276775)*(lumi_number==271)*(event_number==363882336))*(1-(run_number==282800)*(lumi_number==375)*(event_number==714565824))*(1-(run_number==278406)*(lumi_number==1240)*(event_number==-2110167296))*(1-(run_number==275310)*(lumi_number==530)*(event_number==944183168))
+
+
 #Require at least one loose MVA bTag
 bTagsel1loose = '*(((CMVA_bjet1>-0.5884)+(CMVA_bjet2>-0.5884)+(CMVA_Zjet1>-0.5884)+(CMVA_Zjet2>-0.5884))>0)'
 bTagsel1medium = '*(((CMVA_bjet1>0.4432)+(CMVA_bjet2>0.4432)+(CMVA_Zjet1>0.4432)+(CMVA_Zjet2>0.4432))>0)'
@@ -195,6 +197,7 @@ preselectionmunu += passfilter
 
 #These are the Z and TTbar control regions, hard-coded to avoid mistakes in multiple functions
 dyControlRegion_Muon = '(M_uu>80)*(M_uu<100)'
+#dyControlRegion_Muon = '(M_uu>80)*(M_uu<100)*(((Mbb_H<90)+(Mbb_H>140))>0)' # consider adding Mbb_H ?
 ttControlRegion_Muon = '(M_uu>100)*(Pt_miss>100)'
 dyControlRegion_Electron = '(M_ee>80)*(M_ee<100)'
 ttControlRegion_Electron = '(M_ee>100)*(Pt_miss>100)'
@@ -229,18 +232,31 @@ emu_id_eff_err = 0.0027#v7 JEC
 
 # QCD data-driven scale factor
 useDataDrivenQCD = True
-fbd_Muon     = [1.449, 0.03] # Apr 18, 2018
-#fbd_Electron = [4.432, 0.277] # Feb 2018
-fbd_Electron = [1.079, 0.01] # setting equal to muon channel for now
-# tt, z SF calculated using Data with NEW method (Apr 18, 2018)
-Rz_data_muon  = [1.152, 0.013]
-Rtt_data_muon = [1.016, 0.062]
-Rz_data_electron  = [1.242, 0.008]
-Rtt_data_electron = [0.973, 0.016]
+fbd_Muon     = [1.422, 0.012] # Sept 27, 2018
+fbd_Electron = [1.079, 0.01] # Sept 27, 2018
+# tt, z SF calculated using Data with NEW method (Sept 27, 2018)
+Rz_data_muon  = [1.144, 0.006]
+Rtt_data_muon = [0.908, 0.013]
+Rz_data_electron  = [1.246, 0.008]
+Rtt_data_electron = [0.975, 0.016]
 
 
 analysisChannel = 'muon'
 #analysisChannel = 'electron'
+
+analysisSignal = 'HHres' # Spin0 - need to have 'HH' in the name
+#analysisSignal = 'HHBulkGrav' # Spin2 - need to have 'HH' in the name
+
+recalRttRz = True
+#recalRttRz = False
+
+doindiv = False ## this is to use LowM bdt in the electron channel
+#doindiv = True   ## this is to use individually trained bdt for all cases
+
+use_bdtSp0 = False
+#use_bdtSp0 = True ## this is to use BDTs trained with Spin0 signal for Spin2 limits
+
+
 if (analysisChannel == 'muon'):
  	NormalWeight=NormalWeightMuon
 	preselection_nos=preselection_Muon_nos
@@ -271,6 +287,14 @@ if (analysisChannel == 'electron'):
 	cosThetaStar="cosThetaStarEle"
 	Rz_data=Rz_data_electron
 	Rtt_data=Rtt_data_electron
+
+if (analysisSignal == 'HHres'):
+	x_spin = '0'
+	c_OptHH = 'HH_res'
+if (analysisSignal == 'HHBulkGrav'):
+	x_spin = '2'
+	c_OptHH = 'HH_BulkGrav'
+
 
 # Next are the PDF variations.
 _PDFVariations = []
@@ -316,8 +340,8 @@ pdf_uujj_ZJets = [0.95,0.95,2.11,2.98,5.09,5.8,6.73,7.41,7.41,7.62,7.69,8.11,8.4
 
 # These are the total background uncertainties. They are used just to make some error bands on plots. 
 
-totunc_Muon = [7.6]
-totunc_Electron = [7.6]
+totunc_Muon = [6.91]
+totunc_Electron = [7.15]
 
 
 
@@ -380,7 +404,7 @@ drbinning = [70,0,7]
 phibinning = [26,-3.1416,3.1416]
 phi0binning = [13,0,3.1416]
 dphibinning = [64,0,3.2]
-bdtbinning = [50,-0.7,0.8]
+bdtbinning = [50,-0.8,0.6]
 
 for x in range(40):
 	if ptbinning[-1] < 1000:
@@ -419,11 +443,6 @@ lqbinning = [round(x) for x in lqbinning]
 
 
 def main():
-	global analysisChannel
-	global preselection 
-	global ell
-	global latexEll
-	global cosThetaStar
 
 	#######################################################################################
     ######  The output directories, and the files that define final selection cuts  #######
@@ -437,7 +456,7 @@ def main():
 	version_name = 'Testing_diHiggs_newNtuples_MuCutsMC0p49_'+analysisChannel # scriptflag
 	os.system('mkdir Results_'+version_name) 
 
-	MuonOptCutFile = 'Results_'+version_name+'/OptHH_resCuts_Smoothed_pol2cutoff.txt' # scriptflag
+	MuonOptCutFile = 'Results_'+version_name+'/Opt'+c_OptHH+'Cuts_Smoothed_pol2cutoff.txt' # scriptflag
 	MuNuOptCutFile = 'Results_'+version_name+'/OptLQ_uvjjCuts_Smoothed_pol2cutoff.txt' # scriptflag
 
 
@@ -499,6 +518,11 @@ def main():
 	#################################################################################
     ##############     A FEW STANDARD PLOTTING ROUTINES AND STUDIES   ###############
 	#################################################################################
+	global analysisChannel
+	global preselection
+	global ell
+	global latexEll
+	global cosThetaStar
 
 	# ====================================================================================================================================================== #
 	# These are PDF uncertainty studies.
@@ -681,7 +705,7 @@ def main():
 	# ====================================================================================================================================================== #
 	# This is a basic plotting routine to make Analysis Note style plots with ratio plots. AN Analysis-Note
 	# ====================================================================================================================================================== #
-	if False :
+	if True :
 		# Some modifications to the ST and LQ mass binning
 		bjetbinning = [-1.2,-1.01]
 		for x in range(24):
@@ -737,6 +761,7 @@ def main():
 				print x
 				[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = GetNormalizationScaleFactors( NormalWeight+'*'+preselection, NormalDirectory, dyControlRegion+x[0], '(M_uu>100)'+x[1],0)
 			exit()
+				
 		# Get Scale Factors
 		#[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = GetNormalizationScaleFactors( NormalWeight+'*'+preselection, NormalDirectory, dyControlRegion, ttControlRegion,0)
 		[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = [Rz_data,Rtt_data]
@@ -769,7 +794,7 @@ def main():
 		MakeBasicPlot("Pt_miss","E_{T}^{miss} [GeV] (DY control region)",metzoombinning_uujj_Z,preselection+'*(M_'+ell+ell+'>80)*(M_'+ell+ell+'<100)',NormalWeight,NormalDirectory,'controlzoomZRegion',ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
 		MakeBasicPlot("M_"+ell+ell,"M^{"+latexEll+latexEll+"} [GeV] (TT control region)",bosonzoombinning_uujj_TT,preselection+'*'+ttControlRegion,NormalWeight,NormalDirectory,'controlzoom_TTRegion',ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
 		MakeBasicPlot("Pt_miss","E_{T}^{miss} [GeV] (TT control region)",metzoombinning_uujj_TT,preselection+'*'+ttControlRegion,NormalWeight,NormalDirectory,'controlzoomTTRegion',ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
-		
+
 		#Here are some 2D plots
 		
 		#MakeBasicPlot2D("M_uu","Mjj_Z","M_{uu} [GeV]","M_{(Z)jj} [GeV]",binning2D,binning2D,preselection,NormalWeight,NormalDirectory,'standard',ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
@@ -801,12 +826,13 @@ def main():
 		# putting 'QCDDataDriven' will also turns on the use of data-driven QCD if not already set at default
 		if "muon" in analysisChannel:
 			for lqmass in [260,270,300,350,400,450,500,550,600,650,750,800,900,1000]:
-				MakeBasicPlot("uu_bdt_discrim_M"+str(lqmass),"muon channel BDT output at M"+str(lqmass),bdtbinning,preselection,NormalWeight,NormalDirectory,'standard',ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,lqmass)
+				MakeBasicPlot("uu_s"+x_spin+"_bdt_discrim_M"+str(lqmass),"muon channel Spin"+x_spin+" BDT output at M"+str(lqmass),bdtbinning,preselection,NormalWeight,NormalDirectory,'standard',ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,lqmass)
+			MakeBasicPlot("uu_s"+x_spin+"_bdt_discrim_LowM","muon channel Spin"+x_spin+" BDT output combined M260-300",bdtbinning,preselection,NormalWeight,NormalDirectory,'standard',ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,260)
 		if "ele" in analysisChannel:
 			for lqmass in [260,270,300,350,400,450,500,550,600,650,750,800,900,1000]:
-				MakeBasicPlot("ee_bdt_discrim_M"+str(lqmass),"electron channel BDT output at M"+str(lqmass),bdtbinning,preselection,NormalWeight,NormalDirectory,'standard',ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,lqmass)
-		#MakeBasicPlot("bdt_discrims3_low","BDT output combined M260-350",bdtbinning,preselection,NormalWeight,NormalDirectory,'standard',ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
-		#MakeBasicPlot("bdt_discrims3_high","BDT output combined M400-1000",bdtbinning,preselection,NormalWeight,NormalDirectory,'standard',ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,900)
+				MakeBasicPlot("ee_s"+x_spin+"_bdt_discrim_M"+str(lqmass),"electron channel Spin"+x_spin+" BDT output at M"+str(lqmass),bdtbinning,preselection,NormalWeight,NormalDirectory,'standard',ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,lqmass)
+			MakeBasicPlot("ee_s"+x_spin+"_bdt_discrim_LowM","electron channel Spin"+x_spin+" BDT output combined M260-300",bdtbinning,preselection,NormalWeight,NormalDirectory,'standard',ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,260)
+
 		MakeBasicPlot("cosTheta_hbb_"+ell+ell,"cos(#Theta) (H->bb) "+latexEll+latexEll,costhetastarbinning,preselection,NormalWeight,NormalDirectory,'standard',ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
 		MakeBasicPlot("cosTheta_z"+ell+ell+"_hzz","cos(#Theta) (Z->"+latexEll+latexEll+", H->ZZ)",costhetastarbinning,preselection,NormalWeight,NormalDirectory,'standard',ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
 		MakeBasicPlot(cosThetaStar,"cos(#Theta*) ("+latexEll+")",costhetastarbinning,preselection,NormalWeight,NormalDirectory,'standard',ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
@@ -878,20 +904,20 @@ def main():
 		MakeBasicPlot("Zjet1BsfLoose","Zjet1 Btag SF",[120,0,1.5],preselection,NormalWeight,NormalDirectory,'standard',ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
 		MakeBasicPlot("Zjet2BsfLoose","Zjet2 Btag SF",[120,0,1.5],preselection,NormalWeight,NormalDirectory,'standard',ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
 		MakeBasicPlot("(1-(1-(CMVA_bjet1>-0.5884)*Hjet1BsfLoose)*(1-(CMVA_bjet2>-0.5884)*Hjet2BsfLoose)*(1-(CMVA_Zjet1>-0.5884)*Zjet1BsfLoose)*(1-(CMVA_Zjet2>-0.5884)*Zjet2BsfLoose))","Btag Total SF",[200,0,2],preselection,NormalWeight,NormalDirectory,'standard',ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
-		
-                #if analysisChannel=='electron' : exit()
-		#fixme turning off final selection
-		# Full Selection Plots
+
+		##if analysisChannel=='electron' : exit()
+		## fixme turning off final selection
+		## Full Selection Plots
+		if 'muon' in analysisChannel :
+			MakeBasicPlot("uu_s"+x_spin+"_bdt_discrim_LowM","muon channel Spin"+x_spin+" BDT output combined M260-300",bdtbinning,preselection,NormalWeight,NormalDirectory,'final',ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,MuonOptCutFile,version_name,260)
+		if 'ele' in analysisChannel :
+			MakeBasicPlot("ee_s"+x_spin+"_bdt_discrim_LowM","electron channel Spin"+x_spin+" BDT output combined M260-300",bdtbinning,preselection,NormalWeight,NormalDirectory,'final',ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,MuonOptCutFile,version_name,260)
 		for lqmass in [260,270,300,350,400,450,500,550,600,650,750,800,900,1000]:
 		#for lqmass in [300,900]: # AH
 			if 'muon' in analysisChannel : 
-				MakeBasicPlot("uu_bdt_discrim_M"+str(lqmass),"muon channel BDT output at M"+str(lqmass),bdtbinning,preselection,NormalWeight,NormalDirectory,'final',ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,MuonOptCutFile,version_name,lqmass)
+				MakeBasicPlot("uu_s"+x_spin+"_bdt_discrim_M"+str(lqmass),"muon channel Spin"+x_spin+" BDT output at M"+str(lqmass),bdtbinning,preselection,NormalWeight,NormalDirectory,'final',ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,MuonOptCutFile,version_name,lqmass)
 			if 'ele' in analysisChannel : 
-				MakeBasicPlot("ee_bdt_discrim_M"+str(lqmass),"electron channel BDT output at M"+str(lqmass),bdtbinning,preselection,NormalWeight,NormalDirectory,'final',ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,MuonOptCutFile,version_name,lqmass)
-			#MakeBasicPlot("bdt_discrims2_M300","BDT output (no 6-object mass) at M300",bdtbinning,preselection,NormalWeight,NormalDirectory,'final',ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,MuonOptCutFile,version_name,lqmass)
-			#MakeBasicPlot("bdt_discrims2_M550","BDT output (no 6-object mass) at M550",bdtbinning,preselection,NormalWeight,NormalDirectory,'final',ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,MuonOptCutFile,version_name,lqmass)
-			#MakeBasicPlot("bdt_discrims3_low","BDT output combined M260-350",bdtbinning,preselection,NormalWeight,NormalDirectory,'final',ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,MuonOptCutFile,version_name,lqmass)
-			#MakeBasicPlot("bdt_discrims3_high","BDT output combined M400-1000",bdtbinning,preselection,NormalWeight,NormalDirectory,'final',ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,MuonOptCutFile,version_name,lqmass)
+				MakeBasicPlot("ee_s"+x_spin+"_bdt_discrim_M"+str(lqmass),"electron channel Spin"+x_spin+" BDT output at M"+str(lqmass),bdtbinning,preselection,NormalWeight,NormalDirectory,'final',ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,MuonOptCutFile,version_name,lqmass)
 			MakeBasicPlot("cosTheta_hbb_"+ell+ell,"cos(#Theta) (H->bb) "+latexEll+latexEll,costhetastarbinning,preselection,NormalWeight,NormalDirectory,'final',ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,MuonOptCutFile,version_name,lqmass)
 			MakeBasicPlot("cosTheta_z"+ell+ell+"_hzz","cos(#Theta) (Z->"+latexEll+latexEll+", H->ZZ)",costhetastarbinning,preselection,NormalWeight,NormalDirectory,'final',ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,MuonOptCutFile,version_name,lqmass)
 			MakeBasicPlot(cosThetaStar,"cos(#Theta*) ("+latexEll+")",costhetastarbinning,preselection,NormalWeight,NormalDirectory,'final',ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,MuonOptCutFile,version_name,lqmass)
@@ -963,7 +989,7 @@ def main():
 			MakeBasicPlot("Zjet1BsfLoose","Zjet1 Btag SF",[120,0,1.5],preselection,NormalWeight,NormalDirectory,'final',ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,MuonOptCutFile,version_name,lqmass)
 			MakeBasicPlot("Zjet2BsfLoose","Zjet2 Btag SF",[120,0,1.5],preselection,NormalWeight,NormalDirectory,'final',ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,MuonOptCutFile,version_name,lqmass)
 			MakeBasicPlot("(1-(1-(CMVA_bjet1>-0.5884)*Hjet1BsfLoose)*(1-(CMVA_bjet2>-0.5884)*Hjet2BsfLoose)*(1-(CMVA_Zjet1>-0.5884)*Zjet1BsfLoose)*(1-(CMVA_Zjet2>-0.5884)*Zjet2BsfLoose))","Btag Total SF",[200,0,2],preselection,NormalWeight,NormalDirectory,'final',ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,MuonOptCutFile,version_name,lqmass)
-			print '------- Done with final selection plots'
+		print '------- Done with final selection plots'
 
 		#fixme todo removing this, its not helpful at the moment
 		#os.system('echo Combining Figures; convert -density 800 Results_'+version_name+'/*png Results_'+version_name+'/AllPlots.pdf')
@@ -1201,7 +1227,7 @@ def main():
 	# This is for  spurious events
 	# ====================================================================================================================================================== #
 
-	if True:
+	if False:
 		tmpfile = TFile("tmp.root","RECREATE")
 		t_ = t_ZJets.CopyTree(preselection)
 		NN = t_.GetEntries()
@@ -2686,28 +2712,33 @@ def QuickSysTableLine(treestruc,selection,inp_weight,scalefacs,fsys,chan,rglobal
 #	print 'old_d is ' , old_d
 
 	# AH:-----------------------------
-	#plotmass = 300
-	channel = 'HHres'
-#	recovariableFileName = ''
-#	if int(plotmass) > 400:
-#		recovariableFileName = 'bdt_discrim_M550'
-#	elif int(plotmass) <= 400:
-#		recovariableFileName = 'bdt_discrim_M300'
-#	recovariableFileName = ''
-#	if int(plotmass) > 400:
-#		recovariableFileName = 'bdt_discrims3_high'
-#	elif int(plotmass) <= 400:
-#		recovariableFileName = 'bdt_discrims3_low'
+	channel = analysisSignal
+	if (not doindiv) and (analysisChannel == 'electron') and (int(plotmass) <= 300):
+		if use_bdtSp0:
+			recovariableFileName = ell + ell + '_s' + '0' + '_bdt_discrim_LowM'
+		else:
+			recovariableFileName = ell + ell + '_s' + x_spin + '_bdt_discrim_LowM'
+	else:
+		if use_bdtSp0:
+			recovariableFileName = ell + ell + '_s' + '0' + '_bdt_discrim_M' + plotmass # uu_s0_bdt_discrim_Mxxx
+		else:
+			recovariableFileName = ell + ell + '_s' + x_spin + '_bdt_discrim_M' + plotmass # uu_s0_bdt_discrim_Mxxx
 
-	recovariableFileName = 'bdt_discrim_M' + plotmass
 	#_nonWeightVary = ['JESup','JESdown','MESup','MESdown','JERup','JERdown','MER'] # AH: this is just a holder to specify the variations that need the corresponding branches
-	_nonWeightVary = ['JESAbsoluteMPFBiasUp','JESAbsoluteMPFBiasDown','JESAbsoluteScaleUp','JESAbsoluteScaleDown','JESAbsoluteStatUp','JESAbsoluteStatDown','JESFlavorQCDUp','JESFlavorQCDDown','JESFragmentationUp','JESFragmentationDown','JESPileUpDataMCUp','JESPileUpDataMCDown','JESPileUpPtBBUp','JESPileUpPtBBDown','JESPileUpPtEC1Up','JESPileUpPtEC1Down','JESPileUpPtEC2Up','JESPileUpPtEC2Down','JESPileUpPtHFUp','JESPileUpPtHFDown','JESPileUpPtRefUp','JESPileUpPtRefDown','JESRelativeBalUp','JESRelativeBalDown','JESRelativeFSRUp','JESRelativeFSRDown','JESRelativeJEREC1Up','JESRelativeJEREC1Down','JESRelativeJEREC2Up','JESRelativeJEREC2Down','JESRelativeJERHFUp','JESRelativeJERHFDown','JESRelativePtBBUp','JESRelativePtBBDown','JESRelativePtEC1Up','JESRelativePtEC1Down','JESRelativePtEC2Up','JESRelativePtEC2Down','JESRelativePtHFUp','JESRelativePtHFDown','JESRelativeStatECUp','JESRelativeStatECDown','JESRelativeStatFSRUp','JESRelativeStatFSRDown','JESRelativeStatHFUp','JESRelativeStatHFDown','JESSinglePionECALUp','JESSinglePionECALDown','JESSinglePionHCALUp','JESSinglePionHCALDown','JESTimePtEtaUp','JESTimePtEtaDown','MESup','MESdown','JERup','JERdown','MER'] # AH: this is just a holder to specify the variations that need the corresponding branches
+	_nonWeightVary = ['JESAbsoluteMPFBiasUp','JESAbsoluteMPFBiasDown','JESAbsoluteScaleUp','JESAbsoluteScaleDown','JESAbsoluteStatUp','JESAbsoluteStatDown','JESFlavorQCDUp','JESFlavorQCDDown','JESFragmentationUp','JESFragmentationDown','JESPileUpDataMCUp','JESPileUpDataMCDown','JESPileUpPtBBUp','JESPileUpPtBBDown','JESPileUpPtEC1Up','JESPileUpPtEC1Down','JESPileUpPtEC2Up','JESPileUpPtEC2Down','JESPileUpPtHFUp','JESPileUpPtHFDown','JESPileUpPtRefUp','JESPileUpPtRefDown','JESRelativeBalUp','JESRelativeBalDown','JESRelativeFSRUp','JESRelativeFSRDown','JESRelativeJEREC1Up','JESRelativeJEREC1Down','JESRelativeJEREC2Up','JESRelativeJEREC2Down','JESRelativeJERHFUp','JESRelativeJERHFDown','JESRelativePtBBUp','JESRelativePtBBDown','JESRelativePtEC1Up','JESRelativePtEC1Down','JESRelativePtEC2Up','JESRelativePtEC2Down','JESRelativePtHFUp','JESRelativePtHFDown','JESRelativeStatECUp','JESRelativeStatECDown','JESRelativeStatFSRUp','JESRelativeStatFSRDown','JESRelativeStatHFUp','JESRelativeStatHFDown','JESSinglePionECALUp','JESSinglePionECALDown','JESSinglePionHCALUp','JESSinglePionHCALDown','JESTimePtEtaUp','JESTimePtEtaDown','JERup','JERdown','JESup','JESdown'] # AH: this is just a holder to specify the variations that need the corresponding branches
 	recovariable = recovariableFileName
 	for vary in _nonWeightVary:
 		if sysmethod == vary:
 			recovariable += sysmethod
+			## AH: Here, for final selection, I have to remove the cuts on jet pt and instead I will put the cut on BDT.
+			selection = selection.replace('*(Pt_Hjet1>20)','')
+			selection = selection.replace('*(Pt_Hjet2>20)','')
+			selection = selection.replace('*(Pt_Zjet1>20)','')
+			selection = selection.replace('*(Pt_Zjet2>20)','')
+			selection += '*(' + recovariable + '>-100)'
+
 	print '\n AH: I am in QuickSysTableLine(): plotmass is ', plotmass, ' discriminant is ', recovariable, 'recovariableFileName ', recovariableFileName,'\n'
-	presentationbinning = [100,-0.7,0.7]
+	presentationbinning = [500,-0.8,0.6]
 	DataRecoStyle=[0,20,1.5,1,1]
 	Label=["tmp","Events / bin"]
 	
@@ -2731,13 +2762,17 @@ def QuickSysTableLine(treestruc,selection,inp_weight,scalefacs,fsys,chan,rglobal
 	print 'Doing ttbar:'
 	tt_sel_weight = selec_new+'*('+str(scalefacs[1][0])+')*'+weight_new
 	#print '\n AH: I am in QuickSysTableLine(): tt_sel_weight is ', tt_sel_weight, '\n'
+	stop_weight_new = weight_new.replace(str(sysmethod+'/factor_nnpdf_1'),'1')
+	print '\n AH: I am in QuickSysTableLine(): stop_weight_new is ', stop_weight_new, '\n'
+	
 	hs_rec_TTBar=CreateHisto('hs_rec_TTBar','t#bar{t}',_btrees[0],recovariable,presentationbinning,selec_new+'*('+str(scalefacs[1][0]*rglobalb)+')*'+weight_new,DataRecoStyle,Label)
 	print 'Doing ZJets:'
 	hs_rec_ZJets=CreateHisto('hs_rec_ZJets','Z+Jets',_btrees[1],recovariable,presentationbinning,selec_new+'*('+str(scalefacs[1][1]*rglobalb)+')*'+weight_new,DataRecoStyle,Label)
 	print 'Doing WJets:'
 	hs_rec_WJets=CreateHisto('hs_rec_WJets','W+Jets',_btrees[2],recovariable,presentationbinning,selec_new+'*('+str(scalefacs[1][2]*rglobalb)+')*'+weight_new,DataRecoStyle,Label)
 	print 'Doing SingleTop:'
-	hs_rec_SingleTop=CreateHisto('hs_rec_SingleTop','SingleTop',_btrees[3],recovariable,presentationbinning,selec_new+'*'+weight_new,DataRecoStyle,Label) ## AH: fixme : add rglobalb
+	hs_rec_SingleTop=CreateHisto('hs_rec_SingleTop','SingleTop',_btrees[3],recovariable,presentationbinning,selec_new+'*'+stop_weight_new,DataRecoStyle,Label) ## AH: fixme : add rglobalb
+	print '   Finish SingleTop: ', hs_rec_SingleTop.Integral(), hs_rec_SingleTop.GetEntries()
 	print 'Doing DiBoson:'
 	hs_rec_DiBoson=CreateHisto('hs_rec_DiBoson','DiBoson',_btrees[4],recovariable,presentationbinning,selec_new+'*'+weight_new,DataRecoStyle,Label)
 	print 'Doing SMHiggs:'
@@ -2756,7 +2791,7 @@ def QuickSysTableLine(treestruc,selection,inp_weight,scalefacs,fsys,chan,rglobal
 		print '   Doing :'
 		hs_ss_rec_WJets=CreateHisto('hs_ss_rec_WJets','W+Jets' ,_btrees[2],recovariable,presentationbinning,qcd_sel+'*'+weight_new+'*('+str(scalefacs[1][2]*rglobalb)+')',DataRecoStyle,Label)
 		print '   Doing :'
-		hs_ss_rec_SingleTop=CreateHisto('hs_ss_rec_STop','STop',_btrees[3],recovariable,presentationbinning,qcd_sel+'*'+weight_new                      ,DataRecoStyle,Label)
+		hs_ss_rec_SingleTop=CreateHisto('hs_ss_rec_STop','STop',_btrees[3],recovariable,presentationbinning,qcd_sel+'*'+stop_weight_new                      ,DataRecoStyle,Label)
 		print '   Doing :'
 		hs_ss_rec_DiBoson=CreateHisto('hs_ss_rec_VV','VV'      ,_btrees[4],recovariable,presentationbinning,qcd_sel+'*'+weight_new                      ,DataRecoStyle,Label)
 		print '   Doing last:'
@@ -2908,24 +2943,46 @@ def QuickSysTableLineTTDD(treestruc,selections,scalefacs,fsys,chan,rglobals,rglo
 
 
 def ModSelection(selection,sysmethod,channel_log):
+	
+	##----- temporary fix due to missing syst variation branches in the cut variables
+	if 'Pt_Hjet1' in selection:
+		selection += '*('+ell+ell+'_s'+x_spin+'_bdt_discrim_M260>-100)'
+	selection = selection.replace('*(Pt_Hjet1>20)','')
+	selection = selection.replace('*(Pt_Hjet2>20)','')
+	selection = selection.replace('*(Pt_Zjet1>20)','')
+	selection = selection.replace('*(Pt_Zjet2>20)','')
+
 	#print '\n AH: I am in ModSelection(): selection is ', selection, '\n'
 	# variables used in final selections have to be present here
-	_kinematicvariables = ['Pt_muon1','Pt_muon2','Pt_ele1','Pt_ele2','Pt_jet1','Pt_jet2','Pt_miss']
-	_kinematicvariables += ['Eta_muon1','Eta_muon2','Eta_ele1','Eta_ele2','Eta_jet1','Eta_jet2','Eta_miss']
-	_kinematicvariables += ['Phi_muon1','Phi_muon2','Phi_ele1','Phi_ele2','Phi_jet1','Phi_jet2','Phi_miss']
-	_kinematicvariables += ['St_uujj','St_uvjj']
-	_kinematicvariables += ['St_eejj','St_evjj']
-	_kinematicvariables += ['M_uujj1','M_uujj2','M_uujjavg','MT_uvjj1','MT_uvjj2','M_uvjj','MT_uvjj']
-	_kinematicvariables += ['M_uu','MT_uv']
-	_kinematicvariables += ['DR_muon1muon2','DPhi_muon1met','DPhi_jet1met']
-	# _kinematicvariables += ['M_eejj1','M_eejj2','MT_evjj1','MT_evjj2','M_evjj','MT_evjj']
-	# _kinematicvariables += ['JetCount','MuonCount','ElectronCount','GenJetCount']
-	_kinematicvariables += ['Pt_Hjet1','Pt_Hjet2','Pt_Zjet1','Pt_Zjet2','CISV_bjet1','CISV_bjet2','CMVA_bjet1','CMVA_bjet2']
-	_kinematicvariables += ['CMVA_Zjet1','CMVA_Zjet2']
+	_kinematicvariables = []
+#	_kinematicvariables = ['Pt_muon1','Pt_muon2','Pt_ele1','Pt_ele2','Pt_miss']
+#	_kinematicvariables += ['Eta_muon1','Eta_muon2','Eta_ele1','Eta_ele2']
+#	_kinematicvariables += ['M_uu','M_ee']
+#	_kinematicvariables += ['Pt_Hjet1','Pt_Hjet2','Pt_Zjet1','Pt_Zjet2']
+#	_kinematicvariables += ['CMVA_bjet1','CMVA_bjet2','CMVA_Zjet1','CMVA_Zjet2']
+	_kinematicvariables += ['uu_s0_bdt_discrim_M260','uu_s0_bdt_discrim_M270','uu_s0_bdt_discrim_M300','uu_s0_bdt_discrim_M350','uu_s0_bdt_discrim_M400']
+	_kinematicvariables += ['uu_s0_bdt_discrim_M450','uu_s0_bdt_discrim_M500','uu_s0_bdt_discrim_M550','uu_s0_bdt_discrim_M600','uu_s0_bdt_discrim_M650']
+	_kinematicvariables += ['uu_s0_bdt_discrim_M750','uu_s0_bdt_discrim_M800','uu_s0_bdt_discrim_M900','uu_s0_bdt_discrim_M1000']
+
+	_kinematicvariables += ['ee_s0_bdt_discrim_M260','ee_s0_bdt_discrim_M270','ee_s0_bdt_discrim_M300','ee_s0_bdt_discrim_M350','ee_s0_bdt_discrim_M400']
+	_kinematicvariables += ['ee_s0_bdt_discrim_M450','ee_s0_bdt_discrim_M500','ee_s0_bdt_discrim_M550','ee_s0_bdt_discrim_M600','ee_s0_bdt_discrim_M650']
+	_kinematicvariables += ['ee_s0_bdt_discrim_M750','ee_s0_bdt_discrim_M800','ee_s0_bdt_discrim_M900','ee_s0_bdt_discrim_M1000']
+
+	_kinematicvariables += ['uu_s0_bdt_discrim_LowM','ee_s0_bdt_discrim_LowM','uu_s2_bdt_discrim_LowM','ee_s2_bdt_discrim_LowM']
+
+	_kinematicvariables += ['uu_s2_bdt_discrim_M260','uu_s2_bdt_discrim_M270','uu_s2_bdt_discrim_M300','uu_s2_bdt_discrim_M350','uu_s2_bdt_discrim_M400']
+	_kinematicvariables += ['uu_s2_bdt_discrim_M450','uu_s2_bdt_discrim_M500','uu_s2_bdt_discrim_M550','uu_s2_bdt_discrim_M600','uu_s2_bdt_discrim_M650']
+	_kinematicvariables += ['uu_s2_bdt_discrim_M750','uu_s2_bdt_discrim_M800','uu_s2_bdt_discrim_M900','uu_s2_bdt_discrim_M1000']
+
+	_kinematicvariables += ['ee_s2_bdt_discrim_M260','ee_s2_bdt_discrim_M270','ee_s2_bdt_discrim_M300','ee_s2_bdt_discrim_M350','ee_s2_bdt_discrim_M400']
+	_kinematicvariables += ['ee_s2_bdt_discrim_M450','ee_s2_bdt_discrim_M500','ee_s2_bdt_discrim_M550','ee_s2_bdt_discrim_M600','ee_s2_bdt_discrim_M650']
+	_kinematicvariables += ['ee_s2_bdt_discrim_M750','ee_s2_bdt_discrim_M800','ee_s2_bdt_discrim_M900','ee_s2_bdt_discrim_M1000']
+
+
 
 	_weights = ['weight_nopu','weight_central', 'weight_pu_up', 'weight_pu_down'] # AH: this is not used, can be commented out?
 	#_variations = ['','JESup','JESdown','MESup','MESdown','JERup','JERdown','MER'] # AH: this is just a holder to specify the variations that need the corresponding branches
-	_variations = ['','JESAbsoluteMPFBiasUp','JESAbsoluteMPFBiasDown','JESAbsoluteScaleUp','JESAbsoluteScaleDown','JESAbsoluteStatUp','JESAbsoluteStatDown','JESFlavorQCDUp','JESFlavorQCDDown','JESFragmentationUp','JESFragmentationDown','JESPileUpDataMCUp','JESPileUpDataMCDown','JESPileUpPtBBUp','JESPileUpPtBBDown','JESPileUpPtEC1Up','JESPileUpPtEC1Down','JESPileUpPtEC2Up','JESPileUpPtEC2Down','JESPileUpPtHFUp','JESPileUpPtHFDown','JESPileUpPtRefUp','JESPileUpPtRefDown','JESRelativeBalUp','JESRelativeBalDown','JESRelativeFSRUp','JESRelativeFSRDown','JESRelativeJEREC1Up','JESRelativeJEREC1Down','JESRelativeJEREC2Up','JESRelativeJEREC2Down','JESRelativeJERHFUp','JESRelativeJERHFDown','JESRelativePtBBUp','JESRelativePtBBDown','JESRelativePtEC1Up','JESRelativePtEC1Down','JESRelativePtEC2Up','JESRelativePtEC2Down','JESRelativePtHFUp','JESRelativePtHFDown','JESRelativeStatECUp','JESRelativeStatECDown','JESRelativeStatFSRUp','JESRelativeStatFSRDown','JESRelativeStatHFUp','JESRelativeStatHFDown','JESSinglePionECALUp','JESSinglePionECALDown','JESSinglePionHCALUp','JESSinglePionHCALDown','JESTimePtEtaUp','JESTimePtEtaDown','MESup','MESdown','JERup','JERdown','MER'] # AH: this is just a holder to specify the variations that need the corresponding branches
+	_variations = ['','JESAbsoluteMPFBiasUp','JESAbsoluteMPFBiasDown','JESAbsoluteScaleUp','JESAbsoluteScaleDown','JESAbsoluteStatUp','JESAbsoluteStatDown','JESFlavorQCDUp','JESFlavorQCDDown','JESFragmentationUp','JESFragmentationDown','JESPileUpDataMCUp','JESPileUpDataMCDown','JESPileUpPtBBUp','JESPileUpPtBBDown','JESPileUpPtEC1Up','JESPileUpPtEC1Down','JESPileUpPtEC2Up','JESPileUpPtEC2Down','JESPileUpPtHFUp','JESPileUpPtHFDown','JESPileUpPtRefUp','JESPileUpPtRefDown','JESRelativeBalUp','JESRelativeBalDown','JESRelativeFSRUp','JESRelativeFSRDown','JESRelativeJEREC1Up','JESRelativeJEREC1Down','JESRelativeJEREC2Up','JESRelativeJEREC2Down','JESRelativeJERHFUp','JESRelativeJERHFDown','JESRelativePtBBUp','JESRelativePtBBDown','JESRelativePtEC1Up','JESRelativePtEC1Down','JESRelativePtEC2Up','JESRelativePtEC2Down','JESRelativePtHFUp','JESRelativePtHFDown','JESRelativeStatECUp','JESRelativeStatECDown','JESRelativeStatFSRUp','JESRelativeStatFSRDown','JESRelativeStatHFUp','JESRelativeStatHFDown','JESSinglePionECALUp','JESSinglePionECALDown','JESSinglePionHCALUp','JESSinglePionHCALDown','JESTimePtEtaUp','JESTimePtEtaDown','JESup','JESdown','MESup','MESdown','JERup','JERdown','MER'] # AH: this is just a holder to specify the variations that need the corresponding branches
 	selsplit = []
 	selchars = ''
 	alphabet = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_'
@@ -2949,8 +3006,6 @@ def ModSelection(selection,sysmethod,channel_log):
 	if outsel != '':
 		selection=outsel
 
-
-
 	if 'weight' in selection:
 
 		if sysmethod == 'LUMIup':
@@ -2959,85 +3014,83 @@ def ModSelection(selection,sysmethod,channel_log):
 			selection = '(0.975)*'+selection
 
 		if sysmethod == 'MUONIDISOup':
-			if 'uujj' in channel_log or 'HH' in channel_log:
-				selection = '(1.04)*'+selection
-			if 'uvjj' in channel_log: 
-				selection = '(1.02)*'+selection
-
+			selection = '(1.04)*'+selection
 		if sysmethod == 'MUONIDISOdown':
-			if 'uujj' in channel_log or 'HH' in channel_log:
-				selection = '(0.96)*'+selection
-			if 'uvjj' in channel_log: 
-				selection = '(0.98)*'+selection
+			selection = '(0.96)*'+selection
 
 		if sysmethod == 'MUONHLTup':
-			if 'uujj' in channel_log or 'HH' in channel_log:
-				selection = '(1.01)*'+selection
-			if 'uvjj' in channel_log: 
-				selection = '(1.015)*'+selection
-
+			#selection = '(1.01)*'+selection
+			selection = '(1.02)*'+selection # test with 2%
 		if sysmethod == 'MUONHLTdown':
-			if 'uujj' in channel_log or 'HH' in channel_log:
-				selection = '(0.99)*'+selection
-			if 'uvjj' in channel_log: 
-				selection = '(0.985)*'+selection
+			#selection = '(0.99)*'+selection
+			selection = '(0.98)*'+selection # test with 2%
 
 		if sysmethod == 'PUup':
 			selection = selection.replace('weight_central','weight_pu_up')
 		if sysmethod == 'PUdown':
 			selection = selection.replace('weight_central','weight_pu_down')
 
-		if sysmethod == 'HIPup ':#Per-muon uncertainty: 0.5% (pT < 300 GeV), 1% (pT > 300 GeV)
-			if 'uujj' in channel_log or 'HH' in channel_log:
-				selection = '((1.005*(Pt_muon1<300)+1.01*(Pt_muon1>300))*(1.005*(Pt_muon2<300)+1.01*(Pt_muon2>300)))*'+selection
-			if 'uvjj' in channel_log: 
-				selection = '(1.005*(Pt_muon1<300)+1.01*(Pt_muon1>300))*'+selection
+		if sysmethod == 'HIPup':#Per-muon uncertainty: 0.5% (pT < 300 GeV), 1% (pT > 300 GeV)
+			selection = '((1.005*(Pt_muon1<300)+1.01*(Pt_muon1>300))*(1.005*(Pt_muon2<300)+1.01*(Pt_muon2>300)))*'+selection
 		if sysmethod == 'HIPdown':
-			if 'uujj' in channel_log or 'HH' in channel_log:
-				selection = '((0.995*(Pt_muon1<300)+0.99*(Pt_muon1>300))*(0.995*(Pt_muon2<300)+0.99*(Pt_muon2>300)))*'+selection
-			if 'uvjj' in channel_log: 
-				selection = '(0.995*(Pt_muon1<300)+0.99*(Pt_muon1>300))*'+selection
+			selection = '((0.995*(Pt_muon1<300)+0.99*(Pt_muon1>300))*(0.995*(Pt_muon2<300)+0.99*(Pt_muon2>300)))*'+selection
+
 		if sysmethod == 'BTAGup':
-			if 'uujj' in channel_log or 'HH' in channel_log:
-				selection = selection.replace(bTagFinalSF,bTagFinalSFup)
+			selection = selection.replace(bTagFinalSF,bTagFinalSFup)
 		if sysmethod == 'BTAGdown':
-			if 'uujj' in channel_log or 'HH' in channel_log:
-				selection = selection.replace(bTagFinalSF,bTagFinalSFdown)
+			selection = selection.replace(bTagFinalSF,bTagFinalSFdown)
+
+		if sysmethod == 'ELEHLTup':
+			selection = selection.replace("ele1hltSF","ele1hltSFUp").replace("ele2hltSF","ele2hltSFUp")
+		if sysmethod == 'ELEHLTdown':
+			selection = selection.replace("ele1hltSF","ele1hltSFDown").replace("ele2hltSF","ele2hltSFDown")
+
+		if sysmethod == 'ELEIDISOup':
+			selection = selection.replace("ele1IDandIsoSF","ele1IDandIsoSFup").replace("ele2IDandIsoSF","ele2IDandIsoSFup")
+		if sysmethod == 'ELEIDISOdown':
+			selection = selection.replace("ele1IDandIsoSF","ele1IDandIsoSFdown").replace("ele2IDandIsoSF","ele2IDandIsoSFdown")
 
 		if sysmethod == 'QCDscaleR1F2':
-			if 'uujj' in channel_log or 'HH' in channel_log:
-				selection = selection+'*(scaleWeight_R1_F2/scaleWeight_R1_F1)'
-
+			selection = selection+'*(scaleWeight_R1_F2/scaleWeight_R1_F1)'
 		if sysmethod == 'QCDscaleR2F1':
-			if 'uujj' in channel_log or 'HH' in channel_log:
-				selection = selection+'*(scaleWeight_R2_F1/scaleWeight_R1_F1)'
-
+			selection = selection+'*(scaleWeight_R2_F1/scaleWeight_R1_F1)'
 		if sysmethod == 'QCDscaleR2F2':
-			if 'uujj' in channel_log or 'HH' in channel_log:
-				selection = selection+'*(scaleWeight_Up/scaleWeight_R1_F1)'
-
+			selection = selection+'*(scaleWeight_Up/scaleWeight_R1_F1)'
 		if sysmethod == 'QCDscaleR1F0p5':
-			if 'uujj' in channel_log or 'HH' in channel_log:
-				selection = selection+'*(scaleWeight_R1_F0p5/scaleWeight_R1_F1)'
-
+			selection = selection+'*(scaleWeight_R1_F0p5/scaleWeight_R1_F1)'
 		if sysmethod == 'QCDscaleR0p5F1':
-			if 'uujj' in channel_log or 'HH' in channel_log:
-				selection = selection+'*(scaleWeight_R0p5_F1/scaleWeight_R1_F1)'
-
+			selection = selection+'*(scaleWeight_R0p5_F1/scaleWeight_R1_F1)'
 		if sysmethod == 'QCDscaleR0p5F0p5':
-			if 'uujj' in channel_log or 'HH' in channel_log:
-				selection = selection+'*(scaleWeight_R0p5_F0p5/scaleWeight_R1_F1)'
+			selection = selection+'*(scaleWeight_R0p5_F0p5/scaleWeight_R1_F1)'
 
 		for v in _PDFVariations:
 			if sysmethod == v:
-				if 'uujj' in channel_log or 'HH' in channel_log:
-					selection = selection+'*(' + v + '/factor_nnpdf_1)'
-					#print 'doing ', v, ' selection is: ', selection
+				selection = selection+'*(' + v + '/factor_nnpdf_1)'
+				#print 'doing ', v, ' selection is: ', selection
+
+		### If a syst needs to be treated differently in each channel, use the following pattern
+		### channel_log is used to differentiate channels
+		##if sysmethod == 'MUONIDISOdownTest':
+		##	if ell+ell+'jj' in channel_log or 'HH' in channel_log:
+		##		selection = '(0.96)*'+selection
+		##	if 'uvjj' in channel_log:
+		##		selection = '(0.98)*'+selection
 
 	return selection
 
 
 def SysTable(optimlog, PreSelection_uujj, selection_uujj,selection_uvjj,NormalDirectory, NormalWeight, weight,sysmethod):
+	if analysisChannel=='muon' :
+		t_data  = t_DoubleMuData
+		tn_data = tn_DoubleMuData
+		t_QCD   = t_QCDMu
+		tn_QCD  = tn_QCDMu
+	if analysisChannel=='electron' :
+		t_data  = t_DoubleEleData
+		tn_data = tn_DoubleEleData
+		t_QCD   = t_QCDEle
+		tn_QCD  = tn_QCDEle
+
 	print '\n AH: I am in SysTable(): selection_uujj is ', selection_uujj, '\n'
 	print '\n AH: I am in SysTable(): weight is ', weight, '\n'
 	#AH:selection_uujj = selection_uujj+'*'+weight
@@ -3047,12 +3100,17 @@ def SysTable(optimlog, PreSelection_uujj, selection_uujj,selection_uvjj,NormalDi
 	weight            = ModSelection(weight,sysmethod,optimlog)
 	selection_uujj    = ModSelection(selection_uujj,sysmethod,optimlog)
 	selection_uvjj = ModSelection(selection_uvjj,sysmethod,optimlog)
-	print '\n AH: I am in SysTable(): after ModSelection, selection_uujj is ', selection_uujj, '\n'
-	print '\n AH: I am in SysTable(): after ModSelection, weight is ', weight, '\n'
+	print '\n AH: I am in SysTable(): after ModSelection, PreSelection is ', PreSelection_uujj, '\n'
+	print '\n AH: I am in SysTable(): after ModSelection, NormalWeight is ', NormalWeight, '\n'
+	print '\n AH: I am in SysTable(): after ModSelection, FinalSelection is ', selection_uujj, '\n'
+	print '\n AH: I am in SysTable(): after ModSelection, FinalWeight is ', weight, '\n'
 	
-	[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = GetNormalizationScaleFactors( PreSelection_uujj+'*'+NormalWeight, NormalDirectory, dyControlRegion, ttControlRegion,0)
-	#[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = [Rz_data, Rtt_data]
-	# AH: To speed things up when debugging
+	if recalRttRz:
+		[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = GetNormalizationScaleFactors( PreSelection_uujj+'*'+NormalWeight, NormalDirectory, dyControlRegion, ttControlRegion,0)
+	else:
+		print ' \n Taking Rtt Rz from hard-coded values \n'
+		[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = [Rz_data, Rtt_data] ## AH: To speed things up when debugging
+
 	
 	#[[Rw_uvjj,Rw_uvjj_err],[Rtt_uvjj,Rtt_uvjj_err]] = GetMuNuScaleFactors( selection_uvjj, NormalDirectory, '(MT_uv>70)*(MT_uv<110)*(JetCount<3.5)', '(MT_uv>70)*(MT_uv<110)*(JetCount>3.5)')
 	# AH: I set these factors to 1
@@ -3065,7 +3123,7 @@ def SysTable(optimlog, PreSelection_uujj, selection_uujj,selection_uvjj,NormalDi
 	print '\n AH: I am in SysTable(): sysmethod is ', sysmethod, '\n'
 	print sysmethod+' & ' + Rz_uujj_print+' & '+Rtt_uujj_print+' & '+Rw_uvjj_print+' & '+Rtt_uvjj_print+' \\\\'
 
-	if 'uujj' in optimlog or 'HH' in optimlog: # AH:
+	if ell+ell+'jj' in optimlog or 'HH' in optimlog: # AH:
 		[rz,rw,rt] = [Rz_uujj,Rw_uvjj,Rtt_uujj]
 		[_e_rz,_e_rw,_e_rt] = [Rz_uujj_err,Rw_uvjj_err,Rtt_uujj_err]
 
@@ -3135,7 +3193,7 @@ def SysTable(optimlog, PreSelection_uujj, selection_uujj,selection_uvjj,NormalDi
 		masschan = masschan.replace('\n','')
 		masschan = masschan.replace(' ','')
 		#mass = masschan.split('jj')[-1] # AH
-		mass = masschan.split('HHres')[-1]
+		mass = masschan.split(analysisSignal)[-1]
 		chan = 't_'+masschan.split('_')[-1]
 		print '\n AH: I am in SysTable(): masschan is ', masschan, '\n'
 		print '\n AH: I am in SysTable(): chan is ', chan, '\n'
@@ -3154,15 +3212,13 @@ def SysTable(optimlog, PreSelection_uujj, selection_uujj,selection_uvjj,NormalDi
 		print '\n AH: I am in SysTable(): nalign is ', nalign, '\n'
 
 
-		if sysmethod == 'ALIGN':
-			if 'uujj' in optimlog or 'HH' in optimlog:
-				rglobals = 1.0 + alignmentcorrs[0]*.01
-				rglobalb = 1.0 + alignmentcorrs[1]*.01
-			if 'uvjj' in optimlog:
-				rglobals = 1.0 + alignmentcorrs[0]*.01
-				rglobalb = 1.0 + alignmentcorrs[1][nalign] *.01
-
-
+		#		if sysmethod == 'ALIGN':
+		#			if ell+ell+'jj' in optimlog or 'HH' in optimlog:
+		#				rglobals = 1.0 + alignmentcorrs[0]*.01
+		#				rglobalb = 1.0 + alignmentcorrs[1]*.01
+		#			if 'uvjj' in optimlog:
+		#				rglobals = 1.0 + alignmentcorrs[0]*.01
+		#				rglobalb = 1.0 + alignmentcorrs[1][nalign] *.01
 
 		rstop = 1
 		rdiboson = 1
@@ -3171,34 +3227,34 @@ def SysTable(optimlog, PreSelection_uujj, selection_uujj,selection_uvjj,NormalDi
 		_rw = rw
 		_rz = rz
 
-		if sysmethod == 'SHAPETT':#fixme added this for 2015 method
-			if 'uujj' in optimlog or 'HH' in optimlog:
-				_rt *= (1.0+shapesysvar_uujj_ttjets[nalign]*0.01)
-			if 'uvjj' in optimlog:
-				_rt *= (1.0+shapesysvar_uvjj_ttjets[nalign]*0.01)
-
-		if sysmethod == 'SHAPEZ':
-			_rz *= (1.0+shapesysvar_uujj_zjets[nalign]*0.01)
-
-		if sysmethod == 'SHAPEW':
-			_rw *= (1.0+shapesysvar_uvjj_wjets[nalign]*0.01)
-
-		if 'PDF'  in sysmethod:
-			if 'uujj' in optimlog or 'HH' in optimlog:
-				_rt *= (1.0+pdf_uujj_TTBar[nalign]*0.01)
-				_rw *= (1.0+pdf_uujj_WJets[nalign]*0.01)
-				_rz *= (1.0+pdf_uujj_ZJets[nalign]*0.01)
-				rstop *= (1.0+pdf_uujj_sTop[nalign]*0.01)
-				rdiboson *= (1.0+pdf_uujj_VV[nalign]*0.01)
-				rsig *= (1.0+pdf_uujj_Signal[nalign]*0.01)
-
-			if 'uvjj' in optimlog:
-				_rt *= (1.0+pdf_uvjj_TTBar[nalign]*0.01)
-				_rw *= (1.0+pdf_uvjj_WJets[nalign]*0.01)
-				_rz *= (1.0+pdf_uvjj_ZJets[nalign]*0.01)
-				rstop *= (1.0+pdf_uvjj_sTop[nalign]*0.01)
-				rdiboson *= (1.0+pdf_uvjj_VV[nalign]*0.01)
-				rsig *= (1.0+pdf_uvjj_Signal[nalign]*0.01)
+		#		if sysmethod == 'SHAPETT':#fixme added this for 2015 method
+		#			if ell+ell+'jj' in optimlog or 'HH' in optimlog:
+		#				_rt *= (1.0+shapesysvar_uujj_ttjets[nalign]*0.01)
+		#			if 'uvjj' in optimlog:
+		#				_rt *= (1.0+shapesysvar_uvjj_ttjets[nalign]*0.01)
+		#
+		#		if sysmethod == 'SHAPEZ':
+		#			_rz *= (1.0+shapesysvar_uujj_zjets[nalign]*0.01)
+		#
+		#		if sysmethod == 'SHAPEW':
+		#			_rw *= (1.0+shapesysvar_uvjj_wjets[nalign]*0.01)
+		#
+		#		if 'PDF'  in sysmethod:
+		#			if ell+ell+'jj' in optimlog:
+		#				_rt *= (1.0+pdf_uujj_TTBar[nalign]*0.01)
+		#				_rw *= (1.0+pdf_uujj_WJets[nalign]*0.01)
+		#				_rz *= (1.0+pdf_uujj_ZJets[nalign]*0.01)
+		#				rstop *= (1.0+pdf_uujj_sTop[nalign]*0.01)
+		#				rdiboson *= (1.0+pdf_uujj_VV[nalign]*0.01)
+		#				rsig *= (1.0+pdf_uujj_Signal[nalign]*0.01)
+		#
+		#			if 'uvjj' in optimlog:
+		#				_rt *= (1.0+pdf_uvjj_TTBar[nalign]*0.01)
+		#				_rw *= (1.0+pdf_uvjj_WJets[nalign]*0.01)
+		#				_rz *= (1.0+pdf_uvjj_ZJets[nalign]*0.01)
+		#				rstop *= (1.0+pdf_uvjj_sTop[nalign]*0.01)
+		#				rdiboson *= (1.0+pdf_uvjj_VV[nalign]*0.01)
+		#				rsig *= (1.0+pdf_uvjj_Signal[nalign]*0.01)
 
 		if sysmethod =='topPtReweight':
 			t_TT = t_TTBar_topPtReweight
@@ -3206,19 +3262,19 @@ def SysTable(optimlog, PreSelection_uujj, selection_uujj,selection_uvjj,NormalDi
 			t_TT = t_TTBar
 
 		exec('treefeed = ['+chan+']')
-		treefeed.append(t_DoubleMuData)
+		treefeed.append(t_data)
 		
 		if (useDataDrivenQCD):
 			#--- using normal directory with ss requirement
-			t_estQCD = t_DoubleMuData
+			t_estQCD = t_data
 			print 'Using data-driven for QCD est.'
 		else:
-			t_estQCD = t_QCDMu
+			t_estQCD = t_QCD
 			print 'Using QCD MC.'
 		
 		treefeed.append([t_TT,t_ZJets,t_WJets,t_SingleTop,t_DiBoson,t_estQCD,t_SMHiggs]) # AH
 		scalefacs = [rsig,[_rt,_rz,_rw,rstop,rdiboson,1,1],1]	# AH
-		#print '\n AH: I am in SysTable(): this_sel is ', this_sel, '\n'
+		print '\n AH: I am in SysTable(): this_sel is ', this_sel, '\n'
 		print '\n AH: I am in SysTable(): rglobals is ', rglobals, '\n'
 		print '\n AH: I am in SysTable(): rglobalb is ', rglobalb, '\n'
 		print '\n AH: I am in SysTable(): scalefacs is ', scalefacs, '\n'
@@ -3255,7 +3311,7 @@ def SysTableTTDD(optimlog, selection_uujj,selection_uvjj,NormalDirectory, weight
 	print sysmethod+' & ' + Rz_uujj_print+' & '+Rtt_uujj_print+' & '+Rw_uvjj_print+' & '+Rtt_uvjj_print+' \\\\'
 
 #	if 'uujj' in optimlog:
-	if 'uujj' in optimlog or 'HH' in optimlog: # AH:
+	if ell+ell+'jj' in optimlog or 'HH' in optimlog: # AH:
 		[rz,rw,rt] = [Rz_uujj,Rw_uvjj,Rtt_uujj]
 		[_e_rz,_e_rw,_e_rt] = [Rz_uujj_err,Rw_uvjj_err,Rtt_uujj_err]
 
@@ -3318,7 +3374,7 @@ def SysTableTTDD(optimlog, selection_uujj,selection_uvjj,NormalDirectory, weight
 		masschan = masschan.replace('\n','')
 		masschan = masschan.replace(' ','')
 #		mass = masschan.split('jj')[-1]
-		mass = masschan.split('HHres')[-1] # AH
+		mass = masschan.split(analysisSignal)[-1] # AH
 		chan = 't_'+masschan.split('_')[-1]
 		fsel = (fsel.split("="))[-1]
 		fsel = '*'+fsel.replace(" ","")
@@ -3400,8 +3456,14 @@ def FullAnalysis(optimlog,PreSelection_uujj,selection_uujj,selection_uvjj,Normal
 	if usedd=='TTBarDataDriven':
 		TTDD=True
 
-	#_Variations = ['','JESup','JESdown','MESup','MESdown','JERup','JERdown','MER','LUMIup','LUMIdown','PUup','PUdown','ZNORMup','ZNORMdown','WNORMup','WNORMdown','TTNORMup','TTNORMdown','MUONIDISOup','MUONIDISOdown','HIPup','HIPdown','MUONHLTup','MUONHLTdown','BTAGup','BTAGdown','PDF','SHAPETT','SHAPEZ','SHAPEW','QCDscaleR1F2','QCDscaleR2F1','QCDscaleR2F2','QCDscaleR1F0p5','QCDscaleR0p5F1','QCDscaleR0p5F0p5','topPtReweight']
-	_Variations = ['','JESAbsoluteMPFBiasUp','JESAbsoluteMPFBiasDown','JESAbsoluteScaleUp','JESAbsoluteScaleDown','JESAbsoluteStatUp','JESAbsoluteStatDown','JESFlavorQCDUp','JESFlavorQCDDown','JESFragmentationUp','JESFragmentationDown','JESPileUpDataMCUp','JESPileUpDataMCDown','JESPileUpPtBBUp','JESPileUpPtBBDown','JESPileUpPtEC1Up','JESPileUpPtEC1Down','JESPileUpPtEC2Up','JESPileUpPtEC2Down','JESPileUpPtHFUp','JESPileUpPtHFDown','JESPileUpPtRefUp','JESPileUpPtRefDown','JESRelativeBalUp','JESRelativeBalDown','JESRelativeFSRUp','JESRelativeFSRDown','JESRelativeJEREC1Up','JESRelativeJEREC1Down','JESRelativeJEREC2Up','JESRelativeJEREC2Down','JESRelativeJERHFUp','JESRelativeJERHFDown','JESRelativePtBBUp','JESRelativePtBBDown','JESRelativePtEC1Up','JESRelativePtEC1Down','JESRelativePtEC2Up','JESRelativePtEC2Down','JESRelativePtHFUp','JESRelativePtHFDown','JESRelativeStatECUp','JESRelativeStatECDown','JESRelativeStatFSRUp','JESRelativeStatFSRDown','JESRelativeStatHFUp','JESRelativeStatHFDown','JESSinglePionECALUp','JESSinglePionECALDown','JESSinglePionHCALUp','JESSinglePionHCALDown','JESTimePtEtaUp','JESTimePtEtaDown','MESup','MESdown','JERup','JERdown','MER','LUMIup','LUMIdown','PUup','PUdown','ZNORMup','ZNORMdown','WNORMup','WNORMdown','TTNORMup','TTNORMdown','MUONIDISOup','MUONIDISOdown','HIPup','HIPdown','MUONHLTup','MUONHLTdown','BTAGup','BTAGdown','PDF','SHAPETT','SHAPEZ','SHAPEW','QCDscaleR1F2','QCDscaleR2F1','QCDscaleR2F2','QCDscaleR1F0p5','QCDscaleR0p5F1','QCDscaleR0p5F0p5','topPtReweight']
+	## Full list of syst
+	#_Variations = ['','JESAbsoluteMPFBiasUp','JESAbsoluteMPFBiasDown','JESAbsoluteScaleUp','JESAbsoluteScaleDown','JESAbsoluteStatUp','JESAbsoluteStatDown','JESFlavorQCDUp','JESFlavorQCDDown','JESFragmentationUp','JESFragmentationDown','JESPileUpDataMCUp','JESPileUpDataMCDown','JESPileUpPtBBUp','JESPileUpPtBBDown','JESPileUpPtEC1Up','JESPileUpPtEC1Down','JESPileUpPtEC2Up','JESPileUpPtEC2Down','JESPileUpPtHFUp','JESPileUpPtHFDown','JESPileUpPtRefUp','JESPileUpPtRefDown','JESRelativeBalUp','JESRelativeBalDown','JESRelativeFSRUp','JESRelativeFSRDown','JESRelativeJEREC1Up','JESRelativeJEREC1Down','JESRelativeJEREC2Up','JESRelativeJEREC2Down','JESRelativeJERHFUp','JESRelativeJERHFDown','JESRelativePtBBUp','JESRelativePtBBDown','JESRelativePtEC1Up','JESRelativePtEC1Down','JESRelativePtEC2Up','JESRelativePtEC2Down','JESRelativePtHFUp','JESRelativePtHFDown','JESRelativeStatECUp','JESRelativeStatECDown','JESRelativeStatFSRUp','JESRelativeStatFSRDown','JESRelativeStatHFUp','JESRelativeStatHFDown','JESSinglePionECALUp','JESSinglePionECALDown','JESSinglePionHCALUp','JESSinglePionHCALDown','JESTimePtEtaUp','JESTimePtEtaDown','MESup','MESdown','JERup','JERdown','MER','LUMIup','LUMIdown','PUup','PUdown','ZNORMup','ZNORMdown','WNORMup','WNORMdown','TTNORMup','TTNORMdown','MUONIDISOup','MUONIDISOdown','HIPup','HIPdown','MUONHLTup','MUONHLTdown','BTAGup','BTAGdown','PDF','SHAPETT','SHAPEZ','SHAPEW','QCDscaleR1F2','QCDscaleR2F1','QCDscaleR2F2','QCDscaleR1F0p5','QCDscaleR0p5F1','QCDscaleR0p5F0p5','topPtReweight']
+	
+	## Version to be used
+	#_Variations = ['','JESAbsoluteMPFBiasUp','JESAbsoluteMPFBiasDown','JESAbsoluteScaleUp','JESAbsoluteScaleDown','JESAbsoluteStatUp','JESAbsoluteStatDown','JESFlavorQCDUp','JESFlavorQCDDown','JESFragmentationUp','JESFragmentationDown','JESPileUpDataMCUp','JESPileUpDataMCDown','JESPileUpPtBBUp','JESPileUpPtBBDown','JESPileUpPtEC1Up','JESPileUpPtEC1Down','JESPileUpPtEC2Up','JESPileUpPtEC2Down','JESPileUpPtHFUp','JESPileUpPtHFDown','JESPileUpPtRefUp','JESPileUpPtRefDown','JESRelativeBalUp','JESRelativeBalDown','JESRelativeFSRUp','JESRelativeFSRDown','JESRelativeJEREC1Up','JESRelativeJEREC1Down','JESRelativeJEREC2Up','JESRelativeJEREC2Down','JESRelativeJERHFUp','JESRelativeJERHFDown','JESRelativePtBBUp','JESRelativePtBBDown','JESRelativePtEC1Up','JESRelativePtEC1Down','JESRelativePtEC2Up','JESRelativePtEC2Down','JESRelativePtHFUp','JESRelativePtHFDown','JESRelativeStatECUp','JESRelativeStatECDown','JESRelativeStatFSRUp','JESRelativeStatFSRDown','JESRelativeStatHFUp','JESRelativeStatHFDown','JESSinglePionECALUp','JESSinglePionECALDown','JESSinglePionHCALUp','JESSinglePionHCALDown','JESTimePtEtaUp','JESTimePtEtaDown','JERup','JERdown','LUMIup','LUMIdown','PUup','PUdown','ZNORMup','ZNORMdown','TTNORMup','TTNORMdown','MUONIDISOup','MUONIDISOdown','HIPup','HIPdown','MUONHLTup','MUONHLTdown','BTAGup','BTAGdown','QCDscaleR1F2','QCDscaleR2F1','QCDscaleR2F2','QCDscaleR1F0p5','QCDscaleR0p5F1','QCDscaleR0p5F0p5','topPtReweight']
+
+	## Version to be used + JES old: I will run this
+	_Variations = ['','JESAbsoluteMPFBiasUp','JESAbsoluteMPFBiasDown','JESAbsoluteScaleUp','JESAbsoluteScaleDown','JESAbsoluteStatUp','JESAbsoluteStatDown','JESFlavorQCDUp','JESFlavorQCDDown','JESFragmentationUp','JESFragmentationDown','JESPileUpDataMCUp','JESPileUpDataMCDown','JESPileUpPtBBUp','JESPileUpPtBBDown','JESPileUpPtEC1Up','JESPileUpPtEC1Down','JESPileUpPtEC2Up','JESPileUpPtEC2Down','JESPileUpPtHFUp','JESPileUpPtHFDown','JESPileUpPtRefUp','JESPileUpPtRefDown','JESRelativeBalUp','JESRelativeBalDown','JESRelativeFSRUp','JESRelativeFSRDown','JESRelativeJEREC1Up','JESRelativeJEREC1Down','JESRelativeJEREC2Up','JESRelativeJEREC2Down','JESRelativeJERHFUp','JESRelativeJERHFDown','JESRelativePtBBUp','JESRelativePtBBDown','JESRelativePtEC1Up','JESRelativePtEC1Down','JESRelativePtEC2Up','JESRelativePtEC2Down','JESRelativePtHFUp','JESRelativePtHFDown','JESRelativeStatECUp','JESRelativeStatECDown','JESRelativeStatFSRUp','JESRelativeStatFSRDown','JESRelativeStatHFUp','JESRelativeStatHFDown','JESSinglePionECALUp','JESSinglePionECALDown','JESSinglePionHCALUp','JESSinglePionHCALDown','JESTimePtEtaUp','JESTimePtEtaDown','JERup','JERdown','JESup','JESdown','LUMIup','LUMIdown','PUup','PUdown','ZNORMup','ZNORMdown','TTNORMup','TTNORMdown','MUONIDISOup','MUONIDISOdown','HIPup','HIPdown','MUONHLTup','MUONHLTdown','ELEHLTup','ELEHLTdown','ELEIDISOup','ELEIDISOdown','BTAGup','BTAGdown','QCDscaleR1F2','QCDscaleR2F1','QCDscaleR2F2','QCDscaleR1F0p5','QCDscaleR0p5F1','QCDscaleR0p5F0p5','topPtReweight']
 
 	#_Variations = ['']
 
@@ -3567,26 +3629,31 @@ def GetNormalizationScaleFactors( selection, FileDirectory, controlregion_1, con
 		tn_data = tn_DoubleMuData
 		t_QCD  = t_QCDMu
 		tn_QCD = tn_QCDMu
+		doubleIso         = '((TrkIso_muon1<0.25)*(TrkIso_muon2<0.25))'
+		invertedDoubleIso = '(((TrkIso_muon1>0.25) + (TrkIso_muon2>0.25))>0)'
 	if analysisChannel=='electron' :
 		t_data  = t_DoubleEleData
 		tn_data = tn_DoubleEleData
 		t_QCD  = t_QCDEle
 		tn_QCD = tn_QCDEle
+		doubleIso         = '((TrkIso_ele1<0.15)*(TrkIso_ele2<0.15))'
+		invertedDoubleIso = '(((TrkIso_ele1>0.15) + (TrkIso_ele2>0.15))>0)'
 
+	#print 'I am in GetNormalizationScaleFactors, selection CR1 \n', selection_data + '*' + controlregion_1+dataHLT
+	#print 'I am in GetNormalizationScaleFactors, selection CR2 \n', selection_data + '*' + controlregion_2+dataHLT
 	N1 = QuickEntries(t_data,selection_data + '*' + controlregion_1+dataHLT,1.0)
-	#print selection_data + '*' + controlregion_1+dataHLT
 	N2 = QuickEntries(t_data,selection_data + '*' + controlregion_2+dataHLT,1.0)
 
 	Z1 = QuickIntegral(t_ZJets,selection + '*' + controlregion_1,1.0)
 	T1 = QuickIntegral(t_TTBar,selection + '*' + controlregion_1,1.0)
-	s1 = QuickIntegral(t_SingleTop,selection + '*' + controlregion_1,1.0)
+	s1 = QuickIntegral(t_SingleTop,selection_data + '*' + controlregion_1,1.0)
 	w1 = QuickIntegral(t_WJets,selection + '*' + controlregion_1,1.0)
 	v1 = QuickIntegral(t_DiBoson,selection + '*' + controlregion_1,1.0)
 	H1 = QuickIntegral(t_SMHiggs,selection   + '*' + controlregion_1,1.0)
 	
 	Z2 = QuickIntegral(t_ZJets,selection + '*' + controlregion_2,1.0)
 	T2 = QuickIntegral(t_TTBar,selection + '*' + controlregion_2,1.0)
-	s2 = QuickIntegral(t_SingleTop,selection + '*' + controlregion_2,1.0)
+	s2 = QuickIntegral(t_SingleTop,selection_data + '*' + controlregion_2,1.0)
 	w2 = QuickIntegral(t_WJets,selection + '*' + controlregion_2,1.0)
 	v2 = QuickIntegral(t_DiBoson,selection + '*' + controlregion_2,1.0)
 	H2 = QuickIntegral(t_SMHiggs,selection   + '*' + controlregion_2,1.0)
@@ -3603,11 +3670,11 @@ def GetNormalizationScaleFactors( selection, FileDirectory, controlregion_1, con
 	else:
 		print ' using QCD data-driven when calculating '+analysisChannel+' scale factors'
 		print ' QCD fake rate is ', fbd
-		selec_qcd_data = selection_data.replace('*('+charge1+'*'+charge2+' < 0)', '*('+charge1+'*'+charge2+' > 0)*((TrkIso_muon1<0.25)*(TrkIso_muon2<0.25))')
-		selec_qcd = selection.replace('*('+charge1+'*'+charge2+' < 0)', '*('+charge1+'*'+charge2+' > 0)*((TrkIso_muon1<0.25)*(TrkIso_muon2<0.25))')
+		selec_qcd_data = selection_data.replace('*('+charge1+'*'+charge2+' < 0)', '*('+charge1+'*'+charge2+' > 0)*'+doubleIso)
+		selec_qcd = selection.replace('*('+charge1+'*'+charge2+' < 0)', '*('+charge1+'*'+charge2+' > 0)*'+doubleIso)
 		
 		#---- using QCD noniso directory
-		if True:
+		if False:
 			ssiso_n1 = QuickEntries(tn_data          ,selec_qcd_data + '*' + controlregion_1+dataHLT,1.0) # + dataHLT ??
 			ssiso_z1 = QuickIntegral(tn_ZJets        ,selec_qcd + '*' + controlregion_1,Rz_data[0])
 			ssiso_t1 = QuickIntegral(tn_TTBar        ,selec_qcd + '*' + controlregion_1,Rtt_data[0])
@@ -3636,11 +3703,11 @@ def GetNormalizationScaleFactors( selection, FileDirectory, controlregion_1, con
 			ssiso_z2ent = QuickEntries(tn_ZJets        ,selec_qcd + '*' + controlregion_2,1.0)
 
 		#---- using Normal directory
-		if False:
+		if True:
 			ssiso_n1 = QuickEntries(t_data          ,selec_qcd_data + '*' + controlregion_1+dataHLT,1.0) # + dataHLT ??
 			ssiso_z1 = QuickIntegral(t_ZJets        ,selec_qcd + '*' + controlregion_1,Rz_data[0])
 			ssiso_t1 = QuickIntegral(t_TTBar        ,selec_qcd + '*' + controlregion_1,Rtt_data[0])
-			ssiso_s1 = QuickIntegral(t_SingleTop    ,selec_qcd + '*' + controlregion_1,1.0)
+			ssiso_s1 = QuickIntegral(t_SingleTop    ,selec_qcd_data + '*' + controlregion_1,1.0)
 			ssiso_w1 = QuickIntegral(t_WJets        ,selec_qcd + '*' + controlregion_1,1.0)
 			ssiso_v1 = QuickIntegral(t_DiBoson      ,selec_qcd + '*' + controlregion_1,1.0)
 			ssiso_h1 = QuickIntegral(t_SMHiggs      ,selec_qcd + '*' + controlregion_1,1.0)
@@ -3651,7 +3718,7 @@ def GetNormalizationScaleFactors( selection, FileDirectory, controlregion_1, con
 			ssiso_n2 = QuickEntries(t_data          ,selec_qcd_data + '*' + controlregion_2+dataHLT,1.0) # + dataHLT ??
 			ssiso_z2 = QuickIntegral(t_ZJets        ,selec_qcd + '*' + controlregion_2,Rz_data[0])
 			ssiso_t2 = QuickIntegral(t_TTBar        ,selec_qcd + '*' + controlregion_2,Rtt_data[0])
-			ssiso_s2 = QuickIntegral(t_SingleTop    ,selec_qcd + '*' + controlregion_2,1.0)
+			ssiso_s2 = QuickIntegral(t_SingleTop    ,selec_qcd_data + '*' + controlregion_2,1.0)
 			ssiso_w2 = QuickIntegral(t_WJets        ,selec_qcd + '*' + controlregion_2,1.0)
 			ssiso_v2 = QuickIntegral(t_DiBoson      ,selec_qcd + '*' + controlregion_2,1.0)
 			ssiso_h2 = QuickIntegral(t_SMHiggs      ,selec_qcd + '*' + controlregion_2,1.0)
@@ -3722,8 +3789,8 @@ def GetNormalizationScaleFactors( selection, FileDirectory, controlregion_1, con
 	print 'Zjets entries in CR1 CR2 :', z1ent, z2ent
 
 	print '\n'
-	print 'Muon: RZ  = ', zout[-1], zout[0], zout[1]
-	print 'Muon: Rtt = ', tout[-1], tout[0], tout[1]
+	print analysisChannel+' channel: RZ  = ', zout[-1], zout[0], zout[1]
+	print analysisChannel+' channel: Rtt = ', tout[-1], tout[0], tout[1]
 	return [ [ zout[0], zout[1] ] , [ tout[0],tout[1] ] ]
 
 def GetNormalizationScaleFactorsAndFbd( selection, FileDirectory, controlregion_1, controlregion_2, canUseTTDD):
@@ -3736,6 +3803,10 @@ def GetNormalizationScaleFactorsAndFbd( selection, FileDirectory, controlregion_
 	# print QuickIntegral(t_ZJets,selection + '*' + controlregion_1,1.0)
 	# sys.exit()
 	selection_data = selection.split('*(fact')[0]
+	print ' selection_data : ', selection_data
+	print '\n'
+	print ' selection: ', selection
+	
 	if analysisChannel=='muon'     :
 		t_data  = t_DoubleMuData
 		tn_data = tn_DoubleMuData
@@ -3749,8 +3820,9 @@ def GetNormalizationScaleFactorsAndFbd( selection, FileDirectory, controlregion_
 		doubleIso         = '((TrkIso_ele1<0.15)*(TrkIso_ele2<0.15))'
 		invertedDoubleIso = '(((TrkIso_ele1>0.15) + (TrkIso_ele2>0.15))>0)'
 	
+	#print 'I am in GetNormalizationScaleFactorsAndFbd, selection CR1 \n', selection_data + '*' + controlregion_1+dataHLT
+	#print 'I am in GetNormalizationScaleFactorsAndFbd, selection CR2 \n', selection_data + '*' + controlregion_2+dataHLT
 	N1 = QuickEntries(t_data,selection_data + '*' + controlregion_1+dataHLT,1.0)
-	#print selection_data + '*' + controlregion_1+dataHLT
 	N2 = QuickEntries(t_data,selection_data + '*' + controlregion_2+dataHLT,1.0)
 	
 	Z1 = QuickIntegral(t_ZJets,selection + '*' + controlregion_1,1.0)
@@ -3784,7 +3856,7 @@ def GetNormalizationScaleFactorsAndFbd( selection, FileDirectory, controlregion_
 		selec_qcd = selection.replace('*('+charge1+'*'+charge2+' < 0)', '*('+charge1+'*'+charge2+' > 0)*'+doubleIso)
 		
 		#---- using QCD noniso directory
-		if True:
+		if False:
 			print ' doing ss iso in region 1 '
 			ssiso_n1 = QuickEntries(tn_data          ,selec_qcd_data + '*' + controlregion_1+dataHLT,1.0) # + dataHLT ??
 			ssiso_z1 = QuickIntegral(tn_ZJets        ,selec_qcd + '*' + controlregion_1,1.0)
@@ -3793,8 +3865,7 @@ def GetNormalizationScaleFactorsAndFbd( selection, FileDirectory, controlregion_
 			ssiso_w1 = QuickIntegral(tn_WJets        ,selec_qcd + '*' + controlregion_1,1.0)
 			ssiso_v1 = QuickIntegral(tn_DiBoson      ,selec_qcd + '*' + controlregion_1,1.0)
 			ssiso_h1 = QuickIntegral(tn_SMHiggs      ,selec_qcd + '*' + controlregion_1,1.0)
-			ssiso_o1 = [ssiso_s1[0]+ssiso_w1[0]+ssiso_v1[0]+ssiso_h1[0], math.sqrt(ssiso_s1[1]**2 + ssiso_w1[1]**2 + ssiso_v1[1]**2 + ssiso_h1[1]**2)]
-			#ssiso_q1 = [(ssiso_n1[0] - (ssiso_z1[0]+ssiso_t1[0]+ssiso_o1[0])), math.sqrt(ssiso_n1[1]**2 + ssiso_z1[1]**2 + ssiso_t1[1]**2 + ssiso_o1[1]**2)]
+			
 			
 			print ' doing ss iso in region 2 '
 			ssiso_n2 = QuickEntries(tn_data  ,selec_qcd_data + '*' + controlregion_2+dataHLT,1.0) # + dataHLT ??
@@ -3804,8 +3875,6 @@ def GetNormalizationScaleFactorsAndFbd( selection, FileDirectory, controlregion_
 			ssiso_w2 = QuickIntegral(tn_WJets        ,selec_qcd + '*' + controlregion_2,1.0)
 			ssiso_v2 = QuickIntegral(tn_DiBoson      ,selec_qcd + '*' + controlregion_2,1.0)
 			ssiso_h2 = QuickIntegral(tn_SMHiggs      ,selec_qcd + '*' + controlregion_2,1.0)
-			ssiso_o2 = [ssiso_s2[0]+ssiso_w2[0]+ssiso_v2[0]+ssiso_h2[0], math.sqrt(ssiso_s2[1]**2 + ssiso_w2[1]**2 + ssiso_v2[1]**2 + ssiso_h2[1]**2)]
-			#ssiso_q2 = [(ssiso_n2[0] - (ssiso_z2[0]+ssiso_t2[0]+ssiso_o2[0])), math.sqrt(ssiso_n2[1]**2 + ssiso_z2[1]**2 + ssiso_t2[1]**2 + ssiso_o2[1]**2)]
 			
 			ssiso_w1ent = QuickEntries(tn_WJets        ,selec_qcd + '*' + controlregion_1,1.0)
 			ssiso_w2ent = QuickEntries(tn_WJets        ,selec_qcd + '*' + controlregion_2,1.0)
@@ -3813,7 +3882,7 @@ def GetNormalizationScaleFactorsAndFbd( selection, FileDirectory, controlregion_
 			ssiso_z2ent = QuickEntries(tn_ZJets        ,selec_qcd + '*' + controlregion_2,1.0)
 
 		#---- using Normal directory
-		if False:
+		if True:
 			ssiso_n1 = QuickEntries(t_data          ,selec_qcd_data + '*' + controlregion_1+dataHLT,1.0) # + dataHLT ??
 			ssiso_z1 = QuickIntegral(t_ZJets        ,selec_qcd + '*' + controlregion_1,1.0)
 			ssiso_t1 = QuickIntegral(t_TTBar        ,selec_qcd + '*' + controlregion_1,1.0)
@@ -3834,6 +3903,11 @@ def GetNormalizationScaleFactorsAndFbd( selection, FileDirectory, controlregion_
 			ssiso_w2ent = QuickEntries(t_WJets        ,selec_qcd + '*' + controlregion_2,1.0)
 			ssiso_z1ent = QuickEntries(t_ZJets        ,selec_qcd + '*' + controlregion_1,1.0)
 			ssiso_z2ent = QuickEntries(t_ZJets        ,selec_qcd + '*' + controlregion_2,1.0)
+
+		ssiso_o1 = [ssiso_s1[0]+ssiso_w1[0]+ssiso_v1[0]+ssiso_h1[0], math.sqrt(ssiso_s1[1]**2 + ssiso_w1[1]**2 + ssiso_v1[1]**2 + ssiso_h1[1]**2)]
+		#ssiso_q1 = [(ssiso_n1[0] - (ssiso_z1[0]+ssiso_t1[0]+ssiso_o1[0])), math.sqrt(ssiso_n1[1]**2 + ssiso_z1[1]**2 + ssiso_t1[1]**2 + ssiso_o1[1]**2)]
+		ssiso_o2 = [ssiso_s2[0]+ssiso_w2[0]+ssiso_v2[0]+ssiso_h2[0], math.sqrt(ssiso_s2[1]**2 + ssiso_w2[1]**2 + ssiso_v2[1]**2 + ssiso_h2[1]**2)]
+		#ssiso_q2 = [(ssiso_n2[0] - (ssiso_z2[0]+ssiso_t2[0]+ssiso_o2[0])), math.sqrt(ssiso_n2[1]**2 + ssiso_z2[1]**2 + ssiso_t2[1]**2 + ssiso_o2[1]**2)]
 
 		print 'ssiso_cr_n:', ssiso_n1, ssiso_n2
 		print 'ssiso_cr_z:', ssiso_z1, ssiso_z2
@@ -3941,9 +4015,9 @@ def GetNormalizationScaleFactorsAndFbd( selection, FileDirectory, controlregion_
 	print 'Zjets entries in CR1 CR2 :', z1ent, z2ent
 	
 	print '\n'
-	print 'MuMu: RZ  = ', zout[-1], zout[0], zout[1]
-	print 'MuMu: Rtt = ', tout[-1], tout[0], tout[1]
-	print 'MuMu: fbd = ', fbdout[-1], fbdout[0], fbdout[1]
+	print analysisChannel+' channel: RZ  = ', zout[-1], zout[0], zout[1]
+	print analysisChannel+' channel: Rtt = ', tout[-1], tout[0], tout[1]
+	print analysisChannel+' channel: fbd = ', fbdout[-1], fbdout[0], fbdout[1]
 	return [ [ zout[0], zout[1] ] , [ tout[0], tout[1] ], [ fbdout[0], fbdout[1] ] ]
 
 def GetNormalizationScaleFactorsMod( selection, FileDirectory, controlregion_1, controlregion_2,samp):
@@ -4392,14 +4466,18 @@ def MakeBasicPlot(recovariable,xlabel,presentationbinning,selection,weight,FileD
 	# Create Canvas
 	yaxismin = .13333
 	perc = totunc_Muon[0]
+	if analysisChannel == 'electron':
+		perc = totunc_Electron[0]
 	betamarker = '#beta = '
 	isDisplaced=False
 	#if 'cosThetaStar' in recovariable: doLog=False
 	#else: doLog=True
 	doLog=True
 	syslist=[0]
-	if channel == 'uujj' or channel == 'HHres':
-		syslist = totunc_Muon	
+	if channel == ell+ell+'jj' or 'HH' in channel:
+		syslist = totunc_Muon
+		if analysisChannel == 'electron':
+			syslist = totunc_Electron
 		betamarker +="1.0"
 	if channel == 'uvjj':
 		syslist = totunc_uvjj
@@ -4482,17 +4560,20 @@ def MakeBasicPlot(recovariable,xlabel,presentationbinning,selection,weight,FileD
 	bgbandstyle=[3002,20,.00001,0,14]
 
 	#channel = HHres
-	print 'Getting Final sel '
+	print 'Getting Final Opt Cuts'
 	if 'final' in tagname:
-		"""
-		print 'cat '+cutlog+' | grep '+channel+str(plotmass)
- 		fsel = ((os.popen('cat '+cutlog+' | grep '+channel+str(plotmass)).readlines())[0]).replace('\n','')
+		if channel == ell+ell+'jj' or 'HH' in channel:
+			chan_flag = analysisSignal
+		# getting opt cuts (e.g. MET cuts) from txt files
+		print 'cat '+cutlog+' | grep '+chan_flag+str(plotmass)
+ 		fsel = ((os.popen('cat '+cutlog+' | grep '+chan_flag+str(plotmass)).readlines())[0]).replace('\n','')
 		print 'found'
 		fsel = (fsel.split("="))[-1]
 		fsel = '*'+fsel.replace(" ","")
 		selection = '('+selection+fsel+')'
 		print 'parsed'
-		"""
+		print ' selection after opt cut ', selection
+		
 		selection = selection.replace(bTagPresel,bTagFinalsel)
 		weight = weight.replace(bTagPreselSF,bTagFinalSF)
 		print '\n', selection , '\n'
@@ -4667,33 +4748,48 @@ def MakeBasicPlot(recovariable,xlabel,presentationbinning,selection,weight,FileD
 
 	sig1name = ''
 	sig2name = ''
+	tree_name = ''
+	resTag = ''
 
 	if channel == ell+ell+'jj' or 'HH' in channel:
-		sig1name = 'M_{R}=300 (1 pb)'#+betamarker
-		sig2name = 'M_{R}=900 (1 pb)'#+betamarker
-		#sig1name = 'M_{R}=300 x 1000'#+betamarker # AH:
-		#sig2name = 'M_{R}=900 x 1000'#+betamarker # AH:
-		#sig2name = 'LQ, M = 950 GeV, '+betamarker
+		if analysisSignal == 'HHres':
+			sig1name = 'M_{R}=300 (1 pb)'#+betamarker
+			sig2name = 'M_{R}=900 (1 pb)'#+betamarker
+			#sig1name = 'M_{R}=300 x 1000'#+betamarker # AH:
+			#sig2name = 'M_{R}=900 x 1000'#+betamarker # AH:
+			#sig2name = 'LQ, M = 950 GeV, '+betamarker
+			tree_name = 't_HHres'
+			resTag = 'R'
+		else:
+			sig1name = 'M_{G}=300 (1 pb)'
+			sig2name = 'M_{G}=900 (1 pb)'
+			tree_name = 't_HHBulkGrav'
+			resTag = 'G'
+		
 		if 'final' not in tagname:
-			if 'bdt' not in recovariable:
-				hs_rec_Signal=CreateHisto('hs_rec_Signal',sig1name,t_HHres300,recovariable,presentationbinning,selection+'*'+weight,SignalStyle,Label)
-				hs_rec_Signal2=CreateHisto('hs_rec_Signal2',sig2name,t_HHres900,recovariable,presentationbinning,selection+'*'+weight,SignalStyle2,Label)
+			if 'bdt_discrim' not in recovariable:
+				if analysisSignal == 'HHres':
+					hs_rec_Signal=CreateHisto('hs_rec_Signal',sig1name,t_HHres300,recovariable,presentationbinning,selection+'*'+weight,SignalStyle,Label)
+					hs_rec_Signal2=CreateHisto('hs_rec_Signal2',sig2name,t_HHres900,recovariable,presentationbinning,selection+'*'+weight,SignalStyle2,Label)
+				if analysisSignal == 'HHBulkGrav':
+					hs_rec_Signal=CreateHisto('hs_rec_Signal',sig1name,t_HHBulkGrav300,recovariable,presentationbinning,selection+'*'+weight,SignalStyle,Label)
+					hs_rec_Signal2=CreateHisto('hs_rec_Signal2',sig2name,t_HHBulkGrav900,recovariable,presentationbinning,selection+'*'+weight,SignalStyle2,Label)
 			else:
-				exec ("_stree = t_HHres"+str(plotmass))
-				sig1name = 'M_{R} = '+str(plotmass)+' GeV (1 pb)'
-				sig2name = 'M_{R} = 900 GeV (1 pb)'
+				exec ("_stree = "+tree_name+str(plotmass))
+				sig1name = 'M_{'+resTag+'} = '+str(plotmass)+' GeV (1 pb)'
+				sig2name = 'M_{'+resTag+'} = '+str(plotmass)+' GeV (1 pb)'
 				hs_rec_Signal=CreateHisto('hs_rec_Signal',sig1name,_stree,recovariable,presentationbinning,selection+'*'+weight,SignalStyle,Label)
-				hs_rec_Signal2=CreateHisto('hs_rec_Signal2',sig2name,t_HHres900,'bdt_discrim_M900',presentationbinning,selection+'*'+weight,SignalStyle2,Label)
-			print 'signal1,',sig1name,':',hs_rec_Signal.Integral()
-			print 'signal2,',sig2name,':',hs_rec_Signal2.Integral()
+				hs_rec_Signal2=CreateHisto('hs_rec_Signal2',sig2name,_stree,recovariable,presentationbinning,selection+'*'+weight,SignalStyle2,Label)
+			print 'signal1,',tree_name,sig1name,':',hs_rec_Signal.Integral()
+			print 'signal2,',tree_name,sig2name,':',hs_rec_Signal2.Integral()
 			hs_rec_Signal.Scale(1000.)
 			hs_rec_Signal2.Scale(1000.)
 		if 'final' in tagname:
 			#exec ("_stree = t_LQ"+channel+str(plotmass))
-			exec ("_stree = t_HHres"+str(plotmass))
-			# AH: hs_rec_Signal=CreateHisto('hs_rec_Signal','M_{R} = '+str(plotmass)+' GeV, '+betamarker,_stree,recovariable,presentationbinning,selection+'*'+weight,SignalStyle,Label)
-			hs_rec_Signal=CreateHisto('hs_rec_Signal','M_{R} = '+str(plotmass)+' GeV',_stree,recovariable,presentationbinning,selection+'*'+weight,SignalStyle,Label)
-			print 'signal1,',sig1name,':',hs_rec_Signal.Integral()
+			exec ("_stree = "+tree_name+str(plotmass))
+			sig1name = 'M_{'+resTag+'} = '+str(plotmass)+' GeV (1 pb)'
+			hs_rec_Signal=CreateHisto('hs_rec_Signal',sig1name,_stree,recovariable,presentationbinning,selection+'*'+weight,SignalStyle,Label)
+			print 'signal1,',tree_name,sig1name,':',hs_rec_Signal.Integral()
 			# ------- AH: ---------------------------------
 			hs_rec_Signal.Scale(1000.) # AH I have to scale it after writing histogram to files
 
@@ -4940,7 +5036,7 @@ def MakeBasicPlot(recovariable,xlabel,presentationbinning,selection,weight,FileD
 		else:
 			#leg.AddEntry(hs_rec_Signal,'LQ, M = '+str(plotmass)+' GeV, '+betamarker,"l")
 			#leg.AddEntry(hs_rec_Signal,'M_{R} = '+str(plotmass)+' GeV',"l") # AH:
-			leg.AddEntry(hs_rec_Signal,'M_{R} = '+str(plotmass)+' GeV (1 pb)',"l") # AH:
+			leg.AddEntry(hs_rec_Signal,sig1name,"l") # AH:
 	leg.AddEntry(hs_bgband,'Unc. (stat + syst)')
 
 	leg.Draw()
@@ -5243,7 +5339,9 @@ def MakeBasicPlot2D(recovariableX,recovariableY,xlabel,ylabel,presentationbinnin
 	betamarker = '#beta = '
 	isDisplaced=False
 	if channel == 'uujj':
-		syslist = totunc_Muon	
+		syslist = totunc_Muon
+		if analysisChannel == 'electron':
+			syslist = totunc_Electron
 		betamarker +="1.0"
 
 	if 'PAS' not in tagname:
@@ -6549,7 +6647,7 @@ def CompareMeanSys(m,s1,s2):
 
 def ParseFinalCards(cardcoll):
 	print '\n AH: I am in ParseFinalCards(): cardcoll is ', cardcoll, '\n'
-	chan = '' + ell+ell+'jj'*(ell+ell+'jj' in cardcoll)+ 'uvjj'*('uvjj' in cardcoll) + 'HH_res'*('HH_res' in cardcoll)
+	chan = '' + ell+ell+'jj'*(ell+ell+'jj' in cardcoll)+ 'uvjj'*('uvjj' in cardcoll) + c_OptHH*(c_OptHH in cardcoll)
 	print '\n AH: I am in ParseFinalCards(): chan is ', chan, '\n'
 	tables = glob(cardcoll)
 	print '\n AH: I am in ParseFinalCards(): tables is ', tables, '\n'
@@ -6561,6 +6659,11 @@ def ParseFinalCards(cardcoll):
 	for s in systypes:
 		s = s.replace('up','')
 		s = s.replace('down','')
+		if 'JES' in s:
+			if s[-2:] == 'Up':
+				s = s[0:-2]
+			if s[-4:] == 'Down':
+				s = s[0:-4]
 		if s not in variations:
 			variations.append(s)
 	# for v in variations:
@@ -6669,8 +6772,15 @@ def ParseFinalCards(cardcoll):
 			sysline = v + '  lnN  '
 			this_sysset = []
 			for ss in scards:
-				if v in ss:
-					this_sysset.append(ss)
+				if v == 'JES':
+					if ('JESup' in ss) or ('JESdown' in ss): # some syst names have "JES" or "JER" in them. 
+						this_sysset.append(ss)
+				elif v == 'JER':
+					if ('JERup' in ss) or ('JERdown' in ss):
+						this_sysset.append(ss)
+				else:
+					if v in ss:
+						this_sysset.append(ss)
 			if len(this_sysset) == 1:
 				this_sysset.append(this_sysset[0])
 			print 'For sys',v
@@ -6703,7 +6813,13 @@ def ParseFinalCards(cardcoll):
 	return finalcards
 
 def FixFinalCards(cardsets):
-	f = cardsets[0].split('/')[0]+'/FinalCardsLQ.txt'
+	txt_outfile = 'FinalCardsLQ'
+	if analysisChannel == 'muon':
+		txt_outfile += 'uu'
+	if analysisChannel == 'electron':
+		txt_outfile += 'ee'
+	txt_outfile += '.txt'
+	f = cardsets[0].split('/')[0]+'/'+txt_outfile
 	fout = open(f,'w')
 	for c in cardsets:
 		for line in open(c,'r'):
