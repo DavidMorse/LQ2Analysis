@@ -15,7 +15,7 @@ cloned to David Morse (dmorse@cern.ch) May 2015
 
 Checking out the package
 
-git clone git@github.com:DavidMorse/LQ2Analysis8TeV.git LQ2Analysis13TeV
+git clone git@github.com:DavidMorse/LQ2Analysis.git LQ2Analysis13TeV
 
 cd LQ2Analysis13TeV
 
@@ -49,7 +49,7 @@ A little info:
 
 
 Please see a convenient example: 
-NTupleInfo2015Full_MiniAODv2.csv
+NTupleInfo2016Full.csv
 
 --------------------------------------------------------------------------------
 
