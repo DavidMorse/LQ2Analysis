@@ -104,7 +104,7 @@ if override_dir != '':
 	thiseos = override_dir
 	command = 'ls '+thiseos+'/subber*_1.sub'
 	# get original timestamp to check HTCondor jobs
-	now = os.popen(command).readlines()[0].replace('.sub\n','').split('subber')[-1][1:-2]
+	now = thiseos.replace('\n','').split(tagname)[-1][1:]
 	#print now
 	#exit()
 
@@ -518,7 +518,7 @@ while keep_going != 0:
 	done=0
 	
 	while done!=1:
-		ncheck,npend, nrun = 0,0,0
+		ncheck,npend,nrun,nhold,ndone = 0,0,0,0,0
 		os.system('sleep 60')
 		#jobinfo = os.popen('bjobs -w | grep '+now).readlines()
 		condor_check = os.popen('condor_q | grep Failed').readlines()
@@ -527,21 +527,22 @@ while keep_going != 0:
 			break
 		jobinfo = os.popen('condor_q | grep '+now).readlines()
 		for x in range(len(jobinfo)):
-			if len(jobinfo)==0:
-				print '\nNo jobs remaining from previous submission, moving on to submit. \n'
-				done=1
-			else:
-				if str(jobinfo[x])[7]=='1': #IDLE status
+			if len(jobinfo)>0:
+				if str(jobinfo[x]).split()[8]=='1': #HOLD status #fixme not seeing hold?
+					nhold  += 1
+				if str(jobinfo[x]).split()[7]=='1': #IDLE status
 					npend  += 1
 					ncheck += 1
-				if str(jobinfo[x])[6]=='1': #RUN status
+				if str(jobinfo[x]).split()[6]=='1': #RUN status
 					nrun += 1
+				if str(jobinfo[x]).split()[5]=='1': #DONE status
+					ndone += 1
 		jobinfo = len(jobinfo)
 		jobsleft = jobinfo -1
 		if jobsleft == -1:
 			done = 1
 		if jobsleft>=0:
-			print  str(jobsleft+1) +' jobs remaining ('+str(nrun)+' running, '+str(npend)+' idle).'
+			print  str(jobsleft+1) +' jobs remaining ('+str(ndone)+' DONE, '+str(nrun)+' RUN, '+str(npend)+' IDLE, '+str(nhold)+' HOLD).'
 
 		#if (ncheck > 2000) or ((ncheck>1250) and jobsleft<3):
 		#	 print "\nJobs taking too long. Killing remaining jobs. \n"
