@@ -4332,6 +4332,17 @@ for n in range(N):
 	# except possibly to add a new flag or weight variable. 
 	# All editable contents concerning kinematics are in the function defs.
 
+        #First make sure file is accessible
+	ientry = t.LoadTree(n)
+	if ientry<0:
+		print 'ERROR: Could not read from TTree; exiting!!'
+	nb = t.GetEntry(n)
+	nbytes += nb
+	if nb<0:
+		print 'ERROR: Could not read entry from TTree: read '+nb+' bytes; exiting!!'
+		sys.exit(1)
+
+
 	# Get the entry
 	t.GetEntry(n)
 	# if n > 1000:  # Testing....
