@@ -1,9 +1,9 @@
 #!/bin/tcsh
 
 # Set up CMSSW
-scramv1 p -n CMSSW_8_0_26_patch1_PUCALC CMSSW_8_0_26_patch1
+scramv1 p -n CMSSW_10_2_9_PUCALC CMSSW_10_2_9
 
-cd CMSSW_8_0_26_patch1_PUCALC/src
+cd CMSSW_10_2_9_PUCALC/src
 cmsenv
 #git clone https://github.com/cms-sw/RecoLuminosity-LumiDB.git RecoLuminosity/LumiDB
 #cd RecoLuminosity/LumiDB
@@ -42,7 +42,7 @@ cp $LumiJSON ../../
 cp LumiLog.txt ../../
 cp PU*root ../../
 cd ../../
-rm -r CMSSW_8_0_26_patch1_PUCALC
+rm -r CMSSW_10_2_9_PUCALC
 
 echo "\n ------ Done! ------\n"
 echo "\nPlease find LumiLog at:"
