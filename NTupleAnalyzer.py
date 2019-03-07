@@ -117,6 +117,7 @@ print 'After demand 1 pT45 jet:  ',N
 # So branch names will include weight_central, run_number, Pt_muon1, Pt_muon1MESUP, etc.
 
 _kinematicvariables =  ['Pt_muon1','Pt_muon2','Pt_ele1','Pt_ele2','Pt_jet1','Pt_jet2','Pt_miss']
+_kinematicvariables += ['Pt_muon1_noTuneP','Pt_muon2_noTuneP']
 _kinematicvariables += ['Pt_mu1mu2']
 _kinematicvariables += ['Eta_muon1','Eta_muon2','Eta_ele1','Eta_ele2','Eta_jet1','Eta_jet2','Eta_miss']
 _kinematicvariables += ['Phi_muon1','Phi_muon2','Phi_ele1','Phi_ele2','Phi_jet1','Phi_jet2','Phi_miss']
@@ -150,11 +151,12 @@ _kinematicvariables += ['muonIndex1','muonIndex2']
 _kinematicvariables += ['jetIndex1','jetIndex2']
 _kinematicvariables += ['ptHat']
 _kinematicvariables += ['CISV_jet1','CISV_jet2']
+_kinematicvariables += ['CMVA_jet1','CMVA_jet2']
 _kinematicvariables += ['PULoosej1','PUMediumj1','PUTightj1']
 _kinematicvariables += ['PULoosej2','PUMediumj2','PUTightj2']
 _kinematicvariables += ['passWptCut','passZptCut','WorZSystemPt']
 _kinematicvariables += ['WSystemPt','ZSystemPt']
-_kinematicvariables += ['matchedLQ']
+_kinematicvariables += ['matchedLQ','matchedLQ_LVJJ']
 
 #_weights = ['scaleWeight_Up','scaleWeight_Down','scaleWeight_R1_F1','scaleWeight_R1_F2','scaleWeight_R1_F0p5','scaleWeight_R2_F1','scaleWeight_R2_F2','scaleWeight_R2_F0p5','scaleWeight_R0p5_F1','scaleWeight_R0p5_F2','scaleWeight_R0p5_F0p5','scaleWeight_R2_F2','weight_amcNLO','weight_nopu','weight_central', 'weight_pu_up', 'weight_pu_down','weight_central_2012D','weight_topPt']
 _weights = ['scaleWeight_Up','scaleWeight_Down','scaleWeight_R1_F1','scaleWeight_R1_F2','scaleWeight_R1_F0p5','scaleWeight_R2_F1','scaleWeight_R2_F2','scaleWeight_R2_F0p5','scaleWeight_R0p5_F1','scaleWeight_R0p5_F2','scaleWeight_R0p5_F0p5','scaleWeight_R2_F2','weight_amcNLO','weight_nopu','weight_central', 'weight_pu_up', 'weight_pu_down','weight_topPt']
@@ -792,7 +794,7 @@ def JetsFromLQ(T):
 			jets.append(m)
 	for n in range(len(T.GenParticlePdgId)):
 		pdg = T.GenParticlePdgId[n]
-		if pdg not in [4,-4]: #Get charm quarks
+		if pdg not in [4,-4,3,-3]: #Get charm and strange quarks
 			continue
 		motherIndex = T.GenParticleMotherIndex[n]
 		motherid = 0
@@ -877,6 +879,61 @@ def PropagatePTChangeToMET(met,original_object,varied_object):
 # 			taus.append(ThisTau)
 # 	return taus
 
+def MEScorr(_T,_n,upordown):
+	#print '\n'
+	#print _n,len(_T.MuonCocktailPt)
+	pt     = _T.MuonCocktailPt[_n]
+	eta    = _T.MuonCocktailEta[_n]
+	phi    = _T.MuonCocktailPhi[_n]
+	charge = _T.MuonCharge[_n]
+	#print pt,eta,phi,charge,upordown,
+	while phi>math.pi: phi=phi-2.*math.pi
+	while phi<-math.pi: phi=phi+2.*math.pi
+	if pt<0 : return pt
+	if eta<-2.4:
+		print 'Eta<-2.4, setting to -2.399 for MES'
+		eta=-2.399
+	if eta>2.4:
+		print 'Eta>2.4, setting to 2.399 for MES'
+		eta=2.399
+	etabins=[[-2.4, -2.1],[-2.1, -1.2],[-1.2, 0.],[-0., 1.2],[1.2, 2.1],[2.1, 2.4]]
+	phibins=[[-math.pi,-math.pi/3],[-math.pi/3,math.pi/3],[math.pi/3,math.pi]]
+	corrections    = [[-0.388122,0.376061,-0.153950],[-0.039346,0.041069,-0.113320],[0.,0.,0.],[0.,0.,0.],[0.005114,0.035573,0.070002],[-0.235470,-0.122719,0.091502]]
+	correctionsErr = [[0.045881,0.090062,0.063053],[0.031655,0.030070,0.028683],[0.025,0.025,0.025],[0.025,0.025,0.025],[0.033115,0.038574,0.035002],[0.077534,0.061283,0.074502]]
+
+	etabin,phibin = -999,-999
+	for x in range(len(etabins)):
+		if eta>etabins[x][0] and eta<etabins[x][1]:
+			etabin=x
+			break
+	for x in range(len(phibins)):
+		if phi>phibins[x][0] and phi<phibins[x][1]:
+			phibin=x
+			break
+	correction    = corrections[etabin][phibin]
+	correctionErr = correctionsErr[etabin][phibin]
+
+	kappaBias = tRand.Gaus(correction,correctionErr)
+
+	newPt = pt/1000.     #convert to TeV
+	newPt = charge*newPt #convert to signed pt
+	newPt = 1./newPt     #convert to curvature
+	if upordown=='up': newPt = newPt + kappaBias
+	elif upordown=='down': newPt = newPt - kappaBias
+	else : print '-----------MES variation not up or down!!!!'
+
+	newPt = 1./newPt     #return to pt
+	newPt = abs(newPt)   #return unsigned pt
+	newPt = newPt*1000.  #return to GeV
+	#print newPt
+	return newPt
+
+def MERcorr(_T,_n):
+	pt     = _T.MuonCocktailPt[_n]
+	eta    = _T.MuonCocktailEta[_n]
+	pt = pt+pt*tRand.Gaus(0.0,  (eta<1.4442)*(0.003*(pt<=200.0) + (0.005)*(pt>200.0)*(pt<=500.0) + 0.01*(pt>500.0)) + (eta>1.4442)*(0.006*(pt<=200.0) + (0.01)*(pt>200.0)*(pt<=500.0) + 0.02*(pt>500.0)))
+	return pt
+	
 def TightHighPtIDMuons(T,_met,variation,isdata):
 	# Purpose: Gets the collection of muons passing tight muon ID. 
 	#         Returns muons as TLorentzVectors, and indices corrresponding
@@ -884,22 +941,24 @@ def TightHighPtIDMuons(T,_met,variation,isdata):
 	#         Also returns modified MET for systematic variations.
 	muons = []
 	muoninds = []
+	_defaultPts = []
 	if variation=='MESup':	
 		#_MuonCocktailPt = [(pt + pt*(0.05*pt/1000.0)) for pt in T.MuonCocktailPt]#original
-		_MuonCocktailPt = [(pt + pt*(0.10*pt/1000.0)) for pt in T.MuonCocktailPt]#updated to Zprime 13TeV study number
+		#_MuonCocktailPt = [(pt + pt*(0.10*pt/1000.0)) for pt in T.MuonCocktailPt]#updated to Zprime 13TeV study number
+		_MuonCocktailPt = [ MEScorr(T,ind,'up') for ind in range(len(T.MuonCocktailPt))]#updated to Generalized Endpoint method
 	elif variation=='MESdown':	
 		#_MuonCocktailPt = [(pt - pt*(0.05*pt/1000.0)) for pt in T.MuonCocktailPt]
-		_MuonCocktailPt = [(pt - pt*(0.10*pt/1000.0)) for pt in T.MuonCocktailPt]
+		#_MuonCocktailPt = [(pt - pt*(0.10*pt/1000.0)) for pt in T.MuonCocktailPt]
+		_MuonCocktailPt = [ MEScorr(T,ind,'down') for ind in range(len(T.MuonCocktailPt))]#updated to Generalized Endpoint method
 	elif variation=='MER':	
 		#_MuonCocktailPt = [pt+pt*tRand.Gaus(0.0,  0.01*(pt<=200.0) + (0.04)*(pt>200.0) ) for pt in T.MuonCocktailPt]
 		# Updating to 2016 Zprime
-		_MuonCocktailPt = [pt+pt*tRand.Gaus(0.0,  (eta<1.4442)*(0.003*(pt<=200.0) + (0.005)*(pt>200.0)*(pt<=500.0) + 0.01*(pt>500.0)) + (eta>1.4442)*(0.006*(pt<=200.0) + (0.01)*(pt>200.0)*(pt<=500.0) + 0.02*(pt>500.0))) for [pt,eta] in [T.MuonCocktailPt,T.MuonCocktailEta]]
+		_MuonCocktailPt = [MERcorr(T,ind) for ind in range(len(T.MuonCocktailPt))]
 	else:	
 		_MuonCocktailPt = [pt for pt in T.MuonCocktailPt]	
 
 	if (isdata):
 		_MuonCocktailPt = [pt for pt in T.MuonCocktailPt]	
-
 	trk_isos = []
 	charges = []
 	deltainvpts = []
@@ -1006,8 +1065,9 @@ def TightHighPtIDMuons(T,_met,variation,isdata):
 			charges.append(T.MuonCocktailCharge[n])
 			muoninds.append(n)
 			deltainvpts.append(deltainvpt)
+			_defaultPts.append(T.MuonPt[n])
 
-	return [muons,muoninds,_met,trk_isos,charges,deltainvpts,chi2,pfid,layers]
+	return [muons,muoninds,_met,trk_isos,charges,deltainvpts,chi2,pfid,layers,_defaultPts]
 
 
 def HEEPElectrons(T,_met,variation):
@@ -1215,6 +1275,7 @@ def LooseIDJets(T,met,variation,isdata):
 	NHFs = []
 	NEMFs = []
 	CSVscores = []
+	CMVAscores = []
 	PUIds = []
 	for n in range(len(_PFJetPt)):
 		if _PFJetPt[n]>40 and abs(T.PFJetEtaAK4CHS[n])<2.4 :
@@ -1241,6 +1302,7 @@ def LooseIDJets(T,met,variation,isdata):
 				NHFs.append(NHF)
 				NEMFs.append(NEMF)
 				CSVscores.append(T.PFJetCombinedInclusiveSecondaryVertexBTagAK4CHS[n])
+				CMVAscores.append(T.PFJetCombinedMVABTagAK4CHS[n])
 				PUIds.append([T.PFJetPileupMVApassesLooseAK4CHS[n],T.PFJetPileupMVApassesMediumAK4CHS[n],T.PFJetPileupMVApassesTightAK4CHS[n]])
 			else:
 				if _PFJetPt[n] > JetFailThreshold:
@@ -1248,7 +1310,7 @@ def LooseIDJets(T,met,variation,isdata):
 
 	# print met.Pt()
 
-	return [jets,jetinds,met,JetFailThreshold,NHFs,NEMFs,CSVscores,PUIds]
+	return [jets,jetinds,met,JetFailThreshold,NHFs,NEMFs,CSVscores,CMVAscores,PUIds]
 def GetLLJJMasses(l1,l2,j1,j2):
 	# Purpose: For LLJJ channels, this function returns two L-J Masses, corresponding to the
 	#         pair of L-Js which minimizes the difference between LQ masses in the event
@@ -1479,6 +1541,36 @@ def GetLVJJMasses(l1,met,j1,j2):
 	
 	return [pair,pairwithinv,mh]
 
+def compareMatchingLVJJ(mus,matchedMus,jets,matchedJets):
+	#Purpose: check how often the muons and jets are picked correctly - munujj
+	#print 'len(matchedMus):',len(matchedMus)
+	#print 'len(matchedJets):',len(matchedJets)
+	if len(matchedMus)<1 or len(matchedJets)<2 :
+		return -1
+	#print 'mus[0].Pt():',mus[0].Pt()
+	#print 'mus[1].Pt():',mus[1].Pt()
+	#print 'matchedMus[0].Pt()',matchedMus[0].Pt()
+	#print 'matchedMus[1].Pt()',matchedMus[1].Pt()
+	#print 'jets[0].Pt():',jets[0].Pt()
+	#print 'jets[1].Pt():',jets[1].Pt()
+	#print 'matchedJets[0].Pt()',matchedJets[0].Pt()
+	#print 'matchedJets[1].Pt()',matchedJets[1].Pt()
+	if (matchedMus[0].Pt()<5 and matchedMus[1].Pt()<5) or matchedJets[0].Pt()<5 or matchedJets[1].Pt()<5 or (mus[0].Pt()<5 and mus[1].Pt()<5) or jets[0].Pt()<5 or jets[1].Pt()<5:
+		return -1
+	dRmu11 =  mus[0].DeltaR(matchedMus[0])
+	dRmu12 =  mus[0].DeltaR(matchedMus[1])
+	#dRmu21 =  mus[1].DeltaR(matchedMus[0])
+	#dRmu22 =  mus[1].DeltaR(matchedMus[1])
+	dRj11  = jets[0].DeltaR(matchedJets[0])
+	dRj12  = jets[0].DeltaR(matchedJets[1])
+	dRj21  = jets[1].DeltaR(matchedJets[0])
+	dRj22  = jets[1].DeltaR(matchedJets[1])
+	#if( (dRmu11<0.1 or dRmu12<0.1) and (dRmu21<0.1 or dRmu22<0.1) and (dRj11<0.1 or dRj12<0.1) and (dRj21<0.1 or dRj22<0.1) ):
+	if( (dRmu11<0.1 or dRmu12<0.1) and (dRj11<0.1 or dRj12<0.1) and (dRj21<0.1 or dRj22<0.1) ):
+		return 1
+	else:
+		return 0
+
 def compareMatching(mus,matchedMus,jets,matchedJets):
 	#Purpose: check how often the muons and jets are picked correctly
 	if len(matchedMus)<2 or len(matchedJets)<2 :
@@ -1522,12 +1614,12 @@ def FullKinematicCalculation(T,variation):
 	# MET as a vector
 	met = MetVector(T)
 	# ID Muons,Electrons
-	[muons,goodmuoninds,met,trkisos,charges,dpts,chi2,pfid,layers] = TightHighPtIDMuons(T,met,variation,T.isData)
+	[muons,goodmuoninds,met,trkisos,charges,dpts,chi2,pfid,layers,defaultPts] = TightHighPtIDMuons(T,met,variation,T.isData)
 	# muons_forjetsep = MuonsForJetSeparation(T)
 	# taus_forjetsep = TausForJetSeparation(T)
 	[electrons,electroninds,met] = HEEPElectrons(T,met,variation)
 	# ID Jets and filter from muons
-	[jets,jetinds,met,failthreshold,neutralhadronEF,neutralemEF,btagCSVscores,PUIds] = LooseIDJets(T,met,variation,T.isData)
+	[jets,jetinds,met,failthreshold,neutralhadronEF,neutralemEF,btagCSVscores,btagCMVAscores,PUIds] = LooseIDJets(T,met,variation,T.isData)
 	# jets = GeomFilterCollection(jets,muons_forjetsep,0.5)
 	jets = GeomFilterCollection(jets,muons,0.5)
 	jets = GeomFilterCollection(jets,electrons,0.5)
@@ -1550,6 +1642,7 @@ def FullKinematicCalculation(T,variation):
 		chi2.append(-1.0)
 		pfid.append(-1.0)
 		layers.append(-1.0)
+		defaultPts.append(-1.0)
 
 	if len(muons) < 2 : 
 		muons.append(EmptyLorentz)
@@ -1559,6 +1652,7 @@ def FullKinematicCalculation(T,variation):
 		chi2.append(-1.0)
 		pfid.append(-1.0)
 		layers.append(-1.0)
+		defaultPts.append(-1.0)
 
 	if len(electrons) < 1 : electrons.append(EmptyLorentz)
 	if len(electrons) < 2 : electrons.append(EmptyLorentz)	
@@ -1567,12 +1661,14 @@ def FullKinematicCalculation(T,variation):
 		neutralhadronEF.append(0.0)
 		neutralemEF.append(0.0)
 		btagCSVscores.append(-5.0)
+		btagCMVAscores.append(-5.0)
 		PUIds.append([-5.0,-5.0,-5.0])
 	if len(jets) < 2 : 
 		jets.append(EmptyLorentz)
 		neutralhadronEF.append(0.0)
 		neutralemEF.append(0.0)		
 		btagCSVscores.append(-5.0)
+		btagCMVAscores.append(-5.0)
 		PUIds.append([-5.0,-5.0,-5.0])
 	_ismuon_muon1 = 1.0
 	_ismuon_muon2 = 1.0
@@ -1605,6 +1701,8 @@ def FullKinematicCalculation(T,variation):
 	[_ptmu1,_etamu1,_phimu1,_isomu1,_qmu1,_dptmu1] = [muons[0].Pt(),muons[0].Eta(),muons[0].Phi(),trkisos[0],charges[0],dpts[0]]
 	[_ptmu2,_etamu2,_phimu2,_isomu2,_qmu2,_dptmu2] = [muons[1].Pt(),muons[1].Eta(),muons[1].Phi(),trkisos[1],charges[1],dpts[1]]
 	_ptmu1mu2 = (muons[0]+muons[1]).Pt()
+	_ptmu1_default = defaultPts[0]
+	_ptmu2_default = defaultPts[1]
 
 	[_chimu1,_chimu2] = [chi2[0],chi2[1]]
 	[_ispfmu1,ispfmu2] = [pfid[0],pfid[1]]
@@ -1618,6 +1716,7 @@ def FullKinematicCalculation(T,variation):
 	[_ptmet,_etamet,_phimet] = [met.Pt(),0,met.Phi()]
 	[_xmiss,_ymiss] = [met.Px(),met.Py()]
 	[_CSVj1,_CSVj2] = [btagCSVscores[0],btagCSVscores[1]]
+	[_CMVAj1,_CMVAj2] = [btagCMVAscores[0],btagCMVAscores[1]]
 	[_PULoosej1,_PUMediumj1,_PUTightj1] = PUIds[0]
 	[_PULoosej2,_PUMediumj2,_PUTightj2] = PUIds[1]
 
@@ -1673,7 +1772,12 @@ def FullKinematicCalculation(T,variation):
 
 	[_Muujj1, _Muujj2,_MHuujj] = GetLLJJMasses(muons[0],muons[1],jets[0],jets[1])
 
-	_matchedLQ = compareMatching(muons,_matchedRecoMuons,jets,_matchedRecoJets)
+	_matchedLQ     = compareMatching(muons,_matchedRecoMuons,jets,_matchedRecoJets)
+	while len(_matchedRecoMuons)<2:
+		_matchedRecoMuons.append(EmptyLorentz)
+	while len(_matchedRecoJets)<2:
+		_matchedRecoJets.append(EmptyLorentz)
+	_matchedLQ_LVJJ = compareMatchingLVJJ(muons,_matchedRecoMuons,jets,_matchedRecoJets)
 
 	_Muujj = (muons[0]+muons[1]+jets[0]+jets[1]).M()
 	_Muuj1   = (muons[0]+muons[1]+jets[0]).M()
@@ -1713,6 +1817,7 @@ def FullKinematicCalculation(T,variation):
 
 	# This MUST have the same structure as _kinematic variables!
 	toreturn  = [_ptmu1,_ptmu2,_ptel1,_ptel2,_ptj1,_ptj2,_ptmet]
+	toreturn += [_ptmu1_default,_ptmu2_default]
 	toreturn += [_ptmu1mu2]
 	toreturn += [_etamu1,_etamu2,_etael1,_etael2,_etaj1,_etaj2,_etamet]
 	toreturn += [_phimu1,_phimu2,_phiel1,_phiel2,_phij1,_phij2,_phimet]
@@ -1748,11 +1853,12 @@ def FullKinematicCalculation(T,variation):
 	toreturn += [_jetInd1,_jetInd2]
 	toreturn += [_ptHat]
 	toreturn += [_CSVj1,_CSVj2]
+	toreturn += [_CMVAj1,_CMVAj2]
 	toreturn += [_PULoosej1,_PUMediumj1,_PUTightj1]
 	toreturn += [_PULoosej2,_PUMediumj2,_PUTightj2]
 	toreturn += [_passWptCut,_passZptCut,_WorZSystemPt]
 	toreturn += [_WSystemPt,_ZSystemPt]
-	toreturn += [_matchedLQ]
+	toreturn += [_matchedLQ,_matchedLQ_LVJJ]
 	return toreturn
 
 #fixme Had to move these below FullKinematicCalculation, wouldn't find function otherwise. Why only these?
@@ -1809,7 +1915,8 @@ def GeomFilterCollection(collection_to_clean,good_collection,dRcut):
 def MetVector(T):
 	# Purpose: Creates a TLorentzVector representing the MET. No pseudorapidity, obviously.
 	met = TLorentzVector()
-	met.SetPtEtaPhiM(T.PFMETType1XYCor[0],0,T.PFMETPhiType1XYCor[0],0)
+	#met.SetPtEtaPhiM(T.PFMETType1XYCor[0],0,T.PFMETPhiType1XYCor[0],0)#fixme moving away from xy cor
+	met.SetPtEtaPhiM(T.PFMETType1Cor[0],0,T.PFMETPhiType1Cor[0],0)
 	return met
 
 

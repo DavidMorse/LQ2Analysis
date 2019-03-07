@@ -37,6 +37,8 @@ wshapes=[]
 znorms=[]
 zshapes=[]
 vvshapes=[]
+hips=[]
+btags=[]
 
 jer=[999.,0.]
 jes=[999.,0.]
@@ -55,6 +57,8 @@ wshape=[999.,0.]
 znorm=[999.,0.]
 zshape=[999.,0.]
 vvshape=[999.,0.]
+hip=[999.,0.]
+btag=[999.,0.]
 
 jerSig=[999.,0.]
 jesSig=[999.,0.]
@@ -73,6 +77,8 @@ wshapeSig=[999.,0.]
 znormSig=[999.,0.]
 zshapeSig=[999.,0.]
 vvshapeSig=[999.,0.]
+hipSig=[999.,0.]
+btagSig=[999.,0.]
 gotToBetaHalf=False
 def cardtotex(card):
 	# print '  --------------------------------------------------   '
@@ -122,7 +128,7 @@ def cardtotex(card):
 				sysname = sysname.replace('SHAPE','') + ' Shape'
 			sysnames.append(sysname)
 			#if float(mass)>1500 : continue
-			#if gotToBetaHalf==True : continue #== for mumujj, != for munujj, commented out for both
+			if gotToBetaHalf!=True : continue #== for mumujj, != for munujj, commented out for both
 			#print sysname
 			if 'TT Shape' in sysname:
 				if r_b < ttshape[0]:ttshape[0]=r_b
@@ -235,6 +241,18 @@ def cardtotex(card):
 				if r_s < pdfSig[0]:pdfSig[0]=r_s
 				if r_s > pdfSig[1]:pdfSig[1]=r_s
 				pdfs.append(r_b)
+			if sysname == 'HIP': 
+				if r_b < hip[0]:hip[0]=r_b
+				if r_b > hip[1]:hip[1]=r_b
+				if r_s < hipSig[0]:hipSig[0]=r_s
+				if r_s > hipSig[1]:hipSig[1]=r_s
+				hips.append(r_b)
+			if sysname == 'BTAG': 
+				if r_b < btag[0]:btag[0]=r_b
+				if r_b > btag[1]:btag[1]=r_b
+				if r_s < btagSig[0]:btagSig[0]=r_s
+				if r_s > btagSig[1]:btagSig[1]=r_s
+				btags.append(r_b)
 
 
 
@@ -299,33 +317,35 @@ print '\n Deliniation of systematics list'
 for ii in range(len(totinfo)):
 	print cards[ii][0].replace('\n',''), sysuncs[ii]
 
-for x in [jer,jes,lumi,align,mer,mes,muid,pdf,pu,trig,ttnorm,ttshape,wnorm,wshape,znorm,zshape,vvshape,jerSig,jesSig,lumiSig,alignSig,merSig,mesSig,muidSig,pdfSig,puSig,trigSig,ttnormSig,ttshapeSig,wnormSig,wshapeSig,znormSig,zshapeSig,vvshapeSig] :
+for x in [jer,jes,lumi,align,mer,mes,muid,pdf,pu,trig,hip,btag,ttnorm,ttshape,wnorm,wshape,znorm,zshape,vvshape,jerSig,jesSig,lumiSig,alignSig,merSig,mesSig,muidSig,pdfSig,puSig,trigSig,hipSig,btagSig,ttnormSig,ttshapeSig,wnormSig,wshapeSig,znormSig,zshapeSig,vvshapeSig] :
 	if x[0]==999.0: x[0]=0.0
 
 print 'Range of systematics:'
-print '|  systematic  |  Signal min - max  |  BG min - max  |'
-print '|  Jet Energy Resolution  |  ', jerSig[0],'-',jerSig[1],'  |  ',jer[0],'-',jer[1],'  |'
-print '|  Jet Energy Scale       |  ', jesSig[0],'-',jesSig[1],'  |  ',jes[0],'-',jes[1],'  |'
-print '|  Lumi                   |  ', lumiSig[0],'-',lumiSig[1],'  |  ',lumi[0],'-',lumi[1],'  |'
+print '|  systematic uncertainty |  Signal min - max  |  Background min - max  |'
+print '|  Jet energy resolution  |  ', jerSig[0],'-',jerSig[1],'  |  ',jer[0],'-',jer[1],'  |'
+print '|  Jet energy scale       |  ', jesSig[0],'-',jesSig[1],'  |  ',jes[0],'-',jes[1],'  |'
+print '|  Luminosity             |  ', lumiSig[0],'-',lumiSig[1],'    |  ',lumi[0],'-',lumi[1],'  |'
 #print '|  Misalignment           |  ', alignSig[0],'-',alignSig[1],'  |  ',align[0],'-',align[1],'  |'
-print '|  Muon Energy Resolution |  ', merSig[0],'-',merSig[1],'  |  ',mer[0],'-',mer[1],'  |'
-print '|  Muon Energy Scale      |  ', mesSig[0],'-',mesSig[1],'  |  ',mes[0],'-',mes[1],'  |'
-print '|  Muon ID/Iso            |  ', muidSig[0],'-',muidSig[1],'  |  ',muid[0],'-',muid[1],'  |'
+print '|  Muon energy resolution |  ', merSig[0],'-',merSig[1],'  |  ',mer[0],'-',mer[1],'  |'
+print '|  Muon energy scale      |  ', mesSig[0],'-',mesSig[1],'  |  ',mes[0],'-',mes[1],'  |'
+print '|  Muon ID/Isolation      |  ', muidSig[0],'-',muidSig[1],'  |  ',muid[0],'-',muid[1],'  |'
 print '|  PDF                    |  ', pdfSig[0],'-',pdfSig[1],'  |  ',pdf[0],'-',pdf[1],'  |'
 print '|  PileUp                 |  ', puSig[0],'-',puSig[1],'  |  ',pu[0],'-',pu[1],'  |'
 print '|  Trigger                |  ', trigSig[0],'-',trigSig[1],'  |  ',trig[0],'-',trig[1],'  |'
-print '|  TT Normalization       |  ', ttnormSig[0],'-',ttnormSig[1],'  |  ',ttnorm[0],'-',ttnorm[1],'  |'
-print '|  TT Shape               |  ', ttshapeSig[0],'-',ttshapeSig[1],'  |  ',ttshape[0],'-',ttshape[1],'  |'
-print '|  W Normalization        |  ', wnormSig[0],'-',wnormSig[1],'  |  ',wnorm[0],'-',wnorm[1],'  |'
-print '|  W Shape                |  ', wshapeSig[0],'-',wshapeSig[1],'  |  ',wshape[0],'-',wshape[1],'  |'
-print '|  Z Normalization        |  ', znormSig[0],'-',znormSig[1],'  |  ',znorm[0],'-',znorm[1],'  |'
-print '|  Z Shape                |  ', zshapeSig[0],'-',zshapeSig[1],'  |  ',zshape[0],'-',zshape[1],'  |'
-print '|  VV Shape               |  ', vvshapeSig[0],'-',vvshapeSig[1],'  |  ',vvshape[0],'-',vvshape[1],'  |'
+print '|  Tracking efficiency    |  ', hipSig[0],'-',hipSig[1],'  |  ',hip[0],'-',hip[1],'  |'
+print '|  b-tagging efficiency   |  ', btagSig[0],'-',btagSig[1],'  |  ',btag[0],'-',btag[1],'  |'
+print '|  TT normalization       |  ', ttnormSig[0],'-',ttnormSig[1],'  |  ',ttnorm[0],'-',ttnorm[1],'  |'
+print '|  TT shape               |  ', ttshapeSig[0],'-',ttshapeSig[1],'  |  ',ttshape[0],'-',ttshape[1],'  |'
+print '|  W normalization        |  ', wnormSig[0],'-',wnormSig[1],'  |  ',wnorm[0],'-',wnorm[1],'  |'
+print '|  W shape                |  ', wshapeSig[0],'-',wshapeSig[1],'  |  ',wshape[0],'-',wshape[1],'  |'
+print '|  Z normalization        |  ', znormSig[0],'-',znormSig[1],'  |  ',znorm[0],'-',znorm[1],'  |'
+print '|  Z shape                |  ', zshapeSig[0],'-',zshapeSig[1],'  |  ',zshape[0],'-',zshape[1],'  |'
+print '|  Diboson shape          |  ', vvshapeSig[0],'-',vvshapeSig[1],'  |  ',vvshape[0],'-',vvshape[1],'  |'
 
 print '\n\n'
-systos = ['jers','jess','lumis','aligns','mers','mess','muids','pdfs','pus','ttnorms','ttshapes','trigs','wnorms','wshapes','znorms','zshapes','vvshapes']
+systos = ['jers','jess','lumis','aligns','mers','mess','muids','pdfs','pus','ttnorms','ttshapes','trigs','wnorms','wshapes','znorms','zshapes','vvshapes','hips','btags']
 i=0
-for x in [jers,jess,lumis,aligns,mers,mess,muids,pdfs,pus,ttnorms,ttshapes,trigs,wnorms,wshapes,znorms,zshapes,vvshapes]:
+for x in [jers,jess,lumis,aligns,mers,mess,muids,pdfs,pus,ttnorms,ttshapes,trigs,wnorms,wshapes,znorms,zshapes,vvshapes,hips,btags]:
 	print systos[i],'= ',
 	i=i+1
 	print x
