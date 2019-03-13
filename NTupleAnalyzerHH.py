@@ -10,8 +10,9 @@ from argparse import ArgumentParser
 tRand = TRandom3()
 from random import randint
 
-gSystem.Load('libCondFormatsBTauObjects') 
-gSystem.Load('libCondToolsBTau') 
+ROOT.gSystem.Load('libCondFormatsBTauObjects') 
+ROOT.gSystem.Load('libCondToolsBTau') 
+
 # get the sf data loaded
 calib = BTagCalibration('cMVAv2', 'cMVAv2_Moriond17_B_H.csv')
 # making a std::vector<std::string>> in python is a bit awkward, 

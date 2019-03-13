@@ -20,7 +20,7 @@ tagname = 'default'
 json = ''
 dopdf = '0'
 nsplit = 25
-bq = 'workday'
+bq = '\"workday\"'
 override_dir = ''
 
 helpmessage = 'OPTIONS SUMMARY: \n -i  CSVFILE.csv \n -py ANALYZER.py \n -t  TAGNAME (optional) [default "default"] ' 
@@ -43,7 +43,7 @@ for x in range(len(a)):
 	if a[x] == '-s':
 		nsplit = int(a[x+1])
 	if a[x] == '-q':
-		bq = (a[x+1])
+		bq = '\"'+(a[x+1])+'\"'
 	if a[x] == '-d':
 		override_dir = (a[x+1])
 	if a[x] == '--help':
@@ -408,7 +408,7 @@ def MakeJobs(njobs):
 
 		done=0
 		while done!=1:
-			ncheck,npend,nrun,ndone,nhold = 0,0,0,0,0
+			ncheck,npend,nrun,ndone,nhold,ntotal = 0,0,0,0,0,0
 			os.system('sleep 60')
 		        #jobinfo = os.popen('bjobs -w | grep '+now).readlines()
 			condor_check = os.popen('condor_q | grep Failed').readlines()
@@ -416,15 +416,22 @@ def MakeJobs(njobs):
 				print '\nHTCondor failed to query queue!!!! Exiting!!!\n'
 				break
 			jobinfo = os.popen('condor_q | grep '+now).readlines()
-		        #if 'PEND' not in str(jobinfo):
 
+			hasHOLD=False
 			for x in range(len(jobinfo)):
 				if len(jobinfo)==0:
 					print '\nNo jobs remaining from previous submission, moving on to submit. \n'
 					done=1
 				else:
-					if str(jobinfo[x]).split()[8]=='1': #HOLD status #fixme not seeing hold?
-						nhold  += 1
+					if hasHOLD==False and 'OWNER' in jobinfo[x] and 'HOLD' in jobinfo[x]:
+						hasHOLD=True
+					if hasHOLD:
+						if str(jobinfo[x]).split()[8]=='1': #HOLD or TOTAL status 
+							nhold  += 1
+						if str(jobinfo[x]).split()[9]=='1': #HOLD or TOTAL status 
+							ntotal  += 1
+					elif str(jobinfo[x]).split()[8]=='1': #TOTAL status if no HOLD
+						ntotal  += 1
 					if str(jobinfo[x]).split()[7]=='1': #IDLE status
 						npend  += 1
 						ncheck += 1
@@ -437,7 +444,7 @@ def MakeJobs(njobs):
 			if jobsleft == -1:
 				done = 1
 			if jobsleft>=0:
-				print  str(jobsleft+1) +' jobs remaining ('+str(ndone)+' DONE, '+str(nrun)+' RUN, '+str(npend)+' IDLE, '+str(nhold)+' HOLD).'
+				print  str(jobsleft+1)+' jobs remaining ('+str(ndone)+' DONE, '+str(nrun)+' RUN, '+str(npend)+' IDLE, '+str(nhold)+' HOLD).'
 
 
 
@@ -453,10 +460,30 @@ def MakeJobs(njobs):
 	for j in jobgroups:
 		Nj += 1
 		subber = open(thiseos+'/subber_'+now+'_'+str(Nj)+'.tcsh','w')
-		#subber.write('#!/bin/tcsh\n\nscram project CMSSW CMSSW_5_3_18\ncd CMSSW_5_3_18/src\ncmsenv\ncd -\n\n')
-		#subber.write('#!/bin/tcsh\n\nscram project CMSSW CMSSW_7_4_16\ncd CMSSW_7_4_16/src\ncmsenv\ncd -\n\n')
+		##subber.write('#!/bin/tcsh\n\nscram project CMSSW CMSSW_5_3_18\ncd CMSSW_5_3_18/src\ncmsenv\ncd -\n\n')
+		##subber.write('#!/bin/tcsh\n\nscram project CMSSW CMSSW_7_4_16\ncd CMSSW_7_4_16/src\ncmsenv\ncd -\n\n')
 		#subber.write('#!/bin/tcsh\n\nscram project CMSSW CMSSW_8_0_26_patch1\ncd CMSSW_8_0_26_patch1/src\ncmsenv\ncd -\n\n')
-		subber.write('#!/bin/tcsh\n\nscram project CMSSW CMSSW_10_2_9\ncd CMSSW_10_2_9/src\ncmsenv\ncd -\n\n')
+		subber.write('#!/bin/tcsh\n\n')
+
+		#subber.write('\ncp '+thisdir+'/BTagCalibrationStandalone* .\n\n')
+		#subber.write('\n chmod 775 BTagCalibrationStandalone_cpp.so\n\n')
+		#subber.write('/usr/bin/root -b -l -q BTagCalibrationStandalone.cpp+\n')
+		#subber.write('.L BTagCalibrationStandalone.cpp+\n')
+		#subber.write('EOF\n\n')
+
+
+		#fixme changed from 8_0_26_patch1 to 10_2_9 for btagcalibration
+		subber.write('setenv SCRAM_ARCH slc6_amd64_gcc530\n\n')
+		subber.write('source /cvmfs/cms.cern.ch/cmsset_default.csh\n')
+		subber.write('scram project CMSSW CMSSW_8_0_26_patch1\ncd CMSSW_8_0_26_patch1/src\n')#')scramv1 runtime -csh\ncd -\n\n')
+		subber.write('cmsenv\n')
+		#subber.write('git cms-addpkg CondTools/BTau\n')
+		#subber.write('git cms-addpkg CondFormats/BTauObjects\n')
+		#subber.write('scram b\n')
+		subber.write('cd -\n\n')
+                #subber.write('git cms-addpkg CondFormatsPhysicsToolsObjects\n')
+		#subber.write('scram project CMSSW CMSSW_10_2_9\ncd CMSSW_10_2_9/src\nscramv1 runtime -csh\ncd -\n\n')
+		#fixme#for nano#subber.write('#!/bin/tcsh\n\nscram project CMSSW CMSSW_10_2_9\ncd CMSSW_10_2_9/src\ncmsenv\ncd -\n\n')
 		subber.write('\ncp '+thisdir+'/'+pyfile+' .')
 		subber.write('\ncp '+thisdir+'/'+json+' .')
 		#subber.write('\ncp '+thisdir+'/*json .')
@@ -464,6 +491,10 @@ def MakeJobs(njobs):
 		subber.write('\ncp '+thisdir+'/PU*root .\n\n')
 		subber.write('\ncp -r '+thisdir+'/weights_classification .\n\n')
 		subber.write('\ncp '+thisdir+'/cMVAv2_Moriond17_B_H.csv .\n\n')
+		subber.write('\ncp '+thisdir+'/CSVv2_Moriond17_B_H.csv .\n\n')
+		#subber.write('\ncp '+thisdir+'/*.so .\n\n')
+		#subber.write('\ncp '+thisdir+'/libCond* .\n\n')
+		#subber.write('\ncp '+thisdir+'/libCondFormatsPhysicsToolsObjects.so .\n\n')
 
 		# if Nj*njobs>5000:
 		# 	continue
@@ -483,9 +514,12 @@ def MakeJobs(njobs):
 		#tomorrow     = 1 day
 		#testmatch    = 3 days
 		#nextweek     = 1 week
-		subber.write('\noutput                = '+thiseos+'_'+str(Nj))
-		subber.write('\nerror                 = '+thiseos+'_'+str(Nj))
-		subber.write('\nlog                   = '+thiseos+'_'+str(Nj)+'.log')
+		subber.write('\noutput                 = '+thiseos+'_'+str(Nj))
+		subber.write('\nerror                  = '+thiseos+'_'+str(Nj))
+		subber.write('\nlog                    = '+thiseos+'_'+str(Nj)+'.log')
+		#subber.write('\non_exit_remove         = (ExitBySignal == False) && (ExitCode == 0)')
+		#subber.write('\nmax_retries            = 3')
+		#subber.write('\nrequirements = Machine =!= LastRemoteHost')
 		subber.write('\nqueue\n')
 
 		subber.close()
@@ -518,7 +552,7 @@ while keep_going != 0:
 	done=0
 	
 	while done!=1:
-		ncheck,npend,nrun,nhold,ndone = 0,0,0,0,0
+		ncheck,npend,nrun,nhold,ndone,ntotal = 0,0,0,0,0,0
 		os.system('sleep 60')
 		#jobinfo = os.popen('bjobs -w | grep '+now).readlines()
 		condor_check = os.popen('condor_q | grep Failed').readlines()
@@ -526,10 +560,18 @@ while keep_going != 0:
 			print '\nHTCondor failed to query queue!!!! Exiting!!!\n'
 			break
 		jobinfo = os.popen('condor_q | grep '+now).readlines()
+		hasHOLD=False
 		for x in range(len(jobinfo)):
 			if len(jobinfo)>0:
-				if str(jobinfo[x]).split()[8]=='1': #HOLD status #fixme not seeing hold?
-					nhold  += 1
+				if hasHOLD==False and 'OWNER' in jobinfo[x] and 'HOLD' in jobinfo[x]:
+					hasHOLD=True
+				if hasHOLD:
+					if str(jobinfo[x]).split()[8]=='1': #HOLD or TOTAL status 
+						nhold  += 1
+					if str(jobinfo[x]).split()[9]=='1': #HOLD or TOTAL status 
+						ntotal  += 1
+				elif str(jobinfo[x]).split()[8]=='1': #TOTAL status if no HOLD
+					ntotal  += 1
 				if str(jobinfo[x]).split()[7]=='1': #IDLE status
 					npend  += 1
 					ncheck += 1
@@ -542,7 +584,7 @@ while keep_going != 0:
 		if jobsleft == -1:
 			done = 1
 		if jobsleft>=0:
-			print  str(jobsleft+1) +' jobs remaining ('+str(ndone)+' DONE, '+str(nrun)+' RUN, '+str(npend)+' IDLE, '+str(nhold)+' HOLD).'
+			print  str(jobsleft+1)+' jobs remaining ('+str(ndone)+' DONE, '+str(nrun)+' RUN, '+str(npend)+' IDLE, '+str(nhold)+' HOLD, '+str(ntotal)+' TOTAL).'
 
 		#if (ncheck > 2000) or ((ncheck>1250) and jobsleft<3):
 		#	 print "\nJobs taking too long. Killing remaining jobs. \n"
