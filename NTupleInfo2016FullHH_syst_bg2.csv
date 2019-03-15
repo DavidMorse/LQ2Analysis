@@ -1,0 +1,23 @@
+SignalType,Xsections,N_orig,Group,CustomJson,EOSDirectory#####W
+####TT
+TT_TuneCUETP8M2T4_13TeV-powheg-pythia8,831.76,154948894,TTBar,0,/store/group/phys_higgs/HiggsExo/HH_bbZZ_bbllqq/dmorse/v2-3-10/
+####SM Higgs
+#done#GluGluHToZZTo4L_M125,0.01212,1999600,SMHiggs1,0,/store/group/phys_higgs/HiggsExo/HH_bbZZ_bbllqq/dmorse/v2-3-10/
+#done#VBF_HToZZTo4L_M125,0.001034,912417,SMHiggs2,0,/store/group/phys_higgs/HiggsExo/HH_bbZZ_bbllqq/dmorse/v2-3-10/
+#done#GluGluHToBB_M125,25.34,9827392,SMHiggs3,0,/store/group/phys_higgs/HiggsExo/HH_bbZZ_bbllqq/dmorse/v2-3-10/
+#done#VBFHToBB_M125,2.1626,1005638,SMHiggs4,0,/store/group/phys_higgs/HiggsExo/HH_bbZZ_bbllqq/dmorse/v2-3-10/
+#ZH_HToBB_ZToLL_M125,0.173,10729180,SMHiggs5,0,/store/group/phys_higgs/HiggsExo/HH_bbZZ_bbllqq/dmorse/v2-3-10/
+#ggZH_HToBB_ZToLL_M125,.006954,5766800,SMHiggs6,0,/store/group/phys_higgs/HiggsExo/HH_bbZZ_bbllqq/dmorse/v2-3-10/
+#done#WH_HToBB_WToLNu_M125,0.173,1279827,SMHiggs7,0,/store/group/phys_higgs/HiggsExo/HH_bbZZ_bbllqq/dmorse/v2-3-10/
+#done#WplusH_HToZZTo4L_M125,0.0002339,592720,SMHiggs8,0,/store/group/phys_higgs/HiggsExo/HH_bbZZ_bbllqq/dmorse/v2-3-10/
+#done#WminusH_HToZZTo4L_M125,0.0001471,395460,SMHiggs9,0,/store/group/phys_higgs/HiggsExo/HH_bbZZ_bbllqq/dmorse/v2-3-10/
+#done#ttHJetTobb_M125,0.2934,2910760,SMHiggs10,0,/store/group/phys_higgs/HiggsExo/HH_bbZZ_bbllqq/dmorse/v2-3-10/
+#done#ttHJetToNonbb_M125,0.2151,2981359,SMHiggs11,0,/store/group/phys_higgs/HiggsExo/HH_bbZZ_bbllqq/dmorse/v2-3-10/
+#done#GluGluZH_HToWW,0.8696,148525,SMHiggs12,0,/store/group/phys_higgs/HiggsExo/HH_bbZZ_bbllqq/dmorse/v2-3-10/
+#done#VBFHToWWTo2L2Nu,3.748,486510,SMHiggs13,0,/store/group/phys_higgs/HiggsExo/HH_bbZZ_bbllqq/dmorse/v2-3-10/
+#done#GluGluHToWWTo2L2Nu,43.92,499473,SMHiggs14,0,/store/group/phys_higgs/HiggsExo/HH_bbZZ_bbllqq/dmorse/v2-3-10/
+#done#ZH_HToZZ_2LFilter,0.7534,942259,SMHiggs15,0,/store/group/phys_higgs/HiggsExo/HH_bbZZ_bbllqq/dmorse/v2-3-10/
+##
+WToLNu_0J,50279.20,79682330,WJetsJBin,0,/store/group/phys_higgs/HiggsExo/HH_bbZZ_bbllqq/dmorse/v2-3-10/
+WToLNu_1J,8434.257,62299793,WJetsJBin,0,/store/group/phys_higgs/HiggsExo/HH_bbZZ_bbllqq/dmorse/v2-3-10/
+WToLNu_2J,2813.243,45382497,WJetsJBin,0,/store/group/phys_higgs/HiggsExo/HH_bbZZ_bbllqq/dmorse/v2-3-10/
