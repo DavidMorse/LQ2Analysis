@@ -351,7 +351,9 @@ def MakeJobs(njobs):
 	jstr = str(os.popen('find '+thiseos).readlines())
 	for j in jobs:
 		filesig1 = (((j.split(' -f ')[-1]).split(' ')[0]))
+		#print filesig1
 		filesig = filesig1.split('/')[-5]+'__'+filesig1.split('/')[-1].replace('.root','')#changed -2 to -5 to get dataset name instead of 0000
+		filesig = filesig+'_'
 		#print filesig
 		#print jstr
 			# .replace('/','___').)replace('.root','')
