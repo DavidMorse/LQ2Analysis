@@ -521,6 +521,7 @@ def MakeJobs(njobs):
 		#subber.write('\non_exit_remove         = (ExitBySignal == False) && (ExitCode == 0)')
 		#subber.write('\nmax_retries            = 3')
 		#subber.write('\nrequirements = Machine =!= LastRemoteHost')
+                subber.write('\nrequirements = (OpSysAndVer =?= "SLCern6")')
 		subber.write('\nqueue\n')
 
 		subber.close()
