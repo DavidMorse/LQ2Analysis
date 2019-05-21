@@ -3,6 +3,9 @@ import sys
 import math
 
 sysfile = sys.argv[1]
+do_PAS=0
+if 'doPAS' in str(sys.argv):
+	do_PAS = 1
 
 info = [line for line in open(sysfile,'r')]
 
@@ -124,6 +127,8 @@ def tableentryfromraw(rates, stats, syss,flagsys):
 
 def cardtotex(card):
 	# print '  --------------------------------------------------   '
+	global do_PAS
+	mass,sig,zjets,ttbar,wjets,vv,stop,totB=[],[],[],[],[],[],[],[]
 	sysnames = []
 	signalsystematics = []
 	backgroundsystematics = []
@@ -148,14 +153,16 @@ def cardtotex(card):
 			backgrounds = [float(x) for x in vals[2:]]
 
 		if texchan == 'uujj':
+			if do_PAS: backcols = [['Z+Jets',['ZJets']],['$\\ttbar$',['TTBar']],['VV',['VV']],['Other BG',['WJets','sTop']]]
 			#backcols = [['Z+Jets',['ZJets']],['$\\ttbar$',['TTBar']],['Other BG',['WJets','sTop','VV','QCD']]]
 			#backcols = [['Z+Jets',['ZJets']],['$\\ttbar$',['TTBar']],['W+Jets',['WJets']],['sTop',['sTop']],['VV',['VV']],['QCD',['QCD']]]
-			backcols = [['Z+Jets',['ZJets']],['$\\ttbar$',['TTBar']],['W+Jets',['WJets']],['sTop',['sTop']],['VV',['VV']]]
+			if not do_PAS: backcols = [['Z+Jets',['ZJets']],['$\\ttbar$',['TTBar']],['W+Jets',['WJets']],['sTop',['sTop']],['VV',['VV']]]
 
 		if texchan == 'uvjj':
+			if do_PAS: backcols = [['W+Jets',['WJets']],['$\\ttbar$',['TTBar']],['VV',['VV']],['Other BG',['ZJets','sTop']]]
 			#backcols = [['W+Jets',['WJets']],['$\\ttbar$',['TTBar']],['Other BG',['ZJets','sTop','VV','QCD']]]
 			#backcols = [['W+Jets',['WJets']],['$\\ttbar$',['TTBar']],['Z+Jets',['ZJets']],['sTop',['sTop']],['VV',['VV']],['QCD',['QCD']]]
-			backcols = [['W+Jets',['WJets']],['$\\ttbar$',['TTBar']],['Z+Jets',['ZJets']],['sTop',['sTop']],['VV',['VV']]]
+			if not do_PAS: backcols = [['W+Jets',['WJets']],['$\\ttbar$',['TTBar']],['Z+Jets',['ZJets']],['sTop',['sTop']],['VV',['VV']]]
 
 
 		if 'lnN' in line:
@@ -179,17 +186,17 @@ def cardtotex(card):
 	names = [mass]
 	names += backgroundnames
 
-	# print backgroundnames
-	# print rates
-	# print systematics
-	# print staterrs
+	#print names
+	#print rates
+	#print systematics
+	#print staterrs,'\n'
 
 	# signalentry = [rates[0],staterrs[0]*rates[0], systematics[0]*rates[0]]
 
 
 	__Sh = names[0]
 	__S = tableentryfromraw([rates[0]],[staterrs[0]],[systematics[0]],0)
-
+	
 	tabhead = '$M_{LQ}$ & Signal & '
 	tabline = mass+' & '+__S+' & '
 	
@@ -229,8 +236,57 @@ def cardtotex(card):
 	tabline += data +' \\\\'
 
 	#print tabhead
-	#print tabline
+	
+	newline,newlines=[],[]
+	plotline = tabline.replace('\\','').split("&")
+	#for line in plotline:
+	#	for entry in line:
+	#		print entry
+	#		if '$pm$' in entry:
+	#			entry=entry.split('$pm$')
+	#		newline.append(entry)
+	#newlines.append(newline)
+	#print plotline
+	if do_PAS:
+		print 'sig.SetBinContent('+str(int((float(mass)-200)/50+1))+','+str(plotline[1].split('$pm$')[0])+')'
+		print 'sig.SetBinError('+str(int((float(mass)-200)/50+1))+','+str(plotline[1].split('$pm$')[1])+')'
+		i=2
+		for b in backcols:
+			name = b[0]
+			if name=='W+Jets': name='wjets'
+			if name=='Z+Jets': name='zjets'
+			if name=='$\\ttbar$': name='ttbar'
+			if name=='Other BG': name='other'
+			if '$pm$' in plotline[i]:
+				print name+'.SetBinContent('+str(int((float(mass)-200)/50+1))+','+str(plotline[i].split('$pm$')[0])+')'
+				print name+'.SetBinError('+str(int((float(mass)-200)/50+1))+','+str(plotline[i].split('$pm$')[1])+')'
+			else:
+			#print str(plotline[i])
+				print name+'.SetBinContent('+str(int((float(mass)-200)/50+1))+','+str(plotline[i].split('$')[0])+')'
+				print name+'.SetBinError('+str(int((float(mass)-200)/50+1))+','+str(plotline[i].split('$')[1].split('}^{+')[-1].replace('}',''))+')'
+			i=i+1
 
+		ttBGline = plotline[6].split('$')
+	#print ttBGline
+		print 'totBG.SetBinContent('+str(int((float(mass)-200)/50+1))+','+str(ttBGline[0])+')'
+		staterr,syserr=0.0,0.0
+		if 'pm' in ttBGline[1] and 'pm' in ttBGline[3]:
+			staterr=float(ttBGline[2])
+			systerr=float(ttBGline[4])
+		elif '^' in ttBGline[1] and 'pm' in ttBGline[3]:
+			staterr=float(ttBGline[1].split('}^{+')[-1].replace('}',''))
+			systerr=float(ttBGline[4])
+		elif 'pm' in ttBGline[1] and '^' in ttBGline[3]:
+			staterr=float(ttBGline[2])
+			staterr=float(ttBGline[3].split('}^{+')[-1].replace('}',''))
+		elif '^' in ttBGline[1] and '^' in ttBGline[3]:
+			staterr=float(ttBGline[1].split('}^{+')[-1].replace('}',''))
+			staterr=float(ttBGline[3].split('}^{+')[-1].replace('}',''))
+
+		print 'totBG.SetBinError('+str(int((float(mass)-200)/50+1))+','+str(math.sqrt(staterr**2+systerr**2))+')'
+			
+		print 'data.SetBinContent('+str(int((float(mass)-200)/50+1))+','+str(plotline[7])+')'
+		print 'data.SetBinError('+str(int((float(mass)-200)/50+1))+','+str(math.sqrt(float(plotline[7])))+')'
 
 	return tabhead,tabline
 

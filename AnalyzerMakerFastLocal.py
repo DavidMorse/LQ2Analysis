@@ -344,7 +344,7 @@ def MakeJobs(njobs):
 	for j in jobs:
 		filesig1 = (((j.split(' -f ')[-1]).split(' ')[0]))
 		#print filesig1
-		filesig = filesig1.split('/')[-5]+'__'+filesig1.split('/')[-1].replace('.root','')#changed -2 to -5 to get dataset name instead of 0000
+		filesig = filesig1.split('/')[-5]+'__'+filesig1.split('/')[-1].replace('.root','_tree.root')#changed -2 to -5 to get dataset name instead of 0000
 		#print filesig
 		#print jstr
 			# .replace('/','___').)replace('.root','')
@@ -408,6 +408,7 @@ def MakeJobs(njobs):
 		subber.write('\ncp '+thisdir+'/PU*root .\n\n')
 		subber.write('\ncp -r '+thisdir+'/weights_classification .\n\n')
 		subber.write('\ncp '+thisdir+'/cMVAv2_Moriond17_B_H.csv .\n\n')
+		subber.write('\ncp '+thisdir+'/CSVv2_Moriond17_B_H.csv .\n\n')
 
 		# if Nj*njobs>5000:
 		# 	continue

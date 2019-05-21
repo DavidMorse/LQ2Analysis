@@ -10,8 +10,9 @@ from argparse import ArgumentParser
 tRand = TRandom3()
 from random import randint
 
-gSystem.Load('libCondFormatsBTauObjects') 
-gSystem.Load('libCondToolsBTau') 
+ROOT.gSystem.Load('libCondFormatsBTauObjects') 
+ROOT.gSystem.Load('libCondToolsBTau') 
+
 # get the sf data loaded
 calib = BTagCalibration('cMVAv2', 'cMVAv2_Moriond17_B_H.csv')
 # making a std::vector<std::string>> in python is a bit awkward, 
@@ -298,7 +299,6 @@ _kinematicvariables += ['uu_s2_bdt_discrim_M750','uu_s2_bdt_discrim_M800','uu_s2
 _kinematicvariables += ['ee_s2_bdt_discrim_M260','ee_s2_bdt_discrim_M270','ee_s2_bdt_discrim_M300','ee_s2_bdt_discrim_M350','ee_s2_bdt_discrim_M400']
 _kinematicvariables += ['ee_s2_bdt_discrim_M450','ee_s2_bdt_discrim_M500','ee_s2_bdt_discrim_M550','ee_s2_bdt_discrim_M600','ee_s2_bdt_discrim_M650']
 _kinematicvariables += ['ee_s2_bdt_discrim_M750','ee_s2_bdt_discrim_M800','ee_s2_bdt_discrim_M900','ee_s2_bdt_discrim_M1000']
-_kinematicvariables += ['uu_s0_bdt_discrim_LowM','ee_s0_bdt_discrim_LowM','uu_s2_bdt_discrim_LowM','ee_s2_bdt_discrim_LowM']
 
 _kinematicvariables_systOnly = ['uu_s0_bdt_discrim_M260','uu_s0_bdt_discrim_M270','uu_s0_bdt_discrim_M300','uu_s0_bdt_discrim_M350','uu_s0_bdt_discrim_M400']
 _kinematicvariables_systOnly += ['uu_s0_bdt_discrim_M450','uu_s0_bdt_discrim_M500','uu_s0_bdt_discrim_M550','uu_s0_bdt_discrim_M600','uu_s0_bdt_discrim_M650']
@@ -312,7 +312,8 @@ _kinematicvariables_systOnly += ['uu_s2_bdt_discrim_M750','uu_s2_bdt_discrim_M80
 _kinematicvariables_systOnly += ['ee_s2_bdt_discrim_M260','ee_s2_bdt_discrim_M270','ee_s2_bdt_discrim_M300','ee_s2_bdt_discrim_M350','ee_s2_bdt_discrim_M400']
 _kinematicvariables_systOnly += ['ee_s2_bdt_discrim_M450','ee_s2_bdt_discrim_M500','ee_s2_bdt_discrim_M550','ee_s2_bdt_discrim_M600','ee_s2_bdt_discrim_M650']
 _kinematicvariables_systOnly += ['ee_s2_bdt_discrim_M750','ee_s2_bdt_discrim_M800','ee_s2_bdt_discrim_M900','ee_s2_bdt_discrim_M1000']
-_kinematicvariables_systOnly += ['uu_s0_bdt_discrim_LowM','ee_s0_bdt_discrim_LowM','uu_s2_bdt_discrim_LowM','ee_s2_bdt_discrim_LowM']
+_kinematicvariables_systOnly += ['Pt_miss']
+_kinematicvariables_systOnly += ['CMVA_bjet1','CMVA_bjet2','CMVA_Zjet1','CMVA_Zjet2']
 
 #_weights = ['scaleWeight_Up','scaleWeight_Down','scaleWeight_R1_F1','scaleWeight_R1_F2','scaleWeight_R1_F0p5','scaleWeight_R2_F1','scaleWeight_R2_F2','scaleWeight_R2_F0p5','scaleWeight_R0p5_F1','scaleWeight_R0p5_F2','scaleWeight_R0p5_F0p5','scaleWeight_R2_F2','weight_amcNLO','weight_nopu','weight_central', 'weight_pu_up', 'weight_pu_down','weight_topPt']
 #removing weight_amcNLO (always 0 anyway)
@@ -534,32 +535,28 @@ SignalM = ['260','270','300','350','400', '450', '500', '550', '600','650', '750
 
 # TMVA.Reader
 #--- muon BDT
-reader_25vars_uu = TMVA.Reader("!Color")
+reader_22vars_uu = TMVA.Reader("!Color")
 # the order of the variables matters, need to be the same as when training
-_bdtvars_uu = ['Mbb_H','Mjj_Z','M_uu','Pt_muon1','Pt_muon2','Pt_Hjet1','Pt_uu','Pt_Hjets','DR_bb_H','DR_jj_Z','DR_muon1muon2','DR_u1Hj1','DR_u1Hj2','DR_u2Hj1','DR_u2Hj2','DR_u1Zj1','DR_u1Zj2','DR_u2Zj1','DR_u2Zj2','DR_uu_bb_H','DR_uu_jj_Z','abs(cosThetaStarMu)','abs(cosTheta_hbb_uu)','abs(cosTheta_zuu_hzz)','abs(DPhi_muon1met)']
+_bdtvars_uu = ['Mbb_H','DR_bb_H','Mjj_Z','DR_jj_Z','M_uu','DR_muon1muon2','DR_uu_bb_H','DR_u1Hj1','DR_u1Hj2','DR_u2Hj1','DR_u2Hj2','DR_uu_jj_Z','DR_u1Zj1','DR_u1Zj2','DR_u2Zj1','DR_u2Zj2','abs(cosThetaStarMu)','abs(cosTheta_hbb_uu)','abs(cosTheta_zuu_hzz)','abs(DPhi_muon1met)','abs(phi1_uu)','abs(phi1_zjj_uu)']
 _bdtvarnames_uu = {}
 for vth in _bdtvars_uu:
 	_bdtvarnames_uu[vth] = array.array('f',[0])
-	reader_25vars_uu.AddVariable(vth, _bdtvarnames_uu[vth])
+	reader_22vars_uu.AddVariable(vth, _bdtvarnames_uu[vth])
 # TMVA.Reader booked with BDT_classifier, input is .weights.xml file
 for ith in range(len(SignalM)):
-	reader_25vars_uu.BookMVA(str("BDT_classifier_25vars_s0_uu_M" + SignalM[ith]), str("weights_classification/weights_file_25vars_s0_uu/TMVAClassification_BDT_M" + SignalM[ith] + ".weights.xml"))
-	reader_25vars_uu.BookMVA(str("BDT_classifier_25vars_s2_uu_M" + SignalM[ith]), str("weights_classification/weights_file_25vars_s2_uu/TMVAClassification_BDT_M" + SignalM[ith] + ".weights.xml"))
-reader_25vars_uu.BookMVA("BDT_classifier_25vars_s0_uu_LowM", "weights_classification/weights_file_25vars_s0_uu_LowM/TMVAClassification_BDT_LowM.weights.xml")
-reader_25vars_uu.BookMVA("BDT_classifier_25vars_s2_uu_LowM", "weights_classification/weights_file_25vars_s2_uu_LowM/TMVAClassification_BDT_LowM.weights.xml")
+	reader_22vars_uu.BookMVA(str("BDT_classifier_22vars_s0_uu_M" + SignalM[ith]), str("weights_classification/weights_file_22vars_s0_uu/TMVAClassification_BDT_M" + SignalM[ith] + ".weights.xml"))
+	reader_22vars_uu.BookMVA(str("BDT_classifier_22vars_s2_uu_M" + SignalM[ith]), str("weights_classification/weights_file_22vars_s2_uu/TMVAClassification_BDT_M" + SignalM[ith] + ".weights.xml"))
 
 #--- eletron BDT
-reader_25vars_ee = TMVA.Reader("!Color")
-_bdtvars_ee = ['Mbb_H','Mjj_Z','M_ee','Pt_ele1','Pt_ele2','Pt_Hjet1','Pt_ee','Pt_Hjets','DR_bb_H','DR_jj_Z','DR_ele1ele2','DR_e1Hj1','DR_e1Hj2','DR_e2Hj1','DR_e2Hj2','DR_e1Zj1','DR_e1Zj2','DR_e2Zj1','DR_e2Zj2','DR_ee_bb_H','DR_ee_jj_Z','abs(cosThetaStarEle)','abs(cosTheta_hbb_ee)','abs(cosTheta_zee_hzz)','abs(DPhi_ele1met)']
+reader_22vars_ee = TMVA.Reader("!Color")
+_bdtvars_ee = ['Mbb_H','DR_bb_H','Mjj_Z','DR_jj_Z','M_ee','DR_ele1ele2','DR_ee_bb_H','DR_e1Hj1','DR_e1Hj2','DR_e2Hj1','DR_e2Hj2','DR_ee_jj_Z','DR_e1Zj1','DR_e1Zj2','DR_e2Zj1','DR_e2Zj2','abs(cosThetaStarEle)','abs(cosTheta_hbb_ee)','abs(cosTheta_zee_hzz)','abs(DPhi_ele1met)','abs(phi1_ee)','abs(phi1_zjj_ee)']
 _bdtvarnames_ee = {}
 for vth in _bdtvars_ee:
 	_bdtvarnames_ee[vth] = array.array('f',[0])
-	reader_25vars_ee.AddVariable(vth, _bdtvarnames_ee[vth])
+	reader_22vars_ee.AddVariable(vth, _bdtvarnames_ee[vth])
 for ith in range(len(SignalM)):
-	reader_25vars_ee.BookMVA(str("BDT_classifier_25vars_s0_ee_M" + SignalM[ith]), str("weights_classification/weights_file_25vars_s0_ee/TMVAClassification_BDT_M" + SignalM[ith] + ".weights.xml"))
-	reader_25vars_ee.BookMVA(str("BDT_classifier_25vars_s2_ee_M" + SignalM[ith]), str("weights_classification/weights_file_25vars_s2_ee/TMVAClassification_BDT_M" + SignalM[ith] + ".weights.xml"))
-reader_25vars_ee.BookMVA("BDT_classifier_25vars_s0_ee_LowM", "weights_classification/weights_file_25vars_s0_ee_LowM/TMVAClassification_BDT_LowM.weights.xml")
-reader_25vars_ee.BookMVA("BDT_classifier_25vars_s2_ee_LowM", "weights_classification/weights_file_25vars_s2_ee_LowM/TMVAClassification_BDT_LowM.weights.xml")
+	reader_22vars_ee.BookMVA(str("BDT_classifier_22vars_s0_ee_M" + SignalM[ith]), str("weights_classification/weights_file_22vars_s0_ee/TMVAClassification_BDT_M" + SignalM[ith] + ".weights.xml"))
+	reader_22vars_ee.BookMVA(str("BDT_classifier_22vars_s2_ee_M" + SignalM[ith]), str("weights_classification/weights_file_22vars_s2_ee/TMVAClassification_BDT_M" + SignalM[ith] + ".weights.xml"))
 
 ##########################################################################################
 #################      Setup bjets energy regression calculation   #######################
@@ -3167,11 +3164,11 @@ def calculateBDTdiscriminant(reader, classifierTag, _bdtvarnames, _Mll4j, _Mbb_H
 	## MET cut is not needed here, TMVA will calculate bdt score (because MET variable is not used) ?, but we will put the cut in analysis level anyway
 
 	if 'DR_muon1muon2' in _bdtvarnames:
-		if (_ptlep1 > 20 and _ptlep2 > 10 and _Pt_Hjet1 > 20 and _Pt_Hjet2 > 20 and _Pt_Zjet1 > 20 and _Pt_Zjet2 > 20 and _Mll > 12) :
+		if (_ptlep1 > 20 and _ptlep2 > 10 and _Pt_Hjet1 > 20 and _Pt_Hjet2 > 20 and _Pt_Zjet1 > 20 and _Pt_Zjet2 > 20 and _Mll > 15) :
 			out_bdtdisc = reader.EvaluateMVA(classifierTag)
 			#print classifierTag,' out_bdtdisc ', out_bdtdisc
 	elif 'DR_ele1ele2' in _bdtvarnames:
-		if (_ptlep1 > 25 and _ptlep2 > 15 and _Pt_Hjet1 > 20 and _Pt_Hjet2 > 20 and _Pt_Zjet1 > 20 and _Pt_Zjet2 > 20 and _Mll > 12) :
+		if (_ptlep1 > 25 and _ptlep2 > 15 and _Pt_Hjet1 > 20 and _Pt_Hjet2 > 20 and _Pt_Zjet1 > 20 and _Pt_Zjet2 > 20 and _Mll > 15) :
 			out_bdtdisc = reader.EvaluateMVA(classifierTag)
 			#print classifierTag,' out_bdtdisc ', out_bdtdisc
 	#if v == '' : print ' out_bdtdisc ', out_bdtdisc
@@ -4090,32 +4087,24 @@ def FullKinematicCalculation(T,variation):
 	#-- muon bdt
 	_uu_s0_bdt_discrims = [-99.0,-99.0,-99.0,-99.0,-99.0,-99.0,-99.0,-99.0,-99.0,-99.0,-99.0,-99.0,-99.0,-99.0]
 	for kth in range(len(_uu_s0_bdt_discrims)):
-		_uu_s0_bdt_discrims[kth] = calculateBDTdiscriminant(reader_25vars_uu, str("BDT_classifier_25vars_s0_uu_M" + SignalM[kth]), _bdtvarnames_uu, _Muu4j, _Mbb_H, _Mjj_Z, _Muu, _Muujj, _ptmu1, _ptmu2, _ptmet, _Pt_Hjet1, _Pt_Hjet2, _Pt_Zjet1, _Pt_Zjet2, _Pt_uu, _Pt_Hjets, _Pt_Zjets, _dRbb_H, _dRjj_Z, _DRuu, _phi0_uu, _phi1_uu, _phi0_zz_uu, _phi1_zuu, _phi1_zjj_uu, bscoreMVA1, bscoreMVA2, _dRu1Hj1, _dRu1Hj2, _dRu2Hj1, _dRu2Hj2, _dRu1Zj1, _dRu1Zj2, _dRu2Zj1, _dRu2Zj2, _dRuubb_H, _dRuujj_Z, _cosThetaStarMu, _cosTheta_hbb_uu, _cosTheta_zuu_hzz, _cosThetaStar_uu, _cosThetaStarZuu_CS, _cosTheta_Zuu, _etamu1, _etamu2, _phimu1, _phimu2, _DPHIuv, _dPHIuujj_Z, _dPHIuubb_H, _dPhibb_H, _dPhijj_Z)
+		_uu_s0_bdt_discrims[kth] = calculateBDTdiscriminant(reader_22vars_uu, str("BDT_classifier_22vars_s0_uu_M" + SignalM[kth]), _bdtvarnames_uu, _Muu4j, _Mbb_H, _Mjj_Z, _Muu, _Muujj, _ptmu1, _ptmu2, _ptmet, _Pt_Hjet1, _Pt_Hjet2, _Pt_Zjet1, _Pt_Zjet2, _Pt_uu, _Pt_Hjets, _Pt_Zjets, _dRbb_H, _dRjj_Z, _DRuu, _phi0_uu, _phi1_uu, _phi0_zz_uu, _phi1_zuu, _phi1_zjj_uu, bscoreMVA1, bscoreMVA2, _dRu1Hj1, _dRu1Hj2, _dRu2Hj1, _dRu2Hj2, _dRu1Zj1, _dRu1Zj2, _dRu2Zj1, _dRu2Zj2, _dRuubb_H, _dRuujj_Z, _cosThetaStarMu, _cosTheta_hbb_uu, _cosTheta_zuu_hzz, _cosThetaStar_uu, _cosThetaStarZuu_CS, _cosTheta_Zuu, _etamu1, _etamu2, _phimu1, _phimu2, _DPHIuv, _dPHIuujj_Z, _dPHIuubb_H, _dPhibb_H, _dPhijj_Z)
 	[_uu_s0_bdt_discrim_M260, _uu_s0_bdt_discrim_M270, _uu_s0_bdt_discrim_M300, _uu_s0_bdt_discrim_M350, _uu_s0_bdt_discrim_M400, _uu_s0_bdt_discrim_M450, _uu_s0_bdt_discrim_M500, _uu_s0_bdt_discrim_M550, _uu_s0_bdt_discrim_M600, _uu_s0_bdt_discrim_M650, _uu_s0_bdt_discrim_M750, _uu_s0_bdt_discrim_M800, _uu_s0_bdt_discrim_M900, _uu_s0_bdt_discrim_M1000] = _uu_s0_bdt_discrims
 	#if v == '' : print ' _uu_bdt_discrims ', _uu_bdt_discrims
 	#if v == '' : print ' each bdt         ', _uu_bdt_discrim_M260, _uu_bdt_discrim_M270, _uu_bdt_discrim_M300, _uu_bdt_discrim_M350, _uu_bdt_discrim_M400
 	_uu_s2_bdt_discrims = [-99.0,-99.0,-99.0,-99.0,-99.0,-99.0,-99.0,-99.0,-99.0,-99.0,-99.0,-99.0,-99.0,-99.0]
 	for kth in range(len(_uu_s2_bdt_discrims)):
-		_uu_s2_bdt_discrims[kth] = calculateBDTdiscriminant(reader_25vars_uu, str("BDT_classifier_25vars_s2_uu_M" + SignalM[kth]), _bdtvarnames_uu, _Muu4j, _Mbb_H, _Mjj_Z, _Muu, _Muujj, _ptmu1, _ptmu2, _ptmet, _Pt_Hjet1, _Pt_Hjet2, _Pt_Zjet1, _Pt_Zjet2, _Pt_uu, _Pt_Hjets, _Pt_Zjets, _dRbb_H, _dRjj_Z, _DRuu, _phi0_uu, _phi1_uu, _phi0_zz_uu, _phi1_zuu, _phi1_zjj_uu, bscoreMVA1, bscoreMVA2, _dRu1Hj1, _dRu1Hj2, _dRu2Hj1, _dRu2Hj2, _dRu1Zj1, _dRu1Zj2, _dRu2Zj1, _dRu2Zj2, _dRuubb_H, _dRuujj_Z, _cosThetaStarMu, _cosTheta_hbb_uu, _cosTheta_zuu_hzz, _cosThetaStar_uu, _cosThetaStarZuu_CS, _cosTheta_Zuu, _etamu1, _etamu2, _phimu1, _phimu2, _DPHIuv, _dPHIuujj_Z, _dPHIuubb_H, _dPhibb_H, _dPhijj_Z)
+		_uu_s2_bdt_discrims[kth] = calculateBDTdiscriminant(reader_22vars_uu, str("BDT_classifier_22vars_s2_uu_M" + SignalM[kth]), _bdtvarnames_uu, _Muu4j, _Mbb_H, _Mjj_Z, _Muu, _Muujj, _ptmu1, _ptmu2, _ptmet, _Pt_Hjet1, _Pt_Hjet2, _Pt_Zjet1, _Pt_Zjet2, _Pt_uu, _Pt_Hjets, _Pt_Zjets, _dRbb_H, _dRjj_Z, _DRuu, _phi0_uu, _phi1_uu, _phi0_zz_uu, _phi1_zuu, _phi1_zjj_uu, bscoreMVA1, bscoreMVA2, _dRu1Hj1, _dRu1Hj2, _dRu2Hj1, _dRu2Hj2, _dRu1Zj1, _dRu1Zj2, _dRu2Zj1, _dRu2Zj2, _dRuubb_H, _dRuujj_Z, _cosThetaStarMu, _cosTheta_hbb_uu, _cosTheta_zuu_hzz, _cosThetaStar_uu, _cosThetaStarZuu_CS, _cosTheta_Zuu, _etamu1, _etamu2, _phimu1, _phimu2, _DPHIuv, _dPHIuujj_Z, _dPHIuubb_H, _dPhibb_H, _dPhijj_Z)
 	[_uu_s2_bdt_discrim_M260, _uu_s2_bdt_discrim_M270, _uu_s2_bdt_discrim_M300, _uu_s2_bdt_discrim_M350, _uu_s2_bdt_discrim_M400, _uu_s2_bdt_discrim_M450, _uu_s2_bdt_discrim_M500, _uu_s2_bdt_discrim_M550, _uu_s2_bdt_discrim_M600, _uu_s2_bdt_discrim_M650, _uu_s2_bdt_discrim_M750, _uu_s2_bdt_discrim_M800, _uu_s2_bdt_discrim_M900, _uu_s2_bdt_discrim_M1000] = _uu_s2_bdt_discrims
-
-	[_uu_s0_bdt_discrim_LowM, _uu_s2_bdt_discrim_LowM] = [-99.0,-99.0]
-	_uu_s0_bdt_discrim_LowM = calculateBDTdiscriminant(reader_25vars_uu, "BDT_classifier_25vars_s0_uu_LowM", _bdtvarnames_uu, _Muu4j, _Mbb_H, _Mjj_Z, _Muu, _Muujj, _ptmu1, _ptmu2, _ptmet, _Pt_Hjet1, _Pt_Hjet2, _Pt_Zjet1, _Pt_Zjet2, _Pt_uu, _Pt_Hjets, _Pt_Zjets, _dRbb_H, _dRjj_Z, _DRuu, _phi0_uu, _phi1_uu, _phi0_zz_uu, _phi1_zuu, _phi1_zjj_uu, bscoreMVA1, bscoreMVA2, _dRu1Hj1, _dRu1Hj2, _dRu2Hj1, _dRu2Hj2, _dRu1Zj1, _dRu1Zj2, _dRu2Zj1, _dRu2Zj2, _dRuubb_H, _dRuujj_Z, _cosThetaStarMu, _cosTheta_hbb_uu, _cosTheta_zuu_hzz, _cosThetaStar_uu, _cosThetaStarZuu_CS, _cosTheta_Zuu, _etamu1, _etamu2, _phimu1, _phimu2, _DPHIuv, _dPHIuujj_Z, _dPHIuubb_H, _dPhibb_H, _dPhijj_Z)
-	_uu_s2_bdt_discrim_LowM = calculateBDTdiscriminant(reader_25vars_uu, "BDT_classifier_25vars_s2_uu_LowM", _bdtvarnames_uu, _Muu4j, _Mbb_H, _Mjj_Z, _Muu, _Muujj, _ptmu1, _ptmu2, _ptmet, _Pt_Hjet1, _Pt_Hjet2, _Pt_Zjet1, _Pt_Zjet2, _Pt_uu, _Pt_Hjets, _Pt_Zjets, _dRbb_H, _dRjj_Z, _DRuu, _phi0_uu, _phi1_uu, _phi0_zz_uu, _phi1_zuu, _phi1_zjj_uu, bscoreMVA1, bscoreMVA2, _dRu1Hj1, _dRu1Hj2, _dRu2Hj1, _dRu2Hj2, _dRu1Zj1, _dRu1Zj2, _dRu2Zj1, _dRu2Zj2, _dRuubb_H, _dRuujj_Z, _cosThetaStarMu, _cosTheta_hbb_uu, _cosTheta_zuu_hzz, _cosThetaStar_uu, _cosThetaStarZuu_CS, _cosTheta_Zuu, _etamu1, _etamu2, _phimu1, _phimu2, _DPHIuv, _dPHIuujj_Z, _dPHIuubb_H, _dPhibb_H, _dPhijj_Z)
 
 	#-- electron bdt
 	_ee_s0_bdt_discrims = [-99.0,-99.0,-99.0,-99.0,-99.0,-99.0,-99.0,-99.0,-99.0,-99.0,-99.0,-99.0,-99.0,-99.0]
 	for kth in range(len(_ee_s0_bdt_discrims)):
-		_ee_s0_bdt_discrims[kth] = calculateBDTdiscriminant(reader_25vars_ee, str("BDT_classifier_25vars_s0_ee_M" + SignalM[kth]), _bdtvarnames_ee, _Mee4j, _Mbb_H, _Mjj_Z, _Mee, _Meejj, _ptele1, _ptele2, _ptmet, _Pt_Hjet1, _Pt_Hjet2, _Pt_Zjet1, _Pt_Zjet2, _Pt_ee, _Pt_Hjets, _Pt_Zjets, _dRbb_H, _dRjj_Z, _DRee, _phi0_ee, _phi1_ee, _phi0_zz_ee, _phi1_zee, _phi1_zjj_ee, bscoreMVA1, bscoreMVA2, _dRe1Hj1, _dRe1Hj2, _dRe2Hj1, _dRe2Hj2, _dRe1Zj1, _dRe1Zj2, _dRe2Zj1, _dRe2Zj2, _dReebb_H, _dReejj_Z, _cosThetaStarEle, _cosTheta_hbb_ee, _cosTheta_zee_hzz, _cosThetaStar_ee, _cosThetaStarZee_CS, _cosTheta_Zee, _etaele1, _etaele2, _phiele1, _phiele2, _DPHIev, _dPHIeejj_Z, _dPHIeebb_H, _dPhibb_H, _dPhijj_Z)
+		_ee_s0_bdt_discrims[kth] = calculateBDTdiscriminant(reader_22vars_ee, str("BDT_classifier_22vars_s0_ee_M" + SignalM[kth]), _bdtvarnames_ee, _Mee4j, _Mbb_H, _Mjj_Z, _Mee, _Meejj, _ptele1, _ptele2, _ptmet, _Pt_Hjet1, _Pt_Hjet2, _Pt_Zjet1, _Pt_Zjet2, _Pt_ee, _Pt_Hjets, _Pt_Zjets, _dRbb_H, _dRjj_Z, _DRee, _phi0_ee, _phi1_ee, _phi0_zz_ee, _phi1_zee, _phi1_zjj_ee, bscoreMVA1, bscoreMVA2, _dRe1Hj1, _dRe1Hj2, _dRe2Hj1, _dRe2Hj2, _dRe1Zj1, _dRe1Zj2, _dRe2Zj1, _dRe2Zj2, _dReebb_H, _dReejj_Z, _cosThetaStarEle, _cosTheta_hbb_ee, _cosTheta_zee_hzz, _cosThetaStar_ee, _cosThetaStarZee_CS, _cosTheta_Zee, _etaele1, _etaele2, _phiele1, _phiele2, _DPHIev, _dPHIeejj_Z, _dPHIeebb_H, _dPhibb_H, _dPhijj_Z)
 	[_ee_s0_bdt_discrim_M260, _ee_s0_bdt_discrim_M270, _ee_s0_bdt_discrim_M300, _ee_s0_bdt_discrim_M350, _ee_s0_bdt_discrim_M400, _ee_s0_bdt_discrim_M450, _ee_s0_bdt_discrim_M500, _ee_s0_bdt_discrim_M550, _ee_s0_bdt_discrim_M600, _ee_s0_bdt_discrim_M650, _ee_s0_bdt_discrim_M750, _ee_s0_bdt_discrim_M800, _ee_s0_bdt_discrim_M900, _ee_s0_bdt_discrim_M1000] = _ee_s0_bdt_discrims
 	_ee_s2_bdt_discrims = [-99.0,-99.0,-99.0,-99.0,-99.0,-99.0,-99.0,-99.0,-99.0,-99.0,-99.0,-99.0,-99.0,-99.0]
 	for kth in range(len(_ee_s2_bdt_discrims)):
-		_ee_s2_bdt_discrims[kth] = calculateBDTdiscriminant(reader_25vars_ee, str("BDT_classifier_25vars_s2_ee_M" + SignalM[kth]), _bdtvarnames_ee, _Mee4j, _Mbb_H, _Mjj_Z, _Mee, _Meejj, _ptele1, _ptele2, _ptmet, _Pt_Hjet1, _Pt_Hjet2, _Pt_Zjet1, _Pt_Zjet2, _Pt_ee, _Pt_Hjets, _Pt_Zjets, _dRbb_H, _dRjj_Z, _DRee, _phi0_ee, _phi1_ee, _phi0_zz_ee, _phi1_zee, _phi1_zjj_ee, bscoreMVA1, bscoreMVA2, _dRe1Hj1, _dRe1Hj2, _dRe2Hj1, _dRe2Hj2, _dRe1Zj1, _dRe1Zj2, _dRe2Zj1, _dRe2Zj2, _dReebb_H, _dReejj_Z, _cosThetaStarEle, _cosTheta_hbb_ee, _cosTheta_zee_hzz, _cosThetaStar_ee, _cosThetaStarZee_CS, _cosTheta_Zee, _etaele1, _etaele2, _phiele1, _phiele2, _DPHIev, _dPHIeejj_Z, _dPHIeebb_H, _dPhibb_H, _dPhijj_Z)
+		_ee_s2_bdt_discrims[kth] = calculateBDTdiscriminant(reader_22vars_ee, str("BDT_classifier_22vars_s2_ee_M" + SignalM[kth]), _bdtvarnames_ee, _Mee4j, _Mbb_H, _Mjj_Z, _Mee, _Meejj, _ptele1, _ptele2, _ptmet, _Pt_Hjet1, _Pt_Hjet2, _Pt_Zjet1, _Pt_Zjet2, _Pt_ee, _Pt_Hjets, _Pt_Zjets, _dRbb_H, _dRjj_Z, _DRee, _phi0_ee, _phi1_ee, _phi0_zz_ee, _phi1_zee, _phi1_zjj_ee, bscoreMVA1, bscoreMVA2, _dRe1Hj1, _dRe1Hj2, _dRe2Hj1, _dRe2Hj2, _dRe1Zj1, _dRe1Zj2, _dRe2Zj1, _dRe2Zj2, _dReebb_H, _dReejj_Z, _cosThetaStarEle, _cosTheta_hbb_ee, _cosTheta_zee_hzz, _cosThetaStar_ee, _cosThetaStarZee_CS, _cosTheta_Zee, _etaele1, _etaele2, _phiele1, _phiele2, _DPHIev, _dPHIeejj_Z, _dPHIeebb_H, _dPhibb_H, _dPhijj_Z)
 	[_ee_s2_bdt_discrim_M260, _ee_s2_bdt_discrim_M270, _ee_s2_bdt_discrim_M300, _ee_s2_bdt_discrim_M350, _ee_s2_bdt_discrim_M400, _ee_s2_bdt_discrim_M450, _ee_s2_bdt_discrim_M500, _ee_s2_bdt_discrim_M550, _ee_s2_bdt_discrim_M600, _ee_s2_bdt_discrim_M650, _ee_s2_bdt_discrim_M750, _ee_s2_bdt_discrim_M800, _ee_s2_bdt_discrim_M900, _ee_s2_bdt_discrim_M1000] = _ee_s2_bdt_discrims
-
-	[_ee_s0_bdt_discrim_LowM, _ee_s2_bdt_discrim_LowM] = [-99.0,-99.0]
-	_ee_s0_bdt_discrim_LowM = calculateBDTdiscriminant(reader_25vars_ee, "BDT_classifier_25vars_s0_ee_LowM", _bdtvarnames_ee, _Mee4j, _Mbb_H, _Mjj_Z, _Mee, _Meejj, _ptele1, _ptele2, _ptmet, _Pt_Hjet1, _Pt_Hjet2, _Pt_Zjet1, _Pt_Zjet2, _Pt_ee, _Pt_Hjets, _Pt_Zjets, _dRbb_H, _dRjj_Z, _DRee, _phi0_ee, _phi1_ee, _phi0_zz_ee, _phi1_zee, _phi1_zjj_ee, bscoreMVA1, bscoreMVA2, _dRe1Hj1, _dRe1Hj2, _dRe2Hj1, _dRe2Hj2, _dRe1Zj1, _dRe1Zj2, _dRe2Zj1, _dRe2Zj2, _dReebb_H, _dReejj_Z, _cosThetaStarEle, _cosTheta_hbb_ee, _cosTheta_zee_hzz, _cosThetaStar_ee, _cosThetaStarZee_CS, _cosTheta_Zee, _etaele1, _etaele2, _phiele1, _phiele2, _DPHIev, _dPHIeejj_Z, _dPHIeebb_H, _dPhibb_H, _dPhijj_Z)
-	_ee_s2_bdt_discrim_LowM = calculateBDTdiscriminant(reader_25vars_ee, "BDT_classifier_25vars_s2_ee_LowM", _bdtvarnames_ee, _Mee4j, _Mbb_H, _Mjj_Z, _Mee, _Meejj, _ptele1, _ptele2, _ptmet, _Pt_Hjet1, _Pt_Hjet2, _Pt_Zjet1, _Pt_Zjet2, _Pt_ee, _Pt_Hjets, _Pt_Zjets, _dRbb_H, _dRjj_Z, _DRee, _phi0_ee, _phi1_ee, _phi0_zz_ee, _phi1_zee, _phi1_zjj_ee, bscoreMVA1, bscoreMVA2, _dRe1Hj1, _dRe1Hj2, _dRe2Hj1, _dRe2Hj2, _dRe1Zj1, _dRe1Zj2, _dRe2Zj1, _dRe2Zj2, _dReebb_H, _dReejj_Z, _cosThetaStarEle, _cosTheta_hbb_ee, _cosTheta_zee_hzz, _cosThetaStar_ee, _cosThetaStarZee_CS, _cosTheta_Zee, _etaele1, _etaele2, _phiele1, _phiele2, _DPHIev, _dPHIeejj_Z, _dPHIeebb_H, _dPhibb_H, _dPhijj_Z)
 
 	#----- End calculate BDT disc here
 
@@ -4241,7 +4230,6 @@ def FullKinematicCalculation(T,variation):
 	toreturn += [_ee_s2_bdt_discrim_M260,_ee_s2_bdt_discrim_M270,_ee_s2_bdt_discrim_M300,_ee_s2_bdt_discrim_M350,_ee_s2_bdt_discrim_M400]
 	toreturn += [_ee_s2_bdt_discrim_M450,_ee_s2_bdt_discrim_M500,_ee_s2_bdt_discrim_M550,_ee_s2_bdt_discrim_M600,_ee_s2_bdt_discrim_M650]
 	toreturn += [_ee_s2_bdt_discrim_M750,_ee_s2_bdt_discrim_M800,_ee_s2_bdt_discrim_M900,_ee_s2_bdt_discrim_M1000]
-	toreturn += [_uu_s0_bdt_discrim_LowM,_ee_s0_bdt_discrim_LowM,_uu_s2_bdt_discrim_LowM,_ee_s2_bdt_discrim_LowM]
 
 	toreturn_systOnly = [_uu_s0_bdt_discrim_M260,_uu_s0_bdt_discrim_M270,_uu_s0_bdt_discrim_M300,_uu_s0_bdt_discrim_M350,_uu_s0_bdt_discrim_M400]
 	toreturn_systOnly += [_uu_s0_bdt_discrim_M450,_uu_s0_bdt_discrim_M500,_uu_s0_bdt_discrim_M550,_uu_s0_bdt_discrim_M600,_uu_s0_bdt_discrim_M650]
@@ -4255,7 +4243,8 @@ def FullKinematicCalculation(T,variation):
 	toreturn_systOnly += [_ee_s2_bdt_discrim_M260,_ee_s2_bdt_discrim_M270,_ee_s2_bdt_discrim_M300,_ee_s2_bdt_discrim_M350,_ee_s2_bdt_discrim_M400]
 	toreturn_systOnly += [_ee_s2_bdt_discrim_M450,_ee_s2_bdt_discrim_M500,_ee_s2_bdt_discrim_M550,_ee_s2_bdt_discrim_M600,_ee_s2_bdt_discrim_M650]
 	toreturn_systOnly += [_ee_s2_bdt_discrim_M750,_ee_s2_bdt_discrim_M800,_ee_s2_bdt_discrim_M900,_ee_s2_bdt_discrim_M1000]
-	toreturn_systOnly += [_uu_s0_bdt_discrim_LowM,_ee_s0_bdt_discrim_LowM,_uu_s2_bdt_discrim_LowM,_ee_s2_bdt_discrim_LowM]
+	toreturn_systOnly += [_ptmet]
+	toreturn_systOnly += [bscoreMVA1,bscoreMVA2,_cmva_Zjet1,_cmva_Zjet2]
 
 	if v=='': return toreturn
 	else: return toreturn_systOnly
@@ -4331,6 +4320,17 @@ for n in range(N):
 	# systematic variations, this loop is very small. It should not really be editted, 
 	# except possibly to add a new flag or weight variable. 
 	# All editable contents concerning kinematics are in the function defs.
+
+        #First make sure file is accessible
+	ientry = t.LoadTree(n)
+	if ientry<0:
+		print 'ERROR: Could not read from TTree; exiting!!'
+	nb = t.GetEntry(n)
+	#nbytes += nb
+	if nb<0:
+		print 'ERROR: Could not read entry from TTree: read '+nb+' bytes; exiting!!'
+		sys.exit(1)
+
 
 	# Get the entry
 	t.GetEntry(n)

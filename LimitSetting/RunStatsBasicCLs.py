@@ -52,9 +52,11 @@ if '--vectorMC' in sys.argv:
 if '--susyRV' in sys.argv:
 	lqtype = 'RV'		
 	fullcardfile = 'FinalCardsRV.txt'
-if '--displacedBL' in sys.argv:
+if '--displacedBL' in sys.argv or '--displacedBLMuEle' in sys.argv:
 	lqtype = 'BL'
 	fullcardfile = 'FinalCardsBLCTau'
+	if '--displacedBLMuEle' in sys.argv:
+		fullcardfile = 'combinedEleMu_BLCTau'
 
 if '--doFullHybridCLs' in sys.argv:
 	do_fullHybrid = 1
@@ -90,6 +92,10 @@ for x in range(len(sys.argv)):
 	if '--displacedBL' in sys.argv[x]:
 		ctau = sys.argv[x+1]
 		fullcardfile = fullcardfile+ctau+'.txt'
+		print fullcardfile
+	if '--displacedBLee' in sys.argv[x]:
+		ctau = sys.argv[x+1]
+		fullcardfile = 'datacard_rpv_apr6_ctau'+ctau+'.txt'
 		print fullcardfile
 	if '--cardFile' in sys.argv[x]:
 		fullcardfile = sys.argv[x+1]
@@ -577,7 +583,7 @@ if do_combo == 1:
 	for line in flog:
 		if '.txt' not in line:
 			card += line
-		if '.txt' in line:
+		if '.txt' in line or ("Combination of" in line and lqtype == 'BL'):
 			cardcontent.append(card)
 	
 			card  = ''

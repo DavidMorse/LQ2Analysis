@@ -1,0 +1,7 @@
+SignalType,Xsections,N_orig,Group,CustomJson,EOSDirectory
+#TT
+TT_TuneCUETP8M2T4_13TeV-powheg-pythia8,831.76,154948894,TTBar,0,/store/group/phys_higgs/HiggsExo/HH_bbZZ_bbllqq/dmorse/v2-3-10/
+#
+WToLNu_0J,50279.20,79682330,WJetsJBin,0,/store/group/phys_higgs/HiggsExo/HH_bbZZ_bbllqq/dmorse/v2-3-10/
+WToLNu_1J,8434.257,62299793,WJetsJBin,0,/store/group/phys_higgs/HiggsExo/HH_bbZZ_bbllqq/dmorse/v2-3-10/
+WToLNu_2J,2813.243,45382497,WJetsJBin,0,/store/group/phys_higgs/HiggsExo/HH_bbZZ_bbllqq/dmorse/v2-3-10/

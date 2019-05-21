@@ -1,5 +1,5 @@
 
-set resultDir = Results_Testing_v236_Vpt_19Sep
+set resultDir = Results_Testing_v236_etaSF
 cp $resultDir/BasicLQ_uujj_M_uu_controlzoom_ZRegion_TTBarDataDriven.pdf  ~/work/leptoQuark/lqpaper/notes/AN-16-337/trunk/Figures/mumu/.
 cp $resultDir/BasicLQ_uujj_M_uujj2_emuseltagfree.pdf ~/work/leptoQuark/lqpaper/notes/AN-16-337/trunk/Figures/mumu/.
 cp $resultDir/BasicLQ_uujj_St_uujj_emuseltagfree.pdf ~/work/leptoQuark/lqpaper/notes/AN-16-337/trunk/Figures/mumu/.
@@ -33,6 +33,8 @@ cp $resultDir/signalAcceptanceTimesEfficiency_LQuujj_FinalSel.pdf ~/work/leptoQu
 cp $resultDir/signalAcceptanceTimesEfficiency_LQuujj_Presel.pdf ~/work/leptoQuark/lqpaper/notes/AN-16-337/trunk/Figures/OptPlots/signalAcceptanceTimesEfficiency_LQuujj_Presel.pdf
 cp $resultDir/signalAcceptanceTimesEfficiency_LQuvjj_FinalSel.pdf ~/work/leptoQuark/lqpaper/notes/AN-16-337/trunk/Figures/OptPlots/signalAcceptanceTimesEfficiency_LQuvjj.pdf
 cp $resultDir/signalAcceptanceTimesEfficiency_LQuvjj_Presel.pdf ~/work/leptoQuark/lqpaper/notes/AN-16-337/trunk/Figures/OptPlots/signalAcceptanceTimesEfficiency_LQuvjj_Presel.pdf
+cp $resultDir/signalAcceptanceTimesEfficiency_LQuujj_FinalSel.pdf ~/work/leptoQuark/lqpaper/papers/EXO-17-003/trunk/Figures/mumu/signalAcceptanceTimesEfficiency_LQuujj.pdf
+cp $resultDir/signalAcceptanceTimesEfficiency_LQuvjj_FinalSel.pdf ~/work/leptoQuark/lqpaper/papers/EXO-17-003/trunk/Figures/munu/signalAcceptanceTimesEfficiency_LQuvjj.pdf
 cp $resultDir/signalAcceptanceTimesEfficiency_BL_Presel.pdf ~/work/leptoQuark/lqpaper/notes/AN-16-337/trunk/Figures/mumu/.
 cp $resultDir/signalAcceptanceTimesEfficiency_BL_FinalSel.pdf ~/work/leptoQuark/lqpaper/notes/AN-16-337/trunk/Figures/mumu/.
 
