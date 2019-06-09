@@ -193,7 +193,7 @@ _kinematicvariables += ['X_miss','Y_miss']
 _kinematicvariables += ['TrkIso_muon1','TrkIso_muon2','TrkIso_ele1','TrkIso_ele2']
 #_kinematicvariables += ['Chi2_muon1','Chi2_muon2']
 #_kinematicvariables += ['PFID_muon1','PFID_muon2']
-#_kinematicvariables += ['TrkMeasLayers_muon1','TrkMeasLayers_muon2']
+_kinematicvariables += ['TrkMeasLayers_muon1','TrkMeasLayers_muon2']
 _kinematicvariables += ['Charge_muon1','Charge_muon2','Charge_ele1','Charge_ele2']
 _kinematicvariables += ['TrkGlbDpt_muon1','TrkGlbDpt_muon2']
 #_kinematicvariables += ['medIDmu1','medIDmu2','medID2016mu1','medID2016mu2']
@@ -555,22 +555,6 @@ for ith in range(len(SignalM)):
 	reader_22vars_ee.BookMVA(str("BDT_classifier_22vars_s2_ee_M" + SignalM[ith]), str("weights_classification/weights_file_22vars_s2_ee/TMVAClassification_BDT_M" + SignalM[ith] + ".weights.xml"))
 
 ##########################################################################################
-#################      Setup bjets energy regression calculation   #######################
-##########################################################################################
-RegressionReaderBJet1 = TMVA.Reader("!Color")
-RegressionReaderBJet2 = TMVA.Reader("!Color")
-_regrvars = ['Jet_pt','Jet_corr','Jet_eta','Jet_mt','Jet_leadTrackPt','Jet_leptonPtRel','Jet_leptonPt','Jet_leptonDeltaR','Jet_totHEF','Jet_neEmEF','Jet_vtxPt','Jet_vtxMass','Jet_vtx3dL','Jet_vtxNtrk','Jet_vtx3deL','nPVs','Jet_PFMET','Jet_METDPhi']
-_regrvarsnamesBjet1 = {}
-_regrvarsnamesBjet2 = {}
-for vth in _regrvars:
-	_regrvarsnamesBjet1[vth] = array.array('f',[0])
-	_regrvarsnamesBjet2[vth] = array.array('f',[0])
-	RegressionReaderBJet1.AddVariable(vth, _regrvarsnamesBjet1[vth])
-	RegressionReaderBJet2.AddVariable(vth, _regrvarsnamesBjet2[vth])
-RegressionReaderBJet1.BookMVA("BDTG method", "weights_classification/BDTG_16plus2_jetGenJet_nu_7_6.weights.xml")
-RegressionReaderBJet2.BookMVA("BDTG method", "weights_classification/BDTG_16plus2_jetGenJet_nu_7_6.weights.xml")
-
-##########################################################################################
 #################           SPECIAL FUNCTIONS FOR ANALYSIS         #######################
 ##########################################################################################
 
@@ -869,8 +853,6 @@ def getLeptonEventFlavorGEN(T):
 		#	print n,T.GenParticlePdgId[n],T.GenParticleStatus[n],T.GenParticleMass[n],T.GenParticlePdgId[T.GenParticleMotherIndex[n]],T.GenParticleNumDaught[n],bool(T.GenParticleIsLastCopy[n])
 		motherIndex = T.GenPart_genPartIdxMother[n]
 
-#		print ('MOTHERINDEX', motherIndex)
-
 		if motherIndex >= 0:
 			motherid = T.GenPart_pdgId[motherIndex]
 		#if motherid in [-15,15]:
@@ -1049,8 +1031,8 @@ def LeptonsAndJetsFromHH(T):
 		motherid = 0
 		if motherIndex>-1:
 			motherid = T.GenPart_pdgId[motherIndex]
-#?			motherStatus = T.GenParticleStatus[motherIndex]
-#?			grandMotherid = T.GenParticlePdgId[T.GenParticleMotherIndex[motherIndex]]
+			motherStatus = T.GenPart_status[motherIndex]
+			grandMotherid = T.GenPart_pdgId[T.GenPart_genPartIdxMother[motherIndex]]
 			#if parent=='Z' : print 'daughter:',pdg,'  mother:',motherid, '  grandMother:',grandMotherid
 			#if v=='' : print 'daughter:',pdg,'  Status:',T.GenParticleStatus[n],'  mother:',motherid,'  grandMother:',grandMotherid
 
@@ -1255,28 +1237,24 @@ def LooseIDMuons(T,_met,variation,isdata):
 	muoninds = []
 	if variation=='MESup':
 		#_MuonPt = [(pt + pt*(0.05*pt/1000.0)) for pt in T.MuonPt]#original
-		_MuonPt = [(pt + pt*(0.10*pt/1000.0)) for pt in T.MuonPt]#updated to Zprime 13TeV study number
+		_MuonPt = [(pt + pt*(0.10*pt/1000.0)) for pt in T.Muon_pt]#updated to Zprime 13TeV study number
 	elif variation=='MESdown':
 		#_MuonPt = [(pt - pt*(0.05*pt/1000.0)) for pt in T.MuonPt]
-		_MuonPt = [(pt - pt*(0.10*pt/1000.0)) for pt in T.MuonPt]
+		_MuonPt = [(pt - pt*(0.10*pt/1000.0)) for pt in T.Muon_pt]
 	elif variation=='MER':
-		_MuonPt = [pt+pt*tRand.Gaus(0.0,  0.01*(pt<=200.0) + (0.04)*(pt>200.0) ) for pt in T.MuonPt]
+		_MuonPt = [pt+pt*tRand.Gaus(0.0,  0.01*(pt<=200.0) + (0.04)*(pt>200.0) ) for pt in T.Muon_pt]
 	else:
-		_MuonPt = [pt for pt in T.MuonPt]
+		_MuonPt = [pt for pt in T.Muon_pt]
 
 	if (isdata):
-		_MuonPt = [pt for pt in T.MuonPt]
+		_MuonPt = [pt for pt in T.Muon_pt]
 
 	trk_isos = []
 	charges = []
 	deltainvpts = []
 
-	chi2 = []
-	pfid = []
-	layers = []
-
 	nequiv = []
-	for n in range(len(T.MuonPt)):
+	for n in range(len(T.Muon_pt)):
 		#if T.MuonIsGlobal[n]: #not necessary anymore - global muon requirement encompassed later
 		nequiv.append(n)
 
@@ -1285,20 +1263,20 @@ def LooseIDMuons(T,_met,variation,isdata):
 
 		# Some muon alignment studies use the inverse diff of the high pT and Trk pT values
 		deltainvpt = -1.0
-		if ( T.MuonTrkPt[nequiv[n]] > 0.0 ) and (_MuonPt[n]>0.0):
-			deltainvpt = ( 1.0/T.MuonTrkPt[nequiv[n]] - 1.0/_MuonPt[n])
+		if ( T.Muon_ptTuneP[nequiv[n]] > 0.0 ) and (_MuonPt[n]>0.0):
+			deltainvpt = ( 1.0/T.Muon_ptTuneP[nequiv[n]] - 1.0/_MuonPt[n])
 
 		# For alignment correction studies in MC, the pT is modified according to
 		# parameterizations of the position
 		if alignementcorrswitch == True and isdata==False:
 			if abs(deltainvpt) > 0.0000001:
 				__Pt_mu = _MuonPt[n]
-				__Eta_mu = T.MuonEta[n]
-				__Phi_mu = T.MuonPhi[n]
-				__Charge_mu = T.MuonCharge[nequiv[n]]
+				__Eta_mu = T.Muon_eta[n]
+				__Phi_mu = T.Muon_phi[n]
+				__Charge_mu = T.Muon_charge[nequiv[n]]
 				if (__Pt_mu >200)*(abs(__Eta_mu) < 0.9)      :
 					_MuonPt[n] =  ( (1.0) / ( -5e-05*__Charge_mu*sin(-1.4514813+__Phi_mu ) + 1.0/__Pt_mu ) )
-				deltainvpt = ( 1.0/T.MuonTrkPt[nequiv[n]] - 1.0/_MuonPt[n])
+				deltainvpt = ( 1.0/T.Muon_ptTuneP[nequiv[n]] - 1.0/_MuonPt[n])
 
 
 		# For the ID, begin by assuming it passes. Veto if it fails any condition
@@ -1306,47 +1284,22 @@ def LooseIDMuons(T,_met,variation,isdata):
                 # https://twiki.cern.ch/twiki/bin/view/CMS/SWGuideMuonIdRun2?rev=31#Short_Term_Instructions_for_Mori
 		# NTuple definitions in https://raw.githubusercontent.com/CMSLQ/RootTupleMakerV2/master/src/RootTupleMakerV2_Muons.cc
 		Pass = True
-                #There is an or of requirements, do this by making 2 bools and OR'ing them later
-	        Pass1, Pass2 =  True, True
 
                 # Require Loose muon flag
-	        Pass *= T.MuonIsLooseMuon[n] > 0
+	        Pass *= T.Muon_looseId[n] > 0
 
-	        #fixme these two are equivalent to IsLooseMuon
+	        #fixme these two are equivalent to IsLooseMuon #?
 		#Pass *= T.MuonIsPF[n]
 	        #Pass *= (T.MuonIsGlobal[n] or T.MuonIsTracker[n])
-
-	        # Require valid fraction of hits
-	        Pass *= T.MuonTrkValidFractionOfHits[n] > 0.49
 
 		# A preliminary pT cut.
 		Pass *= (_MuonPt[n] > 8)#fixme offline cuts are 20(10)
 
 		# Eta requirement
-	        Pass *= abs(T.MuonEta[n])<2.4
-
-	        # Require Global Muon
-                Pass1 *= T.MuonIsGlobal[n]
-
-		# Global Track chi2
-                Pass1 *= T.MuonGlobalChi2[n] < 3
-
-		# combined Quality chi2LocalPosition
-		Pass1 *= T.MuonCombinedQualityChi2LocalPosition[n] < 12
-
-		# combined Quality Track Kink
-		Pass1 *= T.MuonCombinedQualityTrkKink[n] < 20
-
-		# segment Compatibility
-		Pass1 *= T.MuonSegmentCompatibility[n] > 0.303
-
-		# segment Compatibility
-		Pass2 *= T.MuonSegmentCompatibility[n] > 0.451
-
-		Pass *= (Pass1 or Pass2)
+	        Pass *= abs(T.Muon_eta[n])<2.4
 
 		# Isolation condition using combined PF relative isolation - 0.25 for loose (98% efficiency), 0.15 for tight (95% efficiency)
-	        correctedIso = T.MuonPFIsoR04ChargedHadron[n] + max(0.,T.MuonPFIsoR04NeutralHadron[n]+T.MuonPFIsoR04Photon[n]-0.5*T.MuonPFIsoR04PU[n])
+	        correctedIso = T.Muon_pfRelIso04_all[n]
 		# Don't apply isolation for QCD studies
 		if nonisoswitch != True:
 			Pass *= correctedIso/_MuonPt[n] < 0.25
@@ -1355,25 +1308,23 @@ def LooseIDMuons(T,_met,variation,isdata):
 		if (Pass):
 			NewMu = TLorentzVector()
 			OldMu = TLorentzVector()
-			NewMu.SetPtEtaPhiM(_MuonPt[n],T.MuonEta[n],T.MuonPhi[n],0)
+			NewMu.SetPtEtaPhiM(_MuonPt[n],T.Muon_eta[n],T.Muon_phi[n],0)
 			#NewMu.SetPtEtaPhiM(_MuonPt[n],T.MuonEta[n],T.MuonPhi[n],0)
-			OldMu.SetPtEtaPhiM(T.MuonPt[n],T.MuonEta[n],T.MuonPhi[n],0)
+			OldMu.SetPtEtaPhiM(T.Muon_pt[n],T.Muon_eta[n],T.Muon_phi[n],0)
 			#OldMu.SetPtEtaPhiM(T.MuonPt[n],T.MuonEta[n],T.MuonPhi[n],0)
 			_met = PropagatePTChangeToMET(_met,OldMu,NewMu)
 
 			# Append items to retun if the muon is good
 
 			muons.append(NewMu)
-			#trk_isos.append((T.MuonTrackerIsoSumPT[nequiv[n]]/_MuonPt[n]))
-			trk_isos.append((correctedIso/_MuonPt[n]))
-			chi2.append(T.MuonGlobalChi2[nequiv[n]])
-			pfid.append(T.MuonIsPF[nequiv[n]])
-			layers.append(T.MuonTrackLayersWithMeasurement[nequiv[n]])
-			charges.append(T.MuonCharge[n])
 			muoninds.append(n)
+			pfid.append(T.Muon_isPFcand[nequiv[n]])
+			charges.append(T.Muon_charge[n])
+			layers.append(T.Muon_nTrackerLayers[nequiv[n]])
+			trk_isos.append((correctedIso/_MuonPt[n]))
 			deltainvpts.append(deltainvpt)
 
-	return [muons,muoninds,_met,trk_isos,charges,deltainvpts,chi2,pfid,layers]
+	return [muons,muoninds,_met,trk_isos,charges,deltainvpts,pfid,layers]
 
 
 def MediumIDMuons(T,_met,variation,isdata):
@@ -1401,6 +1352,8 @@ def MediumIDMuons(T,_met,variation,isdata):
 	charges = []
 	deltainvpts = []
 
+	pfid = []
+	layers = []
 	nequiv = []
 
 	for n in range(len(T.Muon_pt)):
@@ -1439,7 +1392,7 @@ def MediumIDMuons(T,_met,variation,isdata):
 		Pass *= abs(T.Muon_eta[n])<2.4
 
                 # Require Loose muon flag
-	        Pass *= T.Muon_mediumId[n] > 0
+	        Pass *= T.Muon_mediumId[n] > 0 #? does this need to be loose and do we need valid fraction of hits
 
 		# Isolation condition using combined PF relative isolation - 0.25 for loose (98% efficiency), 0.15 for tight (95% efficiency)
 	        correctedIso = T.Muon_pfRelIso04_all[n]
@@ -1464,10 +1417,12 @@ def MediumIDMuons(T,_met,variation,isdata):
 
 			muons.append(NewMu)
 			muoninds.append(n)
-			trk_isos.append((correctedIso/_MuonPt[n]))
+			pfid.append(T.Muon_isPFcand[nequiv[n]])
 			charges.append(T.Muon_charge[n])
+			trk_isos.append((correctedIso/_MuonPt[n]))
+			layers.append(T.Muon_nTrackerLayers[nequiv[n]])
 			deltainvpts.append(deltainvpt)
-	return [muons,muoninds,_met,trk_isos,charges,deltainvpts]
+	return [muons,muoninds,_met,trk_isos,charges,deltainvpts,pfid,layers]
 
 def mvaWP90Electrons(T,_met,variation,isdata):
 	# Purpose: Gets the collection of electrons passing Loose Electron ID.
@@ -1489,9 +1444,8 @@ def mvaWP90Electrons(T,_met,variation,isdata):
 	trk_isos = []
 	charges = []
 	deltainvpts = []
-	chi2 = []
-#	pfid = []
-#	layers = []
+#?	pfid = []
+#?	layers = []
 	_idIsoSFs=[]
 	_idIsoSFsUp=[]
 	_idIsoSFsDown=[]
@@ -1513,15 +1467,14 @@ def mvaWP90Electrons(T,_met,variation,isdata):
 #?		endcap = (abs(T.ElectronSCEta[n]))>1.56
 		Pass *= (barrel+endcap)
 
-	        Pass *= T.Electron_mvaFall17V1noIso_WP90[n]>0 #? fall17 non iso
-#?	        Pass *= T.ElectronPassMVAIDWP90[n]>0
+	        Pass *= T.Electron_mvaFall17V2Iso_WP90[n]>0 #? fall17 non iso?
 
-#?	        if (barrel):
-#?			Pass *= abs(T.ElectronVtxDistXY[n])<0.05
-#?			Pass *= abs(T.ElectronVtxDistZ[n]) <0.10
-#?		elif (endcap):
-#?			Pass *= abs(T.ElectronVtxDistXY[n])< 0.10
-#?			Pass *= abs(T.ElectronVtxDistZ[n]) < 0.20
+	        if (barrel):
+			Pass *= abs(T.Electron_dxy[n])<0.05
+			Pass *= abs(T.Electron_dz[n]) <0.10
+		elif (endcap):
+			Pass *= abs(T.Electron_dxy[n])< 0.10
+			Pass *= abs(T.Electron_dz[n]) < 0.20
 
 		iso = T.Electron_mvaFall17V1Iso[n]
 
@@ -1557,11 +1510,12 @@ def mvaWP90Electrons(T,_met,variation,isdata):
 		iso = iso/_ElectronPt[n]
 
 		"""
+		iso=T.Electron_mvaFall17V2Iso[n]/T.Electron_pt[n]
 		# Don't apply isolation for QCD studies
 		if nonisoswitch != True:
 			if (barrel):
 				#Pass *= iso<0.0588#tight
-				Pass *= T.Electron_mvaFall17V1Iso_WP90[n]>0
+				Pass *= T.Electron_mvaFall17V2noIso_WP90[n]>0
 				#Pass *= iso<0.15#ZH(bb)
 		                #fixme removing hlt-safe cuts for now
 		                #Pass *= ((T.ElectronEcalPFClusterIso[n] - 0.165*T.fixedGridRhoFastjetCentralCalo)/_ElectronPt[n])<0.160
@@ -1569,7 +1523,7 @@ def mvaWP90Electrons(T,_met,variation,isdata):
 		                #Pass *= (T.ElectronTrkIsoDR03[n]/_ElectronPt[n])<0.08
 			elif (endcap):
 				#Pass *= iso<0.0571
-				Pass *= T.Electron_mvaFall17V1Iso_WP90[n]>0
+				Pass *= T.Electron_mvaFall17V2noIso_WP90[n]>0
 				#Pass *= iso<0.15#ZH(bb)
                                 #fixme removing hlt-safe cuts for now
 		                #Pass *= ((T.ElectronEcalPFClusterIso[n] - 0.132*T.fixedGridRhoFastjetCentralCalo)/_ElectronPt[n])<0.120
@@ -1593,9 +1547,8 @@ def mvaWP90Electrons(T,_met,variation,isdata):
 			trk_isos.append(iso)
 			charges.append(T.Electron_charge[n])
 			deltainvpts.append(0.)
-			chi2.append(0.)
-#			pfid.append(0.)
-#			layers.append(0.)
+#?			pfid.append(0.)
+#?			layers.append(0.)
 			_idIsoSFs.append(_idIsoSF)
 			_idIsoSFsUp.append(_idIsoSFUp)
 			_idIsoSFsDown.append(_idIsoSFDown)
@@ -1618,41 +1571,40 @@ def LooseElectrons(T,_met,variation,isdata):
 	electrons = []
 	electroninds = []
 	if variation=='EESup':
-		_ElectronPt = [pt*1.01 for pt in T.ElectronPt]
+		_ElectronPt = [pt*1.01 for pt in T.Electron_pt]
 	elif variation=='EESdown':
-		_ElectronPt = [pt*0.99 for pt in T.ElectronPt]
+		_ElectronPt = [pt*0.99 for pt in T.Electron_pt]
 	elif variation=='EER':
-		_ElectronPt = [pt+pt*tRand.Gaus(0.0,0.04) for pt in T.ElectronPt]
+		_ElectronPt = [pt+pt*tRand.Gaus(0.0,0.04) for pt in T.Electron_pt]
 	else:
-		_ElectronPt = [pt for pt in T.ElectronPt]
+		_ElectronPt = [pt for pt in T.Electron_pt]
 
 	trk_isos = []
 	charges = []
 	deltainvpts = []
-	chi2 = []
 	pfid = []
 	layers = []
 
 	for n in range(len(_ElectronPt)):
 		Pass = True
-		Pass *= (T.ElectronPt[n] > 12)
-		Pass *= abs(T.ElectronEta[n])<2.5
+		Pass *= (T.Electron_pt[n] > 12)
+		Pass *= abs(T.Electron_eta[n])<2.5
 
-		barrel = (abs(T.ElectronSCEta[n]))<1.442
-		endcap = (abs(T.ElectronSCEta[n]))>1.56
+		barrel = bool((abs(T.Electron_eta[n]))<1.442) #?
+		endcap = bool((abs(T.Electron_eta[n]))>1.56) #?
 		Pass *= (barrel+endcap)
 
-	        Pass *= T.ElectronPassEGammaIDLoose[n]>0
+	        Pass *= T.Electron_mvaFall17V2Iso_WPL[n]>0
 
 	        if (barrel):
-			Pass *= abs(T.ElectronVtxDistXY[n])<0.05
-			Pass *= abs(T.ElectronVtxDistZ[n]) <0.10
+			Pass *= abs(T.Electron_dxy[n])<0.05
+			Pass *= abs(T.Electron_dz[n]) <0.10
 		elif (endcap):
-			Pass *= abs(T.ElectronVtxDistXY[n])< 0.10
-			Pass *= abs(T.ElectronVtxDistZ[n]) < 0.20
+			Pass *= abs(T.Electron_dxy[n])< 0.10
+			Pass *= abs(T.Electron_dz[n]) < 0.20
 
 
-
+""" #?
 	        ecal_energy_inverse = 1.0/T.ElectronEcalEnergy[n]
 		eSCoverP = T.ElectronESuperClusterOverP[n]
 
@@ -1680,33 +1632,35 @@ def LooseElectrons(T,_met,variation,isdata):
 		eA = getElectronEffectiveArea(T.ElectronEta[n])
 		iso = chad + max(0.0, nhad + pho - T.ElectronRhoIsoHEEP[n]*eA)
 		iso = iso/_ElectronPt[n]
+
+"""
+		iso = T.Electron_mvaFall17V2Iso[n]/T.Electron_pt[n]
 		# Don't apply isolation for QCD studies
 		if nonisoswitch != True:
 			if (barrel):
 				Pass *= iso<0.0588
-		                Pass *= ((T.ElectronEcalPFClusterIso[n] - 0.165*T.fixedGridRhoFastjetCentralCalo)/_ElectronPt[n])<0.160
-		                Pass *= ((T.ElectronHcalPFClusterIso[n] - 0.060*T.fixedGridRhoFastjetCentralCalo)/_ElectronPt[n])<0.120
-		                Pass *= (T.ElectronTrkIsoDR03[n]/_ElectronPt[n])<0.08
+		                #? Pass *= ((T.ElectronEcalPFClusterIso[n] - 0.165*T.fixedGridRhoFastjetCentralCalo)/_ElectronPt[n])<0.160
+		                #? Pass *= ((T.ElectronHcalPFClusterIso[n] - 0.060*T.fixedGridRhoFastjetCentralCalo)/_ElectronPt[n])<0.120
+		                #? Pass *= (T.ElectronTrkIsoDR03[n]/_ElectronPt[n])<0.08
 			elif (endcap):
 				Pass *= iso<0.0571
-		                Pass *= ((T.ElectronEcalPFClusterIso[n] - 0.132*T.fixedGridRhoFastjetCentralCalo)/_ElectronPt[n])<0.120
-		                Pass *= ((T.ElectronHcalPFClusterIso[n] - 0.131*T.fixedGridRhoFastjetCentralCalo)/_ElectronPt[n])<0.120
-		                Pass *= (T.ElectronTrkIsoDR03[n]/_ElectronPt[n])<0.08
+		                #? Pass *= ((T.ElectronEcalPFClusterIso[n] - 0.132*T.fixedGridRhoFastjetCentralCalo)/_ElectronPt[n])<0.120
+		                #? Pass *= ((T.ElectronHcalPFClusterIso[n] - 0.131*T.fixedGridRhoFastjetCentralCalo)/_ElectronPt[n])<0.120
+		                #? Pass *= (T.ElectronTrkIsoDR03[n]/_ElectronPt[n])<0.08
 
 		if (Pass):
 			NewEl = TLorentzVector()
 			OldEl = TLorentzVector()
-			NewEl.SetPtEtaPhiM(_ElectronPt[n],T.ElectronEta[n],T.ElectronPhi[n],0)
-			OldEl.SetPtEtaPhiM(T.ElectronPt[n],T.ElectronEta[n],T.ElectronPhi[n],0)
+			NewEl.SetPtEtaPhiM(_ElectronPt[n],T.Electron_eta[n],T.Electron_phi[n],0)
+			OldEl.SetPtEtaPhiM(T.Electron_pt[n],T.Electron_eta[n],T.Electron_phi[n],0)
 			met = PropagatePTChangeToMET(_met,OldEl,NewEl)
 
 		if (Pass):
 			electrons.append(NewEl)
 			electroninds.append(n)
-			trk_isos.append(T.ElectronTrkIsoDR03[n])
-			charges.append(T.ElectronCharge[n])
+			trk_isos.append(iso)
+			charges.append(T.Electron_charge[n])
 			deltainvpts.append(0.)
-			chi2.append(0.)
 			pfid.append(0.)
 			layers.append(0.)
 
@@ -1722,32 +1676,31 @@ def MediumElectrons(T,_met,variation,isdata):
 	electrons = []
 	electroninds = []
 	if variation=='EESup':
-		_ElectronPt = [pt*1.01 for pt in T.ElectronPt]
+		_ElectronPt = [pt*1.01 for pt in T.Electron_pt]
 	elif variation=='EESdown':
-		_ElectronPt = [pt*0.99 for pt in T.ElectronPt]
+		_ElectronPt = [pt*0.99 for pt in T.Electron_pt]
 	elif variation=='EER':
-		_ElectronPt = [pt+pt*tRand.Gaus(0.0,0.04) for pt in T.ElectronPt]
+		_ElectronPt = [pt+pt*tRand.Gaus(0.0,0.04) for pt in T.Electron_pt]
 	else:
-		_ElectronPt = [pt for pt in T.ElectronPt]
+		_ElectronPt = [pt for pt in T.Electron_pt]
 
 	trk_isos = []
 	charges = []
 	deltainvpts = []
-	chi2 = []
 	pfid = []
 	layers = []
 
 	for n in range(len(_ElectronPt)):
 		Pass = True
 		Pass *= (_ElectronPt[n] > 15)
-		Pass *= abs(T.ElectronSCEta[n])<2.5
+		Pass *= abs(T.Electron_eta[n])<2.5 #?
 
-		barrel = (abs(T.ElectronSCEta[n]))<1.442
-		endcap = (abs(T.ElectronSCEta[n]))>1.56
+		barrel = bool((abs(T.Electron_eta[n]))<1.442) #?
+		endcap = bool((abs(T.Electron_eta[n]))>1.56)
 		Pass *= (barrel+endcap)>0
 
-	        #Pass *= T.ElectronPassEGammaIDMedium[n]>0
-
+	        Pass *= T.Electron_mvaFall17V2Iso_WP90[n]>0
+"""
 	        ecal_energy_inverse = 1.0/T.ElectronEcalEnergy[n]
 		eSCoverP = T.ElectronESuperClusterOverP[n]
 
@@ -1791,41 +1744,42 @@ def MediumElectrons(T,_met,variation,isdata):
 		eA = getElectronEffectiveArea(T.ElectronEta[n])
 		iso = chad + max(0.0, nhad + pho - T.ElectronRhoIsoHEEP[n]*eA)
 		iso = iso/_ElectronPt[n]
+"""
+		iso = T.Electron_mvaFall17V2Iso[n]
 		# Don't apply isolation for QCD studies
 		if nonisoswitch != True:
 			if (barrel):
 				Pass *= iso<0.0695
-		                Pass *= ((T.ElectronEcalPFClusterIso[n] - 0.165*T.fixedGridRhoFastjetCentralCalo)/_ElectronPt[n])<0.160
-		                Pass *= ((T.ElectronHcalPFClusterIso[n] - 0.060*T.fixedGridRhoFastjetCentralCalo)/_ElectronPt[n])<0.120
-		                Pass *= (T.ElectronTrkIsoDR03[n]/_ElectronPt[n])<0.08
+		                #? Pass *= ((T.ElectronEcalPFClusterIso[n] - 0.165*T.fixedGridRhoFastjetCentralCalo)/_ElectronPt[n])<0.160
+		                #? Pass *= ((T.ElectronHcalPFClusterIso[n] - 0.060*T.fixedGridRhoFastjetCentralCalo)/_ElectronPt[n])<0.120
+		                #? Pass *= (T.ElectronTrkIsoDR03[n]/_ElectronPt[n])<0.08
 			elif (endcap):
 				Pass *= iso<0.0821
-		                Pass *= ((T.ElectronEcalPFClusterIso[n] - 0.132*T.fixedGridRhoFastjetCentralCalo)/_ElectronPt[n])<0.120
-		                Pass *= ((T.ElectronHcalPFClusterIso[n] - 0.131*T.fixedGridRhoFastjetCentralCalo)/_ElectronPt[n])<0.120
-		                Pass *= (T.ElectronTrkIsoDR03[n]/_ElectronPt[n])<0.08
+		                #? Pass *= ((T.ElectronEcalPFClusterIso[n] - 0.132*T.fixedGridRhoFastjetCentralCalo)/_ElectronPt[n])<0.120
+		                #? Pass *= ((T.ElectronHcalPFClusterIso[n] - 0.131*T.fixedGridRhoFastjetCentralCalo)/_ElectronPt[n])<0.120
+		                #? Pass *= (T.ElectronTrkIsoDR03[n]/_ElectronPt[n])<0.08
 
 		# impact parameter requirements
         	if (barrel):
-			Pass *= abs(T.ElectronVtxDistXY[n])<0.05
-			Pass *= abs(T.ElectronVtxDistZ[n]) <0.10
+			Pass *= abs(T.Electron_dxy[n])<0.05
+			Pass *= abs(T.Electron_dz[n]) <0.10
 		elif (endcap):
-			Pass *= abs(T.ElectronVtxDistXY[n])< 0.10
-			Pass *= abs(T.ElectronVtxDistZ[n]) < 0.20
+			Pass *= abs(T.Electron_dxy[n])< 0.10
+			Pass *= abs(T.Electron_dz[n]) < 0.20
 
 		if (Pass):
 			NewEl = TLorentzVector()
 			OldEl = TLorentzVector()
-			NewEl.SetPtEtaPhiM(_ElectronPt[n],T.ElectronEta[n],T.ElectronPhi[n],0)
-			OldEl.SetPtEtaPhiM(T.ElectronPt[n],T.ElectronEta[n],T.ElectronPhi[n],0)
+			NewEl.SetPtEtaPhiM(_ElectronPt[n],T.Electron_eta[n],T.Electron_phi[n],0)
+			OldEl.SetPtEtaPhiM(T.Electron_pt[n],T.Electron_eta[n],T.Electron_phi[n],0)
 			met = PropagatePTChangeToMET(_met,OldEl,NewEl)
 
 		if (Pass):
 			electrons.append(NewEl)
 			electroninds.append(n)
-			trk_isos.append(iso)
-			charges.append(T.ElectronCharge[n])
+			trk_isos.append(iso) #?
+			charges.append(T.Electron_charge[n])
 			deltainvpts.append(0.)
-			chi2.append(0.)
 			pfid.append(0.)
 			layers.append(0.)
 
@@ -1841,53 +1795,51 @@ def TightElectrons(T,_met,variation,isdata):
 	electrons = []
 	electroninds = []
 	if variation=='EESup':
-		_ElectronPt = [pt*1.01 for pt in T.ElectronPt]
+		_ElectronPt = [pt*1.01 for pt in T.Electron_pt]
 	elif variation=='EESdown':
-		_ElectronPt = [pt*0.99 for pt in T.ElectronPt]
+		_ElectronPt = [pt*0.99 for pt in T.Electron_pt]
 	elif variation=='EER':
-		_ElectronPt = [pt+pt*tRand.Gaus(0.0,0.04) for pt in T.ElectronPt]
+		_ElectronPt = [pt+pt*tRand.Gaus(0.0,0.04) for pt in T.Electron_pt]
 	else:
-		_ElectronPt = [pt for pt in T.ElectronPt]
+		_ElectronPt = [pt for pt in T.Electron_pt]
 
 	trk_isos = []
 	charges = []
 	deltainvpts = []
-	chi2 = []
 	pfid = []
 	layers = []
 
 	for n in range(len(_ElectronPt)):
 		Pass = True
-		Pass *= (T.ElectronPt[n] > 12)
-		Pass *= abs(T.ElectronEta[n])<2.5
+		Pass *= (T.Electron_pt[n] > 12)
+		Pass *= abs(T.Electron_eta[n])<2.5
 
-		barrel = (abs(T.ElectronSCEta[n]))<1.442
-		endcap = (abs(T.ElectronSCEta[n]))>1.56
+		barrel = bool((abs(T.Electron_eta[n]))<1.442) #?
+		endcap = bool((abs(T.Electron_eta[n]))>1.56) #?
 		Pass *= (barrel+endcap)
 
-	        Pass *= T.ElectronPassEGammaIDTight[n]>0
+	        Pass *= T.Electron_mvaFall17V2Iso_WP80[n]>0
 
         	if (barrel):
-			Pass *= abs(T.ElectronVtxDistXY[n])<0.05
-			Pass *= abs(T.ElectronVtxDistZ[n]) <0.10
+			Pass *= abs(T.Electron_dxy[n])<0.05
+			Pass *= abs(T.Electron_dz[n]) <0.10
 		elif (endcap):
-			Pass *= abs(T.ElectronVtxDistXY[n])< 0.10
-			Pass *= abs(T.ElectronVtxDistZ[n]) < 0.20
+			Pass *= abs(T.Electron_dxy[n])< 0.10
+			Pass *= abs(T.Electron_dz[n]) < 0.20
 
 		if (Pass):
 			NewEl = TLorentzVector()
 			OldEl = TLorentzVector()
-			NewEl.SetPtEtaPhiM(_ElectronPt[n],T.ElectronEta[n],T.ElectronPhi[n],0)
-			OldEl.SetPtEtaPhiM(T.ElectronPt[n],T.ElectronEta[n],T.ElectronPhi[n],0)
+			NewEl.SetPtEtaPhiM(_ElectronPt[n],T.Electron_eta[n],T.Electron_phi[n],0)
+			OldEl.SetPtEtaPhiM(T.Electron_pt[n],T.Electron_eta[n],T.Electron_phi[n],0)
 			met = PropagatePTChangeToMET(_met,OldEl,NewEl)
 
 		if (Pass):
 			electrons.append(NewEl)
 			electroninds.append(n)
-			trk_isos.append(T.ElectronTrkIsoDR03[n])
-			charges.append(T.ElectronCharge[n])
+			trk_isos.append(T.Electron_mvaFall17V2Iso[n]) #?
+			charges.append(T.Electron_charge[n])
 			deltainvpts.append(0.)
-			chi2.append(0.)
 			pfid.append(0.)
 			layers.append(0.)
 
@@ -2056,7 +2008,7 @@ def LooseIDJets(T,met,variation,isdata):
 	#print '\n'
 
 	if variation=='JESup':
-		_PFJetPt = [ _PFJetPt[n]*(1.0+T.PFJetJECUncAK4CHS[n]) for n in range(len(_PFJetPt))]
+		_PFJetPt = [ _PFJetPt[n]*(1.0+T.PFJetJECUncAK4CHS[n]) for n in range(len(_PFJetPt))] #? Are the following in NanoAOD?
 	if variation=='JESdown':
 		_PFJetPt = [ _PFJetPt[n]*(1.0-T.PFJetJECUncAK4CHS[n]) for n in range(len(_PFJetPt))]
 
@@ -2176,6 +2128,7 @@ def LooseIDJets(T,met,variation,isdata):
 
 	jets = []
 	jetinds = []
+	bTagRegSFs = []
 	NHFs = []
 	NEMFs = []
 	CSVscores,bMVAscores = [],[]
@@ -2214,6 +2167,7 @@ def LooseIDJets(T,met,variation,isdata):
 				NEMFs.append(NEMF)
 				CSVscores.append(T.Jet_btagCSVV2[n])
 				bMVAscores.append(T.Jet_btagCMVA[n])
+				bTagRegSFs.append(T.Jet_bRegCorr[n])
 
 				# b-tag SF
 				flavor = abs(T.Jet_hadronFlavour[n])#updated to HadronFlavour
@@ -2278,9 +2232,9 @@ def LooseIDJets(T,met,variation,isdata):
 
 	# print met.Pt()
 
-	return [jets,jetinds,met,JetFailThreshold,NHFs,NEMFs,CSVscores,bMVAscores,bTagSFsLoose,bTagSFsMed,bTagSFsLoose_csv,bTagSFsMed_csv]
+	return [jets,jetinds,met,JetFailThreshold,NHFs,NEMFs,CSVscores,bMVAscores,bTagSFsLoose,bTagSFsMed,bTagSFsLoose_csv,bTagSFsMed_csv,bTagRegSFs]
 
-def GetHHJetsNew(jets,btagScoresCSV,btagScoresMVA,bTagSFloose,bTagSFmed,bTagSFloose_csv,bTagSFmed_csv,muon1,muon2,electron1,electron2,isMuEvent,isEleEvent,jetinds, T, met):
+def GetHHJetsNew(jets,btagScoresCSV,btagScoresMVA,bTagSFloose,bTagSFmed,bTagSFloose_csv,bTagSFmed_csv,bTagRegSFs,muon1,muon2,electron1,electron2,isMuEvent,isEleEvent,jetinds, T, met):
 	#Purpose: select which jets to use for HH analysis, separating bJets from light jets. Note that jets have already been cleaned from muons and electrons in cone of 0.3.
 
 	EmptyLorentz = TLorentzVector()
@@ -2351,7 +2305,7 @@ def GetHHJetsNew(jets,btagScoresCSV,btagScoresMVA,bTagSFloose,bTagSFmed,bTagSFlo
 				secondBtagCounter = i
 		if highBtagCounter >= 0 :
 			bjet1,indRecoBJet1 = jets[highBtagCounter],jetinds[highBtagCounter]
-			regr_corrF1 = T.Jet_bRegCorr[highBtagCounter]
+			regr_corrF1 = bTagRegSFs[highBtagCounter]
 			highBtag,highBtagCSV  = btagScoresMVA[highBtagCounter],btagScoresCSV[highBtagCounter]
 			Hjet1BtagSFL=bTagSFloose[highBtagCounter]
 			Hjet1BtagSFM=bTagSFmed[highBtagCounter]
@@ -2359,7 +2313,7 @@ def GetHHJetsNew(jets,btagScoresCSV,btagScoresMVA,bTagSFloose,bTagSFmed,bTagSFlo
 			Hjet1BtagSFM_csv=bTagSFmed_csv[highBtagCounter]
 			if secondBtagCounter >= 0 :
 				bjet2,indRecoBJet2 = jets[secondBtagCounter],jetinds[secondBtagCounter]
-				regr_corrF2 = T.Jet_bRegCorr[secondBtagCounter]
+				regr_corrF2 = bTagRegSFs[secondBtagCounter]
 				secondBtag,secondBtagCSV = btagScoresMVA[secondBtagCounter],btagScoresCSV[secondBtagCounter]
 				Hjet2BtagSFL=bTagSFloose[secondBtagCounter]
 				Hjet2BtagSFM=bTagSFmed[secondBtagCounter]
@@ -2417,7 +2371,7 @@ def GetHHJetsNew(jets,btagScoresCSV,btagScoresMVA,bTagSFloose,bTagSFmed,bTagSFlo
 						highBtagCounter,secondBtagCounter = i,j
 						bjet1, bjet2 = jets[i], jets[j]
 						indRecoBJet1, indRecoBJet2 = jetinds[i], jetinds[j]
-						regr_corrF1, regr_corrF2 = T.Jet_bRegCorr[i], T.Jet_bRegCorr[j]
+						regr_corrF1, regr_corrF2 = bTagRegSFs[i], bTagRegSFs[j]
 						highBtag, secondBtag = btagScoresMVA[i],btagScoresMVA[j]
 						highBtagCSV, secondBtagCSV = btagScoresCSV[i],btagScoresCSV[j]
 						Hjet1BtagSFL=bTagSFloose[i]
@@ -2432,7 +2386,7 @@ def GetHHJetsNew(jets,btagScoresCSV,btagScoresMVA,bTagSFloose,bTagSFmed,bTagSFlo
 						highBtagCounter,secondBtagCounter = j,i
 						bjet1, bjet2 = jets[j], jets[i]
 						indRecoBJet1, indRecoBJet2 = jetinds[j], jetinds[i]
-						regr_corrF1, regr_corrF2 = T.Jet_bRegCorr[i], T.Jet_bRegCorr[j]
+						regr_corrF1, regr_corrF2 = bTagRegSFs[j], bTagRegSFs[i]
 						highBtag, secondBtag = btagScoresMVA[j],btagScoresMVA[i]
 						highBtagCSV, secondBtagCSV = btagScoresCSV[j],btagScoresCSV[i]
 						Hjet1BtagSFL=bTagSFloose[j]
@@ -2474,7 +2428,7 @@ def GetHHJetsNew(jets,btagScoresCSV,btagScoresMVA,bTagSFloose,bTagSFmed,bTagSFlo
 				secondBtagCounter = i
 		if highBtagCounter >= 0 :
 			bjet1,indRecoBJet1 = jets[highBtagCounter],jetinds[highBtagCounter]
-			regr_corrF1 = T.Jet_bRegCorr[highBtagCounter]
+			regr_corrF1 = bTagRegSFs[highBtagCounter]
 			highBtag,highBtagCSV  = btagScoresMVA[highBtagCounter],btagScoresCSV[highBtagCounter]
 			Hjet1BtagSFL=bTagSFloose[highBtagCounter]
 			Hjet1BtagSFM=bTagSFmed[highBtagCounter]
@@ -2482,7 +2436,7 @@ def GetHHJetsNew(jets,btagScoresCSV,btagScoresMVA,bTagSFloose,bTagSFmed,bTagSFlo
 			Hjet1BtagSFM_csv=bTagSFmed_csv[highBtagCounter]
 		if secondBtagCounter >= 0 :
 			bjet2,indRecoBJet2 = jets[secondBtagCounter],jetinds[secondBtagCounter]
-			regr_corrF2 = T.Jet_bRegCorr[secondBtagCounter]
+			regr_corrF2 = bTagRegSFs[secondBtagCounter]
 			secondBtag,secondBtagCSV = btagScoresMVA[secondBtagCounter],btagScoresCSV[secondBtagCounter]
 			Hjet2BtagSFL=bTagSFloose[secondBtagCounter]
 			Hjet2BtagSFM=bTagSFmed[secondBtagCounter]
@@ -2555,8 +2509,6 @@ def GetHHJetsNew(jets,btagScoresCSV,btagScoresMVA,bTagSFloose,bTagSFmed,bTagSFlo
 	#	print 'pts:',bjet1.Pt(),bjet2.Pt(),jet1.Pt(),jet2.Pt()
 	#	print 'btag scores:', highBtag,secondBtag,jet1Btag,jet2Btag
 
-#	regr_corrF1 = bjetRegressionCorrectionFactor(RegressionReaderBJet1, _regrvarsnamesBjet1, bjet1, jetinds[highBtagCounter], T, met)
-#	regr_corrF2 = bjetRegressionCorrectionFactor(RegressionReaderBJet2, _regrvarsnamesBjet2, bjet2, jetinds[secondBtagCounter], T, met)
 	regr_bjet1 = TLorentzVector()
 	regr_bjet2 = TLorentzVector()
 
@@ -2999,19 +2951,19 @@ def FullKinematicCalculation(T,variation):
 	# MET as a vector
 	met = MetVector(T)
 	# ID Muons,Electrons
-	[muons,goodmuoninds,met,trkisosMu,chargesMu,dpts] = MediumIDMuons(T,met,variation,isData)
+	[muons,goodmuoninds,met,trkisosMu,chargesMu,dpts,pfid,layers] = MediumIDMuons(T,met,variation,isData)
 	# muons_forjetsep = MuonsForJetSeparation(T)
 	# taus_forjetsep = TausForJetSeparation(T)
 	[electrons,electroninds,met,trkisosEle,chargesEle,idIsoSFEle,idIsoSFEleUp,idIsoSFEleDown,hlt1SFEle,hlt1SFEleUp,hlt1SFEleDown,hlt2SFEle,hlt2SFEleUp,hlt2SFEleDown] = mvaWP90Electrons(T,met,variation,isData)
 	# ID Jets and filter from leptons
-	[jets,jetinds,met,failthreshold,neutralhadronEF,neutralemEF,btagCSVscores,btagMVAscores,btagSFsLoose,btagSFsMedium,btagSFsLoose_csv,btagSFsMedium_csv] = LooseIDJets(T,met,variation,isData)
+	[jets,jetinds,met,failthreshold,neutralhadronEF,neutralemEF,btagCSVscores,btagMVAscores,btagSFsLoose,btagSFsMedium,btagSFsLoose_csv,btagSFsMedium_csv,btagRegSFs] = LooseIDJets(T,met,variation,isData)
 	#jetsTemp = jets
 	_jetCntPreFilter = len(jets)
 	## jets = GeomFilterCollection(jets,muons_forjetsep,0.5)
 
-	[jets,btagCSVscores,btagMVAscores,btagSFsLoose,btagSFsMedium,btagSFsLoose_csv,btagSFsMedium_csv,jetinds] = GeomFilterCollection(jets,muons,0.3,btagCSVscores,btagMVAscores,btagSFsLoose,btagSFsMedium,btagSFsLoose_csv,btagSFsMedium_csv,jetinds)#fixme todo was 0.5 - changing to 0.3 following HH->wwbb. In any case 0.5 is too big now that cone size is 0.4 - put back in!
+	[jets,btagCSVscores,btagMVAscores,btagSFsLoose,btagSFsMedium,btagSFsLoose_csv,btagSFsMedium_csv,btagRegSFs,jetinds] = GeomFilterCollection(jets,muons,0.3,btagCSVscores,btagMVAscores,btagSFsLoose,btagSFsMedium,btagSFsLoose_csv,btagSFsMedium_csv,btagRegSFs,jetinds)#fixme todo was 0.5 - changing to 0.3 following HH->wwbb. In any case 0.5 is too big now that cone size is 0.4 - put back in!
 	#FIXME removing filter from electrons for now, since we don't use electron channel
-        [jets,btagCSVscores,btagMVAscores,btagSFsLoose,btagSFsMedium,btagSFsLoose_csv,btagSFsMedium_csv,jetinds] = GeomFilterCollection(jets,electrons,0.3,btagCSVscores,btagMVAscores,btagSFsLoose,btagSFsMedium,btagSFsLoose_csv,btagSFsMedium_csv,jetinds)#fixme todo was 0.5 - changing to 0.3 following HH->wwbb. In any case 0.5 is too big now that cone size is 0.4 - put back in!
+        [jets,btagCSVscores,btagMVAscores,btagSFsLoose,btagSFsMedium,btagSFsLoose_csv,btagSFsMedium_csv,btagRegSFs,jetinds] = GeomFilterCollection(jets,electrons,0.3,btagCSVscores,btagMVAscores,btagSFsLoose,btagSFsMedium,btagSFsLoose_csv,btagSFsMedium_csv,btagRegSFs,jetinds)#fixme todo was 0.5 - changing to 0.3 following HH->wwbb. In any case 0.5 is too big now that cone size is 0.4 - put back in!
 
 	##[jetsTemp,jetinds] = GeomFilterCollection(jetsTemp,muons,0.3,jetinds)
 	##[jetsTemp,jetinds] = GeomFilterCollection(jetsTemp,electrons,0.3,jetinds)
@@ -3075,6 +3027,7 @@ def FullKinematicCalculation(T,variation):
 		btagSFsMedium.append([1.,1.,1.])
 		btagSFsLoose_csv.append([1.,1.,1.])
 		btagSFsMedium_csv.append([1.,1.,1.])
+		btagRegSFs.append(-5.0)
 	if len(jets) < 2 :
 		jets.append(EmptyLorentz)
 		neutralhadronEF.append(0.0)
@@ -3086,6 +3039,7 @@ def FullKinematicCalculation(T,variation):
 		btagSFsMedium.append([1.,1.,1.])
 		btagSFsLoose_csv.append([1.,1.,1.])
 		btagSFsMedium_csv.append([1.,1.,1.])
+		btagRegSFs.append(-5.0)
 	if len(jets) < 3 :
 		jets.append(EmptyLorentz)
 		neutralhadronEF.append(0.0)
@@ -3097,6 +3051,7 @@ def FullKinematicCalculation(T,variation):
 		btagSFsMedium.append([1.,1.,1.])
 		btagSFsLoose_csv.append([1.,1.,1.])
 		btagSFsMedium_csv.append([1.,1.,1.])
+		btagRegSFs.append(-5.0)
 	if len(jets) < 4 :
 		jets.append(EmptyLorentz)
 		neutralhadronEF.append(0.0)
@@ -3108,6 +3063,7 @@ def FullKinematicCalculation(T,variation):
 		btagSFsMedium.append([1.,1.,1.])
 		btagSFsLoose_csv.append([1.,1.,1.])
 		btagSFsMedium_csv.append([1.,1.,1.])
+		btagRegSFs.append(-5.0)
 
 	[_genMuons,_matchedRecoMuons,muonInd] = MuonsFromLQ(T)
 	[_genJets,_matchedRecoJets,jetInd] = JetsFromLQ(T)
@@ -3222,8 +3178,8 @@ def FullKinematicCalculation(T,variation):
 	[_ptmu1,_etamu1,_phimu1,_isomu1,_qmu1,_dptmu1] = [muons[0].Pt(),muons[0].Eta(),muons[0].Phi(),trkisosMu[0],chargesMu[0],dpts[0]]
 	[_ptmu2,_etamu2,_phimu2,_isomu2,_qmu2,_dptmu2] = [muons[1].Pt(),muons[1].Eta(),muons[1].Phi(),trkisosMu[1],chargesMu[1],dpts[1]]
 
-#	[_ispfmu1,ispfmu2] = [pfid[0],pfid[1]]
-#	[_layersmu1,_layersmu2] = [layers[0],layers[1]]
+	[_ispfmu1,ispfmu2] = [pfid[0],pfid[1]]
+	[_layersmu1,_layersmu2] = [layers[0],layers[1]]
 
 	[_ptele1,_etaele1,_phiele1,_isoele1,_qele1] = [electrons[0].Pt(),electrons[0].Eta(),electrons[0].Phi(),trkisosEle[0],chargesEle[0]]
 	[_ptele2,_etaele2,_phiele2,_isoele2,_qele2] = [electrons[1].Pt(),electrons[1].Eta(),electrons[1].Phi(),trkisosEle[1],chargesEle[1]]
@@ -3318,7 +3274,7 @@ def FullKinematicCalculation(T,variation):
 	[bjet1,bscore1,bscoreMVA1,bjet2,bscore2,bscoreMVA2,jet1,jet2,jet3,indRecoBJet1,indRecoBJet2,indRecoJet1,indRecoJet2,indRecoJet3] = [EmptyLorentz,-5.0,-5.0,EmptyLorentz,-5.0,-5.0,EmptyLorentz,EmptyLorentz,EmptyLorentz,-1,-1,-1,-1,-1]
 	[unreg_bjet1,unreg_bjet2] = [EmptyLorentz,EmptyLorentz]
 
-	[unreg_bjet1,bscore1,bscoreMVA1,unreg_bjet2,bscore2,bscoreMVA2,jet1,jet2,jet3,_cisv_Zjet1,_cisv_Zjet2,_cmva_Zjet1,_cmva_Zjet2,indRecoBJet1,indRecoBJet2,indRecoJet1,indRecoJet2,indRecoJet3,bjet1,bjet2,_Hjet1BtagSFL,_Hjet1BtagSFM,_Hjet2BtagSFL,_Hjet2BtagSFM,_Zjet1BtagSFL,_Zjet1BtagSFM,_Zjet2BtagSFL,_Zjet2BtagSFM,_Hjet1BtagSFL_csv,_Hjet1BtagSFM_csv,_Hjet2BtagSFL_csv,_Hjet2BtagSFM_csv,_Zjet1BtagSFL_csv,_Zjet1BtagSFM_csv,_Zjet2BtagSFL_csv,_Zjet2BtagSFM_csv] = GetHHJetsNew(jets,btagCSVscores,btagMVAscores,btagSFsLoose,btagSFsMedium,btagSFsLoose_csv,btagSFsMedium_csv,muons[0],muons[1],electrons[0],electrons[1],_isMuonEvent,_isElectronEvent,jetinds, T, met)
+	[unreg_bjet1,bscore1,bscoreMVA1,unreg_bjet2,bscore2,bscoreMVA2,jet1,jet2,jet3,_cisv_Zjet1,_cisv_Zjet2,_cmva_Zjet1,_cmva_Zjet2,indRecoBJet1,indRecoBJet2,indRecoJet1,indRecoJet2,indRecoJet3,bjet1,bjet2,_Hjet1BtagSFL,_Hjet1BtagSFM,_Hjet2BtagSFL,_Hjet2BtagSFM,_Zjet1BtagSFL,_Zjet1BtagSFM,_Zjet2BtagSFL,_Zjet2BtagSFM,_Hjet1BtagSFL_csv,_Hjet1BtagSFM_csv,_Hjet2BtagSFL_csv,_Hjet2BtagSFM_csv,_Zjet1BtagSFL_csv,_Zjet1BtagSFM_csv,_Zjet2BtagSFL_csv,_Zjet2BtagSFM_csv] = GetHHJetsNew(jets,btagCSVscores,btagMVAscores,btagSFsLoose,btagSFsMedium,btagSFsLoose_csv,btagSFsMedium_csv,btagRegSFs,muons[0],muons[1],electrons[0],electrons[1],_isMuonEvent,_isElectronEvent,jetinds, T, met)
 
 	[_Hjet1BsfLoose,_Hjet1BsfLooseUp,_Hjet1BsfLooseDown] = _Hjet1BtagSFL
 	[_Hjet1BsfMedium,_Hjet1BsfMediumUp,_Hjet1BsfMediumDown] = _Hjet1BtagSFM
@@ -3364,11 +3320,11 @@ def FullKinematicCalculation(T,variation):
 
 	[_bscoreMVA1_genMatched, _bscoreMVA2_genMatched, tempBscore1, tempBscore2] = [-5.0,-5.0,-5.0,-5.0]
 	if jetIndH[0] >= 0 :
-		tempBscore1 = T.PFJetCombinedMVABTagAK4CHS[jetIndH[0]]
-		_bscoreMVA1_genMatched = T.PFJetCombinedMVABTagAK4CHS[jetIndH[0]]
+		tempBscore1 = T.Jet_btagCMVA[jetIndH[0]]
+		_bscoreMVA1_genMatched = T.Jet_btagCMVA[jetIndH[0]]
 	if jetIndH[1] >= 0 :
-		tempBscore2 = T.PFJetCombinedMVABTagAK4CHS[jetIndH[1]]
-		_bscoreMVA2_genMatched = T.PFJetCombinedMVABTagAK4CHS[jetIndH[1]]
+		tempBscore2 = T.Jet_btagCMVA[jetIndH[1]]
+		_bscoreMVA2_genMatched = T.Jet_btagCMVA[jetIndH[1]]
 	if tempBscore1 < tempBscore2 : # becareful if you want to do this. I have NOT re-ordered all variables.
 		_bscoreMVA1_genMatched = tempBscore2
 		_bscoreMVA2_genMatched = tempBscore1
@@ -3640,7 +3596,7 @@ def FullKinematicCalculation(T,variation):
 	#if v == '' : print ' each bdt         ', _uu_bdt_discrim_M260, _uu_bdt_discrim_M270, _uu_bdt_discrim_M300, _uu_bdt_discrim_M350, _uu_bdt_discrim_M400
 	_uu_s2_bdt_discrims = [-99.0,-99.0,-99.0,-99.0,-99.0,-99.0,-99.0,-99.0,-99.0,-99.0,-99.0,-99.0,-99.0,-99.0]
 	for kth in range(len(_uu_s2_bdt_discrims)):
-		_uu_s2_bdt_discrims[kth] = calculateBDTdiscriminant(reader_25vars_uu, str("BDT_classifier_25vars_s2_uu_M" + SignalM[kth]), _bdtvarnames_uu, _Muu4j, _Mbb_H, _Mjj_Z, _Muu, _Muujj, _ptmu1, _ptmu2, _ptmet, _Pt_Hjet1, _Pt_Hjet2, _Pt_Zjet1, _Pt_Zjet2, _Pt_uu, _Pt_Hjets, _Pt_Zjets, _dRbb_H, _dRjj_Z, _DRuu, _phi0_uu, _phi1_uu, _phi0_zz_uu, _phi1_zuu, _phi1_zjj_uu, bscoreMVA1, bscoreMVA2, _dRu1Hj1, _dRu1Hj2, _dRu2Hj1, _dRu2Hj2, _dRu1Zj1, _dRu1Zj2, _dRu2Zj1, _dRu2Zj2, _dRuubb_H, _dRuujj_Z, _cosThetaStarMu, _cosTheta_hbb_uu, _cosTheta_zuu_hzz, _cosThetaStar_uu, _cosThetaStarZuu_CS, _cosTheta_Zuu, _etamu1, _etamu2, _phimu1, _phimu2, _DPHIuv, _dPHIuujj_Z, _dPHIuubb_H, _dPhibb_H, _dPhijj_Z)
+		_uu_s2_bdt_discrims[kth] = calculateBDTdiscriminant(reader_22vars_uu, str("BDT_classifier_22vars_s2_uu_M" + SignalM[kth]), _bdtvarnames_uu, _Muu4j, _Mbb_H, _Mjj_Z, _Muu, _Muujj, _ptmu1, _ptmu2, _ptmet, _Pt_Hjet1, _Pt_Hjet2, _Pt_Zjet1, _Pt_Zjet2, _Pt_uu, _Pt_Hjets, _Pt_Zjets, _dRbb_H, _dRjj_Z, _DRuu, _phi0_uu, _phi1_uu, _phi0_zz_uu, _phi1_zuu, _phi1_zjj_uu, bscoreMVA1, bscoreMVA2, _dRu1Hj1, _dRu1Hj2, _dRu2Hj1, _dRu2Hj2, _dRu1Zj1, _dRu1Zj2, _dRu2Zj1, _dRu2Zj2, _dRuubb_H, _dRuujj_Z, _cosThetaStarMu, _cosTheta_hbb_uu, _cosTheta_zuu_hzz, _cosThetaStar_uu, _cosThetaStarZuu_CS, _cosTheta_Zuu, _etamu1, _etamu2, _phimu1, _phimu2, _DPHIuv, _dPHIuujj_Z, _dPHIuubb_H, _dPhibb_H, _dPhijj_Z)
 	[_uu_s2_bdt_discrim_M260, _uu_s2_bdt_discrim_M270, _uu_s2_bdt_discrim_M300, _uu_s2_bdt_discrim_M350, _uu_s2_bdt_discrim_M400, _uu_s2_bdt_discrim_M450, _uu_s2_bdt_discrim_M500, _uu_s2_bdt_discrim_M550, _uu_s2_bdt_discrim_M600, _uu_s2_bdt_discrim_M650, _uu_s2_bdt_discrim_M750, _uu_s2_bdt_discrim_M800, _uu_s2_bdt_discrim_M900, _uu_s2_bdt_discrim_M1000] = _uu_s2_bdt_discrims
 
 	#-- electron bdt
@@ -3670,8 +3626,8 @@ def FullKinematicCalculation(T,variation):
 	toreturn += [_etaHj1_gen,_etaHj2_gen,_etaZj1_gen,_etaZj2_gen]
 	toreturn += [_xmiss,_ymiss]
 	toreturn += [_isomu1,_isomu2,_isoele1,_isoele2]
-#	toreturn += [_ispfmu1,ispfmu2]
-#	toreturn += [_layersmu1,_layersmu2]
+	toreturn += [_ispfmu1,ispfmu2]
+	toreturn += [_layersmu1,_layersmu2]
 	toreturn += [_qmu1,_qmu2,_qele1,_qele2]
 	toreturn += [_dptmu1,_dptmu2]
 #	toreturn += [_passMedIdmu1,_passMedIdmu1,_passMedId2016mu1,_passMedId2016mu1]
@@ -3818,7 +3774,7 @@ def checkWorZpt(T,lowcut, highcut, WorZ):
 		return 0
 	return 1
 
-def GeomFilterCollection(collection_to_clean,good_collection,dRcut,associatedCollection1,associatedCollection2,associatedCollection3,associatedCollection4,associatedCollection5,associatedCollection6,associatedCollection7):
+def GeomFilterCollection(collection_to_clean,good_collection,dRcut,associatedCollection1,associatedCollection2,associatedCollection3,associatedCollection4,associatedCollection5,associatedCollection6,associatedCollection7,associatedCollection8):
 	# Purpose: Take a collection of TLorentzVectors that you want to clean (arg 1)
 	#         by removing all objects within dR of dRcut (arg 3) of any element in
 	#         the collection of other particles (arg 2)
@@ -3827,7 +3783,7 @@ def GeomFilterCollection(collection_to_clean,good_collection,dRcut,associatedCol
 	output_collection = []
 	associated_output_collection1,associated_output_collection2,associated_output_collection3 = [],[],[]
 	associated_output_collection4,associated_output_collection5,associated_output_collection6 = [],[],[]
-	associated_output_collection7 = []
+	associated_output_collection7,associated_output_collection8 = [],[]
 	for i, c in enumerate(collection_to_clean):
 		isgood = True
 		for g in good_collection:
@@ -3842,7 +3798,8 @@ def GeomFilterCollection(collection_to_clean,good_collection,dRcut,associatedCol
 			associated_output_collection5.append(associatedCollection5[i])
 			associated_output_collection6.append(associatedCollection6[i])
 			associated_output_collection7.append(associatedCollection7[i])
-	return [output_collection,associated_output_collection1,associated_output_collection2,associated_output_collection3,associated_output_collection4,associated_output_collection5,associated_output_collection6,associated_output_collection7]
+			associated_output_collection8.append(associatedCollection8[i])
+	return [output_collection,associated_output_collection1,associated_output_collection2,associated_output_collection3,associated_output_collection4,associated_output_collection5,associated_output_collection6,associated_output_collection7,associated_output_collection8]
 
 
 def MetVector(T):
