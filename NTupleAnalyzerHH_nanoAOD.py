@@ -1032,7 +1032,9 @@ def LeptonsAndJetsFromHH(T):
 		if motherIndex>-1:
 			motherid = T.GenPart_pdgId[motherIndex]
 			motherStatus = T.GenPart_status[motherIndex]
-			grandMotherid = T.GenPart_pdgId[T.GenPart_genPartIdxMother[motherIndex]]
+                        grandMotherid = -1
+                        if T.GenPart_genPartIdxMother[motherIndex]>-1:
+                                grandMotherid = T.GenPart_pdgId[T.GenPart_genPartIdxMother[motherIndex]]
 			#if parent=='Z' : print 'daughter:',pdg,'  mother:',motherid, '  grandMother:',grandMotherid
 			#if v=='' : print 'daughter:',pdg,'  Status:',T.GenParticleStatus[n],'  mother:',motherid,'  grandMother:',grandMotherid
 
@@ -1288,10 +1290,6 @@ def LooseIDMuons(T,_met,variation,isdata):
                 # Require Loose muon flag
 	        Pass *= T.Muon_looseId[n] > 0
 
-	        #fixme these two are equivalent to IsLooseMuon #?
-		#Pass *= T.MuonIsPF[n]
-	        #Pass *= (T.MuonIsGlobal[n] or T.MuonIsTracker[n])
-
 		# A preliminary pT cut.
 		Pass *= (_MuonPt[n] > 8)#fixme offline cuts are 20(10)
 
@@ -1299,19 +1297,17 @@ def LooseIDMuons(T,_met,variation,isdata):
 	        Pass *= abs(T.Muon_eta[n])<2.4
 
 		# Isolation condition using combined PF relative isolation - 0.25 for loose (98% efficiency), 0.15 for tight (95% efficiency)
-	        correctedIso = T.Muon_pfRelIso04_all[n]
+	        correctedIso = T.Muon_pfRelIso04_all[n] 
 		# Don't apply isolation for QCD studies
 		if nonisoswitch != True:
-			Pass *= correctedIso/_MuonPt[n] < 0.25
+			Pass *= correctedIso < 0.25
 
 		# Propagate MET changes if undergoing systematic variation
 		if (Pass):
 			NewMu = TLorentzVector()
 			OldMu = TLorentzVector()
 			NewMu.SetPtEtaPhiM(_MuonPt[n],T.Muon_eta[n],T.Muon_phi[n],0)
-			#NewMu.SetPtEtaPhiM(_MuonPt[n],T.MuonEta[n],T.MuonPhi[n],0)
 			OldMu.SetPtEtaPhiM(T.Muon_pt[n],T.Muon_eta[n],T.Muon_phi[n],0)
-			#OldMu.SetPtEtaPhiM(T.MuonPt[n],T.MuonEta[n],T.MuonPhi[n],0)
 			_met = PropagatePTChangeToMET(_met,OldMu,NewMu)
 
 			# Append items to retun if the muon is good
@@ -1386,20 +1382,20 @@ def MediumIDMuons(T,_met,variation,isdata):
 
 		Pass = True
 		# A preliminary pT cut.
-		Pass *= (_MuonPt[n] > 10)#fixme offline cuts are 20(10)
+		Pass *= (_MuonPt[n] > 8)#fixme offline cuts are 20(10)
 
 		# Eta requirement
 		Pass *= abs(T.Muon_eta[n])<2.4
 
                 # Require Loose muon flag
-	        Pass *= T.Muon_mediumId[n] > 0 #? does this need to be loose and do we need valid fraction of hits
+	        Pass *= T.Muon_mediumId[n] > 0
 
 		# Isolation condition using combined PF relative isolation - 0.25 for loose (98% efficiency), 0.15 for tight (95% efficiency)
 	        correctedIso = T.Muon_pfRelIso04_all[n]
 
 		# Don't apply isolation for QCD studies
 		if nonisoswitch != True:
-			Pass *= correctedIso/_MuonPt[n] < 0.25
+			Pass *= correctedIso < 0.25
 
 		# Prompt requirement
 		Pass *= abs(T.Muon_dxy[n]) < 0.2
@@ -1467,7 +1463,7 @@ def mvaWP90Electrons(T,_met,variation,isdata):
 #?		endcap = (abs(T.ElectronSCEta[n]))>1.56
 		Pass *= (barrel+endcap)
 
-	        Pass *= T.Electron_mvaFall17V2Iso_WP90[n]>0 #? fall17 non iso?
+	        Pass *= T.Electron_mvaFall17V2noIso_WP90[n]>0
 
 	        if (barrel):
 			Pass *= abs(T.Electron_dxy[n])<0.05
@@ -1476,46 +1472,14 @@ def mvaWP90Electrons(T,_met,variation,isdata):
 			Pass *= abs(T.Electron_dxy[n])< 0.10
 			Pass *= abs(T.Electron_dz[n]) < 0.20
 
-		iso = T.Electron_mvaFall17V1Iso[n]
+		iso = T.Electron_pfRelIso03_all[n]
+		#iso=T.Electron_mvaFall17V2Iso[n]/T.Electron_pt[n]
 
-		"""
-	        ecal_energy_inverse = 1.0/T.ElectronEcalEnergy[n]
-		eSCoverP = T.ElectronESuperClusterOverP[n]
-
-                #HLT-safe cuts, except iso which is in nonisoswitch below
-		#fixme removing hlt-safe cuts for now
-
-        	if (barrel):
-			Pass *= T.ElectronFull5x5SigmaIEtaIEta[n]<0.011
-	                Pass *= abs(T.ElectronDeltaEtaTrkSeedSC[n])<0.004
-		        Pass *= abs(T.ElectronDeltaPhiTrkSC[n])<0.020
-		        Pass *= T.ElectronHoE[n]<0.060
-		        Pass *= abs(1.0 - eSCoverP)*ecal_energy_inverse<0.013
-		        #Pass *= T.ElectronNormalizedChi2[n]<
-        	elif (endcap):
-			Pass *= T.ElectronFull5x5SigmaIEtaIEta[n]<0.031
-	                #Pass *= abs(T.ElectronDeltaEtaTrkSeedSC[n])<0.004
-		        #Pass *= abs(T.ElectronDeltaPhiTrkSC[n])<0.020
-		        Pass *= T.ElectronHoE[n]<0.065
-		        Pass *= abs(1.0 - eSCoverP)*ecal_energy_inverse<0.013
-		        Pass *= T.ElectronNormalizedChi2[n]<3.0
-
-		#Isolation
-		chad = T.ElectronPFChargedHadronIso03[n]
-		nhad = T.ElectronPFNeutralHadronIso03[n]
-		pho  = T.ElectronPFPhotonIso03[n]
-
-		eA = getElectronEffectiveArea(T.Electron_eta[n])
-		iso = chad + max(0.0, nhad + pho - T.ElectronRhoIsoHEEP[n]*eA)
-		iso = iso/_ElectronPt[n]
-
-		"""
-		iso=T.Electron_mvaFall17V2Iso[n]/T.Electron_pt[n]
 		# Don't apply isolation for QCD studies
 		if nonisoswitch != True:
 			if (barrel):
 				#Pass *= iso<0.0588#tight
-				Pass *= T.Electron_mvaFall17V2noIso_WP90[n]>0
+				Pass *= T.Electron_mvaFall17V2Iso_WP90[n]>0
 				#Pass *= iso<0.15#ZH(bb)
 		                #fixme removing hlt-safe cuts for now
 		                #Pass *= ((T.ElectronEcalPFClusterIso[n] - 0.165*T.fixedGridRhoFastjetCentralCalo)/_ElectronPt[n])<0.160
@@ -1523,7 +1487,7 @@ def mvaWP90Electrons(T,_met,variation,isdata):
 		                #Pass *= (T.ElectronTrkIsoDR03[n]/_ElectronPt[n])<0.08
 			elif (endcap):
 				#Pass *= iso<0.0571
-				Pass *= T.Electron_mvaFall17V2noIso_WP90[n]>0
+				Pass *= T.Electron_mvaFall17V2Iso_WP90[n]>0
 				#Pass *= iso<0.15#ZH(bb)
                                 #fixme removing hlt-safe cuts for now
 		                #Pass *= ((T.ElectronEcalPFClusterIso[n] - 0.132*T.fixedGridRhoFastjetCentralCalo)/_ElectronPt[n])<0.120
@@ -1604,7 +1568,7 @@ def LooseElectrons(T,_met,variation,isdata):
 			Pass *= abs(T.Electron_dz[n]) < 0.20
 
 
-""" #?
+                """ #?
 	        ecal_energy_inverse = 1.0/T.ElectronEcalEnergy[n]
 		eSCoverP = T.ElectronESuperClusterOverP[n]
 
@@ -1633,8 +1597,8 @@ def LooseElectrons(T,_met,variation,isdata):
 		iso = chad + max(0.0, nhad + pho - T.ElectronRhoIsoHEEP[n]*eA)
 		iso = iso/_ElectronPt[n]
 
-"""
-		iso = T.Electron_mvaFall17V2Iso[n]/T.Electron_pt[n]
+                """
+                iso = T.Electron_mvaFall17V2Iso[n]/T.Electron_pt[n]
 		# Don't apply isolation for QCD studies
 		if nonisoswitch != True:
 			if (barrel):
@@ -1700,7 +1664,7 @@ def MediumElectrons(T,_met,variation,isdata):
 		Pass *= (barrel+endcap)>0
 
 	        Pass *= T.Electron_mvaFall17V2Iso_WP90[n]>0
-"""
+                """
 	        ecal_energy_inverse = 1.0/T.ElectronEcalEnergy[n]
 		eSCoverP = T.ElectronESuperClusterOverP[n]
 
@@ -1744,7 +1708,7 @@ def MediumElectrons(T,_met,variation,isdata):
 		eA = getElectronEffectiveArea(T.ElectronEta[n])
 		iso = chad + max(0.0, nhad + pho - T.ElectronRhoIsoHEEP[n]*eA)
 		iso = iso/_ElectronPt[n]
-"""
+                """
 		iso = T.Electron_mvaFall17V2Iso[n]
 		# Don't apply isolation for QCD studies
 		if nonisoswitch != True:
@@ -2984,11 +2948,15 @@ def FullKinematicCalculation(T,variation):
 		trkisosMu.append(0.0)
 		chargesMu.append(0.0)
 		dpts.append(-1.0)
+                pfid.append(0)
+                layers.append(0)
 	if len(muons) < 2 :
 		muons.append(EmptyLorentz)
 		trkisosMu.append(0.0)
 		chargesMu.append(0.0)
 		dpts.append(-1.0)
+                pfid.append(0)
+                layers.append(0)
 
 	if len(electrons) < 1 :
 		electrons.append(EmptyLorentz)
@@ -3814,8 +3782,8 @@ def MetVector(T):
 startTime = datetime.now()
 
 # Please don't edit here. It is static. The kinematic calulations are the only thing to edit!
-lumisection = array.array("L",[0])
-t.SetBranchAddress("ls",lumisection)
+#lumisection = array.array("L",[0])
+#t.SetBranchAddress("ls",lumisection)
 for n in range(N):
 	# This is the loop over events. Due to the heavy use of functions and automation of
 	# systematic variations, this loop is very small. It should not really be editted,
