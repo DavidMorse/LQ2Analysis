@@ -20,7 +20,8 @@ if 'cmsneu' in platform.node():
 else:
 	print 'Not running on cmsneu!'
 	#exit()
-	NormalDirectory = '/eos/cms/store/group/phys_higgs/HiggsExo/HH_bbZZ_bbllqq/dmorse/hhTrees/NTupleAnalyzerHH_FullSyst_2018_09_20/SummaryFiles'
+	##NormalDirectory = '/eos/cms/store/group/phys_higgs/HiggsExo/HH_bbZZ_bbllqq/dmorse/hhTrees/NTupleAnalyzerHH_FullSyst_2018_09_20/SummaryFiles'
+	NormalDirectory = '/eos/cms/store/group/phys_higgs/HiggsExo/HH_bbZZ_bbllqq/dmorse/hhTrees/NTupleAnalyzerHH_FullSyst_2019_03_27/SummaryFiles'
 	QCDDirectory = '/eos/cms/store/group/phys_higgs/HiggsExo/HH_bbZZ_bbllqq/dmorse/hhTrees/NTupleAnalyzerHH_hh_newEleBDTs_QCDNonIsoQuickTest_2018_07_07/SummaryFiles'
 	EMuDirectory = 'emu'
 
@@ -87,7 +88,7 @@ singleMuonHLTEMU += '+(IsMuon_muon2*( 0.9494*(abs(Eta_muon2)<=0.9)*(Pt_muon2>50)
 #doubleMuonIdAndIsoScale = '*((0.9837*(Eta_muon1>-2.4)*(Eta_muon1<-2.1)+0.9945*(Eta_muon1>-2.1)*(Eta_muon1<-1.6)+0.9970*(Eta_muon1>-1.6)*(Eta_muon1<-1.2)+0.9957*(Eta_muon1>-1.2)*(Eta_muon1<-0.9)+0.9979*(Eta_muon1>-0.9)*(Eta_muon1<-0.3)+0.9924*(Eta_muon1>-0.3)*(Eta_muon1<-0.2)+0.9967*(Eta_muon1>-0.2)*(Eta_muon1<0.2)+0.9940*(Eta_muon1>0.2)*(Eta_muon1<0.3)+0.9980*(Eta_muon1>0.3)*(Eta_muon1<0.9)+0.9953*(Eta_muon1>0.9)*(Eta_muon1<1.2)+0.9968*(Eta_muon1>1.2)*(Eta_muon1<1.6)+0.9960*(Eta_muon1>1.6)*(Eta_muon1<2.1)+0.9859*(Eta_muon1>2.1)*(Eta_muon1<2.4))*(0.9837*(Eta_muon2>-2.4)*(Eta_muon2<-2.1)+0.9945*(Eta_muon2>-2.1)*(Eta_muon2<-1.6)+0.9970*(Eta_muon2>-1.6)*(Eta_muon2<-1.2)+0.9957*(Eta_muon2>-1.2)*(Eta_muon2<-0.9)+0.9979*(Eta_muon2>-0.9)*(Eta_muon2<-0.3)+0.9924*(Eta_muon2>-0.3)*(Eta_muon2<-0.2)+0.9967*(Eta_muon2>-0.2)*(Eta_muon2<0.2)+0.9940*(Eta_muon2>0.2)*(Eta_muon2<0.3)+0.9980*(Eta_muon2>0.3)*(Eta_muon2<0.9)+0.9953*(Eta_muon2>0.9)*(Eta_muon2<1.2)+0.9968*(Eta_muon2>1.2)*(Eta_muon2<1.6)+0.9960*(Eta_muon2>1.6)*(Eta_muon2<2.1)+0.9859*(Eta_muon2>2.1)*(Eta_muon2<2.4)))'
 
 #DM -Update mixing Medium2016 for BCDEF and Medium for GH
-doubleMuonIdAndIsoScale = '*((0.9675*(Eta_muon1>-2.4)*(Eta_muon1<-2.1)+0.9891*(Eta_muon1>-2.1)*(Eta_muon1<-1.6)+0.9941*(Eta_muon1>-1.6)*(Eta_muon1<-1.2)+0.9913*(Eta_muon1>-1.2)*(Eta_muon1<-0.9)+0.9957*(Eta_muon1>-0.9)*(Eta_muon1<-0.3)+0.9848*(Eta_muon1>-0.3)*(Eta_muon1<-0.2)+0.9933*(Eta_muon1>-0.2)*(Eta_muon1<0.2)+0.9881*(Eta_muon1>0.2)*(Eta_muon1<0.3)+0.9961*(Eta_muon1>0.3)*(Eta_muon1<0.9)+0.9906*(Eta_muon1>0.9)*(Eta_muon1<1.2)+0.9935*(Eta_muon1>1.2)*(Eta_muon1<1.6)+0.9919*(Eta_muon1>1.6)*(Eta_muon1<2.1)+0.9717*(Eta_muon1>2.1)*(Eta_muon1<2.4))*(0.9675*(Eta_muon2>-2.4)*(Eta_muon2<-2.1)+0.9891*(Eta_muon2>-2.1)*(Eta_muon2<-1.6)+0.9941*(Eta_muon2>-1.6)*(Eta_muon2<-1.2)+0.9913*(Eta_muon2>-1.2)*(Eta_muon2<-0.9)+0.9957*(Eta_muon2>-0.9)*(Eta_muon2<-0.3)+0.9848*(Eta_muon2>-0.3)*(Eta_muon2<-0.2)+0.9933*(Eta_muon2>-0.2)*(Eta_muon2<0.2)+0.9881*(Eta_muon2>0.2)*(Eta_muon2<0.3)+0.9961*(Eta_muon2>0.3)*(Eta_muon2<0.9)+0.9906*(Eta_muon2>0.9)*(Eta_muon2<1.2)+0.9935*(Eta_muon2>1.2)*(Eta_muon2<1.6)+0.9919*(Eta_muon2>1.6)*(Eta_muon2<2.1)+0.9717*(Eta_muon2>2.1)*(Eta_muon2<2.4)))'
+#doubleMuonIdAndIsoScale = '*((0.9675*(Eta_muon1>-2.4)*(Eta_muon1<-2.1)+0.9891*(Eta_muon1>-2.1)*(Eta_muon1<-1.6)+0.9941*(Eta_muon1>-1.6)*(Eta_muon1<-1.2)+0.9913*(Eta_muon1>-1.2)*(Eta_muon1<-0.9)+0.9957*(Eta_muon1>-0.9)*(Eta_muon1<-0.3)+0.9848*(Eta_muon1>-0.3)*(Eta_muon1<-0.2)+0.9933*(Eta_muon1>-0.2)*(Eta_muon1<0.2)+0.9881*(Eta_muon1>0.2)*(Eta_muon1<0.3)+0.9961*(Eta_muon1>0.3)*(Eta_muon1<0.9)+0.9906*(Eta_muon1>0.9)*(Eta_muon1<1.2)+0.9935*(Eta_muon1>1.2)*(Eta_muon1<1.6)+0.9919*(Eta_muon1>1.6)*(Eta_muon1<2.1)+0.9717*(Eta_muon1>2.1)*(Eta_muon1<2.4))*(0.9675*(Eta_muon2>-2.4)*(Eta_muon2<-2.1)+0.9891*(Eta_muon2>-2.1)*(Eta_muon2<-1.6)+0.9941*(Eta_muon2>-1.6)*(Eta_muon2<-1.2)+0.9913*(Eta_muon2>-1.2)*(Eta_muon2<-0.9)+0.9957*(Eta_muon2>-0.9)*(Eta_muon2<-0.3)+0.9848*(Eta_muon2>-0.3)*(Eta_muon2<-0.2)+0.9933*(Eta_muon2>-0.2)*(Eta_muon2<0.2)+0.9881*(Eta_muon2>0.2)*(Eta_muon2<0.3)+0.9961*(Eta_muon2>0.3)*(Eta_muon2<0.9)+0.9906*(Eta_muon2>0.9)*(Eta_muon2<1.2)+0.9935*(Eta_muon2>1.2)*(Eta_muon2<1.6)+0.9919*(Eta_muon2>1.6)*(Eta_muon2<2.1)+0.9717*(Eta_muon2>2.1)*(Eta_muon2<2.4)))'
 
 doubleMuonIdScale = '*(0.9682423360434217*(Eta_muon1<-2.4)*(Eta_muon1>-2.1)+0.9893833099668479*(Eta_muon1<-2.1)*(Eta_muon1>-1.6)+0.9943077120257308*(Eta_muon1<-1.6)*(Eta_muon1>-1.2)+0.9916914851938796*(Eta_muon1<-1.2)*(Eta_muon1>-0.9)+0.995621634743804*(Eta_muon1<-0.9)*(Eta_muon1>-0.3)+0.9852246225934387*(Eta_muon1<-0.0)*(Eta_muon1>-0.2)+0.9939788646593908*(Eta_muon1<-0.2)*(Eta_muon1>0.2)+0.9885359568100729*(Eta_muon1<0.2)*(Eta_muon1>0.3)+0.9958132831910403*(Eta_muon1<0.3)*(Eta_muon1>0.9)+0.9902529688519877*(Eta_muon1<0.9)*(Eta_muon1>1.2)+0.9934874686188648*(Eta_muon1<1.2)*(Eta_muon1>1.6)+0.9923028170743358*(Eta_muon1<1.6)*(Eta_muon1>2.1)+0.9724438481770842*(Eta_muon1<2.1)*(Eta_muon1>2.4))*(0.9682423360434217*(Eta_muon2<-2.4)*(Eta_muon2>-2.1)+0.9893833099668479*(Eta_muon2<-2.1)*(Eta_muon2>-1.6)+0.9943077120257308*(Eta_muon2<-1.6)*(Eta_muon2>-1.2)+0.9916914851938796*(Eta_muon2<-1.2)*(Eta_muon2>-0.9)+0.995621634743804*(Eta_muon2<-0.9)*(Eta_muon2>-0.3)+0.9852246225934387*(Eta_muon2<-0.0)*(Eta_muon2>-0.2)+0.9939788646593908*(Eta_muon2<-0.2)*(Eta_muon2>0.2)+0.9885359568100729*(Eta_muon2<0.2)*(Eta_muon2>0.3)+0.9958132831910403*(Eta_muon2<0.3)*(Eta_muon2>0.9)+0.9902529688519877*(Eta_muon2<0.9)*(Eta_muon2>1.2)+0.9934874686188648*(Eta_muon2<1.2)*(Eta_muon2>1.6)+0.9923028170743358*(Eta_muon2<1.6)*(Eta_muon2>2.1)+0.9724438481770842*(Eta_muon2<2.1)*(Eta_muon2>2.4))'
 
@@ -100,7 +101,7 @@ doubleMuonIsoScale = '*(0.999189745646657*(Eta_muon1<-2.4)*(Eta_muon1>-2.1)+0.99
 #fracBCDEF2016 = '(0.542239493)'
 #fracGH2016    = '(0.457760507)'
 
-doubleMuonIdAndIsoScale = '*((0.542239493)*medID2016mu1*((abs(Eta_muon1)<0.9)*(0.987*(Pt_muon1<25)+0.987*(Pt_muon1>25)*(Pt_muon1<30)+0.998*(Pt_muon1>30)*(Pt_muon1<40)+0.992*(Pt_muon1>40)*(Pt_muon1<50)+0.985*(Pt_muon1>50)*(Pt_muon1<60)+1.010*(Pt_muon1>60))+(abs(Eta_muon1)>0.9)*(abs(Eta_muon1)<1.2)*(0.975*(Pt_muon1<25)+0.969*(Pt_muon1>25)*(Pt_muon1<30)+0.979*(Pt_muon1>30)*(Pt_muon1<40)+0.983*(Pt_muon1>40)*(Pt_muon1<50)+0.982*(Pt_muon1>50)*(Pt_muon1<60)+0.981*(Pt_muon1>60))+(abs(Eta_muon1)>1.2)*(abs(Eta_muon1)<2.1)*(0.986*(Pt_muon1<25)+0.982*(Pt_muon1>25)*(Pt_muon1<30)+0.987*(Pt_muon1>30)*(Pt_muon1<40)+0.991*(Pt_muon1>40)*(Pt_muon1<50)+0.985*(Pt_muon1>50)*(Pt_muon1<60)+0.993*(Pt_muon1>60))+(abs(Eta_muon1)>2.1)*(abs(Eta_muon1)<2.4)*(0.945*(Pt_muon1<25)+0.942*(Pt_muon1>25)*(Pt_muon1<30)+0.940*(Pt_muon1>30)*(Pt_muon1<40)+0.943*(Pt_muon1>40)*(Pt_muon1<50)+0.941*(Pt_muon1>50)*(Pt_muon1<60)+0.942*(Pt_muon1>60))) + (0.457760507)*medIDmu1*((abs(Eta_muon1)<0.9)*(0.993*(Pt_muon1<25)+0.994*(Pt_muon1>25)*(Pt_muon1<30)+1.000*(Pt_muon1>30)*(Pt_muon1<40)+0.998*(Pt_muon1>40)*(Pt_muon1<50)+0.993*(Pt_muon1>50)*(Pt_muon1<60)+1.000*(Pt_muon1>60))+(abs(Eta_muon1)>0.9)*(abs(Eta_muon1)<1.2)*(0.998*(Pt_muon1<25)+0.999*(Pt_muon1>25)*(Pt_muon1<30)+0.998*(Pt_muon1>30)*(Pt_muon1<40)+0.997*(Pt_muon1>40)*(Pt_muon1<50)+0.993*(Pt_muon1>50)*(Pt_muon1<60)+0.999*(Pt_muon1>60))+(abs(Eta_muon1)>1.2)*(abs(Eta_muon1)<2.1)*(0.998*(Pt_muon1<25)+0.999*(Pt_muon1>25)*(Pt_muon1<30)+0.999*(Pt_muon1>30)*(Pt_muon1<40)+0.996*(Pt_muon1>40)*(Pt_muon1<50)+0.991*(Pt_muon1>50)*(Pt_muon1<60)+0.995*(Pt_muon1>60))+(abs(Eta_muon1)>2.1)*(abs(Eta_muon1)<2.4)*(0.984*(Pt_muon1<25)+0.983*(Pt_muon1>25)*(Pt_muon1<30)+0.975*(Pt_muon1>30)*(Pt_muon1<40)+0.975*(Pt_muon1>40)*(Pt_muon1<50)+0.970*(Pt_muon1>50)*(Pt_muon1<60)+0.971*(Pt_muon1>60))))*((0.542239493)*medID2016mu2*((abs(Eta_muon2)<0.9)*(0.987*(Pt_muon2<25)+0.987*(Pt_muon2>25)*(Pt_muon2<30)+0.998*(Pt_muon2>30)*(Pt_muon2<40)+0.992*(Pt_muon2>40)*(Pt_muon2<50)+0.985*(Pt_muon2>50)*(Pt_muon2<60)+1.010*(Pt_muon2>60))+(abs(Eta_muon2)>0.9)*(abs(Eta_muon2)<1.2)*(0.975*(Pt_muon2<25)+0.969*(Pt_muon2>25)*(Pt_muon2<30)+0.979*(Pt_muon2>30)*(Pt_muon2<40)+0.983*(Pt_muon2>40)*(Pt_muon2<50)+0.982*(Pt_muon2>50)*(Pt_muon2<60)+0.981*(Pt_muon2>60))+(abs(Eta_muon2)>1.2)*(abs(Eta_muon2)<2.1)*(0.986*(Pt_muon2<25)+0.982*(Pt_muon2>25)*(Pt_muon2<30)+0.987*(Pt_muon2>30)*(Pt_muon2<40)+0.991*(Pt_muon2>40)*(Pt_muon2<50)+0.985*(Pt_muon2>50)*(Pt_muon2<60)+0.993*(Pt_muon2>60))+(abs(Eta_muon2)>2.1)*(abs(Eta_muon2)<2.4)*(0.945*(Pt_muon2<25)+0.942*(Pt_muon2>25)*(Pt_muon2<30)+0.940*(Pt_muon2>30)*(Pt_muon2<40)+0.943*(Pt_muon2>40)*(Pt_muon2<50)+0.941*(Pt_muon2>50)*(Pt_muon2<60)+0.942*(Pt_muon2>60))) + (0.457760507)*medIDmu1*((abs(Eta_muon2)<0.9)*(0.993*(Pt_muon2<25)+0.994*(Pt_muon2>25)*(Pt_muon2<30)+1.000*(Pt_muon2>30)*(Pt_muon2<40)+0.998*(Pt_muon2>40)*(Pt_muon2<50)+0.993*(Pt_muon2>50)*(Pt_muon2<60)+1.000*(Pt_muon2>60))+(abs(Eta_muon2)>0.9)*(abs(Eta_muon2)<1.2)*(0.998*(Pt_muon2<25)+0.999*(Pt_muon2>25)*(Pt_muon2<30)+0.998*(Pt_muon2>30)*(Pt_muon2<40)+0.997*(Pt_muon2>40)*(Pt_muon2<50)+0.993*(Pt_muon2>50)*(Pt_muon2<60)+0.999*(Pt_muon2>60))+(abs(Eta_muon2)>1.2)*(abs(Eta_muon2)<2.1)*(0.998*(Pt_muon2<25)+0.999*(Pt_muon2>25)*(Pt_muon2<30)+0.999*(Pt_muon2>30)*(Pt_muon2<40)+0.996*(Pt_muon2>40)*(Pt_muon2<50)+0.991*(Pt_muon2>50)*(Pt_muon2<60)+0.995*(Pt_muon2>60))+(abs(Eta_muon2)>2.1)*(abs(Eta_muon2)<2.4)*(0.984*(Pt_muon2<25)+0.983*(Pt_muon2>25)*(Pt_muon2<30)+0.975*(Pt_muon2>30)*(Pt_muon2<40)+0.975*(Pt_muon2>40)*(Pt_muon2<50)+0.970*(Pt_muon2>50)*(Pt_muon2<60)+0.971*(Pt_muon2>60))))'
+doubleMuonIdAndIsoScale = '*((0.542239493)*medID2016mu1*((abs(Eta_muon1)<0.9)*(0.987*(Pt_muon1<25)+0.987*(Pt_muon1>25)*(Pt_muon1<30)+0.998*(Pt_muon1>30)*(Pt_muon1<40)+0.992*(Pt_muon1>40)*(Pt_muon1<50)+0.985*(Pt_muon1>50)*(Pt_muon1<60)+1.010*(Pt_muon1>60))+(abs(Eta_muon1)>0.9)*(abs(Eta_muon1)<1.2)*(0.975*(Pt_muon1<25)+0.969*(Pt_muon1>25)*(Pt_muon1<30)+0.979*(Pt_muon1>30)*(Pt_muon1<40)+0.983*(Pt_muon1>40)*(Pt_muon1<50)+0.982*(Pt_muon1>50)*(Pt_muon1<60)+0.981*(Pt_muon1>60))+(abs(Eta_muon1)>1.2)*(abs(Eta_muon1)<2.1)*(0.986*(Pt_muon1<25)+0.982*(Pt_muon1>25)*(Pt_muon1<30)+0.987*(Pt_muon1>30)*(Pt_muon1<40)+0.991*(Pt_muon1>40)*(Pt_muon1<50)+0.985*(Pt_muon1>50)*(Pt_muon1<60)+0.993*(Pt_muon1>60))+(abs(Eta_muon1)>2.1)*(abs(Eta_muon1)<2.4)*(0.945*(Pt_muon1<25)+0.942*(Pt_muon1>25)*(Pt_muon1<30)+0.940*(Pt_muon1>30)*(Pt_muon1<40)+0.943*(Pt_muon1>40)*(Pt_muon1<50)+0.941*(Pt_muon1>50)*(Pt_muon1<60)+0.942*(Pt_muon1>60))) + (0.457760507)*medIDmu1*((abs(Eta_muon1)<0.9)*(0.993*(Pt_muon1<25)+0.994*(Pt_muon1>25)*(Pt_muon1<30)+1.000*(Pt_muon1>30)*(Pt_muon1<40)+0.998*(Pt_muon1>40)*(Pt_muon1<50)+0.993*(Pt_muon1>50)*(Pt_muon1<60)+1.000*(Pt_muon1>60))+(abs(Eta_muon1)>0.9)*(abs(Eta_muon1)<1.2)*(0.998*(Pt_muon1<25)+0.999*(Pt_muon1>25)*(Pt_muon1<30)+0.998*(Pt_muon1>30)*(Pt_muon1<40)+0.997*(Pt_muon1>40)*(Pt_muon1<50)+0.993*(Pt_muon1>50)*(Pt_muon1<60)+0.999*(Pt_muon1>60))+(abs(Eta_muon1)>1.2)*(abs(Eta_muon1)<2.1)*(0.998*(Pt_muon1<25)+0.999*(Pt_muon1>25)*(Pt_muon1<30)+0.999*(Pt_muon1>30)*(Pt_muon1<40)+0.996*(Pt_muon1>40)*(Pt_muon1<50)+0.991*(Pt_muon1>50)*(Pt_muon1<60)+0.995*(Pt_muon1>60))+(abs(Eta_muon1)>2.1)*(abs(Eta_muon1)<2.4)*(0.984*(Pt_muon1<25)+0.983*(Pt_muon1>25)*(Pt_muon1<30)+0.975*(Pt_muon1>30)*(Pt_muon1<40)+0.975*(Pt_muon1>40)*(Pt_muon1<50)+0.970*(Pt_muon1>50)*(Pt_muon1<60)+0.971*(Pt_muon1>60))))*((0.542239493)*medID2016mu2*((abs(Eta_muon2)<0.9)*(0.987*(Pt_muon2<25)+0.987*(Pt_muon2>25)*(Pt_muon2<30)+0.998*(Pt_muon2>30)*(Pt_muon2<40)+0.992*(Pt_muon2>40)*(Pt_muon2<50)+0.985*(Pt_muon2>50)*(Pt_muon2<60)+1.010*(Pt_muon2>60))+(abs(Eta_muon2)>0.9)*(abs(Eta_muon2)<1.2)*(0.975*(Pt_muon2<25)+0.969*(Pt_muon2>25)*(Pt_muon2<30)+0.979*(Pt_muon2>30)*(Pt_muon2<40)+0.983*(Pt_muon2>40)*(Pt_muon2<50)+0.982*(Pt_muon2>50)*(Pt_muon2<60)+0.981*(Pt_muon2>60))+(abs(Eta_muon2)>1.2)*(abs(Eta_muon2)<2.1)*(0.986*(Pt_muon2<25)+0.982*(Pt_muon2>25)*(Pt_muon2<30)+0.987*(Pt_muon2>30)*(Pt_muon2<40)+0.991*(Pt_muon2>40)*(Pt_muon2<50)+0.985*(Pt_muon2>50)*(Pt_muon2<60)+0.993*(Pt_muon2>60))+(abs(Eta_muon2)>2.1)*(abs(Eta_muon2)<2.4)*(0.945*(Pt_muon2<25)+0.942*(Pt_muon2>25)*(Pt_muon2<30)+0.940*(Pt_muon2>30)*(Pt_muon2<40)+0.943*(Pt_muon2>40)*(Pt_muon2<50)+0.941*(Pt_muon2>50)*(Pt_muon2<60)+0.942*(Pt_muon2>60))) + (0.457760507)*medIDmu2*((abs(Eta_muon2)<0.9)*(0.993*(Pt_muon2<25)+0.994*(Pt_muon2>25)*(Pt_muon2<30)+1.000*(Pt_muon2>30)*(Pt_muon2<40)+0.998*(Pt_muon2>40)*(Pt_muon2<50)+0.993*(Pt_muon2>50)*(Pt_muon2<60)+1.000*(Pt_muon2>60))+(abs(Eta_muon2)>0.9)*(abs(Eta_muon2)<1.2)*(0.998*(Pt_muon2<25)+0.999*(Pt_muon2>25)*(Pt_muon2<30)+0.998*(Pt_muon2>30)*(Pt_muon2<40)+0.997*(Pt_muon2>40)*(Pt_muon2<50)+0.993*(Pt_muon2>50)*(Pt_muon2<60)+0.999*(Pt_muon2>60))+(abs(Eta_muon2)>1.2)*(abs(Eta_muon2)<2.1)*(0.998*(Pt_muon2<25)+0.999*(Pt_muon2>25)*(Pt_muon2<30)+0.999*(Pt_muon2>30)*(Pt_muon2<40)+0.996*(Pt_muon2>40)*(Pt_muon2<50)+0.991*(Pt_muon2>50)*(Pt_muon2<60)+0.995*(Pt_muon2>60))+(abs(Eta_muon2)>2.1)*(abs(Eta_muon2)<2.4)*(0.984*(Pt_muon2<25)+0.983*(Pt_muon2>25)*(Pt_muon2<30)+0.975*(Pt_muon2>30)*(Pt_muon2<40)+0.975*(Pt_muon2>40)*(Pt_muon2<50)+0.970*(Pt_muon2>50)*(Pt_muon2<60)+0.971*(Pt_muon2>60))))'
 
 
 singleMuonIdScale = '*(0.9813326964101629*(Pt_muon1>50)*(Pt_muon1<55)+0.9811215588407185*(Pt_muon1>55)*(Pt_muon1<60)+0.9888030350742609*(Pt_muon1>60)*(Pt_muon1<120)+1.0179598732419621*(Pt_muon1>120))'
@@ -158,10 +159,10 @@ passfilter += '*(passBadMuon*passBadChargedHadron)'
 #passfilter += '*(noBadMuonsFlag*(1-duplicateMuonsFlag))'
 
 # This defines the preselections for the mu-mu, mu-nu, and e-mu samples
-preselection_Muon_nos = '((pass_HLT_Mu17_Mu8)*(Pt_muon1>20)*(Pt_muon2>10)*(Pt_Hjet1>20)*(Pt_Hjet2>20)*(Pt_Zjet1>20)*(Pt_Zjet2>20)*(M_uu>12)*(isMuonEvent)*(1-isElectronEvent))'
+preselection_Muon_nos = '((pass_HLT_Mu17_Mu8)*(Pt_muon1>20)*(Pt_muon2>10)*(Pt_Hjet1>20)*(Pt_Hjet2>20)*(Pt_Zjet1>20)*(Pt_Zjet2>20)*(M_uu>15)*(isMuonEvent)*(1-isElectronEvent))'
 ## *(1-(run_number==1)*(lumi_number==1764)*(event_number==293919))*(1-(run_number==1)*(lumi_number==109126)*(event_number==125821776))*(1-(run_number==1)*(lumi_number==8709)*(event_number==10040671))*(1-(run_number==1)*(lumi_number==100356)*(event_number==94956608))*(1-(run_number==1)*(lumi_number==418554)*(event_number==67052368))*(1-(run_number==1)*(lumi_number==304909)*(event_number==48846528))*(1-(run_number==1)*(lumi_number==485391)*(event_number==77759520))*(1-(run_number==1)*(lumi_number==444879)*(event_number==71269656))*(1-(run_number==1)*(lumi_number==96384)*(event_number==111130112))*(1-(run_number==276775)*(lumi_number==271)*(event_number==363882336))*(1-(run_number==282800)*(lumi_number==375)*(event_number==714565824))*(1-(run_number==278406)*(lumi_number==1240)*(event_number==-2110167296))*(1-(run_number==275310)*(lumi_number==530)*(event_number==944183168))
 
-preselection_Electron_nos = '((pass_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ)*(Pt_ele1>25)*(Pt_ele2>15)*(Pt_Hjet1>20)*(Pt_Hjet2>20)*(Pt_Zjet1>20)*(Pt_Zjet2>20)*(M_ee>12)*(isElectronEvent)*(1-isMuonEvent))'
+preselection_Electron_nos = '((pass_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ)*(Pt_ele1>25)*(Pt_ele2>15)*(Pt_Hjet1>20)*(Pt_Hjet2>20)*(Pt_Zjet1>20)*(Pt_Zjet2>20)*(M_ee>15)*(isElectronEvent)*(1-isMuonEvent))'
 #*(1-(run_number==1)*(lumi_number==1764)*(event_number==293919))*(1-(run_number==1)*(lumi_number==109126)*(event_number==125821776))*(1-(run_number==1)*(lumi_number==8709)*(event_number==10040671))*(1-(run_number==1)*(lumi_number==100356)*(event_number==94956608))*(1-(run_number==1)*(lumi_number==418554)*(event_number==67052368))*(1-(run_number==1)*(lumi_number==304909)*(event_number==48846528))*(1-(run_number==1)*(lumi_number==485391)*(event_number==77759520))*(1-(run_number==1)*(lumi_number==444879)*(event_number==71269656))*(1-(run_number==1)*(lumi_number==96384)*(event_number==111130112))*(1-(run_number==276775)*(lumi_number==271)*(event_number==363882336))*(1-(run_number==282800)*(lumi_number==375)*(event_number==714565824))*(1-(run_number==278406)*(lumi_number==1240)*(event_number==-2110167296))*(1-(run_number==275310)*(lumi_number==530)*(event_number==944183168))
 
 
@@ -232,13 +233,13 @@ emu_id_eff_err = 0.0027#v7 JEC
 
 # QCD data-driven scale factor
 useDataDrivenQCD = True
-fbd_Muon     = [1.422, 0.012] # Sept 27, 2018
-fbd_Electron = [1.079, 0.01] # Sept 27, 2018
-# tt, z SF calculated using Data with NEW method (Sept 27, 2018)
-Rz_data_muon  = [1.144, 0.006]
-Rtt_data_muon = [0.908, 0.013]
-Rz_data_electron  = [1.246, 0.008]
-Rtt_data_electron = [0.975, 0.016]
+fbd_Muon     = [1.406, 0.011] # Apr 05, 2019
+fbd_Electron = [1.079, 0.009] # Apr 05, 2019
+# tt, z SF calculated using Data with NEW method (Apr 05, 2019)
+Rz_data_muon  = [1.139, 0.006]
+Rtt_data_muon = [0.906, 0.013]
+Rz_data_electron  = [1.241, 0.008]
+Rtt_data_electron = [0.968, 0.018]
 
 
 analysisChannel = 'muon'
@@ -250,11 +251,75 @@ analysisSignal = 'HHres' # Spin0 - need to have 'HH' in the name
 recalRttRz = True
 #recalRttRz = False
 
-doindiv = False ## this is to use LowM bdt in the electron channel
-#doindiv = True   ## this is to use individually trained bdt for all cases
+doindiv = True   ## this is to use individually trained bdt for all cases
+#doindiv = False ## this is to use LowM bdt
 
 use_bdtSp0 = False
 #use_bdtSp0 = True ## this is to use BDTs trained with Spin0 signal for Spin2 limits
+
+
+if analysisSignal == 'HHres':
+	BinsList_all_dic_MUON = {}
+	BinsList_all_dic_MUON['1000'] = [-1.0 , -0.9 , -0.8 , -0.7 , -0.6 , -0.5 , -0.4 , -0.3 , -0.2 , -0.1 , 0.0 , 0.1 , 0.2 , 0.3 , 0.4 , 0.5 , 0.6 , 0.7 , 0.8 , 0.86 , 0.912 , 1.0]
+	BinsList_all_dic_MUON['900'] = [-1.0 , -0.9 , -0.8 , -0.7 , -0.6 , -0.5 , -0.4 , -0.3 , -0.2 , -0.1 , 0.0 , 0.1 , 0.2 , 0.3 , 0.4 , 0.5 , 0.6 , 0.7 , 0.8 , 0.86 , 0.912 , 1.0]
+	BinsList_all_dic_MUON['800'] = [-1.0 , -0.9 , -0.8 , -0.7 , -0.6 , -0.5 , -0.4 , -0.3 , -0.2 , -0.1 , 0.0 , 0.1 , 0.2 , 0.3 , 0.4 , 0.5 , 0.6 , 0.7 , 0.792 , 0.86 , 0.924 , 1.0]
+	BinsList_all_dic_MUON['750'] = [-1.0 , -0.9 , -0.8 , -0.7 , -0.6 , -0.5 , -0.4 , -0.3 , -0.2 , -0.1 , 0.0 , 0.1 , 0.2 , 0.3 , 0.4 , 0.5 , 0.6 , 0.7 , 0.78 , 0.84 , 0.888 , 0.944 , 1.0]
+	BinsList_all_dic_MUON['650'] = [-1.0 , -0.9 , -0.8 , -0.7 , -0.6 , -0.5 , -0.4 , -0.3 , -0.2 , -0.1 , 0.0 , 0.1 , 0.2 , 0.3 , 0.4 , 0.5 , 0.6 , 0.7 , 0.78 , 0.86 , 0.912 , 0.952 , 1.0]
+	BinsList_all_dic_MUON['600'] = [-1.0 , -0.9 , -0.8 , -0.7 , -0.6 , -0.5 , -0.4 , -0.3 , -0.2 , -0.1 , 0.0 , 0.1 , 0.2 , 0.3 , 0.4 , 0.5 , 0.6 , 0.7 , 0.78 , 0.86 , 0.912 , 0.948 , 1.0]
+	BinsList_all_dic_MUON['550'] = [-1.0 , -0.9 , -0.8 , -0.7 , -0.6 , -0.5 , -0.4 , -0.3 , -0.2 , -0.1 , 0.0 , 0.1 , 0.2 , 0.3 , 0.4 , 0.5 , 0.6 , 0.7 , 0.78, 0.856 , 0.904, 0.94 , 1.0]
+	BinsList_all_dic_MUON['500'] = [-1.0 , -0.9 , -0.8 , -0.7 , -0.6 , -0.5 , -0.4 , -0.3 , -0.2 , -0.1 , 0.0 , 0.1 , 0.2 , 0.3 , 0.4 , 0.5 , 0.6 , 0.7 , 0.78 , 0.86 , 0.916 , 0.94 , 1.0]
+	BinsList_all_dic_MUON['450'] = [-1.0 , -0.9 , -0.8 , -0.7 , -0.6 , -0.5 , -0.4 , -0.3 , -0.2 , -0.1 , 0.0 , 0.1 , 0.2 , 0.3 , 0.4 , 0.5 , 0.6 , 0.68 , 0.76, 0.84 , 0.892, 0.92 , 1.0]
+	BinsList_all_dic_MUON['400'] = [-1.0 , -0.9 , -0.8 , -0.7 , -0.6 , -0.5 , -0.4 , -0.3 , -0.2 , -0.1 , 0.0 , 0.1 , 0.2 , 0.3 , 0.4 , 0.5 , 0.6 , 0.7, 0.78, 0.82 ,0.86, 0.9 , 1.0]
+	BinsList_all_dic_MUON['350'] = [-1.0 , -0.9 , -0.8 , -0.7 , -0.6 , -0.5 , -0.4 , -0.3 , -0.2 , -0.1 , 0.0 , 0.1 , 0.2 , 0.3 , 0.4 , 0.5 , 0.6 , 0.7 , 0.76 , 0.82, 0.86 , 1.0]
+	BinsList_all_dic_MUON['300'] = [-1.0 , -0.9 , -0.8 , -0.7 , -0.6 , -0.5 , -0.4 , -0.3 , -0.2 , -0.1 , 0.0 , 0.1 , 0.2 , 0.3 , 0.4 , 0.5 , 0.6 , 0.7 , 0.78 , 0.828 , 1.0]
+	BinsList_all_dic_MUON['270'] = [-1.0 , -0.9 , -0.8 , -0.7 , -0.6 , -0.5 , -0.4 , -0.3 , -0.2 , -0.1 , 0.0 , 0.1 , 0.2 , 0.3 , 0.4 , 0.5 , 0.6 , 0.68 , 0.76 , 0.828 , 1.0]
+	BinsList_all_dic_MUON['260'] = [-1.0 , -0.9 , -0.8 , -0.7 , -0.6 , -0.5 , -0.4 , -0.3 , -0.2 , -0.1 , 0.0 , 0.1 , 0.2 , 0.3 , 0.4 , 0.5 , 0.6 , 0.68 , 0.76 , 0.828 , 1.0]
+	BinsList_all_dic_ELECTRON = {}
+	BinsList_all_dic_ELECTRON['1000'] = [-1.0 , -0.9 , -0.8 , -0.7 , -0.6 , -0.5 , -0.4 , -0.3 , -0.2 , -0.1 , 0.0 , 0.1 , 0.2 , 0.3 , 0.4 , 0.5 , 0.6 , 0.7 , 0.8 , 0.86 , 0.92 , 1.0]
+	BinsList_all_dic_ELECTRON['900'] = [-1.0 , -0.9 , -0.8 , -0.7 , -0.6 , -0.5 , -0.4 , -0.3 , -0.2 , -0.1 , 0.0 , 0.1 , 0.2 , 0.3 , 0.4 , 0.5 , 0.6 , 0.7 , 0.8 , 0.86 , 0.92 , 1.0]
+	BinsList_all_dic_ELECTRON['800'] = [-1.0 , -0.9 , -0.8 , -0.7 , -0.6 , -0.5 , -0.4 , -0.3 , -0.2 , -0.1 , 0.0 , 0.1 , 0.2 , 0.3 , 0.4 , 0.5 , 0.6 , 0.7 , 0.8 , 0.88 , 0.94 , 1.0]
+	BinsList_all_dic_ELECTRON['750'] = [-1.0 , -0.9 , -0.8 , -0.7 , -0.6 , -0.5 , -0.4 , -0.3 , -0.2 , -0.1 , 0.0 , 0.1 , 0.2 , 0.3 , 0.4 , 0.5 , 0.6 , 0.7 , 0.78 , 0.848 ,0.912, 0.948 , 1.0]
+	BinsList_all_dic_ELECTRON['650'] = [-1.0 , -0.9 , -0.8 , -0.7 , -0.6 , -0.5 , -0.4 , -0.3 , -0.2 , -0.1 , 0.0 , 0.1 , 0.2 , 0.3 , 0.4 , 0.5 , 0.6 , 0.68 ,0.752, 0.816, 0.88 , 0.92, 0.952 , 1.0]
+	BinsList_all_dic_ELECTRON['600'] = [-1.0 , -0.9 , -0.8 , -0.7 , -0.6 , -0.5 , -0.4 , -0.3 , -0.2 , -0.1 , 0.0 , 0.1 , 0.2 , 0.3 , 0.4 , 0.5 , 0.6 , 0.7 , 0.78,  0.852 , 0.908 , 0.948, 1.0]
+	BinsList_all_dic_ELECTRON['550'] = [-1.0 , -0.9 , -0.8 , -0.7 , -0.6 , -0.5 , -0.4 , -0.3 , -0.2 , -0.1 , 0.0 , 0.1 , 0.2 , 0.3 , 0.4 , 0.5 , 0.6 , 0.7 , 0.78,  0.86, 0.912 , 0.944 , 1.0]
+	BinsList_all_dic_ELECTRON['500'] = [-1.0 , -0.9 , -0.8 , -0.7 , -0.6 , -0.5 , -0.4 , -0.3 , -0.2 , -0.1 , 0.0 , 0.1 , 0.2 , 0.3 , 0.4 , 0.5 , 0.6 , 0.7 , 0.78,  0.86, 0.912 , 0.94 , 1.0]
+	BinsList_all_dic_ELECTRON['450'] = [-1.0 , -0.9 , -0.8 , -0.7 , -0.6 , -0.5 , -0.4 , -0.3 , -0.2 , -0.1 , 0.0 , 0.1 , 0.2 , 0.3 , 0.4 , 0.5 , 0.6 , 0.7 , 0.8, 0.88 , 0.92 , 1.0]
+	BinsList_all_dic_ELECTRON['400'] = [-1.0 , -0.9 , -0.8 , -0.7 , -0.6 , -0.5 , -0.4 , -0.3 , -0.2 , -0.1 , 0.0 , 0.1 , 0.2 , 0.3 , 0.4 , 0.5 , 0.6 , 0.7, 0.78 , 0.856 , 0.892 , 1.0]
+	BinsList_all_dic_ELECTRON['350'] = [-1.0 , -0.9 , -0.8 , -0.7 , -0.6 , -0.5 , -0.4 , -0.3 , -0.2 , -0.1 , 0.0 , 0.1 , 0.2 , 0.3 , 0.4 , 0.5 , 0.6 , 0.7, 0.76 , 0.8 , 0.84 , 1.0]
+	BinsList_all_dic_ELECTRON['300'] = [-1.0 , -0.9 , -0.8 , -0.7 , -0.6 , -0.5 , -0.4 , -0.3 , -0.2 , -0.1 , 0.0 , 0.1 , 0.2 , 0.3 , 0.4 , 0.5 , 0.6, 0.68 , 0.74 , 0.8 , 1.0]
+	BinsList_all_dic_ELECTRON['270'] = [-1.0 , -0.9 , -0.8 , -0.7 , -0.6 , -0.5 , -0.4 , -0.3 , -0.2 , -0.1 , 0.0 , 0.1 , 0.2 , 0.3 , 0.4 , 0.5 , 0.6 , 0.68 , 0.74 , 0.792 , 1.0]
+	BinsList_all_dic_ELECTRON['260'] = [-1.0 , -0.9 , -0.8 , -0.7 , -0.6 , -0.5 , -0.4 , -0.3 , -0.2 , -0.1 , 0.0 , 0.1 , 0.2 , 0.3 , 0.4 , 0.5 , 0.6, 0.68 , 0.74 , 0.792 , 1.0]
+elif analysisSignal == 'HHBulkGrav':
+	BinsList_all_dic_MUON = {}
+	BinsList_all_dic_MUON['1000'] = [-1.0 , -0.9 , -0.8 , -0.7 , -0.6 , -0.5 , -0.4 , -0.3 , -0.2 , -0.1 , 0.0 , 0.1 , 0.2 , 0.3 , 0.4 , 0.5 , 0.6 , 0.7 , 0.788 , 0.852 , 0.884 , 1.0]
+	BinsList_all_dic_MUON['900'] = [-1.0 , -0.9 , -0.8 , -0.7 , -0.6 , -0.5 , -0.4 , -0.3 , -0.2 , -0.1 , 0.0 , 0.1 , 0.2 , 0.3 , 0.4 , 0.5 , 0.6 , 0.7 , 0.788 , 0.852 , 0.884 , 1.0]
+	BinsList_all_dic_MUON['800'] = [-1.0 , -0.9 , -0.8 , -0.7 , -0.6 , -0.5 , -0.4 , -0.3 , -0.2 , -0.1 , 0.0 , 0.1 , 0.2 , 0.3 , 0.4 , 0.5 , 0.6 , 0.7 , 0.8 , 0.868 , 0.912 , 1.0]
+	BinsList_all_dic_MUON['750'] = [-1.0 , -0.9 , -0.8 , -0.7 , -0.6 , -0.5 , -0.4 , -0.3 , -0.2 , -0.1 , 0.0 , 0.1 , 0.2 , 0.3 , 0.4 , 0.5 , 0.6 , 0.688 , 0.764 , 0.832 , 0.888 , 0.936 , 1.0]
+	BinsList_all_dic_MUON['650'] = [-1.0 , -0.9 , -0.8 , -0.7 , -0.6 , -0.5 , -0.4 , -0.3 , -0.2 , -0.1 , 0.0 , 0.1 , 0.2 , 0.3 , 0.4 , 0.5 , 0.6 , 0.7 , 0.78 , 0.852 , 0.912 , 0.944 , 1.0]
+	BinsList_all_dic_MUON['600'] = [-1.0 , -0.9 , -0.8 , -0.7 , -0.6 , -0.5 , -0.4 , -0.3 , -0.2 , -0.1 , 0.0 , 0.1 , 0.2 , 0.3 , 0.4 , 0.5 , 0.6 , 0.7 , 0.78 , 0.852 , 0.912 , 0.948 , 1.0]
+	BinsList_all_dic_MUON['550'] = [-1.0 , -0.9 , -0.8 , -0.7 , -0.6 , -0.5 , -0.4 , -0.3 , -0.2 , -0.1 , 0.0 , 0.1 , 0.2 , 0.3 , 0.4 , 0.5 , 0.6 , 0.696 , 0.788, 0.86 , 0.916, 0.948 , 1.0]
+	BinsList_all_dic_MUON['500'] = [-1.0 , -0.9 , -0.8 , -0.7 , -0.6 , -0.5 , -0.4 , -0.3 , -0.2 , -0.1 , 0.0 , 0.1 , 0.2 , 0.3 , 0.4 , 0.5 , 0.6 , 0.7 , 0.788 , 0.864 , 0.916 , 0.94 , 1.0]
+	BinsList_all_dic_MUON['450'] = [-1.0 , -0.9 , -0.8 , -0.7 , -0.6 , -0.5 , -0.4 , -0.3 , -0.2 , -0.1 , 0.0 , 0.1 , 0.2 , 0.3 , 0.4 , 0.5 , 0.6 , 0.7 , 0.78, 0.84 , 0.892, 0.928 , 1.0]
+	BinsList_all_dic_MUON['400'] = [-1.0 , -0.9 , -0.8 , -0.7 , -0.6 , -0.5 , -0.4 , -0.3 , -0.2 , -0.1 , 0.0 , 0.1 , 0.2 , 0.3 , 0.4 , 0.5 , 0.6 , 0.68, 0.748, 0.808 ,0.86, 0.896 , 1.0]
+	BinsList_all_dic_MUON['350'] = [-1.0 , -0.9 , -0.8 , -0.7 , -0.6 , -0.5 , -0.4 , -0.3 , -0.2 , -0.1 , 0.0 , 0.1 , 0.2 , 0.3 , 0.4 , 0.5 , 0.6 , 0.7 , 0.768 , 0.824, 0.86 , 1.0]
+	BinsList_all_dic_MUON['300'] = [-1.0 , -0.9 , -0.8 , -0.7 , -0.6 , -0.5 , -0.4 , -0.3 , -0.2 , -0.1 , 0.0 , 0.1 , 0.2 , 0.3 , 0.4 , 0.5 , 0.6 , 0.7   , 0.796 , 0.848 , 1.0]
+	BinsList_all_dic_MUON['270'] = [-1.0 , -0.9 , -0.8 , -0.7 , -0.6 , -0.5 , -0.4 , -0.3 , -0.2 , -0.1 , 0.0 , 0.1 , 0.2 , 0.3 , 0.4 , 0.5 , 0.6 , 0.692 , 0.764 , 0.828 , 1.0]
+	BinsList_all_dic_MUON['260'] = [-1.0 , -0.9 , -0.8 , -0.7 , -0.6 , -0.5 , -0.4 , -0.3 , -0.2 , -0.1 , 0.0 , 0.1 , 0.2 , 0.3 , 0.4 , 0.5 , 0.6 , 0.692 , 0.764 , 0.828 , 1.0]
+	BinsList_all_dic_ELECTRON = {}
+	BinsList_all_dic_ELECTRON['1000'] = [-1.0 , -0.9 , -0.8 , -0.7 , -0.6 , -0.5 , -0.4 , -0.3 , -0.2 , -0.1 , 0.0 , 0.1 , 0.2 , 0.3 , 0.4 , 0.5 , 0.6 , 0.68 , 0.756 , 0.832 , 0.88 , 0.908 , 1.0]
+	BinsList_all_dic_ELECTRON['900'] = [-1.0 , -0.9 , -0.8 , -0.7 , -0.6 , -0.5 , -0.4 , -0.3 , -0.2 , -0.1 , 0.0 , 0.1 , 0.2 , 0.3 , 0.4 , 0.5 , 0.6 , 0.68 , 0.756 , 0.832 , 0.88 , 0.908 , 1.0]
+	BinsList_all_dic_ELECTRON['800'] = [-1.0 , -0.9 , -0.8 , -0.7 , -0.6 , -0.5 , -0.4 , -0.3 , -0.2 , -0.1 , 0.0 , 0.1 , 0.2 , 0.3 , 0.4 , 0.5 , 0.6 , 0.7 , 0.8 , 0.888 , 0.928 , 1.0]
+	BinsList_all_dic_ELECTRON['750'] = [-1.0 , -0.9 , -0.8 , -0.7 , -0.6 , -0.5 , -0.4 , -0.3 , -0.2 , -0.1 , 0.0 , 0.1 , 0.2 , 0.3 , 0.4 , 0.5 , 0.6 , 0.7 , 0.776 , 0.848 ,0.912, 0.952 , 1.0]
+	BinsList_all_dic_ELECTRON['650'] = [-1.0 , -0.9 , -0.8 , -0.7 , -0.6 , -0.5 , -0.4 , -0.3 , -0.2 , -0.1 , 0.0 , 0.1 , 0.2 , 0.3 , 0.4 , 0.5 , 0.6 , 0.7 , 0.78, 0.852 , 0.92, 0.952 , 1.0]
+	BinsList_all_dic_ELECTRON['600'] = [-1.0 , -0.9 , -0.8 , -0.7 , -0.6 , -0.5 , -0.4 , -0.3 , -0.2 , -0.1 , 0.0 , 0.1 , 0.2 , 0.3 , 0.4 , 0.5 , 0.6 , 0.7 , 0.78, 0.852 , 0.92 , 0.956, 1.0]
+	BinsList_all_dic_ELECTRON['550'] = [-1.0 , -0.9 , -0.8 , -0.7 , -0.6 , -0.5 , -0.4 , -0.3 , -0.2 , -0.1 , 0.0 , 0.1 , 0.2 , 0.3 , 0.4 , 0.5 , 0.6 , 0.7 , 0.78, 0.86, 0.916 ,0.952 , 1.0]
+	BinsList_all_dic_ELECTRON['500'] = [-1.0 , -0.9 , -0.8 , -0.7 , -0.6 , -0.5 , -0.4 , -0.3 , -0.2 , -0.1 , 0.0 , 0.1 , 0.2 , 0.3 , 0.4 , 0.5 , 0.6 , 0.7 , 0.792, 0.86, 0.916 , 0.952 , 1.0]
+	BinsList_all_dic_ELECTRON['450'] = [-1.0 , -0.9 , -0.8 , -0.7 , -0.6 , -0.5 , -0.4 , -0.3 , -0.2 , -0.1 , 0.0 , 0.1 , 0.2 , 0.3 , 0.4 , 0.5 , 0.6 , 0.7 , 0.78,  0.86, 0.908 , 0.94 , 1.0]
+	BinsList_all_dic_ELECTRON['400'] = [-1.0 , -0.9 , -0.8 , -0.7 , -0.6 , -0.5 , -0.4 , -0.3 , -0.2 , -0.1 , 0.0 , 0.1 , 0.2 , 0.3 , 0.4 , 0.5 , 0.6 , 0.68 , 0.756 , 0.82 , 0.884 , 0.92 , 1.0]
+	BinsList_all_dic_ELECTRON['350'] = [-1.0 , -0.9 , -0.8 , -0.7 , -0.6 , -0.5 , -0.4 , -0.3 , -0.2 , -0.1 , 0.0 , 0.1 , 0.2 , 0.3 , 0.4 , 0.5 , 0.6 , 0.7, 0.772 , 0.828 , 0.872 , 1.0]
+	BinsList_all_dic_ELECTRON['300'] = [-1.0 , -0.9 , -0.8 , -0.7 , -0.6 , -0.5 , -0.4 , -0.3 , -0.2 , -0.1 , 0.0 , 0.1 , 0.2 , 0.3 , 0.4 , 0.5 , 0.6, 0.68 , 0.748 , 0.812 , 1.0]
+	BinsList_all_dic_ELECTRON['270'] = [-1.0 , -0.9 , -0.8 , -0.7 , -0.6 , -0.5 , -0.4 , -0.3 , -0.2 , -0.1 , 0.0 , 0.1 , 0.2 , 0.3 , 0.4 , 0.5 , 0.6 , 0.68 , 0.74 , 0.792 , 1.0]
+	BinsList_all_dic_ELECTRON['260'] = [-1.0 , -0.9 , -0.8 , -0.7 , -0.6 , -0.5 , -0.4 , -0.3 , -0.2 , -0.1 , 0.0 , 0.1 , 0.2 , 0.3 , 0.4 , 0.5 , 0.6, 0.68 , 0.74 , 0.792 , 1.0]
 
 
 if (analysisChannel == 'muon'):
@@ -272,6 +337,7 @@ if (analysisChannel == 'muon'):
 	cosThetaStar="cosThetaStarMu"
 	Rz_data=Rz_data_muon
 	Rtt_data=Rtt_data_muon
+	BinsList_all_dic = BinsList_all_dic_MUON
 if (analysisChannel == 'electron'):
 	NormalWeight=NormalWeightElectron
 	preselection_nos=preselection_Electron_nos
@@ -287,6 +353,7 @@ if (analysisChannel == 'electron'):
 	cosThetaStar="cosThetaStarEle"
 	Rz_data=Rz_data_electron
 	Rtt_data=Rtt_data_electron
+	BinsList_all_dic = BinsList_all_dic_ELECTRON
 
 if (analysisSignal == 'HHres'):
 	x_spin = '0'
@@ -338,10 +405,11 @@ pdf_uujj_ZJets = [0.95,0.95,2.11,2.98,5.09,5.8,6.73,7.41,7.41,7.62,7.69,8.11,8.4
 
 
 
-# These are the total background uncertainties. They are used just to make some error bands on plots. 
-
-totunc_Muon = [6.91]
-totunc_Electron = [7.15]
+# These are the total background uncertainties. They are used just to make some error bands on plots.
+#totunc_Muon = [6.91]
+#totunc_Electron = [7.15]
+totunc_Muon = [8.08, 8.08, 7.93, 6.59, 6.58, 6.67, 6.56, 6.73, 6.67, 6.24, 6.29, 6.18, 6.23, 6.23]
+totunc_Electron = [8.21, 8.21, 8.18, 6.27, 6.21, 6.36, 6.31, 6.26, 6.26, 5.8, 5.87, 5.78, 5.74, 5.74]
 
 
 
@@ -404,7 +472,9 @@ drbinning = [70,0,7]
 phibinning = [26,-3.1416,3.1416]
 phi0binning = [13,0,3.1416]
 dphibinning = [64,0,3.2]
-bdtbinning = [50,-0.8,0.6]
+#bdtbinning = [50,-0.8,0.6]
+bdtbinning = [50,-1.0,1.0]
+
 
 for x in range(40):
 	if ptbinning[-1] < 1000:
@@ -823,15 +893,15 @@ def main():
 		
 		# UUJJ plots at preselection, Note that putting 'TTBarDataDriven' in the name turns on the use of data-driven ttbar e-mu sample in place of MC
 		
-		# putting 'QCDDataDriven' will also turns on the use of data-driven QCD if not already set at default
-		if "muon" in analysisChannel:
-			for lqmass in [260,270,300,350,400,450,500,550,600,650,750,800,900,1000]:
-				MakeBasicPlot("uu_s"+x_spin+"_bdt_discrim_M"+str(lqmass),"muon channel Spin"+x_spin+" BDT output at M"+str(lqmass),bdtbinning,preselection,NormalWeight,NormalDirectory,'standard',ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,lqmass)
-			MakeBasicPlot("uu_s"+x_spin+"_bdt_discrim_LowM","muon channel Spin"+x_spin+" BDT output combined M260-300",bdtbinning,preselection,NormalWeight,NormalDirectory,'standard',ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,260)
-		if "ele" in analysisChannel:
-			for lqmass in [260,270,300,350,400,450,500,550,600,650,750,800,900,1000]:
-				MakeBasicPlot("ee_s"+x_spin+"_bdt_discrim_M"+str(lqmass),"electron channel Spin"+x_spin+" BDT output at M"+str(lqmass),bdtbinning,preselection,NormalWeight,NormalDirectory,'standard',ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,lqmass)
-			MakeBasicPlot("ee_s"+x_spin+"_bdt_discrim_LowM","electron channel Spin"+x_spin+" BDT output combined M260-300",bdtbinning,preselection,NormalWeight,NormalDirectory,'standard',ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,260)
+#		# putting 'QCDDataDriven' will also turns on the use of data-driven QCD if not already set at default
+#		if "muon" in analysisChannel:
+#			for lqmass in [260,270,300,350,400,450,500,550,600,650,750,800,900,1000]:
+#				MakeBasicPlot("uu_s"+x_spin+"_bdt_discrim_M"+str(lqmass),"muon channel Spin"+x_spin+" BDT output at M"+str(lqmass),bdtbinning,preselection,NormalWeight,NormalDirectory,'standard',ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,lqmass)
+#			MakeBasicPlot("uu_s"+x_spin+"_bdt_discrim_LowM","muon channel Spin"+x_spin+" BDT output combined M260-300",bdtbinning,preselection,NormalWeight,NormalDirectory,'standard',ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,260)
+#		if "ele" in analysisChannel:
+#			for lqmass in [260,270,300,350,400,450,500,550,600,650,750,800,900,1000]:
+#				MakeBasicPlot("ee_s"+x_spin+"_bdt_discrim_M"+str(lqmass),"electron channel Spin"+x_spin+" BDT output at M"+str(lqmass),bdtbinning,preselection,NormalWeight,NormalDirectory,'standard',ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,lqmass)
+#			MakeBasicPlot("ee_s"+x_spin+"_bdt_discrim_LowM","electron channel Spin"+x_spin+" BDT output combined M260-300",bdtbinning,preselection,NormalWeight,NormalDirectory,'standard',ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,260)
 
 		MakeBasicPlot("cosTheta_hbb_"+ell+ell,"cos(#Theta) (H->bb) "+latexEll+latexEll,costhetastarbinning,preselection,NormalWeight,NormalDirectory,'standard',ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
 		MakeBasicPlot("cosTheta_z"+ell+ell+"_hzz","cos(#Theta) (Z->"+latexEll+latexEll+", H->ZZ)",costhetastarbinning,preselection,NormalWeight,NormalDirectory,'standard',ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
@@ -840,7 +910,7 @@ def main():
 		MakeBasicPlot("phi0_zz_"+ell+ell,"#phi0_zz_"+latexEll+latexEll,phi0binning,preselection,NormalWeight,NormalDirectory,'standard',ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
 		MakeBasicPlot("phi1_"+ell+ell,"#phi1_"+latexEll+latexEll,phi0binning,preselection,NormalWeight,NormalDirectory,'standard',ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
 		MakeBasicPlot("phi1_z"+ell+ell,"#phi1_z"+latexEll+latexEll,phi0binning,preselection,NormalWeight,NormalDirectory,'standard',ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
-		MakeBasicPlot("phi1_zjj_"+ell+ell,"#phi1_zjj+"+latexEll+latexEll,phi0binning,preselection,NormalWeight,NormalDirectory,'standard',ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
+		MakeBasicPlot("phi1_zjj_"+ell+ell,"#phi1_zjj_"+latexEll+latexEll,phi0binning,preselection,NormalWeight,NormalDirectory,'standard',ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
 		MakeBasicPlot("CMVA_bjet1","Jet1(H->bb) CMVA score",bjetbinning,preselection,NormalWeight,NormalDirectory,'standard',ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
 		MakeBasicPlot("CMVA_bjet2","Jet2(H->bb) CMVA score",bjetbinning,preselection,NormalWeight,NormalDirectory,'standard',ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
 		MakeBasicPlot("CMVA_Zjet1","Jet1(Z->jj) CMVA score",bjetbinning,preselection,NormalWeight,NormalDirectory,'standard',ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
@@ -905,19 +975,19 @@ def main():
 		MakeBasicPlot("Zjet2BsfLoose","Zjet2 Btag SF",[120,0,1.5],preselection,NormalWeight,NormalDirectory,'standard',ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
 		MakeBasicPlot("(1-(1-(CMVA_bjet1>-0.5884)*Hjet1BsfLoose)*(1-(CMVA_bjet2>-0.5884)*Hjet2BsfLoose)*(1-(CMVA_Zjet1>-0.5884)*Zjet1BsfLoose)*(1-(CMVA_Zjet2>-0.5884)*Zjet2BsfLoose))","Btag Total SF",[200,0,2],preselection,NormalWeight,NormalDirectory,'standard',ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,300)
 
-		##if analysisChannel=='electron' : exit()
-		## fixme turning off final selection
-		## Full Selection Plots
-		if 'muon' in analysisChannel :
-			MakeBasicPlot("uu_s"+x_spin+"_bdt_discrim_LowM","muon channel Spin"+x_spin+" BDT output combined M260-300",bdtbinning,preselection,NormalWeight,NormalDirectory,'final',ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,MuonOptCutFile,version_name,260)
-		if 'ele' in analysisChannel :
-			MakeBasicPlot("ee_s"+x_spin+"_bdt_discrim_LowM","electron channel Spin"+x_spin+" BDT output combined M260-300",bdtbinning,preselection,NormalWeight,NormalDirectory,'final',ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,MuonOptCutFile,version_name,260)
+		#if analysisChannel=='electron' : exit()
+		# fixme turning off final selection
+		# Full Selection Plots
+#		if 'muon' in analysisChannel :
+#			MakeBasicPlot("uu_s"+x_spin+"_bdt_discrim_LowM","muon channel Spin"+x_spin+" BDT output combined M260-300",bdtbinning,preselection,NormalWeight,NormalDirectory,'final',ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,MuonOptCutFile,version_name,260)
+#		if 'ele' in analysisChannel :
+#			MakeBasicPlot("ee_s"+x_spin+"_bdt_discrim_LowM","electron channel Spin"+x_spin+" BDT output combined M260-300",bdtbinning,preselection,NormalWeight,NormalDirectory,'final',ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,MuonOptCutFile,version_name,260)
 		for lqmass in [260,270,300,350,400,450,500,550,600,650,750,800,900,1000]:
 		#for lqmass in [300,900]: # AH
 			if 'muon' in analysisChannel : 
-				MakeBasicPlot("uu_s"+x_spin+"_bdt_discrim_M"+str(lqmass),"muon channel Spin"+x_spin+" BDT output at M"+str(lqmass),bdtbinning,preselection,NormalWeight,NormalDirectory,'final',ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,MuonOptCutFile,version_name,lqmass)
+				MakeBasicPlot("uu_s"+x_spin+"_bdt_discrim_M"+str(lqmass),"muon channel Spin"+x_spin+" BDT output at M"+str(lqmass),BinsList_all_dic[str(lqmass)],preselection,NormalWeight,NormalDirectory,'final',ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,MuonOptCutFile,version_name,lqmass)
 			if 'ele' in analysisChannel : 
-				MakeBasicPlot("ee_s"+x_spin+"_bdt_discrim_M"+str(lqmass),"electron channel Spin"+x_spin+" BDT output at M"+str(lqmass),bdtbinning,preselection,NormalWeight,NormalDirectory,'final',ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,MuonOptCutFile,version_name,lqmass)
+				MakeBasicPlot("ee_s"+x_spin+"_bdt_discrim_M"+str(lqmass),"electron channel Spin"+x_spin+" BDT output at M"+str(lqmass),BinsList_all_dic[str(lqmass)],preselection,NormalWeight,NormalDirectory,'final',ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,MuonOptCutFile,version_name,lqmass)
 			MakeBasicPlot("cosTheta_hbb_"+ell+ell,"cos(#Theta) (H->bb) "+latexEll+latexEll,costhetastarbinning,preselection,NormalWeight,NormalDirectory,'final',ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,MuonOptCutFile,version_name,lqmass)
 			MakeBasicPlot("cosTheta_z"+ell+ell+"_hzz","cos(#Theta) (Z->"+latexEll+latexEll+", H->ZZ)",costhetastarbinning,preselection,NormalWeight,NormalDirectory,'final',ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,MuonOptCutFile,version_name,lqmass)
 			MakeBasicPlot(cosThetaStar,"cos(#Theta*) ("+latexEll+")",costhetastarbinning,preselection,NormalWeight,NormalDirectory,'final',ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,MuonOptCutFile,version_name,lqmass)
@@ -925,7 +995,7 @@ def main():
 			MakeBasicPlot("phi0_zz_"+ell+ell,"#phi0_zz_"+latexEll+latexEll,phi0binning,preselection,NormalWeight,NormalDirectory,'final',ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,MuonOptCutFile,version_name,lqmass)
 			MakeBasicPlot("phi1_"+ell+ell,"#phi1_"+latexEll+latexEll,phi0binning,preselection,NormalWeight,NormalDirectory,'final',ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,MuonOptCutFile,version_name,lqmass)
 			MakeBasicPlot("phi1_z"+ell+ell,"#phi1_z"+latexEll+latexEll,phi0binning,preselection,NormalWeight,NormalDirectory,'final',ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,MuonOptCutFile,version_name,lqmass)
-			MakeBasicPlot("phi1_zjj_"+ell+ell,"#phi1_zjj+"+latexEll+latexEll,phi0binning,preselection,NormalWeight,NormalDirectory,'final',ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,MuonOptCutFile,version_name,lqmass)
+			MakeBasicPlot("phi1_zjj_"+ell+ell,"#phi1_zjj_"+latexEll+latexEll,phi0binning,preselection,NormalWeight,NormalDirectory,'final',ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,MuonOptCutFile,version_name,lqmass)
 			MakeBasicPlot("CMVA_bjet1","Jet1(H->bb) CMVA score",bjetbinning,preselection,NormalWeight,NormalDirectory,'final',ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,MuonOptCutFile,version_name,lqmass)
 			MakeBasicPlot("CMVA_bjet2","Jet2(H->bb) CMVA score",bjetbinning,preselection,NormalWeight,NormalDirectory,'final',ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,MuonOptCutFile,version_name,lqmass)
 			MakeBasicPlot("CMVA_Zjet1","Jet1(Z->jj) CMVA score",bjetbinning,preselection,NormalWeight,NormalDirectory,'final',ell+ell+'jj',Rz_uujj, Rw_uvjj,Rtt_uujj,MuonOptCutFile,version_name,lqmass)
@@ -1282,7 +1352,7 @@ def main():
 				print 'weight*lumi   ',(t_.weight_central)*lumi
 				print 'HIP 1         ',(0.991237*(t_.Eta_muon1>-2.4)*(t_.Eta_muon1<-2.1)+0.994853*(t_.Eta_muon1>-2.1)*(t_.Eta_muon1<-1.6)+0.996413*(t_.Eta_muon1>-1.6)*(t_.Eta_muon1<-1.2)+0.997157*(t_.Eta_muon1>-1.2)*(t_.Eta_muon1<-0.9)+0.997512*(t_.Eta_muon1>-0.9)*(t_.Eta_muon1<-0.6)+0.99756*(t_.Eta_muon1>-0.6)*(t_.Eta_muon1<-0.3)+0.996745*(t_.Eta_muon1>-0.3)*(t_.Eta_muon1<-0.2)+0.996996*(t_.Eta_muon1>-0.2)*(t_.Eta_muon1<0.2)+0.99772*(t_.Eta_muon1>0.2)*(t_.Eta_muon1<0.3)+0.998604*(t_.Eta_muon1>0.3)*(t_.Eta_muon1<0.6)+0.998321*(t_.Eta_muon1>0.6)*(t_.Eta_muon1<0.9)+0.997682*(t_.Eta_muon1>0.9)*(t_.Eta_muon1<1.2)+0.995252*(t_.Eta_muon1>1.2)*(t_.Eta_muon1<1.6)+0.994919*(t_.Eta_muon1>1.6)*(t_.Eta_muon1<2.1)+0.987334*(t_.Eta_muon1>2.1)*(t_.Eta_muon1<2.4) )
 				print 'HIP 2         ',(0.991237*(t_.Eta_muon2>-2.4)*(t_.Eta_muon2<-2.1)+0.994853*(t_.Eta_muon2>-2.1)*(t_.Eta_muon2<-1.6)+0.996413*(t_.Eta_muon2>-1.6)*(t_.Eta_muon2<-1.2)+0.997157*(t_.Eta_muon2>-1.2)*(t_.Eta_muon2<-0.9)+0.997512*(t_.Eta_muon2>-0.9)*(t_.Eta_muon2<-0.6)+0.99756*(t_.Eta_muon2>-0.6)*(t_.Eta_muon2<-0.3)+0.996745*(t_.Eta_muon2>-0.3)*(t_.Eta_muon2<-0.2)+0.996996*(t_.Eta_muon2>-0.2)*(t_.Eta_muon2<0.2)+0.99772*(t_.Eta_muon2>0.2)*(t_.Eta_muon2<0.3)+0.998604*(t_.Eta_muon2>0.3)*(t_.Eta_muon2<0.6)+0.998321*(t_.Eta_muon2>0.6)*(t_.Eta_muon2<0.9)+0.997682*(t_.Eta_muon2>0.9)*(t_.Eta_muon2<1.2)+0.995252*(t_.Eta_muon2>1.2)*(t_.Eta_muon2<1.6)+0.994919*(t_.Eta_muon2>1.6)*(t_.Eta_muon2<2.1)+0.987334*(t_.Eta_muon2>2.1)*(t_.Eta_muon2<2.4) )
-				print 'IdandIso      ',((0.542239493)*t_.medID2016mu1*((abs(t_.Eta_muon1)<0.9)*(0.987*(t_.Pt_muon1<25)+0.987*(t_.Pt_muon1>25)*(t_.Pt_muon1<30)+0.998*(t_.Pt_muon1>30)*(t_.Pt_muon1<40)+0.992*(t_.Pt_muon1>40)*(t_.Pt_muon1<50)+0.985*(t_.Pt_muon1>50)*(t_.Pt_muon1<60)+1.010*(t_.Pt_muon1>60))+(abs(t_.Eta_muon1)>0.9)*(abs(t_.Eta_muon1)<1.2)*(0.975*(t_.Pt_muon1<25)+0.969*(t_.Pt_muon1>25)*(t_.Pt_muon1<30)+0.979*(t_.Pt_muon1>30)*(t_.Pt_muon1<40)+0.983*(t_.Pt_muon1>40)*(t_.Pt_muon1<50)+0.982*(t_.Pt_muon1>50)*(t_.Pt_muon1<60)+0.981*(t_.Pt_muon1>60))+(abs(t_.Eta_muon1)>1.2)*(abs(t_.Eta_muon1)<2.1)*(0.986*(t_.Pt_muon1<25)+0.982*(t_.Pt_muon1>25)*(t_.Pt_muon1<30)+0.987*(t_.Pt_muon1>30)*(t_.Pt_muon1<40)+0.991*(t_.Pt_muon1>40)*(t_.Pt_muon1<50)+0.985*(t_.Pt_muon1>50)*(t_.Pt_muon1<60)+0.993*(t_.Pt_muon1>60))+(abs(t_.Eta_muon1)>2.1)*(abs(t_.Eta_muon1)<2.4)*(0.945*(t_.Pt_muon1<25)+0.942*(t_.Pt_muon1>25)*(t_.Pt_muon1<30)+0.940*(t_.Pt_muon1>30)*(t_.Pt_muon1<40)+0.943*(t_.Pt_muon1>40)*(t_.Pt_muon1<50)+0.941*(t_.Pt_muon1>50)*(t_.Pt_muon1<60)+0.942*(t_.Pt_muon1>60))) + (0.457760507)*t_.medIDmu1*((abs(t_.Eta_muon1)<0.9)*(0.993*(t_.Pt_muon1<25)+0.994*(t_.Pt_muon1>25)*(t_.Pt_muon1<30)+1.000*(t_.Pt_muon1>30)*(t_.Pt_muon1<40)+0.998*(t_.Pt_muon1>40)*(t_.Pt_muon1<50)+0.993*(t_.Pt_muon1>50)*(t_.Pt_muon1<60)+1.000*(t_.Pt_muon1>60))+(abs(t_.Eta_muon1)>0.9)*(abs(t_.Eta_muon1)<1.2)*(0.998*(t_.Pt_muon1<25)+0.999*(t_.Pt_muon1>25)*(t_.Pt_muon1<30)+0.998*(t_.Pt_muon1>30)*(t_.Pt_muon1<40)+0.997*(t_.Pt_muon1>40)*(t_.Pt_muon1<50)+0.993*(t_.Pt_muon1>50)*(t_.Pt_muon1<60)+0.999*(t_.Pt_muon1>60))+(abs(t_.Eta_muon1)>1.2)*(abs(t_.Eta_muon1)<2.1)*(0.998*(t_.Pt_muon1<25)+0.999*(t_.Pt_muon1>25)*(t_.Pt_muon1<30)+0.999*(t_.Pt_muon1>30)*(t_.Pt_muon1<40)+0.996*(t_.Pt_muon1>40)*(t_.Pt_muon1<50)+0.991*(t_.Pt_muon1>50)*(t_.Pt_muon1<60)+0.995*(t_.Pt_muon1>60))+(abs(t_.Eta_muon1)>2.1)*(abs(t_.Eta_muon1)<2.4)*(0.984*(t_.Pt_muon1<25)+0.983*(t_.Pt_muon1>25)*(t_.Pt_muon1<30)+0.975*(t_.Pt_muon1>30)*(t_.Pt_muon1<40)+0.975*(t_.Pt_muon1>40)*(t_.Pt_muon1<50)+0.970*(t_.Pt_muon1>50)*(t_.Pt_muon1<60)+0.971*(t_.Pt_muon1>60))))*((0.542239493)*t_.medID2016mu2*((abs(t_.Eta_muon2)<0.9)*(0.987*(t_.Pt_muon2<25)+0.987*(t_.Pt_muon2>25)*(t_.Pt_muon2<30)+0.998*(t_.Pt_muon2>30)*(t_.Pt_muon2<40)+0.992*(t_.Pt_muon2>40)*(t_.Pt_muon2<50)+0.985*(t_.Pt_muon2>50)*(t_.Pt_muon2<60)+1.010*(t_.Pt_muon2>60))+(abs(t_.Eta_muon2)>0.9)*(abs(t_.Eta_muon2)<1.2)*(0.975*(t_.Pt_muon2<25)+0.969*(t_.Pt_muon2>25)*(t_.Pt_muon2<30)+0.979*(t_.Pt_muon2>30)*(t_.Pt_muon2<40)+0.983*(t_.Pt_muon2>40)*(t_.Pt_muon2<50)+0.982*(t_.Pt_muon2>50)*(t_.Pt_muon2<60)+0.981*(t_.Pt_muon2>60))+(abs(t_.Eta_muon2)>1.2)*(abs(t_.Eta_muon2)<2.1)*(0.986*(t_.Pt_muon2<25)+0.982*(t_.Pt_muon2>25)*(t_.Pt_muon2<30)+0.987*(t_.Pt_muon2>30)*(t_.Pt_muon2<40)+0.991*(t_.Pt_muon2>40)*(t_.Pt_muon2<50)+0.985*(t_.Pt_muon2>50)*(t_.Pt_muon2<60)+0.993*(t_.Pt_muon2>60))+(abs(t_.Eta_muon2)>2.1)*(abs(t_.Eta_muon2)<2.4)*(0.945*(t_.Pt_muon2<25)+0.942*(t_.Pt_muon2>25)*(t_.Pt_muon2<30)+0.940*(t_.Pt_muon2>30)*(t_.Pt_muon2<40)+0.943*(t_.Pt_muon2>40)*(t_.Pt_muon2<50)+0.941*(t_.Pt_muon2>50)*(t_.Pt_muon2<60)+0.942*(t_.Pt_muon2>60))) + (0.457760507)*t_.medIDmu1*((abs(t_.Eta_muon2)<0.9)*(0.993*(t_.Pt_muon2<25)+0.994*(t_.Pt_muon2>25)*(t_.Pt_muon2<30)+1.000*(t_.Pt_muon2>30)*(t_.Pt_muon2<40)+0.998*(t_.Pt_muon2>40)*(t_.Pt_muon2<50)+0.993*(t_.Pt_muon2>50)*(t_.Pt_muon2<60)+1.000*(t_.Pt_muon2>60))+(abs(t_.Eta_muon2)>0.9)*(abs(t_.Eta_muon2)<1.2)*(0.998*(t_.Pt_muon2<25)+0.999*(t_.Pt_muon2>25)*(t_.Pt_muon2<30)+0.998*(t_.Pt_muon2>30)*(t_.Pt_muon2<40)+0.997*(t_.Pt_muon2>40)*(t_.Pt_muon2<50)+0.993*(t_.Pt_muon2>50)*(t_.Pt_muon2<60)+0.999*(t_.Pt_muon2>60))+(abs(t_.Eta_muon2)>1.2)*(abs(t_.Eta_muon2)<2.1)*(0.998*(t_.Pt_muon2<25)+0.999*(t_.Pt_muon2>25)*(t_.Pt_muon2<30)+0.999*(t_.Pt_muon2>30)*(t_.Pt_muon2<40)+0.996*(t_.Pt_muon2>40)*(t_.Pt_muon2<50)+0.991*(t_.Pt_muon2>50)*(t_.Pt_muon2<60)+0.995*(t_.Pt_muon2>60))+(abs(t_.Eta_muon2)>2.1)*(abs(t_.Eta_muon2)<2.4)*(0.984*(t_.Pt_muon2<25)+0.983*(t_.Pt_muon2>25)*(t_.Pt_muon2<30)+0.975*(t_.Pt_muon2>30)*(t_.Pt_muon2<40)+0.975*(t_.Pt_muon2>40)*(t_.Pt_muon2<50)+0.970*(t_.Pt_muon2>50)*(t_.Pt_muon2<60)+0.971*(t_.Pt_muon2>60))))
+				print 'IdandIso      ',((0.542239493)*t_.medID2016mu1*((abs(t_.Eta_muon1)<0.9)*(0.987*(t_.Pt_muon1<25)+0.987*(t_.Pt_muon1>25)*(t_.Pt_muon1<30)+0.998*(t_.Pt_muon1>30)*(t_.Pt_muon1<40)+0.992*(t_.Pt_muon1>40)*(t_.Pt_muon1<50)+0.985*(t_.Pt_muon1>50)*(t_.Pt_muon1<60)+1.010*(t_.Pt_muon1>60))+(abs(t_.Eta_muon1)>0.9)*(abs(t_.Eta_muon1)<1.2)*(0.975*(t_.Pt_muon1<25)+0.969*(t_.Pt_muon1>25)*(t_.Pt_muon1<30)+0.979*(t_.Pt_muon1>30)*(t_.Pt_muon1<40)+0.983*(t_.Pt_muon1>40)*(t_.Pt_muon1<50)+0.982*(t_.Pt_muon1>50)*(t_.Pt_muon1<60)+0.981*(t_.Pt_muon1>60))+(abs(t_.Eta_muon1)>1.2)*(abs(t_.Eta_muon1)<2.1)*(0.986*(t_.Pt_muon1<25)+0.982*(t_.Pt_muon1>25)*(t_.Pt_muon1<30)+0.987*(t_.Pt_muon1>30)*(t_.Pt_muon1<40)+0.991*(t_.Pt_muon1>40)*(t_.Pt_muon1<50)+0.985*(t_.Pt_muon1>50)*(t_.Pt_muon1<60)+0.993*(t_.Pt_muon1>60))+(abs(t_.Eta_muon1)>2.1)*(abs(t_.Eta_muon1)<2.4)*(0.945*(t_.Pt_muon1<25)+0.942*(t_.Pt_muon1>25)*(t_.Pt_muon1<30)+0.940*(t_.Pt_muon1>30)*(t_.Pt_muon1<40)+0.943*(t_.Pt_muon1>40)*(t_.Pt_muon1<50)+0.941*(t_.Pt_muon1>50)*(t_.Pt_muon1<60)+0.942*(t_.Pt_muon1>60))) + (0.457760507)*t_.medIDmu1*((abs(t_.Eta_muon1)<0.9)*(0.993*(t_.Pt_muon1<25)+0.994*(t_.Pt_muon1>25)*(t_.Pt_muon1<30)+1.000*(t_.Pt_muon1>30)*(t_.Pt_muon1<40)+0.998*(t_.Pt_muon1>40)*(t_.Pt_muon1<50)+0.993*(t_.Pt_muon1>50)*(t_.Pt_muon1<60)+1.000*(t_.Pt_muon1>60))+(abs(t_.Eta_muon1)>0.9)*(abs(t_.Eta_muon1)<1.2)*(0.998*(t_.Pt_muon1<25)+0.999*(t_.Pt_muon1>25)*(t_.Pt_muon1<30)+0.998*(t_.Pt_muon1>30)*(t_.Pt_muon1<40)+0.997*(t_.Pt_muon1>40)*(t_.Pt_muon1<50)+0.993*(t_.Pt_muon1>50)*(t_.Pt_muon1<60)+0.999*(t_.Pt_muon1>60))+(abs(t_.Eta_muon1)>1.2)*(abs(t_.Eta_muon1)<2.1)*(0.998*(t_.Pt_muon1<25)+0.999*(t_.Pt_muon1>25)*(t_.Pt_muon1<30)+0.999*(t_.Pt_muon1>30)*(t_.Pt_muon1<40)+0.996*(t_.Pt_muon1>40)*(t_.Pt_muon1<50)+0.991*(t_.Pt_muon1>50)*(t_.Pt_muon1<60)+0.995*(t_.Pt_muon1>60))+(abs(t_.Eta_muon1)>2.1)*(abs(t_.Eta_muon1)<2.4)*(0.984*(t_.Pt_muon1<25)+0.983*(t_.Pt_muon1>25)*(t_.Pt_muon1<30)+0.975*(t_.Pt_muon1>30)*(t_.Pt_muon1<40)+0.975*(t_.Pt_muon1>40)*(t_.Pt_muon1<50)+0.970*(t_.Pt_muon1>50)*(t_.Pt_muon1<60)+0.971*(t_.Pt_muon1>60))))*((0.542239493)*t_.medID2016mu2*((abs(t_.Eta_muon2)<0.9)*(0.987*(t_.Pt_muon2<25)+0.987*(t_.Pt_muon2>25)*(t_.Pt_muon2<30)+0.998*(t_.Pt_muon2>30)*(t_.Pt_muon2<40)+0.992*(t_.Pt_muon2>40)*(t_.Pt_muon2<50)+0.985*(t_.Pt_muon2>50)*(t_.Pt_muon2<60)+1.010*(t_.Pt_muon2>60))+(abs(t_.Eta_muon2)>0.9)*(abs(t_.Eta_muon2)<1.2)*(0.975*(t_.Pt_muon2<25)+0.969*(t_.Pt_muon2>25)*(t_.Pt_muon2<30)+0.979*(t_.Pt_muon2>30)*(t_.Pt_muon2<40)+0.983*(t_.Pt_muon2>40)*(t_.Pt_muon2<50)+0.982*(t_.Pt_muon2>50)*(t_.Pt_muon2<60)+0.981*(t_.Pt_muon2>60))+(abs(t_.Eta_muon2)>1.2)*(abs(t_.Eta_muon2)<2.1)*(0.986*(t_.Pt_muon2<25)+0.982*(t_.Pt_muon2>25)*(t_.Pt_muon2<30)+0.987*(t_.Pt_muon2>30)*(t_.Pt_muon2<40)+0.991*(t_.Pt_muon2>40)*(t_.Pt_muon2<50)+0.985*(t_.Pt_muon2>50)*(t_.Pt_muon2<60)+0.993*(t_.Pt_muon2>60))+(abs(t_.Eta_muon2)>2.1)*(abs(t_.Eta_muon2)<2.4)*(0.945*(t_.Pt_muon2<25)+0.942*(t_.Pt_muon2>25)*(t_.Pt_muon2<30)+0.940*(t_.Pt_muon2>30)*(t_.Pt_muon2<40)+0.943*(t_.Pt_muon2>40)*(t_.Pt_muon2<50)+0.941*(t_.Pt_muon2>50)*(t_.Pt_muon2<60)+0.942*(t_.Pt_muon2>60))) + (0.457760507)*t_.medIDmu2*((abs(t_.Eta_muon2)<0.9)*(0.993*(t_.Pt_muon2<25)+0.994*(t_.Pt_muon2>25)*(t_.Pt_muon2<30)+1.000*(t_.Pt_muon2>30)*(t_.Pt_muon2<40)+0.998*(t_.Pt_muon2>40)*(t_.Pt_muon2<50)+0.993*(t_.Pt_muon2>50)*(t_.Pt_muon2<60)+1.000*(t_.Pt_muon2>60))+(abs(t_.Eta_muon2)>0.9)*(abs(t_.Eta_muon2)<1.2)*(0.998*(t_.Pt_muon2<25)+0.999*(t_.Pt_muon2>25)*(t_.Pt_muon2<30)+0.998*(t_.Pt_muon2>30)*(t_.Pt_muon2<40)+0.997*(t_.Pt_muon2>40)*(t_.Pt_muon2<50)+0.993*(t_.Pt_muon2>50)*(t_.Pt_muon2<60)+0.999*(t_.Pt_muon2>60))+(abs(t_.Eta_muon2)>1.2)*(abs(t_.Eta_muon2)<2.1)*(0.998*(t_.Pt_muon2<25)+0.999*(t_.Pt_muon2>25)*(t_.Pt_muon2<30)+0.999*(t_.Pt_muon2>30)*(t_.Pt_muon2<40)+0.996*(t_.Pt_muon2>40)*(t_.Pt_muon2<50)+0.991*(t_.Pt_muon2>50)*(t_.Pt_muon2<60)+0.995*(t_.Pt_muon2>60))+(abs(t_.Eta_muon2)>2.1)*(abs(t_.Eta_muon2)<2.4)*(0.984*(t_.Pt_muon2<25)+0.983*(t_.Pt_muon2>25)*(t_.Pt_muon2<30)+0.975*(t_.Pt_muon2>30)*(t_.Pt_muon2<40)+0.975*(t_.Pt_muon2>40)*(t_.Pt_muon2<50)+0.970*(t_.Pt_muon2>50)*(t_.Pt_muon2<60)+0.971*(t_.Pt_muon2>60))))
 				print 'btag Loose   ',(1-(1-(t_.CMVA_bjet1>-0.5884)*t_.Hjet1BsfLoose)*(1-(t_.CMVA_bjet2>-0.5884)*t_.Hjet2BsfLoose)*(1-(t_.CMVA_Zjet1>-0.5884)*t_.Zjet1BsfLoose)*(1-(t_.CMVA_Zjet2>-0.5884)*t_.Zjet2BsfLoose))
 				print 'btag Medium   ',(1-(1-(t_.CMVA_bjet1>0.4432)*t_.Hjet1BsfMedium)*(1-(t_.CMVA_bjet2>0.4432)*t_.Hjet2BsfMedium)*(1-(t_.CMVA_Zjet1>0.4432)*t_.Zjet1BsfMedium)*(1-(t_.CMVA_Zjet2>0.4432)*t_.Zjet2BsfMedium))
 
@@ -1928,7 +1998,8 @@ def setZeroBinErrors(data, bg):
 def setZeroBinErrors_tgraph(data_hist,data, bg, sig_hist1, sig_hist2, blinded):
 	start = False
 	nBins = data.GetN()
-	blindstart=0.1
+	#blindstart=0.1
+	blindstart=0.4
 	for bins in range(nBins):
 		alpha = 1 - 0.6827;
 		N = data.GetY()[bins]
@@ -2713,7 +2784,8 @@ def QuickSysTableLine(treestruc,selection,inp_weight,scalefacs,fsys,chan,rglobal
 
 	# AH:-----------------------------
 	channel = analysisSignal
-	if (not doindiv) and (analysisChannel == 'electron') and (int(plotmass) <= 300):
+	#if (not doindiv) and (analysisChannel == 'electron') and (int(plotmass) <= 300):
+	if (not doindiv) and (int(plotmass) <= 300):
 		if use_bdtSp0:
 			recovariableFileName = ell + ell + '_s' + '0' + '_bdt_discrim_LowM'
 		else:
@@ -2738,7 +2810,8 @@ def QuickSysTableLine(treestruc,selection,inp_weight,scalefacs,fsys,chan,rglobal
 			selection += '*(' + recovariable + '>-100)'
 
 	print '\n AH: I am in QuickSysTableLine(): plotmass is ', plotmass, ' discriminant is ', recovariable, 'recovariableFileName ', recovariableFileName,'\n'
-	presentationbinning = [500,-0.8,0.6]
+	#presentationbinning = [500,-0.8,0.6]
+	presentationbinning = [500,-1.0,1.0]
 	DataRecoStyle=[0,20,1.5,1,1]
 	Label=["tmp","Events / bin"]
 	
@@ -2946,7 +3019,7 @@ def ModSelection(selection,sysmethod,channel_log):
 	
 	##----- temporary fix due to missing syst variation branches in the cut variables
 	if 'Pt_Hjet1' in selection:
-		selection += '*('+ell+ell+'_s'+x_spin+'_bdt_discrim_M260>-100)'
+		selection += '*('+ell+ell+'_s'+x_spin+'_bdt_discrim_M260>-100)' # it does not matter which BDT is used here, all of them has the same acceptance
 	selection = selection.replace('*(Pt_Hjet1>20)','')
 	selection = selection.replace('*(Pt_Hjet2>20)','')
 	selection = selection.replace('*(Pt_Zjet1>20)','')
@@ -2955,11 +3028,12 @@ def ModSelection(selection,sysmethod,channel_log):
 	#print '\n AH: I am in ModSelection(): selection is ', selection, '\n'
 	# variables used in final selections have to be present here
 	_kinematicvariables = []
-#	_kinematicvariables = ['Pt_muon1','Pt_muon2','Pt_ele1','Pt_ele2','Pt_miss']
-#	_kinematicvariables += ['Eta_muon1','Eta_muon2','Eta_ele1','Eta_ele2']
-#	_kinematicvariables += ['M_uu','M_ee']
-#	_kinematicvariables += ['Pt_Hjet1','Pt_Hjet2','Pt_Zjet1','Pt_Zjet2']
-#	_kinematicvariables += ['CMVA_bjet1','CMVA_bjet2','CMVA_Zjet1','CMVA_Zjet2']
+	#	_kinematicvariables = ['Pt_muon1','Pt_muon2','Pt_ele1','Pt_ele2','Pt_miss']
+	#	_kinematicvariables += ['Eta_muon1','Eta_muon2','Eta_ele1','Eta_ele2']
+	#	_kinematicvariables += ['M_uu','M_ee']
+	#	_kinematicvariables += ['Pt_Hjet1','Pt_Hjet2','Pt_Zjet1','Pt_Zjet2']
+	_kinematicvariables += ['Pt_miss']
+	_kinematicvariables += ['CMVA_bjet1','CMVA_bjet2','CMVA_Zjet1','CMVA_Zjet2']
 	_kinematicvariables += ['uu_s0_bdt_discrim_M260','uu_s0_bdt_discrim_M270','uu_s0_bdt_discrim_M300','uu_s0_bdt_discrim_M350','uu_s0_bdt_discrim_M400']
 	_kinematicvariables += ['uu_s0_bdt_discrim_M450','uu_s0_bdt_discrim_M500','uu_s0_bdt_discrim_M550','uu_s0_bdt_discrim_M600','uu_s0_bdt_discrim_M650']
 	_kinematicvariables += ['uu_s0_bdt_discrim_M750','uu_s0_bdt_discrim_M800','uu_s0_bdt_discrim_M900','uu_s0_bdt_discrim_M1000']
@@ -2968,7 +3042,7 @@ def ModSelection(selection,sysmethod,channel_log):
 	_kinematicvariables += ['ee_s0_bdt_discrim_M450','ee_s0_bdt_discrim_M500','ee_s0_bdt_discrim_M550','ee_s0_bdt_discrim_M600','ee_s0_bdt_discrim_M650']
 	_kinematicvariables += ['ee_s0_bdt_discrim_M750','ee_s0_bdt_discrim_M800','ee_s0_bdt_discrim_M900','ee_s0_bdt_discrim_M1000']
 
-	_kinematicvariables += ['uu_s0_bdt_discrim_LowM','ee_s0_bdt_discrim_LowM','uu_s2_bdt_discrim_LowM','ee_s2_bdt_discrim_LowM']
+	#	_kinematicvariables += ['uu_s0_bdt_discrim_LowM','ee_s0_bdt_discrim_LowM','uu_s2_bdt_discrim_LowM','ee_s2_bdt_discrim_LowM']
 
 	_kinematicvariables += ['uu_s2_bdt_discrim_M260','uu_s2_bdt_discrim_M270','uu_s2_bdt_discrim_M300','uu_s2_bdt_discrim_M350','uu_s2_bdt_discrim_M400']
 	_kinematicvariables += ['uu_s2_bdt_discrim_M450','uu_s2_bdt_discrim_M500','uu_s2_bdt_discrim_M550','uu_s2_bdt_discrim_M600','uu_s2_bdt_discrim_M650']
@@ -3083,12 +3157,12 @@ def SysTable(optimlog, PreSelection_uujj, selection_uujj,selection_uvjj,NormalDi
 	if analysisChannel=='muon' :
 		t_data  = t_DoubleMuData
 		tn_data = tn_DoubleMuData
-		t_QCD   = t_QCDMu
+		#t_QCD   = t_QCDMu
 		tn_QCD  = tn_QCDMu
 	if analysisChannel=='electron' :
 		t_data  = t_DoubleEleData
 		tn_data = tn_DoubleEleData
-		t_QCD   = t_QCDEle
+		#t_QCD   = t_QCDEle
 		tn_QCD  = tn_QCDEle
 
 	print '\n AH: I am in SysTable(): selection_uujj is ', selection_uujj, '\n'
@@ -3269,7 +3343,7 @@ def SysTable(optimlog, PreSelection_uujj, selection_uujj,selection_uvjj,NormalDi
 			t_estQCD = t_data
 			print 'Using data-driven for QCD est.'
 		else:
-			t_estQCD = t_QCD
+			#t_estQCD = t_QCD
 			print 'Using QCD MC.'
 		
 		treefeed.append([t_TT,t_ZJets,t_WJets,t_SingleTop,t_DiBoson,t_estQCD,t_SMHiggs]) # AH
@@ -3627,14 +3701,14 @@ def GetNormalizationScaleFactors( selection, FileDirectory, controlregion_1, con
 	if analysisChannel=='muon'     :
 		t_data  = t_DoubleMuData
 		tn_data = tn_DoubleMuData
-		t_QCD  = t_QCDMu
+		#t_QCD  = t_QCDMu
 		tn_QCD = tn_QCDMu
 		doubleIso         = '((TrkIso_muon1<0.25)*(TrkIso_muon2<0.25))'
 		invertedDoubleIso = '(((TrkIso_muon1>0.25) + (TrkIso_muon2>0.25))>0)'
 	if analysisChannel=='electron' :
 		t_data  = t_DoubleEleData
 		tn_data = tn_DoubleEleData
-		t_QCD  = t_QCDEle
+		#t_QCD  = t_QCDEle
 		tn_QCD = tn_QCDEle
 		doubleIso         = '((TrkIso_ele1<0.15)*(TrkIso_ele2<0.15))'
 		invertedDoubleIso = '(((TrkIso_ele1>0.15) + (TrkIso_ele2>0.15))>0)'
@@ -3665,8 +3739,8 @@ def GetNormalizationScaleFactors( selection, FileDirectory, controlregion_1, con
 
 	if (not useDataDrivenQCD):
 		print ' using QCD MC when calculating '+analysisChannel+' scale factors'
-		q1 = QuickIntegral(t_QCD,selection   + '*' + controlregion_1,1.0)
-		q2 = QuickIntegral(t_QCD,selection   + '*' + controlregion_2,1.0)		
+		#q1 = QuickIntegral(t_QCD,selection   + '*' + controlregion_1,1.0)
+		#q2 = QuickIntegral(t_QCD,selection   + '*' + controlregion_2,1.0)
 	else:
 		print ' using QCD data-driven when calculating '+analysisChannel+' scale factors'
 		print ' QCD fake rate is ', fbd
@@ -4456,6 +4530,7 @@ def MakeBasicPlot(recovariable,xlabel,presentationbinning,selection,weight,FileD
 	# Load all root files as trees - e.g. file "DiBoson.root" will give you tree called "t_DiBoson"
 	# for f in os.popen('ls '+FileDirectory+"| grep \".root\"").readlines():
 	# 	exec('t_'+f.replace(".root\n","")+" = TFile.Open(\""+FileDirectory+"/"+f.replace("\n","")+"\")"+".Get(\""+TreeName+"\")")
+	masslist = [260,270,300,350,400,450,500,550,600,650,750,800,900,1000]
 	tmpfile = TFile("tmpbin.root","RECREATE")
 	global ell
 	global latexEll
@@ -4465,9 +4540,9 @@ def MakeBasicPlot(recovariable,xlabel,presentationbinning,selection,weight,FileD
 	
 	# Create Canvas
 	yaxismin = .13333
-	perc = totunc_Muon[0]
+	perc = totunc_Muon[masslist.index(plotmass)]
 	if analysisChannel == 'electron':
-		perc = totunc_Electron[0]
+		perc = totunc_Electron[masslist.index(plotmass)]
 	betamarker = '#beta = '
 	isDisplaced=False
 	#if 'cosThetaStar' in recovariable: doLog=False
@@ -4888,12 +4963,68 @@ def MakeBasicPlot(recovariable,xlabel,presentationbinning,selection,weight,FileD
 		# sysratbandYaddon.append(invrat)
 		# sysratbandYaddon.append(invrat)
 
-	for c in range(hs_bgband.GetNbinsX()+1):
-		_err = math.sqrt( (hs_bgband.GetBinError(c))**2 + (perc*0.01*hs_bgband.GetBinContent(c))**2 )
-		hs_bgband.SetBinError(c,_err)
-		if hs_bgband.GetBinContent(c) < 0.0001:
-			hs_bgband.SetBinContent(c,0.0)
-			hs_bgband.SetBinError(c,0.0)
+
+	uncer_ee_sp0_260 = [7.13464645901946, 6.480703157556237, 7.207514064599004, 7.845141639548424, 8.5040668327029, 9.75107540746612, 10.648363529553652, 8.673569470044455, 11.82631725620878, 10.580735472998745, 11.978573165940565, 12.07495935644933, 12.30738110142534, 12.359782925019159, 11.079090601040248, 14.344258720936075, 14.97047912321927, 21.759693508066686, 37.87765909492598, 59.22827668488202]
+	uncer_ee_sp0_270 = [7.13464645901946, 6.480703157556237, 7.207514064599004, 7.845141639548424, 8.5040668327029, 9.75107540746612, 10.648363529553652, 8.673569470044455, 11.82631725620878, 10.580735472998745, 11.978573165940565, 12.07495935644933, 12.30738110142534, 12.359782925019159, 11.079090601040248, 14.344258720936075, 14.97047912321927, 21.759693508066686, 37.87765909492598, 59.22827668488202]
+	uncer_ee_sp0_300 = [8.674758677025311, 6.525720859541538, 6.847650603433077, 8.063875912980178, 7.872451760394916, 8.22121895916223, 8.112388855840486, 10.519124936798583, 9.022838452180357, 9.916750743731592, 12.292139844373482, 11.869256086398192, 12.252639318451351, 11.987159845805945, 13.167158740116216, 13.531055197289142, 20.983899467593574, 25.362434182540014, 39.86759629886844, 26.517349231263267]
+	uncer_ee_sp0_350 = [3.670004248987068, 5.222531505891625, 6.056681497491078, 6.3846948360040345, 7.243511957913831, 6.943468845980138, 7.118991342727064, 7.331341539210176, 7.481577288426058, 8.564309286268587, 7.102469095025415, 8.34292163752368, 8.741807075414867, 8.977605693323037, 9.806899964477074, 10.876683093953288, 13.002149541525444, 17.56707155287901, 28.032700777538942, 22.904193380764152, 19.374147151219642]
+	uncer_ee_sp0_400 = [3.8441382079867554, 5.735732191729246, 5.972376446027642, 5.743096725447927, 6.173215922380324, 7.87135183849773, 7.114138660953471, 7.012368805466426, 7.437307196987882, 7.3839360581465465, 7.795275936259803, 10.115517962000979, 7.684150421472534, 10.924829917838283, 10.680427506483245, 11.614232228324424, 16.301191208753085, 12.739338436777047, 21.734743290162903, 41.89668491793697, 34.27047951841894]
+	uncer_ee_sp0_450 = [4.071836678332426, 5.661309587038005, 5.684329640252704, 6.645791778977178, 6.414072602851952, 6.950104629444213, 7.1159116761575465, 7.805860585043698, 9.938268000691949, 7.890874985116, 8.538780992002721, 9.013086923408682, 8.687006782487432, 9.69046879684615, 13.128417418100941, 16.3132146049946, 16.93075481622912, 14.695363392228833, 19.525035325626057, 21.4359717291929, 44.083447086519186]
+	uncer_ee_sp0_500 = [4.293512565866693, 5.262447105453393, 5.610900658987036, 6.391765589945024, 6.539063543734764, 8.379513765838086, 7.20150454948509, 9.068757239715245, 8.20492907698512, 9.929723444346838, 11.003472495596444, 10.56889540599373, 11.530872227055756, 11.987269803806461, 11.766589599310743, 14.669092390216411, 16.04759595711471, 21.229576453616502, 21.4805143048173, 29.107952902022724, 14.500274282222383, 35.08995026985173]
+	uncer_ee_sp0_550 = [4.291440142900524, 5.322732125466929, 5.516830388311259, 5.728517473253302, 7.93153191033363, 7.457274314574586, 7.9614060832397815, 8.886947359795368, 8.386783373567223, 10.625185631066643, 10.09895237417396, 12.576333502918654, 12.37271947686838, 15.183533257172247, 13.60042585084371, 16.119846743086438, 20.80195068694427, 24.59454568450848, 17.7667393443844, 23.82326153155682, 17.17454442665247, 24.491712596034507]
+	uncer_ee_sp0_600 = [4.473605984267618, 5.247746275920413, 5.39123396146631, 6.495045497624499, 7.571564384058774, 9.313480046603715, 11.130803673372668, 8.672555437313003, 9.632053260287291, 11.697651963524688, 12.855292500244294, 13.917416187177938, 11.47284895685996, 15.961130688904513, 12.957886724568452, 12.988153967165882, 14.408147086280305, 22.299477007979757, 21.544248843690408, 28.13830719199651, 37.66108227647457, 20.00616792814813]
+	uncer_ee_sp0_650 = [4.025698422933454, 4.922618918444316, 5.808282230595601, 6.200325703541389, 6.7575180710101925, 7.3031746386949195, 8.487437891470135, 9.082004796340556, 8.644425986754102, 8.844812305977953, 11.869792135809456, 10.870731809607648, 15.665947248699657, 12.90438919274416, 10.904703358011705, 20.513311056975134, 21.467061364758397, 23.84187009656018, 16.542279516257345, 20.126371943727804, 20.4112545926012, 20.855992096832573, 19.655951552021758]
+	uncer_ee_sp0_750 = [4.23376570819571, 4.7676724646119375, 5.54868042789499, 6.32483080265304, 7.322466307505123, 7.345177869438656, 9.019131314807783, 10.121646202354773, 9.863940463509595, 13.572083840627045, 13.266990735154975, 11.919809625233933, 12.611794003437124, 15.079806456600304, 16.563616061955123, 18.855514790304664, 21.465218802954137, 17.53226231987527, 20.117148421543803, 24.211704776874896, 28.3741694345411, 17.99869535994519]
+	uncer_ee_sp0_800 = [4.192927500371241, 4.647407065856848, 5.757525420009758, 6.2014166637544115, 6.654851563411339, 8.542338528588548, 10.695356954927163, 11.050698701791621, 10.17716325954228, 9.887806114734982, 12.650206223808302, 12.421716817264638, 16.32504919881528, 12.702756646624247, 16.917630461663354, 20.441224287728097, 21.0827740516919, 16.286958258620277, 16.246488024253367, 21.79722223043834, 24.154802804539642]
+	uncer_ee_sp0_900 = [4.245613550311532, 4.344560552749852, 5.2045444770926945, 6.389709523887677, 8.054849623586884, 8.111473383833365, 9.98631788967948, 9.478388985738391, 11.45803721790247, 10.224812665105793, 11.35553283481752, 13.903987577824102, 16.479642868328, 12.882781258985215, 14.1940162822784, 14.719984403419916, 19.80127369820025, 18.555266145920303, 16.658405422508686, 22.38589910012481, 31.82085015272742]
+	uncer_ee_sp0_1000 = [4.245613550311532, 4.344560552749852, 5.2045444770926945, 6.389709523887677, 8.054849623586884, 8.111473383833365, 9.98631788967948, 9.478388985738391, 11.45803721790247, 10.224812665105793, 11.35553283481752, 13.903987577824102, 16.479642868328, 12.882781258985215, 14.1940162822784, 14.719984403419916, 19.80127369820025, 18.555266145920303, 16.658405422508686, 22.38589910012481, 31.82085015272742]
+	
+	uncer_uu_sp0_260 = [6.769648192401531, 6.678092595912619, 7.856461455346088, 8.317331668855495, 8.16329333595917, 9.881711594136743, 10.138456488761104, 10.287898795199201, 8.841813556050983, 10.890154749688579, 11.321068240400615, 12.584745386906025, 16.235400315363506, 17.863152345580747, 11.4056930392053, 11.616172558066179, 16.656079546574702, 18.92768937741652, 30.426744016520704, 11.187715318624313]
+	uncer_uu_sp0_270 = [6.769648192401531, 6.678092595912619, 7.856461455346088, 8.317331668855495, 8.16329333595917, 9.881711594136743, 10.138456488761104, 10.287898795199201, 8.841813556050983, 10.890154749688579, 11.321068240400615, 12.584745386906025, 16.235400315363506, 17.863152345580747, 11.4056930392053, 11.616172558066179, 16.656079546574702, 18.92768937741652, 30.426744016520704, 11.187715318624313]
+	uncer_uu_sp0_300 = [7.079595297589158, 6.004139803487346, 6.695880718031803, 7.936511091294991, 8.44047069128107, 7.982593378806404, 9.434103398383012, 9.549099462054473, 9.728663751878738, 9.777239765627973, 15.120817305084948, 12.294476143656073, 16.652340611201627, 10.558800535422014, 13.122830136150728, 12.41224588806424, 10.904602372793887, 24.325847442759414, 63.894040614876666, 17.794953508888977]
+	uncer_uu_sp0_350 = [4.644059520593811, 4.864963453875204, 5.694723104223511, 5.792840377432069, 6.59496485566917, 7.5834930440225685, 7.901600513765408, 6.40835292067054, 7.105708104014318, 5.946657356597271, 9.654095240467619, 9.792778117812057, 9.627550765548968, 7.806782965936145, 10.894446570294395, 8.608899765409982, 11.689362268446697, 13.440141953988073, 27.07949233416628, 15.560730482532488, 26.11657539534954]
+	uncer_uu_sp0_400 = [5.0210683853532725, 5.3741421962683615, 6.004326722437919, 5.922787239137522, 5.897478023489294, 6.704785850956084, 7.892511897206047, 7.695302166021919, 7.374037874680414, 9.715648001599128, 8.148299716373472, 9.16334874643219, 8.559810814029095, 9.502800761719413, 10.028812966068127, 9.829366435275544, 9.84129676719889, 14.96357915592561, 19.268549026970227, 20.42908249558664, 22.609149506278513, 15.99855571753052]
+	uncer_uu_sp0_450 = [4.714651274241671, 5.5046300937282595, 5.504725461862263, 5.756833276147978, 7.153933289929141, 6.502688178629512, 7.936343925969908, 10.31052425568673, 7.771053695973326, 7.89475801984018, 8.095803253565926, 9.394192805992432, 8.459037256684597, 11.015147161013815, 9.813531128601682, 10.867018903261767, 14.678311623012984, 15.206334172811927, 18.42558617123417, 24.70627137557417, 21.668854385274912, 24.028403671605563]
+	uncer_uu_sp0_500 = [4.797636292071144, 5.364904513580386, 5.507187517176031, 5.5327823527447055, 6.72436068599661, 9.082515247363533, 6.541587834737092, 8.189490650326373, 9.998718882350117, 10.42502763073477, 8.900463621020615, 9.711848351299391, 8.745732105736396, 11.523806368371332, 10.308102317990322, 10.926009658192378, 11.281803922390962, 12.858004557715782, 20.467954715946014, 22.758200205761366, 18.69004063051744, 31.233463916228217]
+	uncer_uu_sp0_550 = [4.913236153369604, 5.295405755052598, 5.671818142719146, 8.250210300830176, 6.320637163668268, 7.651165107362305, 7.846536242205677, 8.679176736119135, 9.829515721503885, 8.8939961703503, 14.373500770449828, 13.035761692900076, 10.233854571622677, 9.939153201677469, 13.999389628868968, 9.78032655165398, 11.716898533900185, 16.311773396810366, 26.547725769256697, 17.33569820996448, 25.844814149045202, 30.439157443861156]
+	uncer_uu_sp0_600 = [5.0143290362986885, 5.188630029122724, 5.773326917663019, 7.326746169859089, 6.941113048806008, 7.35176408812042, 9.632046280858818, 8.477667601306521, 9.327601576125325, 10.645371493384168, 11.73854589006312, 10.932104591124554, 14.03800311048913, 10.605206622228852, 15.015123259913143, 14.858509405084341, 13.645661603475268, 18.57146233219225, 23.736799412436973, 24.836610359229837, 24.219822990023573, 30.768422104104452]
+	uncer_uu_sp0_650 = [4.675596781224539, 4.762338431147267, 6.111059488615625, 5.574708695592448, 7.160876588756802, 6.748005842732033, 7.533206686640654, 9.407156288998793, 9.045199917541009, 9.00797294678592, 11.025251410301607, 9.948125927098173, 9.476909153115459, 10.179956892235358, 9.910966210639828, 10.035741833874123, 13.220393662311741, 11.803052374462826, 24.650288385262, 19.078891006394603, 33.75699844145342, 21.433982285158603]
+	uncer_uu_sp0_750 = [4.749812198837291, 4.62239760451819, 6.259710216174882, 5.73059253328354, 6.738376398378108, 7.4245248785281515, 7.330435598194207, 8.419171305393094, 8.50281943616371, 9.308438599857142, 9.790104197769425, 10.818897093578219, 15.419363061230937, 11.520151265419857, 11.4347045344051, 12.71924623674815, 14.23818152109926, 21.13184912949919, 15.54605394555569, 22.11490822817172, 49.91103819589647, 19.974982679487603]
+	uncer_uu_sp0_800 = [4.546922275894551, 5.088189872423921, 5.253724388131917, 5.957429229654866, 6.844140064451787, 7.9532100010796025, 8.596143584720984, 7.962018379451565, 9.864258069243826, 10.288954000874313, 10.371866241345652, 10.632595251685816, 12.644850371339388, 11.312360137619315, 12.677493418196834, 14.614157981906166, 15.167090145684256, 19.223452567438958, 16.139456962173238, 32.49409434343161, 24.223114211099304]
+	uncer_uu_sp0_900 = [4.710190522179475, 5.194940104752906, 4.871210445744414, 6.1130871871932815, 6.360848602127019, 7.38483971324541, 7.365187772322705, 9.495690661143106, 10.338010955944688, 9.320482254768855, 10.44729987202086, 12.809879514847522, 12.674823212131189, 16.25425745869305, 12.969086911859966, 14.570319256975962, 15.077251438145053, 19.81578084108284, 21.571846875137513, 27.949455065784882, 26.247193605161858]
+	uncer_uu_sp0_1000 = [4.710190522179475, 5.194940104752906, 4.871210445744414, 6.1130871871932815, 6.360848602127019, 7.38483971324541, 7.365187772322705, 9.495690661143106, 10.338010955944688, 9.320482254768855, 10.44729987202086, 12.809879514847522, 12.674823212131189, 16.25425745869305, 12.969086911859966, 14.570319256975962, 15.077251438145053, 19.81578084108284, 21.571846875137513, 27.949455065784882, 26.247193605161858]
+	
+	_mass = ["260","270","300","350","400","450","500", "550","600","650","750","800","900","1000"]
+	index_m = _mass.index(str(plotmass))
+	
+	# use
+	uncer_ee_sp0 = [uncer_ee_sp0_260,uncer_ee_sp0_270,uncer_ee_sp0_300,uncer_ee_sp0_350,uncer_ee_sp0_400,uncer_ee_sp0_450,uncer_ee_sp0_500,uncer_ee_sp0_550,uncer_ee_sp0_600,uncer_ee_sp0_650,uncer_ee_sp0_750,uncer_ee_sp0_800,uncer_ee_sp0_900,uncer_ee_sp0_1000]
+	
+	uncer_uu_sp0 = [uncer_uu_sp0_260,uncer_uu_sp0_270,uncer_uu_sp0_300,uncer_uu_sp0_350,uncer_uu_sp0_400,uncer_uu_sp0_450,uncer_uu_sp0_500,uncer_uu_sp0_550,uncer_uu_sp0_600,uncer_uu_sp0_650,uncer_uu_sp0_750,uncer_uu_sp0_800,uncer_uu_sp0_900,uncer_uu_sp0_1000]
+	
+	if analysisChannel == 'electron':
+		uncer_sp0 = uncer_ee_sp0
+	else:
+		uncer_sp0 = uncer_uu_sp0
+
+	if 'bdt_discrim' in recovariable:
+		print " plot systematic uncer bin-by-bin ", uncer_sp0[index_m]
+		for id in range(hs_bgband.GetNbinsX()):
+			c = id+1
+			#perc = uncer_ee_sp0_500[id]
+			perc = uncer_sp0[index_m][id]
+			_err = math.sqrt( (hs_bgband.GetBinError(c))**2 + (perc*0.01*hs_bgband.GetBinContent(c))**2 )
+			hs_bgband.SetBinError(c,_err)
+			if hs_bgband.GetBinContent(c) < 0.0001:
+				hs_bgband.SetBinContent(c,0.0)
+				hs_bgband.SetBinError(c,0.0)
+	else:
+		for c in range(hs_bgband.GetNbinsX()+1):
+			_err = math.sqrt( (hs_bgband.GetBinError(c))**2 + (perc*0.01*hs_bgband.GetBinContent(c))**2 )
+			hs_bgband.SetBinError(c,_err)
+			if hs_bgband.GetBinContent(c) < 0.0001:
+				hs_bgband.SetBinContent(c,0.0)
+				hs_bgband.SetBinError(c,0.0)
 
 	# print sysbandY
 
@@ -4983,13 +5114,14 @@ def MakeBasicPlot(recovariable,xlabel,presentationbinning,selection,weight,FileD
 	blinded=False
 	#fixme this blinds the BDTs above 0.15
 	if 'bdt' in recovariable: 
-		blind(hs_rec_Data,1)
-		#blinded=True
+		#blind(hs_rec_Data,1)
+		print '... unblinding data '
+		##blinded=True
 	hs_rec_Data_tgraph = TGraphAsymmErrors(hs_rec_Data)
 	if 'final' not in tagname:
 		setZeroBinErrors_tgraph(hs_rec_Data,hs_rec_Data_tgraph,MCStack,hs_rec_Signal,hs_rec_Signal2,blinded)
 	else:
-	       	setZeroBinErrors_tgraph(hs_rec_Data,hs_rec_Data_tgraph,MCStack,hs_rec_Signal,hs_rec_Signal,blinded)
+		setZeroBinErrors_tgraph(hs_rec_Data,hs_rec_Data_tgraph,MCStack,hs_rec_Signal,hs_rec_Signal,blinded)
 
 	hs_rec_Data_tgraph.Draw("ZE0PSAME")
 
@@ -4999,7 +5131,7 @@ def MakeBasicPlot(recovariable,xlabel,presentationbinning,selection,weight,FileD
 	if 'final' not in tagname:
 		leg = TLegend(0.52,0.475,0.98,0.89,"","brNDC");	
 	else: 
-		leg = TLegend(0.55,0.55,0.91,0.9,"","brNDC");	
+		leg = TLegend(0.53,0.55,0.91,0.9,"","brNDC");
 	# leg = TLegend(0.53,0.52,0.89,0.88,"","brNDC");
 	leg.SetTextFont(42);
 	leg.SetFillColor(0);
@@ -5008,7 +5140,7 @@ def MakeBasicPlot(recovariable,xlabel,presentationbinning,selection,weight,FileD
 	if 'final' not in tagname:
 		leg.SetTextSize(.05)
 	else:
-		leg.SetTextSize(.045)
+		leg.SetTextSize(.043)
 	leg.AddEntry(hs_rec_Data,"Data","lpe");
 	leg.AddEntry(hs_rec_TTBar,'t#bar{t}' + (' (e #mu est)')*('TTBarDataDriven' in tagname))
 	if channel==ell+ell+'jj' or 'HH' in channel:
@@ -5130,7 +5262,7 @@ def MakeBasicPlot(recovariable,xlabel,presentationbinning,selection,weight,FileD
 		RatHistNum.GetYaxis().SetLabelSize(.1);
 		RatHistNum.GetXaxis().SetLabelSize(.09);
 
-		if 'bdt' in recovariable: blind(RatHistNum,2)#fixme this is to blind data for BDTs
+		#if 'bdt' in recovariable: blind(RatHistNum,2)#fixme this is to blind data for BDTs
 		RatHistNum.Draw()
 
 	
@@ -5146,7 +5278,7 @@ def MakeBasicPlot(recovariable,xlabel,presentationbinning,selection,weight,FileD
 			RatHistDen.SetBinError(bin,err)
 			RatHistDen.SetBinContent(bin,1)
 		#RatHistDen.Draw("E2SAMES")
-		RatHistNum.Draw("SAMES")
+		#RatHistNum.Draw("SAMES")
 
 		unity=TLine(RatHistNum.GetXaxis().GetXmin(), 1.0 , RatHistNum.GetXaxis().GetXmax(),1.0)
 		unity.Draw("SAME")	
@@ -5160,6 +5292,7 @@ def MakeBasicPlot(recovariable,xlabel,presentationbinning,selection,weight,FileD
 			hs_bgbandRat.SetBinContent(c,1.0)
 			hs_bgbandRat.SetBinError(c,newErr)
 		hs_bgbandRat.Draw("E2SAMES")
+		RatHistNum.Draw("SAMES")
 
 		"""
 		pad3.cd()
@@ -6939,7 +7072,8 @@ def ShapeSystematic(channel,normalWeight,presel,finalWeight,finalSel):
 	#shapesysvar_uujj_ttjets =  [33.0, 33.01, 35.65, 35.19, 35.24, 36.16, 37.41, 39.09, 40.03, 40.9, 41.67, 42.47, 43.18, 43.87, 44.21, 44.56, 45.91, 47.12, 47.9, 48.52, 49.2, 47.6, 47.23, 47.62, 47.73, 45.32, 43.66, 44.82, 45.28, 44.54, 45.37, 45.37, 45.37, 47.85, 47.85, 47.85, 47.85, 47.85, 47.85, 47.85]
 
 def blind(h,pad):
-	blindstart=0.1
+	#blindstart=0.1
+	blindstart=0.4
 	for bin in range(h.GetNbinsX()):
 		if h.GetBinLowEdge(bin+1)>blindstart:
 			if pad==1:
