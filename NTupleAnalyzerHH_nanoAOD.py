@@ -2849,7 +2849,10 @@ def getPhi_ZZ(Zj1, Zj2, ell1, ell2) :
 			dsignhgg = zuu_vect.Dot(vnorm[1].Cross(vnorm[0]))/(abs(zuu_vect.Dot(vnorm[1].Cross(vnorm[0])))) # zuu_vect here is NOT important
 		else:
 			dsignhgg = 0
-		vPhi.append( dsignhgg*(-1) * math.acos(vnorm[0].Dot(vnorm[1])) )
+                if -1<=vnorm[0].Dot(vnorm[1]) and vnorm[0].Dot(vnorm[1])<=1:
+                        vPhi.append( dsignhgg*(-1) * math.acos(vnorm[0].Dot(vnorm[1])) )
+                else:
+                        vPhi.append(-3.5)
 
 		# Define z direction
 		p1 = TLorentzVector()
