@@ -198,16 +198,12 @@ _kinematicvariables += ['AK8_Phi_Hjet_genMatched','AK8_Phi_Zjet_genMatched']
 _kinematicvariables += ['AK8_Mass_Hjet_genMatched','AK8_Mass_Zjet_genMatched']
 _kinematicvariables += ['AK8_dRujH_genMatched','AK8_dRujZ_genMatched','AK8_dRujH_gen','AK8_dRujZ_gen']
 _kinematicvariables += ['AK8_CSV_Hjet_genMatched','AK8_CSV_Zjet_genMatched']
-
 _kinematicvariables += ['AK8_bdt_discr_H','AK8_bdt_discr_Z']
 _kinematicvariables += ['AK8_Pt_Hjet','AK8_Pt_Zjet','AK8_mass_Hjet','AK8_mass_Zjet']
 _kinematicvariables += ['AK8_Pt_Hjet_Matched','AK8_Pt_Zjet_Matched','AK8_mass_Hjet_Matched','AK8_mass_Zjet_Matched']
-
-_kinematicvariables += ['AK8_M_uujj','AK8_M_eejj']
 _kinematicvariables += ['AK8_M_uu4j','AK8_M_ee4j']
 _kinematicvariables += ['AK8_Mbb_H','AK8_Mjj_Z']
 _kinematicvariables += ['AK8_Mbb_H_genMatched','AK8_Mjj_Z_genMatched']
-
 _kinematicvariables += ['AK8_DR_u1Hj','AK8_DR_u2Hj']
 _kinematicvariables += ['AK8_DR_u1Zj','AK8_DR_u2Zj']
 _kinematicvariables += ['AK8_DR_u1Hj_genMatched','AK8_DR_u2Hj_genMatched']
@@ -276,8 +272,6 @@ _kinematicvariables += ['DPhi_jj_Z','DPhi_bb_H']
 _kinematicvariables += ['M_uu4j_gen','M_uu4j_genMatched']
 _kinematicvariables += ['M_ee4j_gen','M_ee4j_genMatched']
 _kinematicvariables += ['jetCntPreFilter','JetCount','MuonCount','ElectronCount','GenJetCount']
-
-
 _kinematicvariables += ['muonIndex1','muonIndex2']
 _kinematicvariables += ['ptHat']
 _kinematicvariables += ['CMVA_Zjet1','CMVA_Zjet2']
@@ -797,7 +791,6 @@ def MuonsFromLQ(T):
 		muons.append(m)
 
 	if isData==False:
-
 		for n in range(T.nGenPart):
 			pdg = T.GenPart_pdgId[n]
 			if pdg not in [13,-13]:
@@ -854,7 +847,6 @@ def JetsFromLQ(T):
 			jets.append(m)
 
 	if isData==False:
-
 		for n in range(T.nGenPart):
 			pdg = T.GenPart_pdgId[n]
 			if pdg not in [4,-4]: #Get charm quarks
@@ -901,7 +893,6 @@ def getLeptonEventFlavorGEN(T):
 	#gotIt=False
 
 	if isData==False:
-
 		for n in range(T.nGenPart):
 			#if gotIt==True: continue
 			pdg = T.GenPart_pdgId[n]
@@ -964,6 +955,9 @@ def LeptonsAndJetsFromHH(T,radius,isdata):
 		SubJetMass = T.SubJet_mass
 		SubJetInd1 = T.FatJet_subJetIdx1
 		SubJetInd2 = T.FatJet_subJetIdx2
+	else:
+		print 'Invalid argument: radius must be 4 or 8. Exiting.'
+		sys.exit()
 
 	muons = []
 	genmuons=[]
@@ -985,7 +979,6 @@ def LeptonsAndJetsFromHH(T,radius,isdata):
 		muons.append(m)
 
 	if isdata==False:
-
 		for n in range(T.nGenPart):
 			pdg = T.GenPart_pdgId[n]
 			if pdg not in [13,-13]:
@@ -1030,7 +1023,6 @@ def LeptonsAndJetsFromHH(T,radius,isdata):
 		electrons.append(m)
 
 	if isdata==False:
-
 		for n in range(T.nGenPart):
 			pdg = T.GenPart_pdgId[n]
 			if pdg not in [11,-11]:
@@ -1085,7 +1077,7 @@ def LeptonsAndJetsFromHH(T,radius,isdata):
 			m = TLorentzVector()
 			if radius == 4:
 				m.SetPtEtaPhiM(PFJetPt[n],PFJetEta[n],PFJetPhi[n],PFJetMass[n])
-			if radius == 8:
+			elif radius == 8:
 				m.SetPtEtaPhiM(PFJetPt[n],PFJetEta[n],PFJetPhi[n],PFJetMass[n])
 			jetsZ.append(m)
 			jetsH.append(m)
@@ -1093,7 +1085,6 @@ def LeptonsAndJetsFromHH(T,radius,isdata):
 			recojetOriIndsH.append(n)
 
 	if isdata==False:
-
 		for n in range(T.nGenPart):
 			pdg = T.GenPart_pdgId[n]
 			if pdg not in daughterJets:
@@ -1231,7 +1222,7 @@ def LeptonsAndJetsFromHH(T,radius,isdata):
 				recojetindsZ.append(-99)
 
 ###################### AK8 JETS #####################################################
-		if radius == 8:
+		elif radius == 8:
 ###################### AK8 matching with 2 GEN GETS from HIGGS ######################
 			usedHjetsInd = []
 			mindr1 = 99999
@@ -1386,7 +1377,7 @@ def LeptonsAndJetsFromHH(T,radius,isdata):
 		while len(matchedrecojetsZ)<2:
 			matchedrecojetsZ.append(emptyvector)
 
-	if radius == 8:
+	elif radius == 8:
 		while len(jetsH)<1:
 			jetsH.append(emptyvector)
 		while len(genjetsH)<2:
@@ -1444,7 +1435,7 @@ def PropagatePTChangeToMET(met,original_object,varied_object):
 
 
 def LooseIDMuons(T,_met,variation,isdata):
-	# Purpose: Gets the collection of muons passing loose muon ID.f
+	# Purpose: Gets the collection of muons passing loose muon ID.
 	#         Returns muons as TLorentzVectors, and indices corrresponding
 	#         to the surviving muons of the muon collection.
 	#         Also returns modified MET for systematic variations.
@@ -1517,7 +1508,7 @@ def LooseIDMuons(T,_met,variation,isdata):
 	        correctedIso = T.Muon_pfRelIso04_all[n]
 		# Don't apply isolation for QCD studies
 		if nonisoswitch != True:
-			Pass *= correctedIso/_MuonPt[n] < 0.25
+			Pass *= correctedIso < 0.25
 
 		# Propagate MET changes if undergoing systematic variation
 		if (Pass):
@@ -1536,7 +1527,7 @@ def LooseIDMuons(T,_met,variation,isdata):
 			pfid.append(T.Muon_isPFcand[nequiv[n]])
 			charges.append(T.Muon_charge[n])
 			layers.append(T.Muon_nTrackerLayers[nequiv[n]])
-			trk_isos.append((correctedIso/_MuonPt[n]))
+			trk_isos.append(correctedIso)
 			deltainvpts.append(deltainvpt)
 
 	return [muons,muoninds,_met,trk_isos,charges,deltainvpts,pfid,layers]
@@ -1614,7 +1605,7 @@ def MediumIDMuons(T,_met,variation,isdata):
 
 		# Don't apply isolation for QCD studies
 		if nonisoswitch != True:
-			Pass *= correctedIso/_MuonPt[n] < 0.25
+			Pass *= correctedIso < 0.25
 
 		# Prompt requirement
 		Pass *= abs(T.Muon_dxy[n]) < 0.2
@@ -1634,7 +1625,7 @@ def MediumIDMuons(T,_met,variation,isdata):
 			muoninds.append(n)
 			pfid.append(T.Muon_isPFcand[nequiv[n]])
 			charges.append(T.Muon_charge[n])
-			trk_isos.append((correctedIso/_MuonPt[n]))
+			trk_isos.append(correctedIso)
 			layers.append(T.Muon_nTrackerLayers[nequiv[n]])
 			deltainvpts.append(deltainvpt)
 	return [muons,muoninds,_met,trk_isos,charges,deltainvpts,pfid,layers]
@@ -1682,7 +1673,7 @@ def mvaWP90Electrons(T,_met,variation,isdata):
 #?		endcap = (abs(T.ElectronSCEta[n]))>1.56
 		Pass *= (barrel+endcap)
 
-	        Pass *= T.Electron_mvaFall17V2Iso_WP90[n]>0
+	        Pass *= T.Electron_mvaFall17V2noIso_WP90[n]>0
 
 	        if (barrel):
 			Pass *= abs(T.Electron_dxy[n])<0.05
@@ -1915,7 +1906,7 @@ def MediumElectrons(T,_met,variation,isdata):
 		endcap = bool((abs(T.Electron_eta[n]))>1.56)
 		Pass *= (barrel+endcap)>0
 
-	        Pass *= T.Electron_mvaFall17V2Iso_WP90[n]>0
+	        Pass *= T.Electron_mvaFall17V2noIso_WP90[n]>0
 		"""
 	        ecal_energy_inverse = 1.0/T.ElectronEcalEnergy[n]
 		eSCoverP = T.ElectronESuperClusterOverP[n]
@@ -3641,7 +3632,6 @@ def FullKinematicCalculation(T,variation):
 	[_ak8_phiHj_genMatched,_ak8_phiZj_genMatched]=[ak8_matchedRecoJetH[0].Phi(),ak8_matchedRecoJetZ[0].Phi()]
 	[_ak8_massHj_genMatched,_ak8_massZj_genMatched]=[ak8_matchedRecoJetH[0].M(),ak8_matchedRecoJetZ[0].M()]
 
-
 	[_ptu1_gen,_ptu2_gen] = [_genMuonsZ[0].Pt(),_genMuonsZ[1].Pt()]
 	[_pte1_gen,_pte2_gen] = [_genElectronsZ[0].Pt(),_genElectronsZ[1].Pt()]
 	[_ptHj1_gen,_ptHj2_gen,_ptZj1_gen,_ptZj2_gen]=[_genJetsH[0].Pt(),_genJetsH[1].Pt(),_genJetsZ[0].Pt(),_genJetsZ[1].Pt()]
@@ -4204,8 +4194,6 @@ def FullKinematicCalculation(T,variation):
 
 	#----- End calculate BDT disc here
 
-	_ak8_Muujj = (muons[0]+muons[1]+ak8_bdtjetH).M()
-	_ak8_Meejj = (electrons[0]+electrons[1]+ak8_bdtjetH).M()
 	_ak8_Muu4j = (muons[0]+muons[1]+ak8_bdtjetH+ak8_bdtjetZ).M()
 	_ak8_Mee4j = (electrons[0]+electrons[1]+ak8_bdtjetH+ak8_bdtjetZ).M()
 	_ak8_Mbb_H = ak8_bdtjetH.M()
@@ -4274,26 +4262,20 @@ def FullKinematicCalculation(T,variation):
 	toreturn += [_ak8_massHj_genMatched,_ak8_massZj_genMatched]
 	toreturn += [_ak8_drujH_genMatched,_ak8_drujZ_genMatched,_ak8_drujH_gen,_ak8_drujZ_gen]
 	toreturn += [_ak8_csvHj_genMatched,_ak8_csvZj_genMatched]
-
 	toreturn += [_bdtdiscr,_bdtdiscrZ]
 	toreturn += [_ak8_ptHj,_ak8_ptZj,_ak8_massHj,_ak8_massZj]
 	toreturn += [_ak8_ptHj_Matched,_ak8_ptZj_Matched,_ak8_massHj_Matched,_ak8_massZj_Matched]
-
-	toreturn += [_ak8_Muujj,_ak8_Meejj]
 	toreturn += [_ak8_Muu4j,_ak8_Mee4j]
 	toreturn += [_ak8_Mbb_H,_ak8_Mjj_Z]
 	toreturn += [_ak8_Mbb_H_genMatched,_ak8_Mjj_Z_genMatched]
-
 	toreturn += [_ak8_dRu1Hj,_ak8_dRu2Hj]
 	toreturn += [_ak8_dRu1Zj,_ak8_dRu2Zj]
 	toreturn += [_ak8_dRu1Hj_genMatched,_ak8_dRu2Hj_genMatched]
 	toreturn += [_ak8_dRu1Zj_genMatched,_ak8_dRu2Zj_genMatched]
-
 	toreturn += [_ak8_dRe1Hj,_ak8_dRe2Hj]
 	toreturn += [_ak8_dRe1Zj,_ak8_dRe2Zj]
 	toreturn += [_ak8_dRe1Hj_genMatched,_ak8_dRe2Hj_genMatched]
 	toreturn += [_ak8_dRe1Zj_genMatched,_ak8_dRe2Zj_genMatched]
-
 	toreturn += [_ak8_dRuubb_H,_ak8_dRuujj_Z,_ak8_dPHIuubb_H,_ak8_dPHIuujj_Z]
 	toreturn += [_ak8_dReebb_H,_ak8_dReejj_Z,_ak8_dPHIeebb_H,_ak8_dPHIeejj_Z]
 	toreturn += [_ak8_Muu4j_genMatched]
@@ -4478,8 +4460,8 @@ def MetVector(T):
 startTime = datetime.now()
 
 # Please don't edit here. It is static. The kinematic calulations are the only thing to edit!
-lumisection = array.array("L",[0])
-t.SetBranchAddress("ls",lumisection)
+#lumisection = array.array("L",[0])
+#t.SetBranchAddress("ls",lumisection)
 for n in range(N):
 	# This is the loop over events. Due to the heavy use of functions and automation of
 	# systematic variations, this loop is very small. It should not really be editted,
