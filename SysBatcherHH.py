@@ -2,6 +2,12 @@ import os
 import sys
 import math
 import random
+import time
+import datetime
+
+dateTo = datetime.datetime.now().strftime("%Y_%m_%d_%H%M%S")
+mtmpdir = 'tmpjobs_' + str(dateTo)
+os.system('mkdir ' + mtmpdir)
 
 # Read teh LQ Result Producer
 f = [line for line in open('HHResultProducer.py','r')]
@@ -93,24 +99,48 @@ for c in ['uujj','eejj']:
 		fout.close()
 
 		# Now, write a csh script for launching the job (same name as .py file, except for extension)
-		ftcsh = runfile.replace('.py','.tcsh')
+		ftcsh = (mtmpdir + '/' + runfile).replace('.py','.tcsh')
 
 		# Open tcsh script
 		fout = open(ftcsh,'w')
 
 		# Lines for CMSSW setup
-		fout.write('#!/bin/csh\nsetenv SCRAM_ARCH slc6_amd64_gcc530\ncmsrel CMSSW_8_0_26_patch1\ncd CMSSW_8_0_26_patch1/src\ncmsenv\ncd '+pwd+'\n')
+		#fout.write('#!/bin/csh\nsetenv SCRAM_ARCH slc6_amd64_gcc530\ncmsrel CMSSW_8_0_26_patch1\ncd CMSSW_8_0_26_patch1/src\ncmsenv\ncd '+pwd+'\n')
+		#fout.write('#!/bin/csh\ncd ' + pwd + '/CMSSW_8_0_26_patch1/src\ncmsenv\ncd '+pwd+'\n')
+		fout.write('#!/bin/csh\nset CMSSW_PROJECT_SRC=' + pwd + '/CMSSW_8_0_26_patch1/src\ncd ' + pwd + '/CMSSW_8_0_26_patch1/src\neval `scramv1 runtime -csh`\ncd '+pwd+'\n')
 		# Line for running the .py file
 		fout.write('python '+runfile+'\n\n')
 		# Close tcsh script
 		fout.close()
 		# bsub command
 		os.system('chmod 755 '+ftcsh)
-		bsub =  'bsub -q 8nh -e /dev/null -J '+runfile.split('.')[0]+' < '+ftcsh #was 1nw
-		#bsub =  'bsub -q 2nd -e /dev/null -J '+runfile.split('.')[0]+' < '+ftcsh #was 1nw
-		print bsub
+		
+		ftcsh_out = ftcsh.replace('.tcsh','.out')
+		ftcsh_err = ftcsh.replace('.tcsh','.err')
+		ftcsh_log = ftcsh.replace('.tcsh','.log')
+		
+		# condor setting up
+		cdjobname = 'job' + (runfile).replace('.py','') + '_' + str(dateTo) + '.sub'
+		cjob_to_write =  'executable  = ' + ftcsh              + '\n'
+		cjob_to_write += 'arguments   = $(ClusterId)$(ProcId)' + '\n'
+		cjob_to_write += 'output      = ' + ftcsh_out       + '\n'
+		cjob_to_write += 'error       = ' + ftcsh_err       + '\n'
+		cjob_to_write += 'log         = ' + ftcsh_log       + '\n'
+		#cjob_to_write += '+JobFlavour = "workday"'             + '\n'
+		cjob_to_write += '+JobFlavour = "tomorrow"'             + '\n'
+		cjob_to_write += 'queue \n'
+		cjob = open(cdjobname,'w')
+		cjob.write(cjob_to_write)
+		cjob.close()
+
+		#bsub =  'bsub -q 8nh -e /dev/null -J '+runfile.split('.')[0]+' < '+ftcsh #was 1nw
+		##bsub =  'bsub -q 2nd -e /dev/null -J '+runfile.split('.')[0]+' < '+ftcsh #was 1nw
+		#print bsub
+		
+		condor_sub = 'condor_submit ' + cdjobname
+		print condor_sub + '\n'
 		# Run bsub command if using "--launch" argument
 		if '--launch' in sys.argv:
-			os.system(bsub)
-
+			#os.system(bsub)
+			os.system(condor_sub)
 

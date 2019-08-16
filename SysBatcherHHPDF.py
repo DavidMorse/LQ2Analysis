@@ -2,6 +2,12 @@ import os
 import sys
 import math
 import random
+import time
+import datetime
+
+dateTo = datetime.datetime.now().strftime("%Y_%m_%d_%H%M%S")
+mtmpdir = 'tmpjobs_' + str(dateTo)
+os.system('mkdir ' + mtmpdir)
 
 ###----------------------------------------------------
 _PDFVariations = []
@@ -17,6 +23,7 @@ _PDFVariations = []
 allf = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101]
 
 good = []
+#good = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100]
 
 print ' all  :', len(allf)
 print ' good :', len(good)
@@ -132,24 +139,48 @@ for c in ['uujj','eejj']:
 		fout.close()
 
 		# Now, write a csh script for launching the job (same name as .py file, except for extension)
-		ftcsh = runfile.replace('.py','.tcsh')
+		ftcsh = (mtmpdir + '/' + runfile).replace('.py','.tcsh')
 
 		# Open tcsh script
 		fout = open(ftcsh,'w')
 
 		# Lines for CMSSW setup
-		fout.write('#!/bin/csh\nsetenv SCRAM_ARCH slc6_amd64_gcc530\ncmsrel CMSSW_8_0_26_patch1\ncd CMSSW_8_0_26_patch1/src\ncmsenv\ncd '+pwd+'\n')
+		#fout.write('#!/bin/csh\nsetenv SCRAM_ARCH slc6_amd64_gcc530\ncmsrel CMSSW_8_0_26_patch1\ncd CMSSW_8_0_26_patch1/src\ncmsenv\ncd '+pwd+'\n')
+		#fout.write('#!/bin/csh\ncd ' + pwd + '/CMSSW_8_0_26_patch1/src\ncmsenv\ncd '+pwd+'\n')
+		fout.write('#!/bin/csh\nset CMSSW_PROJECT_SRC=' + pwd + '/CMSSW_8_0_26_patch1/src\ncd ' + pwd + '/CMSSW_8_0_26_patch1/src\neval `scramv1 runtime -csh`\ncd '+pwd+'\n')
 		# Line for running the .py file
 		fout.write('python '+runfile+'\n\n')
 		# Close tcsh script
 		fout.close()
 		# bsub command
 		os.system('chmod 755 '+ftcsh)
+		
+		ftcsh_out = ftcsh.replace('.tcsh','.out')
+		ftcsh_err = ftcsh.replace('.tcsh','.err')
+		ftcsh_log = ftcsh.replace('.tcsh','.log')
+		
+		# condor setting up
+		cdjobname = 'job' + (runfile).replace('.py','') + '_' + str(dateTo) + '.sub'
+		cjob_to_write =  'executable  = ' + ftcsh              + '\n'
+		cjob_to_write += 'arguments   = $(ClusterId)$(ProcId)' + '\n'
+		cjob_to_write += 'output      = ' + ftcsh_out       + '\n'
+		cjob_to_write += 'error       = ' + ftcsh_err       + '\n'
+		cjob_to_write += 'log         = ' + ftcsh_log       + '\n'
+		#cjob_to_write += '+JobFlavour = "workday"'             + '\n'
+		cjob_to_write += '+JobFlavour = "tomorrow"'             + '\n'
+		cjob_to_write += 'queue \n'
+		cjob = open(cdjobname,'w')
+		cjob.write(cjob_to_write)
+		cjob.close()
+
 		#bsub =  'bsub -q 1nd -e /dev/null -J '+runfile.split('.')[0]+' < '+ftcsh #was 1nw
-		bsub =  'bsub -q 8nh -e /dev/null -J '+runfile.split('.')[0]+' < '+ftcsh #was 1nw
-		print bsub
+		##bsub =  'bsub -q 8nh -e /dev/null -J '+runfile.split('.')[0]+' < '+ftcsh #was 1nw
+		#print bsub
+		
+		condor_sub = 'condor_submit ' + cdjobname
+		print condor_sub + '\n'
 		# Run bsub command if using "--launch" argument
 		if '--launch' in sys.argv:
-			os.system(bsub)
-
+			#os.system(bsub)
+			os.system(condor_sub)
 

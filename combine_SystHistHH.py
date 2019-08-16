@@ -5,9 +5,41 @@ import ROOT
 import array
 import math
 
+###----------------------------------------------------------###
+###------------------ USAGE ---------------------------------###
+###----------------------------------------------------------###
+#
+### Check and resubmit
+#	  python combine_SystHist.py --checkfiles -t <date_time_tag> (--Spin2)
+#	  python combine_SystHist.py --checkfiles -t <date_time_tag> (--Spin2) --launch
+#
+#	  python combine_SystHist.py --checkfiles -t <date_time_tag> (--Spin2) --checkpdffiles
+#	  python combine_SystHist.py --checkfiles -t <date_time_tag> (--Spin2) --checkpdffiles --launch
+#
+### Combine qcdScales files
+#	  python combine_SystHist.py --QCDScale (--Spin2)
+#
+### Combine PDF files
+#	  python combine_SystHist.py --PDF (--Spin2)
+#
+### Combine all files
+#	  python combine_SystHist.py --Standard (--Spin2)
+#
+#
+### Organize root files and txt files
+#	  python combine_SystHist.py --organizefiles (--Spin2)
+#	  python combine_SystHist.py --organizefiles --launch (--Spin2)
+###----------------------------------------------------------###
+###----------------------------------------------------------###
+
 def main():
-	#inpDir = "systRootFiles/"
 	
+	dateTo = ''
+	for x in range(len(sys.argv)):
+		if sys.argv[x] == '-t':
+			dateTo = sys.argv[x+1]
+
+	## adjust this to mach the output dir
 	txtDir = "Results_Testing_diHiggs_newNtuples_MuCutsMC0p49_"
 	
 	#_resHypos = ['HHres', 'HHBulkGrav']
@@ -19,21 +51,28 @@ def main():
 
 	if (resType == 'HHres'):
 		x_spin = '0'
+		c_OptHH = 'HH_res'
 	if (resType == 'HHBulkGrav'):
 		x_spin = '2'
+		c_OptHH = 'HH_BulkGrav'
 
-	doindiv = False ## this is to use LowM bdt in the electron channel (for M260 M270 M300 GeV)
-	#doindiv = True   ## this is to use individually trained bdt for all cases
+	#doindiv = False ## this is to use LowM bdt in the electron channel (for M260 M270 M300 GeV)
+	doindiv = True   ## this is to use individually trained bdt for all cases
 	
 	procs = ["HHres","data_obs","TTBar","ZJets","WJets","sTop","VV","QCD","SMH"]
 	#procs = ["data_obs","HHres"]
 
 	_mass = ["260","270","300","350","400", "450", "500", "550", "600","650", "750", "800", "900", "1000"]
-	#_mass = ["260"]
+	#_mass = ["260","270","300"]
 	
+#	_analysisChan = ['uujj']
+#	_leptonChan = ['uu']
+#	_leps = ['muon']
+
 	_analysisChan = ['uujj','eejj']
 	_leptonChan = ['uu','ee']
 	_leps = ['muon','electron']
+
 	
 	## xx variations (include PDF) : this is what present in the final systematic variations
 	## use for --Standard
@@ -78,8 +117,8 @@ def main():
 		listOfVariations = _PDFVariations # copy the reference to the listOfVariations
 
 		for ilep in range(len(_leps)):
-			fup = open(txtDir + _leps[ilep] + '/OptHH_resCuts_Smoothed_pol2cutoff_systable_'+variationName+'up.txt','w')
-			fdn = open(txtDir + _leps[ilep] + '/OptHH_resCuts_Smoothed_pol2cutoff_systable_'+variationName+'down.txt','w')
+			fup = open(txtDir + _leps[ilep] + '/Opt' + c_OptHH +'Cuts_Smoothed_pol2cutoff_systable_'+variationName+'up.txt','w')
+			fdn = open(txtDir + _leps[ilep] + '/Opt' + c_OptHH +'Cuts_Smoothed_pol2cutoff_systable_'+variationName+'down.txt','w')
 			headers = ['Signal','Data','TTBar','ZJets','WJets','sTop','VV', 'QCD', 'SMH']
 			header = 'headers = '+str(headers)
 			fup.write(header+'\n')
@@ -87,7 +126,8 @@ def main():
 			fmiss = []
 			for m in _mass :
 				print '  doing mass ', m
-				if (not doindiv) and _leptonChan[ilep] == 'ee' and int(m) <= 300:
+				#if (not doindiv) and _leptonChan[ilep] == 'ee' and int(m) <= 300:
+				if (not doindiv) and int(m) <= 300:
 					bdtname = "_s"+x_spin+"_bdt_discrim_LowM"
 				else:
 					bdtname = "_s"+x_spin+"_bdt_discrim_M" + m
@@ -103,7 +143,7 @@ def main():
 				for qcdScVar in listOfVariations :
 					finStr = resType + m + "_" + _leptonChan[ilep] + bdtname + "_" + qcdScVar + "_13TeV_new.root"
 					input = ROOT.TFile.Open(finStr, "READ")
-					print 'opening file ', finStr, ' ---> ', input.IsOpen()
+					#print 'opening file ', finStr, ' ---> ', input.IsOpen()
 					if (not input.IsOpen()):
 						fmiss += [finStr]
 					inputFiles += [input]
@@ -173,8 +213,8 @@ def main():
 		listOfVariations = _qcdSc_Variations # copy the reference to the listOfVariations
 		
 		for ilep in range(len(_leps)):
-			fup = open(txtDir + _leps[ilep] + '/OptHH_resCuts_Smoothed_pol2cutoff_systable_'+variationName+'up.txt','w')
-			fdn = open(txtDir + _leps[ilep] + '/OptHH_resCuts_Smoothed_pol2cutoff_systable_'+variationName+'down.txt','w')
+			fup = open(txtDir + _leps[ilep] + '/Opt' + c_OptHH +'Cuts_Smoothed_pol2cutoff_systable_'+variationName+'up.txt','w')
+			fdn = open(txtDir + _leps[ilep] + '/Opt' + c_OptHH +'Cuts_Smoothed_pol2cutoff_systable_'+variationName+'down.txt','w')
 			headers = ['Signal','Data','TTBar','ZJets','WJets','sTop','VV', 'QCD', 'SMH']
 			header = 'headers = '+str(headers)
 			fup.write(header+'\n')
@@ -182,7 +222,8 @@ def main():
 			fmiss = []
 			for m in _mass :
 				print '  doing mass ', m
-				if (not doindiv) and _leptonChan[ilep] == 'ee' and int(m) <= 300:
+				#if (not doindiv) and _leptonChan[ilep] == 'ee' and int(m) <= 300:
+				if (not doindiv) and int(m) <= 300:
 					bdtname = "_s"+x_spin+"_bdt_discrim_LowM"
 				else:
 					bdtname = "_s"+x_spin+"_bdt_discrim_M" + m
@@ -200,7 +241,7 @@ def main():
 				for qcdScVar in listOfVariations :
 					finStr = resType + m + "_" + _leptonChan[ilep] + bdtname + "_" + qcdScVar + "_13TeV_new.root"
 					input = ROOT.TFile.Open(finStr, "READ")
-					print 'opening file ', finStr, ' ---> ', input.IsOpen()
+					#print 'opening file ', finStr, ' ---> ', input.IsOpen()
 					if (not input.IsOpen()):
 						fmiss += [finStr]
 					inputFiles += [input]
@@ -283,7 +324,8 @@ def main():
 			if _analysisChan[ilep] == 'eejj': _Variations = _Variations_ee
 			fmiss = []
 			for m in _mass :
-				if (not doindiv) and _leptonChan[ilep] == 'ee' and int(m) <= 300:
+				#if (not doindiv) and _leptonChan[ilep] == 'ee' and int(m) <= 300:
+				if (not doindiv) and int(m) <= 300:
 					bdtname = "_s"+x_spin+"_bdt_discrim_LowM"
 				else:
 					bdtname = "_s"+x_spin+"_bdt_discrim_M" + m
@@ -300,7 +342,7 @@ def main():
 					var = var.replace('down','Down')
 					#fnameInps += [finStr]
 					input = ROOT.TFile.Open(finStr, "READ")
-					print 'opening file ', finStr, ' ---> ', input.IsOpen()
+					#print 'opening file ', finStr, ' ---> ', input.IsOpen()
 					if (not input.IsOpen()):
 						fmiss += [finStr]
 					for proc in procs :
@@ -385,7 +427,8 @@ def main():
 							
 			for v in _VariationsCheck:
 				for m in _mass :
-					if (not doindiv) and c == 'ee' and int(m) <= 300:
+					#if (not doindiv) and c == 'ee' and int(m) <= 300:
+					if (not doindiv) and int(m) <= 300:
 						bdtname = "_s"+x_spin+"_bdt_discrim_LowM"
 					else:
 						bdtname = "_s"+x_spin+"_bdt_discrim_M" + m
@@ -411,6 +454,7 @@ def main():
 			print fm
 
 		txt_f_miss = []
+		err_f_hasErr = []
 		for ilep in range(len(_leptonChan)):
 			if _leptonChan[ilep] == 'uu':
 				_VariationsCheck = _Variations_toRun_uu # copy the reference to the _VariationsCheck
@@ -420,7 +464,7 @@ def main():
 				_VariationsCheck = _PDFVariations # copy the reference to the _VariationsCheck
 
 			for v in _VariationsCheck:
-				txt_finStr = txtDir + _leps[ilep] + "/OptHH_resCuts_Smoothed_pol2cutoff_systable_" + v + ".txt"
+				txt_finStr = txtDir + _leps[ilep] + "/Opt" + c_OptHH + "Cuts_Smoothed_pol2cutoff_systable_" + v + ".txt"
 				isop = True
 				try:
 					input = open(txt_finStr,'r')
@@ -437,9 +481,25 @@ def main():
 					elif _leptonChan[ilep] == 'ee':
 						if v not in ee_varToResub:
 							ee_varToResub+=[v]
+			# checking ERROR in .err file
+			for v in _VariationsCheck:
+				err_file_str = "tmpjobs_"+dateTo+"/"+"__HHResultProducer__"+v+"__"+_analysisChan[ilep]+".err"
+				is_fo_err = check_read_error(err_file_str)
+				if is_fo_err:
+					print ' checking :', err_file_str, 'is_fo_err ', is_fo_err
+					err_f_hasErr += [err_file_str]
+					if _leptonChan[ilep] == 'uu':
+						if v not in uu_varToResub:
+							uu_varToResub+=[v]
+					elif _leptonChan[ilep] == 'ee':
+						if v not in ee_varToResub:
+							ee_varToResub+=[v]
 		print ' missing txt files : ', len(txt_f_miss)
 		for fm in txt_f_miss:
 			print fm
+		print ' bad in .err files : ', len(err_f_hasErr)
+		for fe in err_f_hasErr:
+			print fe
 
 		print ' variations to be resub uu : ', len(uu_varToResub)
 		for vresub in uu_varToResub:
@@ -457,30 +517,35 @@ def main():
 				_thesevars = ee_varToResub
 
 			for v in _thesevars:
-				txt_finStr = txtDir + _leps[ilep] + "/OptHH_resCuts_Smoothed_pol2cutoff_systable_" + v + ".txt"
+				txt_finStr = txtDir + _leps[ilep] + "/Opt" + c_OptHH + "Cuts_Smoothed_pol2cutoff_systable_" + v + ".txt"
 				delete_txtFileCom = 'rm ' + txt_finStr
 				print delete_txtFileCom
 				# delete unfinished txt files if using "--launch" argument
 				if '--launch' in sys.argv:
+					print '......deleting file:', delete_txtFileCom
 					os.system(delete_txtFileCom)
 				runfile = '__'+('HHResultProducer.py').replace('.py','__'+v+'__'+_analysisChan[ilep]+'.py')
-				ftcsh = runfile.replace('.py','.tcsh')
+				#ftcsh = runfile.replace('.py','.tcsh')
 				#bsub = 'bsub -q 2nd -e /dev/null -J '+runfile.split('.')[0]+' < '+ftcsh #was 1nw
-				bsub = 'bsub -q 8nh -e /dev/null -J '+runfile.split('.')[0]+' < '+ftcsh #was 1nw
-				print bsub
+				#bsub = 'bsub -q 8nh -e /dev/null -J '+runfile.split('.')[0]+' < '+ftcsh #was 1nw
+				cdjobname = 'job' + (runfile).replace('.py','') + '_' + str(dateTo) + '.sub'
+				condor_sub = 'condor_submit ' + cdjobname
+				print condor_sub
 				# Run bsub command if using "--launch" argument
 				if '--launch' in sys.argv:
-						os.system(bsub)
+					#os.system(bsub)
+					os.system(condor_sub)
 
 	##---- Organizing root files and txt files
 	if '--organizefiles' in sys.argv:
 		#--- root files and job submission files
-		roocom1 = 'mv *0_13TeV_new.root  rootfiles_final/.'
+		roocom1 = 'mv *_factor_nnpdf_*.root rootfiles_pdfs/.'
 		roocom2 = 'mv *QCDscale*.root  rootfiles_QCDscale/.'
-		roocom3 = 'mv *_factor_nnpdf_*.root rootfiles_pdfs/.'
+		roocom3 = 'mv *0_13TeV_new.root  rootfiles_final/.'
 		roocom4 = 'mv *_13TeV_new.root rootfiles_std/.'
-		roocom5 = 'mv __HHResultProducer__* runfiles_tmp/.'
-		roocom6 = 'mv LSFJOB_* runfiles_tmp/.'
+		roocom5 = 'mv __HHResultProducer__*.py runfiles_tmp/.'
+		#roocom6 = 'mv LSFJOB_* runfiles_tmp/.'
+		roocom6 = 'mv job__HHResultProducer__*.sub runfiles_tmp/.'
 		if '--launch' in sys.argv:
 			os.system ('mkdir rootfiles_final')
 			os.system ('mkdir rootfiles_QCDscale')
@@ -571,7 +636,7 @@ def CreatePDFHistos(histos_var):
 		houtUp.SetBinError(bin, 0.0)
 		houtDn.SetBinContent(bin, cenval-out[1])
 		houtDn.SetBinError(bin, 0.0)
-		print ' --- finish doing bin ', bin, ' central val ', cenval, ' PDFup val ', cenval+out[1]
+		#print ' --- finish doing bin ', bin, ' central val ', cenval, ' PDFup val ', cenval+out[1]
 	return [houtUp,houtDn]
 
 def CreatePDFHistos_Ordering(histos_var):
@@ -590,7 +655,7 @@ def CreatePDFHistos_Ordering(histos_var):
 		houtUp.SetBinError(bin, 0.0)
 		houtDn.SetBinContent(bin, cenval-dev)
 		houtDn.SetBinError(bin, 0.0)
-		print ' --- finish doing bin: ', bin, 'central val:', cenval, 'PDFdn val:', cenval-dev, 'PDFup val:', cenval+dev, '16th:',sortL[16], '84th:',sortL[84]
+		#print ' --- finish doing bin: ', bin, 'central val:', cenval, 'PDFdn val:', cenval-dev, 'PDFup val:', cenval+dev, '16th:',sortL[16], '84th:',sortL[84]
 	return [houtUp,houtDn]
 
 
@@ -670,6 +735,19 @@ def mergesort(L):
 		#print 'merged ', together, ' length ', len(together)
 		return together
 
+def check_read_error(file_err_name):
+	error1 = 'SysError in <TFile::ReadBuffer>:'
+	error2 = 'Error in <TBranch::GetBasket>:'
+	found_err = 0
+	f = open(file_err_name, 'r')
+	for index, line in enumerate(list(f)):
+		if (error1 in line) or (error2 in line) :
+			#print 'found it', index
+			found_err = 1
+			f.close()
+			return found_err
+	f.close()
+	return found_err
 
 
 if __name__ == "__main__":
