@@ -159,14 +159,14 @@ _kinematicvariables += ['WorZSystemPt']
 #_kinematicvariables += ['passWptCut','passZptCut','WorZSystemPt']
 #_kinematicvariables += ['WSystemPt','ZSystemPt']
 _kinematicvariables += ['matchedLQ']
-_kinematicvariables += ['recoSFMu1','recoSFupMu1','recoSFdownMu1']
-_kinematicvariables += ['idSFMu1','idSFupMu1','idSFdownMu1']
-_kinematicvariables += ['isoSFMu1','isoSFupMu1','isoSFdownMu1']
-_kinematicvariables += ['hltSFMu1','hltSFupMu1','hltSFdownMu1']
-_kinematicvariables += ['recoSFMu2','recoSFupMu2','recoSFdownMu2']
-_kinematicvariables += ['idSFMu2','idSFupMu2','idSFdownMu2']
-_kinematicvariables += ['isoSFMu2','isoSFupMu2','isoSFdownMu2']
-_kinematicvariables += ['hltSFMu2','hltSFupMu2','hltSFdownMu2']
+_kinematicvariables += ['mu1recoSF','mu1recoSFup','mu1recoSFdown']
+_kinematicvariables += ['mu1idSF','mu1idSFup','mu1idSFdown']
+_kinematicvariables += ['mu1isoSF','mu1isoSFup','mu1isoSFdown']
+_kinematicvariables += ['mu1hltSF','mu1hltSFup','mu1hltSFdown']
+_kinematicvariables += ['mu2recoSF','mu2recoSFup','mu2recoSFdown']
+_kinematicvariables += ['mu2idSF','mu2idSFup','mu2idSFdown']
+_kinematicvariables += ['mu2isoSF','mu2isoSFup','mu2isoSFdown']
+_kinematicvariables += ['mu2hltSF','mu2hltSFup','mu2hltSFdown']
 
 #_weights = ['scaleWeight_Up','scaleWeight_Down','scaleWeight_R1_F1','scaleWeight_R1_F2','scaleWeight_R1_F0p5','scaleWeight_R2_F1','scaleWeight_R2_F2','scaleWeight_R2_F0p5','scaleWeight_R0p5_F1','scaleWeight_R0p5_F2','scaleWeight_R0p5_F0p5','scaleWeight_R2_F2','weight_amcNLO','weight_nopu','weight_central', 'weight_pu_up', 'weight_pu_down','weight_central_2012D','weight_topPt']
 _weights = ['scaleWeight_Up','scaleWeight_Down','scaleWeight_R1_F1','scaleWeight_R1_F2','scaleWeight_R1_F0p5','scaleWeight_R2_F1','scaleWeight_R2_F2','scaleWeight_R2_F0p5','scaleWeight_R0p5_F1','scaleWeight_R0p5_F2','scaleWeight_R0p5_F0p5','scaleWeight_R2_F2','weight_amcNLO','weight_nopu','weight_central', 'weight_pu_up', 'weight_pu_down','weight_topPt']
@@ -916,7 +916,7 @@ def getMuonSF(_pt,_eta,_year,):
 		# Muon high pt identification scale factors
 		# Periods B,C,D,E,F: https://gitlab.cern.ch/cms-muonPOG/MuonReferenceEfficiencies/blob/master/EfficienciesStudies/2016_legacy_rereco/systematic/RunBCDEF_SF_ID.json 
 		# Periods G,H: https://gitlab.cern.ch/cms-muonPOG/MuonReferenceEfficiencies/blob/master/EfficienciesStudies/2016_legacy_rereco/systematic/RunGH_SF_ID.json
-		# Each run was properly weighted by luminosoty and combined into a single SF
+		# Each run was properly weighted by luminosity and combined into a single SF
 		if _eta>-2.40 and _eta<=-2.30: highPtIdSFbyPt = [[0.992, 0.01],[0.991, 0.008],[0.99, 0.006],[0.991, 0.004],[0.979, 0.01],[0.98, 0.02]]
 		if _eta>-2.30 and _eta<=-2.20: highPtIdSFbyPt = [[0.99, 0.008],[0.993, 0.006],[0.987, 0.003],[0.987, 0.003],[0.978, 0.006],[0.99, 0.01]]
 		if _eta>-2.20 and _eta<=-2.10: highPtIdSFbyPt = [[0.965, 0.008],[0.964, 0.005],[0.959, 0.003],[0.96, 0.005],[0.958, 0.006],[0.96, 0.01]]
@@ -948,7 +948,7 @@ def getMuonSF(_pt,_eta,_year,):
 		# Muon relative track isolation scale factors
 		# Periods B,C,D,E,F: * https://gitlab.cern.ch/cms-muonPOG/MuonReferenceEfficiencies/blob/master/EfficienciesStudies/2016_legacy_rereco/systematic/RunBCDEF_SF_ISO.json
 		# Periods G,H: https://gitlab.cern.ch/cms-muonPOG/MuonReferenceEfficiencies/blob/master/EfficienciesStudies/2016_legacy_rereco/systematic/RunGH_SF_ISO.json
-		# Each run was properly weighted by luminosoty and combined into a single SF
+		# Each run was properly weighted by luminosity and combined into a single SF
 		if _eta>-2.40 and _eta<=-2.30: relTrkIsoSFbyPt = [[0.968, 0.008],[0.985, 0.005],[0.999, 0.002],[1.0, 0.001],[0.999, 0.003],[1.0, 0.004]]
 		if _eta>-2.30 and _eta<=-2.20: relTrkIsoSFbyPt = [[0.982, 0.008],[0.995, 0.005],[0.997, 0.002],[1.0, 0.001],[0.998, 0.002],[0.996, 0.003]]
 		if _eta>-2.20 and _eta<=-2.10: relTrkIsoSFbyPt = [[0.983, 0.007],[0.99, 0.004],[0.995, 0.002],[0.9975, 0.0005],[1.0, 0.002],[1.004, 0.003]]
@@ -1034,6 +1034,7 @@ def getMuonSF(_pt,_eta,_year,):
 
 	# Check muon pt and select SF from appropriate pt bin. Different SFs (e.g., reco vs hlt) have different pt ranges/binning. 
 	# Maps ensure double checking of pt bins do not occur (speeds up loop) for different SF types
+	# WARNING! Make sure to check mapping if ANY binning changes
 	lowBndMap1 = {0:0, 1:2, 2:3, 3:4, 4:5, 5:5, 6:6, 7:6}
 	lowBndMap2 = {0:0, 1:4, 2:5, 3:5, 4:5, 5:5, 6:5}
 	i, j, k = 0, 0, 0
