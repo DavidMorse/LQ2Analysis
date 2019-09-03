@@ -1881,8 +1881,8 @@ def FullKinematicCalculation(T,variation):
 
 	year = '2016' #Fixme need to integrate year option
 	#Get muon scale factors and up, down variations here
-	[_recoSFMu1,_recoSFupMu1,_recoSFdownMu1,_idSFMu1,_idSFupMu1,_idSFdownMu1,_isoSFMu1,_isoSFupMu1,_isoSFdownMu1,_hltSFMu1,_hltSFupMu1,_hltSFdownMu1] = getMuonSF(_ptmu1,_etamu1,year)
-	[_recoSFMu2,_recoSFupMu2,_recoSFdownMu2,_idSFMu2,_idSFupMu2,_idSFdownMu2,_isoSFMu2,_isoSFupMu2,_isoSFdownMu2,_hltSFMu2,_hltSFupMu2,_hltSFdownMu2] = getMuonSF(_ptmu2,_etamu2,year)
+	[_mu1recoSF,_mu1recoSFup,_mu1recoSFdown,_mu1idSF,_mu1idSFup,_mu1idSFdown,_mu1isoSF,_mu1isoSFup,_mu1isoSFdown,_mu1hltSF,_mu1hltSFup,_mu1hltSFdown] = getMuonSF(_ptmu1,_etamu1,year)
+	[_mu2recoSF,_mu2recoSFup,_mu2recoSFdown,_mu2idSF,_mu2idSFup,_mu2idSFdown,_mu2isoSF,_mu2isoSFup,_mu2isoSFdown,_mu2hltSF,_mu2hltSFup,_mu2hltSFdown] = getMuonSF(_ptmu2,_etamu2,year)
 
 	_Muujj1_gen=0
 	_Muujj2_gen=0
@@ -1989,14 +1989,14 @@ def FullKinematicCalculation(T,variation):
 	#toreturn += [_passWptCut,_passZptCut,_WorZSystemPt]
 	#toreturn += [_WSystemPt,_ZSystemPt]
 	toreturn += [_matchedLQ]
-	toreturn += [_recoSFMu1,_recoSFupMu1,_recoSFdownMu1]
-	toreturn += [_idSFMu1,_idSFupMu1,_idSFdownMu1]
-	toreturn += [_isoSFMu1,_isoSFupMu1,_isoSFdownMu1]
-	toreturn += [_hltSFMu1,_hltSFupMu1,_hltSFdownMu1]
-	toreturn += [_recoSFMu2,_recoSFupMu2,_recoSFdownMu2]
-	toreturn += [_idSFMu2,_idSFupMu2,_idSFdownMu2]
-	toreturn += [_isoSFMu2,_isoSFupMu2,_isoSFdownMu2]
-	toreturn += [_hltSFMu2,_hltSFupMu2,_hltSFdownMu2]
+	toreturn += [_mu1recoSF,_mu1recoSFup,_mu1recoSFdown]
+	toreturn += [_mu1idSF,_mu1idSFup,_mu1idSFdown]
+	toreturn += [_mu1isoSF,_mu1isoSFup,_mu1isoSFdown]
+	toreturn += [_mu1hltSF,_mu1hltSFup,_mu1hltSFdown]
+	toreturn += [_mu2recoSF,_mu2recoSFup,_mu2recoSFdown]
+	toreturn += [_mu2idSF,_mu2idSFup,_mu2idSFdown]
+	toreturn += [_mu2isoSF,_mu2isoSFup,_mu2isoSFdown]
+	toreturn += [_mu2hltSF,_mu2hltSFup,_mu2hltSFdown]
 	return toreturn
 
 #fixme Had to move these below FullKinematicCalculation, wouldn't find function otherwise. Why only these?
