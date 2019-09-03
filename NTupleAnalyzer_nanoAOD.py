@@ -889,7 +889,7 @@ def PropagatePTChangeToMET(met,original_object,varied_object):
 # 			taus.append(ThisTau)
 # 	return taus
 
-def getMuonSF(_pt,_eta,_year,):
+def getMuonSF(_pt,_eta,_year):
 	# Purpose: Takes muon eta and pt and gets scale factors.
 	#         SFs are hardcoded separately for muon reco, high pt ID, iso, and hlt.
 	#		  Must specify the year being analyzed, as SFs differ for each year.
