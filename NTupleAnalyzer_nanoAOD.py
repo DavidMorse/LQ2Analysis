@@ -159,6 +159,14 @@ _kinematicvariables += ['WorZSystemPt']
 #_kinematicvariables += ['passWptCut','passZptCut','WorZSystemPt']
 #_kinematicvariables += ['WSystemPt','ZSystemPt']
 _kinematicvariables += ['matchedLQ']
+_kinematicvariables += ['mu1recoSF','mu1recoSFup','mu1recoSFdown']
+_kinematicvariables += ['mu1idSF','mu1idSFup','mu1idSFdown']
+_kinematicvariables += ['mu1isoSF','mu1isoSFup','mu1isoSFdown']
+_kinematicvariables += ['mu1hltSF','mu1hltSFup','mu1hltSFdown']
+_kinematicvariables += ['mu2recoSF','mu2recoSFup','mu2recoSFdown']
+_kinematicvariables += ['mu2idSF','mu2idSFup','mu2idSFdown']
+_kinematicvariables += ['mu2isoSF','mu2isoSFup','mu2isoSFdown']
+_kinematicvariables += ['mu2hltSF','mu2hltSFup','mu2hltSFdown']
 
 #_weights = ['scaleWeight_Up','scaleWeight_Down','scaleWeight_R1_F1','scaleWeight_R1_F2','scaleWeight_R1_F0p5','scaleWeight_R2_F1','scaleWeight_R2_F2','scaleWeight_R2_F0p5','scaleWeight_R0p5_F1','scaleWeight_R0p5_F2','scaleWeight_R0p5_F0p5','scaleWeight_R2_F2','weight_amcNLO','weight_nopu','weight_central', 'weight_pu_up', 'weight_pu_down','weight_central_2012D','weight_topPt']
 _weights = ['scaleWeight_Up','scaleWeight_Down','scaleWeight_R1_F1','scaleWeight_R1_F2','scaleWeight_R1_F0p5','scaleWeight_R2_F1','scaleWeight_R2_F2','scaleWeight_R2_F0p5','scaleWeight_R0p5_F1','scaleWeight_R0p5_F2','scaleWeight_R0p5_F0p5','scaleWeight_R2_F2','weight_amcNLO','weight_nopu','weight_central', 'weight_pu_up', 'weight_pu_down','weight_topPt']
@@ -880,6 +888,205 @@ def PropagatePTChangeToMET(met,original_object,varied_object):
 # 			ThisTau.SetPtEtaPhiM(T.HPSTauPt[n],T.HPSTauEta[n],T.HPSTauPhi[n],0)
 # 			taus.append(ThisTau)
 # 	return taus
+
+def getMuonSF(_pt,_eta,_year):
+	# Purpose: Takes muon eta and pt and gets scale factors.
+	#         SFs are hardcoded separately for muon reco, high pt ID, iso, and hlt.
+	#		  Must specify the year being analyzed, as SFs differ for each year.
+	#         Returns array with SFs (ID, iso, etc.) as well as up and down variations
+	#		  of systematic and statisical error for each SF.
+
+	# Store the pt ranges for which different scale factors are defined. Different ranges depending on SF, i.e., reco, id and iso, and hlt
+	recoPt = [[50.00,100.00],[100.00,150.00],[150.00,200.00],[200.00,300.00],[300.00,400.00],[400.00,600.00],[600.00,1500.00],[1500.00,3500.00]]
+	hltPts = [[52.00,55.00],[55.00,60.00],[60.00,120.00],[120.00,200.00],[200.00,300.00],[300.00,500.00],[500.00,1000.00]]
+	idAndIsoPts = [[20.00,25.00],[25.00,30.00],[30.00,40.00],[40.00,50.00],[50.00,60.00],[60.00,120.00]]
+	# ensure all muons fall within the SF eta ranges
+	if _eta<=-2.40:_eta=-2.399
+	if _eta>=2.40:_eta=2.399
+	abseta = abs(_eta)
+	recoSFbyPt,highPtIdSFbyPt,relTrkIsoSFbyPt,hltSFbyPt = 1.0,1.0,1.0,1.0
+
+	########## Muon POG recommended scale factors by year ###############
+	# Check if muon is in eta range, set list of SFs and errors (syst+stat), sorted by pt.
+	if _year=='2016':
+		# Muon reco SFs
+		# https://twiki.cern.ch/twiki/bin/view/CMS/HighPtMuonReferenceRun2
+		if abseta>=0.00 and abseta<=1.60: recoSFbyPt = [[0.9914, 0.0008],[0.9936, 0.0009],[0.993, 0.001],[0.993, 0.002],[0.990, 0.004],[0.990, 0.003],[0.989, 0.004],[0.8, 0.3]]
+		elif abseta>1.60 and abseta<=2.40: recoSFbyPt = [[1.00, 0.00],[0.993, 0.001],[0.991, 0.001],[0.985, 0.001],[0.981, 0.002],[0.979, 0.004],[0.978, 0.005],[0.9, 0.2]]
+		# Muon high pt identification scale factors
+		# Periods B,C,D,E,F: https://gitlab.cern.ch/cms-muonPOG/MuonReferenceEfficiencies/blob/master/EfficienciesStudies/2016_legacy_rereco/systematic/RunBCDEF_SF_ID.json 
+		# Periods G,H: https://gitlab.cern.ch/cms-muonPOG/MuonReferenceEfficiencies/blob/master/EfficienciesStudies/2016_legacy_rereco/systematic/RunGH_SF_ID.json
+		# Each run was properly weighted by luminosity and combined into a single SF
+		if _eta>-2.40 and _eta<=-2.30: highPtIdSFbyPt = [[0.992, 0.01],[0.991, 0.008],[0.99, 0.006],[0.991, 0.004],[0.979, 0.01],[0.98, 0.02]]
+		if _eta>-2.30 and _eta<=-2.20: highPtIdSFbyPt = [[0.99, 0.008],[0.993, 0.006],[0.987, 0.003],[0.987, 0.003],[0.978, 0.006],[0.99, 0.01]]
+		if _eta>-2.20 and _eta<=-2.10: highPtIdSFbyPt = [[0.965, 0.008],[0.964, 0.005],[0.959, 0.003],[0.96, 0.005],[0.958, 0.006],[0.96, 0.01]]
+		if _eta>-2.10 and _eta<=-2.00: highPtIdSFbyPt = [[0.985, 0.007],[0.981, 0.003],[0.983, 0.001],[0.983, 0.002],[0.983, 0.005],[0.993, 0.009]]
+		if _eta>-2.00 and _eta<=-1.70: highPtIdSFbyPt = [[0.979, 0.004],[0.983, 0.002],[0.9827, 0.0009],[0.984, 0.002],[0.985, 0.002],[0.984, 0.006]]
+		if _eta>-1.70 and _eta<=-1.60: highPtIdSFbyPt = [[0.997, 0.006],[0.99, 0.003],[0.994, 0.001],[0.993, 0.001],[0.993, 0.003],[0.988, 0.006]]
+		if _eta>-1.60 and _eta<=-1.50: highPtIdSFbyPt = [[1.0, 0.009],[0.998, 0.004],[0.996, 0.002],[0.997, 0.002],[0.994, 0.003],[1.005, 0.006]]
+		if _eta>-1.50 and _eta<=-1.40: highPtIdSFbyPt = [[1.002, 0.006],[0.994, 0.004],[0.996, 0.001],[0.996, 0.003],[0.995, 0.003],[0.993, 0.007]]
+		if _eta>-1.40 and _eta<=-1.20: highPtIdSFbyPt = [[1.006, 0.006],[0.993, 0.003],[0.9966, 0.0009],[0.996, 0.001],[0.992, 0.002],[0.996, 0.005]]
+		if _eta>-1.20 and _eta<=-0.80: highPtIdSFbyPt = [[0.987, 0.004],[0.986, 0.002],[0.9827, 0.0009],[0.983, 0.001],[0.978, 0.002],[0.985, 0.005]]
+		if _eta>-0.80 and _eta<=-0.50: highPtIdSFbyPt = [[1.003, 0.004],[0.999, 0.003],[0.993, 0.003],[0.994, 0.001],[0.991, 0.002],[0.999, 0.008]]
+		if _eta>-0.50 and _eta<=-0.30: highPtIdSFbyPt = [[1.01, 0.01],[0.992, 0.004],[0.993, 0.002],[0.995, 0.002],[0.991, 0.002],[1.008, 0.009]]
+		if _eta>-0.30 and _eta<=-0.20: highPtIdSFbyPt = [[0.98, 0.01],[0.975, 0.007],[0.97, 0.005],[0.973, 0.003],[0.971, 0.006],[0.97, 0.01]]
+		if _eta>-0.20 and _eta<=0.00: highPtIdSFbyPt = [[0.97, 0.01],[0.991, 0.005],[0.995, 0.003],[0.994, 0.001],[0.99, 0.002],[0.995, 0.009]]
+		if _eta>0.00 and _eta<=0.20: highPtIdSFbyPt = [[1.0, 0.01],[0.991, 0.005],[0.991, 0.002],[0.993, 0.002],[0.989, 0.003],[0.994, 0.008]]
+		if _eta>0.20 and _eta<=0.30: highPtIdSFbyPt = [[0.96, 0.01],[0.97, 0.008],[0.962, 0.006],[0.965, 0.003],[0.965, 0.006],[0.98, 0.01]]
+		if _eta>0.30 and _eta<=0.50: highPtIdSFbyPt = [[1.01, 0.01],[0.995, 0.004],[0.99, 0.005],[0.991, 0.001],[0.99, 0.002],[1.0, 0.01]]
+		if _eta>0.50 and _eta<=0.80: highPtIdSFbyPt = [[1.002, 0.007],[0.996, 0.003],[0.993, 0.003],[0.994, 0.001],[0.987, 0.002],[0.991, 0.009]]
+		if _eta>0.80 and _eta<=1.20: highPtIdSFbyPt = [[0.988, 0.005],[0.983, 0.002],[0.983, 0.001],[0.983, 0.001],[0.978, 0.002],[0.981, 0.006]]
+		if _eta>1.20 and _eta<=1.40: highPtIdSFbyPt = [[1.002, 0.009],[0.999, 0.004],[0.998, 0.004],[1.0, 0.002],[0.988, 0.003],[0.995, 0.01]]
+		if _eta>1.40 and _eta<=1.50: highPtIdSFbyPt = [[1.006, 0.009],[1.003, 0.005],[1.0, 0.002],[1.002, 0.003],[0.984, 0.005],[1.001, 0.005]]
+		if _eta>1.50 and _eta<=1.60: highPtIdSFbyPt = [[1.004, 0.008],[0.998, 0.007],[1.004, 0.002],[1.004, 0.003],[0.994, 0.005],[1.0, 0.01]]
+		if _eta>1.60 and _eta<=1.70: highPtIdSFbyPt = [[0.999, 0.008],[0.998, 0.006],[0.998, 0.002],[1.002, 0.003],[0.99, 0.004],[0.99, 0.01]]
+		if _eta>1.70 and _eta<=2.00: highPtIdSFbyPt = [[0.985, 0.005],[0.986, 0.002],[0.988, 0.001],[0.989, 0.001],[0.986, 0.002],[0.984, 0.004]]
+		if _eta>2.00 and _eta<=2.10: highPtIdSFbyPt = [[0.983, 0.009],[0.983, 0.003],[0.987, 0.002],[0.989, 0.002],[0.986, 0.004],[0.995, 0.008]]
+		if _eta>2.10 and _eta<=2.20: highPtIdSFbyPt = [[0.983, 0.006],[0.975, 0.004],[0.966, 0.003],[0.971, 0.003],[0.965, 0.005],[0.96, 0.01]]
+		if _eta>2.20 and _eta<=2.30: highPtIdSFbyPt = [[1.0, 0.01],[0.993, 0.004],[0.994, 0.003],[0.989, 0.004],[0.981, 0.005],[0.99, 0.01]]
+		if _eta>2.30 and _eta<=2.40: highPtIdSFbyPt = [[1.0, 0.01],[0.975, 0.006],[0.982, 0.003],[0.991, 0.004],[0.986, 0.008],[1.0, 0.01]]		
+		# Muon relative track isolation scale factors
+		# Periods B,C,D,E,F: * https://gitlab.cern.ch/cms-muonPOG/MuonReferenceEfficiencies/blob/master/EfficienciesStudies/2016_legacy_rereco/systematic/RunBCDEF_SF_ISO.json
+		# Periods G,H: https://gitlab.cern.ch/cms-muonPOG/MuonReferenceEfficiencies/blob/master/EfficienciesStudies/2016_legacy_rereco/systematic/RunGH_SF_ISO.json
+		# Each run was properly weighted by luminosity and combined into a single SF
+		if _eta>-2.40 and _eta<=-2.30: relTrkIsoSFbyPt = [[0.968, 0.008],[0.985, 0.005],[0.999, 0.002],[1.0, 0.001],[0.999, 0.003],[1.0, 0.004]]
+		if _eta>-2.30 and _eta<=-2.20: relTrkIsoSFbyPt = [[0.982, 0.008],[0.995, 0.005],[0.997, 0.002],[1.0, 0.001],[0.998, 0.002],[0.996, 0.003]]
+		if _eta>-2.20 and _eta<=-2.10: relTrkIsoSFbyPt = [[0.983, 0.007],[0.99, 0.004],[0.995, 0.002],[0.9975, 0.0005],[1.0, 0.002],[1.004, 0.003]]
+		if _eta>-2.10 and _eta<=-2.00: relTrkIsoSFbyPt = [[0.998, 0.008],[0.993, 0.004],[0.998, 0.002],[0.9974, 0.0008],[0.998, 0.002],[0.997, 0.002]]
+		if _eta>-2.00 and _eta<=-1.70: relTrkIsoSFbyPt = [[0.991, 0.004],[0.994, 0.002],[0.9969, 0.001],[0.9974, 0.0004],[0.9991, 0.0009],[0.999, 0.001]]
+		if _eta>-1.70 and _eta<=-1.60: relTrkIsoSFbyPt = [[0.977, 0.007],[0.991, 0.004],[0.997, 0.002],[0.9975, 0.0008],[0.996, 0.001],[1.0, 0.002]]
+		if _eta>-1.60 and _eta<=-1.50: relTrkIsoSFbyPt = [[0.983, 0.007],[0.991, 0.004],[0.998, 0.002],[0.9985, 0.0008],[0.999, 0.002],[0.998, 0.002]]
+		if _eta>-1.50 and _eta<=-1.40: relTrkIsoSFbyPt = [[0.989, 0.009],[0.992, 0.005],[0.995, 0.002],[0.9974, 0.0009],[0.997, 0.002],[0.999, 0.002]]
+		if _eta>-1.40 and _eta<=-1.20: relTrkIsoSFbyPt = [[0.981, 0.006],[0.993, 0.004],[0.994, 0.001],[0.9963, 0.0003],[0.997, 0.001],[0.998, 0.001]]
+		if _eta>-1.20 and _eta<=-0.80: relTrkIsoSFbyPt = [[0.99, 0.005],[0.991, 0.003],[0.9947, 0.0009],[0.997, 0.001],[0.9986, 0.0008],[1.0, 0.002]]
+		if _eta>-0.80 and _eta<=-0.50: relTrkIsoSFbyPt = [[0.981, 0.006],[0.995, 0.003],[0.995, 0.001],[0.9961, 0.0005],[0.997, 0.001],[0.999, 0.001]]
+		if _eta>-0.50 and _eta<=-0.30: relTrkIsoSFbyPt = [[0.975, 0.008],[0.991, 0.004],[0.993, 0.001],[0.9948, 0.0004],[0.996, 0.001],[0.999, 0.002]]
+		if _eta>-0.30 and _eta<=-0.20: relTrkIsoSFbyPt = [[0.98, 0.01],[0.993, 0.006],[0.996, 0.002],[0.995, 0.001],[0.997, 0.002],[0.997, 0.002]]
+		if _eta>-0.20 and _eta<=0.00: relTrkIsoSFbyPt = [[0.969, 0.008],[0.988, 0.004],[0.993, 0.001],[0.9951, 0.0007],[0.997, 0.001],[0.999, 0.002]]
+		if _eta>0.00 and _eta<=0.20: relTrkIsoSFbyPt = [[0.992, 0.008],[0.996, 0.004],[0.994, 0.001],[0.9951, 0.0007],[0.997, 0.001],[0.998, 0.001]]
+		if _eta>0.20 and _eta<=0.30: relTrkIsoSFbyPt = [[0.98, 0.01],[0.993, 0.006],[0.994, 0.002],[0.9967, 0.001],[1.0, 0.002],[0.998, 0.002]]
+		if _eta>0.30 and _eta<=0.50: relTrkIsoSFbyPt = [[0.994, 0.008],[0.996, 0.004],[0.997, 0.001],[0.9972, 0.0007],[0.998, 0.001],[1.001, 0.002]]
+		if _eta>0.50 and _eta<=0.80: relTrkIsoSFbyPt = [[0.989, 0.006],[1.0, 0.003],[0.9985, 0.001],[0.9983, 0.0005],[0.9985, 0.0009],[1.0, 0.001]]
+		if _eta>0.80 and _eta<=1.20: relTrkIsoSFbyPt = [[0.985, 0.005],[1.001, 0.003],[0.9976, 0.001],[0.9974, 0.0003],[0.998, 0.0008],[0.9986, 0.001]]
+		if _eta>1.20 and _eta<=1.40: relTrkIsoSFbyPt = [[0.983, 0.006],[0.991, 0.004],[0.993, 0.001],[0.9958, 0.0004],[0.998, 0.001],[1.001, 0.001]]
+		if _eta>1.40 and _eta<=1.50: relTrkIsoSFbyPt = [[0.987, 0.009],[0.985, 0.005],[0.993, 0.002],[0.9962, 0.0006],[0.997, 0.002],[1.0, 0.002]]
+		if _eta>1.50 and _eta<=1.60: relTrkIsoSFbyPt = [[0.99, 0.008],[0.994, 0.004],[0.993, 0.002],[0.9962, 0.0008],[1.001, 0.002],[0.999, 0.003]]
+		if _eta>1.60 and _eta<=1.70: relTrkIsoSFbyPt = [[0.977, 0.007],[0.991, 0.004],[0.993, 0.002],[0.996, 0.002],[0.998, 0.001],[0.995, 0.002]]
+		if _eta>1.70 and _eta<=2.00: relTrkIsoSFbyPt = [[0.983, 0.004],[0.991, 0.002],[0.9962, 0.001],[0.9973, 0.0005],[0.998, 0.001],[1.0, 0.001]]
+		if _eta>2.00 and _eta<=2.10: relTrkIsoSFbyPt = [[0.985, 0.008],[0.991, 0.004],[0.995, 0.002],[0.9971, 0.0004],[0.997, 0.002],[0.998, 0.002]]
+		if _eta>2.10 and _eta<=2.20: relTrkIsoSFbyPt = [[0.979, 0.007],[0.99, 0.004],[0.996, 0.002],[0.9977, 0.0008],[0.999, 0.002],[1.004, 0.003]]
+		if _eta>2.20 and _eta<=2.30: relTrkIsoSFbyPt = [[0.978, 0.008],[0.991, 0.005],[0.991, 0.002],[0.996, 0.0008],[0.997, 0.002],[1.001, 0.003]]
+		if _eta>2.30 and _eta<=2.40: relTrkIsoSFbyPt = [[0.98, 0.009],[0.98, 0.005],[0.99, 0.002],[0.996, 0.001],[0.995, 0.005],[1.004, 0.003]]
+		# High level trigger scale factors
+		# https://twiki.cern.ch/twiki/bin/view/CMS/HighPtMuonReferenceRun2
+		if abseta>=0.00 and abseta<=0.90: hltSFbyPt = [[0.980, 0.007],[0.983, 0.004],[0.980, 0.002],[0.980, 0.003],[0.980, 0.007],[0.962, 0.01],[0.983, 0.05]]
+		elif abseta>0.90 and abseta<=1.20: hltSFbyPt = [[0.938, 0.006],[0.958, 0.005],[0.956, 0.002],[0.948, 0.005],[0.927, 0.01],[0.911, 0.03],[0.824, 0.1]]
+		elif abseta>1.20 and abseta<2.10: hltSFbyPt = [[0.996, 0.01],[1.005, 0.009],[0.990, 0.003],[0.988, 0.005],[0.977, 0.01],[1.010, 0.02],[1.020, 0.1]]
+		elif abseta>2.10 and abseta<2.40: hltSFbyPt = [[0.934, 0.03],[0.954, 0.02],[0.948, 0.007],[0.935, 0.01],[0.888, 0.03],[0.953, 0.07],[1.134, 0.5]]
+
+	if _year=='2017':
+		# Muon reco SFs
+		# https://twiki.cern.ch/twiki/bin/view/CMS/HighPtMuonReferenceRun2
+		if abseta>=0.00 and abseta<=1.60: recoSFbyPt = [[0.9938, 0.0006],[0.9950, 0.0007],[0.996, 0.001],[0.996, 0.001],[0.994, 0.001],[1.003, 0.006],[0.987, 0.003],[0.9, 0.1]]
+		elif abseta>1.60 and abseta<=2.40: recoSFbyPt = [[1.00, 0.00],[0.993, 0.001],[0.989, 0.001],[0.986, 0.001],[0.989, 0.001],[0.983, 0.003],[0.986, 0.006],[1.01, 0.01]]
+		# Muon high pt identification scale factors
+		# https://twiki.cern.ch/twiki/pub/CMS/MuonReferenceEffs2017/RunBCDEF_SF_ID_syst.json
+		if abseta>=0.00 and abseta<=0.90: highPtIdSFbyPt = [[0.991, 0.005],[0.987, 0.002],[0.99, 0.02],[0.9905, 0.0008],[0.99, 0.01],[0.992, 0.003]] 
+		elif abseta>0.90 and abseta<=1.20: highPtIdSFbyPt = [[0.99, 0.02],[0.99, 0.03],[0.9864, 0.0008],[0.99, 0.02],[0.986, 0.002],[0.987, 0.004]]
+		elif abseta>1.20 and abseta<=2.10: highPtIdSFbyPt = [[0.99, 0.01],[0.992, 0.001],[0.99, 0.01],[0.994, 0.009],[0.992, 0.005],[0.994, 0.003]]
+		elif abseta>2.10 and abseta<=2.40: highPtIdSFbyPt = [[0.977, 0.005],[0.98, 0.002],[0.978, 0.001],[0.981, 0.001],[0.972, 0.004],[0.98, 0.02]]
+		# Muon relative track isolation scale factors
+		# https://twiki.cern.ch/twiki/pub/CMS/MuonReferenceEffs2017/RunBCDEF_SF_ISO_syst.json
+		if abseta>=0.00 and abseta<=0.90: relTrkIsoSFbyPt = [[0.992, 0.004],[0.995, 0.002],[0.9974, 0.0006],[0.9979, 0.0007],[0.999, 0.0007],[1.0, 0.001]]
+		elif abseta>0.90 and abseta<=1.20: relTrkIsoSFbyPt = [[1.009, 0.007],[1.004, 0.004],[1.0, 0.001],[1.001, 0.0006],[1.002, 0.001],[1.0, 0.002]]
+		elif abseta>1.20 and abseta<=2.10: relTrkIsoSFbyPt = [[1.013, 0.004],[1.009, 0.002],[1.0073, 0.0007],[1.0048, 0.0004],[1.0032, 0.0009],[1.001, 0.001]]
+		elif abseta>2.10 and abseta<=2.40: relTrkIsoSFbyPt = [[1.031, 0.006],[1.025, 0.003],[1.016, 0.001],[1.01, 0.0009],[1.006, 0.002],[1.003, 0.003]]
+		# High level trigger scale factors
+		# https://twiki.cern.ch/twiki/bin/view/CMS/HighPtMuonReferenceRun2
+		if abseta>=0.00 and abseta<=0.90: hltSFbyPt = [[0.968, 0.006],[0.968, 0.004],[0.969, 0.002],[0.967, 0.002],[0.964, 0.005],[0.963, 0.01],[0.951, 0.04]]
+		elif abseta>0.90 and abseta<=1.20: hltSFbyPt = [[0.929, 0.009],[0.953, 0.007],[0.945, 0.003],[0.946, 0.005],[0.948, 0.009],[0.939, 0.02],[0.896, 0.09]]
+		elif abseta>1.20 and abseta<2.10: hltSFbyPt = [[0.980, 0.01],[0.981, 0.008],[0.985, 0.003],[0.991, 0.004],[0.986, 0.007],[1.002, 0.02],[0.922, 0.08]]
+		elif abseta>2.10 and abseta<2.40: hltSFbyPt = [[0.869, 0.04],[0.864, 0.02],[0.926, 0.007],[0.992, 0.01],[1.023, 0.02],[0.905, 0.06],[0.424, 0.5]]
+
+	if _year=='2018':
+		# Muon reco SFs
+		# https://twiki.cern.ch/twiki/bin/view/CMS/HighPtMuonReferenceRun2
+		if abseta>=0.00 and abseta<=1.60: recoSFbyPt = [[0.9943, 0.0007],[0.9948, 0.0007],[0.9950, 0.0009],[0.994, 0.001],[0.9914, 0.0009],[0.993, 0.002],[0.991, 0.004],[1.0, 0.1]]
+		elif abseta>1.60 and abseta<=2.40: recoSFbyPt = [[1.00, 0.00],[0.993, 0.001],[0.990, 0.001],[0.988, 0.001],[0.981, 0.002],[0.983, 0.003],[0.978, 0.006],[0.98, 0.03]]
+		# Muon high pt identification scale factors
+		# https://gitlab.cern.ch/cms-muonPOG/MuonReferenceEfficiencies/blob/master/EfficienciesStudies/2018/jsonfiles/RunABCD_SF_ID.json
+		if abseta>=0.00 and abseta<=0.90: highPtIdSFbyPt = [[0.992, 0.003],[0.992, 0.001],[0.9923, 0.0008],[0.9927, 0.0005],[0.9929, 0.0006],[0.992, 0.003]]
+		elif abseta>0.90 and abseta<=1.20: highPtIdSFbyPt = [[0.988, 0.005],[0.986, 0.002],[0.986, 0.003],[0.9869, 0.0005],[0.986, 0.001],[0.985, 0.002]]
+		elif abseta>1.20 and abseta<=2.10: highPtIdSFbyPt = [[0.9922, 0.0009],[0.992, 0.002],[0.992, 0.001],[0.9916, 0.0002],[0.9925, 0.001],[0.991, 0.0007]]
+		elif abseta>2.10 and abseta<=2.40: highPtIdSFbyPt = [[0.98, 0.004],[0.978, 0.003],[0.978, 0.001],[0.978, 0.002],[0.977, 0.003],[0.974, 0.005]]
+		# Muon relative track isolation scale factors
+		# https://gitlab.cern.ch/cms-muonPOG/MuonReferenceEfficiencies/blob/master/EfficienciesStudies/2018/jsonfiles/RunABCD_SF_ISO.json
+		if abseta>=0.00 and abseta<=0.90: relTrkIsoSFbyPt = [[0.992, 0.004],[0.991, 0.002],[0.9945, 0.0005],[0.9968, 0.0005],[0.9969, 0.0006],[0.9975, 0.0007]]
+		elif abseta>0.90 and abseta<=1.20: relTrkIsoSFbyPt = [[0.998, 0.006],[0.994, 0.003],[0.9979, 0.0009],[0.9994, 0.0005],[0.9997, 0.0009],[1.0, 0.001]]
+		elif abseta>1.20 and abseta<=2.10: relTrkIsoSFbyPt = [[1.007, 0.003],[1.005, 0.002],[1.0032, 0.0006],[1.0026, 0.0006],[1.0011, 0.0007],[1.0011, 0.0009]]
+		elif abseta>2.10 and abseta<=2.40: relTrkIsoSFbyPt = [[1.018, 0.005],[1.008, 0.003],[1.009, 0.003],[1.005, 0.0009],[1.004, 0.001],[1.002, 0.002]]
+		# High level trigger scale factors
+		# https://twiki.cern.ch/twiki/bin/view/CMS/HighPtMuonReferenceRun2
+		if abseta>=0.00 and abseta<=0.90: hltSFbyPt = [[0.980, 0.006],[0.982, 0.004],[0.976, 0.001],[0.980, 0.002],[0.978, 0.004],[0.973, 0.009],[0.957, 0.03]]
+		elif abseta>0.900 and abseta<=1.20: hltSFbyPt = [[0.982, 0.01],[0.966, 0.005],[0.967, 0.002],[0.964, 0.004],[0.960, 0.009],[0.985, 0.02],[0.988, 0.06]]
+		elif abseta>1.20 and abseta<2.10: hltSFbyPt = [[0.983, 0.01],[1.012, 0.008],[1.002, 0.003],[1.004, 0.004],[1.009, 0.009],[0.993, 0.01],[1.062, 0.04]]
+		elif abseta>2.10 and abseta<2.40: hltSFbyPt = [[0.987, 0.03],[0.952, 0.02],[0.999, 0.008],[1.003, 0.01],[1.024, 0.02],[0.993, 0.05],[1.070, 0.2]]
+
+	# Check muon pt and select SF from appropriate pt bin. Different SFs (e.g., reco vs hlt) have different pt ranges/binning. 
+	# Maps ensure double checking of pt bins do not occur (speeds up loop) for different SF types
+	# WARNING! Make sure to check mapping if ANY binning changes
+	lowBndMap1 = {0:0, 1:2, 2:3, 3:4, 4:5, 5:5, 6:6, 7:6}
+	lowBndMap2 = {0:0, 1:4, 2:5, 3:5, 4:5, 5:5, 6:5}
+	i, j, k = 0, 0, 0
+ 
+	if _pt<=50.00:_ptTmp=50.01
+	elif _pt>=3500.00:_ptTmp=3499.99
+	else: _ptTmp = _pt
+	for x in recoPts:
+	    if _ptTmp>=x[0] and _ptTmp<=x[1]:
+	        break
+	    i+=1
+
+	if _pt<=52.00:_ptTmp=52.01
+	elif _pt>=1000.00:_ptTmp=999.99
+	else: _ptTmp = _pt
+	j = lowBndMap1.get(i)
+	for y in hltPts[j:]:
+	    if _ptTmp>=y[0] and _ptTmp<=y[1]:
+	        break
+	    j+=1
+
+	if _pt<=20.00:_ptTmp=20.01
+	elif _pt>=120.00:_ptTmp=119.99
+	else: _ptTmp = _pt
+	k = lowBndMap2.get(j)
+	for z in idAndIsoPts[k:]:
+	    if _ptTmp>=z[0] and _ptTmp<=z[1]:
+	        break
+	    k+=1
+
+	#Get SFs and compute up and down variations (syst+stat errors)
+	recoSFs = recoSFbyPt[i]
+	recoSF = recoSFs[0]
+	recoSFup   = recoSFs[0]+recoSFs[1]
+	recoSFdown = max(recoSFs[0]-recoSFs[1],0.0)
+
+	highPtIdSFs = highPtIdSFbyPt[j]
+	highPtIdSF = highPtIdSFs[0]
+	highPtIdSFup   = highPtIdSFs[0]+highPtIdSFs[1]
+	highPtIdSFdown = max(highPtIdSFs[0]-highPtIdSFs[1],0.0)
+
+	relTrkIsoSFs = relTrkIsoSFbyPt[k]
+	relTrkIsoSF = relTrkIsoSFs[0]
+	relTrkIsoSFup   = relTrkIsoSFs[0]+relTrkIsoSFs[1]
+	relTrkIsoSFdown = max(relTrkIsoSFs[0]-relTrkIsoSFs[1],0.0)
+
+	hltSFs = hltSFbyPt[index]
+	hltSF = hltSFs[0]
+	hltSFup   = hltSFs[0]+hltSFs[1]
+	hltSFdown = max(hltSFs[0]-hltSFs[1],0.0)
+
+	return [recoSF,recoSFup,recoSFdown,highPtIdSF,highPtIdSFup,highPtIdSFdown,relTrkIsoSF,relTrkIsoSFup,relTrkIsoSFdown,hltSF,hltSFup,hltSFdown]
 
 def TightHighPtIDMuons(T,_met,variation,isdata):
 	# Purpose: Gets the collection of muons passing tight muon ID. 
@@ -1624,7 +1831,6 @@ def FullKinematicCalculation(T,variation):
 
 	#[_Muujj1_gen,_Muujj2_gen]=GetLLJJMassesGen(muonInd,jetInd);
 
-
 	# Get kinematic quantities
 	[_ptmu1,_etamu1,_phimu1,_isomu1,_qmu1,_dptmu1] = [muons[0].Pt(),muons[0].Eta(),muons[0].Phi(),trkisos[0],charges[0],dpts[0]]
 	[_ptmu2,_etamu2,_phimu2,_isomu2,_qmu2,_dptmu2] = [muons[1].Pt(),muons[1].Eta(),muons[1].Phi(),trkisos[1],charges[1],dpts[1]]
@@ -1672,6 +1878,11 @@ def FullKinematicCalculation(T,variation):
 	_DPhiu1j2 = abs(muons[0].DeltaPhi(jets[1]))
 	_DPhiu2j1 = abs(muons[1].DeltaPhi(jets[0]))
 	_DPhiu2j2 = abs(muons[1].DeltaPhi(jets[1]))
+
+	year = '2016' #Fixme need to integrate year option
+	#Get muon scale factors and up, down variations here
+	[_mu1recoSF,_mu1recoSFup,_mu1recoSFdown,_mu1idSF,_mu1idSFup,_mu1idSFdown,_mu1isoSF,_mu1isoSFup,_mu1isoSFdown,_mu1hltSF,_mu1hltSFup,_mu1hltSFdown] = getMuonSF(_ptmu1,_etamu1,year)
+	[_mu2recoSF,_mu2recoSFup,_mu2recoSFdown,_mu2idSF,_mu2idSFup,_mu2idSFdown,_mu2isoSF,_mu2isoSFup,_mu2isoSFdown,_mu2hltSF,_mu2hltSFup,_mu2hltSFdown] = getMuonSF(_ptmu2,_etamu2,year)
 
 	_Muujj1_gen=0
 	_Muujj2_gen=0
@@ -1778,6 +1989,14 @@ def FullKinematicCalculation(T,variation):
 	#toreturn += [_passWptCut,_passZptCut,_WorZSystemPt]
 	#toreturn += [_WSystemPt,_ZSystemPt]
 	toreturn += [_matchedLQ]
+	toreturn += [_mu1recoSF,_mu1recoSFup,_mu1recoSFdown]
+	toreturn += [_mu1idSF,_mu1idSFup,_mu1idSFdown]
+	toreturn += [_mu1isoSF,_mu1isoSFup,_mu1isoSFdown]
+	toreturn += [_mu1hltSF,_mu1hltSFup,_mu1hltSFdown]
+	toreturn += [_mu2recoSF,_mu2recoSFup,_mu2recoSFdown]
+	toreturn += [_mu2idSF,_mu2idSFup,_mu2idSFdown]
+	toreturn += [_mu2isoSF,_mu2isoSFup,_mu2isoSFdown]
+	toreturn += [_mu2hltSF,_mu2hltSFup,_mu2hltSFdown]
 	return toreturn
 
 #fixme Had to move these below FullKinematicCalculation, wouldn't find function otherwise. Why only these?
