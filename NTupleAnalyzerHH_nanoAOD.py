@@ -332,9 +332,9 @@ _kinematicvariables_systOnly += ['ee_s2_bdt_discrim_M750','ee_s2_bdt_discrim_M80
 #removing weight_amcNLO (always 0 anyway)
 _weights = ['scaleWeight_Up','scaleWeight_Down','scaleWeight_R1_F1','scaleWeight_R1_F2','scaleWeight_R1_F0p5','scaleWeight_R2_F1','scaleWeight_R2_F2','scaleWeight_R2_F0p5','scaleWeight_R0p5_F1','scaleWeight_R0p5_F2','scaleWeight_R0p5_F0p5','scaleWeight_R2_F2','weight_nopu','weight_central', 'weight_pu_up', 'weight_pu_down','weight_topPt']
 _flagDoubles = ['run_number','event_number','lumi_number']
-_flags = ['pass_HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_DZ','pass_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ','pass_HLT_Mu17_Mu8','pass_HLT_Ele23_WPLoose_Gsf','pass_HLT_Ele25_WPTight_Gsf','pass_HLT_Ele27_eta2p1_WPLoose_Gsf','pass_HLT_Ele27_WPTight_Gsf','GoodVertexCount']
-_flags += ['passPrimaryVertex','passHBHENoiseFilter','passHBHENoiseIsoFilter','passBeamHalo','passTriggerObjectMatching','passDataCert']
-_flags += ['passBadEESuperCrystal','passEcalDeadCellTP','passBeamHalo2016','passBadEcalSC','passBadMuon','passBadChargedHadron','badMuonsFlag','duplicateMuonsFlag','noBadMuonsFlag']
+_flags = ['Flag_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ','Flag_HLT_Ele27_WPTight_Gsf','GoodVertexCount','passTriggerObjectMatching','pass_HLT_Mu17_Mu8']
+_flags += ['Flag_PrimaryVertex','Flag_HBHENoiseFilter','Flag_HBHENoiseIsoFilter','Flag_BeamHalo','passDataCert']
+_flags += ['Flag_eeBadSuperCrystal','Flag_BeamHalo','Flag_globalTightHalo2016Filter','Flag_EcalDeadCellTPFilter','Flag_BadMuon','Flag_BadChargedHadron','badMuonsFlag','duplicateMuonsFlag','noBadMuonsFlag']
 #_variations = ['','JESup','JESdown','MESup','MESdown','JERup','JERdown','MER']
 #_variations = ['','JESup','JESdown','JERup','JERdown','MESup','MESdown','MER']#,'EESup','EESdown','EER']
 _variations = ['','JESup','JESdown','JESAbsoluteMPFBiasUp','JESAbsoluteMPFBiasDown','JESAbsoluteScaleUp','JESAbsoluteScaleDown','JESAbsoluteStatUp','JESAbsoluteStatDown','JESFlavorQCDUp','JESFlavorQCDDown','JESFragmentationUp','JESFragmentationDown','JESPileUpDataMCUp','JESPileUpDataMCDown','JESPileUpPtBBUp','JESPileUpPtBBDown','JESPileUpPtEC1Up','JESPileUpPtEC1Down','JESPileUpPtEC2Up','JESPileUpPtEC2Down','JESPileUpPtHFUp','JESPileUpPtHFDown','JESPileUpPtRefUp','JESPileUpPtRefDown','JESRelativeBalUp','JESRelativeBalDown','JESRelativeFSRUp','JESRelativeFSRDown','JESRelativeJEREC1Up','JESRelativeJEREC1Down','JESRelativeJEREC2Up','JESRelativeJEREC2Down','JESRelativeJERHFUp','JESRelativeJERHFDown','JESRelativePtBBUp','JESRelativePtBBDown','JESRelativePtEC1Up','JESRelativePtEC1Down','JESRelativePtEC2Up','JESRelativePtEC2Down','JESRelativePtHFUp','JESRelativePtHFDown','JESRelativeStatECUp','JESRelativeStatECDown','JESRelativeStatFSRUp','JESRelativeStatFSRDown','JESRelativeStatHFUp','JESRelativeStatHFDown','JESSinglePionECALUp','JESSinglePionECALDown','JESSinglePionHCALUp','JESSinglePionHCALDown','JESTimePtEtaUp','JESTimePtEtaDown','JERup','JERdown']#,'MESup','MESdown','MER','EESup','EESdown','EER']
@@ -4538,34 +4538,24 @@ for n in range(N):
 	Branches['event_number'][0] = t.event#fixme todo this is failing for some event in CMSSW_7_1_14
 	Branches['lumi_number'][0]  = t.luminosityBlock
 	Branches['GoodVertexCount'][0] = t.PV_npvsGood
-
-#	if isData:
-#		Branches['passTriggerObjectMatching'][0]  = 1*(True in t.MuonHLTSingleMuonMatched)  # Data Only
-#		Branches['passBadEESuperCrystal'][0]      = 1*(t.passEEBadScFilter) # Used, Data only
-#	else:
-#		Branches['passTriggerObjectMatching'][0]  = 1
-#		Branches['passBadEESuperCrystal'][0]      = 1
+	Branches['passTriggerObjectMatching'][0] = 0
+	Branches['Flag_eeBadSuperCrystal'][0] = t.Flag_eeBadScFilter # Used, Data only
 
         #Trigger on Data and MC
-#	Branches['pass_HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_DZ'][0] = PassTrigger(t,["HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v"],1)
-#	Branches['pass_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ'][0] = PassTrigger(t,["HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v"],1)
-#	Branches['pass_HLT_Mu17_Mu8'][0] = 1 if (PassTrigger(t,["HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v"],1) + PassTrigger(t,["HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v"],1) + PassTrigger(t,["HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_v"],1) + PassTrigger(t,["HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_v"],1))>0 else 0
-#	Branches['pass_HLT_Ele23_WPLoose_Gsf'][0] = PassTrigger(t,["HLT_Ele23_WPLoose_Gsf_v"],1)
-#	Branches['pass_HLT_Ele25_WPTight_Gsf'][0] = PassTrigger(t,["HLT_Ele25_WPTight_Gsf_v"],1)
-#	Branches['pass_HLT_Ele27_eta2p1_WPLoose_Gsf'][0] = PassTrigger(t,["HLT_Ele27_eta2p1_WPLoose_Gsf_v"],1)
-#	Branches['pass_HLT_Ele27_WPTight_Gsf'][0] = PassTrigger(t,["HLT_Ele27_WPTight_Gsf"],1)
+	Branches['Flag_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ'][0] = t.HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ
+	Branches['pass_HLT_Mu17_Mu8'][0] = 1 if (t.HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ + t.HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL)>0 else 0
 
-	Branches['passPrimaryVertex'][0]          = 1# fixme*(t.passGoodVertices)     # checked, data+MC
-	Branches['passHBHENoiseFilter'][0]        = 1# fixme*(t.passHBHENoiseFilter) # checked, data+MC
-	Branches['passHBHENoiseIsoFilter'][0]     = 1# fixme*(t.passHBHENoiseIsoFilter) # checked, data+MC
-	Branches['passBeamHalo'][0]               = 1# fixme*(t.passCSCTightHaloFilter) # checked, data+MC
-	Branches['passBeamHalo2016'][0]           = 1# fixme*(t.passGlobalTightHalo2016Filter)# checked, data+MC
-	Branches['passEcalDeadCellTP'][0]         = 1# fixme*(t.passEcalDeadCellTriggerPrimitiveFilter) # Checked, data + MC
-	Branches['passBadMuon'][0]                = 1# fixme*(t.passBadPFMuonFilter)     # checked, data+MC
-	Branches['passBadChargedHadron'][0]       = 1# fixme*(t.passBadChargedCandidateFilter)     # checked, data+MC
-	Branches['badMuonsFlag'][0]               = 1# fixme*(t.badMuonsFlag)
-	Branches['duplicateMuonsFlag'][0]         = 1# fixme*(t.duplicateMuonsFlag)
-	Branches['noBadMuonsFlag'][0]             = 1# fixme*(t.noBadMuonsFlag)
+	Branches['Flag_PrimaryVertex'][0]		= t.Flag_goodVertices
+	Branches['Flag_HBHENoiseFilter'][0]		= t.Flag_HBHENoiseFilter
+	Branches['Flag_HBHENoiseIsoFilter'][0]     	= t.Flag_HBHENoiseIsoFilter
+	Branches['Flag_BeamHalo'][0]               	= t.Flag_CSCTightHaloFilter
+	Branches['Flag_globalTightHalo2016Filter'][0] 	= t.Flag_globalTightHalo2016Filter
+	Branches['Flag_EcalDeadCellTPFilter'][0]      	= t.Flag_EcalDeadCellTriggerPrimitiveFilter
+	Branches['Flag_BadMuon'][0]                 	= t.Flag_BadPFMuonFilter
+	Branches['Flag_BadChargedHadron'][0]       	= t.Flag_BadChargedCandidateFilter
+	Branches['badMuonsFlag'][0]               	= 1# fixme*(t.badMuonsFlag)
+	Branches['duplicateMuonsFlag'][0]         	= 1# fixme*(t.duplicateMuonsFlag)
+	Branches['noBadMuonsFlag'][0]             	= 1# fixme*(t.noBadMuonsFlag)
 
 	Branches['passDataCert'][0] = 1
 	if ( (isData) and (CheckRunLumiCert(t.run,t.luminosityBlock) == False) ) :
