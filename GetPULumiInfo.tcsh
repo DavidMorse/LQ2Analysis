@@ -31,7 +31,7 @@ pileupCalc.py -i $LumiJSON --inputLumiJSON $PUJSON --calcMode true --minBiasXsec
 
 pileupCalc.py -i $LumiJSON --inputLumiJSON $PUJSON --calcMode true --minBiasXsec $minBUp --maxPileupBin 100 --numPileupBins 100 PU_Up_2016.root
 
-pileupCalc.py -i $LumiJSON --inputLumiJSON $PUJSON --calcMode true --minBiasXsec $minBDown --maxPileupBin 100 --numPileupBins 100 PU_2016.root
+pileupCalc.py -i $LumiJSON --inputLumiJSON $PUJSON --calcMode true --minBiasXsec $minBDown --maxPileupBin 100 --numPileupBins 100 PU_Down_2016.root
 
 echo "( 35863.308 +/- 932.446)/pb">LumiLog.txt
 
@@ -44,7 +44,7 @@ pileupCalc.py -i $LumiJSON --inputLumiJSON $PUJSON --calcMode true --minBiasXsec
 
 pileupCalc.py -i $LumiJSON --inputLumiJSON $PUJSON --calcMode true --minBiasXsec $minBUp --maxPileupBin 100 --numPileupBins 100 PU_Up_2017.root
 
-pileupCalc.py -i $LumiJSON --inputLumiJSON $PUJSON --calcMode true --minBiasXsec $minBDown --maxPileupBin 100 --numPileupBins 100 PU_2017.root
+pileupCalc.py -i $LumiJSON --inputLumiJSON $PUJSON --calcMode true --minBiasXsec $minBDown --maxPileupBin 100 --numPileupBins 100 PU_Down_2017.root
 
 echo "(  +/-  )/pb">LumiLog.txt
 
@@ -57,7 +57,7 @@ pileupCalc.py -i $LumiJSON --inputLumiJSON $PUJSON --calcMode true --minBiasXsec
 
 pileupCalc.py -i $LumiJSON --inputLumiJSON $PUJSON --calcMode true --minBiasXsec $minBUp --maxPileupBin 100 --numPileupBins 100 PU_Up_2018.root
 
-pileupCalc.py -i $LumiJSON --inputLumiJSON $PUJSON --calcMode true --minBiasXsec $minBDown --maxPileupBin 100 --numPileupBins 100 PU_2018.root
+pileupCalc.py -i $LumiJSON --inputLumiJSON $PUJSON --calcMode true --minBiasXsec $minBDown --maxPileupBin 100 --numPileupBins 100 PU_Down_2018.root
 
 echo "(  +/-  )/pb">LumiLog.txt
 
