@@ -63,26 +63,22 @@ print 'AlignmentCorr Switch = ', alignementcorrswitch
 
 # Get the file, tree, and number of entries
 print name
-#newntupleswitch = True#'V00-03-18' in name
-#if newntupleswitch == True:
-#	print 'Detected V00-03-18 ntuple - making small tweaks to handle this!'
 
 fin = TFile.Open(name,"READ")
 
-#hev = fin.Get('LJFilter/EventCount/EventCounter')
-#NORIG = hev.GetBinContent(1)
-#SumOfTopPtReweights = hev.GetBinContent(4)
-#if 'SingleMuon' in name or 'SingleElectron' in name or 'DoubleMuon' in name or 'DoubleEG' in name:
-#	_TopPtFactor = 1.0
-#else:
-#	_TopPtFactor = float(NORIG)/float(SumOfTopPtReweights)
 _TopPtFactor = 1.0
-
-# Typical event weight, sigma*lumi/Ngenerated
-startingweight = _TopPtFactor*(float(options.crosssection)*float(options.lumi)/float(options.ntotal))
+hev = fin.Get('EventCounter')
+NORIG = hev.GetBinContent(1)
+SumOfTopPtReweights = hev.GetBinContent(4)
+if 'SingleMuon' in name or 'SingleElectron' in name or 'DoubleMuon' in name or 'DoubleEG' in name:
+	_TopPtFactor = 1.0
+else:
+	_TopPtFactor = float(NORIG)/float(SumOfTopPtReweights)
 #print '_TopPtFactor:',_TopPtFactor
 
-#to = fin.Get("rootTupleTree/tree")
+# Typical event weight, sigma*lumi/Ngenerated
+startingweight = float(options.crosssection)*float(options.lumi)/float(options.ntotal)
+
 to = fin.Get("Events")
 No = to.GetEntries()
 
@@ -93,16 +89,15 @@ indicator = ((name.split('/'))[-1]).replace('.root','')
 #print indicator
 junkfile1 = str(randint(100000000,1000000000))+indicator+'junk.root'
 
-# At least one 44 GeV Muon - offline cut is 53
+# At least one 45 GeV Muon - offline cut is 53
 fj1 = TFile.Open(junkfile1,'RECREATE')
 t1 = to.CopyTree('Muon_pt[]>45')
 Nm1 = t1.GetEntries()
 
 junkfile2 = str(randint(100000000,1000000000))+indicator+'junk.root'
 
-# At least one 44 GeV jet - offline cut is 50
+# At least one 45 GeV jet - offline cut is 50
 fj2 = TFile.Open(junkfile2,'RECREATE')
-#t = t1.CopyTree('PFJetPtAK4CHS[]>45')
 t = t1.CopyTree('Jet_pt[]>45')
 N = t.GetEntries()
 
@@ -153,6 +148,7 @@ _kinematicvariables += ['muonIndex1','muonIndex2']
 _kinematicvariables += ['jetIndex1','jetIndex2']
 _kinematicvariables += ['ptHat']
 _kinematicvariables += ['CISV_jet1','CISV_jet2']
+_kinematicvariables += ['bTagSF_jet1','btagSF_jet2']
 _kinematicvariables += ['PULoosej1','PUMediumj1','PUTightj1']
 _kinematicvariables += ['PULoosej2','PUMediumj2','PUTightj2']
 _kinematicvariables += ['WorZSystemPt']
@@ -173,7 +169,7 @@ _weights = ['scaleWeight_Up','scaleWeight_Down','scaleWeight_R1_F1','scaleWeight
 _flagDoubles = ['run_number','event_number','lumi_number']
 _flags = ['pass_HLTIsoMu27','pass_HLTMu45_eta2p1','pass_HLTMu50','pass_HLTMu55','pass_HLTTkMu50','GoodVertexCount']
 _flags += ['passPrimaryVertex','passTriggerObjectMatching','passDataCert']
-_flags += ['Flag_BadChargedCandidateFilter','Flag_BadChargedCandidateSummer16Filter','Flag_BadPFMuonFilter','Flag_BadPFMuonSummer16Filter','Flag_CSCTightHalo2015Filter','Flag_CSCTightHaloFilter','Flag_CSCTightHaloTrkMuUnvetoFilter','Flag_EcalDeadCellBoundaryEnergyFilter','Flag_EcalDeadCellTriggerPrimitiveFilter','Flag_HBHENoiseFilter','Flag_HBHENoiseIsoFilter','Flag_HcalStripHaloFilter','Flag_METFilters','Flag_chargedHadronTrackResolutionFilter','Flag_ecalBadCalibFilter','Flag_ecalBadCalibFilterV2','Flag_ecalLaserCorrFilter','Flag_eeBadScFilter','Flag_globalSuperTightHalo2016Filter','Flag_globalTightHalo2016Filter','Flag_goodVertices','Flag_hcalLaserEventFilter','Flag_muonBadTrackFilter','Flag_trkPOGFilters','Flag_trkPOG_logErrorTooManyClusters','Flag_trkPOG_manystripclus53X','Flag_trkPOG_toomanystripclus53X']
+_flags += ['Flag_BadChargedCandidateFilter','Flag_BadChargedCandidateSummer16Filter','Flag_BadGlobalMuon','Flag_BadPFMuonFilter','Flag_BadPFMuonSummer16Filter','Flag_CSCTightHalo2015Filter','Flag_CSCTightHaloFilter','Flag_CSCTightHaloTrkMuUnvetoFilter','Flag_EcalDeadCellBoundaryEnergyFilter','Flag_EcalDeadCellTriggerPrimitiveFilter','Flag_HBHENoiseFilter','Flag_HBHENoiseIsoFilter','Flag_HcalStripHaloFilter','Flag_METFilters','Flag_chargedHadronTrackResolutionFilter','Flag_ecalBadCalibFilter','Flag_ecalBadCalibFilterV2','Flag_ecalLaserCorrFilter','Flag_eeBadScFilter','Flag_globalSuperTightHalo2016Filter','Flag_globalTightHalo2016Filter','Flag_goodVertices','Flag_hcalLaserEventFilter','Flag_muonBadTrackFilter','Flag_trkPOGFilters','Flag_trkPOG_logErrorTooManyClusters','Flag_trkPOG_manystripclus53X','Flag_trkPOG_toomanystripclus53X']
 _variations = ['','JESup','JESdown','MESup','MESdown','JERup','JERdown','MER']
 if nonisoswitch==True or emuswitch==True or quicktestswitch==True:
 	print 'NOT performing systematics...'
@@ -1441,6 +1437,7 @@ def TightIDJets(T,met,variation,isdata):
 	NHFs = []
 	NEMFs = []
 	CSVscores = []
+        bTagSFs = []
 	PUIds = []
 	for n in range(len(_PFJetPt)):
 		if _PFJetPt[n]>40 and abs(T.Jet_eta[n])<2.4 :
@@ -1471,6 +1468,7 @@ def TightIDJets(T,met,variation,isdata):
 				NHFs.append(T.Jet_neHEF[n])
 				NEMFs.append(T.Jet_neEmEF[n])
 				CSVscores.append(T.Jet_btagCSVV2[n])
+                                bTagSFs.append(T.Jet_btagSF[n])
 				PUIds.append([(T.Jet_puId[n] & 0x4)>0,(T.Jet_puId[n] & 0x2)>0,(T.Jet_puId[n] & 0x1)>0])
 			else:
 				if _PFJetPt[n] > JetFailThreshold:
@@ -1478,7 +1476,7 @@ def TightIDJets(T,met,variation,isdata):
 
 	# print met.Pt()
 
-	return [jets,jetinds,met,JetFailThreshold,NHFs,NEMFs,CSVscores,PUIds]
+	return [jets,jetinds,met,JetFailThreshold,NHFs,NEMFs,CSVscores,bTagSFs,PUIds]
 def GetLLJJMasses(l1,l2,j1,j2):
 	# Purpose: For LLJJ channels, this function returns two L-J Masses, corresponding to the
 	#         pair of L-Js which minimizes the difference between LQ masses in the event
@@ -1758,7 +1756,7 @@ def FullKinematicCalculation(T,variation):
 	# taus_forjetsep = TausForJetSeparation(T)
 	[electrons,electroninds,met] = HEEPElectrons(T,met,variation)
 	# ID Jets and filter from muons
-	[jets,jetinds,met,failthreshold,neutralhadronEF,neutralemEF,btagCSVscores,PUIds] = TightIDJets(T,met,variation,isData)
+	[jets,jetinds,met,failthreshold,neutralhadronEF,neutralemEF,btagCSVscores,btagSFs,PUIds] = TightIDJets(T,met,variation,isData)
 	# jets = GeomFilterCollection(jets,muons_forjetsep,0.5)
 	jets = GeomFilterCollection(jets,muons,0.5)
 	jets = GeomFilterCollection(jets,electrons,0.5)
@@ -1798,12 +1796,14 @@ def FullKinematicCalculation(T,variation):
 		neutralhadronEF.append(0.0)
 		neutralemEF.append(0.0)
 		btagCSVscores.append(-5.0)
+                btagSFs.append(-5.0)
 		PUIds.append([-5.0,-5.0,-5.0])
 	if len(jets) < 2 : 
 		jets.append(EmptyLorentz)
 		neutralhadronEF.append(0.0)
 		neutralemEF.append(0.0)		
 		btagCSVscores.append(-5.0)
+                btagSFs.append(-5.0)
 		PUIds.append([-5.0,-5.0,-5.0])
 	_ismuon_muon1 = 1.0
 	_ismuon_muon2 = 1.0
@@ -1848,6 +1848,7 @@ def FullKinematicCalculation(T,variation):
 	[_ptmet,_etamet,_phimet] = [met.Pt(),0,met.Phi()]
 	[_xmiss,_ymiss] = [met.Px(),met.Py()]
 	[_CSVj1,_CSVj2] = [btagCSVscores[0],btagCSVscores[1]]
+        [_btagSF1,_btagSF2] = [btagSFs[0],btagSFs[1]]
 	[_PULoosej1,_PUMediumj1,_PUTightj1] = PUIds[0]
 	[_PULoosej2,_PUMediumj2,_PUTightj2] = PUIds[1]
 
@@ -1983,6 +1984,7 @@ def FullKinematicCalculation(T,variation):
 	toreturn += [_jetInd1,_jetInd2]
 	toreturn += [_ptHat]
 	toreturn += [_CSVj1,_CSVj2]
+        toreturn += [_btagSF1,_btagSF2]
 	toreturn += [_PULoosej1,_PUMediumj1,_PUTightj1]
 	toreturn += [_PULoosej2,_PUMediumj2,_PUTightj2]
 	toreturn += [_WorZSystemPt]
@@ -2142,12 +2144,13 @@ for n in range(N):
 	# print '-----'
 	# Assign Weights
 
-	Branches['weight_central'][0] = startingweight*GetPUWeight(t,'Central','Basic')
-	Branches['weight_pu_down'][0] = startingweight*GetPUWeight(t,'SysDown','Basic')
-	Branches['weight_pu_up'][0] = startingweight*GetPUWeight(t,'SysUp','Basic')
+	Branches['weight_central'][0] = startingweight*t.genWeight*t.puWeight#GetPUWeight(t,'Central','Basic')
+	Branches['weight_pu_down'][0] = startingweight*t.genWeight*t.puWeightUp#GetPUWeight(t,'SysDown','Basic')
+	Branches['weight_pu_up'][0] = startingweight*t.genWeight*t.puWeightDown#GetPUWeight(t,'SysUp','Basic')
 	#Branches['weight_central_2012D'][0] = startingweight*GetPUWeight(t,'Central','2012D')
-	Branches['weight_nopu'][0] = startingweight
-	Branches['weight_topPt'][0]=1#fixme t.GenParticleTopPtWeight
+	Branches['weight_nopu'][0] = startingweight*t.genWeight
+	Branches['weight_topPt'][0]=_TopPtFactor*startingweight*t.genWeight
+
 	#if 'amcatnlo' in amcNLOname :
 	#	Branches['weight_central'][0]*=t.amcNLOWeight
 	#	Branches['weight_pu_down'][0]*=t.amcNLOWeight
@@ -2207,9 +2210,10 @@ for n in range(N):
 	Branches['pass_HLTTkMu50'][0]      = t.HLT_TkMu50
 
 	#fixme some flags missing, others not working correctly
-	Branches['Flag_BadChargedCandidateFilter'][0]         = 1#t.Flag_BadChargedCandidateFilter		
+	Branches['Flag_BadChargedCandidateFilter'][0]         = t.Flag_BadChargedCandidateFilter		
 	Branches['Flag_BadChargedCandidateSummer16Filter'][0] = 1#t.Flag_BadChargedCandidateSummer16Filter 
-	Branches['Flag_BadPFMuonFilter'][0]	       	      = 1#t.Flag_BadPFMuonFilter			
+	Branches['Flag_BadGlobalMuon'][0]	       	      = t.Flag_BadGlobalMuon			
+	Branches['Flag_BadPFMuonFilter'][0]	       	      = t.Flag_BadPFMuonFilter			
 	Branches['Flag_BadPFMuonSummer16Filter'][0]    	      = 1#t.Flag_BadPFMuonSummer16Filter  		
 	Branches['Flag_CSCTightHalo2015Filter'][0]     	      = t.Flag_CSCTightHalo2015Filter   		
 	Branches['Flag_CSCTightHaloFilter'][0]         	      = t.Flag_CSCTightHaloFilter       		
@@ -2234,7 +2238,7 @@ for n in range(N):
 	Branches['Flag_trkPOG_logErrorTooManyClusters'][0]    = t.Flag_trkPOG_logErrorTooManyClusters    
 	Branches['Flag_trkPOG_manystripclus53X'][0] 	      = t.Flag_trkPOG_manystripclus53X  		
 	Branches['Flag_trkPOG_toomanystripclus53X'][0]        = t.Flag_trkPOG_toomanystripclus53X             
-	Branches['passPrimaryVertex'][0]          = 1# fixme*(t.passGoodVertices)     # checked, data+MC
+	Branches['passPrimaryVertex'][0]                      = t.Flag_GoodVertices
 
 	Branches['passDataCert'][0] = 1
 	if ( (isData) and (CheckRunLumiCert(t.run,t.luminosityBlock) == False) ) : 	
