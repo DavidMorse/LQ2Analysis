@@ -35,7 +35,7 @@ if '/castor/cern.ch' in name:
 # Get the file, tree, and number of entries
 fin = TFile.Open(name,"READ")
 
-hev = fin.Get('LJFilter/EventCount/EventCounter')
+hev = fin.Get('EventCounter')
 if 'amcatnlo' in name:
 	NORIG = hev.GetBinContent(3)
 else:
