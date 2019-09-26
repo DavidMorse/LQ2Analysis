@@ -72,7 +72,7 @@ NORIG = hev.GetBinContent(1)
 SumOfTopPtReweights = hev.GetBinContent(4)
 if 'SingleMuon' in name or 'SingleElectron' in name or 'DoubleMuon' in name or 'DoubleEG' in name:
 	_TopPtFactor = 1.0
-else:
+elif SumOfTopPtReweights != 0.0:
 	_TopPtFactor = float(NORIG)/float(SumOfTopPtReweights)
 #print '_TopPtFactor:',_TopPtFactor
 
@@ -174,7 +174,7 @@ _variations = ['','JESup','JESdown','MESup','MESdown','JERup','JERdown','MER']
 if nonisoswitch==True or emuswitch==True or quicktestswitch==True:
 	print 'NOT performing systematics...'
 	_variations = ['']  # For quicker tests
-# _variations = ['']  # For quicker tests
+_variations = ['']  # For quicker tests
 
 
 
@@ -893,7 +893,7 @@ def getMuonSF(_pt,_eta,_year):
 	#		  of systematic and statisical error for each SF.
 
 	# Store the pt ranges for which different scale factors are defined. Different ranges depending on SF, i.e., reco, id and iso, and hlt
-	recoPt = [[50.00,100.00],[100.00,150.00],[150.00,200.00],[200.00,300.00],[300.00,400.00],[400.00,600.00],[600.00,1500.00],[1500.00,3500.00]]
+	recoPts = [[50.00,100.00],[100.00,150.00],[150.00,200.00],[200.00,300.00],[300.00,400.00],[400.00,600.00],[600.00,1500.00],[1500.00,3500.00]]
 	hltPts = [[52.00,55.00],[55.00,60.00],[60.00,120.00],[120.00,200.00],[200.00,300.00],[300.00,500.00],[500.00,1000.00]]
 	idAndIsoPts = [[20.00,25.00],[25.00,30.00],[30.00,40.00],[40.00,50.00],[50.00,60.00],[60.00,120.00]]
 	# ensure all muons fall within the SF eta ranges
@@ -1034,32 +1034,35 @@ def getMuonSF(_pt,_eta,_year):
 	lowBndMap1 = {0:0, 1:2, 2:3, 3:4, 4:5, 5:5, 6:6, 7:6}
 	lowBndMap2 = {0:0, 1:4, 2:5, 3:5, 4:5, 5:5, 6:5}
 	i, j, k = 0, 0, 0
- 
+	print 'pt is ',_pt
 	if _pt<=50.00:_ptTmp=50.01
 	elif _pt>=3500.00:_ptTmp=3499.99
 	else: _ptTmp = _pt
 	for x in recoPts:
-	    if _ptTmp>=x[0] and _ptTmp<=x[1]:
-	        break
-	    i+=1
-
+		print 'i = ',i
+		if _ptTmp>=x[0] and _ptTmp<=x[1]:
+			break
+		i+=1
+		
 	if _pt<=52.00:_ptTmp=52.01
 	elif _pt>=1000.00:_ptTmp=999.99
 	else: _ptTmp = _pt
 	j = lowBndMap1.get(i)
 	for y in hltPts[j:]:
-	    if _ptTmp>=y[0] and _ptTmp<=y[1]:
-	        break
-	    j+=1
+		print 'j = ',j
+		if _ptTmp>=y[0] and _ptTmp<=y[1]:
+			break
+		j+=1
 
 	if _pt<=20.00:_ptTmp=20.01
 	elif _pt>=120.00:_ptTmp=119.99
 	else: _ptTmp = _pt
 	k = lowBndMap2.get(j)
 	for z in idAndIsoPts[k:]:
-	    if _ptTmp>=z[0] and _ptTmp<=z[1]:
-	        break
-	    k+=1
+		print 'k = ',k
+		if _ptTmp>=z[0] and _ptTmp<=z[1]:
+			break
+		k+=1
 
 	#Get SFs and compute up and down variations (syst+stat errors)
 	recoSFs = recoSFbyPt[i]
@@ -1067,7 +1070,7 @@ def getMuonSF(_pt,_eta,_year):
 	recoSFup   = recoSFs[0]+recoSFs[1]
 	recoSFdown = max(recoSFs[0]-recoSFs[1],0.0)
 
-	highPtIdSFs = highPtIdSFbyPt[j]
+	highPtIdSFs = highPtIdSFbyPt[k]
 	highPtIdSF = highPtIdSFs[0]
 	highPtIdSFup   = highPtIdSFs[0]+highPtIdSFs[1]
 	highPtIdSFdown = max(highPtIdSFs[0]-highPtIdSFs[1],0.0)
@@ -1077,7 +1080,7 @@ def getMuonSF(_pt,_eta,_year):
 	relTrkIsoSFup   = relTrkIsoSFs[0]+relTrkIsoSFs[1]
 	relTrkIsoSFdown = max(relTrkIsoSFs[0]-relTrkIsoSFs[1],0.0)
 
-	hltSFs = hltSFbyPt[index]
+	hltSFs = hltSFbyPt[j]
 	hltSF = hltSFs[0]
 	hltSFup   = hltSFs[0]+hltSFs[1]
 	hltSFdown = max(hltSFs[0]-hltSFs[1],0.0)
@@ -1437,7 +1440,7 @@ def TightIDJets(T,met,variation,isdata):
 	NHFs = []
 	NEMFs = []
 	CSVscores = []
-        bTagSFs = []
+	bTagSFs = []
 	PUIds = []
 	for n in range(len(_PFJetPt)):
 		if _PFJetPt[n]>40 and abs(T.Jet_eta[n])<2.4 :
@@ -1468,7 +1471,8 @@ def TightIDJets(T,met,variation,isdata):
 				NHFs.append(T.Jet_neHEF[n])
 				NEMFs.append(T.Jet_neEmEF[n])
 				CSVscores.append(T.Jet_btagCSVV2[n])
-                                bTagSFs.append(T.Jet_btagSF[n])
+				if 'SingleMuon' in name or 'SingleElectron' in name or 'DoubleMuon' in name or 'DoubleEG' in name: bTagSFs.append(-5.0)
+				else: bTagSFs.append(T.Jet_btagSF[n])
 				PUIds.append([(T.Jet_puId[n] & 0x4)>0,(T.Jet_puId[n] & 0x2)>0,(T.Jet_puId[n] & 0x1)>0])
 			else:
 				if _PFJetPt[n] > JetFailThreshold:
@@ -1796,14 +1800,14 @@ def FullKinematicCalculation(T,variation):
 		neutralhadronEF.append(0.0)
 		neutralemEF.append(0.0)
 		btagCSVscores.append(-5.0)
-                btagSFs.append(-5.0)
+		btagSFs.append(-5.0)
 		PUIds.append([-5.0,-5.0,-5.0])
 	if len(jets) < 2 : 
 		jets.append(EmptyLorentz)
 		neutralhadronEF.append(0.0)
 		neutralemEF.append(0.0)		
 		btagCSVscores.append(-5.0)
-                btagSFs.append(-5.0)
+		btagSFs.append(-5.0)
 		PUIds.append([-5.0,-5.0,-5.0])
 	_ismuon_muon1 = 1.0
 	_ismuon_muon2 = 1.0
@@ -1820,9 +1824,13 @@ def FullKinematicCalculation(T,variation):
 
 	_passTrigMu1,_passTrigMu2 = 0,0#fixme CheckTriggerObjects(t,muons[0],muons[1],"HLT_Mu50_v","HLT_TkMu50_v")
 	#print 	_passTrigMu1,_passTrigMu2,"\n"
-
-	[_genMuons,_matchedRecoMuons,muonInd] = MuonsFromLQ(T)
-	[_genJets,_matchedRecoJets,jetInd] = JetsFromLQ(T)
+	
+	if 'SingleMuon' in name or 'SingleElectron' in name or 'DoubleMuon' in name or 'DoubleEG' in name:
+		[_genMuons,_matchedRecoMuons,muonInd] = [[EmptyLorentz,EmptyLorentz],[EmptyLorentz,EmptyLorentz],[-1,-1]]
+		[_genJets,_matchedRecoJets,jetInd] = [[EmptyLorentz,EmptyLorentz],[EmptyLorentz,EmptyLorentz],[-1,-1]]
+	else:
+		[_genMuons,_matchedRecoMuons,muonInd] = MuonsFromLQ(T)
+		[_genJets,_matchedRecoJets,jetInd] = JetsFromLQ(T)
 	#print 'muon index:',muonInd,'  jet index:',jetInd
 	_muonInd1=muonInd[0]
 	_muonInd2=muonInd[1]
@@ -1848,7 +1856,7 @@ def FullKinematicCalculation(T,variation):
 	[_ptmet,_etamet,_phimet] = [met.Pt(),0,met.Phi()]
 	[_xmiss,_ymiss] = [met.Px(),met.Py()]
 	[_CSVj1,_CSVj2] = [btagCSVscores[0],btagCSVscores[1]]
-        [_btagSF1,_btagSF2] = [btagSFs[0],btagSFs[1]]
+	[_btagSF1,_btagSF2] = [btagSFs[0],btagSFs[1]]
 	[_PULoosej1,_PUMediumj1,_PUTightj1] = PUIds[0]
 	[_PULoosej2,_PUMediumj2,_PUTightj2] = PUIds[1]
 
@@ -1984,7 +1992,7 @@ def FullKinematicCalculation(T,variation):
 	toreturn += [_jetInd1,_jetInd2]
 	toreturn += [_ptHat]
 	toreturn += [_CSVj1,_CSVj2]
-        toreturn += [_btagSF1,_btagSF2]
+	toreturn += [_btagSF1,_btagSF2]
 	toreturn += [_PULoosej1,_PUMediumj1,_PUTightj1]
 	toreturn += [_PULoosej2,_PUMediumj2,_PUTightj2]
 	toreturn += [_WorZSystemPt]
@@ -2143,13 +2151,19 @@ for n in range(N):
 	## ===========================  BASIC SETUP  ============================= ##
 	# print '-----'
 	# Assign Weights
-
-	Branches['weight_central'][0] = startingweight*t.genWeight*t.puWeight#GetPUWeight(t,'Central','Basic')
-	Branches['weight_pu_down'][0] = startingweight*t.genWeight*t.puWeightUp#GetPUWeight(t,'SysDown','Basic')
-	Branches['weight_pu_up'][0] = startingweight*t.genWeight*t.puWeightDown#GetPUWeight(t,'SysUp','Basic')
-	#Branches['weight_central_2012D'][0] = startingweight*GetPUWeight(t,'Central','2012D')
-	Branches['weight_nopu'][0] = startingweight*t.genWeight
-	Branches['weight_topPt'][0]=_TopPtFactor*startingweight*t.genWeight
+	if 'SingleMuon' in name or 'SingleElectron' in name or 'DoubleMuon' in name or 'DoubleEG' in name:
+		Branches['weight_central'][0] = 1.0
+		Branches['weight_pu_down'][0] = 1.0
+		Branches['weight_pu_up'][0] = 1.0
+		Branches['weight_nopu'][0] = 1.0
+		Branches['weight_topPt'][0]= 1.0
+	else:
+		Branches['weight_central'][0] = startingweight*t.genWeight*t.puWeight#GetPUWeight(t,'Central','Basic')
+		Branches['weight_pu_down'][0] = startingweight*t.genWeight*t.puWeightUp#GetPUWeight(t,'SysDown','Basic')
+		Branches['weight_pu_up'][0] = startingweight*t.genWeight*t.puWeightDown#GetPUWeight(t,'SysUp','Basic')
+		#Branches['weight_central_2012D'][0] = startingweight*GetPUWeight(t,'Central','2012D')
+		Branches['weight_nopu'][0] = startingweight*t.genWeight
+		Branches['weight_topPt'][0]=_TopPtFactor*startingweight*t.genWeight
 
 	#if 'amcatnlo' in amcNLOname :
 	#	Branches['weight_central'][0]*=t.amcNLOWeight
@@ -2210,11 +2224,22 @@ for n in range(N):
 	Branches['pass_HLTTkMu50'][0]      = t.HLT_TkMu50
 
 	#fixme some flags missing, others not working correctly
-	Branches['Flag_BadChargedCandidateFilter'][0]         = t.Flag_BadChargedCandidateFilter		
-	Branches['Flag_BadChargedCandidateSummer16Filter'][0] = 1#t.Flag_BadChargedCandidateSummer16Filter 
-	Branches['Flag_BadGlobalMuon'][0]	       	      = t.Flag_BadGlobalMuon			
-	Branches['Flag_BadPFMuonFilter'][0]	       	      = t.Flag_BadPFMuonFilter			
-	Branches['Flag_BadPFMuonSummer16Filter'][0]    	      = 1#t.Flag_BadPFMuonSummer16Filter  		
+	if 'SingleMuon' in name or 'SingleElectron' in name or 'DoubleMuon' in name or 'DoubleEG' in name:
+		Branches['Flag_BadChargedCandidateFilter'][0]         = t.Flag_BadChargedCandidateFilter		
+		Branches['Flag_BadChargedCandidateSummer16Filter'][0] = t.Flag_BadChargedCandidateSummer16Filter 
+		Branches['Flag_BadGlobalMuon'][0]	       	      = 1#t.Flag_BadGlobalMuon			
+		Branches['Flag_BadPFMuonFilter'][0]	       	      = t.Flag_BadPFMuonFilter			
+		Branches['Flag_BadPFMuonSummer16Filter'][0]    	      = t.Flag_BadPFMuonSummer16Filter  
+		Branches['Flag_ecalBadCalibFilter'][0]                = t.Flag_ecalBadCalibFilter 
+		Branches['passPrimaryVertex'][0]                      = t.Flag_goodVertices
+	else:
+		Branches['Flag_BadChargedCandidateFilter'][0]         = 1		
+		Branches['Flag_BadChargedCandidateSummer16Filter'][0] = 1 
+		Branches['Flag_BadGlobalMuon'][0]	       	      = 1			
+		Branches['Flag_BadPFMuonFilter'][0]	       	      = 1			
+		Branches['Flag_BadPFMuonSummer16Filter'][0]    	      = 1 
+		Branches['Flag_ecalBadCalibFilter'][0]                = 1
+		Branches['passPrimaryVertex'][0]                      = 1
 	Branches['Flag_CSCTightHalo2015Filter'][0]     	      = t.Flag_CSCTightHalo2015Filter   		
 	Branches['Flag_CSCTightHaloFilter'][0]         	      = t.Flag_CSCTightHaloFilter       		
 	Branches['Flag_CSCTightHaloTrkMuUnvetoFilter'][0]     = t.Flag_CSCTightHaloTrkMuUnvetoFilter     
@@ -2225,8 +2250,8 @@ for n in range(N):
 	Branches['Flag_HcalStripHaloFilter'][0]               = t.Flag_HcalStripHaloFilter      		
 	Branches['Flag_METFilters'][0]     	              = t.Flag_METFilters     			
 	Branches['Flag_chargedHadronTrackResolutionFilter'][0]= t.Flag_chargedHadronTrackResolutionFilter
-	Branches['Flag_ecalBadCalibFilter'][0]                = 1#t.Flag_ecalBadCalibFilter       		
-	Branches['Flag_ecalBadCalibFilterV2'][0]              = 1#t.Flag_ecalBadCalibFilterV2     		
+	#Branches['Flag_ecalBadCalibFilter'][0]                = t.Flag_ecalBadCalibFilter       		
+	#Branches['Flag_ecalBadCalibFilterV2'][0]              = 1#t.Flag_ecalBadCalibFilterV2  
 	Branches['Flag_ecalLaserCorrFilter'][0]               = t.Flag_ecalLaserCorrFilter      		
 	Branches['Flag_eeBadScFilter'][0]  	       	      = t.Flag_eeBadScFilter  			
 	Branches['Flag_globalSuperTightHalo2016Filter'][0]    = t.Flag_globalSuperTightHalo2016Filter    
@@ -2237,8 +2262,8 @@ for n in range(N):
 	Branches['Flag_trkPOGFilters'][0] 		      = t.Flag_trkPOGFilters  			
 	Branches['Flag_trkPOG_logErrorTooManyClusters'][0]    = t.Flag_trkPOG_logErrorTooManyClusters    
 	Branches['Flag_trkPOG_manystripclus53X'][0] 	      = t.Flag_trkPOG_manystripclus53X  		
-	Branches['Flag_trkPOG_toomanystripclus53X'][0]        = t.Flag_trkPOG_toomanystripclus53X             
-	Branches['passPrimaryVertex'][0]                      = t.Flag_GoodVertices
+	Branches['Flag_trkPOG_toomanystripclus53X'][0]        = t.Flag_trkPOG_toomanystripclus53X 
+	#Branches['passPrimaryVertex'][0]                      = t.Flag_goodVertices
 
 	Branches['passDataCert'][0] = 1
 	if ( (isData) and (CheckRunLumiCert(t.run,t.luminosityBlock) == False) ) : 	
