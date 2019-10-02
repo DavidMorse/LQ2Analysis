@@ -101,8 +101,6 @@ fj2 = TFile.Open(junkfile2,'RECREATE')
 t = t1.CopyTree('Jet_pt[]>45')
 N = t.GetEntries()
 
-print 'electron eta',t.Electron_eta
-
 # Print the reduction status
 print 'Original events:          ',No
 print 'After demand 1 pT45 muon: ',Nm1
