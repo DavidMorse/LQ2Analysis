@@ -101,11 +101,20 @@ fj2 = TFile.Open(junkfile2,'RECREATE')
 t = t1.CopyTree('Jet_pt[]>45')
 N = t.GetEntries()
 
+print 'electron eta',t.Electron_eta
+
 # Print the reduction status
 print 'Original events:          ',No
 print 'After demand 1 pT45 muon: ',Nm1
 print 'After demand 1 pT45 jet:  ',N
-
+#branchesList = t.GetListOfBranches()
+#nBranches = branchesList.GetEntries()
+#print 'List of branches: '
+#for i in range(nBranches): 
+#t.GetEntry(0)
+#print branchesList.At(12).GetName(),' = ',branchesList.At(12).GetEntry(0)
+#t.GetEntry(0)
+#print 't.Flag_BadChargedCandidateFilter:',t.Flag_BadChargedCandidateFilter
 ##########################################################################################
 #################      PREPARE THE VARIABLES FOR THE OUTPUT TREE   #######################
 ##########################################################################################
@@ -1034,12 +1043,12 @@ def getMuonSF(_pt,_eta,_year):
 	lowBndMap1 = {0:0, 1:2, 2:3, 3:4, 4:5, 5:5, 6:6, 7:6}
 	lowBndMap2 = {0:0, 1:4, 2:5, 3:5, 4:5, 5:5, 6:5}
 	i, j, k = 0, 0, 0
-	print 'pt is ',_pt
+	#print 'pt is ',_pt
 	if _pt<=50.00:_ptTmp=50.01
 	elif _pt>=3500.00:_ptTmp=3499.99
 	else: _ptTmp = _pt
 	for x in recoPts:
-		print 'i = ',i
+		#print 'i = ',i
 		if _ptTmp>=x[0] and _ptTmp<=x[1]:
 			break
 		i+=1
@@ -1049,7 +1058,7 @@ def getMuonSF(_pt,_eta,_year):
 	else: _ptTmp = _pt
 	j = lowBndMap1.get(i)
 	for y in hltPts[j:]:
-		print 'j = ',j
+		#print 'j = ',j
 		if _ptTmp>=y[0] and _ptTmp<=y[1]:
 			break
 		j+=1
@@ -1059,7 +1068,7 @@ def getMuonSF(_pt,_eta,_year):
 	else: _ptTmp = _pt
 	k = lowBndMap2.get(j)
 	for z in idAndIsoPts[k:]:
-		print 'k = ',k
+		#print 'k = ',k
 		if _ptTmp>=z[0] and _ptTmp<=z[1]:
 			break
 		k+=1
@@ -1471,7 +1480,7 @@ def TightIDJets(T,met,variation,isdata):
 				NHFs.append(T.Jet_neHEF[n])
 				NEMFs.append(T.Jet_neEmEF[n])
 				CSVscores.append(T.Jet_btagCSVV2[n])
-				if 'SingleMuon' in name or 'SingleElectron' in name or 'DoubleMuon' in name or 'DoubleEG' in name: bTagSFs.append(-5.0)
+				if 'SingleMuon' in name or 'SingleElectron' in name or 'DoubleMuon' in name or 'DoubleEG' in name: bTagSFs.append(1.0)
 				else: bTagSFs.append(T.Jet_btagSF[n])
 				PUIds.append([(T.Jet_puId[n] & 0x4)>0,(T.Jet_puId[n] & 0x2)>0,(T.Jet_puId[n] & 0x1)>0])
 			else:
@@ -2224,19 +2233,26 @@ for n in range(N):
 	Branches['pass_HLTTkMu50'][0]      = t.HLT_TkMu50
 
 	#fixme some flags missing, others not working correctly
+	#print 't.Flag_BadChargedCandidateFilter is', t.Flag_BadChargedCandidateFilter,
+	#print 'len:',len(t.Flag_BadChargedCandidateFilter)
+	branchNum = 200
+	print 'evnt',n,':',t.GetListOfBranches().At(branchNum).GetName(),':',t.GetListOfBranches().At(branchNum).GetEntry()
+	Branches['Flag_BadChargedCandidateFilter'][0]         = 1#t.Flag_BadChargedCandidateFilter
+	Branches['Flag_BadGlobalMuon'][0]	       	      = 1#t.Flag_BadGlobalMuon
+	Branches['Flag_BadPFMuonFilter'][0]	       	      = 1#t.Flag_BadPFMuonFilter
 	if 'SingleMuon' in name or 'SingleElectron' in name or 'DoubleMuon' in name or 'DoubleEG' in name:
-		Branches['Flag_BadChargedCandidateFilter'][0]         = t.Flag_BadChargedCandidateFilter		
+		#Branches['Flag_BadChargedCandidateFilter'][0]         = t.Flag_BadChargedCandidateFilter		
 		Branches['Flag_BadChargedCandidateSummer16Filter'][0] = t.Flag_BadChargedCandidateSummer16Filter 
-		Branches['Flag_BadGlobalMuon'][0]	       	      = 1#t.Flag_BadGlobalMuon			
-		Branches['Flag_BadPFMuonFilter'][0]	       	      = t.Flag_BadPFMuonFilter			
+		#Branches['Flag_BadGlobalMuon'][0]	       	      = t.Flag_BadGlobalMuon			
+		#Branches['Flag_BadPFMuonFilter'][0]	       	      = t.Flag_BadPFMuonFilter			
 		Branches['Flag_BadPFMuonSummer16Filter'][0]    	      = t.Flag_BadPFMuonSummer16Filter  
 		Branches['Flag_ecalBadCalibFilter'][0]                = t.Flag_ecalBadCalibFilter 
 		Branches['passPrimaryVertex'][0]                      = t.Flag_goodVertices
 	else:
-		Branches['Flag_BadChargedCandidateFilter'][0]         = 1		
-		Branches['Flag_BadChargedCandidateSummer16Filter'][0] = 1 
-		Branches['Flag_BadGlobalMuon'][0]	       	      = 1			
-		Branches['Flag_BadPFMuonFilter'][0]	       	      = 1			
+		#Branches['Flag_BadChargedCandidateFilter'][0]         = 1#
+		Branches['Flag_BadChargedCandidateSummer16Filter'][0] = 1
+		#Branches['Flag_BadGlobalMuon'][0]	       	      = 1#		
+		#Branches['Flag_BadPFMuonFilter'][0]	       	      = 1#			
 		Branches['Flag_BadPFMuonSummer16Filter'][0]    	      = 1 
 		Branches['Flag_ecalBadCalibFilter'][0]                = 1
 		Branches['passPrimaryVertex'][0]                      = 1
