@@ -107,14 +107,7 @@ print 'electron eta',t.Electron_eta
 print 'Original events:          ',No
 print 'After demand 1 pT45 muon: ',Nm1
 print 'After demand 1 pT45 jet:  ',N
-#branchesList = t.GetListOfBranches()
-#nBranches = branchesList.GetEntries()
-#print 'List of branches: '
-#for i in range(nBranches): 
-#t.GetEntry(0)
-#print branchesList.At(12).GetName(),' = ',branchesList.At(12).GetEntry(0)
-#t.GetEntry(0)
-#print 't.Flag_BadChargedCandidateFilter:',t.Flag_BadChargedCandidateFilter
+
 ##########################################################################################
 #################      PREPARE THE VARIABLES FOR THE OUTPUT TREE   #######################
 ##########################################################################################
@@ -2161,11 +2154,12 @@ for n in range(N):
 	# print '-----'
 	# Assign Weights
 	if 'SingleMuon' in name or 'SingleElectron' in name or 'DoubleMuon' in name or 'DoubleEG' in name:
-		Branches['weight_central'][0] = 1.0
-		Branches['weight_pu_down'][0] = 1.0
-		Branches['weight_pu_up'][0] = 1.0
-		Branches['weight_nopu'][0] = 1.0
-		Branches['weight_topPt'][0]= 1.0
+		Branches['weight_central'][0] = 1.0#startingweight*t.genWeight*t.puWeight#GetPUWeight(t,'Central','Basic')
+		Branches['weight_pu_down'][0] = 1.0#startingweight*t.genWeight*t.puWeightUp#GetPUWeight(t,'SysDown','Basic')
+		Branches['weight_pu_up'][0] = 1.0#startingweight*t.genWeight*t.puWeightDown#GetPUWeight(t,'SysUp','Basic')
+		#Branches['weight_central_2012D'][0] = startingweight*GetPUWeight(t,'Central','2012D')
+		Branches['weight_nopu'][0] = 1.0#startingweight*t.genWeight
+		Branches['weight_topPt'][0]= 1.0#_TopPtFactor*startingweight*t.genWeight
 	else:
 		Branches['weight_central'][0] = startingweight*t.genWeight*t.puWeight#GetPUWeight(t,'Central','Basic')
 		Branches['weight_pu_down'][0] = startingweight*t.genWeight*t.puWeightUp#GetPUWeight(t,'SysDown','Basic')
@@ -2233,29 +2227,11 @@ for n in range(N):
 	Branches['pass_HLTTkMu50'][0]      = t.HLT_TkMu50
 
 	#fixme some flags missing, others not working correctly
-	#print 't.Flag_BadChargedCandidateFilter is', t.Flag_BadChargedCandidateFilter,
-	#print 'len:',len(t.Flag_BadChargedCandidateFilter)
-	branchNum = 200
-	print 'evnt',n,':',t.GetListOfBranches().At(branchNum).GetName(),':',t.GetListOfBranches().At(branchNum).GetEntry()
-	Branches['Flag_BadChargedCandidateFilter'][0]         = 1#t.Flag_BadChargedCandidateFilter
-	Branches['Flag_BadGlobalMuon'][0]	       	      = 1#t.Flag_BadGlobalMuon
-	Branches['Flag_BadPFMuonFilter'][0]	       	      = 1#t.Flag_BadPFMuonFilter
-	if 'SingleMuon' in name or 'SingleElectron' in name or 'DoubleMuon' in name or 'DoubleEG' in name:
-		#Branches['Flag_BadChargedCandidateFilter'][0]         = t.Flag_BadChargedCandidateFilter		
-		Branches['Flag_BadChargedCandidateSummer16Filter'][0] = t.Flag_BadChargedCandidateSummer16Filter 
-		#Branches['Flag_BadGlobalMuon'][0]	       	      = t.Flag_BadGlobalMuon			
-		#Branches['Flag_BadPFMuonFilter'][0]	       	      = t.Flag_BadPFMuonFilter			
-		Branches['Flag_BadPFMuonSummer16Filter'][0]    	      = t.Flag_BadPFMuonSummer16Filter  
-		Branches['Flag_ecalBadCalibFilter'][0]                = t.Flag_ecalBadCalibFilter 
-		Branches['passPrimaryVertex'][0]                      = t.Flag_goodVertices
-	else:
-		#Branches['Flag_BadChargedCandidateFilter'][0]         = 1#
-		Branches['Flag_BadChargedCandidateSummer16Filter'][0] = 1
-		#Branches['Flag_BadGlobalMuon'][0]	       	      = 1#		
-		#Branches['Flag_BadPFMuonFilter'][0]	       	      = 1#			
-		Branches['Flag_BadPFMuonSummer16Filter'][0]    	      = 1 
-		Branches['Flag_ecalBadCalibFilter'][0]                = 1
-		Branches['passPrimaryVertex'][0]                      = 1
+	Branches['Flag_BadChargedCandidateFilter'][0]         = ord(t.Flag_BadChargedCandidateFilter)
+	Branches['Flag_BadChargedCandidateSummer16Filter'][0] = 1#t.Flag_BadChargedCandidateSummer16Filter
+	Branches['Flag_BadGlobalMuon'][0]	       	      = ord(t.Flag_BadGlobalMuon)		
+	Branches['Flag_BadPFMuonFilter'][0]	       	      = ord(t.Flag_BadPFlMuonFilter)			
+	Branches['Flag_BadPFMuonSummer16Filter'][0]    	      = 1#t.Flag_BadPFMuonSummer16Filter 
 	Branches['Flag_CSCTightHalo2015Filter'][0]     	      = t.Flag_CSCTightHalo2015Filter   		
 	Branches['Flag_CSCTightHaloFilter'][0]         	      = t.Flag_CSCTightHaloFilter       		
 	Branches['Flag_CSCTightHaloTrkMuUnvetoFilter'][0]     = t.Flag_CSCTightHaloTrkMuUnvetoFilter     
@@ -2266,11 +2242,14 @@ for n in range(N):
 	Branches['Flag_HcalStripHaloFilter'][0]               = t.Flag_HcalStripHaloFilter      		
 	Branches['Flag_METFilters'][0]     	              = t.Flag_METFilters     			
 	Branches['Flag_chargedHadronTrackResolutionFilter'][0]= t.Flag_chargedHadronTrackResolutionFilter
-	#Branches['Flag_ecalBadCalibFilter'][0]                = t.Flag_ecalBadCalibFilter       		
-	#Branches['Flag_ecalBadCalibFilterV2'][0]              = 1#t.Flag_ecalBadCalibFilterV2  
+	Branches['Flag_ecalBadCalibFilter'][0]                = 1#t.Flag_ecalBadCalibFilter       		
+	Branches['Flag_ecalBadCalibFilterV2'][0]              = 1#t.Flag_ecalBadCalibFilterV2  
 	Branches['Flag_ecalLaserCorrFilter'][0]               = t.Flag_ecalLaserCorrFilter      		
-	Branches['Flag_eeBadScFilter'][0]  	       	      = t.Flag_eeBadScFilter  			
-	Branches['Flag_globalSuperTightHalo2016Filter'][0]    = t.Flag_globalSuperTightHalo2016Filter    
+	Branches['Flag_eeBadScFilter'][0]  	       	      = t.Flag_eeBadScFilter 
+	if 'SingleMuon' in name or 'SingleElectron' in name or 'DoubleMuon' in name or 'DoubleEG' in name:
+		Branches['Flag_globalSuperTightHalo2016Filter'][0]    = t.Flag_globalSuperTightHalo2016Filter 
+	else:
+		Branches['Flag_globalSuperTightHalo2016Filter'][0]    = 1#t.Flag_globalSuperTightHalo2016Filter
 	Branches['Flag_globalTightHalo2016Filter'][0]	      = t.Flag_globalTightHalo2016Filter		
 	Branches['Flag_goodVertices'][0]		      = t.Flag_goodVertices   			
 	Branches['Flag_hcalLaserEventFilter'][0]     	      = t.Flag_hcalLaserEventFilter     		
