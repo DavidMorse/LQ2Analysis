@@ -13,6 +13,6 @@ drop TkMET*
 drop Jet_mass*
 keep Jet_mass
 drop SV*
-keep HLT*Mu17_Mu8*
-keep HLT*Ele23_Ele12*
+keep HLT*Mu17*Mu8*
+keep HLT*Ele23*Ele12*
 keep HLT*Ele27*

@@ -27,10 +27,9 @@ parser.add_option("-p", "--pdf", dest="pdf", help="option to produce pdf uncerta
 
 # Here we get the file name, and adjust it accordingly for EOS, castor, or local directory
 name = options.filename
+
 if '/store' in name:
 	name = 'root://eoscms//eos/cms'+name
-if '/castor/cern.ch' in name:
-	name = 'rfio://'+name
 
 # Get the file, tree, and number of entries
 fin = TFile.Open(name,"READ")
