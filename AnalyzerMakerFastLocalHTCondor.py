@@ -472,9 +472,9 @@ def MakeJobs(njobs):
 
 
 		#fixme changed from 8_0_26_patch1 to 10_2_9 for btagcalibration
-		subber.write('setenv SCRAM_ARCH slc6_amd64_gcc530\n\n')
+		subber.write('setenv SCRAM_ARCH slc6_amd64_gcc700\n\n')
 		subber.write('source /cvmfs/cms.cern.ch/cmsset_default.csh\n')
-		subber.write('scram project CMSSW CMSSW_8_0_26_patch1\ncd CMSSW_8_0_26_patch1/src\n')#')scramv1 runtime -csh\ncd -\n\n')
+		subber.write('scram project CMSSW CMSSW_10_2_12\ncd CMSSW_10_2_12/src\n')#')scramv1 runtime -csh\ncd -\n\n')
 		subber.write('cmsenv\n')
 		#subber.write('git cms-addpkg CondTools/BTau\n')
 		#subber.write('git cms-addpkg CondFormats/BTauObjects\n')
