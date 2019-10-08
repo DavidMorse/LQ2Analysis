@@ -331,8 +331,10 @@ _kinematicvariables_systOnly += ['ee_s2_bdt_discrim_M750','ee_s2_bdt_discrim_M80
 #removing weight_amcNLO (always 0 anyway)
 _weights = ['scaleWeight_Up','scaleWeight_Down','scaleWeight_R1_F1','scaleWeight_R1_F2','scaleWeight_R1_F0p5','scaleWeight_R2_F1','scaleWeight_R2_F2','scaleWeight_R2_F0p5','scaleWeight_R0p5_F1','scaleWeight_R0p5_F2','scaleWeight_R0p5_F0p5','scaleWeight_R2_F2','weight_nopu','weight_central', 'weight_pu_up', 'weight_pu_down','weight_topPt']
 _flagDoubles = ['run_number','event_number','lumi_number']
+##_flags = ['Flag_HLT_Ele27_WPTight_Gsf','GoodVertexCount','passTriggerObjectMatching']
 _flags = ['Flag_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ','Flag_HLT_Ele27_WPTight_Gsf','GoodVertexCount','passTriggerObjectMatching','pass_HLT_Mu17_Mu8']
-_flags += ['Flag_PrimaryVertex','passDataCert']
+_flags += ['passDataCert']
+##_flags += ['Flag_PrimaryVertex','passDataCert']
 _flags += ['Flag_BadChargedCandidateFilter','Flag_BadChargedCandidateSummer16Filter','Flag_BadGlobalMuon','Flag_BadPFMuonFilter','Flag_BadPFMuonSummer16Filter','Flag_CSCTightHalo2015Filter','Flag_CSCTightHaloFilter','Flag_CSCTightHaloTrkMuUnvetoFilter','Flag_EcalDeadCellBoundaryEnergyFilter','Flag_EcalDeadCellTriggerPrimitiveFilter','Flag_HBHENoiseFilter','Flag_HBHENoiseIsoFilter','Flag_HcalStripHaloFilter','Flag_METFilters','Flag_chargedHadronTrackResolutionFilter','Flag_ecalBadCalibFilter','Flag_ecalBadCalibFilterV2','Flag_ecalLaserCorrFilter','Flag_eeBadScFilter','Flag_globalSuperTightHalo2016Filter','Flag_globalTightHalo2016Filter','Flag_goodVertices','Flag_hcalLaserEventFilter','Flag_muonBadTrackFilter','Flag_trkPOGFilters','Flag_trkPOG_logErrorTooManyClusters','Flag_trkPOG_manystripclus53X','Flag_trkPOG_toomanystripclus53X']
 #_variations = ['','JESup','JESdown','MESup','MESdown','JERup','JERdown','MER']
 #_variations = ['','JESup','JESdown','JERup','JERdown','MESup','MESdown','MER']#,'EESup','EESdown','EER']
@@ -2425,12 +2427,15 @@ def LooseIDJets(T,met,variation,isdata):
 						ptSF         # pt
 						)
 				bTagSFsLoose.append([sf_loose,sf_loose_up,sf_loose_down])
-				
+
                                 #FIXME moving to nanoAOD post-processing version - for 2016 its CSVv2 medium
                                 #bTagSFsMed.append([sf_medium,sf_medium_up,sf_medium_down])
-				bTagSFsMed.append([T.Jet_bTagSF[n], T.Jet_bTagSF_up, T.Jet_bTagSF_down])
+				if isData:
+					bTagSFsMed.append([1.0, 1.0, 1.0])
+				else:
+					bTagSFsMed.append([T.Jet_btagSF[n], T.Jet_btagSF_up[n], T.Jet_btagSF_down[n]])
                                 #
-                                
+
                                 sf_loose_csv, sf_loose_csv_up, sf_loose_csv_down, sf_medium_csv, sf_medium_csv_up, sf_medium_csv_down=1.,1.,1.,1.,1.,1.
 				bTagSFsLoose_csv.append([sf_loose_csv,sf_loose_csv_up,sf_loose_csv_down])
 				bTagSFsMed_csv.append([sf_medium_csv,sf_medium_csv_up,sf_medium_csv_down])
@@ -4484,13 +4489,21 @@ for n in range(N):
 	## ===========================  BASIC SETUP  ============================= ##
 	# print '-----'
 	# Assign Weights
+	if 'SingleMuon' in name or 'SingleElectron' in name or 'DoubleMuon' in name or 'DoubleEG' in name:
+		Branches['weight_central'][0] = 1.0#startingweight*t.genWeight*t.puWeight#GetPUWeight(t,'Central','Basic')
+		Branches['weight_pu_down'][0] = 1.0#startingweight*t.genWeight*t.puWeightUp#GetPUWeight(t,'SysDown','Basic')
+		Branches['weight_pu_up'][0] = 1.0#startingweight*t.genWeight*t.puWeightDown#GetPUWeight(t,'SysUp','Basic')
+		#Branches['weight_central_2012D'][0] = startingweight*GetPUWeight(t,'Central','2012D')
+		Branches['weight_nopu'][0] = 1.0#startingweight*t.genWeight
+		Branches['weight_topPt'][0]= 1.0#_TopPtFactor*startingweight*t.genWeight
+	else:
+		Branches['weight_central'][0] = startingweight*t.genWeight*t.puWeight#GetPUWeight(t,'Central','Basic')
+		Branches['weight_pu_down'][0] = startingweight*t.genWeight*t.puWeightUp#GetPUWeight(t,'SysDown','Basic')
+		Branches['weight_pu_up'][0] = startingweight*t.genWeight*t.puWeightDown#GetPUWeight(t,'SysUp','Basic')
+		#Branches['weight_central_2012D'][0] = startingweight*GetPUWeight(t,'Central','2012D')
+		Branches['weight_nopu'][0] = startingweight*t.genWeight
+		Branches['weight_topPt'][0]=_TopPtFactor*startingweight*t.genWeight
 
-	Branches['weight_central'][0] = startingweight*t.genWeight*t.puWeight#GetPUWeight(t,'Central','Basic')
-	Branches['weight_pu_down'][0] = startingweight*t.genWeight*t.puWeightUp#GetPUWeight(t,'SysDown','Basic')
-	Branches['weight_pu_up'][0] = startingweight*t.genWeight*t.puWeightDown#GetPUWeight(t,'SysUp','Basic')
-	#Branches['weight_central_2012D'][0] = startingweight*GetPUWeight(t,'Central','2012D')
-	Branches['weight_nopu'][0] = startingweight*t.genWeight
-	Branches['weight_topPt'][0]=1#fixme t.GenParticleTopPtWeight
 	#if 'amcatnlo' in amcNLOname :
 	#	Branches['weight_central'][0]*=t.amcNLOWeight
 	#	Branches['weight_pu_down'][0]*=t.amcNLOWeight
@@ -4548,35 +4561,39 @@ for n in range(N):
 	Branches['Flag_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ'][0] = t.HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ
 	Branches['pass_HLT_Mu17_Mu8'][0] = 1 if (t.HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ + t.HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL)>0 else 0
 
-        Branches['Flag_BadChargedCandidateFilter'][0]         = t.Flag_BadChargedCandidateFilter		
-	Branches['Flag_BadChargedCandidateSummer16Filter'][0] = 1#t.Flag_BadChargedCandidateSummer16Filter 
-	Branches['Flag_BadGlobalMuon'][0]	       	      = t.Flag_BadGlobalMuon			
-	Branches['Flag_BadPFMuonFilter'][0]	       	      = t.Flag_BadPFMuonFilter			
-	Branches['Flag_BadPFMuonSummer16Filter'][0]    	      = 1#t.Flag_BadPFMuonSummer16Filter  		
-	Branches['Flag_CSCTightHalo2015Filter'][0]     	      = t.Flag_CSCTightHalo2015Filter   		
-	Branches['Flag_CSCTightHaloFilter'][0]         	      = t.Flag_CSCTightHaloFilter       		
-	Branches['Flag_CSCTightHaloTrkMuUnvetoFilter'][0]     = t.Flag_CSCTightHaloTrkMuUnvetoFilter     
-	Branches['Flag_EcalDeadCellBoundaryEnergyFilter'][0]  = t.Flag_EcalDeadCellBoundaryEnergyFilter  
+	if isData:
+        	Branches['Flag_BadChargedCandidateFilter'][0]         = t.Flag_BadChargedCandidateFilter
+		Branches['Flag_BadGlobalMuon'][0]	       	      = 1#t.Flag_BadGlobalMuon
+		Branches['Flag_BadPFMuonFilter'][0]	       	      = t.Flag_BadPFMuonFilter
+	else:
+        	Branches['Flag_BadChargedCandidateFilter'][0]         = ord(t.Flag_BadChargedCandidateFilter)
+		Branches['Flag_BadGlobalMuon'][0]	       	      = ord(t.Flag_BadGlobalMuon)
+		Branches['Flag_BadPFMuonFilter'][0]	       	      = ord(t.Flag_BadPFMuonFilter)
+	Branches['Flag_BadChargedCandidateSummer16Filter'][0] = 1#t.Flag_BadChargedCandidateSummer16Filter
+	Branches['Flag_BadPFMuonSummer16Filter'][0]    	      = 1#t.Flag_BadPFMuonSummer16Filter
+	Branches['Flag_CSCTightHalo2015Filter'][0]     	      = t.Flag_CSCTightHalo2015Filter
+	Branches['Flag_CSCTightHaloFilter'][0]         	      = t.Flag_CSCTightHaloFilter
+	Branches['Flag_CSCTightHaloTrkMuUnvetoFilter'][0]     = t.Flag_CSCTightHaloTrkMuUnvetoFilter
+	Branches['Flag_EcalDeadCellBoundaryEnergyFilter'][0]  = t.Flag_EcalDeadCellBoundaryEnergyFilter
 	Branches['Flag_EcalDeadCellTriggerPrimitiveFilter'][0]= t.Flag_EcalDeadCellTriggerPrimitiveFilter
-	Branches['Flag_HBHENoiseFilter'][0]	       	      = t.Flag_HBHENoiseFilter			
-	Branches['Flag_HBHENoiseIsoFilter'][0]                = t.Flag_HBHENoiseIsoFilter       		
-	Branches['Flag_HcalStripHaloFilter'][0]               = t.Flag_HcalStripHaloFilter      		
-	Branches['Flag_METFilters'][0]     	              = t.Flag_METFilters     			
+	Branches['Flag_HBHENoiseFilter'][0]	       	      = t.Flag_HBHENoiseFilter
+	Branches['Flag_HBHENoiseIsoFilter'][0]                = t.Flag_HBHENoiseIsoFilter
+	Branches['Flag_HcalStripHaloFilter'][0]               = t.Flag_HcalStripHaloFilter
+	Branches['Flag_METFilters'][0]     	              = t.Flag_METFilters
 	Branches['Flag_chargedHadronTrackResolutionFilter'][0]= t.Flag_chargedHadronTrackResolutionFilter
-	Branches['Flag_ecalBadCalibFilter'][0]                = 1#t.Flag_ecalBadCalibFilter       		
-	Branches['Flag_ecalBadCalibFilterV2'][0]              = 1#t.Flag_ecalBadCalibFilterV2     		
-	Branches['Flag_ecalLaserCorrFilter'][0]               = t.Flag_ecalLaserCorrFilter      		
-	Branches['Flag_eeBadScFilter'][0]  	       	      = t.Flag_eeBadScFilter  			
-	Branches['Flag_globalSuperTightHalo2016Filter'][0]    = t.Flag_globalSuperTightHalo2016Filter    
-	Branches['Flag_globalTightHalo2016Filter'][0]	      = t.Flag_globalTightHalo2016Filter		
-	Branches['Flag_goodVertices'][0]		      = t.Flag_goodVertices   			
-	Branches['Flag_hcalLaserEventFilter'][0]     	      = t.Flag_hcalLaserEventFilter     		
-	Branches['Flag_muonBadTrackFilter'][0]       	      = t.Flag_muonBadTrackFilter       		
-	Branches['Flag_trkPOGFilters'][0] 		      = t.Flag_trkPOGFilters  			
-	Branches['Flag_trkPOG_logErrorTooManyClusters'][0]    = t.Flag_trkPOG_logErrorTooManyClusters    
-	Branches['Flag_trkPOG_manystripclus53X'][0] 	      = t.Flag_trkPOG_manystripclus53X  		
-	Branches['Flag_trkPOG_toomanystripclus53X'][0]        = t.Flag_trkPOG_toomanystripclus53X             
-	Branches['passPrimaryVertex'][0]                      = t.Flag_GoodVertices
+	Branches['Flag_ecalBadCalibFilter'][0]                = 1#t.Flag_ecalBadCalibFilter
+	Branches['Flag_ecalBadCalibFilterV2'][0]              = 1#t.Flag_ecalBadCalibFilterV2
+	Branches['Flag_ecalLaserCorrFilter'][0]               = t.Flag_ecalLaserCorrFilter
+	Branches['Flag_eeBadScFilter'][0]  	       	      = t.Flag_eeBadScFilter
+	Branches['Flag_globalSuperTightHalo2016Filter'][0]    = t.Flag_globalSuperTightHalo2016Filter
+	Branches['Flag_globalTightHalo2016Filter'][0]	      = t.Flag_globalTightHalo2016Filter
+	Branches['Flag_goodVertices'][0]		      = t.Flag_goodVertices
+	Branches['Flag_hcalLaserEventFilter'][0]     	      = t.Flag_hcalLaserEventFilter
+	Branches['Flag_muonBadTrackFilter'][0]       	      = t.Flag_muonBadTrackFilter
+	Branches['Flag_trkPOGFilters'][0] 		      = t.Flag_trkPOGFilters
+	Branches['Flag_trkPOG_logErrorTooManyClusters'][0]    = t.Flag_trkPOG_logErrorTooManyClusters
+	Branches['Flag_trkPOG_manystripclus53X'][0] 	      = t.Flag_trkPOG_manystripclus53X
+	Branches['Flag_trkPOG_toomanystripclus53X'][0]        = t.Flag_trkPOG_toomanystripclus53X
 
 	Branches['passDataCert'][0] = 1
 	if ( (isData) and (CheckRunLumiCert(t.run,t.luminosityBlock) == False) ) :
