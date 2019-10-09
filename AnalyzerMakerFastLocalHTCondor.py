@@ -353,7 +353,8 @@ def MakeJobs(njobs):
 		filesig1 = (((j.split(' -f ')[-1]).split(' ')[0]))
 		#print filesig1
 		filesig = filesig1.split('/')[-5]+'__'+filesig1.split('/')[-1].replace('.root','')#changed -2 to -5 to get dataset name instead of 0000
-		#print filesig
+		filesig = filesig+'_'
+                #print filesig
 		#print jstr
 		if filesig not in jstr:
 			# print '**', filesig
