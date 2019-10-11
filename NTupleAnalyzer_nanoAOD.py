@@ -2221,7 +2221,11 @@ for n in range(N):
 	Branches['pass_HLTMu45_eta2p1'][0] = t.HLT_Mu45_eta2p1
 	Branches['pass_HLTMu50'][0]        = t.HLT_Mu50
 	Branches['pass_HLTMu55'][0]        = t.HLT_Mu55
-	Branches['pass_HLTTkMu50'][0]      = t.HLT_TkMu50
+	if hasattr(t,'HLT_TkMu50'):
+                Branches['pass_HLTTkMu50'][0]      = t.HLT_TkMu50
+        else:
+                Branches['pass_HLTTkMu50'][0]      = 0
+
 
 	#fixme some flags missing, others not working correctly
 	if 'SingleMuon' in name or 'SingleElectron' in name or 'DoubleMuon' in name or 'DoubleEG' in name:

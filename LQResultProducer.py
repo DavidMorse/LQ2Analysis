@@ -20,9 +20,9 @@ if 'cmsneu' in platform.node():
 	EMuDirectory    = '/media/dataPlus/dmorse/lqNtuples/NTupleAnalyzer_LQfull_HEEPtag_EMuSwitch_2017_10_10_09/SummaryFiles'
 
 else:
-	NormalDirectory = '/eos/cms/store/user/dmorse/leptoQuark/NTupleAnalyzer_muCuts_full_2017_09_04/SummaryFiles'
-	QCDDirectory    = '/eos/cms/store/user/dmorse/leptoQuark/NTupleAnalyzer_Full2016QCDNonIsoQuickTest_2017_11_09_20_59_08/SummaryFiles'
-	EMuDirectory    = '/eos/cms/store/user/dmorse/leptoQuark/NTupleAnalyzer_LQfull_HEEPtag_EMuSwitch_2017_10_10_09/SummaryFiles'
+	NormalDirectory = '/eos/cms/store/group/phys_exotica/leptonsPlusJets/LQ/LQ2/trees/NTupleAnalyzer_nanoAOD_Full2016QuickTest_2019_10_09/SummaryFiles'
+	QCDDirectory    = '/eos/cms/store/group/phys_exotica/leptonsPlusJets/LQ/LQ2/trees/NTupleAnalyzer_nanoAOD_Full2016QCDNonIsoQuickTest_2019_10_09/SummaryFiles'
+	EMuDirectory    = '/eos/cms/store/group/phys_exotica/leptonsPlusJets/LQ/LQ2/trees/NTupleAnalyzer_nanoAOD_Full2016EMuSwitch_2019_10_09/SummaryFiles'
 
 # The name of the main ttree (ntuple structure)
 TreeName = "PhysicalVariables"
@@ -40,52 +40,22 @@ lumi = 35863.308
 
 # Single-mu trigger efficiencies as a function of muon Eta. 
 # This is for the case of one muon
-#2012
-#singlemuHLT =  '*( 0.93*(abs(Eta_muon1)<=0.9) + 0.83*(abs(Eta_muon1)>0.9)*(abs(Eta_muon1)<=1.2) + 0.80*(abs(Eta_muon1)>1.2)*(abs(Eta_muon1)<=2.1) )'
-#2016 efficiencies - moving to trigger+SF
-#singlemuHLT =  '*(0.931484*(abs(Eta_muon1)<=0.9)*(Pt_muon1>52)*(Pt_muon1<55)+0.936389*(abs(Eta_muon1)<=0.9)*(Pt_muon1>55)*(Pt_muon1<60)+0.936215*(abs(Eta_muon1)<=0.9)*(Pt_muon1>60)*(Pt_muon1<80)+0.932935*(abs(Eta_muon1)<=0.9)*(Pt_muon1>80)*(Pt_muon1<120)+0.924966*(abs(Eta_muon1)<=0.9)*(Pt_muon1>120)*(Pt_muon1<200)+0.912550*(abs(Eta_muon1)<=0.9)*(Pt_muon1>200)*(Pt_muon1<300)+0.915244*(abs(Eta_muon1)<=0.9)*(Pt_muon1>300)*(Pt_muon1<400)+0.865542*(abs(Eta_muon1)<=0.9)*(Pt_muon1>400)+0.928172*(abs(Eta_muon1)>0.9)*(abs(Eta_muon1)<=1.2)*(Pt_muon1>52)*(Pt_muon1<55)+0.933461*(abs(Eta_muon1)>0.9)*(abs(Eta_muon1)<=1.2)*(Pt_muon1>55)*(Pt_muon1<60)+0.934581*(abs(Eta_muon1)>0.9)*(abs(Eta_muon1)<=1.2)*(Pt_muon1>60)*(Pt_muon1<80)+0.930415*(abs(Eta_muon1)>0.9)*(abs(Eta_muon1)<=1.2)*(Pt_muon1>80)*(Pt_muon1<120)+0.918477*(abs(Eta_muon1)>0.9)*(abs(Eta_muon1)<=1.2)*(Pt_muon1>120)*(Pt_muon1<200)+0.895276*(abs(Eta_muon1)>0.9)*(abs(Eta_muon1)<=1.2)*(Pt_muon1>200)*(Pt_muon1<300)+0.895417*(abs(Eta_muon1)>0.9)*(abs(Eta_muon1)<=1.2)*(Pt_muon1>300)*(Pt_muon1<400)+0.930819*(abs(Eta_muon1)>0.9)*(abs(Eta_muon1)<=1.2)*(Pt_muon1>400)+0.881011*(abs(Eta_muon1)>1.2)*(abs(Eta_muon1)<=2.1)*(Pt_muon1>52)*(Pt_muon1<55)+0.887047*(abs(Eta_muon1)>1.2)*(abs(Eta_muon1)<=2.1)*(Pt_muon1>55)*(Pt_muon1<60)+0.890108*(abs(Eta_muon1)>1.2)*(abs(Eta_muon1)<=2.1)*(Pt_muon1>60)*(Pt_muon1<80)+0.890968*(abs(Eta_muon1)>1.2)*(abs(Eta_muon1)<=2.1)*(Pt_muon1>80)*(Pt_muon1<120)+0.890131*(abs(Eta_muon1)>1.2)*(abs(Eta_muon1)<=2.1)*(Pt_muon1>120)*(Pt_muon1<200)+0.881725*(abs(Eta_muon1)>1.2)*(abs(Eta_muon1)<=2.1)*(Pt_muon1>200)*(Pt_muon1<300)+0.888385*(abs(Eta_muon1)>1.2)*(abs(Eta_muon1)<=2.1)*(Pt_muon1>300)*(Pt_muon1<400)+0.858157*(abs(Eta_muon1)>1.2)*(abs(Eta_muon1)<=2.1)*(Pt_muon1>400)+0.775304*(abs(Eta_muon1)>2.1)*(abs(Eta_muon1)<=2.4)*(Pt_muon1>52)*(Pt_muon1<55)+0.802406*(abs(Eta_muon1)>2.1)*(abs(Eta_muon1)<=2.4)*(Pt_muon1>55)*(Pt_muon1<60)+0.813275*(abs(Eta_muon1)>2.1)*(abs(Eta_muon1)<=2.4)*(Pt_muon1>60)*(Pt_muon1<80)+0.816880*(abs(Eta_muon1)>2.1)*(abs(Eta_muon1)<=2.4)*(Pt_muon1>80)*(Pt_muon1<120)+0.818516*(abs(Eta_muon1)>2.1)*(abs(Eta_muon1)<=2.4)*(Pt_muon1>120)*(Pt_muon1<200)+0.766791*(abs(Eta_muon1)>2.1)*(abs(Eta_muon1)<=2.4)*(Pt_muon1>200)*(Pt_muon1<300)+0.767369*(abs(Eta_muon1)>2.1)*(abs(Eta_muon1)<=2.4)*(Pt_muon1>300)*(Pt_muon1<400)+0.705534*(abs(Eta_muon1)>2.1)*(abs(Eta_muon1)<=2.4)*(Pt_muon1>400))'
 
-#2016 eff = eta dependence only
-singlemuHLT =  '*(0.808817574*(Eta_muon1>-2.4)*(Eta_muon1<=-2.1)+0.840181626*(Eta_muon1>-2.1)*(Eta_muon1<=-1.6)+0.93011615*(Eta_muon1>-1.6)*(Eta_muon1<=-1.2)+0.932998639*(Eta_muon1>-1.2)*(Eta_muon1<=-0.9)+0.944877352*(Eta_muon1>-0.9)*(Eta_muon1<=-0.3)+0.834425799*(Eta_muon1>-0.3)*(Eta_muon1<=-0.2)+0.942011629*(Eta_muon1>-0.2)*(Eta_muon1<=0.0)+0.945695021*(Eta_muon1>0.0)*(Eta_muon1<=0.2)+0.852901162*(Eta_muon1>0.2)*(Eta_muon1<=0.3)+0.944524531*(Eta_muon1>0.3)*(Eta_muon1<=0.9)+0.930999614*(Eta_muon1>0.9)*(Eta_muon1<=1.2)+0.922040828*(Eta_muon1>1.2)*(Eta_muon1<=1.6)+0.850334343*(Eta_muon1>1.6)*(Eta_muon1<=2.1)+0.791902937*(Eta_muon1>2.1)*(Eta_muon1<=2.4))'
-
-#2016 SF - eta dependence only
-#singlemuHLT =  '*(0.949621*(Eta_muon1>-2.4)*(Eta_muon1<=-2.1)+0.967073*(Eta_muon1>-2.1)*(Eta_muon1<=-1.6)+1.02402*(Eta_muon1>-1.6)*(Eta_muon1<=-1.2)+0.958010*(Eta_muon1>-1.2)*(Eta_muon1<=-0.9)+0.986735*(Eta_muon1>-0.9)*(Eta_muon1<=-0.3)+0.923577*(Eta_muon1>-0.3)*(Eta_muon1<=-0.2)+0.975074*(Eta_muon1>-0.2)*(Eta_muon1<=0.0)+0.977559*(Eta_muon1>0.0)*(Eta_muon1<=0.2)+0.947337*(Eta_muon1>0.2)*(Eta_muon1<=0.3)+0.982190*(Eta_muon1>0.3)*(Eta_muon1<=0.9)+0.968889*(Eta_muon1>0.9)*(Eta_muon1<=1.2)+1.01164*(Eta_muon1>1.2)*(Eta_muon1<=1.6)+0.956268*(Eta_muon1>1.6)*(Eta_muon1<=2.1)+0.916149*(Eta_muon1>2.1)*(Eta_muon1<=2.4))'
-#for two muons, efficiency will be higher.....for SF, should it be applied to muon1, muon2, or muon matched to HLT?
-#doublemuHLT =  '*(0.949621*(Eta_muon1>-2.4)*(Eta_muon1<=-2.1)+0.967073*(Eta_muon1>-2.1)*(Eta_muon1<=-1.6)+1.02402*(Eta_muon1>-1.6)*(Eta_muon1<=-1.2)+0.958010*(Eta_muon1>-1.2)*(Eta_muon1<=-0.9)+0.986735*(Eta_muon1>-0.9)*(Eta_muon1<=-0.3)+0.923577*(Eta_muon1>-0.3)*(Eta_muon1<=-0.2)+0.975074*(Eta_muon1>-0.2)*(Eta_muon1<=0.0)+0.977559*(Eta_muon1>0.0)*(Eta_muon1<=0.2)+0.947337*(Eta_muon1>0.2)*(Eta_muon1<=0.3)+0.982190*(Eta_muon1>0.3)*(Eta_muon1<=0.9)+0.968889*(Eta_muon1>0.9)*(Eta_muon1<=1.2)+1.01164*(Eta_muon1>1.2)*(Eta_muon1<=1.6)+0.956268*(Eta_muon1>1.6)*(Eta_muon1<=2.1)+0.916149*(Eta_muon1>2.1)*(Eta_muon1<=2.4))'
+#2016 eff - eta dependence only, HLT_Mu50 OR HLT_TkMu
+singlemuHLT = '*(mu1hltSF)'
+# This is for the case of two muons (i.e. the above factors, but for the case where the event has two muons)
+doublemuHLT = '*(1.0-((1.0-mu1hltSF)*(1.0-mu2hltSF)))'
 
 singlemuHLTEMUSF =  '*((IsMuon_muon1)*(0.949621*(Eta_muon1>-2.4)*(Eta_muon1<=-2.1)+0.967073*(Eta_muon1>-2.1)*(Eta_muon1<=-1.6)+1.02402*(Eta_muon1>-1.6)*(Eta_muon1<=-1.2)+0.958010*(Eta_muon1>-1.2)*(Eta_muon1<=-0.9)+0.986735*(Eta_muon1>-0.9)*(Eta_muon1<=-0.3)+0.923577*(Eta_muon1>-0.3)*(Eta_muon1<=-0.2)+0.975074*(Eta_muon1>-0.2)*(Eta_muon1<=0.0)+0.977559*(Eta_muon1>0.0)*(Eta_muon1<=0.2)+0.947337*(Eta_muon1>0.2)*(Eta_muon1<=0.3)+0.982190*(Eta_muon1>0.3)*(Eta_muon1<=0.9)+0.968889*(Eta_muon1>0.9)*(Eta_muon1<=1.2)+1.01164*(Eta_muon1>1.2)*(Eta_muon1<=1.6)+0.956268*(Eta_muon1>1.6)*(Eta_muon1<=2.1)+0.916149*(Eta_muon1>2.1)*(Eta_muon1<=2.4))+(IsMuon_muon2)*(0.949621*(Eta_muon2>-2.4)*(Eta_muon2<=-2.1)+0.967073*(Eta_muon2>-2.1)*(Eta_muon2<=-1.6)+1.02402*(Eta_muon2>-1.6)*(Eta_muon2<=-1.2)+0.958010*(Eta_muon2>-1.2)*(Eta_muon2<=-0.9)+0.986735*(Eta_muon2>-0.9)*(Eta_muon2<=-0.3)+0.923577*(Eta_muon2>-0.3)*(Eta_muon2<=-0.2)+0.975074*(Eta_muon2>-0.2)*(Eta_muon2<=0.0)+0.977559*(Eta_muon2>0.0)*(Eta_muon2<=0.2)+0.947337*(Eta_muon2>0.2)*(Eta_muon2<=0.3)+0.982190*(Eta_muon2>0.3)*(Eta_muon2<=0.9)+0.968889*(Eta_muon2>0.9)*(Eta_muon2<=1.2)+1.01164*(Eta_muon2>1.2)*(Eta_muon2<=1.6)+0.956268*(Eta_muon2>1.6)*(Eta_muon2<=2.1)+0.916149*(Eta_muon2>2.1)*(Eta_muon2<=2.4)))'
 
-
-# This is for the case of two muons (i.e. the above factors, but for the case where the event has two muons)
-#2012#doublemuHLT =  '*(1.0-(( 1.0 - 0.93*(abs(Eta_muon1)<=0.9) - 0.83*(abs(Eta_muon1)>0.9)*(abs(Eta_muon1)<=1.2) - 0.80*(abs(Eta_muon1)>1.2)*(abs(Eta_muon1)<=2.1) )'
-#2012#doublemuHLT += '*( 1.0 - 0.93*(abs(Eta_muon2)<=0.9) - 0.83*(abs(Eta_muon2)>0.9)*(abs(Eta_muon2)<=1.2) - 0.80*(abs(Eta_muon2)>1.2)*(abs(Eta_muon2)<=2.1) )))'
-#2015#doublemuHLT =  '*(1.0-(( 1.0 - 0.9494*(abs(Eta_muon1)<=0.9)*(Pt_muon1>50)*(Pt_muon1<60) - 0.9460*(abs(Eta_muon1)<=0.9)*(Pt_muon1>60) - 0.9030*(abs(Eta_muon1)>0.9)*(abs(Eta_muon1)<=1.2)*(Pt_muon1>50)*(Pt_muon1<60) - 0.8968*(abs(Eta_muon1)>0.9)*(abs(Eta_muon1)<=1.2)*(Pt_muon1>60) - 0.9153*(abs(Eta_muon1)>1.2)*(abs(Eta_muon1)<=2.1)*(Pt_muon1>50)*(Pt_muon1<60) - 0.9175*(abs(Eta_muon1)>1.2)*(abs(Eta_muon1)<=2.1)*(Pt_muon1>60) )'
-#2015#doublemuHLT += '*( 1.0 - 0.9494*(abs(Eta_muon2)<=0.9)*(Pt_muon2>50)*(Pt_muon2<60) - 0.9460*(abs(Eta_muon2)<=0.9)*(Pt_muon2>60) - 0.9030*(abs(Eta_muon2)>0.9)*(abs(Eta_muon2)<=1.2)*(Pt_muon2>50)*(Pt_muon2<60) - 0.8968*(abs(Eta_muon2)>0.9)*(abs(Eta_muon2)<=1.2)*(Pt_muon2>60) - 0.9153*(abs(Eta_muon2)>1.2)*(abs(Eta_muon2)<=2.1)*(Pt_muon2>50)*(Pt_muon2<60) - 0.9175*(abs(Eta_muon2)>1.2)*(abs(Eta_muon2)<=2.1)*(Pt_muon2>60) )))'
-
-#2017, HLT_Mu50 OR HLT_TkMu50
-#These use averaged, run-dependent values - Efficiency NOT scale factor!
-#doublemuHLT =  '*(1.0-((1.0 - (0.931484*(abs(Eta_muon1)<=0.9)*(Pt_muon1>52)*(Pt_muon1<55)+0.936389*(abs(Eta_muon1)<=0.9)*(Pt_muon1>55)*(Pt_muon1<60)+0.936215*(abs(Eta_muon1)<=0.9)*(Pt_muon1>60)*(Pt_muon1<80)+0.932935*(abs(Eta_muon1)<=0.9)*(Pt_muon1>80)*(Pt_muon1<120)+0.924966*(abs(Eta_muon1)<=0.9)*(Pt_muon1>120)*(Pt_muon1<200)+0.912550*(abs(Eta_muon1)<=0.9)*(Pt_muon1>200)*(Pt_muon1<300)+0.915244*(abs(Eta_muon1)<=0.9)*(Pt_muon1>300)*(Pt_muon1<400)+0.865542*(abs(Eta_muon1)<=0.9)*(Pt_muon1>400)+0.928172*(abs(Eta_muon1)>0.9)*(abs(Eta_muon1)<=1.2)*(Pt_muon1>52)*(Pt_muon1<55)+0.933461*(abs(Eta_muon1)>0.9)*(abs(Eta_muon1)<=1.2)*(Pt_muon1>55)*(Pt_muon1<60)+0.934581*(abs(Eta_muon1)>0.9)*(abs(Eta_muon1)<=1.2)*(Pt_muon1>60)*(Pt_muon1<80)+0.930415*(abs(Eta_muon1)>0.9)*(abs(Eta_muon1)<=1.2)*(Pt_muon1>80)*(Pt_muon1<120)+0.918477*(abs(Eta_muon1)>0.9)*(abs(Eta_muon1)<=1.2)*(Pt_muon1>120)*(Pt_muon1<200)+0.895276*(abs(Eta_muon1)>0.9)*(abs(Eta_muon1)<=1.2)*(Pt_muon1>200)*(Pt_muon1<300)+0.895417*(abs(Eta_muon1)>0.9)*(abs(Eta_muon1)<=1.2)*(Pt_muon1>300)*(Pt_muon1<400)+0.930819*(abs(Eta_muon1)>0.9)*(abs(Eta_muon1)<=1.2)*(Pt_muon1>400)+0.881011*(abs(Eta_muon1)>1.2)*(abs(Eta_muon1)<=2.1)*(Pt_muon1>52)*(Pt_muon1<55)+0.887047*(abs(Eta_muon1)>1.2)*(abs(Eta_muon1)<=2.1)*(Pt_muon1>55)*(Pt_muon1<60)+0.890108*(abs(Eta_muon1)>1.2)*(abs(Eta_muon1)<=2.1)*(Pt_muon1>60)*(Pt_muon1<80)+0.890968*(abs(Eta_muon1)>1.2)*(abs(Eta_muon1)<=2.1)*(Pt_muon1>80)*(Pt_muon1<120)+0.890131*(abs(Eta_muon1)>1.2)*(abs(Eta_muon1)<=2.1)*(Pt_muon1>120)*(Pt_muon1<200)+0.881725*(abs(Eta_muon1)>1.2)*(abs(Eta_muon1)<=2.1)*(Pt_muon1>200)*(Pt_muon1<300)+0.888385*(abs(Eta_muon1)>1.2)*(abs(Eta_muon1)<=2.1)*(Pt_muon1>300)*(Pt_muon1<400)+0.858157*(abs(Eta_muon1)>1.2)*(abs(Eta_muon1)<=2.1)*(Pt_muon1>400)+0.775304*(abs(Eta_muon1)>2.1)*(abs(Eta_muon1)<=2.4)*(Pt_muon1>52)*(Pt_muon1<55)+0.802406*(abs(Eta_muon1)>2.1)*(abs(Eta_muon1)<=2.4)*(Pt_muon1>55)*(Pt_muon1<60)+0.813275*(abs(Eta_muon1)>2.1)*(abs(Eta_muon1)<=2.4)*(Pt_muon1>60)*(Pt_muon1<80)+0.816880*(abs(Eta_muon1)>2.1)*(abs(Eta_muon1)<=2.4)*(Pt_muon1>80)*(Pt_muon1<120)+0.818516*(abs(Eta_muon1)>2.1)*(abs(Eta_muon1)<=2.4)*(Pt_muon1>120)*(Pt_muon1<200)+0.766791*(abs(Eta_muon1)>2.1)*(abs(Eta_muon1)<=2.4)*(Pt_muon1>200)*(Pt_muon1<300)+0.767369*(abs(Eta_muon1)>2.1)*(abs(Eta_muon1)<=2.4)*(Pt_muon1>300)*(Pt_muon1<400)+0.705534*(abs(Eta_muon1)>2.1)*(abs(Eta_muon1)<=2.4)*(Pt_muon1>400)))'
-
-#doublemuHLT+='*(1.0-(0.931484*(abs(Eta_muon2)<=0.9)*(Pt_muon2>52)*(Pt_muon2<55)+0.936389*(abs(Eta_muon2)<=0.9)*(Pt_muon2>55)*(Pt_muon2<60)+0.936215*(abs(Eta_muon2)<=0.9)*(Pt_muon2>60)*(Pt_muon2<80)+0.932935*(abs(Eta_muon2)<=0.9)*(Pt_muon2>80)*(Pt_muon2<120)+0.924966*(abs(Eta_muon2)<=0.9)*(Pt_muon2>120)*(Pt_muon2<200)+0.912550*(abs(Eta_muon2)<=0.9)*(Pt_muon2>200)*(Pt_muon2<300)+0.915244*(abs(Eta_muon2)<=0.9)*(Pt_muon2>300)*(Pt_muon2<400)+0.865542*(abs(Eta_muon2)<=0.9)*(Pt_muon2>400)+0.928172*(abs(Eta_muon2)>0.9)*(abs(Eta_muon2)<=1.2)*(Pt_muon2>52)*(Pt_muon2<55)+0.933461*(abs(Eta_muon2)>0.9)*(abs(Eta_muon2)<=1.2)*(Pt_muon2>55)*(Pt_muon2<60)+0.934581*(abs(Eta_muon2)>0.9)*(abs(Eta_muon2)<=1.2)*(Pt_muon2>60)*(Pt_muon2<80)+0.930415*(abs(Eta_muon2)>0.9)*(abs(Eta_muon2)<=1.2)*(Pt_muon2>80)*(Pt_muon2<120)+0.918477*(abs(Eta_muon2)>0.9)*(abs(Eta_muon2)<=1.2)*(Pt_muon2>120)*(Pt_muon2<200)+0.895276*(abs(Eta_muon2)>0.9)*(abs(Eta_muon2)<=1.2)*(Pt_muon2>200)*(Pt_muon2<300)+0.895417*(abs(Eta_muon2)>0.9)*(abs(Eta_muon2)<=1.2)*(Pt_muon2>300)*(Pt_muon2<400)+0.930819*(abs(Eta_muon2)>0.9)*(abs(Eta_muon2)<=1.2)*(Pt_muon2>400)+0.881011*(abs(Eta_muon2)>1.2)*(abs(Eta_muon2)<=2.1)*(Pt_muon2>52)*(Pt_muon2<55)+0.887047*(abs(Eta_muon2)>1.2)*(abs(Eta_muon2)<=2.1)*(Pt_muon2>55)*(Pt_muon2<60)+0.890108*(abs(Eta_muon2)>1.2)*(abs(Eta_muon2)<=2.1)*(Pt_muon2>60)*(Pt_muon2<80)+0.890968*(abs(Eta_muon2)>1.2)*(abs(Eta_muon2)<=2.1)*(Pt_muon2>80)*(Pt_muon2<120)+0.890131*(abs(Eta_muon2)>1.2)*(abs(Eta_muon2)<=2.1)*(Pt_muon2>120)*(Pt_muon2<200)+0.881725*(abs(Eta_muon2)>1.2)*(abs(Eta_muon2)<=2.1)*(Pt_muon2>200)*(Pt_muon2<300)+0.888385*(abs(Eta_muon2)>1.2)*(abs(Eta_muon2)<=2.1)*(Pt_muon2>300)*(Pt_muon2<400)+0.858157*(abs(Eta_muon2)>1.2)*(abs(Eta_muon2)<=2.1)*(Pt_muon2>400)+0.775304*(abs(Eta_muon2)>2.1)*(abs(Eta_muon2)<=2.4)*(Pt_muon2>52)*(Pt_muon2<55)+0.802406*(abs(Eta_muon2)>2.1)*(abs(Eta_muon2)<=2.4)*(Pt_muon2>55)*(Pt_muon2<60)+0.813275*(abs(Eta_muon2)>2.1)*(abs(Eta_muon2)<=2.4)*(Pt_muon2>60)*(Pt_muon2<80)+0.816880*(abs(Eta_muon2)>2.1)*(abs(Eta_muon2)<=2.4)*(Pt_muon2>80)*(Pt_muon2<120)+0.818516*(abs(Eta_muon2)>2.1)*(abs(Eta_muon2)<=2.4)*(Pt_muon2>120)*(Pt_muon2<200)+0.766791*(abs(Eta_muon2)>2.1)*(abs(Eta_muon2)<=2.4)*(Pt_muon2>200)*(Pt_muon2<300)+0.767369*(abs(Eta_muon2)>2.1)*(abs(Eta_muon2)<=2.4)*(Pt_muon2>300)*(Pt_muon2<400)+0.705534*(abs(Eta_muon2)>2.1)*(abs(Eta_muon2)<=2.4)*(Pt_muon2>400)))))'
-
-#2016 eff - eta dependence only
-doublemuHLT =  '*(1.0-((1.0-(0.808817574*(Eta_muon1>-2.4)*(Eta_muon1<=-2.1)+0.840181626*(Eta_muon1>-2.1)*(Eta_muon1<=-1.6)+0.93011615*(Eta_muon1>-1.6)*(Eta_muon1<=-1.2)+0.932998639*(Eta_muon1>-1.2)*(Eta_muon1<=-0.9)+0.944877352*(Eta_muon1>-0.9)*(Eta_muon1<=-0.3)+0.834425799*(Eta_muon1>-0.3)*(Eta_muon1<=-0.2)+0.942011629*(Eta_muon1>-0.2)*(Eta_muon1<=0.0)+0.945695021*(Eta_muon1>0.0)*(Eta_muon1<=0.2)+0.852901162*(Eta_muon1>0.2)*(Eta_muon1<=0.3)+0.944524531*(Eta_muon1>0.3)*(Eta_muon1<=0.9)+0.930999614*(Eta_muon1>0.9)*(Eta_muon1<=1.2)+0.922040828*(Eta_muon1>1.2)*(Eta_muon1<=1.6)+0.850334343*(Eta_muon1>1.6)*(Eta_muon1<=2.1)+0.791902937*(Eta_muon1>2.1)*(Eta_muon1<=2.4)))'
-doublemuHLT +=  '*(1.0-(0.808817574*(Eta_muon2>-2.4)*(Eta_muon2<=-2.1)+0.840181626*(Eta_muon2>-2.1)*(Eta_muon2<=-1.6)+0.93011615*(Eta_muon2>-1.6)*(Eta_muon2<=-1.2)+0.932998639*(Eta_muon2>-1.2)*(Eta_muon2<=-0.9)+0.944877352*(Eta_muon2>-0.9)*(Eta_muon2<=-0.3)+0.834425799*(Eta_muon2>-0.3)*(Eta_muon2<=-0.2)+0.942011629*(Eta_muon2>-0.2)*(Eta_muon2<=0.0)+0.945695021*(Eta_muon2>0.0)*(Eta_muon2<=0.2)+0.852901162*(Eta_muon2>0.2)*(Eta_muon2<=0.3)+0.944524531*(Eta_muon2>0.3)*(Eta_muon2<=0.9)+0.930999614*(Eta_muon2>0.9)*(Eta_muon2<=1.2)+0.922040828*(Eta_muon2>1.2)*(Eta_muon2<=1.6)+0.850334343*(Eta_muon2>1.6)*(Eta_muon2<=2.1)+0.791902937*(Eta_muon2>2.1)*(Eta_muon2<=2.4)))))'
-
-#2016 SF - eta dependence only
-#doublemuHLT =  '*(1.0-((1.0-(0.949621*(Eta_muon1>-2.4)*(Eta_muon1<=-2.1)+0.967073*(Eta_muon1>-2.1)*(Eta_muon1<=-1.6)+1.02402*(Eta_muon1>-1.6)*(Eta_muon1<=-1.2)+0.958010*(Eta_muon1>-1.2)*(Eta_muon1<=-0.9)+0.986735*(Eta_muon1>-0.9)*(Eta_muon1<=-0.3)+0.923577*(Eta_muon1>-0.3)*(Eta_muon1<=-0.2)+0.975074*(Eta_muon1>-0.2)*(Eta_muon1<=0.0)+0.977559*(Eta_muon1>0.0)*(Eta_muon1<=0.2)+0.947337*(Eta_muon1>0.2)*(Eta_muon1<=0.3)+0.982190*(Eta_muon1>0.3)*(Eta_muon1<=0.9)+0.968889*(Eta_muon1>0.9)*(Eta_muon1<=1.2)+1.01164*(Eta_muon1>1.2)*(Eta_muon1<=1.6)+0.956268*(Eta_muon1>1.6)*(Eta_muon1<=2.1)+0.916149*(Eta_muon1>2.1)*(Eta_muon1<=2.4)))'
-#doublemuHLT +=  '*(1.0-(0.949621*(Eta_muon2>-2.4)*(Eta_muon2<=-2.1)+0.967073*(Eta_muon2>-2.1)*(Eta_muon2<=-1.6)+1.02402*(Eta_muon2>-1.6)*(Eta_muon2<=-1.2)+0.958010*(Eta_muon2>-1.2)*(Eta_muon2<=-0.9)+0.986735*(Eta_muon2>-0.9)*(Eta_muon2<=-0.3)+0.923577*(Eta_muon2>-0.3)*(Eta_muon2<=-0.2)+0.975074*(Eta_muon2>-0.2)*(Eta_muon2<=0.0)+0.977559*(Eta_muon2>0.0)*(Eta_muon2<=0.2)+0.947337*(Eta_muon2>0.2)*(Eta_muon2<=0.3)+0.982190*(Eta_muon2>0.3)*(Eta_muon2<=0.9)+0.968889*(Eta_muon2>0.9)*(Eta_muon2<=1.2)+1.01164*(Eta_muon2>1.2)*(Eta_muon2<=1.6)+0.956268*(Eta_muon2>1.6)*(Eta_muon2<=2.1)+0.916149*(Eta_muon2>2.1)*(Eta_muon2<=2.4)))))'
-
-
+bTag1SFmedium = '*(1-(1-(CMVA_bjet1>0.4432)*Hjet1BsfMedium)*(1-(CMVA_bjet2>0.4432)*Hjet2BsfMedium)*(1-(CMVA_Zjet1>0.4432)*Zjet1BsfMedium)*(1-(CMVA_Zjet2>0.4432)*Zjet2BsfMedium))'
+bTag1SFmediumUp = '*(1-(1-(CMVA_bjet1>0.4432)*Hjet1BsfMediumUp)*(1-(CMVA_bjet2>0.4432)*Hjet2BsfMediumUp)*(1-(CMVA_Zjet1>0.4432)*Zjet1BsfMediumUp)*(1-(CMVA_Zjet2>0.4432)*Zjet2BsfMediumUp))'
+bTag1SFmediumDown = '*(1-(1-(CMVA_bjet1>0.4432)*Hjet1BsfMediumDown)*(1-(CMVA_bjet2>0.4432)*Hjet2BsfMediumDown)*(1-(CMVA_Zjet1>0.4432)*Zjet1BsfMediumDown)*(1-(CMVA_Zjet2>0.4432)*Zjet2BsfMediumDown))'
 
 
 
 # This is for the case of the E-mu sample, where one "muon" is replaced by an electron. In that case, we check
 # which muon is a real muon (IsMuon_muon1) and apply the trigger efficiency based on the muon
-#2012#singlemuHLTEMU = '*((IsMuon_muon1*( 0.93*(abs(Eta_muon1)<=0.9) + 0.83*(abs(Eta_muon1)>0.9)*(abs(Eta_muon1)<=1.2) + 0.80*(abs(Eta_muon1)>1.2)*(abs(Eta_muon1)<=2.1) ))'
-#2012#singlemuHLTEMU += '+(IsMuon_muon2*( 0.93*(abs(Eta_muon2)<=0.9) + 0.83*(abs(Eta_muon2)>0.9)*(abs(Eta_muon2)<=1.2) + 0.80*(abs(Eta_muon2)>1.2)*(abs(Eta_muon2)<=2.1) )))'
-#2015#singlemuHLTEMU = '*((IsMuon_muon1*( 0.9494*(abs(Eta_muon1)<=0.9)*(Pt_muon1>50)*(Pt_muon1<60) + 0.9460*(abs(Eta_muon1)<=0.9)*(Pt_muon1>60) + 0.9030*(abs(Eta_muon1)>0.9)*(abs(Eta_muon1)<=1.2)*(Pt_muon1>50)*(Pt_muon1<60) + 0.8968*(abs(Eta_muon1)>0.9)*(abs(Eta_muon1)<=1.2)*(Pt_muon1>60) + 0.9153*(abs(Eta_muon1)>1.2)*(abs(Eta_muon1)<=2.1)*(Pt_muon1>50)*(Pt_muon1<60) + 0.9175*(abs(Eta_muon1)>1.2)*(abs(Eta_muon1)<=2.1)*(Pt_muon1>60) ))'
-#2015#singlemuHLTEMU += '+(IsMuon_muon2*( 0.9494*(abs(Eta_muon2)<=0.9)*(Pt_muon2>50)*(Pt_muon2<60) + 0.9460*(abs(Eta_muon2)<=0.9)*(Pt_muon2>60) + 0.9030*(abs(Eta_muon2)>0.9)*(abs(Eta_muon2)<=1.2)*(Pt_muon2>50)*(Pt_muon2<60) + 0.8968*(abs(Eta_muon2)>0.9)*(abs(Eta_muon2)<=1.2)*(Pt_muon2>60) + 0.9153*(abs(Eta_muon2)>1.2)*(abs(Eta_muon2)<=2.1)*(Pt_muon2>50)*(Pt_muon2<60) + 0.9175*(abs(Eta_muon2)>1.2)*(abs(Eta_muon2)<=2.1)*(Pt_muon2>60) )))'
 
 
 #These use averaged, run-dependent values - Efficiency NOT scale factor!
@@ -101,32 +71,12 @@ singlemuHLTEMU += '+(IsMuon_muon2)*(0.808813*(Eta_muon2>-2.4)*(Eta_muon2<-2.1)+0
 
 #Muon ID and Iso MC scale factors
 #https://twiki.cern.ch/twiki/bin/view/CMS/MuonReferenceEffsRun2
-#doubleMuIdScale = '*((0.985720157623291*((abs(Eta_muon1)<1.2)*(Pt_muon1>50)*(Pt_muon1<80))+0.9935390949249268*((abs(Eta_muon1)>1.2)*(Pt_muon1>50)*(Pt_muon1<80))+0.990919828414917*((abs(Eta_muon1)<1.2)*(Pt_muon1>80)*(Pt_muon1<140))+1.001926302909851*((abs(Eta_muon1)>1.2)*(Pt_muon1>80)*(Pt_muon1<140))+0.9570706486701965*((abs(Eta_muon1)<1.2)*(Pt_muon1>140))+0.9942596554756165*((abs(Eta_muon1)>1.2)*(Pt_muon1>140)))*(0.985720157623291*((abs(Eta_muon2)<1.2)*(Pt_muon2>50)*(Pt_muon2<80))+0.9935390949249268*((abs(Eta_muon2)>1.2)*(Pt_muon2>50)*(Pt_muon2<80))+0.990919828414917*((abs(Eta_muon2)<1.2)*(Pt_muon2>80)*(Pt_muon2<140))+1.001926302909851*((abs(Eta_muon2)>1.2)*(Pt_muon2>80)*(Pt_muon2<140))+0.9570706486701965*((abs(Eta_muon2)<1.2)*(Pt_muon2>140))+0.9942596554756165*((abs(Eta_muon2)>1.2)*(Pt_muon2>140))))'
-
-doubleMuIdScale = '*((0.9813326964101629*(Pt_muon1>50)*(Pt_muon1<55)+0.9811215588407185*(Pt_muon1>55)*(Pt_muon1<60)+0.9888030350742609*(Pt_muon1>60)*(Pt_muon1<120)+1.0179598732419621*(Pt_muon1>120))*(0.9813326964101629*(Pt_muon2>50)*(Pt_muon2<55)+0.9811215588407185*(Pt_muon2>55)*(Pt_muon2<60)+0.9888030350742609*(Pt_muon2>60)*(Pt_muon2<120)+1.0179598732419621*(Pt_muon2>120)))'
-
-doubleMuIsoScale = '*((0.9985465327438463*(Pt_muon1>50)*(Pt_muon1<55)+0.9988891755735836*(Pt_muon1>55)*(Pt_muon1<60)+0.9989480835906359*(Pt_muon1>60)*(Pt_muon1<120)+1.0006806854046033*(Pt_muon1>120))*(0.9985465327438463*(Pt_muon2>50)*(Pt_muon2<55)+0.9988891755735836*(Pt_muon2>55)*(Pt_muon2<60)+0.9989480835906359*(Pt_muon2>60)*(Pt_muon2<120)+1.0006806854046033*(Pt_muon2>120)))'
-
 #eta-binned
-doubleMuIdScale = '*((0.969328*(Eta_muon1>-2.4)*(Eta_muon1<-2.1)+0.98193*(Eta_muon1>-2.1)*(Eta_muon1<-1.6)+0.989731*(Eta_muon1>-1.6)*(Eta_muon1<-1.2)+0.975207*(Eta_muon1>-1.2)*(Eta_muon1<-0.9)+0.987146*(Eta_muon1>-0.9)*(Eta_muon1<-0.3)+0.965056*(Eta_muon1>-0.3)*(Eta_muon1<-0.2)+0.988669*(Eta_muon1>-0.2)*(Eta_muon1<0.2)+0.958604*(Eta_muon1>0.2)*(Eta_muon1<0.3)+0.986526*(Eta_muon1>0.3)*(Eta_muon1<0.9)+0.972524*(Eta_muon1>0.9)*(Eta_muon1<1.2)+0.98789*(Eta_muon1>1.2)*(Eta_muon1<1.6)+0.984616*(Eta_muon1>1.6)*(Eta_muon1<2.1)+0.972038*(Eta_muon1>2.1)*(Eta_muon1<2.4))*(0.969328*(Eta_muon2>-2.4)*(Eta_muon2<-2.1)+0.98193*(Eta_muon2>-2.1)*(Eta_muon2<-1.6)+0.989731*(Eta_muon2>-1.6)*(Eta_muon2<-1.2)+0.975207*(Eta_muon2>-1.2)*(Eta_muon2<-0.9)+0.987146*(Eta_muon2>-0.9)*(Eta_muon2<-0.3)+0.965056*(Eta_muon2>-0.3)*(Eta_muon2<-0.2)+0.988669*(Eta_muon2>-0.2)*(Eta_muon2<0.2)+0.958604*(Eta_muon2>0.2)*(Eta_muon2<0.3)+0.986526*(Eta_muon2>0.3)*(Eta_muon2<0.9)+0.972524*(Eta_muon2>0.9)*(Eta_muon2<1.2)+0.98789*(Eta_muon2>1.2)*(Eta_muon2<1.6)+0.984616*(Eta_muon2>1.6)*(Eta_muon2<2.1)+0.972038*(Eta_muon2>2.1)*(Eta_muon2<2.4)))'
+singleMuIdScale = '*mu1idSF'
+doubleMuIdScale = '*mu1idSF*mu2idSF'
 
-doubleMuIsoScale = '*((0.999026*(Eta_muon1>-2.4)*(Eta_muon1<-2.1)+0.999513*(Eta_muon1>-2.1)*(Eta_muon1<-1.6)+0.999475*(Eta_muon1>-1.6)*(Eta_muon1<-1.2)+0.999077*(Eta_muon1>-1.2)*(Eta_muon1<-0.9)+0.998022*(Eta_muon1>-0.9)*(Eta_muon1<-0.3)+0.997644*(Eta_muon1>-0.3)*(Eta_muon1<-0.2)+0.998011*(Eta_muon1>-0.2)*(Eta_muon1<0.2)+0.997196*(Eta_muon1>0.2)*(Eta_muon1<0.3)+0.997877*(Eta_muon1>0.3)*(Eta_muon1<0.9)+0.999609*(Eta_muon1>0.9)*(Eta_muon1<1.2)+0.999474*(Eta_muon1>1.2)*(Eta_muon1<1.6)+0.999761*(Eta_muon1>1.6)*(Eta_muon1<2.1)+1.00043*(Eta_muon1>2.1)*(Eta_muon1<2.4))*(0.999026*(Eta_muon2>-2.4)*(Eta_muon2<-2.1)+0.999513*(Eta_muon2>-2.1)*(Eta_muon2<-1.6)+0.999475*(Eta_muon2>-1.6)*(Eta_muon2<-1.2)+0.999077*(Eta_muon2>-1.2)*(Eta_muon2<-0.9)+0.998022*(Eta_muon2>-0.9)*(Eta_muon2<-0.3)+0.997644*(Eta_muon2>-0.3)*(Eta_muon2<-0.2)+0.998011*(Eta_muon2>-0.2)*(Eta_muon2<0.2)+0.997196*(Eta_muon2>0.2)*(Eta_muon2<0.3)+0.997877*(Eta_muon2>0.3)*(Eta_muon2<0.9)+0.999609*(Eta_muon2>0.9)*(Eta_muon2<1.2)+0.999474*(Eta_muon2>1.2)*(Eta_muon2<1.6)+0.999761*(Eta_muon2>1.6)*(Eta_muon2<2.1)+1.00043*(Eta_muon2>2.1)*(Eta_muon2<2.4)))'
-
-#pt-binned
-singleMuIdScale = '*(0.9813326964101629*(Pt_muon1>50)*(Pt_muon1<55)+0.9811215588407185*(Pt_muon1>55)*(Pt_muon1<60)+0.9888030350742609*(Pt_muon1>60)*(Pt_muon1<120)+1.0179598732419621*(Pt_muon1>120))'
-
-singleMuIsoScale = '*(0.9985465327438463*(Pt_muon1>50)*(Pt_muon1<55)+0.9988891755735836*(Pt_muon1>55)*(Pt_muon1<60)+0.9989480835906359*(Pt_muon1>60)*(Pt_muon1<120)+1.0006806854046033*(Pt_muon1>120))'
-
-#eta-binned
-singleMuIdScale = '*(0.969328*(Eta_muon1>-2.4)*(Eta_muon1<-2.1)+0.98193*(Eta_muon1>-2.1)*(Eta_muon1<-1.6)+0.989731*(Eta_muon1>-1.6)*(Eta_muon1<-1.2)+0.975207*(Eta_muon1>-1.2)*(Eta_muon1<-0.9)+0.987146*(Eta_muon1>-0.9)*(Eta_muon1<-0.3)+0.965056*(Eta_muon1>-0.3)*(Eta_muon1<-0.2)+0.988669*(Eta_muon1>-0.2)*(Eta_muon1<0.2)+0.958604*(Eta_muon1>0.2)*(Eta_muon1<0.3)+0.986526*(Eta_muon1>0.3)*(Eta_muon1<0.9)+0.972524*(Eta_muon1>0.9)*(Eta_muon1<1.2)+0.98789*(Eta_muon1>1.2)*(Eta_muon1<1.6)+0.984616*(Eta_muon1>1.6)*(Eta_muon1<2.1)+0.972038*(Eta_muon1>2.1)*(Eta_muon1<2.4))'
-
-singleMuIsoScale = '*(0.999026*(Eta_muon1>-2.4)*(Eta_muon1<-2.1)+0.999513*(Eta_muon1>-2.1)*(Eta_muon1<-1.6)+0.999475*(Eta_muon1>-1.6)*(Eta_muon1<-1.2)+0.999077*(Eta_muon1>-1.2)*(Eta_muon1<-0.9)+0.998022*(Eta_muon1>-0.9)*(Eta_muon1<-0.3)+0.997644*(Eta_muon1>-0.3)*(Eta_muon1<-0.2)+0.998011*(Eta_muon1>-0.2)*(Eta_muon1<0.2)+0.997196*(Eta_muon1>0.2)*(Eta_muon1<0.3)+0.997877*(Eta_muon1>0.3)*(Eta_muon1<0.9)+0.999609*(Eta_muon1>0.9)*(Eta_muon1<1.2)+0.999474*(Eta_muon1>1.2)*(Eta_muon1<1.6)+0.999761*(Eta_muon1>1.6)*(Eta_muon1<2.1)+1.00043*(Eta_muon1>2.1)*(Eta_muon1<2.4))'
-
-
-#pt-binned
-MuIdScaleEMU = '*(IsMuon_muon1*(0.9813326964101629*(Pt_muon1>50)*(Pt_muon1<55)+0.9811215588407185*(Pt_muon1>55)*(Pt_muon1<60)+0.9888030350742609*(Pt_muon1>60)*(Pt_muon1<120)+1.0179598732419621*(Pt_muon1>120))+IsMuon_muon2*(0.9813326964101629*(Pt_muon2>50)*(Pt_muon2<55)+0.9811215588407185*(Pt_muon2>55)*(Pt_muon2<60)+0.9888030350742609*(Pt_muon2>60)*(Pt_muon2<120)+1.0179598732419621*(Pt_muon2>120)))'
-
-MuIsoScaleEMU = '*(IsMuon_muon1*(0.9985465327438463*(Pt_muon1>50)*(Pt_muon1<55)+0.9988891755735836*(Pt_muon1>55)*(Pt_muon1<60)+0.9989480835906359*(Pt_muon1>60)*(Pt_muon1<120)+1.0006806854046033*(Pt_muon1>120))+IsMuon_muon2*(0.9985465327438463*(Pt_muon2>50)*(Pt_muon2<55)+0.9988891755735836*(Pt_muon2>55)*(Pt_muon2<60)+0.9989480835906359*(Pt_muon2>60)*(Pt_muon2<120)+1.0006806854046033*(Pt_muon2>120)))'
+singleMuIsoScale = '*mu1isoSF'
+doubleMuIsoScale = '*mu1isoSF*mu2isoSF'
 
 #eta-binned
 
@@ -152,6 +102,15 @@ eleRECOScale = '*((1-IsMuon_muon1)*(((Eta_muon1>-2.5)*(Eta_muon1<-2.45)*1.3176)+
 #eleHEEPScale = '*((1-IsMuon_muon1)*(((Eta_muon1>-2.5)*(Eta_muon1<-1.566)*0.983)+((Eta_muon1>-1.4442)*(Eta_muon1<-0.5)*0.971)+((Eta_muon1>-0.5)*(Eta_muon1<-0.0)*0.961)+((Eta_muon1>0.0)*(Eta_muon1<0.5)*0.973)+((Eta_muon1>0.5)*(Eta_muon1<1.4442)*0.978)+((Eta_muon1>1.566)*(Eta_muon1<2.5)*0.980))+(1-IsMuon_muon2)*(((Eta_muon2>-2.5)*(Eta_muon2<-1.566)*0.984)+((Eta_muon2>-1.4442)*(Eta_muon2<-0.5)*0.971)+((Eta_muon2>-0.5)*(Eta_muon2<-0.0)*0.961)+((Eta_muon2>0.0)*(Eta_muon2<0.5)*0.973)+((Eta_muon2>0.5)*(Eta_muon2<1.4442)*0.978)+((Eta_muon2>1.566)*(Eta_muon2<2.5)*0.980)))'
 eleHEEPScale = '*((1-IsMuon_muon1)*(((abs(Eta_muon1)>0.0)*(abs(Eta_muon1)<0.5)*0.967)+((abs(Eta_muon1)>0.5)*(abs(Eta_muon1)<1.4442)*0.975)+((abs(Eta_muon1)>1.566)*(abs(Eta_muon1)<2.5)*0.983))+(1-IsMuon_muon2)*((abs(Eta_muon2)>0.0)*(abs(Eta_muon2)<0.5)*0.967+((abs(Eta_muon2)>0.5)*(abs(Eta_muon2)<1.4442)*0.975)+((abs(Eta_muon2)>1.566)*(abs(Eta_muon2)<2.5)*0.983)))'
 
+#BTAG scale factors
+#2016
+bTag1SFmedium = '*(1-(1-(CISV_jet1>0.8838)*bTagSF_jet1)*(1-(CISV_jet2>0.8838)*bTagSF_jet2))'
+bTag1SFmediumUp = '*(1-(1-(CISV_jet1>0.8838)*bTagSF_jet1Up)*(1-(CISV_jet2>0.8838)*bTagSF_jet2Up))'
+bTag1SFmediumDown = '*(1-(1-(CISV_jet1>0.8838)*bTagSF_jet1Down)*(1-(CISV_jet2>0.8838)*bTagSF_jet2Down))'
+
+bTagsel1medium = '*(((CISV_jet1>0.8838)+(CISV_jet2>0.8838))>0)'
+
+
 # Weights for different MC selections, including integrated luminosity, event weight, and trigger weight
 #NormalWeightMuMu = str(lumi)+'*weight_central*((pass_HLTMu50+pass_HLTTkMu50)>0)'+doublemuHLT+doubleMuIdScale+doubleMuIsoScale+trackerHIP1+trackerHIP2
 #NormalWeightMuNu = str(lumi)+'*weight_central*((pass_HLTMu50+pass_HLTTkMu50)>0)'+singlemuHLT+singleMuIdScale+singleMuIsoScale+trackerHIP1
@@ -171,14 +130,14 @@ dataHLT = '*((pass_HLTMu50+pass_HLTTkMu50)>0)'
 
 # This is the set of event filters used
 passfilter =  '*(passDataCert*passPrimaryVertex*(GoodVertexCount>=1))'
-passfilter += '*(passHBHENoiseFilter*passHBHENoiseIsoFilter)'
-passfilter += '*(passBadEESuperCrystal*passEcalDeadCellTP)'
-passfilter += '*(passBeamHalo2016)'
-passfilter += '*(passBadMuon*passBadChargedHadron)'
+passfilter += '*(Flag_HBHENoiseFilter*Flag_HBHENoiseIsoFilter)'
+passfilter += '*(Flag_eeBadScFilter*Flag_EcalDeadCellTriggerPrimitiveFilter)'
+passfilter += '*(Flag_globalSuperTightHalo2016Filter)'
+passfilter += '*(Flag_BadPFMuonFilter)'#*Flag_BadChargedHadron)'
 #passfilter += '*(noBadMuonsFlag*(1-duplicateMuonsFlag))'
 
 # This defines the preselections for the mu-mu, mu-nu, and e-mu samples
-preselectionmumu = '((Pt_muon1>53)*(Pt_muon2>53)*(Pt_jet1>50)*(Pt_jet2>50)*(St_uujj>300)*(M_uu>50)*(DR_muon1muon2>0.3))'
+preselectionmumu = '((Pt_muon1>53)*(Pt_muon2>53)*(Pt_jet1>50)*(Pt_jet2>50)*(St_uujj>300)*(M_uu>50)*(DR_muon1muon2>0.3)'+bTagsel1medium+')'
 preselectionmunu = '((Pt_muon1>53)*(Pt_muon2<53)*(Pt_miss>55)*(Pt_jet1>50)*(Pt_jet2>50)*(Pt_ele1<53)*(St_uvjj>300)*(MT_uv>50.0)*(DPhi_muon1met>0.8)*(DPhi_jet1met>0.5))'
 preselectionemu  = '((Pt_muon1>53)*(Pt_muon2>53)*(Pt_jet1>50)*(Pt_jet2>50)*(St_uujj>300)*(M_uu>50)*(DR_muon1muon2>0.3))'
 
@@ -225,7 +184,7 @@ munu2 = '(MT_uv>70)*(MT_uv<110)*(1-(1-(CISV_jet1>0.8484)*0.561694*((1.+(0.31439*
 #emu_id_eff = 0.5716
 #emu_id_eff_err = 0.00606
 emu_id_eff = 1.0
-useDataDrivenTTbar = True
+useDataDrivenTTbar = False
 if useDataDrivenTTbar:
 	#emu_id_eff = 0.496644871013
 	#emu_id_eff = 0.586505470035 #NLO vv
@@ -250,14 +209,6 @@ pdf_uvjj_Signal = [0.35,0.35,0.35,0.53,0.83,0.83,0.83,0.83,0.83,0.83,0.83,0.84,1
 #pdf_uujj_Signal = [2.0 for x in pdf_MASS]               
 #pdf_uvjj_Signal = [3.0 for x in pdf_MASS]               
 
-#2015
-#pdf_uujj_QCD = [0.95,0.95,2.11,2.98,5.09,5.8,6.73,7.41,7.41,7.62,7.69,8.11,8.48,11.43,11.43,14.11,14.11,14.11,14.11,14.11,14.11,14.11,14.11,14.11,14.11,14.11,14.11,14.11,14.11,14.11,14.11,14.11,14.11,14.11,14.11,14.11,14.11]
-#pdf_uujj_ZJets = [0.95,0.95,2.11,2.98,5.09,5.8,6.73,7.41,7.41,7.62,7.69,8.11,8.48,11.43,11.43,14.11,14.11,14.11,14.11,14.11,14.11,14.11,14.11,14.11,14.11,14.11,14.11,14.11,14.11,14.11,14.11,14.11,14.11,14.11,14.11,14.11,14.11]
-#pdf_uujj_WJets = [5.83,5.83,5.83,5.83,6.42,6.42,6.42,6.42,6.42,6.42,6.42,6.42,6.42,6.42,6.42,6.42,6.42,6.42,6.42,6.42,6.42,6.42,6.42,6.42,6.42,6.42,6.42,6.42,6.42,6.42,6.42,6.42,6.42,6.42,6.42,6.42,6.42]
-#pdf_uujj_TTBar = [32.579,32.579,32.579,32.579,32.579,32.579,32.579,32.579,32.579,32.579,32.579,32.579,32.579,32.579,32.579,32.579,32.579,32.579,32.579,32.579,32.579,32.579,32.579,32.579,32.579,32.579,32.579,32.579,32.579,32.579,32.579,32.579,32.579,32.579,32.579,32.579,32.579]
-pdf_uujj_Signal = [1.88,2.36,2.36,2.36,2.44,3.81,3.81,3.81,3.81,3.81,3.81,3.81,3.81,3.81,3.96,3.96,3.96,3.96,3.96,3.96,3.96,3.96,3.96,3.96,3.96,3.96,3.96,3.96,3.96,3.96,3.96,3.96,3.96,3.96,3.96,3.96,3.96]
-#pdf_uujj_sTop = [8.43,8.43,8.43,8.43,8.43,8.43,8.43,8.43,8.43,8.43,8.43,8.43,8.43,8.43,8.43,8.43,8.43,8.43,8.43,8.43,8.43,8.43,8.43,8.43,8.43,8.43,8.43,8.43,8.43,8.43,8.43,8.43,8.43,8.43,8.43,8.43,8.43]
-#pdf_uujj_VV = [3.35,3.35,3.35,3.41,3.62,3.73,4.03,4.03,4.03,4.03,4.03,4.03,4.03,4.03,4.03,4.03,4.03,4.03,4.03,4.03,4.03,4.03,4.03,4.03,4.03,4.03,4.03,4.03,4.03,4.03,4.03,4.03,4.03,4.03,4.03,4.03,4.03]
 
 #2016
 pdf_uujj_TTBar = [1.61,1.74,2.01,2.39,2.85,3.24,3.48,4.0,4.22,4.22,4.22,4.22,4.22,4.22,4.22,4.22,4.22,4.22,4.22,4.22,4.22,4.22,4.22,4.22,4.22,4.22,4.22,4.22,4.22,4.22,4.22,4.22,4.22,4.22,4.22,4.22,4.22]
@@ -361,7 +312,7 @@ def main():
 	# for this, and make use of it. e.g. For systematic variations, we can run in batch instead
 	# of running serially, which speeds things up.
 
-	version_name = 'Testing_v236_etaSF_ttbar_newPlots' # scriptflag
+	version_name = 'Testing_2016_customNano' # scriptflag
 	#version_name = 'Testing_noQCD_14nov' # use sf tag above if this is the real folder
 	os.system('mkdir Results_'+version_name) 
 
@@ -554,7 +505,7 @@ def main():
 	# ====================================================================================================================================================== #
 	# This is a basic plotting routine to make Analysis Note style plots with ratio plots. AN Analysis-Note
 	# ====================================================================================================================================================== #
-	if False :
+	if True :
 		#global preselectionmumu 
 		# Some modifications to the ST and LQ mass binning
 		bjetbinning = [0,.05]
@@ -591,8 +542,8 @@ def main():
 		munu2plot = munu2#'(MT_uv>70)*(MT_uv<150)*(((CISV_jet1>0.8484)+(CISV_jet2>0.8484))>=1)*(0.561694*((1.+(0.31439*Pt_jet1))/(1.+(0.17756*Pt_jet1))))'#*(CISV_jet1>CISV_jet2)+(0.901114+(1.40704e-05*(Pt_jet2)))*(CISV_jet2>0.8484)*(CISV_jet1<CISV_jet2))'
 		#munu1 = '(MT_uv>70)*(MT_uv<110)*(JetCount<3.5)'
 		#munu2 = '(MT_uv>70)*(MT_uv<110)*(JetCount>3.5)'
-		#[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = GetMuMuScaleFactors( NormalWeightMuMu+'*'+preselectionmumu, NormalDirectory, '(M_uu>80)*(M_uu<100)', '(M_uu>100)',1,0)
-		[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = [[0.983,0.006],[1.000,0.023]]#TTBarDataDriven, eta-driven SF, no top-pt reweight
+		[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = GetMuMuScaleFactors( NormalWeightMuMu+'*'+preselectionmumu, NormalDirectory, '(M_uu>80)*(M_uu<100)', '(M_uu>100)',0,0)
+		#[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = [[0.983,0.006],[1.000,0.023]]#TTBarDataDriven, eta-driven SF, no top-pt reweight
 		#[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = [[0.983,0.006],[1.000,0.023]]#TTBarDataDriven, eta-driven SF
 		#[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = [[0.925,0.005],[1.000,0.023]]#TTBarDataDriven
 		#[[Rw_uvjj,Rw_uvjj_err],[Rtt_uvjj,Rtt_uvjj_err]] = [[0.977,0.052],[0.932,0.039]]#TTBarMC
@@ -605,7 +556,7 @@ def main():
 		#CSVv2T	0.9535
 		# Optionally, you can make an event-count table for each selection. Useful if testing a new optimization
 		# We will do this later wtih full systematics for our set of stable cuts. 
-		if True:
+		if False:
 			
 			MuMuOptCutFileTable = 'Results_'+version_name+'/OptLQ_uujjCuts_LQ1400_plus_st3000.txt' # scriptflag
 			##MuNuOptCutFileTable = 'Results_'+version_name+'/OptLQ_uvjjCuts_Smoothed_pol2cutoff_table.txt' # scriptflag
@@ -909,7 +860,8 @@ def main():
 	# Alternatively, you can run > python SysBatcher.py --launch to do each table in a separate batch job
 	# When done, proceed to the next step to make higgs limit cards
 	if False : 
-		FullAnalysis(MuMuOptCutFile, preselectionmumu,preselectionmunu,NormalDirectory,NormalWeightMuMu,'TTBarDataDriven') # scriptflag 
+		#FullAnalysis(MuMuOptCutFile, preselectionmumu,preselectionmunu,NormalDirectory,NormalWeightMuMu,'TTBarDataDriven') # scriptflag 
+		FullAnalysis(MuMuOptCutFile, preselectionmumu,preselectionmunu,NormalDirectory,NormalWeightMuMu,'normal') # scriptflag 
 		FullAnalysis(MuNuOptCutFile, preselectionmumu,preselectionmunu,NormalDirectory,NormalWeightMuNu,'normal')  # scriptflag
 	if False :
  		uujjcardfiles = MuMuOptCutFile.replace('.txt','_systable*.txt')
@@ -1016,7 +968,7 @@ def main():
 	# This is for scale factor studies
 	# ====================================================================================================================================================== #
 
-	if True:
+	if False:
 		
 		mtCR = '*(MT_uv>70)*(MT_uv<110)'
 		mtSR = '*(((MT_uv>50)*(MT_uv<70)+(MT_uv>110))>0)'
