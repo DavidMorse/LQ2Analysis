@@ -129,7 +129,8 @@ NormalWeightEMuNoHLT = str(lumi)+'*weight_central'+MuIdScaleEMU+MuIsoScaleEMU+el
 dataHLT = '*((pass_HLTMu50+pass_HLTTkMu50)>0)'
 
 # This is the set of event filters used
-passfilter =  '*(passDataCert*passPrimaryVertex*(GoodVertexCount>=1))'
+#passfilter =  '*(passDataCert*passPrimaryVertex*(GoodVertexCount>=1))' #fixme json not working
+passfilter =  '*(Flag_goodVertices*(GoodVertexCount>=1))'
 passfilter += '*(Flag_HBHENoiseFilter*Flag_HBHENoiseIsoFilter)'
 passfilter += '*(Flag_eeBadScFilter*Flag_EcalDeadCellTriggerPrimitiveFilter)'
 passfilter += '*(Flag_globalSuperTightHalo2016Filter)'
