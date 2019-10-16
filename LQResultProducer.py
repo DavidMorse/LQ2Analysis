@@ -5636,10 +5636,10 @@ def MakeBasicPlot(recovariable,xlabel,presentationbinning,selection,weight,FileD
 		hs_rec_Signal4.Draw("HISTSAME")
 	#setZeroBinErrors(hs_rec_Data,MCStack)
 	#blind(hs_rec_Data,recovariable,1,tagname,channel)#fixme
-	blinded=False
+	blinded=True
         #hs_rec_Data.Draw("E0PSAME")
 	hs_rec_Data_tgraph = TGraphAsymmErrors(hs_rec_Data)
-	blinded=False
+	blinded=True
 	if 'BDT' in tagname: blinded=True
 	if 'final' not in tagname:
 		setZeroBinErrors_tgraph(hs_rec_Data,hs_rec_Data_tgraph,MCStack,hs_rec_Signal,hs_rec_Signal2,blinded)
@@ -6151,7 +6151,7 @@ def MakeBasicPlotEMuMuMu(recovariable,xlabel,presentationbinning,selection,weigh
 	c1.cd(1).SetLogy()
 
 	MCStack=BeautifyStack(MCStack,Label)
-	blinded=False
+	blinded=True
 	hs_rec_TTBar_tgraph = TGraphAsymmErrors(hs_rec_TTBar)
 	#setZeroBinErrors_tgraph(hs_rec_TTBar,hs_rec_TTBar_tgraph,MCStack,hs_rec_Signal,hs_rec_Signal2,blinded)
 	hs_rec_TTBar_tgraph.Draw("ZE0PSAME")
