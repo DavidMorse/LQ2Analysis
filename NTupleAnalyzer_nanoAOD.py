@@ -2146,7 +2146,7 @@ for n in range(N):
 		print 'Processing event',n, 'of', N # where we are in the loop...
 
 	
-	isData = t.run>0
+	isData = t.run>1
 	## ===========================  BASIC SETUP  ============================= ##
 	# print '-----'
 	# Assign Weights
