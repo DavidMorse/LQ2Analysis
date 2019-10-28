@@ -1220,7 +1220,7 @@ def TightHighPtIDMuons(T,_met,variation,isdata):
 			# Append items to retun if the muon is good
 
 			muons.append(NewMu)
-			trk_isos.append(0.)#(T.MuonTrackerIsoSumPT[n]/_MuonCocktailPt[n]))
+			trk_isos.append(0.)#T.Muon_tkRelIso)
 			chi2.append(0.)#T.MuonGlobalChi2[n])
 			pfid.append(0.)#T.MuonIsPF[n])
 			layers.append(0.)#T.MuonTrackLayersWithMeasurement[n])
