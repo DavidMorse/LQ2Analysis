@@ -506,7 +506,7 @@ def main():
 	# ====================================================================================================================================================== #
 	# This is a basic plotting routine to make Analysis Note style plots with ratio plots. AN Analysis-Note
 	# ====================================================================================================================================================== #
-	if True :
+	if False :
 		#global preselectionmumu 
 		# Some modifications to the ST and LQ mass binning
 		bjetbinning = [0,.05]
@@ -543,8 +543,8 @@ def main():
 		munu2plot = munu2#'(MT_uv>70)*(MT_uv<150)*(((CISV_jet1>0.8484)+(CISV_jet2>0.8484))>=1)*(0.561694*((1.+(0.31439*Pt_jet1))/(1.+(0.17756*Pt_jet1))))'#*(CISV_jet1>CISV_jet2)+(0.901114+(1.40704e-05*(Pt_jet2)))*(CISV_jet2>0.8484)*(CISV_jet1<CISV_jet2))'
 		#munu1 = '(MT_uv>70)*(MT_uv<110)*(JetCount<3.5)'
 		#munu2 = '(MT_uv>70)*(MT_uv<110)*(JetCount>3.5)'
-		[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = GetMuMuScaleFactors( NormalWeightMuMu+'*'+preselectionmumu, NormalDirectory, '(M_uu>80)*(M_uu<100)', '(M_uu>100)',0,0)
-		#[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = [[1.025,0.04],[1.147,0.019]]#TTBar MC, 2016 customNano
+		#[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = GetMuMuScaleFactors( NormalWeightMuMu+'*'+preselectionmumu, NormalDirectory, '(M_uu>80)*(M_uu<100)', '(M_uu>100)',0,0)
+		[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = [[1.025,0.04],[1.147,0.019]]#TTBar MC, 2016 customNano
 		#[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = [[0.925,0.005],[1.000,0.023]]#TTBarDataDriven
 		#[[Rw_uvjj,Rw_uvjj_err],[Rtt_uvjj,Rtt_uvjj_err]] = [[0.977,0.052],[0.932,0.039]]#TTBarMC
 		#[[Rw_uvjj,Rw_uvjj_err],[Rtt_uvjj,Rtt_uvjj_err]] = GetMuNuScaleFactors( NormalWeightMuNu+'*'+preselectionmunu, NormalDirectory, munu1, munu2,0)#fixme todo varying control sample MT windoq
@@ -571,7 +571,7 @@ def main():
 		#MakeEfficiencyPlot(NormalDirectory,NormalWeightMuMu,MuMuOptCutFile,'LQuujj',version_name,1)
 		#MakeEfficiencyPlot(NormalDirectory,NormalWeightMuNu,MuNuOptCutFile,'LQuvjj',version_name,1)
 		#exit()
-		
+
 		# Here are a few plots which are zoomed-in on control regions. 
 		MakeBasicPlot("M_uu","M^{#mu#mu} [GeV]",bosonzoombinning_uujj_Z,preselectionmumu,NormalWeightMuMu,NormalDirectory,'controlzoom_ZRegion','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
 		MakeBasicPlot("Pt_miss","E_{T}^{miss} [GeV]",metzoombinning_uujj_Z,preselectionmumu+'*(M_uu>80)*(M_uu<100)*(Pt_miss<100)',NormalWeightMuMu,NormalDirectory,'controlzoom_ZRegion','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
@@ -931,8 +931,14 @@ def main():
 	if False :
 		doLongLived = False
 		# Get Scale Factors
-		[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = GetMuMuScaleFactors( NormalWeightMuMu+'*'+preselectionmumu, NormalDirectory, '(M_uu>80)*(M_uu<100)', '(M_uu>100)',0,0)
-		[[Rw_uvjj,Rw_uvjj_err],[Rtt_uvjj,Rtt_uvjj_err]] = GetMuNuScaleFactors( NormalWeightMuNu+'*'+preselectionmunu, NormalDirectory, munu1, munu2,0)#fixme todo varying control sample MT window
+		#[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = GetMuMuScaleFactors( NormalWeightMuMu+'*'+preselectionmumu, NormalDirectory, '(M_uu>80)*(M_uu<100)', '(M_uu>100)',0,0)
+		#[[Rw_uvjj,Rw_uvjj_err],[Rtt_uvjj,Rtt_uvjj_err]] = GetMuNuScaleFactors( NormalWeightMuNu+'*'+preselectionmunu, NormalDirectory, munu1, munu2,0)#fixme todo varying control sample MT window
+
+		[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = [[1.025,0.04],[1.147,0.019]]#TTBar MC, 2016 customNano
+		[[Rw_uvjj,Rw_uvjj_err],[Rtt_uvjj,Rtt_uvjj_err]] = [[0.934,0.01],[0.984,0.008]]#TTBarMC, eta-driven SF, no top-pt reweight
+
+
+
 
 		scaleFactors = [Rz_uujj,Rtt_uujj,Rw_uvjj]
 		if not doLongLived :
@@ -940,16 +946,16 @@ def main():
 			variableSpace = ['M_uu:25:100:1000','St_uujj:100:300:2500','M_uujj2:25:100:1000']
 			OptimizeCuts3D(variableSpace,preselectionmumu,NormalWeightMuMu,version_name,scaleFactors,'','uujj')
 			scaleFactors = [Rz_uujj,Rtt_uvjj,Rw_uvjj]
-			variableSpace = ['MT_uv:50:150:1200','St_uvjj:100:300:3000','M_uvjj:50:100:900',]
-		        OptimizeCuts3D(variableSpace,preselectionmunu,NormalWeightMuNu,version_name,scaleFactors,'','uvjj')
+			#variableSpace = ['MT_uv:50:150:1200','St_uvjj:100:300:3000','M_uvjj:50:100:900',]
+		    #OptimizeCuts3D(variableSpace,preselectionmunu,NormalWeightMuNu,version_name,scaleFactors,'','uvjj')
 		#Now we can do it for long-lived samples
 		if doLongLived :
 			scaleFactors = [Rz_uujj,Rtt_uujj,Rw_uvjj]
 			variableSpace = ['M_uu:15:100:500','St_uujj:15:300:1800','M_uujj2:15:100:900',]
 			OptimizeCuts3D(variableSpace,preselectionmumu,NormalWeightMuMu,version_name,scaleFactors,'','BLuujj')
-	if False:
- 		makeOptPlotForPAS(MuMuOptCutFile,'uujj',version_name,1)
-		makeOptPlotForPAS(MuNuOptCutFile,'uvjj',version_name,1)
+	if True:
+ 		makeOptPlotForPAS(MuMuOptCutFile,'uujj',version_name,0)
+		#makeOptPlotForPAS(MuNuOptCutFile,'uvjj',version_name,1)
 
 	# ====================================================================================================================================================== #
 	# This is for shape systematics
@@ -5193,16 +5199,18 @@ def MakeBasicPlot(recovariable,xlabel,presentationbinning,selection,weight,FileD
 
 	if 'PAS' not in tagname:
 		c1 = TCanvas("c1","",800,800)
-		pad1 = TPad( 'pad1', 'pad1', 0.0, 0.4, 1.0, 1.0 )#divide canvas into pads
-		pad2 = TPad( 'pad2', 'pad2', 0.0, 0.26, 1.0, 0.4 )
-		pad3 = TPad( 'pad3', 'pad3', 0.0, 0.0, 1.0, 0.26 )
+		#pad1 = TPad( 'pad1', 'pad1', 0.0, 0.4, 1.0, 1.0 )#divide canvas into pads
+		#pad2 = TPad( 'pad2', 'pad2', 0.0, 0.26, 1.0, 0.4 )
+		#pad3 = TPad( 'pad3', 'pad3', 0.0, 0.0, 1.0, 0.26 )
+		pad1 = TPad( 'pad1', 'pad1', 0.0, 0.3, 1.0, 1.0 )
+		pad3 = TPad( 'pad3', 'pad3', 0.0, 0.0, 1.0, 0.3 )
 		pad1.Draw()
-		pad2.Draw()
+		#pad2.Draw()
 		pad3.Draw()
 		pad1.SetBottomMargin(0.0)		
-		pad2.SetTopMargin(0.0)
+		#pad2.SetTopMargin(0.0)
 		pad3.SetTopMargin(0.0)
-		pad2.SetBottomMargin(0.0)
+		#pad2.SetBottomMargin(0.0)
 		pad3.SetBottomMargin(0.43)
 		if 'final' not in tagname:
 			perc = syslist[0]
@@ -5636,8 +5644,8 @@ def MakeBasicPlot(recovariable,xlabel,presentationbinning,selection,weight,FileD
 		hs_rec_Signal3.Draw("HISTSAME")
 		hs_rec_Signal4.Draw("HISTSAME")
 	#setZeroBinErrors(hs_rec_Data,MCStack)
-	#blind(hs_rec_Data,recovariable,1,tagname,channel)#fixme
 	blinded=True
+	if blinded: blind(hs_rec_Data,recovariable,1,tagname,channel)#fixme
         #hs_rec_Data.Draw("E0PSAME")
 	hs_rec_Data_tgraph = TGraphAsymmErrors(hs_rec_Data)
 	blinded=True
@@ -5707,7 +5715,7 @@ def MakeBasicPlot(recovariable,xlabel,presentationbinning,selection,weight,FileD
  
 	if  'PAS' in tagname and 'tagfree' not in tagname:
 		#l1.DrawLatex(0.18,0.94,"CMS #it{Preliminary}      "+sqrts+", 19.7 fb^{-1}")
-		l1.DrawLatex(0.13,0.94,"#it{Preliminary}                              35.9 fb^{-1} (13 TeV)")
+		l1.DrawLatex(0.13,0.94,"#it{Preliminary}                                35.9 fb^{-1} (13 TeV)")
 		#l1.DrawLatex(0.64,0.94,"5 fb^{-1} (13 TeV)")
 		l2.DrawLatex(0.15,0.84,"CMS")
 	elif  'PAS' in tagname and 'tagfree' in tagname:
@@ -5721,7 +5729,7 @@ def MakeBasicPlot(recovariable,xlabel,presentationbinning,selection,weight,FileD
 			l1.DrawLatex(0.155,0.77,"#mu#nujj")
 	else:
 		#l1.DrawLatex(0.18,0.94,"                          "+sqrts+", 225.57 pb^{-1}")
-		l1.DrawLatex(0.13,0.94,"#it{Preliminary}                                       35.9 fb^{-1} (13 TeV)")
+		l1.DrawLatex(0.12,0.94,"#it{Preliminary}                           35.9 fb^{-1} (13 TeV)")
 		l2.DrawLatex(0.15,0.84,"CMS")
 
 
@@ -5756,10 +5764,9 @@ def MakeBasicPlot(recovariable,xlabel,presentationbinning,selection,weight,FileD
 		MCStack.SetMaximum(100*MCStack.GetMaximum())
 	resstring = ''
 	if 'PAS' not in tagname:
-
-		pad2.cd()
+		pad3.cd()
 		# pad2.SetLogy()
-		pad2.SetGrid()
+		pad3.SetGrid()
 
 		RatHistDen =CreateHisto('RatHisDen','RatHistDen',t_SingleMuData,recovariable,presentationbinning,'0',DataRecoStyle,Label)
 
@@ -5784,20 +5791,21 @@ def MakeBasicPlot(recovariable,xlabel,presentationbinning,selection,weight,FileD
 		RatHistNum.GetXaxis().SetTitle(xlabel)
 
 		RatHistNum.GetYaxis().SetTitleFont(42);
-		RatHistNum.GetXaxis().SetTitle('');
+		#RatHistNum.GetXaxis().SetTitle('');
 		RatHistNum.GetYaxis().SetTitle('Data/MC');
 		RatHistNum.GetYaxis().SetNdivisions(308,True)
 
-		RatHistNum.GetXaxis().SetTitleSize(0.);
-		RatHistNum.GetYaxis().SetTitleSize(.20);
+		RatHistNum.GetXaxis().SetTitleSize(0.14);
+		RatHistNum.GetYaxis().SetTitleSize(.12);
 		#RatHistNum.GetXaxis().CenterTitle();
 		#RatHistNum.GetYaxis().CenterTitle();		
-		RatHistNum.GetXaxis().SetTitleOffset(.28);
-		RatHistNum.GetYaxis().SetTitleOffset(.18);
-		RatHistNum.GetYaxis().SetLabelSize(.15);
+		RatHistNum.GetXaxis().SetTitleOffset(0.);
+		RatHistNum.GetYaxis().SetTitleOffset(.45);
+		RatHistNum.GetYaxis().SetLabelSize(.1);
 		RatHistNum.GetXaxis().SetLabelSize(.09);
+		
 
-		#blind(RatHistNum,recovariable,2,tagname,channel)#fixme
+		if blinded: blind(RatHistNum,recovariable,2,tagname,channel)#fixme
 		RatHistNum.Draw("PE0")
 
 	
@@ -5827,7 +5835,7 @@ def MakeBasicPlot(recovariable,xlabel,presentationbinning,selection,weight,FileD
 			hs_bgbandRat.SetBinContent(c,1.0)
 			hs_bgbandRat.SetBinError(c,newErr)
 		hs_bgbandRat.Draw("E2SAMES")
-
+		"""
 		pad3.cd()
 		# pad2.SetLogy()
 		pad3.SetGrid()
@@ -5889,7 +5897,7 @@ def MakeBasicPlot(recovariable,xlabel,presentationbinning,selection,weight,FileD
 		chiplot.GetYaxis().SetLabelSize(.09);
 		chiplot.GetXaxis().SetLabelSize(.09);
 
-		#blind(chiplot,recovariable,3,tagname,channel)
+		if blinded: blind(chiplot,recovariable,3,tagname,channel)
 		chiplot.Draw('EP')
 		zero=TLine(RatHistNum.GetXaxis().GetXmin(), 0.0 , RatHistNum.GetXaxis().GetXmax(),0.0)
 		plus2=TLine(RatHistNum.GetXaxis().GetXmin(), 2.0 , RatHistNum.GetXaxis().GetXmax(),2.0)
@@ -5900,7 +5908,7 @@ def MakeBasicPlot(recovariable,xlabel,presentationbinning,selection,weight,FileD
 		#plus2.Draw("SAME")
 		#minus2.Draw("SAME")
 		zero.Draw("SAME")	
-
+		"""
 
 
 	if 'PAS' in tagname and 'final' in tagname and False:
@@ -7535,7 +7543,7 @@ def MakeSmoothCuts(vals,vnames,versionname,signalType,chan,rawmethod):
 
 	if 'cutoff' in rawmethod:
 		_vals = []
-		if 'uujj' in chan: cutoffVal=1500
+		if 'uujj' in chan: cutoffVal=1250
 		elif 'uvjj' in chan: cutoffVal=1300
 		for v in _allvals:
 			if v[0] <= cutoffVal :
