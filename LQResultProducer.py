@@ -104,7 +104,7 @@ eleHEEPScale = '*((1-IsMuon_muon1)*(((abs(Eta_muon1)>0.0)*(abs(Eta_muon1)<0.5)*0
 
 #BTAG scale factors
 #2016
-bTag1SFmedium = '*(1-(1-(CISV_jet1>0.8838)*bTagSF_jet1)*(1-(CISV_jet2>0.8838)*bTagSF_jet2))'
+bTag1SFmedium = '*(1-(1-(CISV_jet1>0.8838)*bTagSF_jet1)*(1-(CISV_jet2>0.8838)*btagSF_jet2))' #fixme btag -> BTag
 bTag1SFmediumUp = '*(1-(1-(CISV_jet1>0.8838)*bTagSF_jet1Up)*(1-(CISV_jet2>0.8838)*bTagSF_jet2Up))'
 bTag1SFmediumDown = '*(1-(1-(CISV_jet1>0.8838)*bTagSF_jet1Down)*(1-(CISV_jet2>0.8838)*bTagSF_jet2Down))'
 
@@ -115,7 +115,7 @@ bTagsel1medium = '*(((CISV_jet1>0.8838)+(CISV_jet2>0.8838))>0)'
 #NormalWeightMuMu = str(lumi)+'*weight_central*((pass_HLTMu50+pass_HLTTkMu50)>0)'+doublemuHLT+doubleMuIdScale+doubleMuIsoScale+trackerHIP1+trackerHIP2
 #NormalWeightMuNu = str(lumi)+'*weight_central*((pass_HLTMu50+pass_HLTTkMu50)>0)'+singlemuHLT+singleMuIdScale+singleMuIsoScale+trackerHIP1
 #NormalWeightEMu = str(lumi)+'*weight_central*((pass_HLTMu50+pass_HLTTkMu50)>0)'+singlemuHLTEMU+MuIdScaleEMU+MuIsoScaleEMU+eleRECOScale+eleHEEPScale+trackerHIPEMU
-NormalWeightMuMu = str(lumi)+'*weight_central'+doublemuHLT+doubleMuIdScale+doubleMuIsoScale+trackerHIP1+trackerHIP2
+NormalWeightMuMu = str(lumi)+'*weight_central'+doublemuHLT+doubleMuIdScale+doubleMuIsoScale+trackerHIP1+trackerHIP2+bTag1SFmedium
 NormalWeightMuNu = str(lumi)+'*weight_central'+singlemuHLT+singleMuIdScale+singleMuIsoScale+trackerHIP1
 #fixme checking eta restriction on muons and electrons to fix r_uu/eu
 muEtaRestrict = '*((IsMuon_muon1>0)*(abs(Eta_muon1)<2.1)+(IsMuon_muon2>0)*(abs(Eta_muon2)<2.1))'
@@ -138,11 +138,13 @@ passfilter += '*(Flag_BadPFMuonFilter)'#*Flag_BadChargedHadron)'
 #passfilter += '*(noBadMuonsFlag*(1-duplicateMuonsFlag))'
 
 # This defines the preselections for the mu-mu, mu-nu, and e-mu samples
+preselectionmumu_single = '((Pt_muon1>53)*(Pt_muon2>53)*(Pt_jet1>50)*(St_uujj>250)*(M_uu>50)*(DR_muon1muon2>0.3)'+bTagsel1medium+')'
 preselectionmumu = '((Pt_muon1>53)*(Pt_muon2>53)*(Pt_jet1>50)*(Pt_jet2>50)*(St_uujj>300)*(M_uu>50)*(DR_muon1muon2>0.3)'+bTagsel1medium+')'
 preselectionmunu = '((Pt_muon1>53)*(Pt_muon2<53)*(Pt_miss>55)*(Pt_jet1>50)*(Pt_jet2>50)*(Pt_ele1<53)*(St_uvjj>300)*(MT_uv>50.0)*(DPhi_muon1met>0.8)*(DPhi_jet1met>0.5))'
 preselectionemu  = '((Pt_muon1>53)*(Pt_muon2>53)*(Pt_jet1>50)*(Pt_jet2>50)*(St_uujj>300)*(M_uu>50)*(DR_muon1muon2>0.3))'
 
 # Add the filters to the preselections
+preselectionmumu_single += passfilter
 preselectionmumu += passfilter
 preselectionmunu += passfilter
 preselectionemu  += passfilter
@@ -324,6 +326,8 @@ def main():
         ##############     A FEW STANDARD PLOTTING ROUTINES AND STUDIES   ###############
 	#################################################################################
 	global preselectionmumu 
+	global preselectionmumu_single 
+	global preselectionmunu 
 
 	# ====================================================================================================================================================== #
 	# These are PDF uncertainty studies.
@@ -506,7 +510,7 @@ def main():
 	# ====================================================================================================================================================== #
 	# This is a basic plotting routine to make Analysis Note style plots with ratio plots. AN Analysis-Note
 	# ====================================================================================================================================================== #
-	if False :
+	if True :
 		#global preselectionmumu 
 		# Some modifications to the ST and LQ mass binning
 		bjetbinning = [0,.05]
@@ -543,8 +547,10 @@ def main():
 		munu2plot = munu2#'(MT_uv>70)*(MT_uv<150)*(((CISV_jet1>0.8484)+(CISV_jet2>0.8484))>=1)*(0.561694*((1.+(0.31439*Pt_jet1))/(1.+(0.17756*Pt_jet1))))'#*(CISV_jet1>CISV_jet2)+(0.901114+(1.40704e-05*(Pt_jet2)))*(CISV_jet2>0.8484)*(CISV_jet1<CISV_jet2))'
 		#munu1 = '(MT_uv>70)*(MT_uv<110)*(JetCount<3.5)'
 		#munu2 = '(MT_uv>70)*(MT_uv<110)*(JetCount>3.5)'
-		#[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = GetMuMuScaleFactors( NormalWeightMuMu+'*'+preselectionmumu, NormalDirectory, '(M_uu>80)*(M_uu<100)', '(M_uu>100)',0,0)
-		[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = [[1.025,0.04],[1.147,0.019]]#TTBar MC, 2016 customNano
+		[[Rz_uuj,Rz_uuj_err],[Rtt_uuj,Rtt_uuj_err]] = GetMuMuScaleFactors( NormalWeightMuMu+'*'+preselectionmumu_single, NormalDirectory, '(M_uu>80)*(M_uu<100)', '(M_uu>100)*(M_uu<250)',0,0)
+		[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = GetMuMuScaleFactors( NormalWeightMuMu+'*'+preselectionmumu, NormalDirectory, '(M_uu>80)*(M_uu<100)', '(M_uu>100)*(M_uu<250)',0,0)
+                #exit()
+		#[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = [[1.025,0.04],[1.147,0.019]]#TTBar MC, 2016 customNano
 		#[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = [[0.925,0.005],[1.000,0.023]]#TTBarDataDriven
 		#[[Rw_uvjj,Rw_uvjj_err],[Rtt_uvjj,Rtt_uvjj_err]] = [[0.977,0.052],[0.932,0.039]]#TTBarMC
 		#[[Rw_uvjj,Rw_uvjj_err],[Rtt_uvjj,Rtt_uvjj_err]] = GetMuNuScaleFactors( NormalWeightMuNu+'*'+preselectionmunu, NormalDirectory, munu1, munu2,0)#fixme todo varying control sample MT windoq
@@ -577,7 +583,7 @@ def main():
 		MakeBasicPlot("Pt_miss","E_{T}^{miss} [GeV]",metzoombinning_uujj_Z,preselectionmumu+'*(M_uu>80)*(M_uu<100)*(Pt_miss<100)',NormalWeightMuMu,NormalDirectory,'controlzoom_ZRegion','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
 		MakeBasicPlot("M_uu","M^{#mu#mu} [GeV]",bosonzoombinning_uujj_TT,preselectionmumu+'*(M_uu>100)*(Pt_miss>=100)',NormalWeightMuMu,NormalDirectory,'controlzoom_TTRegion','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
 		MakeBasicPlot("Pt_miss","E_{T}^{miss} [GeV]",metzoombinning_uujj_TT,preselectionmumu+'*(M_uu>100)*(Pt_miss>=100)',NormalWeightMuMu,NormalDirectory,'controlzoom_TTRegion','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
-		
+		exit()
 		#MakeBasicPlot("CISV_jet1","Jet1 CSV score",bjetbinning,preselectionmunu+'*(MT_uv>70)*(MT_uv<150)*(JetCount<3.5)',NormalWeightMuNu,NormalDirectory,'controlzoom_WRegion','uvjj',Rz_uujj, Rw_uvjj,Rtt_uvjj,'',version_name,850)
 		#MakeBasicPlot("CISV_jet2","Jet2 CSV score",bjetbinning,preselectionmunu+'*(MT_uv>70)*(MT_uv<150)*(JetCount<3.5)',NormalWeightMuNu,NormalDirectory,'controlzoom_WRegion','uvjj',Rz_uujj, Rw_uvjj,Rtt_uvjj,'',version_name,850)
 		#MakeBasicPlot("CISV_jet1","Jet1 CSV score",bjetbinning,preselectionmunu+'*(MT_uv>70)*(MT_uv<150)*(JetCount>3.5)',NormalWeightMuNu,NormalDirectory,'controlzoom_TTRegion','uvjj',Rz_uujj, Rw_uvjj,Rtt_uvjj,'',version_name,850)
@@ -945,6 +951,11 @@ def main():
 			MuMuOptTestCutFile = 'Results_'+version_name+'/OptLQ_uujjCuts_Smoothed_pol2cutoff.txt'
 			variableSpace = ['M_uu:25:100:1000','St_uujj:100:300:2500','M_uujj2:25:100:1000']
 			OptimizeCuts3D(variableSpace,preselectionmumu,NormalWeightMuMu,version_name,scaleFactors,'','uujj')
+                        #
+                        scaleFactors = [Rz_uuj,Rtt_uuj,Rw_uvj]
+			variableSpace = ['M_uu:25:100:1000','St_uuj:100:300:2500','M_uuj1:25:100:1000']
+			OptimizeCuts3D(variableSpace,preselectionmumu_single,NormalWeightMuMu,version_name,scaleFactors,'','uuj')
+                        #
 			scaleFactors = [Rz_uujj,Rtt_uvjj,Rw_uvjj]
 			#variableSpace = ['MT_uv:50:150:1200','St_uvjj:100:300:3000','M_uvjj:50:100:900',]
 		    #OptimizeCuts3D(variableSpace,preselectionmunu,NormalWeightMuNu,version_name,scaleFactors,'','uvjj')

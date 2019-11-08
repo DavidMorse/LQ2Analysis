@@ -82,10 +82,12 @@ parser.add_argument("-l", "--lumi", dest="lumi", help="integrated luminosity for
 parser.add_argument("-j", "--json", dest="json", help="json file for certified run:lumis", metavar="JSON")
 parser.add_argument("-d", "--dir", dest="dir", help="output directory", metavar="DIR")
 parser.add_argument("-p", "--pdf", dest="pdf", help="option to produce pdf uncertainties", metavar="PDF")
+parser.add_argument("-y", "--year", dest="year", help="option to pick running year (2016,2017,2018)", metavar="YEAR")
 
 
 options = parser.parse_args()
 dopdf = int(options.pdf)==1
+_year = options.year
 
 # Here we get the file name, and adjust it accordingly for EOS, castor, or local directory
 name = options.filename
@@ -4566,9 +4568,14 @@ for n in range(N):
 		Branches['Flag_BadGlobalMuon'][0]	       	      = 1#t.Flag_BadGlobalMuon
 		Branches['Flag_BadPFMuonFilter'][0]	       	      = t.Flag_BadPFMuonFilter
 	else:
-        	Branches['Flag_BadChargedCandidateFilter'][0]         = ord(t.Flag_BadChargedCandidateFilter)
-		Branches['Flag_BadGlobalMuon'][0]	       	      = ord(t.Flag_BadGlobalMuon)
-		Branches['Flag_BadPFMuonFilter'][0]	       	      = ord(t.Flag_BadPFMuonFilter)
+                if _year=='2016':
+                        Branches['Flag_BadChargedCandidateFilter'][0]         = ord(t.Flag_BadChargedCandidateFilter)
+                        Branches['Flag_BadGlobalMuon'][0]	       	      = ord(t.Flag_BadGlobalMuon)	
+                        Branches['Flag_BadPFMuonFilter'][0]	       	      = ord(t.Flag_BadPFMuonFilter)
+                elif _year=='2017':
+                        Branches['Flag_BadChargedCandidateFilter'][0]         = t.Flag_BadChargedCandidateFilter
+                        Branches['Flag_BadGlobalMuon'][0]	       	      = 1#t.Flag_BadGlobalMuon		
+                        Branches['Flag_BadPFMuonFilter'][0]	       	      = t.Flag_BadPFMuonFilter
 	Branches['Flag_BadChargedCandidateSummer16Filter'][0] = 1#t.Flag_BadChargedCandidateSummer16Filter
 	Branches['Flag_BadPFMuonSummer16Filter'][0]    	      = 1#t.Flag_BadPFMuonSummer16Filter
 	Branches['Flag_CSCTightHalo2015Filter'][0]     	      = t.Flag_CSCTightHalo2015Filter

@@ -24,10 +24,12 @@ parser.add_argument("-l", "--lumi", dest="lumi", help="integrated luminosity for
 parser.add_argument("-j", "--json", dest="json", help="json file for certified run:lumis", metavar="JSON")
 parser.add_argument("-d", "--dir", dest="dir", help="output directory", metavar="DIR")
 parser.add_argument("-p", "--pdf", dest="pdf", help="option to produce pdf uncertainties", metavar="PDF")
+parser.add_argument("-y", "--year", dest="year", help="option to pick running year (2016,2017,2018)", metavar="YEAR")
 
 #global options
 options = parser.parse_args()
 dopdf = int(options.pdf)==1
+_year = options.year
 
 # Here we get the file name, and adjust it accordingly for EOS, castor, or local directory
 name = options.filename
@@ -148,7 +150,7 @@ _kinematicvariables += ['muonIndex1','muonIndex2']
 _kinematicvariables += ['jetIndex1','jetIndex2']
 _kinematicvariables += ['ptHat']
 _kinematicvariables += ['CISV_jet1','CISV_jet2']
-_kinematicvariables += ['bTagSF_jet1','btagSF_jet2']
+_kinematicvariables += ['bTagSF_jet1','bTagSF_jet2']
 _kinematicvariables += ['PULoosej1','PUMediumj1','PUTightj1']
 _kinematicvariables += ['PULoosej2','PUMediumj2','PUTightj2']
 _kinematicvariables += ['WorZSystemPt']
@@ -884,13 +886,14 @@ def PropagatePTChangeToMET(met,original_object,varied_object):
 # 			taus.append(ThisTau)
 # 	return taus
 
-def getMuonSF(_pt,_eta,_year):
+def getMuonSF(_pt,_eta):
 	# Purpose: Takes muon eta and pt and gets scale factors.
 	#         SFs are hardcoded separately for muon reco, high pt ID, iso, and hlt.
 	#		  Must specify the year being analyzed, as SFs differ for each year.
 	#         Returns array with SFs (ID, iso, etc.) as well as up and down variations
 	#		  of systematic and statisical error for each SF.
 
+        global _year
 	# Store the pt ranges for which different scale factors are defined. Different ranges depending on SF, i.e., reco, id and iso, and hlt
 	recoPts = [[50.00,100.00],[100.00,150.00],[150.00,200.00],[200.00,300.00],[300.00,400.00],[400.00,600.00],[600.00,1500.00],[1500.00,3500.00]]
 	hltPts = [[52.00,55.00],[55.00,60.00],[60.00,120.00],[120.00,200.00],[200.00,300.00],[300.00,500.00],[500.00,1000.00]]
@@ -1314,9 +1317,9 @@ def JERModifiedPt(res,resSF,resSFup,resSFdown,pt,eta,phi,T,modtype):
 	bestdR = 9999999.9
 	jet = TLorentzVector()
 	jet.SetPtEtaPhiM(pt,eta,phi,0.0)
-	for n in range(len(T.GenJetPtAK4)):
+	for n in range(len(T.GenJet_pt)):
 		gjet = TLorentzVector()
-		gjet.SetPtEtaPhiM(T.GenJetPtAK4[n],T.GenJetEtaAK4[n],T.GenJetPhiAK4[n],0.0)
+		gjet.SetPtEtaPhiM(T.GenJet_pt[n],T.GenJet_eta[n],T.GenJet_phi[n],0.0)
 		dR = abs(jet.DeltaR(gjet))
 		if dR<bestdR:# and dR<0.3 :
 			bestdR = dR
@@ -1859,6 +1862,7 @@ def FullKinematicCalculation(T,variation):
 	[_PULoosej1,_PUMediumj1,_PUTightj1] = PUIds[0]
 	[_PULoosej2,_PUMediumj2,_PUTightj2] = PUIds[1]
 
+	_stuuj  = ST([muons[0],muons[1],jets[0]])
 	_stuujj = ST([muons[0],muons[1],jets[0],jets[1]])
 	_stuvjj = ST([muons[0],met,jets[0],jets[1]])
 
@@ -1887,10 +1891,9 @@ def FullKinematicCalculation(T,variation):
 	_DPhiu2j1 = abs(muons[1].DeltaPhi(jets[0]))
 	_DPhiu2j2 = abs(muons[1].DeltaPhi(jets[1]))
 
-	year = '2016' #Fixme need to integrate year option
 	#Get muon scale factors and up, down variations here
-	[_mu1recoSF,_mu1recoSFup,_mu1recoSFdown,_mu1idSF,_mu1idSFup,_mu1idSFdown,_mu1isoSF,_mu1isoSFup,_mu1isoSFdown,_mu1hltSF,_mu1hltSFup,_mu1hltSFdown] = getMuonSF(_ptmu1,_etamu1,year)
-	[_mu2recoSF,_mu2recoSFup,_mu2recoSFdown,_mu2idSF,_mu2idSFup,_mu2idSFdown,_mu2isoSF,_mu2isoSFup,_mu2isoSFdown,_mu2hltSF,_mu2hltSFup,_mu2hltSFdown] = getMuonSF(_ptmu2,_etamu2,year)
+	[_mu1recoSF,_mu1recoSFup,_mu1recoSFdown,_mu1idSF,_mu1idSFup,_mu1idSFdown,_mu1isoSF,_mu1isoSFup,_mu1isoSFdown,_mu1hltSF,_mu1hltSFup,_mu1hltSFdown] = getMuonSF(_ptmu1,_etamu1)
+	[_mu2recoSF,_mu2recoSFup,_mu2recoSFdown,_mu2idSF,_mu2idSFup,_mu2idSFdown,_mu2isoSF,_mu2isoSFup,_mu2isoSFdown,_mu2hltSF,_mu2hltSFup,_mu2hltSFdown] = getMuonSF(_ptmu2,_etamu2)
 
 	_Muujj1_gen=0
 	_Muujj2_gen=0
@@ -1918,6 +1921,7 @@ def FullKinematicCalculation(T,variation):
 
 	_matchedLQ = compareMatching(muons,_matchedRecoMuons,jets,_matchedRecoJets)
 
+	_Muujj = (muons[0]+muons[1]+jets[0]+jets[1]).M()
 	_Muujj = (muons[0]+muons[1]+jets[0]+jets[1]).M()
 	_Muuj1   = (muons[0]+muons[1]+jets[0]).M()
 	_Muuj2   = (muons[0]+muons[1]+jets[1]).M()
@@ -1952,7 +1956,7 @@ def FullKinematicCalculation(T,variation):
 
 	_genjetcount = 0
 	if isData==0:
-		_genjetcount = len(T.GenJetPtAK4)
+		_genjetcount = len(T.GenJet_pt)
 
 	# This MUST have the same structure as _kinematic variables!
 	toreturn  = [_ptmu1,_ptmu2,_ptel1,_ptel2,_ptj1,_ptj2,_ptmet]
@@ -2245,9 +2249,14 @@ for n in range(N):
 		Branches['Flag_BadGlobalMuon'][0]	       	      = 1#t.Flag_BadGlobalMuon	
 		Branches['Flag_BadPFMuonFilter'][0]	       	      = t.Flag_BadPFMuonFilter
 	else:
-		Branches['Flag_BadChargedCandidateFilter'][0]         = ord(t.Flag_BadChargedCandidateFilter)
-		Branches['Flag_BadGlobalMuon'][0]	       	      = ord(t.Flag_BadGlobalMuon)		
-		Branches['Flag_BadPFMuonFilter'][0]	       	      = ord(t.Flag_BadPFMuonFilter)	
+                if _year=='2016':
+                        Branches['Flag_BadChargedCandidateFilter'][0]         = ord(t.Flag_BadChargedCandidateFilter)
+                        Branches['Flag_BadGlobalMuon'][0]	       	      = ord(t.Flag_BadGlobalMuon)	
+                        Branches['Flag_BadPFMuonFilter'][0]	       	      = ord(t.Flag_BadPFMuonFilter)
+                elif _year=='2017':
+                        Branches['Flag_BadChargedCandidateFilter'][0]         = t.Flag_BadChargedCandidateFilter
+                        Branches['Flag_BadGlobalMuon'][0]	       	      = 1#t.Flag_BadGlobalMuon		
+                        Branches['Flag_BadPFMuonFilter'][0]	       	      = t.Flag_BadPFMuonFilter
 	Branches['Flag_BadChargedCandidateSummer16Filter'][0] = 1#t.Flag_BadChargedCandidateSummer16Filter		
 	Branches['Flag_BadPFMuonSummer16Filter'][0]    	      = 1#t.Flag_BadPFMuonSummer16Filter 
 	Branches['Flag_CSCTightHalo2015Filter'][0]     	      = t.Flag_CSCTightHalo2015Filter   		
@@ -2302,13 +2311,16 @@ for n in range(N):
 	# Make sure your skim is looser than any selection you will need afterward!
 	
 	if (Branches['Pt_muon1'][0] < 45): continue
+	if (Branches['Pt_muon2'][0] < 45): continue #this should be removed if TTBarDataDriven will be used
 	if nonisoswitch != True:
 			if (Branches['Pt_muon2'][0] < 45) and (Branches['Pt_miss'][0] < 45): continue
 	if (Branches['Pt_jet1'][0] <  45): continue
 	#if (Branches['Pt_jet2'][0] <  45): continue #fixme turned off for qcd check.....turn back on!
+	if (Branches['St_uujj'][0] < 275) and (Branches['St_uuj'][0] < 225): continue
 	#if (Branches['St_uujj'][0] < 275) and (Branches['St_uvjj'][0] < 275): continue
-	#if (Branches['M_uu'][0]    <  45) and (Branches['MT_uv'][0]   <  45): continue
-	
+	#if (Branches['M_uu'][0]    <  45) and (Branches['MT_uv'][0]   <  45): continue #this should be used if munujj channel is used
+        if (Branches['M_uu'][0]    <  45): continue #this should be used if munujj channel is not used
+
 	# Fill output tree with event
 	tout.Fill()
 

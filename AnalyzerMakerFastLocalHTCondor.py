@@ -21,12 +21,14 @@ json = ''
 dopdf = '0'
 nsplit = 25
 bq = '\"workday\"'
+year = '2016'
 override_dir = ''
 
 helpmessage = 'OPTIONS SUMMARY: \n -i  CSVFILE.csv \n -py ANALYZER.py \n -t  TAGNAME (optional) [default "default"] ' 
 helpmessage += '\n -j  JSONFILE (needed, but ignored for MC) \n -p  0 or 1 (optional boolean to store PDF uncertainties in trees) [default 0] \n -q  Batch Queue (optional) [default "workday (8 hrs runtime)"] '
 helpmessage += ' \n -d  /path/to/directory (optional override output dir, use only when you have incomplete output in existing dir) '
 helpmessage += ' \n -s 25  (number of files to analyzer per batch job)'
+helpmessage += ' \n -y 2016  (year of samples, can be 2016, 2017, 2018)'
 helpmessage += ' \n -h  (show this message)'
 helpmessage += '\n'
 for x in range(len(a)):
@@ -52,8 +54,10 @@ for x in range(len(a)):
 	if a[x] == '-h':
 		print helpmessage
 		sys.exit()
+        if a[x] == '-y':
+                year=a[x+1]
 
-if pyfile == ''  or ifile == '' or json == '':
+if pyfile == ''  or ifile == '' or json == '' or year == '':
 	print 'Must specify input python script, .csv file, and json file, e.g.:\n\npython AnalyzerMakerFast.py -i NTupleInfoSpring2011.csv -py NTupleAnalyzer.py \n   Exiting   \n\n'
 	sys.exit()
 
@@ -319,7 +323,7 @@ for x in range(len(SignalType)):
 	print 'Preparing '+ SignalType[x],':', len(fcont),'files.'
 
 	for f in fcont:
-		jobs.append('python '+pyfile.replace('\n','')+' -f '+f.replace('\n','').replace('//','/')+' -s '+sigma+' -n '+Norig+' -j '+thisjson + ' -l 1.0 -p '+dopdf+' -d '+random.choice(output_subfolders).replace('\n',''))
+		jobs.append('python '+pyfile.replace('\n','')+' -f '+f.replace('\n','').replace('//','/')+' -s '+sigma+' -n '+Norig+' -j '+thisjson + ' -l 1.0 -p '+dopdf+' -y '+year+' -d '+random.choice(output_subfolders).replace('\n',''))
 
 # Some NTuple sets have larger files then others. Avoid grouping of large files by shuffling. 
 random.shuffle(jobs)
