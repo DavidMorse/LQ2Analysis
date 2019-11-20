@@ -235,17 +235,23 @@ emu_id_eff_err = 0.0027#v7 JEC
 
 # QCD data-driven scale factor
 useDataDrivenQCD = True
-fbd_Muon     = [1.406, 0.011] # Apr 05, 2019
+#fbd_Muon     = [1.406, 0.011] # Apr 05, 2019
 fbd_Electron = [1.079, 0.009] # Apr 05, 2019
+fbd_Muon     = [1.678, 0.012] # Nov 20, 2019 - custom Nano 2016
+#fbd_Electron = [1.079, 0.009] # Nov 20, 2019 - custom Nano 2016
 # tt, z SF calculated using Data with NEW method (Apr 05, 2019)
 Rz_data_muon  = [1.139, 0.006]
 Rtt_data_muon = [0.906, 0.013]
 Rz_data_electron  = [1.241, 0.008]
 Rtt_data_electron = [0.968, 0.018]
+# tt, z SF calculated using Data with NEW method on custom Nano 2016 (Nov 20, 2019)
+Rz_data_muon  = [0.972, 0.021]
+Rtt_data_muon = [0.878, 0.006]
+#Rz_data_electron  = [1.241, 0.008]
+#Rtt_data_electron = [0.968, 0.018]
 
-
-analysisChannel = 'muon'
-#analysisChannel = 'electron'
+#analysisChannel = 'muon'
+analysisChannel = 'electron'
 
 analysisSignal = 'HHres' # Spin0 - need to have 'HH' in the name
 #analysisSignal = 'HHBulkGrav' # Spin2 - need to have 'HH' in the name
