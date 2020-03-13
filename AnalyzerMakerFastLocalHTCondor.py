@@ -9,6 +9,7 @@ from time import strftime
 import sys
 import random
 import time
+import getpass
 
 print 'Importing root...',
 from ROOT import *
@@ -412,43 +413,56 @@ def MakeJobs(njobs):
 
 		done=0
 		while done!=1:
-			ncheck,npend,nrun,ndone,nhold,ntotal = 0,0,0,0,0,0
+			ncheck,npend,nrun,ndone,nhold,ntotal,ncompleted,nremoved,nidle,nrunning,nsuspended = 0,0,0,0,0,0,0,0,0,0,0
 			os.system('sleep 60')
 		        #jobinfo = os.popen('bjobs -w | grep '+now).readlines()
 			condor_check = os.popen('condor_q | grep Failed').readlines()
 			if 'Failed' in condor_check:
 				print '\nHTCondor failed to query queue!!!! Exiting!!!\n'
 				break
-			jobinfo = os.popen('condor_q | grep '+now).readlines()
-
+                        jobinfo = os.popen("condor_q | grep 'Total for "+getpass.getuser()+"'").readlines()
 			hasHOLD=False
-			for x in range(len(jobinfo)):
-				if len(jobinfo)==0:
-					print '\nNo jobs remaining from previous submission, moving on to submit. \n'
-					done=1
-				else:
-					if hasHOLD==False and 'OWNER' in jobinfo[x] and 'HOLD' in jobinfo[x]:
-						hasHOLD=True
-					if hasHOLD:
-						if str(jobinfo[x]).split()[8]=='1': #HOLD or TOTAL status 
-							nhold  += 1
-						if str(jobinfo[x]).split()[9]=='1': #HOLD or TOTAL status 
-							ntotal  += 1
-					elif str(jobinfo[x]).split()[8]=='1': #TOTAL status if no HOLD
-						ntotal  += 1
-					if str(jobinfo[x]).split()[7]=='1': #IDLE status
-						npend  += 1
-						ncheck += 1
-					if str(jobinfo[x]).split()[6]=='1': #RUN status
-						nrun += 1
-					if str(jobinfo[x]).split()[5]=='1': #DONE status
-						ndone += 1
-			jobinfo = len(jobinfo)
-			jobsleft = jobinfo -1
-			if jobsleft == -1:
-				done = 1
-			if jobsleft>=0:
-				print  str(jobsleft+1)+' jobs remaining ('+str(ndone)+' DONE, '+str(nrun)+' RUN, '+str(npend)+' IDLE, '+str(nhold)+' HOLD).'
+                        ntotal     = int(str(jobinfo).split()[3])
+                        ncompleted = int(str(jobinfo).split()[5])
+                        nremoved   = int(str(jobinfo).split()[7])
+                        nidle      = int(str(jobinfo).split()[9])
+                        nrunning   = int(str(jobinfo).split()[11])
+                        nhold      = int(str(jobinfo).split()[13])
+                        nsuspended = int(str(jobinfo).split()[15])
+                        
+                        if ntotal == 0:
+                                print '\nNo jobs remaining from previous submission, moving on to submit. \n'
+                                done=1
+                        else:
+                                print jobinfo
+
+			#for x in range(len(jobinfo)):
+			#	if len(jobinfo)==0:
+			#		print '\nNo jobs remaining from previous submission, moving on to submit. \n'
+			#		done=1
+			#	else:
+			#		if hasHOLD==False and 'OWNER' in jobinfo[x] and 'HOLD' in jobinfo[x]:
+			#			hasHOLD=True
+			#		if hasHOLD:
+			#			if str(jobinfo[x]).split()[8]=='1': #HOLD or TOTAL status 
+			#				nhold  += 1
+			#			if str(jobinfo[x]).split()[9]=='1': #HOLD or TOTAL status 
+			#				ntotal  += 1
+			#		elif str(jobinfo[x]).split()[8]=='1': #TOTAL status if no HOLD
+			#			ntotal  += 1
+			#		if str(jobinfo[x]).split()[7]=='1': #IDLE status
+			#			npend  += 1
+			#			ncheck += 1
+			#		if str(jobinfo[x]).split()[6]=='1': #RUN status
+			#			nrun += 1
+			#		if str(jobinfo[x]).split()[5]=='1': #DONE status
+			#			ndone += 1
+			#jobinfo = len(jobinfo)
+			#jobsleft = jobinfo -1
+			#if jobsleft == -1:
+			#	done = 1
+			#if jobsleft>=0:
+			#	print  str(jobsleft+1)+' jobs remaining ('+str(ndone)+' DONE, '+str(nrun)+' RUN, '+str(npend)+' IDLE, '+str(nhold)+' HOLD).'
 
 
 
@@ -557,39 +571,52 @@ while keep_going != 0:
 	done=0
 	
 	while done!=1:
-		ncheck,npend,nrun,nhold,ndone,ntotal = 0,0,0,0,0,0
+		ncheck,npend,nrun,ndone,nhold,ntotal,ncompleted,nremoved,nidle,nrunning,nsuspended = 0,0,0,0,0,0,0,0,0,0,0
 		os.system('sleep 60')
 		#jobinfo = os.popen('bjobs -w | grep '+now).readlines()
 		condor_check = os.popen('condor_q | grep Failed').readlines()
 		if 'Failed' in condor_check:
 			print '\nHTCondor failed to query queue!!!! Exiting!!!\n'
 			break
-		jobinfo = os.popen('condor_q | grep '+now).readlines()
+		#jobinfo = os.popen('condor_q | grep \"Total for'+getpass.getuser()+'\"').readlines()
+                jobinfo = os.popen("condor_q | grep 'Total for "+getpass.getuser()+"'").readlines()
 		hasHOLD=False
 		for x in range(len(jobinfo)):
 			if len(jobinfo)>0:
-				if hasHOLD==False and 'OWNER' in jobinfo[x] and 'HOLD' in jobinfo[x]:
-					hasHOLD=True
-				if hasHOLD:
-					if str(jobinfo[x]).split()[8]=='1': #HOLD or TOTAL status 
-						nhold  += 1
-					if str(jobinfo[x]).split()[9]=='1': #HOLD or TOTAL status 
-						ntotal  += 1
-				elif str(jobinfo[x]).split()[8]=='1': #TOTAL status if no HOLD
-					ntotal  += 1
-				if str(jobinfo[x]).split()[7]=='1': #IDLE status
-					npend  += 1
-					ncheck += 1
-				if str(jobinfo[x]).split()[6]=='1': #RUN status
-					nrun += 1
-				if str(jobinfo[x]).split()[5]=='1': #DONE status
-					ndone += 1
-		jobinfo = len(jobinfo)
-		jobsleft = jobinfo -1
-		if jobsleft == -1:
-			done = 1
-		if jobsleft>=0:
-			print  str(jobsleft+1)+' jobs remaining ('+str(ndone)+' DONE, '+str(nrun)+' RUN, '+str(npend)+' IDLE, '+str(nhold)+' HOLD, '+str(ntotal)+' TOTAL).'
+				#if hasHOLD==False and 'OWNER' in jobinfo[x] and 'HOLD' in jobinfo[x]:
+				#	hasHOLD=True
+				#if hasHOLD:
+				#	if str(jobinfo[x]).split()[8]=='1': #HOLD or TOTAL status 
+				#		nhold  += 1
+				#	if str(jobinfo[x]).split()[9]=='1': #HOLD or TOTAL status 
+				#		ntotal  += 1
+				#elif str(jobinfo[x]).split()[8]=='1': #TOTAL status if no HOLD
+				#	ntotal  += 1
+				#if str(jobinfo[x]).split()[7]=='1': #IDLE status
+				#	npend  += 1
+				#	ncheck += 1
+				#if str(jobinfo[x]).split()[6]=='1': #RUN status
+				#	nrun += 1
+				#if str(jobinfo[x]).split()[5]=='1': #DONE status
+				#	ndone += 1
+                                ntotal     = int(str(jobinfo[x]).split()[3])
+                                ncompleted = int(str(jobinfo[x]).split()[5])
+                                nremoved   = int(str(jobinfo[x]).split()[7])
+                                nidle      = int(str(jobinfo[x]).split()[9])
+                                nrunning   = int(str(jobinfo[x]).split()[11])
+                                nhold      = int(str(jobinfo[x]).split()[13])
+                                nsuspended = int(str(jobinfo[x]).split()[15])
+		jobinfoLen = len(jobinfo)
+		jobsleft = jobinfoLen -1
+		#if jobsleft == -1:
+		#	done = 1
+                
+                        
+                if ntotal == 0:
+                        print '\nNo jobs remaining, moving on. \n'
+                        done=1
+                else:
+                        print jobinfo
 
 		#if (ncheck > 2000) or ((ncheck>1250) and jobsleft<3):
 		#	 print "\nJobs taking too long. Killing remaining jobs. \n"
