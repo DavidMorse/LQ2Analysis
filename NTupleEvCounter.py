@@ -36,7 +36,7 @@ if '/store' in name:
 fin = TFile.Open(name,"READ")
 
 hev = fin.Get('EventCounter')
-if 'amcatnlo' in name:
+if 'amcnlo' in name or 'amcatnlo' in name:
 	NORIG = hev.GetBinContent(3)
 else:
 	NORIG = hev.GetBinContent(1)
