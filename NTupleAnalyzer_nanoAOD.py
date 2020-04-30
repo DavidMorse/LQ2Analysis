@@ -169,7 +169,7 @@ _kinematicvariables += ['mu2hltSF','mu2hltSFup','mu2hltSFdown']
 #_weights = ['scaleWeight_Up','scaleWeight_Down','scaleWeight_R1_F1','scaleWeight_R1_F2','scaleWeight_R1_F0p5','scaleWeight_R2_F1','scaleWeight_R2_F2','scaleWeight_R2_F0p5','scaleWeight_R0p5_F1','scaleWeight_R0p5_F2','scaleWeight_R0p5_F0p5','scaleWeight_R2_F2','weight_amcNLO','weight_nopu','weight_central', 'weight_pu_up', 'weight_pu_down','weight_central_2012D','weight_topPt']
 _weights = ['scaleWeight_Up','scaleWeight_Down','scaleWeight_R1_F1','scaleWeight_R1_F2','scaleWeight_R1_F0p5','scaleWeight_R2_F1','scaleWeight_R2_F2','scaleWeight_R2_F0p5','scaleWeight_R0p5_F1','scaleWeight_R0p5_F2','scaleWeight_R0p5_F0p5','scaleWeight_R2_F2','weight_amcNLO','weight_nopu','weight_central', 'weight_pu_up', 'weight_pu_down','weight_topPt']
 _flagDoubles = ['run_number','event_number','lumi_number']
-_flags = ['pass_HLTIsoMu27','pass_HLTMu45_eta2p1','pass_HLTMu50','pass_HLTMu55','pass_HLTTkMu50','GoodVertexCount']
+_flags = ['pass_HLTIsoMu27','pass_HLTMu45_eta2p1','pass_HLTMu50','pass_HLTMu55','pass_HLTTkMu50','pass_HLTOldMu100','pass_HLTTkMu100','GoodVertexCount']
 _flags += ['passPrimaryVertex','passTriggerObjectMatching','passDataCert']
 _flags += ['Flag_BadChargedCandidateFilter','Flag_BadChargedCandidateSummer16Filter','Flag_BadGlobalMuon','Flag_BadPFMuonFilter','Flag_BadPFMuonSummer16Filter','Flag_CSCTightHalo2015Filter','Flag_CSCTightHaloFilter','Flag_CSCTightHaloTrkMuUnvetoFilter','Flag_EcalDeadCellBoundaryEnergyFilter','Flag_EcalDeadCellTriggerPrimitiveFilter','Flag_HBHENoiseFilter','Flag_HBHENoiseIsoFilter','Flag_HcalStripHaloFilter','Flag_METFilters','Flag_chargedHadronTrackResolutionFilter','Flag_ecalBadCalibFilter','Flag_ecalBadCalibFilterV2','Flag_ecalLaserCorrFilter','Flag_eeBadScFilter','Flag_globalSuperTightHalo2016Filter','Flag_globalTightHalo2016Filter','Flag_goodVertices','Flag_hcalLaserEventFilter','Flag_muonBadTrackFilter','Flag_trkPOGFilters','Flag_trkPOG_logErrorTooManyClusters','Flag_trkPOG_manystripclus53X','Flag_trkPOG_toomanystripclus53X']
 _variations = ['','JESup','JESdown','MESup','MESdown','JERup','JERdown','MER']
@@ -2222,25 +2222,34 @@ for n in range(N):
 	Branches['GoodVertexCount'][0] = t.PV_npvsGood
 
 	if hasattr(t,'HLT_IsoMu27'):
-                Branches['pass_HLTIsoMu27'][0]     = t.HLT_IsoMu27
-        else:
-                Branches['pass_HLTIsoMu27'][0]     = 0
-        if hasattr(t,'HLT_Mu45_eta2p1'):
-                Branches['pass_HLTMu45_eta2p1'][0] = t.HLT_Mu45_eta2p1
-        else:
-                Branches['pass_HLTMu45_eta2p1'][0] = 0
+		Branches['pass_HLTIsoMu27'][0]     = t.HLT_IsoMu27
+	else:
+		Branches['pass_HLTIsoMu27'][0]     = 0
+	if hasattr(t,'HLT_Mu45_eta2p1'):
+		Branches['pass_HLTMu45_eta2p1'][0] = t.HLT_Mu45_eta2p1
+	else:
+		Branches['pass_HLTMu45_eta2p1'][0] = 0
 	if hasattr(t,'HLT_Mu50'):
-                Branches['pass_HLTMu50'][0]        = t.HLT_Mu50
-        else:
-                Branches['pass_HLTMu50'][0] = 0
+		Branches['pass_HLTMu50'][0]        = t.HLT_Mu50
+	else:
+		Branches['pass_HLTMu50'][0] 	   = 0
 	if hasattr(t,'HLT_TkMu50'):
-                Branches['pass_HLTTkMu50'][0]      = t.HLT_TkMu50
-        else:
-                Branches['pass_HLTTkMu50'][0]      = 0
+		Branches['pass_HLTTkMu50'][0]      = t.HLT_TkMu50
+	else:
+		Branches['pass_HLTTkMu50'][0]      = 0
 	if hasattr(t,'HLT_Mu55'):
-                Branches['pass_HLTMu55'][0]        = t.HLT_Mu55
-        else:
-                Branches['pass_HLTMu55'][0]        = 0
+		Branches['pass_HLTMu55'][0]        = t.HLT_Mu55
+	else:
+		Branches['pass_HLTMu55'][0]        = 0
+	if hasattr(t, 'HLT_OldMu100'):
+		Branches['pass_HLTOldMu100')[0]	   = t.HLT_OldMu100
+	else:
+		Branches['pass_HLTOldMu100'][0]	   = 0
+	if hasattr(t, 'HLT_TkMu100'):
+		Branches['pass_HLTTkMu100')[0]	   = t.HLT_TkMu100
+	else:
+		Branches['pass_HLTTkMu100'][0]	   = 0
+	
 
 
 	#fixme some flags missing, others not working correctly
@@ -2319,7 +2328,7 @@ for n in range(N):
 	if (Branches['St_uujj'][0] < 275) and (Branches['St_uuj'][0] < 225): continue
 	#if (Branches['St_uujj'][0] < 275) and (Branches['St_uvjj'][0] < 275): continue
 	#if (Branches['M_uu'][0]    <  45) and (Branches['MT_uv'][0]   <  45): continue #this should be used if munujj channel is used
-        if (Branches['M_uu'][0]    <  45): continue #this should be used if munujj channel is not used
+    	if (Branches['M_uu'][0]    <  45): continue #this should be used if munujj channel is not used
 
 	# Fill output tree with event
 	tout.Fill()
