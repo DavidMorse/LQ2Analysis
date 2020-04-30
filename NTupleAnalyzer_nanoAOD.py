@@ -1474,7 +1474,7 @@ def TightIDJets(T,met,variation,isdata):
 				NEMFs.append(T.Jet_neEmEF[n])
 				CSVscores.append(T.Jet_btagCSVV2[n])
 				if 'SingleMuon' in name or 'SingleElectron' in name or 'DoubleMuon' in name or 'DoubleEG' in name: bTagSFs.append(1.0)
-				else: bTagSFs.append(T.Jet_btagSF[n])
+				else: bTagSFs.append(T.Jet_btagSF_deepcsv_M[n])
 				PUIds.append([(T.Jet_puId[n] & 0x4)>0,(T.Jet_puId[n] & 0x2)>0,(T.Jet_puId[n] & 0x1)>0])
 			else:
 				if _PFJetPt[n] > JetFailThreshold:
@@ -2242,11 +2242,11 @@ for n in range(N):
 	else:
 		Branches['pass_HLTMu55'][0]        = 0
 	if hasattr(t, 'HLT_OldMu100'):
-		Branches['pass_HLTOldMu100')[0]	   = t.HLT_OldMu100
+		Branches['pass_HLTOldMu100'][0]	   = t.HLT_OldMu100
 	else:
 		Branches['pass_HLTOldMu100'][0]	   = 0
 	if hasattr(t, 'HLT_TkMu100'):
-		Branches['pass_HLTTkMu100')[0]	   = t.HLT_TkMu100
+		Branches['pass_HLTTkMu100'][0]	   = t.HLT_TkMu100
 	else:
 		Branches['pass_HLTTkMu100'][0]	   = 0
 	
@@ -2328,7 +2328,7 @@ for n in range(N):
 	if (Branches['St_uujj'][0] < 275) and (Branches['St_uuj'][0] < 225): continue
 	#if (Branches['St_uujj'][0] < 275) and (Branches['St_uvjj'][0] < 275): continue
 	#if (Branches['M_uu'][0]    <  45) and (Branches['MT_uv'][0]   <  45): continue #this should be used if munujj channel is used
-    	if (Branches['M_uu'][0]    <  45): continue #this should be used if munujj channel is not used
+		if (Branches['M_uu'][0]    <  45): continue #this should be used if munujj channel is not used
 
 	# Fill output tree with event
 	tout.Fill()
