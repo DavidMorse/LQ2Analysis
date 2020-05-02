@@ -36,7 +36,8 @@ name = options.filename
 amcNLOname = options.filename
 
 if '/store' in name:
-	name = 'root://eoscms//eos/cms'+name
+	#name = 'root://eoscms//eos/cms'+name
+	name = '/eos/cms'+name
 if '/castor/cern.ch' in name:
 	name = 'rfio://'+name
 
@@ -78,35 +79,39 @@ elif SumOfTopPtReweights != 0.0:
 	_TopPtFactor = float(NORIG)/float(SumOfTopPtReweights)
 #print '_TopPtFactor:',_TopPtFactor
 
+
 # Typical event weight, sigma*lumi/Ngenerated
 startingweight = float(options.crosssection)*float(options.lumi)/float(options.ntotal)
 
-to = fin.Get("Events")
-No = to.GetEntries()
-
+#to = fin.Get("Events")
+#No = to.GetEntries()
+t = fin.Get("Events")
+N = t.GetEntries()
 
 
 # Here we are going to pre-skim the file to reduce running time.
 indicator = ((name.split('/'))[-1]).replace('.root','')
 #print indicator
-junkfile1 = str(randint(100000000,1000000000))+indicator+'junk.root'
+#junkfile1 = str(randint(100000000,1000000000))+indicator+'junk.root'
+#
+## At least one 45 GeV Muon - offline cut is 53
+#fj1 = TFile.Open(junkfile1,'RECREATE')
+#t1 = to.CopyTree('Muon_pt[]>45')
+#Nm1 = t1.GetEntries()
+#
+#junkfile2 = str(randint(100000000,1000000000))+indicator+'junk.root'
+#
+## At least one 45 GeV jet - offline cut is 50
+#fj2 = TFile.Open(junkfile2,'RECREATE')
+#t = t1.CopyTree('Jet_pt[]>45')
+#N = t.GetEntries()
+#
+## Print the reduction status
+#print 'Original events:          ',No
+#print 'After demand 1 pT45 muon: ',Nm1
+#print 'After demand 1 pT45 jet:  ',N
+print 'Number of events:',N
 
-# At least one 45 GeV Muon - offline cut is 53
-fj1 = TFile.Open(junkfile1,'RECREATE')
-t1 = to.CopyTree('Muon_pt[]>45')
-Nm1 = t1.GetEntries()
-
-junkfile2 = str(randint(100000000,1000000000))+indicator+'junk.root'
-
-# At least one 45 GeV jet - offline cut is 50
-fj2 = TFile.Open(junkfile2,'RECREATE')
-t = t1.CopyTree('Jet_pt[]>45')
-N = t.GetEntries()
-
-# Print the reduction status
-print 'Original events:          ',No
-print 'After demand 1 pT45 muon: ',Nm1
-print 'After demand 1 pT45 jet:  ',N
 
 ##########################################################################################
 #################      PREPARE THE VARIABLES FOR THE OUTPUT TREE   #######################
@@ -2258,14 +2263,14 @@ for n in range(N):
 		Branches['Flag_BadGlobalMuon'][0]	       	      = 1#t.Flag_BadGlobalMuon	
 		Branches['Flag_BadPFMuonFilter'][0]	       	      = t.Flag_BadPFMuonFilter
 	else:
-                if _year=='2016':
-                        Branches['Flag_BadChargedCandidateFilter'][0]         = ord(t.Flag_BadChargedCandidateFilter)
-                        Branches['Flag_BadGlobalMuon'][0]	       	      = ord(t.Flag_BadGlobalMuon)	
-                        Branches['Flag_BadPFMuonFilter'][0]	       	      = ord(t.Flag_BadPFMuonFilter)
-                elif _year=='2017':
-                        Branches['Flag_BadChargedCandidateFilter'][0]         = t.Flag_BadChargedCandidateFilter
-                        Branches['Flag_BadGlobalMuon'][0]	       	      = 1#t.Flag_BadGlobalMuon		
-                        Branches['Flag_BadPFMuonFilter'][0]	       	      = t.Flag_BadPFMuonFilter
+		if _year=='2016':
+			Branches['Flag_BadChargedCandidateFilter'][0]         = ord(t.Flag_BadChargedCandidateFilter)
+			Branches['Flag_BadGlobalMuon'][0]	       	      = ord(t.Flag_BadGlobalMuon)
+			Branches['Flag_BadPFMuonFilter'][0]	       	      = ord(t.Flag_BadPFMuonFilter)
+		elif _year=='2017':
+			Branches['Flag_BadChargedCandidateFilter'][0]         = t.Flag_BadChargedCandidateFilter
+			Branches['Flag_BadGlobalMuon'][0]	       	      = 1#t.Flag_BadGlobalMuon
+			Branches['Flag_BadPFMuonFilter'][0]	       	      = t.Flag_BadPFMuonFilter
 	Branches['Flag_BadChargedCandidateSummer16Filter'][0] = 1#t.Flag_BadChargedCandidateSummer16Filter		
 	Branches['Flag_BadPFMuonSummer16Filter'][0]    	      = 1#t.Flag_BadPFMuonSummer16Filter 
 	Branches['Flag_CSCTightHalo2015Filter'][0]     	      = t.Flag_CSCTightHalo2015Filter   		
@@ -2321,14 +2326,15 @@ for n in range(N):
 	
 	if (Branches['Pt_muon1'][0] < 45): continue
 	if (Branches['Pt_muon2'][0] < 45): continue #this should be removed if TTBarDataDriven will be used
-	if nonisoswitch != True:
-			if (Branches['Pt_muon2'][0] < 45) and (Branches['Pt_miss'][0] < 45): continue
+	#if nonisoswitch != True:
+	#		if (Branches['Pt_muon2'][0] < 45) and (Branches['Pt_miss'][0] < 45): continue
 	if (Branches['Pt_jet1'][0] <  45): continue
 	#if (Branches['Pt_jet2'][0] <  45): continue #fixme turned off for qcd check.....turn back on!
-	if (Branches['St_uujj'][0] < 275) and (Branches['St_uuj'][0] < 225): continue
+	if (Branches['St_uujj'][0] < 275): continue
+	#if (Branches['St_uujj'][0] < 275) and (Branches['St_uuj'][0] < 225): continue
 	#if (Branches['St_uujj'][0] < 275) and (Branches['St_uvjj'][0] < 275): continue
 	#if (Branches['M_uu'][0]    <  45) and (Branches['MT_uv'][0]   <  45): continue #this should be used if munujj channel is used
-		if (Branches['M_uu'][0]    <  45): continue #this should be used if munujj channel is not used
+	if (Branches['M_uu'][0]    <  45): continue #this should be used if munujj channel is not used
 
 	# Fill output tree with event
 	tout.Fill()
@@ -2343,5 +2349,5 @@ print(datetime.now()-startTime)
 import os
 print ('mv '+tmpfout+' '+finalfout)
 os.system('mv '+tmpfout+' '+finalfout)
-os.system('rm '+junkfile1)
-os.system('rm '+junkfile2)
+#os.system('rm '+junkfile1)
+#os.system('rm '+junkfile2)
