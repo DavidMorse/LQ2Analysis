@@ -36,8 +36,7 @@ name = options.filename
 amcNLOname = options.filename
 
 if '/store' in name:
-	#name = 'root://eoscms//eos/cms'+name
-	name = '/eos/cms'+name
+	name = 'root://eoscms//eos/cms'+name
 if '/castor/cern.ch' in name:
 	name = 'rfio://'+name
 
@@ -79,39 +78,35 @@ elif SumOfTopPtReweights != 0.0:
 	_TopPtFactor = float(NORIG)/float(SumOfTopPtReweights)
 #print '_TopPtFactor:',_TopPtFactor
 
-
 # Typical event weight, sigma*lumi/Ngenerated
 startingweight = float(options.crosssection)*float(options.lumi)/float(options.ntotal)
 
-#to = fin.Get("Events")
-#No = to.GetEntries()
-t = fin.Get("Events")
-N = t.GetEntries()
+to = fin.Get("Events")
+No = to.GetEntries()
+
 
 
 # Here we are going to pre-skim the file to reduce running time.
 indicator = ((name.split('/'))[-1]).replace('.root','')
 #print indicator
-#junkfile1 = str(randint(100000000,1000000000))+indicator+'junk.root'
-#
-## At least one 45 GeV Muon - offline cut is 53
-#fj1 = TFile.Open(junkfile1,'RECREATE')
-#t1 = to.CopyTree('Muon_pt[]>45')
-#Nm1 = t1.GetEntries()
-#
-#junkfile2 = str(randint(100000000,1000000000))+indicator+'junk.root'
-#
-## At least one 45 GeV jet - offline cut is 50
-#fj2 = TFile.Open(junkfile2,'RECREATE')
-#t = t1.CopyTree('Jet_pt[]>45')
-#N = t.GetEntries()
-#
-## Print the reduction status
-#print 'Original events:          ',No
-#print 'After demand 1 pT45 muon: ',Nm1
-#print 'After demand 1 pT45 jet:  ',N
-print 'Number of events:',N
+junkfile1 = str(randint(100000000,1000000000))+indicator+'junk.root'
 
+# At least one 45 GeV Muon - offline cut is 53
+fj1 = TFile.Open(junkfile1,'RECREATE')
+t1 = to.CopyTree('Muon_pt[]>45')
+Nm1 = t1.GetEntries()
+
+junkfile2 = str(randint(100000000,1000000000))+indicator+'junk.root'
+
+# At least one 45 GeV jet - offline cut is 50
+fj2 = TFile.Open(junkfile2,'RECREATE')
+t = t1.CopyTree('Jet_pt[]>45')
+N = t.GetEntries()
+
+# Print the reduction status
+print 'Original events:          ',No
+print 'After demand 1 pT45 muon: ',Nm1
+print 'After demand 1 pT45 jet:  ',N
 
 ##########################################################################################
 #################      PREPARE THE VARIABLES FOR THE OUTPUT TREE   #######################
@@ -2180,7 +2175,7 @@ for n in range(N):
 	#	Branches['weight_pu_up'][0]*=t.amcNLOWeight
 	#	#Branches['weight_central_2012D'][0]*=t.amcNLOWeight
 	#	Branches['weight_nopu'][0]*=t.amcNLOWeight
-	Branches['weight_amcNLO'][0]=0#t.amcNLOWeight
+	#Branches['weight_amcNLO'][0]=0#t.amcNLOWeight
 
 	#if 'amcatnlo' in amcNLOname :
 	#	scaleWeights = t.ScaleWeightsAMCNLO
@@ -2329,7 +2324,7 @@ for n in range(N):
 	#if nonisoswitch != True:
 	#		if (Branches['Pt_muon2'][0] < 45) and (Branches['Pt_miss'][0] < 45): continue
 	if (Branches['Pt_jet1'][0] <  45): continue
-	#if (Branches['Pt_jet2'][0] <  45): continue #fixme turned off for qcd check.....turn back on!
+	if (Branches['Pt_jet2'][0] <  45): continue #fixme turned off for qcd check.....turn back on!
 	if (Branches['St_uujj'][0] < 275): continue
 	#if (Branches['St_uujj'][0] < 275) and (Branches['St_uuj'][0] < 225): continue
 	#if (Branches['St_uujj'][0] < 275) and (Branches['St_uvjj'][0] < 275): continue
@@ -2349,5 +2344,5 @@ print(datetime.now()-startTime)
 import os
 print ('mv '+tmpfout+' '+finalfout)
 os.system('mv '+tmpfout+' '+finalfout)
-#os.system('rm '+junkfile1)
-#os.system('rm '+junkfile2)
+os.system('rm '+junkfile1)
+os.system('rm '+junkfile2)
