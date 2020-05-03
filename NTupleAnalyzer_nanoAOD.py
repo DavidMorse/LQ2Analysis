@@ -2175,7 +2175,7 @@ for n in range(N):
 	#	Branches['weight_pu_up'][0]*=t.amcNLOWeight
 	#	#Branches['weight_central_2012D'][0]*=t.amcNLOWeight
 	#	Branches['weight_nopu'][0]*=t.amcNLOWeight
-	#Branches['weight_amcNLO'][0]=0#t.amcNLOWeight
+	Branches['weight_amcNLO'][0]=0#t.amcNLOWeight
 
 	#if 'amcatnlo' in amcNLOname :
 	#	scaleWeights = t.ScaleWeightsAMCNLO
@@ -2325,8 +2325,7 @@ for n in range(N):
 	#		if (Branches['Pt_muon2'][0] < 45) and (Branches['Pt_miss'][0] < 45): continue
 	if (Branches['Pt_jet1'][0] <  45): continue
 	if (Branches['Pt_jet2'][0] <  45): continue #fixme turned off for qcd check.....turn back on!
-	if (Branches['St_uujj'][0] < 275): continue
-	#if (Branches['St_uujj'][0] < 275) and (Branches['St_uuj'][0] < 225): continue
+	if (Branches['St_uujj'][0] < 275) and (Branches['St_uuj'][0] < 225): continue
 	#if (Branches['St_uujj'][0] < 275) and (Branches['St_uvjj'][0] < 275): continue
 	#if (Branches['M_uu'][0]    <  45) and (Branches['MT_uv'][0]   <  45): continue #this should be used if munujj channel is used
 	if (Branches['M_uu'][0]    <  45): continue #this should be used if munujj channel is not used
