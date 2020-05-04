@@ -128,7 +128,7 @@ _kinematicvariables += ['TrkMeasLayers_muon1','TrkMeasLayers_muon2']
 _kinematicvariables += ['Charge_muon1','Charge_muon2']
 _kinematicvariables += ['TrkGlbDpt_muon1','TrkGlbDpt_muon2']
 _kinematicvariables += ['NHEF_jet1','NHEF_jet2','NEMEF_jet1','NEMEF_jet2']
-_kinematicvariables += ['St_uujj','St_uvjj']
+_kinematicvariables += ['St_uuj','St_uujj','St_uvjj']
 _kinematicvariables += ['M_uu','MT_uv']
 _kinematicvariables += ['M_jj']
 _kinematicvariables += ['DR_muon1muon2','DPhi_muon1met','DPhi_jet1met','DPhi_jet2met']
@@ -1973,7 +1973,7 @@ def FullKinematicCalculation(T,variation):
 	toreturn += [_qmu1,_qmu2]
 	toreturn += [_dptmu1,_dptmu2]
 	toreturn += [_nhefj1,_nhefj2,_nemefj1,_nemefj2]
-	toreturn += [_stuujj,_stuvjj]
+	toreturn += [_stuuj,_stuujj,_stuvjj]
 	toreturn += [_Muu,_MTuv]
 	toreturn += [_Mjj]
 	toreturn += [_DRuu,_DPHIuv,_DPHIj1v,_DPHIj2v]
@@ -2175,7 +2175,7 @@ for n in range(N):
 	#	Branches['weight_pu_up'][0]*=t.amcNLOWeight
 	#	#Branches['weight_central_2012D'][0]*=t.amcNLOWeight
 	#	Branches['weight_nopu'][0]*=t.amcNLOWeight
-	Branches['weight_amcNLO'][0]=0#t.amcNLOWeight
+	#Branches['weight_amcNLO'][0]=0#t.amcNLOWeight
 
 	#if 'amcatnlo' in amcNLOname :
 	#	scaleWeights = t.ScaleWeightsAMCNLO
@@ -2325,7 +2325,8 @@ for n in range(N):
 	#		if (Branches['Pt_muon2'][0] < 45) and (Branches['Pt_miss'][0] < 45): continue
 	if (Branches['Pt_jet1'][0] <  45): continue
 	if (Branches['Pt_jet2'][0] <  45): continue #fixme turned off for qcd check.....turn back on!
-	if (Branches['St_uujj'][0] < 275) and (Branches['St_uuj'][0] < 225): continue
+	if (Branches['St_uujj'][0] < 275): continue
+	#if (Branches['St_uujj'][0] < 275) and (Branches['St_uuj'][0] < 225): continue
 	#if (Branches['St_uujj'][0] < 275) and (Branches['St_uvjj'][0] < 275): continue
 	#if (Branches['M_uu'][0]    <  45) and (Branches['MT_uv'][0]   <  45): continue #this should be used if munujj channel is used
 	if (Branches['M_uu'][0]    <  45): continue #this should be used if munujj channel is not used
