@@ -2,13 +2,13 @@ SignalType,Xsections,N_orig,Group,CustomJson,EOSDirectory
 ##
 #SingleMuon Data
 #
-Run2016B_ver2-Nano25Oct2019,1,1,SingleMuData,Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt,/store/group/phys_exotica/leptonsPlusJets/LQ/stockNanoSkim/LQ2/2016/gmadigan/SingleMuon/
-Run2016C-Nano25Oct2019,1,1,SingleMuData,Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt,/store/group/phys_exotica/leptonsPlusJets/LQ/stockNanoSkim/LQ2/2016/gmadigan/SingleMuon/
-Run2016D-Nano25Oct2019,1,1,SingleMuData,Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt,/store/group/phys_exotica/leptonsPlusJets/LQ/stockNanoSkim/LQ2/2016/gmadigan/SingleMuon/
-Run2016E-Nano25Oct2019,1,1,SingleMuData,Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt,/store/group/phys_exotica/leptonsPlusJets/LQ/stockNanoSkim/LQ2/2016/gmadigan/SingleMuon/
-Run2016F-Nano25Oct2019,1,1,SingleMuData,Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt,/store/group/phys_exotica/leptonsPlusJets/LQ/stockNanoSkim/LQ2/2016/gmadigan/SingleMuon/
-Run2016G-Nano25Oct2019,1,1,SingleMuData,Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt,/store/group/phys_exotica/leptonsPlusJets/LQ/stockNanoSkim/LQ2/2016/gmadigan/SingleMuon/
-Run2016H-Nano25Oct2019,1,1,SingleMuData,Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt,/store/group/phys_exotica/leptonsPlusJets/LQ/stockNanoSkim/LQ2/2016/gmadigan/SingleMuon/
+Run2016B_ver2-Nano25Oct2019,1,1,SingleMuData,Cert_271036-284044_13TeV_ReReco_07Aug2017_Collisions16_JSON.txt,/store/group/phys_exotica/leptonsPlusJets/LQ/stockNanoSkim/LQ2/2016/gmadigan/SingleMuon/
+Run2016C-Nano25Oct2019,1,1,SingleMuData,Cert_271036-284044_13TeV_ReReco_07Aug2017_Collisions16_JSON.txt,/store/group/phys_exotica/leptonsPlusJets/LQ/stockNanoSkim/LQ2/2016/gmadigan/SingleMuon/
+Run2016D-Nano25Oct2019,1,1,SingleMuData,Cert_271036-284044_13TeV_ReReco_07Aug2017_Collisions16_JSON.txt,/store/group/phys_exotica/leptonsPlusJets/LQ/stockNanoSkim/LQ2/2016/gmadigan/SingleMuon/
+Run2016E-Nano25Oct2019,1,1,SingleMuData,Cert_271036-284044_13TeV_ReReco_07Aug2017_Collisions16_JSON.txt,/store/group/phys_exotica/leptonsPlusJets/LQ/stockNanoSkim/LQ2/2016/gmadigan/SingleMuon/
+Run2016F-Nano25Oct2019,1,1,SingleMuData,Cert_271036-284044_13TeV_ReReco_07Aug2017_Collisions16_JSON.txt,/store/group/phys_exotica/leptonsPlusJets/LQ/stockNanoSkim/LQ2/2016/gmadigan/SingleMuon/
+Run2016G-Nano25Oct2019,1,1,SingleMuData,Cert_271036-284044_13TeV_ReReco_07Aug2017_Collisions16_JSON.txt,/store/group/phys_exotica/leptonsPlusJets/LQ/stockNanoSkim/LQ2/2016/gmadigan/SingleMuon/
+Run2016H-Nano25Oct2019,1,1,SingleMuData,Cert_271036-284044_13TeV_ReReco_07Aug2017_Collisions16_JSON.txt,/store/group/phys_exotica/leptonsPlusJets/LQ/stockNanoSkim/LQ2/2016/gmadigan/SingleMuon/
 #
 #DY+Jets
 #
