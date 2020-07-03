@@ -20,9 +20,9 @@ DYJetsToLL_Pt-650ToInf,0.040981,198926,ZJetsPtBin,0,/store/group/phys_exotica/le
 #
 #TTBar
 #
-TTTo2L2Nu,88.29,2903570012,TTBar_decayBinned,0,/store/group/phys_exotica/leptonsPlusJets/LQ/stockNanoSkim/LQ2/2018/gmadigan/
+TTTo2L2Nu,87.31,2903570012,TTBar_decayBinned,0,/store/group/phys_exotica/leptonsPlusJets/LQ/stockNanoSkim/LQ2/2018/gmadigan/
 TTToHadronic,377.96,103722897824,TTBar_decayBinned,0,/store/group/phys_exotica/leptonsPlusJets/LQ/stockNanoSkim/LQ2/2018/gmadigan/
-TTToSemiLeptonic,365.34,147103616584,TTBar_decayBinned,0,/store/group/phys_exotica/leptonsPlusJets/LQ/stockNanoSkim/LQ2/2018/gmadigan/
+TTToSemiLeptonic,365.34,148456977096,TTBar_decayBinned,0,/store/group/phys_exotica/leptonsPlusJets/LQ/stockNanoSkim/LQ2/2018/gmadigan/
 #
 #Single Top
 #
@@ -34,7 +34,7 @@ ST_tW_antitop_5f_inclusiveDecays,35.85,266470418,SingleTop,0,/store/group/phys_e
 #
 #W+Jets
 #
-#WJetsToLNu_Wpt-0To50_,57297.39264,168695742944,WJetsPtBin,0,/store/group/phys_exotica/leptonsPlusJets/LQ/stockNanoSkim/LQ2/2018/gmadigan/ # Not on DAS
+#WJetsToLNu_Wpt-0To50_,57297.39264,0,WJetsPtBin,0,/store/group/phys_exotica/leptonsPlusJets/LQ/stockNanoSkim/LQ2/2018/gmadigan/ # Not on DAS
 WJetsToLNu_Pt-50To100_,3298.3733,168695742944,WJetsPtBin,0,/store/group/phys_exotica/leptonsPlusJets/LQ/stockNanoSkim/LQ2/2018/gmadigan/
 WJetsToLNu_Pt-100To250_,689.7496,90978536192,WJetsPtBin,0,/store/group/phys_exotica/leptonsPlusJets/LQ/stockNanoSkim/LQ2/2018/gmadigan/
 WJetsToLNu_Pt-250To400_,24.5069,587476583,WJetsPtBin,0,/store/group/phys_exotica/leptonsPlusJets/LQ/stockNanoSkim/LQ2/2018/gmadigan/
