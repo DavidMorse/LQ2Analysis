@@ -1,5 +1,6 @@
 import os, sys, math, random, platform, time
 from glob import glob
+from argparse import ArgumentParser
 
 global preselectionmumu 
 
@@ -9,31 +10,41 @@ global preselectionmumu
 ########    GLOBAL VARIABLES NEEDED FOR PLOTS AND ANALYSIS        ########
 ##########################################################################
 
+# Input Options - file, cross-section, number of events
+#parser = OptionParser()
+parser = ArgumentParser()
+parser.add_argument("-y", "--year", dest="year", help="option to pick running year (2016,2017,2018)", metavar="YEAR")
+options = parser.parse_args()
+year = str(options.year)
+
 # Directory where root files are kept and the tree you want to get root files from
-
-if 'cmsneu' in platform.node():
-	#NormalDirectory = '/media/dataPlus/dmorse/lqNtuples/NTupleAnalyzer_Full2016_v236_HLT_2017_04_21_19_13_01/SummaryFiles'
-	#QCDDirectory    = '/media/dataPlus/dmorse/lqNtuples/NTupleAnalyzer_Full2016QCDNonIsoQuickTest_2017_11_09/SummaryFiles'
-	QCDDirectory    = '/media/dataPlus/dmorse/lqNtuples/NTupleAnalyzer_QCDNonIsoSwitch_1jetReq_2017_11_26/SummaryFiles'
-        #EMuDirectory    = '/media/dataPlus/dmorse/lqNtuples/NTupleAnalyzer_Full2016_v236_HLT_Ele40Cut_EMuSwitch_2017_05_29/SummaryFiles'
-	NormalDirectory = '/media/dataPlus/dmorse/lqNtuples/NTupleAnalyzer_muCuts_full_2017_09_04/SummaryFiles'
-	EMuDirectory    = '/media/dataPlus/dmorse/lqNtuples/NTupleAnalyzer_LQfull_HEEPtag_EMuSwitch_2017_10_10_09/SummaryFiles'
-
-else:
-	NormalDirectory = '/eos/cms/store/group/phys_exotica/leptonsPlusJets/LQ/LQ2/trees/NTupleAnalyzer_nanoAOD_Full2016QuickTest_2019_10_14/SummaryFiles'
-	QCDDirectory    = '/eos/cms/store/group/phys_exotica/leptonsPlusJets/LQ/LQ2/trees/NTupleAnalyzer_nanoAOD_Full2016QCDNonIsoQuickTest_2019_10_14/SummaryFiles'
-	EMuDirectory    = '/eos/cms/store/group/phys_exotica/leptonsPlusJets/LQ/LQ2/trees/NTupleAnalyzer_nanoAOD_Full2016EMuSwitch_2019_10_14/SummaryFiles'
+if year == '2016':
+	NormalDirectory = '/eos/cms/store/group/phys_exotica/leptonsPlusJets/LQ/LQ2/stockNanoTrees/2016/gmadigan/NTupleAnalyzer_nanoAOD_Full2016QuickTest_stockNano_2020_07_20_21_53_31/SummaryFiles'
+	QCDDirectory    = '/eos/cms/store/group/phys_exotica/leptonsPlusJets/LQ/LQ2/trees/NTupleAnalyzer_nanoAOD_Full2016QCDNonIsoQuickTest_2019_10_14/SummaryFiles' #Placeholder
+	EMuDirectory    = '/eos/cms/store/group/phys_exotica/leptonsPlusJets/LQ/LQ2/trees/NTupleAnalyzer_nanoAOD_Full2016EMuSwitch_2019_10_14/SummaryFiles' #Placeholder
+elif year == '2017':
+	NormalDirectory = '/eos/cms/store/group/phys_exotica/leptonsPlusJets/LQ/LQ2/stockNanoTrees/2017/gmadigan/NTupleAnalyzer_nanoAOD_Full2017QuickTest_stockNano_2020_05_04_21_47_24/SummaryFiles'
+	QCDDirectory    = '/eos/cms/store/group/phys_exotica/leptonsPlusJets/LQ/LQ2/trees/NTupleAnalyzer_nanoAOD_Full2016QCDNonIsoQuickTest_2019_10_14/SummaryFiles' #Placeholder
+	EMuDirectory    = '/eos/cms/store/group/phys_exotica/leptonsPlusJets/LQ/LQ2/trees/NTupleAnalyzer_nanoAOD_Full2016EMuSwitch_2019_10_14/SummaryFiles' #Placeholder
+elif year == '2018':
+	NormalDirectory = '/eos/cms/store/group/phys_exotica/leptonsPlusJets/LQ/LQ2/stockNanoTrees/2018/gmadigan/NTupleAnalyzer_nanoAOD_Full2018QuickTest_stockNano_2020_07_05_00_00_41/SummaryFiles'
+	QCDDirectory    = '/eos/cms/store/group/phys_exotica/leptonsPlusJets/LQ/LQ2/trees/NTupleAnalyzer_nanoAOD_Full2016QCDNonIsoQuickTest_2019_10_14/SummaryFiles' #Placeholder
+	EMuDirectory    = '/eos/cms/store/group/phys_exotica/leptonsPlusJets/LQ/LQ2/trees/NTupleAnalyzer_nanoAOD_Full2016EMuSwitch_2019_10_14/SummaryFiles' #Placeholder
+else: exit()
 
 # The name of the main ttree (ntuple structure)
 TreeName = "PhysicalVariables"
 
 # Integrated luminosity for normalization
-#lumi =  2318.348
-#lumi = 2690.707
-#lumi = 27192.225
-#lumi = 36455.377
-lumi = 35863.308
-
+if year == '2016':
+	lumi = 35920.
+	lumiInvfb = '35.9'
+elif year == '2017':
+	lumi = 41530.
+	lumiInvfb = '41.5'
+elif year == '2018':
+	lumi = 59740.
+	lumiInvfb = '59.7'
 
 #Muon HLT MC scale factor
 #https://twiki.cern.ch/twiki/bin/view/CMS/MuonReferenceEffsRun2
@@ -47,12 +58,6 @@ singlemuHLT = '*(mu1hltSF)'
 doublemuHLT = '*(1.0-((1.0-mu1hltSF)*(1.0-mu2hltSF)))'
 
 singlemuHLTEMUSF =  '*((IsMuon_muon1)*(0.949621*(Eta_muon1>-2.4)*(Eta_muon1<=-2.1)+0.967073*(Eta_muon1>-2.1)*(Eta_muon1<=-1.6)+1.02402*(Eta_muon1>-1.6)*(Eta_muon1<=-1.2)+0.958010*(Eta_muon1>-1.2)*(Eta_muon1<=-0.9)+0.986735*(Eta_muon1>-0.9)*(Eta_muon1<=-0.3)+0.923577*(Eta_muon1>-0.3)*(Eta_muon1<=-0.2)+0.975074*(Eta_muon1>-0.2)*(Eta_muon1<=0.0)+0.977559*(Eta_muon1>0.0)*(Eta_muon1<=0.2)+0.947337*(Eta_muon1>0.2)*(Eta_muon1<=0.3)+0.982190*(Eta_muon1>0.3)*(Eta_muon1<=0.9)+0.968889*(Eta_muon1>0.9)*(Eta_muon1<=1.2)+1.01164*(Eta_muon1>1.2)*(Eta_muon1<=1.6)+0.956268*(Eta_muon1>1.6)*(Eta_muon1<=2.1)+0.916149*(Eta_muon1>2.1)*(Eta_muon1<=2.4))+(IsMuon_muon2)*(0.949621*(Eta_muon2>-2.4)*(Eta_muon2<=-2.1)+0.967073*(Eta_muon2>-2.1)*(Eta_muon2<=-1.6)+1.02402*(Eta_muon2>-1.6)*(Eta_muon2<=-1.2)+0.958010*(Eta_muon2>-1.2)*(Eta_muon2<=-0.9)+0.986735*(Eta_muon2>-0.9)*(Eta_muon2<=-0.3)+0.923577*(Eta_muon2>-0.3)*(Eta_muon2<=-0.2)+0.975074*(Eta_muon2>-0.2)*(Eta_muon2<=0.0)+0.977559*(Eta_muon2>0.0)*(Eta_muon2<=0.2)+0.947337*(Eta_muon2>0.2)*(Eta_muon2<=0.3)+0.982190*(Eta_muon2>0.3)*(Eta_muon2<=0.9)+0.968889*(Eta_muon2>0.9)*(Eta_muon2<=1.2)+1.01164*(Eta_muon2>1.2)*(Eta_muon2<=1.6)+0.956268*(Eta_muon2>1.6)*(Eta_muon2<=2.1)+0.916149*(Eta_muon2>2.1)*(Eta_muon2<=2.4)))'
-
-bTag1SFmedium = '*(1-(1-(CMVA_bjet1>0.4432)*Hjet1BsfMedium)*(1-(CMVA_bjet2>0.4432)*Hjet2BsfMedium)*(1-(CMVA_Zjet1>0.4432)*Zjet1BsfMedium)*(1-(CMVA_Zjet2>0.4432)*Zjet2BsfMedium))'
-bTag1SFmediumUp = '*(1-(1-(CMVA_bjet1>0.4432)*Hjet1BsfMediumUp)*(1-(CMVA_bjet2>0.4432)*Hjet2BsfMediumUp)*(1-(CMVA_Zjet1>0.4432)*Zjet1BsfMediumUp)*(1-(CMVA_Zjet2>0.4432)*Zjet2BsfMediumUp))'
-bTag1SFmediumDown = '*(1-(1-(CMVA_bjet1>0.4432)*Hjet1BsfMediumDown)*(1-(CMVA_bjet2>0.4432)*Hjet2BsfMediumDown)*(1-(CMVA_Zjet1>0.4432)*Zjet1BsfMediumDown)*(1-(CMVA_Zjet2>0.4432)*Zjet2BsfMediumDown))'
-
-
 
 # This is for the case of the E-mu sample, where one "muon" is replaced by an electron. In that case, we check
 # which muon is a real muon (IsMuon_muon1) and apply the trigger efficiency based on the muon
@@ -104,12 +109,11 @@ eleHEEPScale = '*((1-IsMuon_muon1)*(((abs(Eta_muon1)>0.0)*(abs(Eta_muon1)<0.5)*0
 
 #BTAG scale factors
 #2016
-bTag1SFmedium = '*(1-(1-(CISV_jet1>0.8838)*bTagSF_jet1)*(1-(CISV_jet2>0.8838)*btagSF_jet2))' #fixme btag -> BTag
-bTag1SFmediumUp = '*(1-(1-(CISV_jet1>0.8838)*bTagSF_jet1Up)*(1-(CISV_jet2>0.8838)*bTagSF_jet2Up))'
-bTag1SFmediumDown = '*(1-(1-(CISV_jet1>0.8838)*bTagSF_jet1Down)*(1-(CISV_jet2>0.8838)*bTagSF_jet2Down))'
+bTag1SFmedium = '*(1-(1-(DeepJet_jet1>0.3033)*bTagSF_jet1)*(1-(DeepJet_jet2>0.3033)*bTagSF_jet2))' #fixme btag -> BTag
+bTag1SFmediumUp = '*(1-(1-(DeepJet_jet1>0.3033)*bTagSF_jet1Up)*(1-(DeepJet_jet2>0.3033)*bTagSF_jet2Up))'
+bTag1SFmediumDown = '*(1-(1-(DeepJet_jet1>0.3033)*bTagSF_jet1Down)*(1-(DeepJet_jet2>0.3033)*bTagSF_jet2Down))'
 
-bTagsel1medium = '*(((CISV_jet1>0.8838)+(CISV_jet2>0.8838))>0)'
-
+bTagsel1medium = '*(((DeepJet_jet1>0.3033)+(DeepJet_jet2>0.3033))>0)'
 
 # Weights for different MC selections, including integrated luminosity, event weight, and trigger weight
 #NormalWeightMuMu = str(lumi)+'*weight_central*((pass_HLTMu50+pass_HLTTkMu50)>0)'+doublemuHLT+doubleMuIdScale+doubleMuIsoScale+trackerHIP1+trackerHIP2
@@ -126,7 +130,9 @@ NormalWeightEMuNoHLT = str(lumi)+'*weight_central'+MuIdScaleEMU+MuIsoScaleEMU+el
 #ZptReweight = '*(0.95-0.1*TMath::Erf((Pt_mu1mu2_gen-14.0)/8.8))'
 
 # This is the real data trigger condition
-dataHLT = '*((pass_HLTMu50+pass_HLTTkMu50)>0)'
+dataHLT = '*0'
+if year == '2016': dataHLT = '*((pass_HLTMu50+pass_HLTTkMu50)>0)'
+elif year == '2017' or year == '2018': dataHLT = '*((pass_HLTMu50+pass_HLTOldMu100+pass_HLTTkMu100)>0)'
 
 # This is the set of event filters used
 #passfilter =  '*(passDataCert*passPrimaryVertex*(GoodVertexCount>=1))' #fixme json not working
@@ -315,7 +321,7 @@ def main():
 	# for this, and make use of it. e.g. For systematic variations, we can run in batch instead
 	# of running serially, which speeds things up.
 
-	version_name = 'Testing_2016_customNano' # scriptflag
+	version_name = 'Testing_'+year+'_stockNano' # scriptflag
 	#version_name = 'Testing_noQCD_14nov' # use sf tag above if this is the real folder
 	os.system('mkdir Results_'+version_name) 
 
@@ -549,7 +555,6 @@ def main():
 		#munu2 = '(MT_uv>70)*(MT_uv<110)*(JetCount>3.5)'
 		[[Rz_uuj,Rz_uuj_err],[Rtt_uuj,Rtt_uuj_err]] = GetMuMuScaleFactors( NormalWeightMuMu+'*'+preselectionmumu_single, NormalDirectory, '(M_uu>80)*(M_uu<100)', '(M_uu>100)*(M_uu<250)',0,0)
 		[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = GetMuMuScaleFactors( NormalWeightMuMu+'*'+preselectionmumu, NormalDirectory, '(M_uu>80)*(M_uu<100)', '(M_uu>100)*(M_uu<250)',0,0)
-                #exit()
 		#[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = [[1.025,0.04],[1.147,0.019]]#TTBar MC, 2016 customNano
 		#[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = [[0.925,0.005],[1.000,0.023]]#TTBarDataDriven
 		#[[Rw_uvjj,Rw_uvjj_err],[Rtt_uvjj,Rtt_uvjj_err]] = [[0.977,0.052],[0.932,0.039]]#TTBarMC
@@ -583,7 +588,6 @@ def main():
 		MakeBasicPlot("Pt_miss","E_{T}^{miss} [GeV]",metzoombinning_uujj_Z,preselectionmumu+'*(M_uu>80)*(M_uu<100)*(Pt_miss<100)',NormalWeightMuMu,NormalDirectory,'controlzoom_ZRegion','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
 		MakeBasicPlot("M_uu","M^{#mu#mu} [GeV]",bosonzoombinning_uujj_TT,preselectionmumu+'*(M_uu>100)*(Pt_miss>=100)',NormalWeightMuMu,NormalDirectory,'controlzoom_TTRegion','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
 		MakeBasicPlot("Pt_miss","E_{T}^{miss} [GeV]",metzoombinning_uujj_TT,preselectionmumu+'*(M_uu>100)*(Pt_miss>=100)',NormalWeightMuMu,NormalDirectory,'controlzoom_TTRegion','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
-		exit()
 		#MakeBasicPlot("CISV_jet1","Jet1 CSV score",bjetbinning,preselectionmunu+'*(MT_uv>70)*(MT_uv<150)*(JetCount<3.5)',NormalWeightMuNu,NormalDirectory,'controlzoom_WRegion','uvjj',Rz_uujj, Rw_uvjj,Rtt_uvjj,'',version_name,850)
 		#MakeBasicPlot("CISV_jet2","Jet2 CSV score",bjetbinning,preselectionmunu+'*(MT_uv>70)*(MT_uv<150)*(JetCount<3.5)',NormalWeightMuNu,NormalDirectory,'controlzoom_WRegion','uvjj',Rz_uujj, Rw_uvjj,Rtt_uvjj,'',version_name,850)
 		#MakeBasicPlot("CISV_jet1","Jet1 CSV score",bjetbinning,preselectionmunu+'*(MT_uv>70)*(MT_uv<150)*(JetCount>3.5)',NormalWeightMuNu,NormalDirectory,'controlzoom_TTRegion','uvjj',Rz_uujj, Rw_uvjj,Rtt_uvjj,'',version_name,850)
@@ -635,6 +639,8 @@ def main():
 		# UUJJ plots at preselection, Note that putting 'TTBarDataDriven' in the name turns on the use of data-driven ttbar e-mu sample in place of MC
 		
 		#preselectionmumu += '*(M_uu>50)*(M_uu<80)'#fixme this is for control region checks
+		MakeBasicPlot("DeepJet_jet1","Jet1 DeepJet score",bjetbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
+		MakeBasicPlot("DeepJet_jet2","Jet2 DeepJet score",bjetbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
 		MakeBasicPlot("Pt_jet1+Pt_jet2","p_{T}(jet_{1})+p_{T}(jet_{2}) [GeV]",ptbinning2,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
 		MakeBasicPlot("Pt_muon1+Pt_muon2","p_{T}(#mu_{1})+p_{T}(#mu_{2}) [GeV]",ptbinning2,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
 		MakeBasicPlot("GoodVertexCount","N_{Vertices}",vbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
@@ -676,8 +682,6 @@ def main():
 		MakeBasicPlot("DPhi_muon1jet2","#Delta#phi(#mu_{1},j_{2})",dphibinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
 		MakeBasicPlot("DPhi_muon2jet1","#Delta#phi(#mu_{2},j_{1})",dphibinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
 		MakeBasicPlot("DPhi_muon2jet2","#Delta#phi(#mu_{2},j_{2})",dphibinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
-		MakeBasicPlot("CISV_jet1","Jet1 CSV score",bjetbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
-		MakeBasicPlot("CISV_jet2","Jet2 CSV score",bjetbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
 
 		# UVJJ plots at preselection
 		
@@ -4544,6 +4548,9 @@ def GetMuMuScaleFactors( selection, FileDirectory, controlregion_1, controlregio
 	print 'Data:',N1,N2
 	print 'Z:',Z1,Z2
 	print 'TT:',T1,T2
+	print 'ST:',s1,s2
+	print 'W:',w1,w2
+	print 'VV:',v1,v2
 	print 'Other:',Other1,Other2
 
 
@@ -5642,9 +5649,9 @@ def MakeBasicPlot(recovariable,xlabel,presentationbinning,selection,weight,FileD
 
 
 	MCStack=BeautifyStack(MCStack,Label)
-	hs_rec_Signal.Draw("HISTSAME")
-	if 'final' not in tagname:
-		hs_rec_Signal2.Draw("HISTSAME")
+	#hs_rec_Signal.Draw("HISTSAME")
+	#if 'final' not in tagname:
+		#hs_rec_Signal2.Draw("HISTSAME")
  	if 'PAS' in tagname and 'final' in tagname:
 		# sysTop.Draw("F")
 		hs_bgband.Draw("E2SAME")
@@ -5698,8 +5705,8 @@ def MakeBasicPlot(recovariable,xlabel,presentationbinning,selection,weight,FileD
 	if 'final' not in tagname:
 		if 'PAS' in tagname:
 			leg.AddEntry(hs_bgband,'Unc. (stat + syst)')
-		leg.AddEntry(hs_rec_Signal,sig1name,"l")
-		leg.AddEntry(hs_rec_Signal2,sig2name,"l")
+		#leg.AddEntry(hs_rec_Signal,sig1name,"l")
+		#leg.AddEntry(hs_rec_Signal2,sig2name,"l")
 	else:
 		if 'PAS' in tagname:
 			leg.AddEntry(hs_bgband,'Unc. (stat + syst)')
@@ -5726,12 +5733,12 @@ def MakeBasicPlot(recovariable,xlabel,presentationbinning,selection,weight,FileD
  
 	if  'PAS' in tagname and 'tagfree' not in tagname:
 		#l1.DrawLatex(0.18,0.94,"CMS #it{Preliminary}      "+sqrts+", 19.7 fb^{-1}")
-		l1.DrawLatex(0.13,0.94,"#it{Preliminary}                                35.9 fb^{-1} (13 TeV)")
+		l1.DrawLatex(0.13,0.94,"#it{Preliminary}                                "+lumiInvfb+" fb^{-1} (13 TeV)")
 		#l1.DrawLatex(0.64,0.94,"5 fb^{-1} (13 TeV)")
 		l2.DrawLatex(0.15,0.84,"CMS")
 	elif  'PAS' in tagname and 'tagfree' in tagname:
 		#l1.DrawLatex(0.18,0.94,"CMS #it{Preliminary}      "+sqrts+", 19.7 fb^{-1}")
-		l1.DrawLatex(0.13,0.94,"                                                35.9 fb^{-1} (13 TeV)")
+		l1.DrawLatex(0.13,0.94,"                                                "+lumiInvfb+" fb^{-1} (13 TeV)")
 		#l1.DrawLatex(0.64,0.94,"5 fb^{-1} (13 TeV)")
 		l2.DrawLatex(0.15,0.84,"CMS")
 		if channel=='uujj':
@@ -5740,7 +5747,7 @@ def MakeBasicPlot(recovariable,xlabel,presentationbinning,selection,weight,FileD
 			l1.DrawLatex(0.155,0.77,"#mu#nujj")
 	else:
 		#l1.DrawLatex(0.18,0.94,"                          "+sqrts+", 225.57 pb^{-1}")
-		l1.DrawLatex(0.12,0.94,"#it{Preliminary}                           35.9 fb^{-1} (13 TeV)")
+		l1.DrawLatex(0.12,0.94,"#it{Preliminary}                           "+lumiInvfb+" fb^{-1} (13 TeV)")
 		l2.DrawLatex(0.15,0.84,"CMS")
 
 
@@ -8026,7 +8033,9 @@ def blind(h,name,num,tag,chan):
 	#print name
 	#name = h.GetName()
 	blindstart = 9999
-	if 'St' in name and 'uujj' in chan:
+	if name == 'M_uu':
+		blindstart = 300
+	elif 'St' in name and 'uujj' in chan:
 		blindstart = 1500
 	elif 'uujj2' in name:
 		blindstart = 800

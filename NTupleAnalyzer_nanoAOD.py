@@ -149,7 +149,7 @@ _kinematicvariables += ['passTrigMu1','passTrigMu2']
 _kinematicvariables += ['muonIndex1','muonIndex2']
 _kinematicvariables += ['jetIndex1','jetIndex2']
 _kinematicvariables += ['ptHat']
-_kinematicvariables += ['CISV_jet1','CISV_jet2']
+_kinematicvariables += ['DeepJet_jet1','DeepJet_jet2']
 _kinematicvariables += ['bTagSF_jet1','bTagSF_jet2']
 _kinematicvariables += ['PULoosej1','PUMediumj1','PUTightj1']
 _kinematicvariables += ['PULoosej2','PUMediumj2','PUTightj2']
@@ -1441,7 +1441,7 @@ def TightIDJets(T,met,variation,isdata):
 	jetinds = []
 	NHFs = []
 	NEMFs = []
-	CSVscores = []
+	DeepJetScores = []
 	bTagSFs = []
 	PUIds = []
 	for n in range(len(_PFJetPt)):
@@ -1472,9 +1472,9 @@ def TightIDJets(T,met,variation,isdata):
 				jetinds.append(n)
 				NHFs.append(T.Jet_neHEF[n])
 				NEMFs.append(T.Jet_neEmEF[n])
-				CSVscores.append(T.Jet_btagCSVV2[n])
+				DeepJetScores.append(T.Jet_btagDeepFlavB[n])
 				if 'SingleMuon' in name or 'SingleElectron' in name or 'DoubleMuon' in name or 'DoubleEG' in name: bTagSFs.append(1.0)
-				else: bTagSFs.append(T.Jet_btagSF_deepcsv_M[n])
+				else: bTagSFs.append(T.Jet_btagSF_deepjet_M[n])
 				PUIds.append([(T.Jet_puId[n] & 0x4)>0,(T.Jet_puId[n] & 0x2)>0,(T.Jet_puId[n] & 0x1)>0])
 			else:
 				if _PFJetPt[n] > JetFailThreshold:
@@ -1482,7 +1482,7 @@ def TightIDJets(T,met,variation,isdata):
 
 	# print met.Pt()
 
-	return [jets,jetinds,met,JetFailThreshold,NHFs,NEMFs,CSVscores,bTagSFs,PUIds]
+	return [jets,jetinds,met,JetFailThreshold,NHFs,NEMFs,DeepJetScores,bTagSFs,PUIds]
 def GetLLJJMasses(l1,l2,j1,j2):
 	# Purpose: For LLJJ channels, this function returns two L-J Masses, corresponding to the
 	#         pair of L-Js which minimizes the difference between LQ masses in the event
@@ -1762,7 +1762,7 @@ def FullKinematicCalculation(T,variation):
 	# taus_forjetsep = TausForJetSeparation(T)
 	[electrons,electroninds,met] = HEEPElectrons(T,met,variation)
 	# ID Jets and filter from muons
-	[jets,jetinds,met,failthreshold,neutralhadronEF,neutralemEF,btagCSVscores,btagSFs,PUIds] = TightIDJets(T,met,variation,isData)
+	[jets,jetinds,met,failthreshold,neutralhadronEF,neutralemEF,btagDeepJetScores,btagSFs,PUIds] = TightIDJets(T,met,variation,isData)
 	# jets = GeomFilterCollection(jets,muons_forjetsep,0.5)
 	jets = GeomFilterCollection(jets,muons,0.5)
 	jets = GeomFilterCollection(jets,electrons,0.5)
@@ -1801,14 +1801,14 @@ def FullKinematicCalculation(T,variation):
 		jets.append(EmptyLorentz)
 		neutralhadronEF.append(0.0)
 		neutralemEF.append(0.0)
-		btagCSVscores.append(-5.0)
+		btagDeepJetScores.append(-5.0)
 		btagSFs.append(-5.0)
 		PUIds.append([-5.0,-5.0,-5.0])
 	if len(jets) < 2 : 
 		jets.append(EmptyLorentz)
 		neutralhadronEF.append(0.0)
 		neutralemEF.append(0.0)		
-		btagCSVscores.append(-5.0)
+		btagDeepJetScores.append(-5.0)
 		btagSFs.append(-5.0)
 		PUIds.append([-5.0,-5.0,-5.0])
 	_ismuon_muon1 = 1.0
@@ -1857,7 +1857,7 @@ def FullKinematicCalculation(T,variation):
 	[_nhefj1,_nhefj2,_nemefj1,_nemefj2] = [neutralhadronEF[0],neutralhadronEF[1],neutralemEF[0],neutralemEF [1]]
 	[_ptmet,_etamet,_phimet] = [met.Pt(),0,met.Phi()]
 	[_xmiss,_ymiss] = [met.Px(),met.Py()]
-	[_CSVj1,_CSVj2] = [btagCSVscores[0],btagCSVscores[1]]
+	[_deepJetj1,_deepJetj2] = [btagDeepJetScores[0],btagDeepJetScores[1]]
 	[_btagSF1,_btagSF2] = [btagSFs[0],btagSFs[1]]
 	[_PULoosej1,_PUMediumj1,_PUTightj1] = PUIds[0]
 	[_PULoosej2,_PUMediumj2,_PUTightj2] = PUIds[1]
@@ -1994,7 +1994,7 @@ def FullKinematicCalculation(T,variation):
 	toreturn += [_muonInd1,_muonInd2]
 	toreturn += [_jetInd1,_jetInd2]
 	toreturn += [_ptHat]
-	toreturn += [_CSVj1,_CSVj2]
+	toreturn += [_deepJetj1,_deepJetj2]
 	toreturn += [_btagSF1,_btagSF2]
 	toreturn += [_PULoosej1,_PUMediumj1,_PUTightj1]
 	toreturn += [_PULoosej2,_PUMediumj2,_PUTightj2]
