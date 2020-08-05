@@ -30,7 +30,9 @@ elif year == '2018':
 	NormalDirectory = '/eos/cms/store/group/phys_exotica/leptonsPlusJets/LQ/LQ2/stockNanoTrees/2018/gmadigan/NTupleAnalyzer_nanoAOD_Full2018QuickTest_stockNano_2020_07_05_00_00_41/SummaryFiles'
 	QCDDirectory    = '/eos/cms/store/group/phys_exotica/leptonsPlusJets/LQ/LQ2/trees/NTupleAnalyzer_nanoAOD_Full2016QCDNonIsoQuickTest_2019_10_14/SummaryFiles' #Placeholder
 	EMuDirectory    = '/eos/cms/store/group/phys_exotica/leptonsPlusJets/LQ/LQ2/trees/NTupleAnalyzer_nanoAOD_Full2016EMuSwitch_2019_10_14/SummaryFiles' #Placeholder
-else: exit()
+else:
+	print "Did not enter a valid year.\nPlease use option \'-y\' to select running year (2016,2017,2018)"
+	exit()
 
 # The name of the main ttree (ntuple structure)
 TreeName = "PhysicalVariables"
@@ -555,6 +557,7 @@ def main():
 		#munu2 = '(MT_uv>70)*(MT_uv<110)*(JetCount>3.5)'
 		[[Rz_uuj,Rz_uuj_err],[Rtt_uuj,Rtt_uuj_err]] = GetMuMuScaleFactors( NormalWeightMuMu+'*'+preselectionmumu_single, NormalDirectory, '(M_uu>80)*(M_uu<100)', '(M_uu>100)*(M_uu<250)',0,0)
 		[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = GetMuMuScaleFactors( NormalWeightMuMu+'*'+preselectionmumu, NormalDirectory, '(M_uu>80)*(M_uu<100)', '(M_uu>100)*(M_uu<250)',0,0)
+		#exit()
 		#[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = [[1.025,0.04],[1.147,0.019]]#TTBar MC, 2016 customNano
 		#[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = [[0.925,0.005],[1.000,0.023]]#TTBarDataDriven
 		#[[Rw_uvjj,Rw_uvjj_err],[Rtt_uvjj,Rtt_uvjj_err]] = [[0.977,0.052],[0.932,0.039]]#TTBarMC
@@ -5649,9 +5652,9 @@ def MakeBasicPlot(recovariable,xlabel,presentationbinning,selection,weight,FileD
 
 
 	MCStack=BeautifyStack(MCStack,Label)
-	#hs_rec_Signal.Draw("HISTSAME")
-	#if 'final' not in tagname:
-		#hs_rec_Signal2.Draw("HISTSAME")
+	hs_rec_Signal.Draw("HISTSAME")
+	if 'final' not in tagname:
+		hs_rec_Signal2.Draw("HISTSAME")
  	if 'PAS' in tagname and 'final' in tagname:
 		# sysTop.Draw("F")
 		hs_bgband.Draw("E2SAME")
@@ -5705,8 +5708,8 @@ def MakeBasicPlot(recovariable,xlabel,presentationbinning,selection,weight,FileD
 	if 'final' not in tagname:
 		if 'PAS' in tagname:
 			leg.AddEntry(hs_bgband,'Unc. (stat + syst)')
-		#leg.AddEntry(hs_rec_Signal,sig1name,"l")
-		#leg.AddEntry(hs_rec_Signal2,sig2name,"l")
+		leg.AddEntry(hs_rec_Signal,sig1name,"l")
+		leg.AddEntry(hs_rec_Signal2,sig2name,"l")
 	else:
 		if 'PAS' in tagname:
 			leg.AddEntry(hs_bgband,'Unc. (stat + syst)')
