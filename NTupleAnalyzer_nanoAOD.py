@@ -1761,12 +1761,18 @@ def FullKinematicCalculation(T,variation):
 	# muons_forjetsep = MuonsForJetSeparation(T)
 	# taus_forjetsep = TausForJetSeparation(T)
 	[electrons,electroninds,met] = HEEPElectrons(T,met,variation)
-	# ID Jets and filter from muons
+	# ID Jets and filter from leptons
 	[jets,jetinds,met,failthreshold,neutralhadronEF,neutralemEF,btagDeepJetScores,btagSFs,PUIds] = TightIDJets(T,met,variation,isData)
-	# jets = GeomFilterCollection(jets,muons_forjetsep,0.5)
-	jets = GeomFilterCollection(jets,muons,0.5)
-	jets = GeomFilterCollection(jets,electrons,0.5)
-	# jets = GeomFilterCollection(jets,taus_forjetsep,0.5)
+        # Filter jets from good muons and electrons.
+        # Filter jets and associated collections - jets must be first element in the array!! (don't put met or failthreshold, they are not arrays)
+        # All arrays MUST have same length as the jets, and all associated collections of the jets MUST be added here - think btagging, SF, etc.....
+	[jets,jetinds,neutralhadronEF,neutralemEF,btagDeepJetScores,btagSFs,PUIds] = GeomFilterCollections([jets,jetinds,neutralhadronEF,neutralemEF,btagDeepJetScores,btagSFs,PUIds],muons,0.5)
+        [jets,jetinds,neutralhadronEF,neutralemEF,btagDeepJetScores,btagSFs,PUIds] = GeomFilterCollections([jets,jetinds,neutralhadronEF,neutralemEF,btagDeepJetScores,btagSFs,PUIds],electrons,0.5)
+        # Filter jets only, not associated collections!!
+	#jets = GeomFilterCollection(jets,muons,0.5)
+	#jets = GeomFilterCollection(jets,electrons,0.5)
+	##jets = GeomFilterCollection(jets,muons_forjetsep,0.5)
+        ##jets = GeomFilterCollection(jets,taus_forjetsep,0.5)
 	# Empty lorenz vector for bookkeeping
 	EmptyLorentz = TLorentzVector()
 	EmptyLorentz.SetPtEtaPhiM(.01,0,0,0)
@@ -2062,6 +2068,26 @@ def GeomFilterCollection(collection_to_clean,good_collection,dRcut):
 		if isgood==True:
 			output_collection.append(c)
 	return output_collection
+
+def GeomFilterCollections(collections_to_clean,good_collection,dRcut):
+	# Purpose: Take an array of collections of TLorentzVectors that you want to clean (arg 1)
+	#         by removing all objects within dR of dRcut (arg 3) of any element in
+	#         the collection of other particles (arg 2)
+	#         e.g.  arguments ([jets,btags,PUid],muons,0.3) gets rid of jets within 0.3 of muons. 
+	output_collections = [[] for i in range(len(collections_to_clean))]
+        #print collections_to_clean
+        for i in range(len(collections_to_clean[0])): #this is why e.g. jets must be first element
+                isgood = True
+		for g in good_collection:
+			if (collections_to_clean[0][i].DeltaR(g))<dRcut:
+				isgood = False
+                #print 'jet',i,'pass?',isgood
+		if isgood==True:
+                        for j in range(len(collections_to_clean)):
+                                #print 'j',j
+                                output_collections[j].append(collections_to_clean[j][i])
+        #print 'startlength',len(collections_to_clean[0]),'endlength',len(output_collections[0])
+	return output_collections
 
 def MetVector(T):
 	# Purpose: Creates a TLorentzVector representing the MET. No pseudorapidity, obviously.
