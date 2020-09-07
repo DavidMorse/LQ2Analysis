@@ -171,7 +171,7 @@ _weights = ['scaleWeight_Up','scaleWeight_Down','scaleWeight_R1_F1','scaleWeight
 _flagDoubles = ['run_number','event_number','lumi_number']
 _flags = ['pass_HLTIsoMu27','pass_HLTMu45_eta2p1','pass_HLTMu50','pass_HLTMu55','pass_HLTTkMu50','pass_HLTOldMu100','pass_HLTTkMu100','GoodVertexCount']
 _flags += ['passPrimaryVertex','passTriggerObjectMatching','passDataCert']
-_flags += ['Flag_BadChargedCandidateFilter','Flag_BadChargedCandidateSummer16Filter','Flag_BadGlobalMuon','Flag_BadPFMuonFilter','Flag_BadPFMuonSummer16Filter','Flag_CSCTightHalo2015Filter','Flag_CSCTightHaloFilter','Flag_CSCTightHaloTrkMuUnvetoFilter','Flag_EcalDeadCellBoundaryEnergyFilter','Flag_EcalDeadCellTriggerPrimitiveFilter','Flag_HBHENoiseFilter','Flag_HBHENoiseIsoFilter','Flag_HcalStripHaloFilter','Flag_METFilters','Flag_chargedHadronTrackResolutionFilter','Flag_ecalBadCalibFilter','Flag_ecalBadCalibFilterV2','Flag_ecalLaserCorrFilter','Flag_eeBadScFilter','Flag_globalSuperTightHalo2016Filter','Flag_globalTightHalo2016Filter','Flag_goodVertices','Flag_hcalLaserEventFilter','Flag_muonBadTrackFilter','Flag_trkPOGFilters','Flag_trkPOG_logErrorTooManyClusters','Flag_trkPOG_manystripclus53X','Flag_trkPOG_toomanystripclus53X']
+_flags += ['Flag_BadChargedCandidateFilter','Flag_BadChargedCandidateSummer16Filter','Flag_BadPFMuonFilter','Flag_BadPFMuonSummer16Filter','Flag_CSCTightHalo2015Filter','Flag_CSCTightHaloFilter','Flag_CSCTightHaloTrkMuUnvetoFilter','Flag_EcalDeadCellBoundaryEnergyFilter','Flag_EcalDeadCellTriggerPrimitiveFilter','Flag_HBHENoiseFilter','Flag_HBHENoiseIsoFilter','Flag_HcalStripHaloFilter','Flag_METFilters','Flag_chargedHadronTrackResolutionFilter','Flag_ecalBadCalibFilter','Flag_ecalBadCalibFilterV2','Flag_ecalLaserCorrFilter','Flag_eeBadScFilter','Flag_globalSuperTightHalo2016Filter','Flag_globalTightHalo2016Filter','Flag_goodVertices','Flag_hcalLaserEventFilter','Flag_muonBadTrackFilter','Flag_trkPOGFilters','Flag_trkPOG_logErrorTooManyClusters','Flag_trkPOG_manystripclus53X','Flag_trkPOG_toomanystripclus53X']
 _variations = ['','JESup','JESdown','MESup','MESdown','JERup','JERdown','MER']
 if nonisoswitch==True or emuswitch==True or quicktestswitch==True:
 	print 'NOT performing systematics...'
@@ -2279,48 +2279,33 @@ for n in range(N):
 
 
 	#fixme some flags missing, others not working correctly
-	if 'SingleMuon' in name or 'SingleElectron' in name or 'DoubleMuon' in name or 'DoubleEG' in name:
-		Branches['Flag_BadChargedCandidateFilter'][0]         = t.Flag_BadChargedCandidateFilter
-		Branches['Flag_BadGlobalMuon'][0]	       	      = 1#t.Flag_BadGlobalMuon	
-		Branches['Flag_BadPFMuonFilter'][0]	       	      = t.Flag_BadPFMuonFilter
-	else:
-		if _year=='2016':
-			Branches['Flag_BadChargedCandidateFilter'][0]         = ord(t.Flag_BadChargedCandidateFilter)
-			Branches['Flag_BadGlobalMuon'][0]	       	      = ord(t.Flag_BadGlobalMuon)
-			Branches['Flag_BadPFMuonFilter'][0]	       	      = ord(t.Flag_BadPFMuonFilter)
-		elif _year=='2017':
-			Branches['Flag_BadChargedCandidateFilter'][0]         = t.Flag_BadChargedCandidateFilter
-			Branches['Flag_BadGlobalMuon'][0]	       	      = 1#t.Flag_BadGlobalMuon
-			Branches['Flag_BadPFMuonFilter'][0]	       	      = t.Flag_BadPFMuonFilter
-	Branches['Flag_BadChargedCandidateSummer16Filter'][0] = 1#t.Flag_BadChargedCandidateSummer16Filter		
-	Branches['Flag_BadPFMuonSummer16Filter'][0]    	      = 1#t.Flag_BadPFMuonSummer16Filter 
-	Branches['Flag_CSCTightHalo2015Filter'][0]     	      = t.Flag_CSCTightHalo2015Filter   		
-	Branches['Flag_CSCTightHaloFilter'][0]         	      = t.Flag_CSCTightHaloFilter       		
-	Branches['Flag_CSCTightHaloTrkMuUnvetoFilter'][0]     = t.Flag_CSCTightHaloTrkMuUnvetoFilter     
-	Branches['Flag_EcalDeadCellBoundaryEnergyFilter'][0]  = t.Flag_EcalDeadCellBoundaryEnergyFilter  
-	Branches['Flag_EcalDeadCellTriggerPrimitiveFilter'][0]= t.Flag_EcalDeadCellTriggerPrimitiveFilter
-	Branches['Flag_HBHENoiseFilter'][0]	       	      = t.Flag_HBHENoiseFilter			
-	Branches['Flag_HBHENoiseIsoFilter'][0]                = t.Flag_HBHENoiseIsoFilter       		
-	Branches['Flag_HcalStripHaloFilter'][0]               = t.Flag_HcalStripHaloFilter      		
-	Branches['Flag_METFilters'][0]     	              = t.Flag_METFilters     			
-	Branches['Flag_chargedHadronTrackResolutionFilter'][0]= t.Flag_chargedHadronTrackResolutionFilter
-	Branches['Flag_ecalBadCalibFilter'][0]                = 1#t.Flag_ecalBadCalibFilter       		
-	Branches['Flag_ecalBadCalibFilterV2'][0]              = 1#t.Flag_ecalBadCalibFilterV2  
-	Branches['Flag_ecalLaserCorrFilter'][0]               = t.Flag_ecalLaserCorrFilter      		
-	Branches['Flag_eeBadScFilter'][0]  	       	      = t.Flag_eeBadScFilter 
-	if 'SingleMuon' in name or 'SingleElectron' in name or 'DoubleMuon' in name or 'DoubleEG' in name:
-		Branches['Flag_globalSuperTightHalo2016Filter'][0]    = t.Flag_globalSuperTightHalo2016Filter 
-	else:
-		Branches['Flag_globalSuperTightHalo2016Filter'][0]    = 1#t.Flag_globalSuperTightHalo2016Filter
-	Branches['Flag_globalTightHalo2016Filter'][0]	      = t.Flag_globalTightHalo2016Filter		
-	Branches['Flag_goodVertices'][0]		      = t.Flag_goodVertices   			
-	Branches['Flag_hcalLaserEventFilter'][0]     	      = t.Flag_hcalLaserEventFilter     		
-	Branches['Flag_muonBadTrackFilter'][0]       	      = t.Flag_muonBadTrackFilter       		
-	Branches['Flag_trkPOGFilters'][0] 		      = t.Flag_trkPOGFilters  			
-	Branches['Flag_trkPOG_logErrorTooManyClusters'][0]    = t.Flag_trkPOG_logErrorTooManyClusters    
-	Branches['Flag_trkPOG_manystripclus53X'][0] 	      = t.Flag_trkPOG_manystripclus53X  		
-	Branches['Flag_trkPOG_toomanystripclus53X'][0]        = t.Flag_trkPOG_toomanystripclus53X 
-	#Branches['passPrimaryVertex'][0]                      = t.Flag_goodVertices
+	Branches['Flag_BadChargedCandidateFilter'][0] 			= t.Flag_BadChargedCandidateFilter
+	Branches['Flag_BadPFMuonFilter'][0] 					= t.Flag_BadPFMuonFilter
+	Branches['Flag_BadChargedCandidateSummer16Filter'][0]	= t.Flag_BadChargedCandidateSummer16Filter
+	Branches['Flag_BadPFMuonSummer16Filter'][0]				= t.Flag_BadPFMuonSummer16Filter
+	Branches['Flag_CSCTightHalo2015Filter'][0] 				= t.Flag_CSCTightHalo2015Filter
+	Branches['Flag_CSCTightHaloFilter'][0] 					= t.Flag_CSCTightHaloFilter
+	Branches['Flag_CSCTightHaloTrkMuUnvetoFilter'][0] 		= t.Flag_CSCTightHaloTrkMuUnvetoFilter
+	Branches['Flag_EcalDeadCellBoundaryEnergyFilter'][0]	= t.Flag_EcalDeadCellBoundaryEnergyFilter
+	Branches['Flag_EcalDeadCellTriggerPrimitiveFilter'][0]	= t.Flag_EcalDeadCellTriggerPrimitiveFilter
+	Branches['Flag_HBHENoiseFilter'][0] 					= t.Flag_HBHENoiseFilter
+	Branches['Flag_HBHENoiseIsoFilter'][0] 					= t.Flag_HBHENoiseIsoFilter
+	Branches['Flag_HcalStripHaloFilter'][0] 				= t.Flag_HcalStripHaloFilter
+	Branches['Flag_METFilters'][0] 							= t.Flag_METFilters
+	Branches['Flag_chargedHadronTrackResolutionFilter'][0]	= t.Flag_chargedHadronTrackResolutionFilter
+	Branches['Flag_ecalBadCalibFilter'][0] 					= t.Flag_ecalBadCalibFilter
+	Branches['Flag_ecalBadCalibFilterV2'][0] 				= 1 #Bad ECAL calib flag (updated xtal list)
+	Branches['Flag_ecalLaserCorrFilter'][0] 				= t.Flag_ecalLaserCorrFilter
+	Branches['Flag_eeBadScFilter'][0] 						= t.Flag_eeBadScFilter
+	Branches['Flag_globalSuperTightHalo2016Filter'][0] 		= t.Flag_globalSuperTightHalo2016Filter
+	Branches['Flag_globalTightHalo2016Filter'][0] 			= t.Flag_globalTightHalo2016Filter
+	Branches['Flag_goodVertices'][0] 						= t.Flag_goodVertices
+	Branches['Flag_hcalLaserEventFilter'][0] 				= t.Flag_hcalLaserEventFilter
+	Branches['Flag_muonBadTrackFilter'][0] 					= t.Flag_muonBadTrackFilter
+	Branches['Flag_trkPOGFilters'][0] 						= t.Flag_trkPOGFilters
+	Branches['Flag_trkPOG_logErrorTooManyClusters'][0] 		= t.Flag_trkPOG_logErrorTooManyClusters
+	Branches['Flag_trkPOG_manystripclus53X'][0] 			= t.Flag_trkPOG_manystripclus53X
+	Branches['Flag_trkPOG_toomanystripclus53X'][0] 			= t.Flag_trkPOG_toomanystripclus53X
 
 	Branches['passDataCert'][0] = 1
 	if ( (isData) and (CheckRunLumiCert(t.run,t.luminosityBlock) == False) ) : 	
