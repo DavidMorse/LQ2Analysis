@@ -121,7 +121,7 @@ if btags == '0':
 	bTagSFmedium = '*1'
 	bTagSFmediumUp = '*1'
 	bTagSFmediumDown = '*1'
-	bTagselmedium = '*1'
+	bTagselmedium = '*(((DeepJet_jet1>'+deepJetWPmedium+')+(DeepJet_jet2>'+deepJetWPmedium+'))==0)'
 elif btags == '1':
 	bTagSFmedium = '*(1-(1-(DeepJet_jet1>'+deepJetWPmedium+')*bTagSF_jet1)*(1-(DeepJet_jet2>'+deepJetWPmedium+')*bTagSF_jet2))'
 	bTagSFmediumUp = '*(1-(1-(DeepJet_jet1>'+deepJetWPmedium+')*bTagSF_jet1Up)*(1-(DeepJet_jet2>'+deepJetWPmedium+')*bTagSF_jet2Up))'
@@ -131,7 +131,7 @@ elif btags == '2':
 	bTagSFmedium = '*(DeepJet_jet1>'+deepJetWPmedium+')*(DeepJet_jet2>'+deepJetWPmedium+')*(1-(1-bTagSF_jet1)*(1-bTagSF_jet2))'
 	bTagSFmediumUp = '*(DeepJet_jet1>'+deepJetWPmedium+')*(DeepJet_jet2>'+deepJetWPmedium+')*(1-(1-bTagSF_jet1Up)*(1-bTagSF_jet2Up))'
 	bTagSFmediumDown = '*(DeepJet_jet1>'+deepJetWPmedium+')*(DeepJet_jet2>'+deepJetWPmedium+')*(1-(1-bTagSF_jet1Down)*(1-bTagSF_jet2Down))'
-	bTagselmedium = '*(DeepJet_jet1>'+deepJetWPmedium+')*(DeepJet_jet2>'+deepJetWPmedium+')'
+	bTagselmedium = '*(((DeepJet_jet1>'+deepJetWPmedium+')+(DeepJet_jet2>'+deepJetWPmedium+'))>1)'
 else:
 	print "Did not select a valid minimum number of b-tags to require; only 2 b-tags kept in analysis trees.\n Please use option \'-b\' to select a valid number of minimum b-tagged jets (0,1,2)"
 	exit()
