@@ -11,19 +11,21 @@ global preselectionmumu
 ##########################################################################
 
 # Input Options - file, cross-section, number of events
-#parser = OptionParser()
 parser = ArgumentParser()
 parser.add_argument("-y", "--year", dest="year", help="option to pick running year (2016,2017,2018)", metavar="YEAR")
+parser.add_argument("-b", "--btags", dest="btags", help="option to pick minimum number of b-tagged jets required (0,1,2)", metavar="BTAGS", default="0")
 options = parser.parse_args()
 year = str(options.year)
+btags = str(options.btags)
+
 
 # Directory where root files are kept and the tree you want to get root files from
 if year == '2016':
-	NormalDirectory = '/eos/cms/store/group/phys_exotica/leptonsPlusJets/LQ/LQ2/stockNanoTrees/2016/gmadigan/NTupleAnalyzer_nanoAOD_Full2016QuickTest_stockNano_2020_07_20_21_53_31/SummaryFiles'
+	NormalDirectory = '/eos/cms/store/group/phys_exotica/leptonsPlusJets/LQ/LQ2/stockNanoTrees/2016/gmadigan/NTupleAnalyzer_nanoAOD_Full2016QuickTest_stockNano_2020_08_07_20_19_27/SummaryFiles'
 	QCDDirectory    = '/eos/cms/store/group/phys_exotica/leptonsPlusJets/LQ/LQ2/trees/NTupleAnalyzer_nanoAOD_Full2016QCDNonIsoQuickTest_2019_10_14/SummaryFiles' #Placeholder
 	EMuDirectory    = '/eos/cms/store/group/phys_exotica/leptonsPlusJets/LQ/LQ2/trees/NTupleAnalyzer_nanoAOD_Full2016EMuSwitch_2019_10_14/SummaryFiles' #Placeholder
 elif year == '2017':
-	NormalDirectory = '/eos/cms/store/group/phys_exotica/leptonsPlusJets/LQ/LQ2/stockNanoTrees/2017/gmadigan/NTupleAnalyzer_nanoAOD_Full2017QuickTest_stockNano_2020_05_04_21_47_24/SummaryFiles'
+	NormalDirectory = '/eos/cms/store/group/phys_exotica/leptonsPlusJets/LQ/LQ2/stockNanoTrees/2017/gmadigan/NTupleAnalyzer_nanoAOD_2017QuickTest_stockNano_2020_08_24_23_54_52/SummaryFiles'
 	QCDDirectory    = '/eos/cms/store/group/phys_exotica/leptonsPlusJets/LQ/LQ2/trees/NTupleAnalyzer_nanoAOD_Full2016QCDNonIsoQuickTest_2019_10_14/SummaryFiles' #Placeholder
 	EMuDirectory    = '/eos/cms/store/group/phys_exotica/leptonsPlusJets/LQ/LQ2/trees/NTupleAnalyzer_nanoAOD_Full2016EMuSwitch_2019_10_14/SummaryFiles' #Placeholder
 elif year == '2018':
@@ -109,19 +111,36 @@ eleRECOScale = '*((1-IsMuon_muon1)*(((Eta_muon1>-2.5)*(Eta_muon1<-2.45)*1.3176)+
 #eleHEEPScale = '*((1-IsMuon_muon1)*(((Eta_muon1>-2.5)*(Eta_muon1<-1.566)*0.983)+((Eta_muon1>-1.4442)*(Eta_muon1<-0.5)*0.971)+((Eta_muon1>-0.5)*(Eta_muon1<-0.0)*0.961)+((Eta_muon1>0.0)*(Eta_muon1<0.5)*0.973)+((Eta_muon1>0.5)*(Eta_muon1<1.4442)*0.978)+((Eta_muon1>1.566)*(Eta_muon1<2.5)*0.980))+(1-IsMuon_muon2)*(((Eta_muon2>-2.5)*(Eta_muon2<-1.566)*0.984)+((Eta_muon2>-1.4442)*(Eta_muon2<-0.5)*0.971)+((Eta_muon2>-0.5)*(Eta_muon2<-0.0)*0.961)+((Eta_muon2>0.0)*(Eta_muon2<0.5)*0.973)+((Eta_muon2>0.5)*(Eta_muon2<1.4442)*0.978)+((Eta_muon2>1.566)*(Eta_muon2<2.5)*0.980)))'
 eleHEEPScale = '*((1-IsMuon_muon1)*(((abs(Eta_muon1)>0.0)*(abs(Eta_muon1)<0.5)*0.967)+((abs(Eta_muon1)>0.5)*(abs(Eta_muon1)<1.4442)*0.975)+((abs(Eta_muon1)>1.566)*(abs(Eta_muon1)<2.5)*0.983))+(1-IsMuon_muon2)*((abs(Eta_muon2)>0.0)*(abs(Eta_muon2)<0.5)*0.967+((abs(Eta_muon2)>0.5)*(abs(Eta_muon2)<1.4442)*0.975)+((abs(Eta_muon2)>1.566)*(abs(Eta_muon2)<2.5)*0.983)))'
 
-#BTAG scale factors
-#2016
-bTag1SFmedium = '*(1-(1-(DeepJet_jet1>0.3033)*bTagSF_jet1)*(1-(DeepJet_jet2>0.3033)*bTagSF_jet2))' #fixme btag -> BTag
-bTag1SFmediumUp = '*(1-(1-(DeepJet_jet1>0.3033)*bTagSF_jet1Up)*(1-(DeepJet_jet2>0.3033)*bTagSF_jet2Up))'
-bTag1SFmediumDown = '*(1-(1-(DeepJet_jet1>0.3033)*bTagSF_jet1Down)*(1-(DeepJet_jet2>0.3033)*bTagSF_jet2Down))'
+#BTAG scale factors and selection
+deepJetWPmedium = '1'
+if year == '2016': deepJetWPmedium = '0.3093'
+elif year == '2017': deepJetWPmedium = '0.3033'
+elif year == '2018': deepJetWPmedium = '0.2770'
 
-bTagsel1medium = '*(((DeepJet_jet1>0.3033)+(DeepJet_jet2>0.3033))>0)'
+if btags == '0':
+	bTagSFmedium = '*1'
+	bTagSFmediumUp = '*1'
+	bTagSFmediumDown = '*1'
+	bTagselmedium = '*(((DeepJet_jet1>'+deepJetWPmedium+')+(DeepJet_jet2>'+deepJetWPmedium+'))==0)'
+elif btags == '1':
+	bTagSFmedium = '*(1-(1-(DeepJet_jet1>'+deepJetWPmedium+')*bTagSF_jet1)*(1-(DeepJet_jet2>'+deepJetWPmedium+')*bTagSF_jet2))'
+	bTagSFmediumUp = '*(1-(1-(DeepJet_jet1>'+deepJetWPmedium+')*bTagSF_jet1Up)*(1-(DeepJet_jet2>'+deepJetWPmedium+')*bTagSF_jet2Up))'
+	bTagSFmediumDown = '*(1-(1-(DeepJet_jet1>'+deepJetWPmedium+')*bTagSF_jet1Down)*(1-(DeepJet_jet2>'+deepJetWPmedium+')*bTagSF_jet2Down))'
+	bTagselmedium = '*(((DeepJet_jet1>'+deepJetWPmedium+')+(DeepJet_jet2>'+deepJetWPmedium+'))>0)'
+elif btags == '2':
+	bTagSFmedium = '*(DeepJet_jet1>'+deepJetWPmedium+')*(DeepJet_jet2>'+deepJetWPmedium+')*(1-(1-bTagSF_jet1)*(1-bTagSF_jet2))'
+	bTagSFmediumUp = '*(DeepJet_jet1>'+deepJetWPmedium+')*(DeepJet_jet2>'+deepJetWPmedium+')*(1-(1-bTagSF_jet1Up)*(1-bTagSF_jet2Up))'
+	bTagSFmediumDown = '*(DeepJet_jet1>'+deepJetWPmedium+')*(DeepJet_jet2>'+deepJetWPmedium+')*(1-(1-bTagSF_jet1Down)*(1-bTagSF_jet2Down))'
+	bTagselmedium = '*(((DeepJet_jet1>'+deepJetWPmedium+')+(DeepJet_jet2>'+deepJetWPmedium+'))>1)'
+else:
+	print "Did not select a valid minimum number of b-tags to require; only 2 b-tags kept in analysis trees.\n Please use option \'-b\' to select a valid number of minimum b-tagged jets (0,1,2)"
+	exit()
 
 # Weights for different MC selections, including integrated luminosity, event weight, and trigger weight
 #NormalWeightMuMu = str(lumi)+'*weight_central*((pass_HLTMu50+pass_HLTTkMu50)>0)'+doublemuHLT+doubleMuIdScale+doubleMuIsoScale+trackerHIP1+trackerHIP2
 #NormalWeightMuNu = str(lumi)+'*weight_central*((pass_HLTMu50+pass_HLTTkMu50)>0)'+singlemuHLT+singleMuIdScale+singleMuIsoScale+trackerHIP1
 #NormalWeightEMu = str(lumi)+'*weight_central*((pass_HLTMu50+pass_HLTTkMu50)>0)'+singlemuHLTEMU+MuIdScaleEMU+MuIsoScaleEMU+eleRECOScale+eleHEEPScale+trackerHIPEMU
-NormalWeightMuMu = str(lumi)+'*weight_central'+doublemuHLT+doubleMuIdScale+doubleMuIsoScale+trackerHIP1+trackerHIP2+bTag1SFmedium
+NormalWeightMuMu = str(lumi)+'*weight_central'+doublemuHLT+doubleMuIdScale+doubleMuIsoScale+trackerHIP1+trackerHIP2+bTagSFmedium
 NormalWeightMuNu = str(lumi)+'*weight_central'+singlemuHLT+singleMuIdScale+singleMuIsoScale+trackerHIP1
 #fixme checking eta restriction on muons and electrons to fix r_uu/eu
 muEtaRestrict = '*((IsMuon_muon1>0)*(abs(Eta_muon1)<2.1)+(IsMuon_muon2>0)*(abs(Eta_muon2)<2.1))'
@@ -146,8 +165,8 @@ passfilter += '*(Flag_BadPFMuonFilter)'#*Flag_BadChargedHadron)'
 #passfilter += '*(noBadMuonsFlag*(1-duplicateMuonsFlag))'
 
 # This defines the preselections for the mu-mu, mu-nu, and e-mu samples
-preselectionmumu_single = '((Pt_muon1>53)*(Pt_muon2>53)*(Pt_jet1>50)*(St_uujj>250)*(M_uu>50)*(DR_muon1muon2>0.3)'+bTagsel1medium+')'
-preselectionmumu = '((Pt_muon1>53)*(Pt_muon2>53)*(Pt_jet1>50)*(Pt_jet2>50)*(St_uujj>300)*(M_uu>50)*(DR_muon1muon2>0.3)'+bTagsel1medium+')'
+preselectionmumu_single = '((Pt_muon1>53)*(Pt_muon2>53)*(Pt_jet1>50)*(St_uujj>250)*(M_uu>50)*(DR_muon1muon2>0.3)'+bTagselmedium+')'
+preselectionmumu = '((Pt_muon1>53)*(Pt_muon2>53)*(Pt_jet1>50)*(Pt_jet2>50)*(St_uujj>300)*(M_uu>50)*(DR_muon1muon2>0.3)'+bTagselmedium+')'
 preselectionmunu = '((Pt_muon1>53)*(Pt_muon2<53)*(Pt_miss>55)*(Pt_jet1>50)*(Pt_jet2>50)*(Pt_ele1<53)*(St_uvjj>300)*(MT_uv>50.0)*(DPhi_muon1met>0.8)*(DPhi_jet1met>0.5))'
 preselectionemu  = '((Pt_muon1>53)*(Pt_muon2>53)*(Pt_jet1>50)*(Pt_jet2>50)*(St_uujj>300)*(M_uu>50)*(DR_muon1muon2>0.3))'
 
@@ -591,6 +610,7 @@ def main():
 		MakeBasicPlot("Pt_miss","E_{T}^{miss} [GeV]",metzoombinning_uujj_Z,preselectionmumu+'*(M_uu>80)*(M_uu<100)*(Pt_miss<100)',NormalWeightMuMu,NormalDirectory,'controlzoom_ZRegion','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
 		MakeBasicPlot("M_uu","M^{#mu#mu} [GeV]",bosonzoombinning_uujj_TT,preselectionmumu+'*(M_uu>100)*(Pt_miss>=100)',NormalWeightMuMu,NormalDirectory,'controlzoom_TTRegion','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
 		MakeBasicPlot("Pt_miss","E_{T}^{miss} [GeV]",metzoombinning_uujj_TT,preselectionmumu+'*(M_uu>100)*(Pt_miss>=100)',NormalWeightMuMu,NormalDirectory,'controlzoom_TTRegion','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
+		MakeBasicPlot("GoodVertexCount","N_{Vertices}",vbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'linscale','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
 		#MakeBasicPlot("CISV_jet1","Jet1 CSV score",bjetbinning,preselectionmunu+'*(MT_uv>70)*(MT_uv<150)*(JetCount<3.5)',NormalWeightMuNu,NormalDirectory,'controlzoom_WRegion','uvjj',Rz_uujj, Rw_uvjj,Rtt_uvjj,'',version_name,850)
 		#MakeBasicPlot("CISV_jet2","Jet2 CSV score",bjetbinning,preselectionmunu+'*(MT_uv>70)*(MT_uv<150)*(JetCount<3.5)',NormalWeightMuNu,NormalDirectory,'controlzoom_WRegion','uvjj',Rz_uujj, Rw_uvjj,Rtt_uvjj,'',version_name,850)
 		#MakeBasicPlot("CISV_jet1","Jet1 CSV score",bjetbinning,preselectionmunu+'*(MT_uv>70)*(MT_uv<150)*(JetCount>3.5)',NormalWeightMuNu,NormalDirectory,'controlzoom_TTRegion','uvjj',Rz_uujj, Rw_uvjj,Rtt_uvjj,'',version_name,850)
@@ -4501,6 +4521,7 @@ def GetMuMuScaleFactors( selection, FileDirectory, controlregion_1, controlregio
 	s1 = QuickIntegral(t_SingleTop,selection + '*' + controlregion_1,1.0)
 	w1 = QuickIntegral(t_WJets,selection + '*' + controlregion_1,1.0)
 	v1 = QuickIntegral(t_DiBoson,selection + '*' + controlregion_1,1.0)
+	ttv1 = QuickIntegral(t_TTV,selection + '*' + controlregion_1,1.0)
 	#q1 = QuickIntegral(t_QCDMu,selection   + '*' + controlregion_1,1.0)
 
 	Z2 = QuickIntegral(t_ZJets,selection + '*' + controlregion_2,1.0)
@@ -4508,6 +4529,7 @@ def GetMuMuScaleFactors( selection, FileDirectory, controlregion_1, controlregio
 	s2 = QuickIntegral(t_SingleTop,selection + '*' + controlregion_2,1.0)
 	w2 = QuickIntegral(t_WJets,selection + '*' + controlregion_2,1.0)
 	v2 = QuickIntegral(t_DiBoson,selection + '*' + controlregion_2,1.0)
+	ttv2 = QuickIntegral(t_TTV,selection + '*' + controlregion_2,1.0)
 	#q2 = QuickIntegral(t_QCDMu,selection   + '*' + controlregion_2,1.0)
 
 	if useDataDrivenTTbar and canUseTTDD:
@@ -4522,8 +4544,8 @@ def GetMuMuScaleFactors( selection, FileDirectory, controlregion_1, controlregio
 
 	#Other1 = [ s1[0]+w1[0]+v1[0]+q1[0], math.sqrt( s1[1]*s1[1] + w1[1]*w1[1] + v1[1]*v1[1] + q1[1]*q1[1] ) ]
 	#Other2 = [ s2[0]+w2[0]+v2[0]+q2[0], math.sqrt( s2[1]*s2[1] + w2[1]*w2[1] + v2[1]*v2[1] + q2[1]*q2[1] ) ]
-	Other1 = [ s1[0]+w1[0]+v1[0], math.sqrt( s1[1]*s1[1] + w1[1]*w1[1] + v1[1]*v1[1] ) ]
-	Other2 = [ s2[0]+w2[0]+v2[0], math.sqrt( s2[1]*s2[1] + w2[1]*w2[1] + v2[1]*v2[1] ) ]
+	Other1 = [ s1[0]+w1[0]+v1[0]+ttv1[0], math.sqrt( s1[1]*s1[1] + w1[1]*w1[1] + v1[1]*v1[1] + ttv1[1]*ttv1[1]) ]
+	Other2 = [ s2[0]+w2[0]+v2[0]+ttv2[0], math.sqrt( s2[1]*s2[1] + w2[1]*w2[1] + v2[1]*v2[1] + ttv2[1]*ttv2[1]) ]
 	zvals = []
 	tvals = []
 
@@ -4554,6 +4576,7 @@ def GetMuMuScaleFactors( selection, FileDirectory, controlregion_1, controlregio
 	print 'ST:',s1,s2
 	print 'W:',w1,w2
 	print 'VV:',v1,v2
+	print 'TTV:',ttv1,ttv2
 	print 'Other:',Other1,Other2
 
 
@@ -5278,6 +5301,7 @@ def MakeBasicPlot(recovariable,xlabel,presentationbinning,selection,weight,FileD
 	DiBosonStackStyle=[3006,20,.00001,1,3]
 	StopStackStyle=[3008,20,.00001,1,7]
 	QCDStackStyle=[3013,20,.00001,1,15]
+	TTVStackStyle=[3015,20,.00001,1,28]
 
 	SignalStyle=[0,22,0.7,4,28]
 	SignalStyle2=[0,22,0.7,4,38]
@@ -5366,6 +5390,7 @@ def MakeBasicPlot(recovariable,xlabel,presentationbinning,selection,weight,FileD
 	print tt_sel_weight
 	hs_rec_TTBar=CreateHisto('hs_rec_TTBar','t#bar{t}',t_T,recovariable,presentationbinning,tt_sel_weight,TTStackStyle,Label)
 	hs_rec_SingleTop=CreateHisto('hs_rec_SingleTop','SingleTop',t_SingleTop,recovariable,presentationbinning,selection+'*'+weight,StopStackStyle,Label)
+	hs_rec_TTV=CreateHisto('hs_rec_TTV','t#bar{t}V',t_TTV,recovariable,presentationbinning,selection+'*'+weight,TTVStackStyle,Label)
 	#hs_rec_QCD=CreateHisto('hs_rec_QCD','QCD',t_QCDMu,recovariable,presentationbinning,selection+'*'+weight,QCDStackStyle,Label)
 
 	if 'TTBarDataDriven' in tagname:
@@ -5393,11 +5418,11 @@ def MakeBasicPlot(recovariable,xlabel,presentationbinning,selection,weight,FileD
 	sig2name = ''
 
 	if channel == 'uujj':
-		sig1name = 'm_{LQ} = 1200 GeV, '+betamarker
-		sig2name = 'm_{LQ} = 1600 GeV, '+betamarker
+		sig1name = 'm_{LQ} = 1500 GeV, '+betamarker
+		sig2name = 'm_{LQ} = 2000 GeV, '+betamarker
 		if 'final' not in tagname:
-			hs_rec_Signal=CreateHisto('hs_rec_Signal',sig1name,t_LQuujj1200,recovariable,presentationbinning,selection+'*'+weight,SignalStyle,Label)
-			hs_rec_Signal2=CreateHisto('hs_rec_Signal2',sig2name,t_LQuujj1600,recovariable,presentationbinning,selection+'*'+weight,SignalStyle2,Label)
+			hs_rec_Signal=CreateHisto('hs_rec_Signal',sig1name,t_LQuujj1500,recovariable,presentationbinning,selection+'*'+weight,SignalStyle,Label)
+			hs_rec_Signal2=CreateHisto('hs_rec_Signal2',sig2name,t_LQuujj2000,recovariable,presentationbinning,selection+'*'+weight,SignalStyle2,Label)
 			print 'signal1,',sig1name,':',hs_rec_Signal.Integral()
 			print 'signal2,',sig2name,':',hs_rec_Signal2.Integral()
 		if 'final' in tagname:
@@ -5405,23 +5430,25 @@ def MakeBasicPlot(recovariable,xlabel,presentationbinning,selection,weight,FileD
 			hs_rec_Signal=CreateHisto('hs_rec_Signal','m_{LQ} = '+str(plotmass)+' GeV, '+betamarker,_stree,recovariable,presentationbinning,selection+'*'+weight,SignalStyle,Label)
 			print 'signal1,',sig1name,':',hs_rec_Signal.Integral()
 
-		wErr=zErr=vvErr=ttErr=stErr=qcdErr=Double(0.)
+		wErr=zErr=vvErr=ttErr=stErr=ttvErr=qcdErr=Double(0.)
 		wInt=hs_rec_WJets.IntegralAndError(0,-1,wErr)
 		zInt=hs_rec_ZJets.IntegralAndError(0,-1,zErr)
 		vvInt=hs_rec_DiBoson.IntegralAndError(0,-1,vvErr)
 		ttInt=hs_rec_TTBar.IntegralAndError(0,-1,ttErr)
 		stInt=hs_rec_SingleTop.IntegralAndError(0,-1,stErr)
+		ttvInt=hs_rec_TTV.IntegralAndError(0,-1,ttvErr)
 		#qcdInt=hs_rec_QCD.IntegralAndError(0,-1,qcdErr)
 		#totBg = wInt+zInt+vvInt+ttInt+stInt+qcdInt
 		#totErr = math.sqrt(wErr**2+zErr**2+vvErr**2+ttErr**2+stErr**2+qcdErr**2)
 		totBg = wInt+zInt+vvInt+ttInt+stInt
-		totErr = math.sqrt(wErr**2+zErr**2+vvErr**2+ttErr**2+stErr**2)
+		totErr = math.sqrt(wErr**2+zErr**2+vvErr**2+ttErr**2+stErr**2+ttvErr**2)
 
 		print 'W:  ',wInt#hs_rec_WJets.Integral()
 		print 'Z:  ',zInt#hs_rec_ZJets.Integral()
 		print 'VV: ',vvInt#hs_rec_DiBoson.Integral()
 		print 'TT: ',ttInt#hs_rec_TTBar.Integral()
 		print 'ST: ',stInt#hs_rec_SingleTop.Integral()
+		print 'TTV: ',ttvInt
 		#print 'QCD:',qcdInt#hs_rec_QCD.Integral()
 		print 'Total Background:',totBg,'+-',totErr
 		print 'Data            :',hs_rec_Data.Integral(0,-1)
@@ -5429,6 +5456,7 @@ def MakeBasicPlot(recovariable,xlabel,presentationbinning,selection,weight,FileD
 		hs_rec_DiBoson.SetTitle("Other background")
 		hs_rec_DiBoson.Add(hs_rec_WJets)
 		hs_rec_DiBoson.Add(hs_rec_SingleTop)
+		hs_rec_DiBoson.Add(hs_rec_TTV)
 		#hs_rec_DiBoson.Add(hs_rec_QCD)
 		SM=[hs_rec_DiBoson,hs_rec_TTBar,hs_rec_ZJets]
 
@@ -5646,6 +5674,7 @@ def MakeBasicPlot(recovariable,xlabel,presentationbinning,selection,weight,FileD
 
 	MCStack.Draw("HIST")
 	c1.cd(1).SetLogy()
+	if 'GoodVertex' in recovariable and 'linscale' in tagname: c1.cd(1).SetLogy(0)
 	if 'DPhi' in recovariable or ('MT' in recovariable and 'control' in tagname): c1.cd(1).SetLogy(0)
 
  	# sysTop->Draw("L");
@@ -5776,6 +5805,8 @@ def MakeBasicPlot(recovariable,xlabel,presentationbinning,selection,weight,FileD
 		MCStack.SetMaximum(100000*hs_rec_Data.GetMaximum())
 	if 'St' in recovariable or 'GoodVertex' in recovariable:
 		MCStack.SetMaximum(250*hs_rec_Data.GetMaximum())
+	if 'GoodVertex' in recovariable and 'linscale' in tagname:
+		MCStack.SetMaximum(2.0*hs_rec_Data.GetMaximum())
 	if 'St' in recovariable and 'final' in tagname:
 		#MCStack.SetMaximum(50*hs_rec_Data.GetMaximum())
 		MCStack.SetMaximum(50*hs_rec_Signal.GetMaximum())
