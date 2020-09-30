@@ -1,4 +1,4 @@
-import os, sys, math, random, platform, time
+import os, sys, math, random, platform, time, re
 from glob import glob
 from argparse import ArgumentParser
 
@@ -21,11 +21,11 @@ btags = str(options.btags)
 
 # Directory where root files are kept and the tree you want to get root files from
 if year == '2016':
-	NormalDirectory = '/eos/cms/store/group/phys_exotica/leptonsPlusJets/LQ/LQ2/stockNanoTrees/2016/gmadigan/NTupleAnalyzer_nanoAOD_Full2016QuickTest_stockNano_2020_08_07_20_19_27/SummaryFiles'
+	NormalDirectory = '/eos/cms/store/group/phys_exotica/leptonsPlusJets/LQ/LQ2/stockNanoTrees/2016/gmadigan/NTupleAnalyzer_nanoAOD_Full2016QuickTest_stockNano_2020_09_18_21_07_21/SummaryFiles'
 	QCDDirectory    = '/eos/cms/store/group/phys_exotica/leptonsPlusJets/LQ/LQ2/trees/NTupleAnalyzer_nanoAOD_Full2016QCDNonIsoQuickTest_2019_10_14/SummaryFiles' #Placeholder
 	EMuDirectory    = '/eos/cms/store/group/phys_exotica/leptonsPlusJets/LQ/LQ2/trees/NTupleAnalyzer_nanoAOD_Full2016EMuSwitch_2019_10_14/SummaryFiles' #Placeholder
 elif year == '2017':
-	NormalDirectory = '/eos/cms/store/group/phys_exotica/leptonsPlusJets/LQ/LQ2/stockNanoTrees/2017/gmadigan/NTupleAnalyzer_nanoAOD_2017QuickTest_stockNano_2020_08_24_23_54_52/SummaryFiles'
+	NormalDirectory = '/eos/cms/store/group/phys_exotica/leptonsPlusJets/LQ/LQ2/stockNanoTrees/2017/gmadigan/NTupleAnalyzer_nanoAOD_Full2017QuickTest_stockNano_2020_09_09_23_00_36/SummaryFiles'
 	QCDDirectory    = '/eos/cms/store/group/phys_exotica/leptonsPlusJets/LQ/LQ2/trees/NTupleAnalyzer_nanoAOD_Full2016QCDNonIsoQuickTest_2019_10_14/SummaryFiles' #Placeholder
 	EMuDirectory    = '/eos/cms/store/group/phys_exotica/leptonsPlusJets/LQ/LQ2/trees/NTupleAnalyzer_nanoAOD_Full2016EMuSwitch_2019_10_14/SummaryFiles' #Placeholder
 elif year == '2018':
@@ -537,7 +537,7 @@ def main():
 	# ====================================================================================================================================================== #
 	# This is a basic plotting routine to make Analysis Note style plots with ratio plots. AN Analysis-Note
 	# ====================================================================================================================================================== #
-	if True :
+	if False :
 		#global preselectionmumu 
 		# Some modifications to the ST and LQ mass binning
 		bjetbinning = [0,.05]
@@ -553,6 +553,7 @@ def main():
 		stbinning = stbinning[1:]
 		lqbinningTT = lqbinning[1:20]
 		lqbinning = lqbinning[1:]
+		bjetweightbinning = [10,.8,1.4]
 		##bosonbinning = [50, 70, 105, 150,200,300,425, 600, 750, 900, 1105, 1330, 1575, 1840, 2125, 2430, 2590]
 		##lqbinning = [50, 75, 105, 175, 280, 405, 550, 715, 900, 1105, 1330, 1575, 1840, 2125, 2430, 2590]
 		#stbinning = [300, 330, 370, 420, 480, 550, 630, 720, 820, 930, 1050, 1180, 1320, 1470, 1630, 1800, 1980, 2170, 2370, 2580, 2800, 3000, 3500]#added 3500	
@@ -581,7 +582,7 @@ def main():
 		#[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = [[0.925,0.005],[1.000,0.023]]#TTBarDataDriven
 		#[[Rw_uvjj,Rw_uvjj_err],[Rtt_uvjj,Rtt_uvjj_err]] = [[0.977,0.052],[0.932,0.039]]#TTBarMC
 		#[[Rw_uvjj,Rw_uvjj_err],[Rtt_uvjj,Rtt_uvjj_err]] = GetMuNuScaleFactors( NormalWeightMuNu+'*'+preselectionmunu, NormalDirectory, munu1, munu2,0)#fixme todo varying control sample MT windoq
-		[[Rw_uvjj,Rw_uvjj_err],[Rtt_uvjj,Rtt_uvjj_err]] = [[0.934,0.01],[0.984,0.008]]#TTBarMC, eta-driven SF, no top-pt reweight
+		[[Rw_uvjj,Rw_uvjj_err],[Rtt_uvjj,Rtt_uvjj_err]] = [[1.0,0.0],[1.0,0.0]]#TTBarMC, eta-driven SF, no top-pt reweight
 		#[[Rw_uvjj,Rw_uvjj_err],[Rtt_uvjj,Rtt_uvjj_err]] = [[0.934,0.01],[1.028,0.008]]#TTBarMC, eta-driven SF
 		#[[Rw_uvjj,Rw_uvjj_err],[Rtt_uvjj,Rtt_uvjj_err]] = [[0.9,0.009],[1.023,0.008]]#TTBarMC
 		#CSVv2L	0.5426
@@ -664,6 +665,7 @@ def main():
 		#preselectionmumu += '*(M_uu>50)*(M_uu<80)'#fixme this is for control region checks
 		MakeBasicPlot("DeepJet_jet1","Jet1 DeepJet score",bjetbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
 		MakeBasicPlot("DeepJet_jet2","Jet2 DeepJet score",bjetbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
+		MakeBasicPlot(bTagSFmedium[1:],"B-Tag SF Weight",bjetweightbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
 		MakeBasicPlot("Pt_jet1+Pt_jet2","p_{T}(jet_{1})+p_{T}(jet_{2}) [GeV]",ptbinning2,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
 		MakeBasicPlot("Pt_muon1+Pt_muon2","p_{T}(#mu_{1})+p_{T}(#mu_{2}) [GeV]",ptbinning2,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
 		MakeBasicPlot("GoodVertexCount","N_{Vertices}",vbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
@@ -967,23 +969,26 @@ def main():
 		#[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = GetMuMuScaleFactors( NormalWeightMuMu+'*'+preselectionmumu, NormalDirectory, '(M_uu>80)*(M_uu<100)', '(M_uu>100)',0,0)
 		#[[Rw_uvjj,Rw_uvjj_err],[Rtt_uvjj,Rtt_uvjj_err]] = GetMuNuScaleFactors( NormalWeightMuNu+'*'+preselectionmunu, NormalDirectory, munu1, munu2,0)#fixme todo varying control sample MT window
 
-		[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = [[1.025,0.04],[1.147,0.019]]#TTBar MC, 2016 customNano
-		[[Rw_uvjj,Rw_uvjj_err],[Rtt_uvjj,Rtt_uvjj_err]] = [[0.934,0.01],[0.984,0.008]]#TTBarMC, eta-driven SF, no top-pt reweight
+		#[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = [[1.025,0.04],[1.147,0.019]]#TTBar MC, 2016 customNano
+		#[[Rw_uvjj,Rw_uvjj_err],[Rtt_uvjj,Rtt_uvjj_err]] = [[0.934,0.01],[0.984,0.008]]#TTBarMC, eta-driven SF, no top-pt reweight
+		[[Rw_uvjj,Rw_uvjj_err],[Rtt_uvjj,Rtt_uvjj_err]] = [[1.0,0.0],[1.0,0.0]]
+		[[Rz_uuj,Rz_uuj_err],[Rtt_uuj,Rtt_uuj_err]] = GetMuMuScaleFactors( NormalWeightMuMu+'*'+preselectionmumu_single, NormalDirectory, '(M_uu>80)*(M_uu<100)', '(M_uu>100)*(M_uu<250)',0,0)
+		[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = GetMuMuScaleFactors( NormalWeightMuMu+'*'+preselectionmumu, NormalDirectory, '(M_uu>80)*(M_uu<100)', '(M_uu>100)*(M_uu<250)',0,0)
 
 
 
 
 		scaleFactors = [Rz_uujj,Rtt_uujj,Rw_uvjj]
 		if not doLongLived :
-			MuMuOptTestCutFile = 'Results_'+version_name+'/OptLQ_uujjCuts_Smoothed_pol2cutoff.txt'
+			MuMuOptTestCutFile = 'Results_'+version_name+'/Log_LQuujjCuts.txt'
 			variableSpace = ['M_uu:25:100:1000','St_uujj:100:300:2500','M_uujj2:25:100:1000']
 			OptimizeCuts3D(variableSpace,preselectionmumu,NormalWeightMuMu,version_name,scaleFactors,'','uujj')
                         #
-                        scaleFactors = [Rz_uuj,Rtt_uuj,Rw_uvj]
-			variableSpace = ['M_uu:25:100:1000','St_uuj:100:300:2500','M_uuj1:25:100:1000']
-			OptimizeCuts3D(variableSpace,preselectionmumu_single,NormalWeightMuMu,version_name,scaleFactors,'','uuj')
+                        #scaleFactors = [Rz_uuj,Rtt_uuj,Rw_uvj]
+			#makeOptPlotForPASvariableSpace = ['M_uu:25:100:1000','St_uuj:100:300:2500','M_uuj1:25:100:1000']
+			#OptimizeCuts3D(variableSpace,preselectionmumu_single,NormalWeightMuMu,version_name,scaleFactors,'','uuj')
                         #
-			scaleFactors = [Rz_uujj,Rtt_uvjj,Rw_uvjj]
+			#scaleFactors = [Rz_uujj,Rtt_uvjj,Rw_uvjj]
 			#variableSpace = ['MT_uv:50:150:1200','St_uvjj:100:300:3000','M_uvjj:50:100:900',]
 		    #OptimizeCuts3D(variableSpace,preselectionmunu,NormalWeightMuNu,version_name,scaleFactors,'','uvjj')
 		#Now we can do it for long-lived samples
@@ -991,7 +996,7 @@ def main():
 			scaleFactors = [Rz_uujj,Rtt_uujj,Rw_uvjj]
 			variableSpace = ['M_uu:15:100:500','St_uujj:15:300:1800','M_uujj2:15:100:900',]
 			OptimizeCuts3D(variableSpace,preselectionmumu,NormalWeightMuMu,version_name,scaleFactors,'','BLuujj')
-	if True:
+	if False:
  		makeOptPlotForPAS(MuMuOptCutFile,'uujj',version_name,0)
 		#makeOptPlotForPAS(MuNuOptCutFile,'uvjj',version_name,1)
 
@@ -7413,7 +7418,7 @@ def OptimizeCuts3D(variablespace,presel,weight,tag,scalefacs,cutfile,channel):
 
 	minvarcuts = ['('+minvar[0]+'>'+str(x)+')' for x in ConvertBinning(minvar[1])] 
 
-	background =  [ 't_'+x.replace('\n','') for x in  ['DiBoson','WJets','TTBar','ZJets','SingleTop']]#original 
+	background =  [ 't_'+x.replace('\n','') for x in  ['DiBoson','WJets','TTBar','ZJets','SingleTop','TTV']]#original 
 	#background =  [ 't_'+x.replace('\n','') for x in  ['QCDMu','DiBoson','WJets','TTBar','ZJetsOpt','SingleTop']]#fixme this is if we use the 1/5 statistics ZJets for optimization to avoid 'overtraining'
 	#background =  [ 't_'+x.replace('\n','') for x in  ['QCDMu','DiBoson','WJets','TTBar','ZJets','SingleTop']]
 	#if '/store/' in NormalDirectory:#fixme removing since eos is hosted on /eos now
@@ -7480,7 +7485,11 @@ def OptimizeCuts3D(variablespace,presel,weight,tag,scalefacs,cutfile,channel):
 
 	valuetable = []
 
-	xsecs = [6.06E+01,2.03E+01,8.04E+00,3.59E+00,1.74E+00,9.06E-01,4.96E-01,2.84E-01,1.69E-01,1.03E-01,6.48E-02,4.16E-02,2.73E-02,1.82E-02,1.23E-02,8.45E-03,5.86E-03,4.11E-03,2.91E-03,2.08E-03,1.50E-03,1.09E-03,7.95E-04,5.85E-04,4.33E-04,3.21E-04,2.40E-04,1.80E-04,1.35E-04,1.02E-04,7.74E-05,5.88E-05,4.48E-05,3.43E-05,2.62E-05,2.01E-05,1.55E-05]#this assumes 200-2000
+	# Get LQ cross sections from ntuple info csv files 
+	channelDict = {'uujj':'pair','uuj':'single','1':'BMu','2':'BMu','0':'CMu'}
+	with open('NTupleInfo'+year+'Full_stockNano.csv','read') as NTupleInfocsv:
+		xsecs = [float(line.split(',')[1]) for line in NTupleInfocsv if 'LQTo'+channelDict[btags] in line and channelDict[channel] in line]
+	NTupleInfocsv.close()
 
 	for S in range(len(SIGS)):
 		_ssbmax = -99999
@@ -8099,7 +8108,10 @@ def makeOptPlotForPAS(cutlog, channel, version_name, isPAS):
 	pad1.Draw()
 	gStyle.SetOptStat(0)
 
-	masses=[200,250,300,350,400,450,500,550,600,650,700,750,800,850,900,950,1000,1050,1100,1150,1200,1250,1300,1350,1400,1450,1500,1550,1600,1650,1700,1750,1800,1850,1900,1950,2000]
+	with open(cutlog,'read') as cutlogfile:
+		masses = [int(re.search('[0-9]+',line).group(0)) for line in cutlogfile]
+	cutlogfile.close()
+
 	#if channel == 'uujj':
 	#	uujj=1
 
