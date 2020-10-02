@@ -963,7 +963,7 @@ def main():
 	# This is for Optimization of cuts
 	# ====================================================================================================================================================== #
 
-	if False :
+	if True :
 		doLongLived = False
 		# Get Scale Factors
 		#[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = GetMuMuScaleFactors( NormalWeightMuMu+'*'+preselectionmumu, NormalDirectory, '(M_uu>80)*(M_uu<100)', '(M_uu>100)',0,0)
@@ -980,12 +980,12 @@ def main():
 
 		scaleFactors = [Rz_uujj,Rtt_uujj,Rw_uvjj]
 		if not doLongLived :
-			MuMuOptTestCutFile = 'Results_'+version_name+'/Log_LQuujjCuts.txt'
+			MuMuOptTestCutFile = 'Results_'+version_name+'/OptLQ_uujjCuts_Smoothed_pol2cutoff.txt'
 			variableSpace = ['M_uu:25:100:1000','St_uujj:100:300:2500','M_uujj2:25:100:1000']
 			OptimizeCuts3D(variableSpace,preselectionmumu,NormalWeightMuMu,version_name,scaleFactors,'','uujj')
                         #
                         #scaleFactors = [Rz_uuj,Rtt_uuj,Rw_uvj]
-			#makeOptPlotForPASvariableSpace = ['M_uu:25:100:1000','St_uuj:100:300:2500','M_uuj1:25:100:1000']
+			#variableSpace = ['M_uu:25:100:1000','St_uuj:100:300:2500','M_uuj1:25:100:1000']
 			#OptimizeCuts3D(variableSpace,preselectionmumu_single,NormalWeightMuMu,version_name,scaleFactors,'','uuj')
                         #
 			#scaleFactors = [Rz_uujj,Rtt_uvjj,Rw_uvjj]
@@ -996,7 +996,7 @@ def main():
 			scaleFactors = [Rz_uujj,Rtt_uujj,Rw_uvjj]
 			variableSpace = ['M_uu:15:100:500','St_uujj:15:300:1800','M_uujj2:15:100:900',]
 			OptimizeCuts3D(variableSpace,preselectionmumu,NormalWeightMuMu,version_name,scaleFactors,'','BLuujj')
-	if False:
+	if True:
  		makeOptPlotForPAS(MuMuOptCutFile,'uujj',version_name,0)
 		#makeOptPlotForPAS(MuNuOptCutFile,'uvjj',version_name,1)
 
@@ -7486,7 +7486,7 @@ def OptimizeCuts3D(variablespace,presel,weight,tag,scalefacs,cutfile,channel):
 	valuetable = []
 
 	# Get LQ cross sections from ntuple info csv files 
-	channelDict = {'uujj':'pair','uuj':'single','1':'BMu','2':'BMu','0':'CMu'}
+	channelDict = {'uujj':'pair','uuj':'single','1':'BMu','2':'BMu','0':'SMu'}
 	with open('NTupleInfo'+year+'Full_stockNano.csv','read') as NTupleInfocsv:
 		xsecs = [float(line.split(',')[1]) for line in NTupleInfocsv if 'LQTo'+channelDict[btags] in line and channelDict[channel] in line]
 	NTupleInfocsv.close()
