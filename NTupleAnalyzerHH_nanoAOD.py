@@ -331,7 +331,7 @@ _kinematicvariables_systOnly += ['ee_s2_bdt_discrim_M750','ee_s2_bdt_discrim_M80
 
 #_weights = ['scaleWeight_Up','scaleWeight_Down','scaleWeight_R1_F1','scaleWeight_R1_F2','scaleWeight_R1_F0p5','scaleWeight_R2_F1','scaleWeight_R2_F2','scaleWeight_R2_F0p5','scaleWeight_R0p5_F1','scaleWeight_R0p5_F2','scaleWeight_R0p5_F0p5','scaleWeight_R2_F2','weight_amcNLO','weight_nopu','weight_central', 'weight_pu_up', 'weight_pu_down','weight_topPt']
 #removing weight_amcNLO (always 0 anyway)
-_weights = ['scaleWeight_Up','scaleWeight_Down','scaleWeight_R1_F1','scaleWeight_R1_F2','scaleWeight_R1_F0p5','scaleWeight_R2_F1','scaleWeight_R2_F2','scaleWeight_R2_F0p5','scaleWeight_R0p5_F1','scaleWeight_R0p5_F2','scaleWeight_R0p5_F0p5','scaleWeight_R2_F2','weight_nopu','weight_central', 'weight_pu_up', 'weight_pu_down','weight_topPt']
+_weights = ['scaleWeight_Up','scaleWeight_Down','scaleWeight_R1_F1','scaleWeight_R1_F2','scaleWeight_R1_F0p5','scaleWeight_R2_F1','scaleWeight_R2_F2','scaleWeight_R2_F0p5','scaleWeight_R0p5_F1','scaleWeight_R0p5_F2','scaleWeight_R0p5_F0p5','scaleWeight_R2_F2','weight_nopu','weight_central', 'weight_pu_up', 'weight_pu_down','weight_topPt','prefireWeight','prefireWeight_up','prefireWeight_down']
 _flagDoubles = ['run_number','event_number','lumi_number']
 ##_flags = ['Flag_HLT_Ele27_WPTight_Gsf','GoodVertexCount','passTriggerObjectMatching']
 _flags = ['Flag_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ','Flag_HLT_Ele27_WPTight_Gsf','GoodVertexCount','passTriggerObjectMatching','pass_HLT_Mu17_Mu8']
@@ -462,9 +462,9 @@ def GetPDFWeightVars(T):
 		#for x in range(len(T.PDFMMTHWeights)):
 		#	#if(T.PDFMMTHWeights[x]>-10 and T.PDFMMTHWeights[x]<10): pdfweights.append('factor_mmth_'+str(x+1-51))
 		#	if(T.PDFMMTHWeights[x]>-10 and T.PDFMMTHWeights[x]<10): pdfweights.append('factor_mmth_'+str(x+1))
-
-		for x in range(101):
-			pdfweights.append('factor_nnpdf_'+str(x+1))
+                #
+		#for x in range(101):
+		#	pdfweights.append('factor_nnpdf_'+str(x+1))
 		#if 'amcatnlo' in amcNLOname :
 		#	for x in range(len(T.PDFAmcNLOWeights)):
 		#		pdfweights.append('factor_nnpdf_'+str(x+1))
@@ -473,6 +473,9 @@ def GetPDFWeightVars(T):
 		#	        #if(T.PDFNNPDFWeights[x]>-10 and T.PDFNNPDFWeights[x]<10): pdfweights.append('factor_nnpdf_'+str(x+1-101))
 		#	        #if(T.PDFNNPDFWeights[x]>-10 and T.PDFNNPDFWeights[x]<10): pdfweights.append('factor_nnpdf_'+str(x+1))
 		#		if(T.PDFNNPDFWeights[x]>-10 and T.PDFNNPDFWeights[x]<10): pdfweights.append('factor_nnpdf_'+str(x+1))
+                for x in range(len(T.LHEPdfWeight)):
+			pdfweights.append('factor_pdf_'+str(x+1))
+
 		return pdfweights
 
 
@@ -767,17 +770,17 @@ def GetPDFWeights(T):
 	#for x in range(len(T.PDFMMTHWeights)):
 	#	if(T.PDFMMTHWeights[x]>-10 and T.PDFMMTHWeights[x]<10): _allweights.append(T.PDFMMTHWeights[x])
 	extras=0
-	if 'amcatnlo' in amcNLOname :
+	if 'amcatnloxxx' in amcNLOname :
 		for x in range(len(T.PDFNNPDFWeightsAMCNLO)):
 			_allweights.append(T.PDFNNPDFWeightsAMCNLO[x]/T.PDFNNPDFWeightsAMCNLO[0])
-		extras = 101-len(T.PDFNNPDFWeightsAMCNLO)
+		#extras = 101-len(T.PDFNNPDFWeightsAMCNLO)
 	else:
-		for x in range(len(T.PDFNNPDFWeights)):
+		for x in range(len(T.LHEPdfWeight)):
 		        #if(T.PDFNNPDFWeights[x]>-10 and T.PDFNNPDFWeights[x]<10): _allweights.append(T.PDFNNPDFWeights[x])
-			_allweights.append(T.PDFNNPDFWeights[x])
-		extras = 101-len(T.PDFNNPDFWeights)
-	for x in range(extras):
-		_allweights.append(1.0)
+			_allweights.append(T.LHEPdfWeight[x])
+		#extras = 101-len(T.LHEPdfWeight)
+	#for x in range(extras):
+	#	_allweights.append(1.0)
 	return _allweights
 
 
@@ -2205,131 +2208,131 @@ def LooseIDJets(T,met,variation,isdata):
 	#         to the surviving jetss of the jet collection.
 	#         Also returns modified MET for systematic variations.
 
-	if variation!='JERup' and variation!='JERdown':
-		# _PFJetPt = [JERModifiedPt(T.PFJetPt[n],T.PFJetEta[n],T.PFJetPhi[n],T,'') for n in range(len(T.PFJetPt))]
-		 _PFJetPt = [pt for pt in T.Jet_pt]
-	if variation=='JERup':
-		_PFJetPt = [JERModifiedPt(T.Jet_pt[n],T.Jet_eta[n],T.Jet_phi[n],T,'up') for n in range(len(T.Jet_pt))]
+        _PFJetPt = [pt for pt in T.Jet_pt]
+	
+        if variation=='JERup':
+		#_PFJetPt = [JERModifiedPt(T.Jet_pt[n],T.Jet_eta[n],T.Jet_phi[n],T,'up') for n in range(len(T.Jet_pt))] #old way
+                _PFJetPt = [pt for pt in T.Jet_pt_jerUp] 
 	if variation=='JERdown':
-		_PFJetPt = [JERModifiedPt(T.Jet_pt[n],T.Jet_eta[n],T.Jet_phi[n],T,'down') for n in range(len(T.Jet_pt))]
+		#_PFJetPt = [JERModifiedPt(T.Jet_pt[n],T.Jet_eta[n],T.Jet_phi[n],T,'down') for n in range(len(T.Jet_pt))] #old way
+                _PFJetPt = [pt for pt in T.Jet_pt_jerDown]               
 
 	#print 'JEC:'
 	#print [T.PFJetJECUncAK4CHS[n] for n in range(len(_PFJetPt))]
 	#print '\n'
 
 	if variation=='JESup':
-		_PFJetPt = [ _PFJetPt[n]*(1.0+T.PFJetJECUncAK4CHS[n]) for n in range(len(_PFJetPt))] #? Are the following in NanoAOD?
+		_PFJetPt = [pt for pt in T.Jet_pt_jesTotalUp] 
 	if variation=='JESdown':
-		_PFJetPt = [ _PFJetPt[n]*(1.0-T.PFJetJECUncAK4CHS[n]) for n in range(len(_PFJetPt))]
+		_PFJetPt = [pt for pt in T.Jet_pt_jesTotalDown]
 
 	if variation=='JESAbsoluteMPFBiasUp':
-		_PFJetPt = [ _PFJetPt[n]*(1.0+T.PFJetJECUncAbsoluteMPFBiasAK4CHS[n]) for n in range(len(_PFJetPt))]
+		_PFJetPt = [pt for pt in T.Jet_pt_jesAbsoluteMPFBiasUp]
 	if variation=='JESAbsoluteMPFBiasDown':
-		_PFJetPt = [ _PFJetPt[n]*(1.0-T.PFJetJECUncAbsoluteMPFBiasAK4CHS[n]) for n in range(len(_PFJetPt))]
+		_PFJetPt = [pt for pt in T.Jet_pt_jesAbsoluteMPFBiasDown]
 	if variation=='JESAbsoluteScaleUp':
-		_PFJetPt = [ _PFJetPt[n]*(1.0+T.PFJetJECUncAbsoluteScaleAK4CHS[n]) for n in range(len(_PFJetPt))]
+		_PFJetPt = [pt for pt in T.Jet_pt_jesAbsoluteScaleUp]
 	if variation=='JESAbsoluteScaleDown':
-		_PFJetPt = [ _PFJetPt[n]*(1.0-T.PFJetJECUncAbsoluteScaleAK4CHS[n]) for n in range(len(_PFJetPt))]
+		_PFJetPt = [pt for pt in T.Jet_pt_jesAbsoluteScaleDown]
 	if variation=='JESAbsoluteStatUp':
-		_PFJetPt = [ _PFJetPt[n]*(1.0+T.PFJetJECUncAbsoluteStatAK4CHS[n]) for n in range(len(_PFJetPt))]
+		_PFJetPt = [pt for pt in T.Jet_pt_jesAbsoluteStatUp]
 	if variation=='JESAbsoluteStatDown':
-		_PFJetPt = [ _PFJetPt[n]*(1.0-T.PFJetJECUncAbsoluteStatAK4CHS[n]) for n in range(len(_PFJetPt))]
+		_PFJetPt = [pt for pt in T.Jet_pt_jesAbsoluteStatDown]
 	if variation=='JESFlavorQCDUp':
-		_PFJetPt = [ _PFJetPt[n]*(1.0+T.PFJetJECUncFlavorQCDAK4CHS[n]	) for n in range(len(_PFJetPt))]
+		_PFJetPt = [pt for pt in T.Jet_pt_jesFlavorQCDUp]
 	if variation=='JESFlavorQCDDown':
-		_PFJetPt = [ _PFJetPt[n]*(1.0-T.PFJetJECUncFlavorQCDAK4CHS[n]) for n in range(len(_PFJetPt))]
+		_PFJetPt = [pt for pt in T.Jet_pt_jesFlavorQCDDown]
 	if variation=='JESFragmentationUp':
-		_PFJetPt = [ _PFJetPt[n]*(1.0+T.PFJetJECUncFragmentationAK4CHS[n]) for n in range(len(_PFJetPt))]
+		_PFJetPt = [pt for pt in T.Jet_pt_jesFragmentationUp]
 	if variation=='JESFragmentationDown':
-		_PFJetPt = [ _PFJetPt[n]*(1.0-T.PFJetJECUncFragmentationAK4CHS[n]) for n in range(len(_PFJetPt))]
+		_PFJetPt = [pt for pt in T.Jet_pt_jesFragmentationDown]
 	if variation=='JESPileUpDataMCUp':
-		_PFJetPt = [ _PFJetPt[n]*(1.0+T.PFJetJECUncPileUpDataMCAK4CHS[n]) for n in range(len(_PFJetPt))]
+		_PFJetPt = [pt for pt in T.Jet_pt_jesPileUpDataMCUp]
 	if variation=='JESPileUpDataMCDown':
-		_PFJetPt = [ _PFJetPt[n]*(1.0-T.PFJetJECUncPileUpDataMCAK4CHS[n]) for n in range(len(_PFJetPt))]
+		_PFJetPt = [pt for pt in T.Jet_pt_jesPileUpDataMCDown]
 	if variation=='JESPileUpPtBBUp':
-		_PFJetPt = [ _PFJetPt[n]*(1.0+T.PFJetJECUncPileUpPtBBAK4CHS[n]) for n in range(len(_PFJetPt))]
+		_PFJetPt = [pt for pt in T.Jet_pt_jesPileUpPtBBUp]
 	if variation=='JESPileUpPtBBDown':
-		_PFJetPt = [ _PFJetPt[n]*(1.0-T.PFJetJECUncPileUpPtBBAK4CHS[n]) for n in range(len(_PFJetPt))]
+		_PFJetPt = [pt for pt in T.Jet_pt_jesPileUpPtBBDown]
 	if variation=='JESPileUpPtEC1Up':
-		_PFJetPt = [ _PFJetPt[n]*(1.0+T.PFJetJECUncPileUpPtEC1AK4CHS[n]) for n in range(len(_PFJetPt))]
+		_PFJetPt = [pt for pt in T.Jet_pt_jesPileUpPtEC1Up]
 	if variation=='JESPileUpPtEC1Down':
-		_PFJetPt = [ _PFJetPt[n]*(1.0-T.PFJetJECUncPileUpPtEC1AK4CHS[n]) for n in range(len(_PFJetPt))]
+		_PFJetPt = [pt for pt in T.Jet_pt_jesPileUpPtEC1Down]
 	if variation=='JESPileUpPtEC2Up':
-		_PFJetPt = [ _PFJetPt[n]*(1.0+T.PFJetJECUncPileUpPtEC2AK4CHS[n]) for n in range(len(_PFJetPt))]
+		_PFJetPt = [pt for pt in T.Jet_pt_jesPileUpPtEC2Up]
 	if variation=='JESPileUpPtEC2Down':
-		_PFJetPt = [ _PFJetPt[n]*(1.0-T.PFJetJECUncPileUpPtEC2AK4CHS[n]) for n in range(len(_PFJetPt))]
+		_PFJetPt = [pt for pt in T.Jet_pt_jesPileUpPtEC2Down]
 	if variation=='JESPileUpPtHFUp':
-		_PFJetPt = [ _PFJetPt[n]*(1.0+T.PFJetJECUncPileUpPtHFAK4CHS[n]) for n in range(len(_PFJetPt))]
+		_PFJetPt = [pt for pt in T.Jet_pt_jesPileUpPtHFUp]
 	if variation=='JESPileUpPtHFDown':
-		_PFJetPt = [ _PFJetPt[n]*(1.0-T.PFJetJECUncPileUpPtHFAK4CHS[n]) for n in range(len(_PFJetPt))]
+		_PFJetPt = [pt for pt in T.Jet_pt_jesPileUpPtHFDown]
 	if variation=='JESPileUpPtRefUp':
-		_PFJetPt = [ _PFJetPt[n]*(1.0+T.PFJetJECUncPileUpPtRefAK4CHS[n]) for n in range(len(_PFJetPt))]
+		_PFJetPt = [pt for pt in T.Jet_pt_jesPileUpPtRefUp]
 	if variation=='JESPileUpPtRefDown':
-		_PFJetPt = [ _PFJetPt[n]*(1.0-T.PFJetJECUncPileUpPtRefAK4CHS[n]) for n in range(len(_PFJetPt))]
+		_PFJetPt = [pt for pt in T.Jet_pt_jesPileUpPtRefDown]
 	if variation=='JESRelativeBalUp':
-		_PFJetPt = [ _PFJetPt[n]*(1.0+T.PFJetJECUncRelativeBalAK4CHS[n]) for n in range(len(_PFJetPt))]
+		_PFJetPt = [pt for pt in T.Jet_pt_jesRelativeBalUp]
 	if variation=='JESRelativeBalDown':
-		_PFJetPt = [ _PFJetPt[n]*(1.0-T.PFJetJECUncRelativeBalAK4CHS[n]) for n in range(len(_PFJetPt))]
+		_PFJetPt = [pt for pt in T.Jet_pt_jesRelativeBalDown]
 	if variation=='JESRelativeFSRUp':
-		_PFJetPt = [ _PFJetPt[n]*(1.0+T.PFJetJECUncRelativeFSRAK4CHS[n]) for n in range(len(_PFJetPt))]
+		_PFJetPt = [pt for pt in T.Jet_pt_jesRelativeFSRUp]
 	if variation=='JESRelativeFSRDown':
-		_PFJetPt = [ _PFJetPt[n]*(1.0-T.PFJetJECUncRelativeFSRAK4CHS[n]) for n in range(len(_PFJetPt))]
+		_PFJetPt = [pt for pt in T.Jet_pt_jesRelativeFSRDown]
 	if variation=='JESRelativeJEREC1Up':
-		_PFJetPt = [ _PFJetPt[n]*(1.0+T.PFJetJECUncRelativeJEREC1AK4CHS[n]) for n in range(len(_PFJetPt))]
+		_PFJetPt = [pt for pt in T.Jet_pt_jesRelativeJEREC1Up]
 	if variation=='JESRelativeJEREC1Down':
-		_PFJetPt = [ _PFJetPt[n]*(1.0-T.PFJetJECUncRelativeJEREC1AK4CHS[n]) for n in range(len(_PFJetPt))]
+		_PFJetPt = [pt for pt in T.Jet_pt_jesRelativeJEREC1Down]
 	if variation=='JESRelativeJEREC2Up':
-		_PFJetPt = [ _PFJetPt[n]*(1.0+T.PFJetJECUncRelativeJEREC2AK4CHS[n]) for n in range(len(_PFJetPt))]
+		_PFJetPt = [pt for pt in T.Jet_pt_jesRelativeJEREC2Up]
 	if variation=='JESRelativeJEREC2Down':
-		_PFJetPt = [ _PFJetPt[n]*(1.0-T.PFJetJECUncRelativeJEREC2AK4CHS[n]) for n in range(len(_PFJetPt))]
+		_PFJetPt = [pt for pt in T.Jet_pt_jesRelativeJEREC2Down]
 	if variation=='JESRelativeJERHFUp':
-		_PFJetPt = [ _PFJetPt[n]*(1.0+T.PFJetJECUncRelativeJERHFAK4CHS[n]) for n in range(len(_PFJetPt))]
+		_PFJetPt = [pt for pt in T.Jet_pt_jesRelativeJERHFUp]
 	if variation=='JESRelativeJERHFDown':
-		_PFJetPt = [ _PFJetPt[n]*(1.0-T.PFJetJECUncRelativeJERHFAK4CHS[n]) for n in range(len(_PFJetPt))]
+		_PFJetPt = [pt for pt in T.Jet_pt_jesRelativeJERHFDown]
 	if variation=='JESRelativePtBBUp':
-		_PFJetPt = [ _PFJetPt[n]*(1.0+T.PFJetJECUncRelativePtBBAK4CHS[n]) for n in range(len(_PFJetPt))]
+		_PFJetPt = [pt for pt in T.Jet_pt_jesRelativePtBBUp]
 	if variation=='JESRelativePtBBDown':
-		_PFJetPt = [ _PFJetPt[n]*(1.0-T.PFJetJECUncRelativePtBBAK4CHS[n]) for n in range(len(_PFJetPt))]
+		_PFJetPt = [pt for pt in T.Jet_pt_jesRelativePtBBDown]
 	if variation=='JESRelativePtEC1Up':
-		_PFJetPt = [ _PFJetPt[n]*(1.0+T.PFJetJECUncRelativePtEC1AK4CHS[n]) for n in range(len(_PFJetPt))]
+		_PFJetPt = [pt for pt in T.Jet_pt_jesRelativePtEC1Up]
 	if variation=='JESRelativePtEC1Down':
-		_PFJetPt = [ _PFJetPt[n]*(1.0-T.PFJetJECUncRelativePtEC1AK4CHS[n]) for n in range(len(_PFJetPt))]
+		_PFJetPt = [pt for pt in T.Jet_pt_jesRelativePtEC1Down]
 	if variation=='JESRelativePtEC2Up':
-		_PFJetPt = [ _PFJetPt[n]*(1.0+T.PFJetJECUncRelativePtEC2AK4CHS[n]) for n in range(len(_PFJetPt))]
+		_PFJetPt = [pt for pt in T.Jet_pt_jesRelativePtEC2Up]
 	if variation=='JESRelativePtEC2Down':
-		_PFJetPt = [ _PFJetPt[n]*(1.0-T.PFJetJECUncRelativePtEC2AK4CHS[n]) for n in range(len(_PFJetPt))]
+		_PFJetPt = [pt for pt in T.Jet_pt_jesRelativePtEC2Down]
 	if variation=='JESRelativePtHFUp':
-		_PFJetPt = [ _PFJetPt[n]*(1.0+T.PFJetJECUncRelativePtHFAK4CHS[n]) for n in range(len(_PFJetPt))]
+		_PFJetPt = [pt for pt in T.Jet_pt_jesRelativePtHFUp]
 	if variation=='JESRelativePtHFDown':
-		_PFJetPt = [ _PFJetPt[n]*(1.0-T.PFJetJECUncRelativePtHFAK4CHS[n]) for n in range(len(_PFJetPt))]
+		_PFJetPt = [pt for pt in T.Jet_pt_jesRelativePtHFDown]
 	if variation=='JESRelativeStatECUp':
-		_PFJetPt = [ _PFJetPt[n]*(1.0+T.PFJetJECUncRelativeStatECAK4CHS[n]) for n in range(len(_PFJetPt))]
+		_PFJetPt = [pt for pt in T.Jet_pt_jesRelativeStatECUp]
 	if variation=='JESRelativeStatECDown':
-		_PFJetPt = [ _PFJetPt[n]*(1.0-T.PFJetJECUncRelativeStatECAK4CHS[n]) for n in range(len(_PFJetPt))]
+		_PFJetPt = [pt for pt in T.Jet_pt_jesRelativeStatECDown]
 	if variation=='JESRelativeStatFSRUp':
-		_PFJetPt = [ _PFJetPt[n]*(1.0+T.PFJetJECUncRelativeStatFSRAK4CHS[n]) for n in range(len(_PFJetPt))]
+		_PFJetPt = [pt for pt in T.Jet_pt_jesRelativeStatFSRUp]
 	if variation=='JESRelativeStatFSRDown':
-		_PFJetPt = [ _PFJetPt[n]*(1.0-T.PFJetJECUncRelativeStatFSRAK4CHS[n]) for n in range(len(_PFJetPt))]
+		_PFJetPt = [pt for pt in T.Jet_pt_jesRelativeStatFSRDown]
 	if variation=='JESRelativeStatHFUp':
-		_PFJetPt = [ _PFJetPt[n]*(1.0+T.PFJetJECUncRelativeStatHFAK4CHS[n]) for n in range(len(_PFJetPt))]
+		_PFJetPt = [pt for pt in T.Jet_pt_jesRelativeStatHFUp]
 	if variation=='JESRelativeStatHFDown':
-		_PFJetPt = [ _PFJetPt[n]*(1.0-T.PFJetJECUncRelativeStatHFAK4CHS[n]) for n in range(len(_PFJetPt))]
+		_PFJetPt = [pt for pt in T.Jet_pt_jesRelativeStatHFDown]
 	if variation=='JESSinglePionECALUp':
-		_PFJetPt = [ _PFJetPt[n]*(1.0+T.PFJetJECUncSinglePionECALAK4CHS[n]) for n in range(len(_PFJetPt))]
+		_PFJetPt = [pt for pt in T.Jet_pt_jesSinglePionECALUp]
 	if variation=='JESSinglePionECALDown':
-		_PFJetPt = [ _PFJetPt[n]*(1.0-T.PFJetJECUncSinglePionECALAK4CHS[n]) for n in range(len(_PFJetPt))]
+		_PFJetPt = [pt for pt in T.Jet_pt_jesSinglePionECALDown]
 	if variation=='JESSinglePionHCALUp':
-		_PFJetPt = [ _PFJetPt[n]*(1.0+T.PFJetJECUncSinglePionHCALAK4CHS[n]) for n in range(len(_PFJetPt))]
+		_PFJetPt = [pt for pt in T.Jet_pt_jesSinglePionHCALUp]
 	if variation=='JESSinglePionHCALDown':
-		_PFJetPt = [ _PFJetPt[n]*(1.0-T.PFJetJECUncSinglePionHCALAK4CHS[n]) for n in range(len(_PFJetPt))]
+		_PFJetPt = [pt for pt in T.Jet_pt_jesSinglePionHCALDown]
 	if variation=='JESTimePtEtaUp':
-		_PFJetPt = [ _PFJetPt[n]*(1.0+T.PFJetJECUncTimePtEtaAK4CHS[n]) for n in range(len(_PFJetPt))]
+		_PFJetPt = [pt for pt in T.Jet_pt_jesTimePtEtaUp]
 	if variation=='JESTimePtEtaDown':
-		_PFJetPt = [ _PFJetPt[n]*(1.0-T.PFJetJECUncTimePtEtaAK4CHS[n]) for n in range(len(_PFJetPt))]
+		_PFJetPt = [pt for pt in T.Jet_pt_jesTimePtEtaDown]
 
 	if (isdata):
 		_PFJetPt = [pt for pt in T.Jet_pt]
-		#_PFJetPt = [T.PFJetPtAK4CHS[n]*T.PFJetL2L3ResJECAK4CHS[n] for n in range(len(T.PFJetPtAK4CHS))]
 
 	# print met.Pt(),
 
@@ -2473,114 +2476,114 @@ def AK8LooseIDJets(T,met,variation,isdata):
 	#print '\n'
 
 	if variation=='JESup':
-		_PFJetPt = [ _PFJetPt[n]*(1.0+T.PFJetJECUncAK4CHS[n]) for n in range(len(_PFJetPt))] #? Are the following in NanoAOD?
+		_PFJetPt = [pt for pt in T.Jet_pt_jesTotalUp] 
 	if variation=='JESdown':
-		_PFJetPt = [ _PFJetPt[n]*(1.0-T.PFJetJECUncAK4CHS[n]) for n in range(len(_PFJetPt))]
+		_PFJetPt = [pt for pt in T.Jet_pt_jesTotalDown]
 
 	if variation=='JESAbsoluteMPFBiasUp':
-		_PFJetPt = [ _PFJetPt[n]*(1.0+T.PFJetJECUncAbsoluteMPFBiasAK4CHS[n]) for n in range(len(_PFJetPt))]
+		_PFJetPt = [pt for pt in T.Jet_pt_jesAbsoluteMPFBiasUp]
 	if variation=='JESAbsoluteMPFBiasDown':
-		_PFJetPt = [ _PFJetPt[n]*(1.0-T.PFJetJECUncAbsoluteMPFBiasAK4CHS[n]) for n in range(len(_PFJetPt))]
+		_PFJetPt = [pt for pt in T.Jet_pt_jesAbsoluteMPFBiasDown]
 	if variation=='JESAbsoluteScaleUp':
-		_PFJetPt = [ _PFJetPt[n]*(1.0+T.PFJetJECUncAbsoluteScaleAK4CHS[n]) for n in range(len(_PFJetPt))]
+		_PFJetPt = [pt for pt in T.Jet_pt_jesAbsoluteScaleUp]
 	if variation=='JESAbsoluteScaleDown':
-		_PFJetPt = [ _PFJetPt[n]*(1.0-T.PFJetJECUncAbsoluteScaleAK4CHS[n]) for n in range(len(_PFJetPt))]
+		_PFJetPt = [pt for pt in T.Jet_pt_jesAbsoluteScaleDown]
 	if variation=='JESAbsoluteStatUp':
-		_PFJetPt = [ _PFJetPt[n]*(1.0+T.PFJetJECUncAbsoluteStatAK4CHS[n]) for n in range(len(_PFJetPt))]
+		_PFJetPt = [pt for pt in T.Jet_pt_jesAbsoluteStatUp]
 	if variation=='JESAbsoluteStatDown':
-		_PFJetPt = [ _PFJetPt[n]*(1.0-T.PFJetJECUncAbsoluteStatAK4CHS[n]) for n in range(len(_PFJetPt))]
+		_PFJetPt = [pt for pt in T.Jet_pt_jesAbsoluteStatDown]
 	if variation=='JESFlavorQCDUp':
-		_PFJetPt = [ _PFJetPt[n]*(1.0+T.PFJetJECUncFlavorQCDAK4CHS[n]	) for n in range(len(_PFJetPt))]
+		_PFJetPt = [pt for pt in T.Jet_pt_jesFlavorQCDUp]
 	if variation=='JESFlavorQCDDown':
-		_PFJetPt = [ _PFJetPt[n]*(1.0-T.PFJetJECUncFlavorQCDAK4CHS[n]) for n in range(len(_PFJetPt))]
+		_PFJetPt = [pt for pt in T.Jet_pt_jesFlavorQCDDown]
 	if variation=='JESFragmentationUp':
-		_PFJetPt = [ _PFJetPt[n]*(1.0+T.PFJetJECUncFragmentationAK4CHS[n]) for n in range(len(_PFJetPt))]
+		_PFJetPt = [pt for pt in T.Jet_pt_jesFragmentationUp]
 	if variation=='JESFragmentationDown':
-		_PFJetPt = [ _PFJetPt[n]*(1.0-T.PFJetJECUncFragmentationAK4CHS[n]) for n in range(len(_PFJetPt))]
+		_PFJetPt = [pt for pt in T.Jet_pt_jesFragmentationDown]
 	if variation=='JESPileUpDataMCUp':
-		_PFJetPt = [ _PFJetPt[n]*(1.0+T.PFJetJECUncPileUpDataMCAK4CHS[n]) for n in range(len(_PFJetPt))]
+		_PFJetPt = [pt for pt in T.Jet_pt_jesPileUpDataMCUp]
 	if variation=='JESPileUpDataMCDown':
-		_PFJetPt = [ _PFJetPt[n]*(1.0-T.PFJetJECUncPileUpDataMCAK4CHS[n]) for n in range(len(_PFJetPt))]
+		_PFJetPt = [pt for pt in T.Jet_pt_jesPileUpDataMCDown]
 	if variation=='JESPileUpPtBBUp':
-		_PFJetPt = [ _PFJetPt[n]*(1.0+T.PFJetJECUncPileUpPtBBAK4CHS[n]) for n in range(len(_PFJetPt))]
+		_PFJetPt = [pt for pt in T.Jet_pt_jesPileUpPtBBUp]
 	if variation=='JESPileUpPtBBDown':
-		_PFJetPt = [ _PFJetPt[n]*(1.0-T.PFJetJECUncPileUpPtBBAK4CHS[n]) for n in range(len(_PFJetPt))]
+		_PFJetPt = [pt for pt in T.Jet_pt_jesPileUpPtBBDown]
 	if variation=='JESPileUpPtEC1Up':
-		_PFJetPt = [ _PFJetPt[n]*(1.0+T.PFJetJECUncPileUpPtEC1AK4CHS[n]) for n in range(len(_PFJetPt))]
+		_PFJetPt = [pt for pt in T.Jet_pt_jesPileUpPtEC1Up]
 	if variation=='JESPileUpPtEC1Down':
-		_PFJetPt = [ _PFJetPt[n]*(1.0-T.PFJetJECUncPileUpPtEC1AK4CHS[n]) for n in range(len(_PFJetPt))]
+		_PFJetPt = [pt for pt in T.Jet_pt_jesPileUpPtEC1Down]
 	if variation=='JESPileUpPtEC2Up':
-		_PFJetPt = [ _PFJetPt[n]*(1.0+T.PFJetJECUncPileUpPtEC2AK4CHS[n]) for n in range(len(_PFJetPt))]
+		_PFJetPt = [pt for pt in T.Jet_pt_jesPileUpPtEC2Up]
 	if variation=='JESPileUpPtEC2Down':
-		_PFJetPt = [ _PFJetPt[n]*(1.0-T.PFJetJECUncPileUpPtEC2AK4CHS[n]) for n in range(len(_PFJetPt))]
+		_PFJetPt = [pt for pt in T.Jet_pt_jesPileUpPtEC2Down]
 	if variation=='JESPileUpPtHFUp':
-		_PFJetPt = [ _PFJetPt[n]*(1.0+T.PFJetJECUncPileUpPtHFAK4CHS[n]) for n in range(len(_PFJetPt))]
+		_PFJetPt = [pt for pt in T.Jet_pt_jesPileUpPtHFUp]
 	if variation=='JESPileUpPtHFDown':
-		_PFJetPt = [ _PFJetPt[n]*(1.0-T.PFJetJECUncPileUpPtHFAK4CHS[n]) for n in range(len(_PFJetPt))]
+		_PFJetPt = [pt for pt in T.Jet_pt_jesPileUpPtHFDown]
 	if variation=='JESPileUpPtRefUp':
-		_PFJetPt = [ _PFJetPt[n]*(1.0+T.PFJetJECUncPileUpPtRefAK4CHS[n]) for n in range(len(_PFJetPt))]
+		_PFJetPt = [pt for pt in T.Jet_pt_jesPileUpPtRefUp]
 	if variation=='JESPileUpPtRefDown':
-		_PFJetPt = [ _PFJetPt[n]*(1.0-T.PFJetJECUncPileUpPtRefAK4CHS[n]) for n in range(len(_PFJetPt))]
+		_PFJetPt = [pt for pt in T.Jet_pt_jesPileUpPtRefDown]
 	if variation=='JESRelativeBalUp':
-		_PFJetPt = [ _PFJetPt[n]*(1.0+T.PFJetJECUncRelativeBalAK4CHS[n]) for n in range(len(_PFJetPt))]
+		_PFJetPt = [pt for pt in T.Jet_pt_jesRelativeBalUp]
 	if variation=='JESRelativeBalDown':
-		_PFJetPt = [ _PFJetPt[n]*(1.0-T.PFJetJECUncRelativeBalAK4CHS[n]) for n in range(len(_PFJetPt))]
+		_PFJetPt = [pt for pt in T.Jet_pt_jesRelativeBalDown]
 	if variation=='JESRelativeFSRUp':
-		_PFJetPt = [ _PFJetPt[n]*(1.0+T.PFJetJECUncRelativeFSRAK4CHS[n]) for n in range(len(_PFJetPt))]
+		_PFJetPt = [pt for pt in T.Jet_pt_jesRelativeFSRUp]
 	if variation=='JESRelativeFSRDown':
-		_PFJetPt = [ _PFJetPt[n]*(1.0-T.PFJetJECUncRelativeFSRAK4CHS[n]) for n in range(len(_PFJetPt))]
+		_PFJetPt = [pt for pt in T.Jet_pt_jesRelativeFSRDown]
 	if variation=='JESRelativeJEREC1Up':
-		_PFJetPt = [ _PFJetPt[n]*(1.0+T.PFJetJECUncRelativeJEREC1AK4CHS[n]) for n in range(len(_PFJetPt))]
+		_PFJetPt = [pt for pt in T.Jet_pt_jesRelativeJEREC1Up]
 	if variation=='JESRelativeJEREC1Down':
-		_PFJetPt = [ _PFJetPt[n]*(1.0-T.PFJetJECUncRelativeJEREC1AK4CHS[n]) for n in range(len(_PFJetPt))]
+		_PFJetPt = [pt for pt in T.Jet_pt_jesRelativeJEREC1Down]
 	if variation=='JESRelativeJEREC2Up':
-		_PFJetPt = [ _PFJetPt[n]*(1.0+T.PFJetJECUncRelativeJEREC2AK4CHS[n]) for n in range(len(_PFJetPt))]
+		_PFJetPt = [pt for pt in T.Jet_pt_jesRelativeJEREC2Up]
 	if variation=='JESRelativeJEREC2Down':
-		_PFJetPt = [ _PFJetPt[n]*(1.0-T.PFJetJECUncRelativeJEREC2AK4CHS[n]) for n in range(len(_PFJetPt))]
+		_PFJetPt = [pt for pt in T.Jet_pt_jesRelativeJEREC2Down]
 	if variation=='JESRelativeJERHFUp':
-		_PFJetPt = [ _PFJetPt[n]*(1.0+T.PFJetJECUncRelativeJERHFAK4CHS[n]) for n in range(len(_PFJetPt))]
+		_PFJetPt = [pt for pt in T.Jet_pt_jesRelativeJERHFUp]
 	if variation=='JESRelativeJERHFDown':
-		_PFJetPt = [ _PFJetPt[n]*(1.0-T.PFJetJECUncRelativeJERHFAK4CHS[n]) for n in range(len(_PFJetPt))]
+		_PFJetPt = [pt for pt in T.Jet_pt_jesRelativeJERHFDown]
 	if variation=='JESRelativePtBBUp':
-		_PFJetPt = [ _PFJetPt[n]*(1.0+T.PFJetJECUncRelativePtBBAK4CHS[n]) for n in range(len(_PFJetPt))]
+		_PFJetPt = [pt for pt in T.Jet_pt_jesRelativePtBBUp]
 	if variation=='JESRelativePtBBDown':
-		_PFJetPt = [ _PFJetPt[n]*(1.0-T.PFJetJECUncRelativePtBBAK4CHS[n]) for n in range(len(_PFJetPt))]
+		_PFJetPt = [pt for pt in T.Jet_pt_jesRelativePtBBDown]
 	if variation=='JESRelativePtEC1Up':
-		_PFJetPt = [ _PFJetPt[n]*(1.0+T.PFJetJECUncRelativePtEC1AK4CHS[n]) for n in range(len(_PFJetPt))]
+		_PFJetPt = [pt for pt in T.Jet_pt_jesRelativePtEC1Up]
 	if variation=='JESRelativePtEC1Down':
-		_PFJetPt = [ _PFJetPt[n]*(1.0-T.PFJetJECUncRelativePtEC1AK4CHS[n]) for n in range(len(_PFJetPt))]
+		_PFJetPt = [pt for pt in T.Jet_pt_jesRelativePtEC1Down]
 	if variation=='JESRelativePtEC2Up':
-		_PFJetPt = [ _PFJetPt[n]*(1.0+T.PFJetJECUncRelativePtEC2AK4CHS[n]) for n in range(len(_PFJetPt))]
+		_PFJetPt = [pt for pt in T.Jet_pt_jesRelativePtEC2Up]
 	if variation=='JESRelativePtEC2Down':
-		_PFJetPt = [ _PFJetPt[n]*(1.0-T.PFJetJECUncRelativePtEC2AK4CHS[n]) for n in range(len(_PFJetPt))]
+		_PFJetPt = [pt for pt in T.Jet_pt_jesRelativePtEC2Down]
 	if variation=='JESRelativePtHFUp':
-		_PFJetPt = [ _PFJetPt[n]*(1.0+T.PFJetJECUncRelativePtHFAK4CHS[n]) for n in range(len(_PFJetPt))]
+		_PFJetPt = [pt for pt in T.Jet_pt_jesRelativePtHFUp]
 	if variation=='JESRelativePtHFDown':
-		_PFJetPt = [ _PFJetPt[n]*(1.0-T.PFJetJECUncRelativePtHFAK4CHS[n]) for n in range(len(_PFJetPt))]
+		_PFJetPt = [pt for pt in T.Jet_pt_jesRelativePtHFDown]
 	if variation=='JESRelativeStatECUp':
-		_PFJetPt = [ _PFJetPt[n]*(1.0+T.PFJetJECUncRelativeStatECAK4CHS[n]) for n in range(len(_PFJetPt))]
+		_PFJetPt = [pt for pt in T.Jet_pt_jesRelativeStatECUp]
 	if variation=='JESRelativeStatECDown':
-		_PFJetPt = [ _PFJetPt[n]*(1.0-T.PFJetJECUncRelativeStatECAK4CHS[n]) for n in range(len(_PFJetPt))]
+		_PFJetPt = [pt for pt in T.Jet_pt_jesRelativeStatECDown]
 	if variation=='JESRelativeStatFSRUp':
-		_PFJetPt = [ _PFJetPt[n]*(1.0+T.PFJetJECUncRelativeStatFSRAK4CHS[n]) for n in range(len(_PFJetPt))]
+		_PFJetPt = [pt for pt in T.Jet_pt_jesRelativeStatFSRUp]
 	if variation=='JESRelativeStatFSRDown':
-		_PFJetPt = [ _PFJetPt[n]*(1.0-T.PFJetJECUncRelativeStatFSRAK4CHS[n]) for n in range(len(_PFJetPt))]
+		_PFJetPt = [pt for pt in T.Jet_pt_jesRelativeStatFSRDown]
 	if variation=='JESRelativeStatHFUp':
-		_PFJetPt = [ _PFJetPt[n]*(1.0+T.PFJetJECUncRelativeStatHFAK4CHS[n]) for n in range(len(_PFJetPt))]
+		_PFJetPt = [pt for pt in T.Jet_pt_jesRelativeStatHFUp]
 	if variation=='JESRelativeStatHFDown':
-		_PFJetPt = [ _PFJetPt[n]*(1.0-T.PFJetJECUncRelativeStatHFAK4CHS[n]) for n in range(len(_PFJetPt))]
+		_PFJetPt = [pt for pt in T.Jet_pt_jesRelativeStatHFDown]
 	if variation=='JESSinglePionECALUp':
-		_PFJetPt = [ _PFJetPt[n]*(1.0+T.PFJetJECUncSinglePionECALAK4CHS[n]) for n in range(len(_PFJetPt))]
+		_PFJetPt = [pt for pt in T.Jet_pt_jesSinglePionECALUp]
 	if variation=='JESSinglePionECALDown':
-		_PFJetPt = [ _PFJetPt[n]*(1.0-T.PFJetJECUncSinglePionECALAK4CHS[n]) for n in range(len(_PFJetPt))]
+		_PFJetPt = [pt for pt in T.Jet_pt_jesSinglePionECALDown]
 	if variation=='JESSinglePionHCALUp':
-		_PFJetPt = [ _PFJetPt[n]*(1.0+T.PFJetJECUncSinglePionHCALAK4CHS[n]) for n in range(len(_PFJetPt))]
+		_PFJetPt = [pt for pt in T.Jet_pt_jesSinglePionHCALUp]
 	if variation=='JESSinglePionHCALDown':
-		_PFJetPt = [ _PFJetPt[n]*(1.0-T.PFJetJECUncSinglePionHCALAK4CHS[n]) for n in range(len(_PFJetPt))]
+		_PFJetPt = [pt for pt in T.Jet_pt_jesSinglePionHCALDown]
 	if variation=='JESTimePtEtaUp':
-		_PFJetPt = [ _PFJetPt[n]*(1.0+T.PFJetJECUncTimePtEtaAK4CHS[n]) for n in range(len(_PFJetPt))]
+		_PFJetPt = [pt for pt in T.Jet_pt_jesTimePtEtaUp]
 	if variation=='JESTimePtEtaDown':
-		_PFJetPt = [ _PFJetPt[n]*(1.0-T.PFJetJECUncTimePtEtaAK4CHS[n]) for n in range(len(_PFJetPt))]
+		_PFJetPt = [pt for pt in T.Jet_pt_jesTimePtEtaDown]
 
 	if (isdata):
 		_PFJetPt = [pt for pt in T.FatJet_pt]
@@ -4520,17 +4523,17 @@ for n in range(N):
 	#	scaleWeights = t.ScaleWeights
 	scaleWeights = [0,0,0,0,0,0,0,0,0]#fixme have to calculate?
 	if len(scaleWeights) > 7 :
-		Branches['scaleWeight_Up'][0]=       scaleWeights[4]
-		Branches['scaleWeight_Down'][0]=     scaleWeights[8]
-		Branches['scaleWeight_R1_F1'][0]=    scaleWeights[0]
-		Branches['scaleWeight_R1_F2'][0]=    scaleWeights[1]
-		Branches['scaleWeight_R1_F0p5'][0]=  scaleWeights[2]
-		Branches['scaleWeight_R2_F1'][0]=    scaleWeights[3]
-		Branches['scaleWeight_R2_F2'][0]=    scaleWeights[4]
-		Branches['scaleWeight_R2_F0p5'][0]=  scaleWeights[5]
-		Branches['scaleWeight_R0p5_F1'][0]=  scaleWeights[6]
-		Branches['scaleWeight_R0p5_F2'][0]=  scaleWeights[7]
-		Branches['scaleWeight_R0p5_F0p5'][0]=scaleWeights[8]
+		Branches['scaleWeight_Up'][0]=       scaleWeights[8]
+		Branches['scaleWeight_Down'][0]=     scaleWeights[0]
+		Branches['scaleWeight_R0p5_F0p5'][0]=scaleWeights[0]
+		Branches['scaleWeight_R0p5_F1'][0]=  scaleWeights[1]
+		Branches['scaleWeight_R0p5_F2'][0]=  scaleWeights[2]
+		Branches['scaleWeight_R1_F0p5'][0]=  scaleWeights[3]
+		Branches['scaleWeight_R1_F1'][0]=    scaleWeights[4]
+		Branches['scaleWeight_R1_F2'][0]=    scaleWeights[5]
+		Branches['scaleWeight_R2_F0p5'][0]=  scaleWeights[6]
+		Branches['scaleWeight_R2_F1'][0]=    scaleWeights[7]
+		Branches['scaleWeight_R2_F2'][0]=    scaleWeights[8]
 	else :
 		Branches['scaleWeight_Up'][0]=       1.0
 		Branches['scaleWeight_Down'][0]=     1.0
@@ -4543,6 +4546,11 @@ for n in range(N):
 		Branches['scaleWeight_R0p5_F1'][0]=  1.0
 		Branches['scaleWeight_R0p5_F2'][0]=  1.0
 		Branches['scaleWeight_R0p5_F0p5'][0]=1.0
+
+        Branches['prefireWeight'][0]      = t.PrefireWeight
+        Branches['prefireWeight_up'][0]   = t.PrefireWeight_Up
+        Branches['prefireWeight_down'][0] = t.PrefireWeight_Down
+
 	if isData:
 		dopdf = False
 	if dopdf:

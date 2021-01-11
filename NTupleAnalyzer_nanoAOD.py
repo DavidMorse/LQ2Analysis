@@ -85,7 +85,6 @@ to = fin.Get("Events")
 No = to.GetEntries()
 
 
-
 # Here we are going to pre-skim the file to reduce running time.
 indicator = ((name.split('/'))[-1]).replace('.root','')
 #print indicator
@@ -166,8 +165,7 @@ _kinematicvariables += ['mu2idSF','mu2idSFup','mu2idSFdown']
 _kinematicvariables += ['mu2isoSF','mu2isoSFup','mu2isoSFdown']
 _kinematicvariables += ['mu2hltSF','mu2hltSFup','mu2hltSFdown']
 
-#_weights = ['scaleWeight_Up','scaleWeight_Down','scaleWeight_R1_F1','scaleWeight_R1_F2','scaleWeight_R1_F0p5','scaleWeight_R2_F1','scaleWeight_R2_F2','scaleWeight_R2_F0p5','scaleWeight_R0p5_F1','scaleWeight_R0p5_F2','scaleWeight_R0p5_F0p5','scaleWeight_R2_F2','weight_amcNLO','weight_nopu','weight_central', 'weight_pu_up', 'weight_pu_down','weight_central_2012D','weight_topPt']
-_weights = ['scaleWeight_Up','scaleWeight_Down','scaleWeight_R1_F1','scaleWeight_R1_F2','scaleWeight_R1_F0p5','scaleWeight_R2_F1','scaleWeight_R2_F2','scaleWeight_R2_F0p5','scaleWeight_R0p5_F1','scaleWeight_R0p5_F2','scaleWeight_R0p5_F0p5','scaleWeight_R2_F2','weight_amcNLO','weight_nopu','weight_central', 'weight_pu_up', 'weight_pu_down','weight_topPt']
+_weights = ['scaleWeight_Up','scaleWeight_Down','scaleWeight_R1_F1','scaleWeight_R1_F2','scaleWeight_R1_F0p5','scaleWeight_R2_F1','scaleWeight_R2_F2','scaleWeight_R2_F0p5','scaleWeight_R0p5_F1','scaleWeight_R0p5_F2','scaleWeight_R0p5_F0p5','scaleWeight_R2_F2','weight_amcNLO','weight_nopu','weight_central', 'weight_pu_up', 'weight_pu_down','weight_topPt','prefireWeight','prefireWeight_up','prefireWeight_down']
 _flagDoubles = ['run_number','event_number','lumi_number']
 _flags = ['pass_HLTIsoMu27','pass_HLTMu45_eta2p1','pass_HLTMu50','pass_HLTMu55','pass_HLTTkMu50','pass_HLTOldMu100','pass_HLTTkMu100','GoodVertexCount']
 _flags += ['passPrimaryVertex','passTriggerObjectMatching','passDataCert']
@@ -290,17 +288,12 @@ def GetPDFWeightVars(T):
 		#for x in range(len(T.PDFMMTHWeights)):
 		#	#if(T.PDFMMTHWeights[x]>-10 and T.PDFMMTHWeights[x]<10): pdfweights.append('factor_mmth_'+str(x+1-51))
 		#	if(T.PDFMMTHWeights[x]>-10 and T.PDFMMTHWeights[x]<10): pdfweights.append('factor_mmth_'+str(x+1))
-		
-		for x in range(101):
-			pdfweights.append('factor_nnpdf_'+str(x+1))
-		#if 'amcatnlo' in amcNLOname :
-		#	for x in range(len(T.PDFAmcNLOWeights)):
-		#		pdfweights.append('factor_nnpdf_'+str(x+1))
-		#else:
-		#	for x in range(len(T.PDFNNPDFWeights)):
-		#	        #if(T.PDFNNPDFWeights[x]>-10 and T.PDFNNPDFWeights[x]<10): pdfweights.append('factor_nnpdf_'+str(x+1-101))
-		#	        #if(T.PDFNNPDFWeights[x]>-10 and T.PDFNNPDFWeights[x]<10): pdfweights.append('factor_nnpdf_'+str(x+1))
-		#		if(T.PDFNNPDFWeights[x]>-10 and T.PDFNNPDFWeights[x]<10): pdfweights.append('factor_nnpdf_'+str(x+1))
+		#
+		#for x in range(101):
+		#	pdfweights.append('factor_nnpdf_'+str(x+1))
+                for x in range(len(T.LHEPdfWeight)):
+			pdfweights.append('factor_pdf_'+str(x+1))
+
 		return pdfweights
 
 
@@ -721,17 +714,17 @@ def GetPDFWeights(T):
 	#for x in range(len(T.PDFMMTHWeights)):
 	#	if(T.PDFMMTHWeights[x]>-10 and T.PDFMMTHWeights[x]<10): _allweights.append(T.PDFMMTHWeights[x])
 	extras=0
-	if 'amcatnlo' in amcNLOname :
+	if 'amcatnloxxx' in amcNLOname :
 		for x in range(len(T.PDFNNPDFWeightsAMCNLO)):
 			_allweights.append(T.PDFNNPDFWeightsAMCNLO[x]/T.PDFNNPDFWeightsAMCNLO[0])
-		extras = 101-len(T.PDFNNPDFWeightsAMCNLO)
+		#extras = 101-len(T.PDFNNPDFWeightsAMCNLO)
 	else:
-		for x in range(len(T.PDFNNPDFWeights)):
+		for x in range(len(T.LHEPdfWeight)):
 		        #if(T.PDFNNPDFWeights[x]>-10 and T.PDFNNPDFWeights[x]<10): _allweights.append(T.PDFNNPDFWeights[x])
-			_allweights.append(T.PDFNNPDFWeights[x])
-		extras = 101-len(T.PDFNNPDFWeights)
-	for x in range(extras):
-		_allweights.append(1.0)
+			_allweights.append(T.LHEPdfWeight[x])
+		#extras = 101-len(T.LHEPdfWeight)
+	#for x in range(extras):
+	#	_allweights.append(1.0)
 	return _allweights
 
 def MuonsFromLQ(T):
@@ -1108,7 +1101,7 @@ def TightHighPtIDMuons(T,_met,variation,isdata):
 		#_MuonCocktailPt = [pt+pt*tRand.Gaus(0.0,  0.01*(pt<=200.0) + (0.04)*(pt>200.0) ) for pt in T.MuonCocktailPt]
 		# Updating to 2016 Zprime
 		#_MuonCocktailPt = [pt+pt*tRand.Gaus(0.0,  (eta<1.4442)*(0.003*(pt<=200.0) + (0.005)*(pt>200.0)*(pt<=500.0) + 0.01*(pt>500.0)) + (eta>1.4442)*(0.006*(pt<=200.0) + (0.01)*(pt>200.0)*(pt<=500.0) + 0.02*(pt>500.0))) for [pt,eta] in [T.MuonCocktailPt,T.MuonCocktailEta]]
-		_MuonCocktailPt = [pt+pt*tRand.Gaus(0.0,  (eta<1.4442)*(0.003*(pt<=200.0) + (0.005)*(pt>200.0)*(pt<=500.0) + 0.01*(pt>500.0)) + (eta>1.4442)*(0.006*(pt<=200.0) + (0.01)*(pt>200.0)*(pt<=500.0) + 0.02*(pt>500.0))) for [pt,eta] in [T.Muon_pt,T.Muon_eta]]# fixme 2019
+		_MuonCocktailPt = [pt+pt*tRand.Gaus(0.0,  (eta<1.4442)*(0.003*(pt<=200.0) + (0.005)*(pt>200.0)*(pt<=500.0) + 0.01*(pt>500.0)) + (eta>1.4442)*(0.006*(pt<=200.0) + (0.01)*(pt>200.0)*(pt<=500.0) + 0.02*(pt>500.0))) for pt,eta in zip(T.Muon_pt,T.Muon_eta)]
 	else:	
 		_MuonCocktailPt = [pt for pt in T.Muon_pt]# fixme 2019
 
@@ -1122,11 +1115,6 @@ def TightHighPtIDMuons(T,_met,variation,isdata):
 	chi2 = []
 	pfid = []
 	layers = []
-
-	#nequiv = []
-	#for n in range(len(T.MuonPt)):
-	#	#if T.MuonIsGlobal[n] or newntupleswitch==True: #not necessary anymore - global muon requirement encompassed later
-	#	nequiv.append(n)
 
 	# Loop over muons using the pT array from above
 	for n in range(len(_MuonCocktailPt)):
@@ -1413,24 +1401,23 @@ def TightIDJets(T,met,variation,isdata):
 	#         Returns jets as TLorentzVectors, and indices corrresponding
 	#         to the surviving jetss of the jet collection. 
 	#         Also returns modified MET for systematic variations.	
-
-	if variation!='JERup' and variation!='JERdown':                          
-                #_PFJetPt = [JERModifiedPt(T.PFJetJERResAK4CHS[n],T.PFJetJERResSFAK4CHS[n],T.PFJetJERResSFUpAK4CHS[n],T.PFJetJERResSFDownAK4CHS[n],T.Jet_pt[n],T.Jet_eta[n],T.Jet_phi[n],T,'') for n in range(len(T.Jet_pt))]   
-		_PFJetPt = [pt for pt in T.Jet_pt]
+  
+        _PFJetPt = [pt for pt in T.Jet_pt]
    				
 	if variation=='JERup':	
-		_PFJetPt = [JERModifiedPt(T.PFJetJERResAK4CHS[n],T.PFJetJERResSFAK4CHS[n],T.PFJetJERResSFUpAK4CHS[n],T.PFJetJERResSFDownAK4CHS[n],T.Jet_pt[n],T.Jet_eta[n],T.Jet_phi[n],T,'up') for n in range(len(T.Jet_pt))] 
+		#_PFJetPt = [JERModifiedPt(T.PFJetJERResAK4CHS[n],T.PFJetJERResSFAK4CHS[n],T.PFJetJERResSFUpAK4CHS[n],T.PFJetJERResSFDownAK4CHS[n],T.Jet_pt[n],T.Jet_eta[n],T.Jet_phi[n],T,'up') for n in range(len(T.Jet_pt))] #old way
+                _PFJetPt = [pt for pt in T.Jet_pt_jerUp] 
 	if variation=='JERdown':	
-		__PFJetPt = [JERModifiedPt(T.PFJetJERResAK4CHS[n],T.PFJetJERResSFAK4CHS[n],T.PFJetJERResSFUpAK4CHS[n],T.PFJetJERResSFDownAK4CHS[n],T.Jet_pt[n],T.Jet_eta[n],T.Jet_phi[n],T,'down') for n in range(len(T.Jet_pt))]                
+		#_PFJetPt = [JERModifiedPt(T.PFJetJERResAK4CHS[n],T.PFJetJERResSFAK4CHS[n],T.PFJetJERResSFUpAK4CHS[n],T.PFJetJERResSFDownAK4CHS[n],T.Jet_pt[n],T.Jet_eta[n],T.Jet_phi[n],T,'down') for n in range(len(T.Jet_pt))] #old way
+                _PFJetPt = [pt for pt in T.Jet_pt_jerDown]               
 	
 	if variation=='JESup':	
-		_PFJetPt = [ _PFJetPt[n]*(1.0+T.PFJetJECUncAK4CHS[n]) for n in range(len(_PFJetPt))]
+		_PFJetPt = [pt for pt in T.Jet_pt_jesTotalUp]
 	if variation=='JESdown':	
-		_PFJetPt = [ _PFJetPt[n]*(1.0-T.PFJetJECUncAK4CHS[n]) for n in range(len(_PFJetPt))]
+		_PFJetPt = [pt for pt in T.Jet_pt_jesTotalDown]
 
 	if (isdata):
 		_PFJetPt = [pt for pt in T.Jet_pt]	
-		#_PFJetPt = [T.PFJetPtAK4CHS[n]*T.PFJetL2L3ResJECAK4CHS[n] for n in range(len(T.PFJetPtAK4CHS))]	
 
 	# print met.Pt(),
 
@@ -2188,12 +2175,12 @@ for n in range(N):
 		Branches['weight_nopu'][0] = 1.0#startingweight*t.genWeight
 		Branches['weight_topPt'][0]= 1.0#_TopPtFactor*startingweight*t.genWeight
 	else:
-		Branches['weight_central'][0] = startingweight*t.genWeight*t.puWeight#GetPUWeight(t,'Central','Basic')
-		Branches['weight_pu_down'][0] = startingweight*t.genWeight*t.puWeightUp#GetPUWeight(t,'SysDown','Basic')
-		Branches['weight_pu_up'][0] = startingweight*t.genWeight*t.puWeightDown#GetPUWeight(t,'SysUp','Basic')
+		Branches['weight_central'][0] = startingweight*t.genWeight*t.puWeight
+		Branches['weight_pu_down'][0] = startingweight*t.genWeight*t.puWeightDown
+		Branches['weight_pu_up'][0] = startingweight*t.genWeight*t.puWeightUp
 		#Branches['weight_central_2012D'][0] = startingweight*GetPUWeight(t,'Central','2012D')
 		Branches['weight_nopu'][0] = startingweight*t.genWeight
-		Branches['weight_topPt'][0]=_TopPtFactor*startingweight*t.genWeight
+		Branches['weight_topPt'][0]=_TopPtFactor*startingweight*t.genWeight*t.puWeight
 
 	#if 'amcatnlo' in amcNLOname :
 	#	Branches['weight_central'][0]*=t.amcNLOWeight
@@ -2207,19 +2194,20 @@ for n in range(N):
 	#	scaleWeights = t.ScaleWeightsAMCNLO
 	#else:
 	#	scaleWeights = t.ScaleWeights
-	scaleWeights = [0,0,0,0,0,0,0,0,0]#fixme have to calculate?
-	if len(scaleWeights) > 7 :
-		Branches['scaleWeight_Up'][0]=       scaleWeights[4]
-		Branches['scaleWeight_Down'][0]=     scaleWeights[8]
-		Branches['scaleWeight_R1_F1'][0]=    scaleWeights[0]
-		Branches['scaleWeight_R1_F2'][0]=    scaleWeights[1]
-		Branches['scaleWeight_R1_F0p5'][0]=  scaleWeights[2]
-		Branches['scaleWeight_R2_F1'][0]=    scaleWeights[3]
-		Branches['scaleWeight_R2_F2'][0]=    scaleWeights[4]
-		Branches['scaleWeight_R2_F0p5'][0]=  scaleWeights[5]
-		Branches['scaleWeight_R0p5_F1'][0]=  scaleWeights[6]
-		Branches['scaleWeight_R0p5_F2'][0]=  scaleWeights[7]
-		Branches['scaleWeight_R0p5_F0p5'][0]=scaleWeights[8]
+	#scaleWeights = [0,0,0,0,0,0,0,0,0]#fixme have to calculate?
+	scaleWeights = t.LHEScaleWeight
+        if len(scaleWeights) > 7 :
+		Branches['scaleWeight_Up'][0]=       scaleWeights[8]
+		Branches['scaleWeight_Down'][0]=     scaleWeights[0]
+		Branches['scaleWeight_R0p5_F0p5'][0]=scaleWeights[0]
+		Branches['scaleWeight_R0p5_F1'][0]=  scaleWeights[1]
+		Branches['scaleWeight_R0p5_F2'][0]=  scaleWeights[2]
+		Branches['scaleWeight_R1_F0p5'][0]=  scaleWeights[3]
+		Branches['scaleWeight_R1_F1'][0]=    scaleWeights[4]
+		Branches['scaleWeight_R1_F2'][0]=    scaleWeights[5]
+		Branches['scaleWeight_R2_F0p5'][0]=  scaleWeights[6]
+		Branches['scaleWeight_R2_F1'][0]=    scaleWeights[7]
+		Branches['scaleWeight_R2_F2'][0]=    scaleWeights[8]
 	else :
 		Branches['scaleWeight_Up'][0]=       1.0
 		Branches['scaleWeight_Down'][0]=     1.0
@@ -2232,6 +2220,11 @@ for n in range(N):
 		Branches['scaleWeight_R0p5_F1'][0]=  1.0
 		Branches['scaleWeight_R0p5_F2'][0]=  1.0
 		Branches['scaleWeight_R0p5_F0p5'][0]=1.0
+
+        Branches['prefireWeight'][0]      = t.PrefireWeight
+        Branches['prefireWeight_up'][0]   = t.PrefireWeight_Up
+        Branches['prefireWeight_down'][0] = t.PrefireWeight_Down
+
 	if isData:
 		dopdf = False
 	if dopdf:
