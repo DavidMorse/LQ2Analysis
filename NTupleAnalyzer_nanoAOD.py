@@ -2305,6 +2305,7 @@ for n in range(N):
 		#Branches['weight_central_2012D'][0] = startingweight*GetPUWeight(t,'Central','2012D')
 		Branches['weight_nopu'][0] = 1.0#startingweight*t.genWeight
 		Branches['weight_topPt'][0]= 1.0#_TopPtFactor*startingweight*t.genWeight
+		scaleWeights = [] #Data has no branch "LHEScaleWeight"--this will set all scale weights to 1.0 in the loop below
 	else:
 		Branches['weight_central'][0] = startingweight*t.genWeight*t.puWeight
 		Branches['weight_pu_down'][0] = startingweight*t.genWeight*t.puWeightDown
@@ -2312,6 +2313,7 @@ for n in range(N):
 		#Branches['weight_central_2012D'][0] = startingweight*GetPUWeight(t,'Central','2012D')
 		Branches['weight_nopu'][0] = startingweight*t.genWeight
 		Branches['weight_topPt'][0]=_TopPtFactor*startingweight*t.genWeight*t.puWeight
+		scaleWeights = t.LHEScaleWeight
 
 	#if 'amcatnlo' in amcNLOname :
 	#	Branches['weight_central'][0]*=t.amcNLOWeight
@@ -2326,7 +2328,7 @@ for n in range(N):
 	#else:
 	#	scaleWeights = t.ScaleWeights
 	#scaleWeights = [0,0,0,0,0,0,0,0,0]#fixme have to calculate?
-	scaleWeights = t.LHEScaleWeight
+	#scaleWeights = t.LHEScaleWeight
 	if _year == '2017' and 'DYJetsToLL_Pt-' in amcNLOname and len(scaleWeights) == 8: # 2017 Pt-binned DY samples do not include nominal LHE scale weight; set "R1_F1" to 1.0
 		Branches['scaleWeight_Up'][0]=       scaleWeights[7]
 		Branches['scaleWeight_Down'][0]=     scaleWeights[0]
@@ -2364,9 +2366,9 @@ for n in range(N):
 		Branches['scaleWeight_R0p5_F2'][0]=  1.0
 		Branches['scaleWeight_R0p5_F0p5'][0]=1.0
 
-        Branches['prefireWeight'][0]      = t.PrefireWeight
-        Branches['prefireWeight_up'][0]   = t.PrefireWeight_Up
-        Branches['prefireWeight_down'][0] = t.PrefireWeight_Down
+    Branches['prefireWeight'][0]      = t.PrefireWeight
+    Branches['prefireWeight_up'][0]   = t.PrefireWeight_Up
+    Branches['prefireWeight_down'][0] = t.PrefireWeight_Down
 
 	if isData:
 		dopdf = False
