@@ -2305,7 +2305,6 @@ for n in range(N):
 		#Branches['weight_central_2012D'][0] = startingweight*GetPUWeight(t,'Central','2012D')
 		Branches['weight_nopu'][0] = 1.0#startingweight*t.genWeight
 		Branches['weight_topPt'][0]= 1.0#_TopPtFactor*startingweight*t.genWeight
-		scaleWeights = [] #Data has no branch "LHEScaleWeight"--this will set all scale weights to 1.0 in the loop below
 	else:
 		Branches['weight_central'][0] = startingweight*t.genWeight*t.puWeight
 		Branches['weight_pu_down'][0] = startingweight*t.genWeight*t.puWeightDown
@@ -2313,59 +2312,59 @@ for n in range(N):
 		#Branches['weight_central_2012D'][0] = startingweight*GetPUWeight(t,'Central','2012D')
 		Branches['weight_nopu'][0] = startingweight*t.genWeight
 		Branches['weight_topPt'][0]=_TopPtFactor*startingweight*t.genWeight*t.puWeight
+
+		#if 'amcatnlo' in amcNLOname :
+		#	Branches['weight_central'][0]*=t.amcNLOWeight
+		#	Branches['weight_pu_down'][0]*=t.amcNLOWeight
+		#	Branches['weight_pu_up'][0]*=t.amcNLOWeight
+		#	#Branches['weight_central_2012D'][0]*=t.amcNLOWeight
+		#	Branches['weight_nopu'][0]*=t.amcNLOWeight
+		#Branches['weight_amcNLO'][0]=0#t.amcNLOWeight
+
+		#if 'amcatnlo' in amcNLOname :
+		#	scaleWeights = t.ScaleWeightsAMCNLO
+		#else:
+		#	scaleWeights = t.ScaleWeights
+		#scaleWeights = [0,0,0,0,0,0,0,0,0]#fixme have to calculate?
 		scaleWeights = t.LHEScaleWeight
+		if _year == '2017' and 'DYJetsToLL_Pt-' in amcNLOname and len(scaleWeights) == 8: # 2017 Pt-binned DY samples do not include nominal LHE scale weight; set "R1_F1" to 1.0
+			Branches['scaleWeight_Up'][0]=       scaleWeights[7]
+			Branches['scaleWeight_Down'][0]=     scaleWeights[0]
+			Branches['scaleWeight_R0p5_F0p5'][0]=scaleWeights[0]
+			Branches['scaleWeight_R0p5_F1'][0]=  scaleWeights[1]
+			Branches['scaleWeight_R0p5_F2'][0]=  scaleWeights[2]
+			Branches['scaleWeight_R1_F0p5'][0]=  scaleWeights[3]
+			Branches['scaleWeight_R1_F1'][0]=    1.0
+			Branches['scaleWeight_R1_F2'][0]=    scaleWeights[4]
+			Branches['scaleWeight_R2_F0p5'][0]=  scaleWeights[5]
+			Branches['scaleWeight_R2_F1'][0]=    scaleWeights[6]
+			Branches['scaleWeight_R2_F2'][0]=    scaleWeights[7]
+		elif len(scaleWeights) > 7 :
+			Branches['scaleWeight_Up'][0]=       scaleWeights[8]
+			Branches['scaleWeight_Down'][0]=     scaleWeights[0]
+			Branches['scaleWeight_R0p5_F0p5'][0]=scaleWeights[0]
+			Branches['scaleWeight_R0p5_F1'][0]=  scaleWeights[1]
+			Branches['scaleWeight_R0p5_F2'][0]=  scaleWeights[2]
+			Branches['scaleWeight_R1_F0p5'][0]=  scaleWeights[3]
+			Branches['scaleWeight_R1_F1'][0]=    scaleWeights[4]
+			Branches['scaleWeight_R1_F2'][0]=    scaleWeights[5]
+			Branches['scaleWeight_R2_F0p5'][0]=  scaleWeights[6]
+			Branches['scaleWeight_R2_F1'][0]=    scaleWeights[7]
+			Branches['scaleWeight_R2_F2'][0]=    scaleWeights[8]
+		else :
+			Branches['scaleWeight_Up'][0]=       1.0
+			Branches['scaleWeight_Down'][0]=     1.0
+			Branches['scaleWeight_R1_F1'][0]=    1.0
+			Branches['scaleWeight_R1_F2'][0]=    1.0
+			Branches['scaleWeight_R1_F0p5'][0]=  1.0
+			Branches['scaleWeight_R2_F1'][0]=    1.0
+			Branches['scaleWeight_R2_F2'][0]=    1.0
+			Branches['scaleWeight_R2_F0p5'][0]=  1.0
+			Branches['scaleWeight_R0p5_F1'][0]=  1.0
+			Branches['scaleWeight_R0p5_F2'][0]=  1.0
+			Branches['scaleWeight_R0p5_F0p5'][0]=1.0
 
-	#if 'amcatnlo' in amcNLOname :
-	#	Branches['weight_central'][0]*=t.amcNLOWeight
-	#	Branches['weight_pu_down'][0]*=t.amcNLOWeight
-	#	Branches['weight_pu_up'][0]*=t.amcNLOWeight
-	#	#Branches['weight_central_2012D'][0]*=t.amcNLOWeight
-	#	Branches['weight_nopu'][0]*=t.amcNLOWeight
 	Branches['weight_amcNLO'][0]=0#t.amcNLOWeight
-
-	#if 'amcatnlo' in amcNLOname :
-	#	scaleWeights = t.ScaleWeightsAMCNLO
-	#else:
-	#	scaleWeights = t.ScaleWeights
-	#scaleWeights = [0,0,0,0,0,0,0,0,0]#fixme have to calculate?
-	#scaleWeights = t.LHEScaleWeight
-	if _year == '2017' and 'DYJetsToLL_Pt-' in amcNLOname and len(scaleWeights) == 8: # 2017 Pt-binned DY samples do not include nominal LHE scale weight; set "R1_F1" to 1.0
-		Branches['scaleWeight_Up'][0]=       scaleWeights[7]
-		Branches['scaleWeight_Down'][0]=     scaleWeights[0]
-		Branches['scaleWeight_R0p5_F0p5'][0]=scaleWeights[0]
-		Branches['scaleWeight_R0p5_F1'][0]=  scaleWeights[1]
-		Branches['scaleWeight_R0p5_F2'][0]=  scaleWeights[2]
-		Branches['scaleWeight_R1_F0p5'][0]=  scaleWeights[3]
-		Branches['scaleWeight_R1_F1'][0]=    1.0
-		Branches['scaleWeight_R1_F2'][0]=    scaleWeights[4]
-		Branches['scaleWeight_R2_F0p5'][0]=  scaleWeights[5]
-		Branches['scaleWeight_R2_F1'][0]=    scaleWeights[6]
-		Branches['scaleWeight_R2_F2'][0]=    scaleWeights[7]
-	elif len(scaleWeights) > 7 :
-		Branches['scaleWeight_Up'][0]=       scaleWeights[8]
-		Branches['scaleWeight_Down'][0]=     scaleWeights[0]
-		Branches['scaleWeight_R0p5_F0p5'][0]=scaleWeights[0]
-		Branches['scaleWeight_R0p5_F1'][0]=  scaleWeights[1]
-		Branches['scaleWeight_R0p5_F2'][0]=  scaleWeights[2]
-		Branches['scaleWeight_R1_F0p5'][0]=  scaleWeights[3]
-		Branches['scaleWeight_R1_F1'][0]=    scaleWeights[4]
-		Branches['scaleWeight_R1_F2'][0]=    scaleWeights[5]
-		Branches['scaleWeight_R2_F0p5'][0]=  scaleWeights[6]
-		Branches['scaleWeight_R2_F1'][0]=    scaleWeights[7]
-		Branches['scaleWeight_R2_F2'][0]=    scaleWeights[8]
-	else :
-		Branches['scaleWeight_Up'][0]=       1.0
-		Branches['scaleWeight_Down'][0]=     1.0
-		Branches['scaleWeight_R1_F1'][0]=    1.0
-		Branches['scaleWeight_R1_F2'][0]=    1.0
-		Branches['scaleWeight_R1_F0p5'][0]=  1.0
-		Branches['scaleWeight_R2_F1'][0]=    1.0
-		Branches['scaleWeight_R2_F2'][0]=    1.0
-		Branches['scaleWeight_R2_F0p5'][0]=  1.0
-		Branches['scaleWeight_R0p5_F1'][0]=  1.0
-		Branches['scaleWeight_R0p5_F2'][0]=  1.0
-		Branches['scaleWeight_R0p5_F0p5'][0]=1.0
-
     Branches['prefireWeight'][0]      = t.PrefireWeight
     Branches['prefireWeight_up'][0]   = t.PrefireWeight_Up
     Branches['prefireWeight_down'][0] = t.PrefireWeight_Down
