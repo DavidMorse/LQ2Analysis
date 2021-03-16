@@ -1434,22 +1434,22 @@ def TightIDJets(T,met,variation,isdata):
 	#         to the surviving jetss of the jet collection. 
 	#         Also returns modified MET for systematic variations.	
   
-        _PFJetPt = [pt for pt in T.Jet_pt]
-   				
-	if variation=='JERup':	
-		#_PFJetPt = [JERModifiedPt(T.PFJetJERResAK4CHS[n],T.PFJetJERResSFAK4CHS[n],T.PFJetJERResSFUpAK4CHS[n],T.PFJetJERResSFDownAK4CHS[n],T.Jet_pt[n],T.Jet_eta[n],T.Jet_phi[n],T,'up') for n in range(len(T.Jet_pt))] #old way
-                _PFJetPt = [pt for pt in T.Jet_pt_jerUp] 
-	if variation=='JERdown':	
-		#_PFJetPt = [JERModifiedPt(T.PFJetJERResAK4CHS[n],T.PFJetJERResSFAK4CHS[n],T.PFJetJERResSFUpAK4CHS[n],T.PFJetJERResSFDownAK4CHS[n],T.Jet_pt[n],T.Jet_eta[n],T.Jet_phi[n],T,'down') for n in range(len(T.Jet_pt))] #old way
-                _PFJetPt = [pt for pt in T.Jet_pt_jerDown]               
-	
-	if variation=='JESup':	
-		_PFJetPt = [pt for pt in T.Jet_pt_jesTotalUp]
-	if variation=='JESdown':	
-		_PFJetPt = [pt for pt in T.Jet_pt_jesTotalDown]
+  	_PFJetPt = [pt for pt in T.Jet_pt]
 
 	if (isdata):
-		_PFJetPt = [pt for pt in T.Jet_pt]	
+		_PFJetPt = [pt for pt in T.Jet_pt]
+	else:
+		if variation=='JERup':	
+			#_PFJetPt = [JERModifiedPt(T.PFJetJERResAK4CHS[n],T.PFJetJERResSFAK4CHS[n],T.PFJetJERResSFUpAK4CHS[n],T.PFJetJERResSFDownAK4CHS[n],T.Jet_pt[n],T.Jet_eta[n],T.Jet_phi[n],T,'up') for n in range(len(T.Jet_pt))] #old way
+    	            _PFJetPt = [pt for pt in T.Jet_pt_jerUp] 
+		if variation=='JERdown':	
+			#_PFJetPt = [JERModifiedPt(T.PFJetJERResAK4CHS[n],T.PFJetJERResSFAK4CHS[n],T.PFJetJERResSFUpAK4CHS[n],T.PFJetJERResSFDownAK4CHS[n],T.Jet_pt[n],T.Jet_eta[n],T.Jet_phi[n],T,'down') for n in range(len(T.Jet_pt))] #old way
+    	            _PFJetPt = [pt for pt in T.Jet_pt_jerDown]               
+
+		if variation=='JESup':	
+			_PFJetPt = [pt for pt in T.Jet_pt_jesTotalUp]
+		if variation=='JESdown':	
+			_PFJetPt = [pt for pt in T.Jet_pt_jesTotalDown]	
 
 	# print met.Pt(),
 
@@ -2365,9 +2365,9 @@ for n in range(N):
 			Branches['scaleWeight_R0p5_F0p5'][0]=1.0
 
 	Branches['weight_amcNLO'][0]=0#t.amcNLOWeight
-    Branches['prefireWeight'][0]      = t.PrefireWeight
-    Branches['prefireWeight_up'][0]   = t.PrefireWeight_Up
-    Branches['prefireWeight_down'][0] = t.PrefireWeight_Down
+	Branches['prefireWeight'][0]      = t.PrefireWeight
+	Branches['prefireWeight_up'][0]   = t.PrefireWeight_Up
+	Branches['prefireWeight_down'][0] = t.PrefireWeight_Down
 
 	if isData:
 		dopdf = False
