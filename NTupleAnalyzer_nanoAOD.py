@@ -142,7 +142,7 @@ _kinematicvariables += ['M_uu','MT_uv']
 _kinematicvariables += ['M_jj']
 _kinematicvariables += ['DR_muon1muon2','DPhi_muon1met','DPhi_jet1met','DPhi_jet2met']
 _kinematicvariables += ['DR_muon1jet1','DR_muon1jet2','DR_muon2jet1','DR_muon2jet2']
-_kinematicvariables += ['DR_muon1muon2jet1']
+_kinematicvariables += ['DR_dimuonjet1']
 _kinematicvariables += ['DR_jet1jet2','DPhi_jet1jet2']
 _kinematicvariables += ['DPhi_muon1jet1','DPhi_muon1jet2','DPhi_muon2jet1','DPhi_muon2jet2']
 _kinematicvariables += ['M_uujj1_gen','M_uujj2_gen','M_uujjavg_gen']
@@ -1967,7 +1967,7 @@ def FullKinematicCalculation(T,variation):
 	_DRu1j2 = abs(muons[0].DeltaR(jets[1]))
 	_DRu2j1 = abs(muons[1].DeltaR(jets[0]))
 	_DRu2j2 = abs(muons[1].DeltaR(jets[1]))
-	_DRu1u2j1 = abs((muons[0]+muons[1]).DeltaR(jets[0]))
+	_DRdimuj1 = abs((muons[0]+muons[1]).DeltaR(jets[0]))
 
 	_DRj1j2   = abs(jets[0].DeltaR(jets[1]))
 	_DPhij1j2 = abs(jets[0].DeltaPhi(jets[1]))
@@ -2079,7 +2079,7 @@ def FullKinematicCalculation(T,variation):
 	toreturn += [_Mjj]
 	toreturn += [_DRuu,_DPHIuv,_DPHIj1v,_DPHIj2v]
 	toreturn += [_DRu1j1,_DRu1j2,_DRu2j1,_DRu2j2]
-	toreturn += [_DRu1u2j1]
+	toreturn += [_DRdimuj1]
 	toreturn += [_DRj1j2,_DPhij1j2]
 	toreturn += [_DPhiu1j1,_DPhiu1j2,_DPhiu2j1,_DPhiu2j2]
 	toreturn += [_Muujj1_gen, _Muujj2_gen,_Muujjavg_gen]
