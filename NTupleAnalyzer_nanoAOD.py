@@ -26,7 +26,6 @@ parser.add_argument("-d", "--dir", dest="dir", help="output directory", metavar=
 parser.add_argument("-p", "--pdf", dest="pdf", help="option to produce pdf uncertainties", metavar="PDF")
 parser.add_argument("-y", "--year", dest="year", help="option to pick running year (2016,2017,2018)", metavar="YEAR")
 
-#global options
 options = parser.parse_args()
 dopdf = int(options.pdf)==1
 _year = options.year
@@ -62,6 +61,17 @@ print 'EMu Switch = ', emuswitch
 print 'NonIso Switch = ', nonisoswitch
 print 'Quick Switch (No Sys) = ', quicktestswitch
 print 'AlignmentCorr Switch = ', alignementcorrswitch
+
+#Switches to add BDT discriminants
+LQToBMu_single_bdtswitch = False
+LQToBMu_pair_bdtswitch = False
+
+if LQToBMu_single_bdtswitch:
+	LQToBMu_single_uub_weights = ["",""]
+
+if LQToBMu_pair_bdtswitch:
+	LQToBMu_pair_uubj_weights = ["/eos/user/g/gmadigan/LQ_MVA_Batch/weights_2021_01_11_182754/TMVAClassification_np1__BDTG01_LQuujj_uu_NTrees_MinNodeSize_MaxDepth_AdaBeta_SepType_nCuts_M","_2021_01_11_182754_BDTG01.weights.xml"]
+
 
 # Get the file, tree, and number of entries
 print name
@@ -132,6 +142,7 @@ _kinematicvariables += ['M_uu','MT_uv']
 _kinematicvariables += ['M_jj']
 _kinematicvariables += ['DR_muon1muon2','DPhi_muon1met','DPhi_jet1met','DPhi_jet2met']
 _kinematicvariables += ['DR_muon1jet1','DR_muon1jet2','DR_muon2jet1','DR_muon2jet2']
+_kinematicvariables += ['DR_dimuonjet1']
 _kinematicvariables += ['DR_jet1jet2','DPhi_jet1jet2']
 _kinematicvariables += ['DPhi_muon1jet1','DPhi_muon1jet2','DPhi_muon2jet1','DPhi_muon2jet2']
 _kinematicvariables += ['M_uujj1_gen','M_uujj2_gen','M_uujjavg_gen']
@@ -164,6 +175,28 @@ _kinematicvariables += ['mu2recoSF','mu2recoSFup','mu2recoSFdown']
 _kinematicvariables += ['mu2idSF','mu2idSFup','mu2idSFdown']
 _kinematicvariables += ['mu2isoSF','mu2isoSFup','mu2isoSFdown']
 _kinematicvariables += ['mu2hltSF','mu2hltSFup','mu2hltSFdown']
+
+_kinematicvariables += ['LQToBMu_single_uub_BDT_discrim_M300', 'LQToBMu_single_uub_BDT_discrim_M400', 'LQToBMu_single_uub_BDT_discrim_M500']
+_kinematicvariables += ['LQToBMu_single_uub_BDT_discrim_M600', 'LQToBMu_single_uub_BDT_discrim_M700', 'LQToBMu_single_uub_BDT_discrim_M800']
+_kinematicvariables += ['LQToBMu_single_uub_BDT_discrim_M900', 'LQToBMu_single_uub_BDT_discrim_M1000', 'LQToBMu_single_uub_BDT_discrim_M1100']
+_kinematicvariables += ['LQToBMu_single_uub_BDT_discrim_M1200', 'LQToBMu_single_uub_BDT_discrim_M1300', 'LQToBMu_single_uub_BDT_discrim_M1400']
+_kinematicvariables += ['LQToBMu_single_uub_BDT_discrim_M1500', 'LQToBMu_single_uub_BDT_discrim_M1600', 'LQToBMu_single_uub_BDT_discrim_M1700']
+_kinematicvariables += ['LQToBMu_single_uub_BDT_discrim_M1800', 'LQToBMu_single_uub_BDT_discrim_M1900', 'LQToBMu_single_uub_BDT_discrim_M2000']
+_kinematicvariables += ['LQToBMu_single_uub_BDT_discrim_M2100', 'LQToBMu_single_uub_BDT_discrim_M2200', 'LQToBMu_single_uub_BDT_discrim_M2300']
+_kinematicvariables += ['LQToBMu_single_uub_BDT_discrim_M2400', 'LQToBMu_single_uub_BDT_discrim_M2500', 'LQToBMu_single_uub_BDT_discrim_M2600']
+_kinematicvariables += ['LQToBMu_single_uub_BDT_discrim_M2700', 'LQToBMu_single_uub_BDT_discrim_M2800', 'LQToBMu_single_uub_BDT_discrim_M2900']
+_kinematicvariables += ['LQToBMu_single_uub_BDT_discrim_M3000', 'LQToBMu_single_uub_BDT_discrim_M3500', 'LQToBMu_single_uub_BDT_discrim_M4000']
+
+_kinematicvariables += ['LQToBMu_pair_uubj_BDT_discrim_M300', 'LQToBMu_pair_uubj_BDT_discrim_M400', 'LQToBMu_pair_uubj_BDT_discrim_M500']
+_kinematicvariables += ['LQToBMu_pair_uubj_BDT_discrim_M600', 'LQToBMu_pair_uubj_BDT_discrim_M700', 'LQToBMu_pair_uubj_BDT_discrim_M800']
+_kinematicvariables += ['LQToBMu_pair_uubj_BDT_discrim_M900', 'LQToBMu_pair_uubj_BDT_discrim_M1000', 'LQToBMu_pair_uubj_BDT_discrim_M1100']
+_kinematicvariables += ['LQToBMu_pair_uubj_BDT_discrim_M1200', 'LQToBMu_pair_uubj_BDT_discrim_M1300', 'LQToBMu_pair_uubj_BDT_discrim_M1400']
+_kinematicvariables += ['LQToBMu_pair_uubj_BDT_discrim_M1500', 'LQToBMu_pair_uubj_BDT_discrim_M1600', 'LQToBMu_pair_uubj_BDT_discrim_M1700']
+_kinematicvariables += ['LQToBMu_pair_uubj_BDT_discrim_M1800', 'LQToBMu_pair_uubj_BDT_discrim_M1900', 'LQToBMu_pair_uubj_BDT_discrim_M2000']
+_kinematicvariables += ['LQToBMu_pair_uubj_BDT_discrim_M2100', 'LQToBMu_pair_uubj_BDT_discrim_M2200', 'LQToBMu_pair_uubj_BDT_discrim_M2300']
+_kinematicvariables += ['LQToBMu_pair_uubj_BDT_discrim_M2400', 'LQToBMu_pair_uubj_BDT_discrim_M2500', 'LQToBMu_pair_uubj_BDT_discrim_M2600']
+_kinematicvariables += ['LQToBMu_pair_uubj_BDT_discrim_M2700', 'LQToBMu_pair_uubj_BDT_discrim_M2800', 'LQToBMu_pair_uubj_BDT_discrim_M2900']
+_kinematicvariables += ['LQToBMu_pair_uubj_BDT_discrim_M3000', 'LQToBMu_pair_uubj_BDT_discrim_M3500', 'LQToBMu_pair_uubj_BDT_discrim_M4000']
 
 _weights = ['scaleWeight_Up','scaleWeight_Down','scaleWeight_R1_F1','scaleWeight_R1_F2','scaleWeight_R1_F0p5','scaleWeight_R2_F1','scaleWeight_R2_F2','scaleWeight_R2_F0p5','scaleWeight_R0p5_F1','scaleWeight_R0p5_F2','scaleWeight_R0p5_F0p5','scaleWeight_R2_F2','weight_amcNLO','weight_nopu','weight_central', 'weight_pu_up', 'weight_pu_down','weight_topPt','prefireWeight','prefireWeight_up','prefireWeight_down']
 _flagDoubles = ['run_number','event_number','lumi_number']
@@ -516,7 +549,6 @@ def CheckBadRunLumiEvent(badEvents,r,l,e,isData):
 def GetRunLumiList():
 	# Purpose: Parse the json file to get a list of good runs and lumis 
 	#          to call on later. For real data only.
-	global options
 	jfile = open(options.json,'r')	
 	flatjson = ''
 	for line in jfile:
@@ -1402,22 +1434,22 @@ def TightIDJets(T,met,variation,isdata):
 	#         to the surviving jetss of the jet collection. 
 	#         Also returns modified MET for systematic variations.	
   
-        _PFJetPt = [pt for pt in T.Jet_pt]
-   				
-	if variation=='JERup':	
-		#_PFJetPt = [JERModifiedPt(T.PFJetJERResAK4CHS[n],T.PFJetJERResSFAK4CHS[n],T.PFJetJERResSFUpAK4CHS[n],T.PFJetJERResSFDownAK4CHS[n],T.Jet_pt[n],T.Jet_eta[n],T.Jet_phi[n],T,'up') for n in range(len(T.Jet_pt))] #old way
-                _PFJetPt = [pt for pt in T.Jet_pt_jerUp] 
-	if variation=='JERdown':	
-		#_PFJetPt = [JERModifiedPt(T.PFJetJERResAK4CHS[n],T.PFJetJERResSFAK4CHS[n],T.PFJetJERResSFUpAK4CHS[n],T.PFJetJERResSFDownAK4CHS[n],T.Jet_pt[n],T.Jet_eta[n],T.Jet_phi[n],T,'down') for n in range(len(T.Jet_pt))] #old way
-                _PFJetPt = [pt for pt in T.Jet_pt_jerDown]               
-	
-	if variation=='JESup':	
-		_PFJetPt = [pt for pt in T.Jet_pt_jesTotalUp]
-	if variation=='JESdown':	
-		_PFJetPt = [pt for pt in T.Jet_pt_jesTotalDown]
+  	_PFJetPt = [pt for pt in T.Jet_pt]
 
 	if (isdata):
-		_PFJetPt = [pt for pt in T.Jet_pt]	
+		_PFJetPt = [pt for pt in T.Jet_pt]
+	else:
+		if variation=='JERup':	
+			#_PFJetPt = [JERModifiedPt(T.PFJetJERResAK4CHS[n],T.PFJetJERResSFAK4CHS[n],T.PFJetJERResSFUpAK4CHS[n],T.PFJetJERResSFDownAK4CHS[n],T.Jet_pt[n],T.Jet_eta[n],T.Jet_phi[n],T,'up') for n in range(len(T.Jet_pt))] #old way
+    	            _PFJetPt = [pt for pt in T.Jet_pt_jerUp] 
+		if variation=='JERdown':	
+			#_PFJetPt = [JERModifiedPt(T.PFJetJERResAK4CHS[n],T.PFJetJERResSFAK4CHS[n],T.PFJetJERResSFUpAK4CHS[n],T.PFJetJERResSFDownAK4CHS[n],T.Jet_pt[n],T.Jet_eta[n],T.Jet_phi[n],T,'down') for n in range(len(T.Jet_pt))] #old way
+    	            _PFJetPt = [pt for pt in T.Jet_pt_jerDown]               
+
+		if variation=='JESup':	
+			_PFJetPt = [pt for pt in T.Jet_pt_jesTotalUp]
+		if variation=='JESdown':	
+			_PFJetPt = [pt for pt in T.Jet_pt_jesTotalDown]	
 
 	# print met.Pt(),
 
@@ -1719,6 +1751,66 @@ def compareMatching(mus,matchedMus,jets,matchedJets):
 	else:
 		return 0
 
+def calculateBDTdiscriminant(reader, classifierTag, _bdtvarnames, _Muu, _Muujj, _Muujj1, _Muujj2, _stuujj, _ptmet, _deepJetj1, _deepJetj2, _ptmu1, _ptmu2, _ptj1,_ptj2, _DRu1u2j1):
+
+	if 'M_uu' in _bdtvarnames: _bdtvarnames['M_uu'][0] = _Muu
+	if 'M_uujj' in _bdtvarnames: _bdtvarnames['M_uujj'][0] = _Muujj 
+	if 'M_uujj1' in _bdtvarnames: _bdtvarnames['M_uujj1'][0] = _Muujj1
+	if 'M_uujj2' in _bdtvarnames: _bdtvarnames['M_uujj2'][0] = _Muujj2
+	if 'St_uujj' in _bdtvarnames: _bdtvarnames['St_uujj'][0] = _stuujj
+	if 'Pt_miss' in _bdtvarnames: _bdtvarnames['Pt_miss'][0] = _ptmet
+	if 'DeepJet_jet1' in _bdtvarnames: _bdtvarnames['DeepJet_jet1'][0] = _deepJetj1
+	if 'DeepJet_jet2' in _bdtvarnames: _bdtvarnames['DeepJet_jet2'][0] = _deepJetj2
+	if 'Pt_muon1' in _bdtvarnames: _bdtvarnames['Pt_muon1'][0] = _ptmu1
+	if 'Pt_muon2' in _bdtvarnames: _bdtvarnames['Pt_muon2'][0] = _ptmu2
+	if 'Pt_jet1' in _bdtvarnames: _bdtvarnames['Pt_jet1'][0] = _ptj1
+	if 'Pt_jet2' in _bdtvarnames: _bdtvarnames['Pt_jet2'][0] = _ptj2
+	if 'DR_muon1muon2jet1' in _bdtvarnames: _bdtvarnames[dR_uu_jet1][0] = _DRu1u2j1
+
+	out_bdtdisc = -999.
+	
+	if (_ptmu1 > 0 and _ptmu2 > 0 and _ptj1 > 0 and _ptj2 > 0 and _Muu > 0):
+		out_bdtdisc = reader.EvaluateMVA(classifierTag)
+			
+	return out_bdtdisc
+
+##########################################################################################
+#################      Setup BDT discrimator calculation           #######################
+##########################################################################################
+
+TMVA.Tools.Instance()
+SignalM = ["300","400","500", "600", "700", "800", "900","1000","1100","1200","1300","1400","1500", "1600", "1700", "1800", "1900","2000","2100","2200","2300","2400","2500", "2600", "2700", "2800", "2900","3000","3500","4000"]
+
+if LQToBMu_single_bdtswitch:
+	# TMVA.Reader
+	#---Single prod. LQ->bu with uub selection BDT
+	reader_LQToBMu_single_uub = TMVA.Reader("!Color")
+	# the order of the variables matters, need to be the same as when training
+	_bdtvars_uub = ['M_uu', 'M_uujj', 'M_uujj1', 'M_uujj2', 'St_uujj', 'Pt_miss', 'DeepJet_jet1', 'DeepJet_jet2', 'Pt_muon1', 'Pt_muon2', 'Pt_jet1', 'Pt_jet2', 'DR_muon1muon2jet1']
+
+	_bdtvarnames_uub = {}
+	for vth in _bdtvars_uub:
+		_bdtvarnames_uub[vth] = array.array('f',[0])
+		reader_LQToBMu_single_uub.AddVariable(vth, _bdtvarnames_uub[vth])
+	# TMVA.Reader booked with BDT_classifier, input is .weights.xml file
+	for ith in range(len(SignalM)):
+		reader_LQToBMu_single_uub.BookMVA(str("BDT_classifier_LQToBMu_single_uub_M" + SignalM[ith]), str(LQToBMu_pair_uubj_weights[0] + SignalM[ith] + LQToBMu_pair_uubj_weights[1]))
+
+if LQToBMu_pair_bdtswitch:
+	# TMVA.Reader
+	#---Pair prod. LQ->bu with uubj selection BDT
+	reader_LQToBMu_pair_uubj = TMVA.Reader("!Color")
+	# the order of the variables matters, need to be the same as when training
+	_bdtvars_uubj = ['M_uu', 'M_uujj', 'M_uujj1', 'M_uujj2', 'St_uujj', 'Pt_miss', 'DeepJet_jet1', 'DeepJet_jet2', 'Pt_muon1', 'Pt_muon2', 'Pt_jet1', 'Pt_jet2', 'DR_muon1muon2jet1']
+
+	_bdtvarnames_uubj = {}
+	for vth in _bdtvars_uubj:
+		_bdtvarnames_uubj[vth] = array.array('f',[0])
+		reader_LQToBMu_pair_uubj.AddVariable(vth, _bdtvarnames_uubj[vth])
+	# TMVA.Reader booked with BDT_classifier, input is .weights.xml file
+	for ith in range(len(SignalM)):
+		reader_LQToBMu_pair_uubj.BookMVA(str("BDT_classifier_LQTOBMu_pair_uubj_M" + SignalM[ith]), str(LQToBMu_pair_uubj_weights[0] + SignalM[ith] + LQToBMu_pair_uubj_weights[1]))
+
 ##########################################################################################
 ###########      FULL CALCULATION OF ALL VARIABLES, REPEATED FOR EACH SYS   ##############
 ##########################################################################################
@@ -1875,6 +1967,7 @@ def FullKinematicCalculation(T,variation):
 	_DRu1j2 = abs(muons[0].DeltaR(jets[1]))
 	_DRu2j1 = abs(muons[1].DeltaR(jets[0]))
 	_DRu2j2 = abs(muons[1].DeltaR(jets[1]))
+	_DRdimuj1 = abs((muons[0]+muons[1]).DeltaR(jets[0]))
 
 	_DRj1j2   = abs(jets[0].DeltaR(jets[1]))
 	_DPhij1j2 = abs(jets[0].DeltaPhi(jets[1]))
@@ -1951,6 +2044,21 @@ def FullKinematicCalculation(T,variation):
 	if isData==0:
 		_genjetcount = len(T.GenJet_pt)
 
+	_lqtobmu_single_uub_bdt_discrims = [-99.0,-99.0,-99.0,-99.0,-99.0,-99.0,-99.0,-99.0,-99.0,-99.0,-99.0,-99.0,-99.0,-99.0,-99.0,-99.0,-99.0,-99.0,-99.0,-99.0,-99.0,-99.0,-99.0,-99.0,-99.0,-99.0,-99.0,-99.0,-99.0,-99.0]
+	_lqtobmu_pair_uubj_bdt_discrims = [-99.0,-99.0,-99.0,-99.0,-99.0,-99.0,-99.0,-99.0,-99.0,-99.0,-99.0,-99.0,-99.0,-99.0,-99.0,-99.0,-99.0,-99.0,-99.0,-99.0,-99.0,-99.0,-99.0,-99.0,-99.0,-99.0,-99.0,-99.0,-99.0,-99.0]
+	
+	if LQToBMu_single_bdtswitch:
+		for m in range(len(_lqtobmu_single_uub_bdt_discrims)):
+			_LQuujj_uu_bdt_discrims[m] = calculateBDTdiscriminant(reader_LQToBMu_single_uub, str("BDT_classifier_LQToBMu_single_uub_M"+SignalM[m]), _bdtvarnames_uub, _Muu, _Muujj, _Muujj1, _Muujj2, _stuujj, _ptmet, _deepJetj1, _deepJetj2, _ptmu1, _ptmu2, _ptj1, _ptj2, _DRu1u2j1)
+	
+	if LQToBMu_pair_bdtswitch:
+		for m in range(len(_lqtobmu_pair_uubj_bdt_discrims)):
+			_lqtobmu_pair_uubj_bdt_discrims[m] = calculateBDTdiscriminant(reader_LQToBMu_pair_uubj, str("BDT_classifier_LQToBMu_uubj_M"+SignalM[m]), _bdtvarnames_uubj, _Muu, _Muujj, _Muujj1, _Muujj2, _stuujj, _ptmet, _deepJetj1, _deepJetj2, _ptmu1, _ptmu2, _ptj1, _ptj2, _DRu1u2j1)
+	
+	[_LQToBMu_single_uub_BDT_discrim_M300, _LQToBMu_single_uub_BDT_discrim_M400, _LQToBMu_single_uub_BDT_discrim_M500, _LQToBMu_single_uub_BDT_discrim_M600, _LQToBMu_single_uub_BDT_discrim_M700, _LQToBMu_single_uub_BDT_discrim_M800, _LQToBMu_single_uub_BDT_discrim_M900, _LQToBMu_single_uub_BDT_discrim_M1000, _LQToBMu_single_uub_BDT_discrim_M1100, _LQToBMu_single_uub_BDT_discrim_M1200, _LQToBMu_single_uub_BDT_discrim_M1300, _LQToBMu_single_uub_BDT_discrim_M1400, _LQToBMu_single_uub_BDT_discrim_M1500, _LQToBMu_single_uub_BDT_discrim_M1600, _LQToBMu_single_uub_BDT_discrim_M1700, _LQToBMu_single_uub_BDT_discrim_M1800, _LQToBMu_single_uub_BDT_discrim_M1900, _LQToBMu_single_uub_BDT_discrim_M2000, _LQToBMu_single_uub_BDT_discrim_M2100, _LQToBMu_single_uub_BDT_discrim_M2200, _LQToBMu_single_uub_BDT_discrim_M2300, _LQToBMu_single_uub_BDT_discrim_M2400, _LQToBMu_single_uub_BDT_discrim_M2500, _LQToBMu_single_uub_BDT_discrim_M2600, _LQToBMu_single_uub_BDT_discrim_M2700, _LQToBMu_single_uub_BDT_discrim_M2800, _LQToBMu_single_uub_BDT_discrim_M2900, _LQToBMu_single_uub_BDT_discrim_M3000, _LQToBMu_single_uub_BDT_discrim_M3500, _LQToBMu_single_uub_BDT_discrim_M4000] = _lqtobmu_single_uub_bdt_discrims
+
+	[_LQToBMu_pair_uubj_BDT_discrim_M300, _LQToBMu_pair_uubj_BDT_discrim_M400, _LQToBMu_pair_uubj_BDT_discrim_M500, _LQToBMu_pair_uubj_BDT_discrim_M600, _LQToBMu_pair_uubj_BDT_discrim_M700, _LQToBMu_pair_uubj_BDT_discrim_M800, _LQToBMu_pair_uubj_BDT_discrim_M900, _LQToBMu_pair_uubj_BDT_discrim_M1000, _LQToBMu_pair_uubj_BDT_discrim_M1100, _LQToBMu_pair_uubj_BDT_discrim_M1200, _LQToBMu_pair_uubj_BDT_discrim_M1300, _LQToBMu_pair_uubj_BDT_discrim_M1400, _LQToBMu_pair_uubj_BDT_discrim_M1500, _LQToBMu_pair_uubj_BDT_discrim_M1600, _LQToBMu_pair_uubj_BDT_discrim_M1700, _LQToBMu_pair_uubj_BDT_discrim_M1800, _LQToBMu_pair_uubj_BDT_discrim_M1900, _LQToBMu_pair_uubj_BDT_discrim_M2000, _LQToBMu_pair_uubj_BDT_discrim_M2100, _LQToBMu_pair_uubj_BDT_discrim_M2200, _LQToBMu_pair_uubj_BDT_discrim_M2300, _LQToBMu_pair_uubj_BDT_discrim_M2400, _LQToBMu_pair_uubj_BDT_discrim_M2500, _LQToBMu_pair_uubj_BDT_discrim_M2600, _LQToBMu_pair_uubj_BDT_discrim_M2700, _LQToBMu_pair_uubj_BDT_discrim_M2800, _LQToBMu_pair_uubj_BDT_discrim_M2900, _LQToBMu_pair_uubj_BDT_discrim_M3000, _LQToBMu_pair_uubj_BDT_discrim_M3500, _LQToBMu_pair_uubj_BDT_discrim_M4000] = _lqtobmu_pair_uubj_bdt_discrims
+
 	# This MUST have the same structure as _kinematic variables!
 	toreturn  = [_ptmu1,_ptmu2,_ptel1,_ptel2,_ptj1,_ptj2,_ptmet]
 	toreturn += [_ptmu1mu2]
@@ -1971,6 +2079,7 @@ def FullKinematicCalculation(T,variation):
 	toreturn += [_Mjj]
 	toreturn += [_DRuu,_DPHIuv,_DPHIj1v,_DPHIj2v]
 	toreturn += [_DRu1j1,_DRu1j2,_DRu2j1,_DRu2j2]
+	toreturn += [_DRdimuj1]
 	toreturn += [_DRj1j2,_DPhij1j2]
 	toreturn += [_DPhiu1j1,_DPhiu1j2,_DPhiu2j1,_DPhiu2j2]
 	toreturn += [_Muujj1_gen, _Muujj2_gen,_Muujjavg_gen]
@@ -2003,6 +2112,28 @@ def FullKinematicCalculation(T,variation):
 	toreturn += [_mu2idSF,_mu2idSFup,_mu2idSFdown]
 	toreturn += [_mu2isoSF,_mu2isoSFup,_mu2isoSFdown]
 	toreturn += [_mu2hltSF,_mu2hltSFup,_mu2hltSFdown]
+
+	toreturn += [_LQToBMu_single_uub_BDT_discrim_M300, _LQToBMu_single_uub_BDT_discrim_M400, _LQToBMu_single_uub_BDT_discrim_M500]
+	toreturn += [_LQToBMu_single_uub_BDT_discrim_M600, _LQToBMu_single_uub_BDT_discrim_M700, _LQToBMu_single_uub_BDT_discrim_M800]
+	toreturn += [_LQToBMu_single_uub_BDT_discrim_M900, _LQToBMu_single_uub_BDT_discrim_M1000, _LQToBMu_single_uub_BDT_discrim_M1100]
+	toreturn += [_LQToBMu_single_uub_BDT_discrim_M1200, _LQToBMu_single_uub_BDT_discrim_M1300, _LQToBMu_single_uub_BDT_discrim_M1400]
+	toreturn += [_LQToBMu_single_uub_BDT_discrim_M1500, _LQToBMu_single_uub_BDT_discrim_M1600, _LQToBMu_single_uub_BDT_discrim_M1700]
+	toreturn += [_LQToBMu_single_uub_BDT_discrim_M1800, _LQToBMu_single_uub_BDT_discrim_M1900, _LQToBMu_single_uub_BDT_discrim_M2000]
+	toreturn += [_LQToBMu_single_uub_BDT_discrim_M2100, _LQToBMu_single_uub_BDT_discrim_M2200, _LQToBMu_single_uub_BDT_discrim_M2300]
+	toreturn += [_LQToBMu_single_uub_BDT_discrim_M2400, _LQToBMu_single_uub_BDT_discrim_M2500, _LQToBMu_single_uub_BDT_discrim_M2600]
+	toreturn += [_LQToBMu_single_uub_BDT_discrim_M2700, _LQToBMu_single_uub_BDT_discrim_M2800, _LQToBMu_single_uub_BDT_discrim_M2900]
+	toreturn += [_LQToBMu_single_uub_BDT_discrim_M3000, _LQToBMu_single_uub_BDT_discrim_M3500, _LQToBMu_single_uub_BDT_discrim_M4000]
+
+	toreturn += [_LQToBMu_pair_uubj_BDT_discrim_M300, _LQToBMu_pair_uubj_BDT_discrim_M400, _LQToBMu_pair_uubj_BDT_discrim_M500]
+	toreturn += [_LQToBMu_pair_uubj_BDT_discrim_M600, _LQToBMu_pair_uubj_BDT_discrim_M700, _LQToBMu_pair_uubj_BDT_discrim_M800]
+	toreturn += [_LQToBMu_pair_uubj_BDT_discrim_M900, _LQToBMu_pair_uubj_BDT_discrim_M1000, _LQToBMu_pair_uubj_BDT_discrim_M1100]
+	toreturn += [_LQToBMu_pair_uubj_BDT_discrim_M1200, _LQToBMu_pair_uubj_BDT_discrim_M1300, _LQToBMu_pair_uubj_BDT_discrim_M1400]
+	toreturn += [_LQToBMu_pair_uubj_BDT_discrim_M1500, _LQToBMu_pair_uubj_BDT_discrim_M1600, _LQToBMu_pair_uubj_BDT_discrim_M1700]
+	toreturn += [_LQToBMu_pair_uubj_BDT_discrim_M1800, _LQToBMu_pair_uubj_BDT_discrim_M1900, _LQToBMu_pair_uubj_BDT_discrim_M2000]
+	toreturn += [_LQToBMu_pair_uubj_BDT_discrim_M2100, _LQToBMu_pair_uubj_BDT_discrim_M2200, _LQToBMu_pair_uubj_BDT_discrim_M2300]
+	toreturn += [_LQToBMu_pair_uubj_BDT_discrim_M2400, _LQToBMu_pair_uubj_BDT_discrim_M2500, _LQToBMu_pair_uubj_BDT_discrim_M2600]
+	toreturn += [_LQToBMu_pair_uubj_BDT_discrim_M2700, _LQToBMu_pair_uubj_BDT_discrim_M2800, _LQToBMu_pair_uubj_BDT_discrim_M2900]
+	toreturn += [_LQToBMu_pair_uubj_BDT_discrim_M3000, _LQToBMu_pair_uubj_BDT_discrim_M3500, _LQToBMu_pair_uubj_BDT_discrim_M4000]
 	return toreturn
 
 #fixme Had to move these below FullKinematicCalculation, wouldn't find function otherwise. Why only these?
@@ -2182,48 +2313,61 @@ for n in range(N):
 		Branches['weight_nopu'][0] = startingweight*t.genWeight
 		Branches['weight_topPt'][0]=_TopPtFactor*startingweight*t.genWeight*t.puWeight
 
-	#if 'amcatnlo' in amcNLOname :
-	#	Branches['weight_central'][0]*=t.amcNLOWeight
-	#	Branches['weight_pu_down'][0]*=t.amcNLOWeight
-	#	Branches['weight_pu_up'][0]*=t.amcNLOWeight
-	#	#Branches['weight_central_2012D'][0]*=t.amcNLOWeight
-	#	Branches['weight_nopu'][0]*=t.amcNLOWeight
+		#if 'amcatnlo' in amcNLOname :
+		#	Branches['weight_central'][0]*=t.amcNLOWeight
+		#	Branches['weight_pu_down'][0]*=t.amcNLOWeight
+		#	Branches['weight_pu_up'][0]*=t.amcNLOWeight
+		#	#Branches['weight_central_2012D'][0]*=t.amcNLOWeight
+		#	Branches['weight_nopu'][0]*=t.amcNLOWeight
+		#Branches['weight_amcNLO'][0]=0#t.amcNLOWeight
+
+		#if 'amcatnlo' in amcNLOname :
+		#	scaleWeights = t.ScaleWeightsAMCNLO
+		#else:
+		#	scaleWeights = t.ScaleWeights
+		#scaleWeights = [0,0,0,0,0,0,0,0,0]#fixme have to calculate?
+		scaleWeights = t.LHEScaleWeight
+		if _year == '2017' and 'DYJetsToLL_Pt-' in amcNLOname and len(scaleWeights) == 8: # 2017 Pt-binned DY samples do not include nominal LHE scale weight; set "R1_F1" to 1.0
+			Branches['scaleWeight_Up'][0]=       scaleWeights[7]
+			Branches['scaleWeight_Down'][0]=     scaleWeights[0]
+			Branches['scaleWeight_R0p5_F0p5'][0]=scaleWeights[0]
+			Branches['scaleWeight_R0p5_F1'][0]=  scaleWeights[1]
+			Branches['scaleWeight_R0p5_F2'][0]=  scaleWeights[2]
+			Branches['scaleWeight_R1_F0p5'][0]=  scaleWeights[3]
+			Branches['scaleWeight_R1_F1'][0]=    1.0
+			Branches['scaleWeight_R1_F2'][0]=    scaleWeights[4]
+			Branches['scaleWeight_R2_F0p5'][0]=  scaleWeights[5]
+			Branches['scaleWeight_R2_F1'][0]=    scaleWeights[6]
+			Branches['scaleWeight_R2_F2'][0]=    scaleWeights[7]
+		elif len(scaleWeights) > 7 :
+			Branches['scaleWeight_Up'][0]=       scaleWeights[8]
+			Branches['scaleWeight_Down'][0]=     scaleWeights[0]
+			Branches['scaleWeight_R0p5_F0p5'][0]=scaleWeights[0]
+			Branches['scaleWeight_R0p5_F1'][0]=  scaleWeights[1]
+			Branches['scaleWeight_R0p5_F2'][0]=  scaleWeights[2]
+			Branches['scaleWeight_R1_F0p5'][0]=  scaleWeights[3]
+			Branches['scaleWeight_R1_F1'][0]=    scaleWeights[4]
+			Branches['scaleWeight_R1_F2'][0]=    scaleWeights[5]
+			Branches['scaleWeight_R2_F0p5'][0]=  scaleWeights[6]
+			Branches['scaleWeight_R2_F1'][0]=    scaleWeights[7]
+			Branches['scaleWeight_R2_F2'][0]=    scaleWeights[8]
+		else :
+			Branches['scaleWeight_Up'][0]=       1.0
+			Branches['scaleWeight_Down'][0]=     1.0
+			Branches['scaleWeight_R1_F1'][0]=    1.0
+			Branches['scaleWeight_R1_F2'][0]=    1.0
+			Branches['scaleWeight_R1_F0p5'][0]=  1.0
+			Branches['scaleWeight_R2_F1'][0]=    1.0
+			Branches['scaleWeight_R2_F2'][0]=    1.0
+			Branches['scaleWeight_R2_F0p5'][0]=  1.0
+			Branches['scaleWeight_R0p5_F1'][0]=  1.0
+			Branches['scaleWeight_R0p5_F2'][0]=  1.0
+			Branches['scaleWeight_R0p5_F0p5'][0]=1.0
+
 	Branches['weight_amcNLO'][0]=0#t.amcNLOWeight
-
-	#if 'amcatnlo' in amcNLOname :
-	#	scaleWeights = t.ScaleWeightsAMCNLO
-	#else:
-	#	scaleWeights = t.ScaleWeights
-	#scaleWeights = [0,0,0,0,0,0,0,0,0]#fixme have to calculate?
-	scaleWeights = t.LHEScaleWeight
-        if len(scaleWeights) > 7 :
-		Branches['scaleWeight_Up'][0]=       scaleWeights[8]
-		Branches['scaleWeight_Down'][0]=     scaleWeights[0]
-		Branches['scaleWeight_R0p5_F0p5'][0]=scaleWeights[0]
-		Branches['scaleWeight_R0p5_F1'][0]=  scaleWeights[1]
-		Branches['scaleWeight_R0p5_F2'][0]=  scaleWeights[2]
-		Branches['scaleWeight_R1_F0p5'][0]=  scaleWeights[3]
-		Branches['scaleWeight_R1_F1'][0]=    scaleWeights[4]
-		Branches['scaleWeight_R1_F2'][0]=    scaleWeights[5]
-		Branches['scaleWeight_R2_F0p5'][0]=  scaleWeights[6]
-		Branches['scaleWeight_R2_F1'][0]=    scaleWeights[7]
-		Branches['scaleWeight_R2_F2'][0]=    scaleWeights[8]
-	else :
-		Branches['scaleWeight_Up'][0]=       1.0
-		Branches['scaleWeight_Down'][0]=     1.0
-		Branches['scaleWeight_R1_F1'][0]=    1.0
-		Branches['scaleWeight_R1_F2'][0]=    1.0
-		Branches['scaleWeight_R1_F0p5'][0]=  1.0
-		Branches['scaleWeight_R2_F1'][0]=    1.0
-		Branches['scaleWeight_R2_F2'][0]=    1.0
-		Branches['scaleWeight_R2_F0p5'][0]=  1.0
-		Branches['scaleWeight_R0p5_F1'][0]=  1.0
-		Branches['scaleWeight_R0p5_F2'][0]=  1.0
-		Branches['scaleWeight_R0p5_F0p5'][0]=1.0
-
-        Branches['prefireWeight'][0]      = t.PrefireWeight
-        Branches['prefireWeight_up'][0]   = t.PrefireWeight_Up
-        Branches['prefireWeight_down'][0] = t.PrefireWeight_Down
+	Branches['prefireWeight'][0]      = t.PrefireWeight
+	Branches['prefireWeight_up'][0]   = t.PrefireWeight_Up
+	Branches['prefireWeight_down'][0] = t.PrefireWeight_Down
 
 	if isData:
 		dopdf = False
