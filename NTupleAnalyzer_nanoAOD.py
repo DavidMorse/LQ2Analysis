@@ -70,8 +70,7 @@ if LQToBMu_single_bdtswitch:
 	LQToBMu_single_uub_weights = ["",""]
 
 if LQToBMu_pair_bdtswitch:
-	LQToBMu_pair_uubj_weights = ["/eos/user/g/gmadigan/LQ_MVA_Batch/weights_2021_03_24_17_23_23/TMVAClassification_np1__BDTG01_LQToBMu_pair_uubj_NTrees_MinNodeSize_MaxDepth_AdaBeta_SepType_nCuts_M","_2021_03_24_17_23_23_BDTG01.weights.xml"]
-
+	LQToBMu_pair_uubj_weights = ["/eos/user/g/gmadigan/LQ_MVA_Batch/weights_2021_03_24_004128/TMVAClassification_np1__BDTG01_LQToBMu_pair_uubj_NTrees_MinNodeSize_MaxDepth_AdaBeta_SepType_nCuts_M","_2021_03_24_004128_BDTG01.weights.xml"]
 
 # Get the file, tree, and number of entries
 print name
