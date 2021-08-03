@@ -2289,8 +2289,8 @@ for n in range(N):
 	t.GetEntry(n)
 	# if n > 1000:  # Testing....
 	# 	break
-	if n%100==0:
-		print 'Processing event',n, 'of', N # where we are in the loop...
+	#if n%100==0:
+	#	print 'Processing event',n, 'of', N # where we are in the loop...
 
 	
 	isData = t.run>1
@@ -2326,7 +2326,7 @@ for n in range(N):
 		#	scaleWeights = t.ScaleWeights
 		#scaleWeights = [0,0,0,0,0,0,0,0,0]#fixme have to calculate?
 		scaleWeights = t.LHEScaleWeight
-		if _year == '2017' and 'DYJetsToLL_Pt-' in amcNLOname and len(scaleWeights) == 8: # 2017 Pt-binned DY samples do not include nominal LHE scale weight; set "R1_F1" to 1.0
+		if (_year == '2017' or _year == '2018') and ('DYJetsToLL_Pt-' in amcNLOname or 'WJetsToLNu_' in amcNLOname or 'ZZTo4L' in amcNLOname) and len(scaleWeights) == 8: # 2017 Pt-binned DY, WJets to lv, and ZZ to llll samples and 2018 Pt-binned DY samples do not include nominal LHE scale weight; set "R1_F1" to 1.0
 			Branches['scaleWeight_Up'][0]=       scaleWeights[7]
 			Branches['scaleWeight_Down'][0]=     scaleWeights[0]
 			Branches['scaleWeight_R0p5_F0p5'][0]=scaleWeights[0]
