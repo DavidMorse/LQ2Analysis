@@ -64,7 +64,7 @@ print 'AlignmentCorr Switch = ', alignementcorrswitch
 
 #Switches to add BDT discriminants
 LQToBMu_single_bdtswitch = False
-LQToBMu_pair_bdtswitch = True
+LQToBMu_pair_bdtswitch = False
 
 if LQToBMu_single_bdtswitch:
 	LQToBMu_single_uub_weights = ["",""]
@@ -166,14 +166,17 @@ _kinematicvariables += ['WorZSystemPt']
 #_kinematicvariables += ['passWptCut','passZptCut','WorZSystemPt']
 #_kinematicvariables += ['WSystemPt','ZSystemPt']
 _kinematicvariables += ['matchedLQ']
-_kinematicvariables += ['mu1recoSF','mu1recoSFup','mu1recoSFdown']
-_kinematicvariables += ['mu1idSF','mu1idSFup','mu1idSFdown']
-_kinematicvariables += ['mu1isoSF','mu1isoSFup','mu1isoSFdown']
-_kinematicvariables += ['mu1hltSF','mu1hltSFup','mu1hltSFdown']
-_kinematicvariables += ['mu2recoSF','mu2recoSFup','mu2recoSFdown']
-_kinematicvariables += ['mu2idSF','mu2idSFup','mu2idSFdown']
-_kinematicvariables += ['mu2isoSF','mu2isoSFup','mu2isoSFdown']
-_kinematicvariables += ['mu2hltSF','mu2hltSFup','mu2hltSFdown']
+#_kinematicvariables += ['mu1recoSF','mu1recoSFup','mu1recoSFdown']
+#_kinematicvariables += ['mu1idSF','mu1idSFup','mu1idSFdown']
+#_kinematicvariables += ['mu1isoSF','mu1isoSFup','mu1isoSFdown']
+#_kinematicvariables += ['mu1hltSF','mu1hltSFup','mu1hltSFdown']
+#_kinematicvariables += ['mu2recoSF','mu2recoSFup','mu2recoSFdown']
+#_kinematicvariables += ['mu2idSF','mu2idSFup','mu2idSFdown']
+#_kinematicvariables += ['mu2isoSF','mu2isoSFup','mu2isoSFdown']
+#_kinematicvariables += ['mu2hltSF','mu2hltSFup','mu2hltSFdown']
+
+_kinematicvariables += ['mu1recoSF','mu1idSF','mu1isoSF','mu1hltSF']
+_kinematicvariables += ['mu2recoSF','mu2idSF','mu2isoSF','mu2hltSF']
 
 _kinematicvariables += ['LQToBMu_single_uub_BDT_discrim_M300', 'LQToBMu_single_uub_BDT_discrim_M400', 'LQToBMu_single_uub_BDT_discrim_M500']
 _kinematicvariables += ['LQToBMu_single_uub_BDT_discrim_M600', 'LQToBMu_single_uub_BDT_discrim_M700', 'LQToBMu_single_uub_BDT_discrim_M800']
@@ -202,7 +205,7 @@ _flagDoubles = ['run_number','event_number','lumi_number']
 _flags = ['pass_HLTIsoMu27','pass_HLTMu45_eta2p1','pass_HLTMu50','pass_HLTMu55','pass_HLTTkMu50','pass_HLTOldMu100','pass_HLTTkMu100','GoodVertexCount']
 _flags += ['passPrimaryVertex','passTriggerObjectMatching','passDataCert']
 _flags += ['Flag_BadChargedCandidateFilter','Flag_BadChargedCandidateSummer16Filter','Flag_BadPFMuonFilter','Flag_BadPFMuonSummer16Filter','Flag_CSCTightHalo2015Filter','Flag_CSCTightHaloFilter','Flag_CSCTightHaloTrkMuUnvetoFilter','Flag_EcalDeadCellBoundaryEnergyFilter','Flag_EcalDeadCellTriggerPrimitiveFilter','Flag_HBHENoiseFilter','Flag_HBHENoiseIsoFilter','Flag_HcalStripHaloFilter','Flag_METFilters','Flag_chargedHadronTrackResolutionFilter','Flag_ecalBadCalibFilter','Flag_ecalBadCalibFilterV2','Flag_ecalLaserCorrFilter','Flag_eeBadScFilter','Flag_globalSuperTightHalo2016Filter','Flag_globalTightHalo2016Filter','Flag_goodVertices','Flag_hcalLaserEventFilter','Flag_muonBadTrackFilter','Flag_trkPOGFilters','Flag_trkPOG_logErrorTooManyClusters','Flag_trkPOG_manystripclus53X','Flag_trkPOG_toomanystripclus53X']
-_variations = ['','JESup','JESdown','MESup','MESdown','JERup','JERdown','MER']
+_variations = ['','JESup','JESdown','MESup','MESdown','JERup','JERdown','MER','MUONIDup','MUONIDdown','MUONISOup','MUONISOdown','MUONRECOup','MUONRECOdown','MUONHLTup','MUONHLTdown','BTAGup','BTAGdown']
 if nonisoswitch==True or emuswitch==True or quicktestswitch==True:
 	print 'NOT performing systematics...'
 	_variations = ['']  # For quicker tests
@@ -1091,27 +1094,51 @@ def getMuonSF(_pt,_eta):
 		k+=1
 
 	#Get SFs and compute up and down variations (syst+stat errors)
+	#recoSFs = recoSFbyPt[i]
+	#recoSF = recoSFs[0]
+	#recoSFup   = recoSFs[0]+recoSFs[1]
+	#recoSFdown = max(recoSFs[0]-recoSFs[1],0.0)
+
+	#highPtIdSFs = highPtIdSFbyPt[k]
+	#highPtIdSF = highPtIdSFs[0]
+	#highPtIdSFup   = highPtIdSFs[0]+highPtIdSFs[1]
+	#highPtIdSFdown = max(highPtIdSFs[0]-highPtIdSFs[1],0.0)
+
+	#relTrkIsoSFs = relTrkIsoSFbyPt[k]
+	#relTrkIsoSF = relTrkIsoSFs[0]
+	#relTrkIsoSFup   = relTrkIsoSFs[0]+relTrkIsoSFs[1]
+	#relTrkIsoSFdown = max(relTrkIsoSFs[0]-relTrkIsoSFs[1],0.0)
+
+	#hltSFs = hltSFbyPt[j]
+	#hltSF = hltSFs[0]
+	#hltSFup   = hltSFs[0]+hltSFs[1]
+	#hltSFdown = max(hltSFs[0]-hltSFs[1],0.0)
+
+	#return [recoSF,recoSFup,recoSFdown,highPtIdSF,highPtIdSFup,highPtIdSFdown,relTrkIsoSF,relTrkIsoSFup,relTrkIsoSFdown,hltSF,hltSFup,hltSFdown]
+
 	recoSFs = recoSFbyPt[i]
-	recoSF = recoSFs[0]
-	recoSFup   = recoSFs[0]+recoSFs[1]
-	recoSFdown = max(recoSFs[0]-recoSFs[1],0.0)
-
 	highPtIdSFs = highPtIdSFbyPt[k]
-	highPtIdSF = highPtIdSFs[0]
-	highPtIdSFup   = highPtIdSFs[0]+highPtIdSFs[1]
-	highPtIdSFdown = max(highPtIdSFs[0]-highPtIdSFs[1],0.0)
-
 	relTrkIsoSFs = relTrkIsoSFbyPt[k]
-	relTrkIsoSF = relTrkIsoSFs[0]
-	relTrkIsoSFup   = relTrkIsoSFs[0]+relTrkIsoSFs[1]
-	relTrkIsoSFdown = max(relTrkIsoSFs[0]-relTrkIsoSFs[1],0.0)
-
 	hltSFs = hltSFbyPt[j]
-	hltSF = hltSFs[0]
-	hltSFup   = hltSFs[0]+hltSFs[1]
-	hltSFdown = max(hltSFs[0]-hltSFs[1],0.0)
 
-	return [recoSF,recoSFup,recoSFdown,highPtIdSF,highPtIdSFup,highPtIdSFdown,relTrkIsoSF,relTrkIsoSFup,relTrkIsoSFdown,hltSF,hltSFup,hltSFdown]
+	recoSF = recoSFs[0]
+	if variation=='MURECOup': recoSF = recoSFs[0]+recoSFs[1]
+	if variation=='MURECOdown': recoSF = max(recoSFs[0]-recoSFs[1],0.0)
+
+	highPtIdSF = highPtIdSFs[0]
+	if variation=='MUIDup':	highPtIdSF = highPtIdSFs[0]+highPtIdSFs[1]
+	if variation=='MUIDdown':highPtIdSF = max(highPtIdSFs[0]-highPtIdSFs[1],0.0)
+
+	relTrkIsoSF = relTrkIsoSFs[0]
+	if variation=='MUISOup': relTrkIsoSF = relTrkIsoSFs[0]+relTrkIsoSFs[1]
+	if variation=='MUISOdown': relTrkIsoSF = max(relTrkIsoSFs[0]-relTrkIsoSFs[1],0.0)
+
+	hltSF = hltSFs[0]
+	if variation=='MUHLTup': hltSF = hltSFs[0]+hltSFs[1]
+	if variation=='MUHLTdown': hltSF = max(hltSFs[0]-hltSFs[1],0.0)
+	
+
+	return [recoSF,highPtIdSF,relTrkIsoSF,hltSF]
 
 def TightHighPtIDMuons(T,_met,variation,isdata):
 	# Purpose: Gets the collection of muons passing tight muon ID. 
@@ -1182,8 +1209,8 @@ def TightHighPtIDMuons(T,_met,variation,isdata):
                 #this uses the muon id flag for id
 	        Pass *= ( T.Muon_highPtId[n] > 1 ) > 0 #Muon high Pt Id 1=tracker high pT, 2=global high pT
                 #fixme relative tracker isolation missing from 10_2_x?
-                #if nonisoswitch != True:
-                #       Pass *= (T.Muon_tkIsoId & 0x1) #TkIso ID (1=TkIsoLoose, 2=TkIsoTight)
+                if nonisoswitch != True:
+                       Pass *= (T.Muon_tkIsoId & 0x1) #TkIso ID (1=TkIsoLoose, 2=TkIsoTight)
 
 	        """
 	        if nonisoswitch != True:
@@ -1492,6 +1519,8 @@ def TightIDJets(T,met,variation,isdata):
 				NEMFs.append(T.Jet_neEmEF[n])
 				DeepJetScores.append(T.Jet_btagDeepFlavB[n])
 				if 'SingleMuon' in name or 'SingleElectron' in name or 'DoubleMuon' in name or 'DoubleEG' in name: bTagSFs.append(1.0)
+				elif variation=='BTAGup':bTagSFs.append(T.Jet_btagSF_deepjet_M_up[n]+)
+				elif variation=='BTAGdown':bTagSFs.append(T.Jet_btagSF_deepjet_M_down[n]+)
 				else: bTagSFs.append(T.Jet_btagSF_deepjet_M[n])
 				PUIds.append([(T.Jet_puId[n] & 0x4)>0,(T.Jet_puId[n] & 0x2)>0,(T.Jet_puId[n] & 0x1)>0])
 			else:
@@ -1977,8 +2006,11 @@ def FullKinematicCalculation(T,variation):
 	_DPhiu2j2 = abs(muons[1].DeltaPhi(jets[1]))
 
 	#Get muon scale factors and up, down variations here
-	[_mu1recoSF,_mu1recoSFup,_mu1recoSFdown,_mu1idSF,_mu1idSFup,_mu1idSFdown,_mu1isoSF,_mu1isoSFup,_mu1isoSFdown,_mu1hltSF,_mu1hltSFup,_mu1hltSFdown] = getMuonSF(_ptmu1,_etamu1)
-	[_mu2recoSF,_mu2recoSFup,_mu2recoSFdown,_mu2idSF,_mu2idSFup,_mu2idSFdown,_mu2isoSF,_mu2isoSFup,_mu2isoSFdown,_mu2hltSF,_mu2hltSFup,_mu2hltSFdown] = getMuonSF(_ptmu2,_etamu2)
+	#[_mu1recoSF,_mu1recoSFup,_mu1recoSFdown,_mu1idSF,_mu1idSFup,_mu1idSFdown,_mu1isoSF,_mu1isoSFup,_mu1isoSFdown,_mu1hltSF,_mu1hltSFup,_mu1hltSFdown] = getMuonSF(_ptmu1,_etamu1)
+	#[_mu2recoSF,_mu2recoSFup,_mu2recoSFdown,_mu2idSF,_mu2idSFup,_mu2idSFdown,_mu2isoSF,_mu2isoSFup,_mu2isoSFdown,_mu2hltSF,_mu2hltSFup,_mu2hltSFdown] = getMuonSF(_ptmu2,_etamu2)
+
+	[_mu1recoSF,_mu1idSF,_mu1isoSF,_mu1hltSF] = getMuonSF(_ptmu1,_etamu1)
+	[_mu2recoSF,_mu2idSF,_mu2isoSF,_mu2hltSF] = getMuonSF(_ptmu2,_etamu2)
 
 	_Muujj1_gen=0
 	_Muujj2_gen=0
@@ -2103,14 +2135,16 @@ def FullKinematicCalculation(T,variation):
 	#toreturn += [_passWptCut,_passZptCut,_WorZSystemPt]
 	#toreturn += [_WSystemPt,_ZSystemPt]
 	toreturn += [_matchedLQ]
-	toreturn += [_mu1recoSF,_mu1recoSFup,_mu1recoSFdown]
-	toreturn += [_mu1idSF,_mu1idSFup,_mu1idSFdown]
-	toreturn += [_mu1isoSF,_mu1isoSFup,_mu1isoSFdown]
-	toreturn += [_mu1hltSF,_mu1hltSFup,_mu1hltSFdown]
-	toreturn += [_mu2recoSF,_mu2recoSFup,_mu2recoSFdown]
-	toreturn += [_mu2idSF,_mu2idSFup,_mu2idSFdown]
-	toreturn += [_mu2isoSF,_mu2isoSFup,_mu2isoSFdown]
-	toreturn += [_mu2hltSF,_mu2hltSFup,_mu2hltSFdown]
+	#toreturn += [_mu1recoSF,_mu1recoSFup,_mu1recoSFdown]
+	#toreturn += [_mu1idSF,_mu1idSFup,_mu1idSFdown]
+	#toreturn += [_mu1isoSF,_mu1isoSFup,_mu1isoSFdown]
+	#toreturn += [_mu1hltSF,_mu1hltSFup,_mu1hltSFdown]
+	#toreturn += [_mu2recoSF,_mu2recoSFup,_mu2recoSFdown]
+	#toreturn += [_mu2idSF,_mu2idSFup,_mu2idSFdown]
+	#toreturn += [_mu2isoSF,_mu2isoSFup,_mu2isoSFdown]
+	#toreturn += [_mu2hltSF,_mu2hltSFup,_mu2hltSFdown]
+	toreturn += [_mu1recoSF,_mu1idSF,_mu1isoSF,_mu1hltSF]
+	toreturn += [_mu2recoSF,_mu2idSF,_mu2isoSF,_mu2hltSF]
 
 	toreturn += [_LQToBMu_single_uub_BDT_discrim_M300, _LQToBMu_single_uub_BDT_discrim_M400, _LQToBMu_single_uub_BDT_discrim_M500]
 	toreturn += [_LQToBMu_single_uub_BDT_discrim_M600, _LQToBMu_single_uub_BDT_discrim_M700, _LQToBMu_single_uub_BDT_discrim_M800]
