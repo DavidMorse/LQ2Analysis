@@ -177,9 +177,6 @@ _kinematicvariables += ['mu2idSF','mu2idSFup','mu2idSFdown']
 _kinematicvariables += ['mu2isoSF','mu2isoSFup','mu2isoSFdown']
 _kinematicvariables += ['mu2hltSF','mu2hltSFup','mu2hltSFdown']
 
-#_kinematicvariables += ['mu1recoSF','mu1idSF','mu1isoSF','mu1hltSF']
-#_kinematicvariables += ['mu2recoSF','mu2idSF','mu2isoSF','mu2hltSF']
-
 _kinematicvariables += ['LQToBMu_single_uub_BDT_discrim_M300', 'LQToBMu_single_uub_BDT_discrim_M400', 'LQToBMu_single_uub_BDT_discrim_M500']
 _kinematicvariables += ['LQToBMu_single_uub_BDT_discrim_M600', 'LQToBMu_single_uub_BDT_discrim_M700', 'LQToBMu_single_uub_BDT_discrim_M800']
 _kinematicvariables += ['LQToBMu_single_uub_BDT_discrim_M900', 'LQToBMu_single_uub_BDT_discrim_M1000', 'LQToBMu_single_uub_BDT_discrim_M1100']
