@@ -1468,6 +1468,8 @@ def TightIDJets(T,met,variation,isdata):
 	NEMFs = []
 	DeepJetScores = []
 	bTagSFs = []
+	bTagSFs_up = []
+	bTagSFs_down = []
 	PUIds = []
 	for n in range(len(_PFJetPt)):
 		if _PFJetPt[n]>40 and abs(T.Jet_eta[n])<2.4 :
@@ -1499,9 +1501,9 @@ def TightIDJets(T,met,variation,isdata):
 				NEMFs.append(T.Jet_neEmEF[n])
 				DeepJetScores.append(T.Jet_btagDeepFlavB[n])
 				if 'SingleMuon' in name or 'SingleElectron' in name or 'DoubleMuon' in name or 'DoubleEG' in name: bTagSFs.append(1.0)
-				bTagSF.append(T.Jet_btagSF_deepjet_M[n])
-				bTagSF_up.append(T.Jet_btagSF_deepjet_M_up[n])
-				bTagSF_down.append(T.Jet_btagSF_deepjet_M_down[n])
+				bTagSFs.append(T.Jet_btagSF_deepjet_M[n])
+				bTagSFs_up.append(T.Jet_btagSF_deepjet_M_up[n])
+				bTagSFs_down.append(T.Jet_btagSF_deepjet_M_down[n])
 				PUIds.append([(T.Jet_puId[n] & 0x4)>0,(T.Jet_puId[n] & 0x2)>0,(T.Jet_puId[n] & 0x1)>0])
 			else:
 				if _PFJetPt[n] > JetFailThreshold:
@@ -1509,7 +1511,7 @@ def TightIDJets(T,met,variation,isdata):
 
 	# print met.Pt()
 
-	return [jets,jetinds,met,JetFailThreshold,NHFs,NEMFs,DeepJetScores,bTagSF,bTagSF_up,btagSF_down,PUIds]
+	return [jets,jetinds,met,JetFailThreshold,NHFs,NEMFs,DeepJetScores,bTagSFs,bTagSFs_up,btagSFs_down,PUIds]
 def GetLLJJMasses(l1,l2,j1,j2):
 	# Purpose: For LLJJ channels, this function returns two L-J Masses, corresponding to the
 	#         pair of L-Js which minimizes the difference between LQ masses in the event
