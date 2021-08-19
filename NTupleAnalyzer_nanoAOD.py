@@ -1204,14 +1204,16 @@ def TightHighPtIDMuons(T,_met,variation,isdata):
 		# all non-global muons have cocktail pT of -1 in the ntuples.
 		Pass *= (_MuonCocktailPt[n] > 45)     
 		# Eta requirement
-		Pass *= abs(T.Muon_eta[n]) < 2.4
-
+		Pass *= (abs(T.Muon_eta[n]) < 2.4)
+		# Muon_highPtId and Muon_tkIsoId are stored as type UChar_t (unsigned characters)
+		# passing the objects through a python array and specifying typecode 'B' allows them to be returned as integers
+		# otherwise they are read as empty strings and data cannot be retrieved
+		# -GM
                 #this uses the muon id flag for id
-	        Pass *= ( T.Muon_highPtId[n] > 1 ) > 0 #Muon high Pt Id 1=tracker high pT, 2=global high pT
+	        Pass *= (array.array('B',T.Muon_highPtId[n])[0] > 1) #Muon high Pt Id 1=tracker high pT, 2=global high pT
                 #fixme relative tracker isolation missing from 10_2_x?
                 if nonisoswitch != True:
-                       Pass *= (T.Muon_tkIsoId & 0x1) #TkIso ID (1=TkIsoLoose, 2=TkIsoTight)
-
+                       Pass *= (array.array('B',T.Muon_tkIsoId[n])[0] > 0) #TkIso ID (1=TkIsoLoose, 2=TkIsoTight)
 	        """
 	        if nonisoswitch != True:
 		        Pass *= (T.Muon_highPtId[n] > 1) > 0 #Muon high Pt Id 1=tracker high pT, 2=global high pT
@@ -1519,8 +1521,8 @@ def TightIDJets(T,met,variation,isdata):
 				NEMFs.append(T.Jet_neEmEF[n])
 				DeepJetScores.append(T.Jet_btagDeepFlavB[n])
 				if 'SingleMuon' in name or 'SingleElectron' in name or 'DoubleMuon' in name or 'DoubleEG' in name: bTagSFs.append(1.0)
-				elif variation=='BTAGup':bTagSFs.append(T.Jet_btagSF_deepjet_M_up[n]+)
-				elif variation=='BTAGdown':bTagSFs.append(T.Jet_btagSF_deepjet_M_down[n]+)
+				elif variation=='BTAGup':bTagSFs.append(T.Jet_btagSF_deepjet_M_up[n])
+				elif variation=='BTAGdown':bTagSFs.append(T.Jet_btagSF_deepjet_M_down[n])
 				else: bTagSFs.append(T.Jet_btagSF_deepjet_M[n])
 				PUIds.append([(T.Jet_puId[n] & 0x4)>0,(T.Jet_puId[n] & 0x2)>0,(T.Jet_puId[n] & 0x1)>0])
 			else:
@@ -2009,8 +2011,8 @@ def FullKinematicCalculation(T,variation):
 	#[_mu1recoSF,_mu1recoSFup,_mu1recoSFdown,_mu1idSF,_mu1idSFup,_mu1idSFdown,_mu1isoSF,_mu1isoSFup,_mu1isoSFdown,_mu1hltSF,_mu1hltSFup,_mu1hltSFdown] = getMuonSF(_ptmu1,_etamu1)
 	#[_mu2recoSF,_mu2recoSFup,_mu2recoSFdown,_mu2idSF,_mu2idSFup,_mu2idSFdown,_mu2isoSF,_mu2isoSFup,_mu2isoSFdown,_mu2hltSF,_mu2hltSFup,_mu2hltSFdown] = getMuonSF(_ptmu2,_etamu2)
 
-	[_mu1recoSF,_mu1idSF,_mu1isoSF,_mu1hltSF] = getMuonSF(_ptmu1,_etamu1)
-	[_mu2recoSF,_mu2idSF,_mu2isoSF,_mu2hltSF] = getMuonSF(_ptmu2,_etamu2)
+	[_mu1recoSF,_mu1idSF,_mu1isoSF,_mu1hltSF] = getMuonSF(_ptmu1,_etamu1,variation)
+	[_mu2recoSF,_mu2idSF,_mu2isoSF,_mu2hltSF] = getMuonSF(_ptmu2,_etamu2,variation)
 
 	_Muujj1_gen=0
 	_Muujj2_gen=0
