@@ -160,23 +160,25 @@ _kinematicvariables += ['jetIndex1','jetIndex2']
 _kinematicvariables += ['ptHat']
 _kinematicvariables += ['DeepJet_jet1','DeepJet_jet2']
 _kinematicvariables += ['bTagSF_jet1','bTagSF_jet2']
+_kinematicvariables += ['bTagSF_jet1_up','bTagSF_jet2_up']
+_kinematicvariables += ['bTagSF_jet1_down','bTagSF_jet2_down']
 _kinematicvariables += ['PULoosej1','PUMediumj1','PUTightj1']
 _kinematicvariables += ['PULoosej2','PUMediumj2','PUTightj2']
 _kinematicvariables += ['WorZSystemPt']
 #_kinematicvariables += ['passWptCut','passZptCut','WorZSystemPt']
 #_kinematicvariables += ['WSystemPt','ZSystemPt']
 _kinematicvariables += ['matchedLQ']
-#_kinematicvariables += ['mu1recoSF','mu1recoSFup','mu1recoSFdown']
-#_kinematicvariables += ['mu1idSF','mu1idSFup','mu1idSFdown']
-#_kinematicvariables += ['mu1isoSF','mu1isoSFup','mu1isoSFdown']
-#_kinematicvariables += ['mu1hltSF','mu1hltSFup','mu1hltSFdown']
-#_kinematicvariables += ['mu2recoSF','mu2recoSFup','mu2recoSFdown']
-#_kinematicvariables += ['mu2idSF','mu2idSFup','mu2idSFdown']
-#_kinematicvariables += ['mu2isoSF','mu2isoSFup','mu2isoSFdown']
-#_kinematicvariables += ['mu2hltSF','mu2hltSFup','mu2hltSFdown']
+_kinematicvariables += ['mu1recoSF','mu1recoSFup','mu1recoSFdown']
+_kinematicvariables += ['mu1idSF','mu1idSFup','mu1idSFdown']
+_kinematicvariables += ['mu1isoSF','mu1isoSFup','mu1isoSFdown']
+_kinematicvariables += ['mu1hltSF','mu1hltSFup','mu1hltSFdown']
+_kinematicvariables += ['mu2recoSF','mu2recoSFup','mu2recoSFdown']
+_kinematicvariables += ['mu2idSF','mu2idSFup','mu2idSFdown']
+_kinematicvariables += ['mu2isoSF','mu2isoSFup','mu2isoSFdown']
+_kinematicvariables += ['mu2hltSF','mu2hltSFup','mu2hltSFdown']
 
-_kinematicvariables += ['mu1recoSF','mu1idSF','mu1isoSF','mu1hltSF']
-_kinematicvariables += ['mu2recoSF','mu2idSF','mu2isoSF','mu2hltSF']
+#_kinematicvariables += ['mu1recoSF','mu1idSF','mu1isoSF','mu1hltSF']
+#_kinematicvariables += ['mu2recoSF','mu2idSF','mu2isoSF','mu2hltSF']
 
 _kinematicvariables += ['LQToBMu_single_uub_BDT_discrim_M300', 'LQToBMu_single_uub_BDT_discrim_M400', 'LQToBMu_single_uub_BDT_discrim_M500']
 _kinematicvariables += ['LQToBMu_single_uub_BDT_discrim_M600', 'LQToBMu_single_uub_BDT_discrim_M700', 'LQToBMu_single_uub_BDT_discrim_M800']
@@ -205,7 +207,7 @@ _flagDoubles = ['run_number','event_number','lumi_number']
 _flags = ['pass_HLTIsoMu27','pass_HLTMu45_eta2p1','pass_HLTMu50','pass_HLTMu55','pass_HLTTkMu50','pass_HLTOldMu100','pass_HLTTkMu100','GoodVertexCount']
 _flags += ['passPrimaryVertex','passTriggerObjectMatching','passDataCert']
 _flags += ['Flag_BadChargedCandidateFilter','Flag_BadChargedCandidateSummer16Filter','Flag_BadPFMuonFilter','Flag_BadPFMuonSummer16Filter','Flag_CSCTightHalo2015Filter','Flag_CSCTightHaloFilter','Flag_CSCTightHaloTrkMuUnvetoFilter','Flag_EcalDeadCellBoundaryEnergyFilter','Flag_EcalDeadCellTriggerPrimitiveFilter','Flag_HBHENoiseFilter','Flag_HBHENoiseIsoFilter','Flag_HcalStripHaloFilter','Flag_METFilters','Flag_chargedHadronTrackResolutionFilter','Flag_ecalBadCalibFilter','Flag_ecalBadCalibFilterV2','Flag_ecalLaserCorrFilter','Flag_eeBadScFilter','Flag_globalSuperTightHalo2016Filter','Flag_globalTightHalo2016Filter','Flag_goodVertices','Flag_hcalLaserEventFilter','Flag_muonBadTrackFilter','Flag_trkPOGFilters','Flag_trkPOG_logErrorTooManyClusters','Flag_trkPOG_manystripclus53X','Flag_trkPOG_toomanystripclus53X']
-_variations = ['','JESup','JESdown','MESup','MESdown','JERup','JERdown','MER','MUONIDup','MUONIDdown','MUONISOup','MUONISOdown','MUONRECOup','MUONRECOdown','MUONHLTup','MUONHLTdown','BTAGup','BTAGdown']
+_variations = ['','JESup','JESdown','MESup','MESdown','JERup','JERdown','MER']
 if nonisoswitch==True or emuswitch==True or quicktestswitch==True:
 	print 'NOT performing systematics...'
 	_variations = ['']  # For quicker tests
@@ -1094,51 +1096,27 @@ def getMuonSF(_pt,_eta):
 		k+=1
 
 	#Get SFs and compute up and down variations (syst+stat errors)
-	#recoSFs = recoSFbyPt[i]
-	#recoSF = recoSFs[0]
-	#recoSFup   = recoSFs[0]+recoSFs[1]
-	#recoSFdown = max(recoSFs[0]-recoSFs[1],0.0)
-
-	#highPtIdSFs = highPtIdSFbyPt[k]
-	#highPtIdSF = highPtIdSFs[0]
-	#highPtIdSFup   = highPtIdSFs[0]+highPtIdSFs[1]
-	#highPtIdSFdown = max(highPtIdSFs[0]-highPtIdSFs[1],0.0)
-
-	#relTrkIsoSFs = relTrkIsoSFbyPt[k]
-	#relTrkIsoSF = relTrkIsoSFs[0]
-	#relTrkIsoSFup   = relTrkIsoSFs[0]+relTrkIsoSFs[1]
-	#relTrkIsoSFdown = max(relTrkIsoSFs[0]-relTrkIsoSFs[1],0.0)
-
-	#hltSFs = hltSFbyPt[j]
-	#hltSF = hltSFs[0]
-	#hltSFup   = hltSFs[0]+hltSFs[1]
-	#hltSFdown = max(hltSFs[0]-hltSFs[1],0.0)
-
-	#return [recoSF,recoSFup,recoSFdown,highPtIdSF,highPtIdSFup,highPtIdSFdown,relTrkIsoSF,relTrkIsoSFup,relTrkIsoSFdown,hltSF,hltSFup,hltSFdown]
-
 	recoSFs = recoSFbyPt[i]
-	highPtIdSFs = highPtIdSFbyPt[k]
-	relTrkIsoSFs = relTrkIsoSFbyPt[k]
-	hltSFs = hltSFbyPt[j]
-
 	recoSF = recoSFs[0]
-	if variation=='MURECOup': recoSF = recoSFs[0]+recoSFs[1]
-	if variation=='MURECOdown': recoSF = max(recoSFs[0]-recoSFs[1],0.0)
+	recoSFup   = recoSFs[0]+recoSFs[1]
+	recoSFdown = max(recoSFs[0]-recoSFs[1],0.0)
 
+	highPtIdSFs = highPtIdSFbyPt[k]
 	highPtIdSF = highPtIdSFs[0]
-	if variation=='MUIDup':	highPtIdSF = highPtIdSFs[0]+highPtIdSFs[1]
-	if variation=='MUIDdown':highPtIdSF = max(highPtIdSFs[0]-highPtIdSFs[1],0.0)
+	highPtIdSFup   = highPtIdSFs[0]+highPtIdSFs[1]
+	highPtIdSFdown = max(highPtIdSFs[0]-highPtIdSFs[1],0.0)
 
+	relTrkIsoSFs = relTrkIsoSFbyPt[k]
 	relTrkIsoSF = relTrkIsoSFs[0]
-	if variation=='MUISOup': relTrkIsoSF = relTrkIsoSFs[0]+relTrkIsoSFs[1]
-	if variation=='MUISOdown': relTrkIsoSF = max(relTrkIsoSFs[0]-relTrkIsoSFs[1],0.0)
+	relTrkIsoSFup   = relTrkIsoSFs[0]+relTrkIsoSFs[1]
+	relTrkIsoSFdown = max(relTrkIsoSFs[0]-relTrkIsoSFs[1],0.0)
 
+	hltSFs = hltSFbyPt[j]
 	hltSF = hltSFs[0]
-	if variation=='MUHLTup': hltSF = hltSFs[0]+hltSFs[1]
-	if variation=='MUHLTdown': hltSF = max(hltSFs[0]-hltSFs[1],0.0)
-	
+	hltSFup   = hltSFs[0]+hltSFs[1]
+	hltSFdown = max(hltSFs[0]-hltSFs[1],0.0)
 
-	return [recoSF,highPtIdSF,relTrkIsoSF,hltSF]
+	return [recoSF,recoSFup,recoSFdown,highPtIdSF,highPtIdSFup,highPtIdSFdown,relTrkIsoSF,relTrkIsoSFup,relTrkIsoSFdown,hltSF,hltSFup,hltSFdown]
 
 def TightHighPtIDMuons(T,_met,variation,isdata):
 	# Purpose: Gets the collection of muons passing tight muon ID. 
@@ -1521,9 +1499,9 @@ def TightIDJets(T,met,variation,isdata):
 				NEMFs.append(T.Jet_neEmEF[n])
 				DeepJetScores.append(T.Jet_btagDeepFlavB[n])
 				if 'SingleMuon' in name or 'SingleElectron' in name or 'DoubleMuon' in name or 'DoubleEG' in name: bTagSFs.append(1.0)
-				elif variation=='BTAGup':bTagSFs.append(T.Jet_btagSF_deepjet_M_up[n])
-				elif variation=='BTAGdown':bTagSFs.append(T.Jet_btagSF_deepjet_M_down[n])
-				else: bTagSFs.append(T.Jet_btagSF_deepjet_M[n])
+				bTagSF.append(T.Jet_btagSF_deepjet_M[n])
+				bTagSF_up.append(T.Jet_btagSF_deepjet_M_up[n])
+				bTagSF_down.append(T.Jet_btagSF_deepjet_M_down[n])
 				PUIds.append([(T.Jet_puId[n] & 0x4)>0,(T.Jet_puId[n] & 0x2)>0,(T.Jet_puId[n] & 0x1)>0])
 			else:
 				if _PFJetPt[n] > JetFailThreshold:
@@ -1531,7 +1509,7 @@ def TightIDJets(T,met,variation,isdata):
 
 	# print met.Pt()
 
-	return [jets,jetinds,met,JetFailThreshold,NHFs,NEMFs,DeepJetScores,bTagSFs,PUIds]
+	return [jets,jetinds,met,JetFailThreshold,NHFs,NEMFs,DeepJetScores,bTagSF,bTagSF_up,btagSF_down,PUIds]
 def GetLLJJMasses(l1,l2,j1,j2):
 	# Purpose: For LLJJ channels, this function returns two L-J Masses, corresponding to the
 	#         pair of L-Js which minimizes the difference between LQ masses in the event
@@ -1871,12 +1849,12 @@ def FullKinematicCalculation(T,variation):
 	# taus_forjetsep = TausForJetSeparation(T)
 	[electrons,electroninds,met] = HEEPElectrons(T,met,variation)
 	# ID Jets and filter from leptons
-	[jets,jetinds,met,failthreshold,neutralhadronEF,neutralemEF,btagDeepJetScores,btagSFs,PUIds] = TightIDJets(T,met,variation,isData)
+	[jets,jetinds,met,failthreshold,neutralhadronEF,neutralemEF,btagDeepJetScores,btagSFs,btagSFs_up,btagSFs_down,PUIds] = TightIDJets(T,met,variation,isData)
         # Filter jets from good muons and electrons.
         # Filter jets and associated collections - jets must be first element in the array!! (don't put met or failthreshold, they are not arrays)
         # All arrays MUST have same length as the jets, and all associated collections of the jets MUST be added here - think btagging, SF, etc.....
-	[jets,jetinds,neutralhadronEF,neutralemEF,btagDeepJetScores,btagSFs,PUIds] = GeomFilterCollections([jets,jetinds,neutralhadronEF,neutralemEF,btagDeepJetScores,btagSFs,PUIds],muons,0.5)
-        [jets,jetinds,neutralhadronEF,neutralemEF,btagDeepJetScores,btagSFs,PUIds] = GeomFilterCollections([jets,jetinds,neutralhadronEF,neutralemEF,btagDeepJetScores,btagSFs,PUIds],electrons,0.5)
+	[jets,jetinds,neutralhadronEF,neutralemEF,btagDeepJetScores,btagSFs,PUIds] = GeomFilterCollections([jets,jetinds,neutralhadronEF,neutralemEF,btagDeepJetScores,btagSFs,btagSFs_up,btagSFs_down,PUIds],muons,0.5)
+        [jets,jetinds,neutralhadronEF,neutralemEF,btagDeepJetScores,btagSFs,PUIds] = GeomFilterCollections([jets,jetinds,neutralhadronEF,neutralemEF,btagDeepJetScores,btagSFs,btagSFs_up,btagSFs_down,PUIds],electrons,0.5)
         # Filter jets only, not associated collections!!
 	#jets = GeomFilterCollection(jets,muons,0.5)
 	#jets = GeomFilterCollection(jets,electrons,0.5)
@@ -1918,6 +1896,8 @@ def FullKinematicCalculation(T,variation):
 		neutralemEF.append(0.0)
 		btagDeepJetScores.append(-5.0)
 		btagSFs.append(-5.0)
+		btagSFs_up.append(-5.0)
+		btagSFs_down.append(-5.0)
 		PUIds.append([-5.0,-5.0,-5.0])
 	if len(jets) < 2 : 
 		jets.append(EmptyLorentz)
@@ -1925,6 +1905,8 @@ def FullKinematicCalculation(T,variation):
 		neutralemEF.append(0.0)		
 		btagDeepJetScores.append(-5.0)
 		btagSFs.append(-5.0)
+		btagSFs_up.append(-5.0)
+		btagSFs_down.append(-5.0)
 		PUIds.append([-5.0,-5.0,-5.0])
 	_ismuon_muon1 = 1.0
 	_ismuon_muon2 = 1.0
@@ -1974,6 +1956,9 @@ def FullKinematicCalculation(T,variation):
 	[_xmiss,_ymiss] = [met.Px(),met.Py()]
 	[_deepJetj1,_deepJetj2] = [btagDeepJetScores[0],btagDeepJetScores[1]]
 	[_btagSF1,_btagSF2] = [btagSFs[0],btagSFs[1]]
+	[_btagSF1_up,_btagSF2_up] = [btagSFs_up[0],btagSFs_up[1]]
+	[_btagSF1_down,_btagSF2_down] = [btagSFs_down[0],btagSFs_down[1]]
+
 	[_PULoosej1,_PUMediumj1,_PUTightj1] = PUIds[0]
 	[_PULoosej2,_PUMediumj2,_PUTightj2] = PUIds[1]
 
@@ -2008,11 +1993,8 @@ def FullKinematicCalculation(T,variation):
 	_DPhiu2j2 = abs(muons[1].DeltaPhi(jets[1]))
 
 	#Get muon scale factors and up, down variations here
-	#[_mu1recoSF,_mu1recoSFup,_mu1recoSFdown,_mu1idSF,_mu1idSFup,_mu1idSFdown,_mu1isoSF,_mu1isoSFup,_mu1isoSFdown,_mu1hltSF,_mu1hltSFup,_mu1hltSFdown] = getMuonSF(_ptmu1,_etamu1)
-	#[_mu2recoSF,_mu2recoSFup,_mu2recoSFdown,_mu2idSF,_mu2idSFup,_mu2idSFdown,_mu2isoSF,_mu2isoSFup,_mu2isoSFdown,_mu2hltSF,_mu2hltSFup,_mu2hltSFdown] = getMuonSF(_ptmu2,_etamu2)
-
-	[_mu1recoSF,_mu1idSF,_mu1isoSF,_mu1hltSF] = getMuonSF(_ptmu1,_etamu1,variation)
-	[_mu2recoSF,_mu2idSF,_mu2isoSF,_mu2hltSF] = getMuonSF(_ptmu2,_etamu2,variation)
+	[_mu1recoSF,_mu1recoSFup,_mu1recoSFdown,_mu1idSF,_mu1idSFup,_mu1idSFdown,_mu1isoSF,_mu1isoSFup,_mu1isoSFdown,_mu1hltSF,_mu1hltSFup,_mu1hltSFdown] = getMuonSF(_ptmu1,_etamu1)
+	[_mu2recoSF,_mu2recoSFup,_mu2recoSFdown,_mu2idSF,_mu2idSFup,_mu2idSFdown,_mu2isoSF,_mu2isoSFup,_mu2isoSFdown,_mu2hltSF,_mu2hltSFup,_mu2hltSFdown] = getMuonSF(_ptmu2,_etamu2)
 
 	_Muujj1_gen=0
 	_Muujj2_gen=0
@@ -2131,22 +2113,22 @@ def FullKinematicCalculation(T,variation):
 	toreturn += [_ptHat]
 	toreturn += [_deepJetj1,_deepJetj2]
 	toreturn += [_btagSF1,_btagSF2]
+	toreturn += [_btagSF1_up,_btagSF2_up]
+	toreturn += [_btagSF1_down,_btagSF2_down]
 	toreturn += [_PULoosej1,_PUMediumj1,_PUTightj1]
 	toreturn += [_PULoosej2,_PUMediumj2,_PUTightj2]
 	toreturn += [_WorZSystemPt]
 	#toreturn += [_passWptCut,_passZptCut,_WorZSystemPt]
 	#toreturn += [_WSystemPt,_ZSystemPt]
 	toreturn += [_matchedLQ]
-	#toreturn += [_mu1recoSF,_mu1recoSFup,_mu1recoSFdown]
-	#toreturn += [_mu1idSF,_mu1idSFup,_mu1idSFdown]
-	#toreturn += [_mu1isoSF,_mu1isoSFup,_mu1isoSFdown]
-	#toreturn += [_mu1hltSF,_mu1hltSFup,_mu1hltSFdown]
-	#toreturn += [_mu2recoSF,_mu2recoSFup,_mu2recoSFdown]
-	#toreturn += [_mu2idSF,_mu2idSFup,_mu2idSFdown]
-	#toreturn += [_mu2isoSF,_mu2isoSFup,_mu2isoSFdown]
-	#toreturn += [_mu2hltSF,_mu2hltSFup,_mu2hltSFdown]
-	toreturn += [_mu1recoSF,_mu1idSF,_mu1isoSF,_mu1hltSF]
-	toreturn += [_mu2recoSF,_mu2idSF,_mu2isoSF,_mu2hltSF]
+	toreturn += [_mu1recoSF,_mu1recoSFup,_mu1recoSFdown]
+	toreturn += [_mu1idSF,_mu1idSFup,_mu1idSFdown]
+	toreturn += [_mu1isoSF,_mu1isoSFup,_mu1isoSFdown]
+	toreturn += [_mu1hltSF,_mu1hltSFup,_mu1hltSFdown]
+	toreturn += [_mu2recoSF,_mu2recoSFup,_mu2recoSFdown]
+	toreturn += [_mu2idSF,_mu2idSFup,_mu2idSFdown]
+	toreturn += [_mu2isoSF,_mu2isoSFup,_mu2isoSFdown]
+	toreturn += [_mu2hltSF,_mu2hltSFup,_mu2hltSFdown]
 
 	toreturn += [_LQToBMu_single_uub_BDT_discrim_M300, _LQToBMu_single_uub_BDT_discrim_M400, _LQToBMu_single_uub_BDT_discrim_M500]
 	toreturn += [_LQToBMu_single_uub_BDT_discrim_M600, _LQToBMu_single_uub_BDT_discrim_M700, _LQToBMu_single_uub_BDT_discrim_M800]
