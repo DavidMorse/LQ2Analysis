@@ -1508,7 +1508,8 @@ def TightIDJets(T,met,variation,isdata):
 
 	# print met.Pt()
 
-	return [jets,jetinds,met,JetFailThreshold,NHFs,NEMFs,DeepJetScores,bTagSFs,bTagSFs_up,btagSFs_down,PUIds]
+	return [jets,jetinds,met,JetFailThreshold,NHFs,NEMFs,DeepJetScores,bTagSFs,bTagSFs_up,bTagSFs_down,PUIds]
+
 def GetLLJJMasses(l1,l2,j1,j2):
 	# Purpose: For LLJJ channels, this function returns two L-J Masses, corresponding to the
 	#         pair of L-Js which minimizes the difference between LQ masses in the event
