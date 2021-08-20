@@ -1853,7 +1853,7 @@ def FullKinematicCalculation(T,variation):
         # Filter jets from good muons and electrons.
         # Filter jets and associated collections - jets must be first element in the array!! (don't put met or failthreshold, they are not arrays)
         # All arrays MUST have same length as the jets, and all associated collections of the jets MUST be added here - think btagging, SF, etc.....
-	[jets,jetinds,neutralhadronEF,neutralemEF,btagDeepJetScores,btagSFs,btagSFs_up,btagSFs_downPUIds] = GeomFilterCollections([jets,jetinds,neutralhadronEF,neutralemEF,btagDeepJetScores,btagSFs,btagSFs_up,btagSFs_down,PUIds],muons,0.5)
+	[jets,jetinds,neutralhadronEF,neutralemEF,btagDeepJetScores,btagSFs,btagSFs_up,btagSFs_down,PUIds] = GeomFilterCollections([jets,jetinds,neutralhadronEF,neutralemEF,btagDeepJetScores,btagSFs,btagSFs_up,btagSFs_down,PUIds],muons,0.5)
         [jets,jetinds,neutralhadronEF,neutralemEF,btagDeepJetScores,btagSFs,btagSFs_up,btagSFs_down,PUIds] = GeomFilterCollections([jets,jetinds,neutralhadronEF,neutralemEF,btagDeepJetScores,btagSFs,btagSFs_up,btagSFs_down,PUIds],electrons,0.5)
         # Filter jets only, not associated collections!!
 	#jets = GeomFilterCollection(jets,muons,0.5)
