@@ -1497,10 +1497,14 @@ def TightIDJets(T,met,variation,isdata):
 				NHFs.append(T.Jet_neHEF[n])
 				NEMFs.append(T.Jet_neEmEF[n])
 				DeepJetScores.append(T.Jet_btagDeepFlavB[n])
-				if 'SingleMuon' in name or 'SingleElectron' in name or 'DoubleMuon' in name or 'DoubleEG' in name: bTagSFs.append(1.0)
-				bTagSFs.append(T.Jet_btagSF_deepjet_M[n])
-				bTagSFs_up.append(T.Jet_btagSF_deepjet_M_up[n])
-				bTagSFs_down.append(T.Jet_btagSF_deepjet_M_down[n])
+				if 'SingleMuon' in name or 'SingleElectron' in name or 'DoubleMuon' in name or 'DoubleEG' in name:
+					bTagSFs.append(1.0)
+					bTagSFs_up.append(1.0)
+					bTagSFs_down.append(1.0)
+				else:
+					bTagSFs.append(T.Jet_btagSF_deepjet_M[n])
+					bTagSFs_up.append(T.Jet_btagSF_deepjet_M_up[n])
+					bTagSFs_down.append(T.Jet_btagSF_deepjet_M_down[n])
 				PUIds.append([(T.Jet_puId[n] & 0x4)>0,(T.Jet_puId[n] & 0x2)>0,(T.Jet_puId[n] & 0x1)>0])
 			else:
 				if _PFJetPt[n] > JetFailThreshold:
