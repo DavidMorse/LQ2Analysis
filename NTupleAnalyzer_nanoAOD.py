@@ -912,31 +912,36 @@ def PropagatePTChangeToMET(met,original_object,varied_object):
 # 			taus.append(ThisTau)
 # 	return taus
 
-def getMuonSF(_pt,_eta):
+def getMuonSF(_pt,_eta,_phi):
 	# Purpose: Takes muon eta and pt and gets scale factors.
 	#         SFs are hardcoded separately for muon reco, high pt ID, iso, and hlt.
 	#		  Must specify the year being analyzed, as SFs differ for each year.
 	#         Returns array with SFs (ID, iso, etc.) as well as up and down variations
 	#		  of systematic and statisical error for each SF.
 
-        global _year
-	# Store the pt ranges for which different scale factors are defined. Different ranges depending on SF, i.e., reco, id and iso, and hlt
-	recoPts = [[50.00,100.00],[100.00,150.00],[150.00,200.00],[200.00,300.00],[300.00,400.00],[400.00,600.00],[600.00,1500.00],[1500.00,3500.00]]
+    global _year
+
+	tmpMu = TLorentzVector()
+	tmpMu.SetPtEtaPhiM(_pt,_eta,_phi,0)
+	_p = math.sqrt(tmpMu.Px()*tmpMu.Px() + tmpMu.Py()*tmpMu.Py() + tmpMu.Pz()*tmpMu.Pz())
+
+	# Store the pt (or p for reco) ranges for which different scale factors are defined. Different ranges depending on SF, i.e., reco, id and iso, and hlt
+	recoPs = [[50.00,100.00],[100.00,150.00],[150.00,200.00],[200.00,300.00],[300.00,400.00],[400.00,600.00],[600.00,1500.00],[1500.00,3500.00]] # NOT pt--just full momentum (p)
 	hltPts = [[52.00,55.00],[55.00,60.00],[60.00,120.00],[120.00,200.00],[200.00,300.00],[300.00,500.00],[500.00,1000.00]]
 	idAndIsoPts = [[20.00,25.00],[25.00,30.00],[30.00,40.00],[40.00,50.00],[50.00,60.00],[60.00,120.00]]
 	# ensure all muons fall within the SF eta ranges
 	if _eta<=-2.40:_eta=-2.399
 	if _eta>=2.40:_eta=2.399
 	abseta = abs(_eta)
-	recoSFbyPt,highPtIdSFbyPt,relTrkIsoSFbyPt,hltSFbyPt = 1.0,1.0,1.0,1.0
+	recoSFbyP,highPtIdSFbyPt,relTrkIsoSFbyPt,hltSFbyPt = 1.0,1.0,1.0,1.0
 
 	########## Muon POG recommended scale factors by year ###############
 	# Check if muon is in eta range, set list of SFs and errors (syst+stat), sorted by pt.
 	if _year=='2016':
 		# Muon reco SFs
 		# https://twiki.cern.ch/twiki/bin/view/CMS/HighPtMuonReferenceRun2
-		if abseta>=0.00 and abseta<=1.60: recoSFbyPt = [[0.9914, 0.0008],[0.9936, 0.0009],[0.993, 0.001],[0.993, 0.002],[0.990, 0.004],[0.990, 0.003],[0.989, 0.004],[0.8, 0.3]]
-		elif abseta>1.60 and abseta<=2.40: recoSFbyPt = [[1.00, 0.00],[0.993, 0.001],[0.991, 0.001],[0.985, 0.001],[0.981, 0.002],[0.979, 0.004],[0.978, 0.005],[0.9, 0.2]]
+		if abseta>=0.00 and abseta<=1.60: recoSFbyP = [[0.9914, 0.0008],[0.9936, 0.0009],[0.993, 0.001],[0.993, 0.002],[0.990, 0.004],[0.990, 0.003],[0.989, 0.004],[0.8, 0.3]]
+		elif abseta>1.60 and abseta<=2.40: recoSFbyP = [[1.00, 0.00],[0.993, 0.001],[0.991, 0.001],[0.985, 0.001],[0.981, 0.002],[0.979, 0.004],[0.978, 0.005],[0.9, 0.2]]
 		# Muon high pt identification scale factors
 		# Periods B,C,D,E,F: https://gitlab.cern.ch/cms-muonPOG/MuonReferenceEfficiencies/blob/master/EfficienciesStudies/2016_legacy_rereco/systematic/RunBCDEF_SF_ID.json 
 		# Periods G,H: https://gitlab.cern.ch/cms-muonPOG/MuonReferenceEfficiencies/blob/master/EfficienciesStudies/2016_legacy_rereco/systematic/RunGH_SF_ID.json
@@ -1011,8 +1016,8 @@ def getMuonSF(_pt,_eta):
 	if _year=='2017':
 		# Muon reco SFs
 		# https://twiki.cern.ch/twiki/bin/view/CMS/HighPtMuonReferenceRun2
-		if abseta>=0.00 and abseta<=1.60: recoSFbyPt = [[0.9938, 0.0006],[0.9950, 0.0007],[0.996, 0.001],[0.996, 0.001],[0.994, 0.001],[1.003, 0.006],[0.987, 0.003],[0.9, 0.1]]
-		elif abseta>1.60 and abseta<=2.40: recoSFbyPt = [[1.00, 0.00],[0.993, 0.001],[0.989, 0.001],[0.986, 0.001],[0.989, 0.001],[0.983, 0.003],[0.986, 0.006],[1.01, 0.01]]
+		if abseta>=0.00 and abseta<=1.60: recoSFbyP = [[0.9938, 0.0006],[0.9950, 0.0007],[0.996, 0.001],[0.996, 0.001],[0.994, 0.001],[1.003, 0.006],[0.987, 0.003],[0.9, 0.1]]
+		elif abseta>1.60 and abseta<=2.40: recoSFbyP = [[1.00, 0.00],[0.993, 0.001],[0.989, 0.001],[0.986, 0.001],[0.989, 0.001],[0.983, 0.003],[0.986, 0.006],[1.01, 0.01]]
 		# Muon high pt identification scale factors
 		# https://twiki.cern.ch/twiki/pub/CMS/MuonReferenceEffs2017/RunBCDEF_SF_ID_syst.json
 		if abseta>=0.00 and abseta<=0.90: highPtIdSFbyPt = [[0.991, 0.005],[0.987, 0.002],[0.99, 0.02],[0.9905, 0.0008],[0.99, 0.01],[0.992, 0.003]] 
@@ -1035,8 +1040,8 @@ def getMuonSF(_pt,_eta):
 	if _year=='2018':
 		# Muon reco SFs
 		# https://twiki.cern.ch/twiki/bin/view/CMS/HighPtMuonReferenceRun2
-		if abseta>=0.00 and abseta<=1.60: recoSFbyPt = [[0.9943, 0.0007],[0.9948, 0.0007],[0.9950, 0.0009],[0.994, 0.001],[0.9914, 0.0009],[0.993, 0.002],[0.991, 0.004],[1.0, 0.1]]
-		elif abseta>1.60 and abseta<=2.40: recoSFbyPt = [[1.00, 0.00],[0.993, 0.001],[0.990, 0.001],[0.988, 0.001],[0.981, 0.002],[0.983, 0.003],[0.978, 0.006],[0.98, 0.03]]
+		if abseta>=0.00 and abseta<=1.60: recoSFbyP = [[0.9943, 0.0007],[0.9948, 0.0007],[0.9950, 0.0009],[0.994, 0.001],[0.9914, 0.0009],[0.993, 0.002],[0.991, 0.004],[1.0, 0.1]]
+		elif abseta>1.60 and abseta<=2.40: recoSFbyP = [[1.00, 0.00],[0.993, 0.001],[0.990, 0.001],[0.988, 0.001],[0.981, 0.002],[0.983, 0.003],[0.978, 0.006],[0.98, 0.03]]
 		# Muon high pt identification scale factors
 		# https://gitlab.cern.ch/cms-muonPOG/MuonReferenceEfficiencies/blob/master/EfficienciesStudies/2018/jsonfiles/RunABCD_SF_ID.json
 		if abseta>=0.00 and abseta<=0.90: highPtIdSFbyPt = [[0.992, 0.003],[0.992, 0.001],[0.9923, 0.0008],[0.9927, 0.0005],[0.9929, 0.0006],[0.992, 0.003]]
@@ -1059,25 +1064,23 @@ def getMuonSF(_pt,_eta):
 	# Check muon pt and select SF from appropriate pt bin. Different SFs (e.g., reco vs hlt) have different pt ranges/binning. 
 	# Maps ensure double checking of pt bins do not occur (speeds up loop) for different SF types
 	# WARNING! Make sure to check mapping if ANY binning changes
-	lowBndMap1 = {0:0, 1:2, 2:3, 3:4, 4:5, 5:5, 6:6, 7:6}
-	lowBndMap2 = {0:0, 1:4, 2:5, 3:5, 4:5, 5:5, 6:5}
-	i, j, k = 0, 0, 0
-	#print 'pt is ',_pt
-	if _pt<=50.00:_ptTmp=50.01
-	elif _pt>=3500.00:_ptTmp=3499.99
-	else: _ptTmp = _pt
-	for x in recoPts:
-		#print 'i = ',i
-		if _ptTmp>=x[0] and _ptTmp<=x[1]:
+	lowBndMap = {0:0, 1:4, 2:5, 3:5, 4:5, 5:5, 6:5}
+	i = 0 
+	j = 0
+	k = 0
+
+	if _p<=50.00:_pTmp=50.01
+	elif _p>=3500.00:_pTmp=3499.99
+	else: _pTmp = _p
+	for x in recoPs:
+		if _pTmp>=x[0] and _pTmp<=x[1]:
 			break
 		i+=1
-		
+
 	if _pt<=52.00:_ptTmp=52.01
 	elif _pt>=1000.00:_ptTmp=999.99
 	else: _ptTmp = _pt
-	j = lowBndMap1.get(i)
-	for y in hltPts[j:]:
-		#print 'j = ',j
+	for y in hltPts:
 		if _ptTmp>=y[0] and _ptTmp<=y[1]:
 			break
 		j+=1
@@ -1085,15 +1088,14 @@ def getMuonSF(_pt,_eta):
 	if _pt<=20.00:_ptTmp=20.01
 	elif _pt>=120.00:_ptTmp=119.99
 	else: _ptTmp = _pt
-	k = lowBndMap2.get(j)
+	k = lowBndMap.get(j)
 	for z in idAndIsoPts[k:]:
-		#print 'k = ',k
 		if _ptTmp>=z[0] and _ptTmp<=z[1]:
 			break
 		k+=1
 
 	#Get SFs and compute up and down variations (syst+stat errors)
-	recoSFs = recoSFbyPt[i]
+	recoSFs = recoSFbyP[i]
 	recoSF = recoSFs[0]
 	recoSFup   = recoSFs[0]+recoSFs[1]
 	recoSFdown = max(recoSFs[0]-recoSFs[1],0.0)
@@ -1133,9 +1135,9 @@ def MERParametrization(_p, _eta):
     elif _year == '2018':
         coeffsAllEta = [[0.0062, 0.0001, 0.000000110, 0.0000000000510, 0.00000000000000910],[0.0136, 0.00005, 0.0000000210, 0.00000000000510, 0.0],[0.0174, 0.00009, 0.00000000310, 0.0000000000210, 0.00000000000000510]]
 
-    if abs(_eta) < 1.2 : coeffs = coeffsAllEta[0]
-    elif 1.2 <= abs(_eta) < 2.1 : coeffs = coeffsAllEta[1]
-    elif 2.1 <= abs(_eta) < 2.4 : coeffs = coeffsAllEta[2]
+    if abs(_eta) <= 1.2 : coeffs = coeffsAllEta[0]
+    elif 1.2 < abs(_eta) <= 2.1 : coeffs = coeffsAllEta[1]
+    elif 2.1 < abs(_eta) <= 2.4 : coeffs = coeffsAllEta[2]
 
     sigmaToReturn = coeffs[0] + coeffs[1]*_p - coeffs[2]*_p*_p + coeffs[3]*_p*_p*_p - coeffs[4]*_p*_p*_p*_p
 
@@ -1153,8 +1155,8 @@ def SmearMuonCollections(_ptCollection, _etaCollection, _phiCollection, isSystem
 
 	# loop through muons
 	for n in range(len(_ptCollection)):
-		if abs(_etaCollection[n]) < 1.2 and not isSystematic: continue # no smearing if abs(eta) < 1.2
-		elif abs(_etaCollection[n]) >= 1.2 or isSystematic:
+		if abs(_etaCollection[n]) <= 1.2 and not isSystematic: continue # no smearing if abs(eta) < 1.2
+		elif abs(_etaCollection[n]) > 1.2 or isSystematic:
 			smearConst = 0.57 # resolution smearing of 15% -> 0.57
 			if isSystematic: smearConst = 0.46 # systematics requires 10% smearing -> 0.46
 			#print 'pt:',_ptCollection[n]
@@ -1194,20 +1196,18 @@ def TightHighPtIDMuons(T,_met,variation,isdata):
 	_MuonCocktailEta = [eta for eta in T.Muon_eta]
 	_MuonCocktailPhi = [phi for phi in T.Muon_phi]
 
+	# Following perscription for muon momentum smearing of 15% from resolution uncertainty
+    # https://twiki.cern.ch/twiki/bin/view/CMS/MuonLegacy2016#Momentum_Resolution
+    # https://twiki.cern.ch/twiki/bin/view/CMS/MuonLegacy2017#Momentum_Resolution
+    # https://twiki.cern.ch/twiki/bin/view/CMS/MuonLegacy2018#Momentum_Resolution
+			
 	if isdata: 
 		pass
-	else: 
-        # Following perscription for muon momentum smearing of 15% from resolution uncertainty
-        # https://twiki.cern.ch/twiki/bin/view/CMS/MuonLegacy2016#Momentum_Resolution
-        # https://twiki.cern.ch/twiki/bin/view/CMS/MuonLegacy2017#Momentum_Resolution
-        # https://twiki.cern.ch/twiki/bin/view/CMS/MuonLegacy2018#Momentum_Resolution
-		
-		
-		if _year == '2016': # 2016 requires no smearing to MC
-			pass				
-		elif _year == '2017' or _year == '2018': # 2017 and 2018 require smearing to MC
-			# Smearing 15%
-			[_MuonCocktailPt, _MuonCocktailEta, _MuonCocktailPhi] = SmearMuonCollections(_MuonCocktailPt, _MuonCocktailEta, _MuonCocktailPhi, False)
+	elif _year == '2016': # 2016 requires no smearing to MC
+		pass: 
+	elif _year == '2017' or _year == '2018': # 2017 and 2018 require smearing to MC
+		# Smearing 15%
+		[_MuonCocktailPt, _MuonCocktailEta, _MuonCocktailPhi] = SmearMuonCollections(_MuonCocktailPt, _MuonCocktailEta, _MuonCocktailPhi, False)
 		
 	if variation=='MESup':  
         #_MuonCocktailPt = [(pt + pt*(0.05*pt/1000.0)) for pt in T.MuonCocktailPt]#original
@@ -2088,8 +2088,8 @@ def FullKinematicCalculation(T,variation):
 	_DPhiu2j2 = abs(muons[1].DeltaPhi(jets[1]))
 
 	#Get muon scale factors and up, down variations here
-	[_mu1recoSF,_mu1recoSFup,_mu1recoSFdown,_mu1idSF,_mu1idSFup,_mu1idSFdown,_mu1isoSF,_mu1isoSFup,_mu1isoSFdown,_mu1hltSF,_mu1hltSFup,_mu1hltSFdown] = getMuonSF(_ptmu1,_etamu1)
-	[_mu2recoSF,_mu2recoSFup,_mu2recoSFdown,_mu2idSF,_mu2idSFup,_mu2idSFdown,_mu2isoSF,_mu2isoSFup,_mu2isoSFdown,_mu2hltSF,_mu2hltSFup,_mu2hltSFdown] = getMuonSF(_ptmu2,_etamu2)
+	[_mu1recoSF,_mu1recoSFup,_mu1recoSFdown,_mu1idSF,_mu1idSFup,_mu1idSFdown,_mu1isoSF,_mu1isoSFup,_mu1isoSFdown,_mu1hltSF,_mu1hltSFup,_mu1hltSFdown] = getMuonSF(_ptmu1,_etamu1,_phimu1)
+	[_mu2recoSF,_mu2recoSFup,_mu2recoSFdown,_mu2idSF,_mu2idSFup,_mu2idSFdown,_mu2isoSF,_mu2isoSFup,_mu2isoSFdown,_mu2hltSF,_mu2hltSFup,_mu2hltSFdown] = getMuonSF(_ptmu2,_etamu2,_phimu2)
 
 	_Muujj1_gen=0
 	_Muujj2_gen=0
