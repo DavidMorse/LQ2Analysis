@@ -44,13 +44,13 @@ TreeName = "PhysicalVariables"
 # Udated July 13th 2021: https://twiki.cern.ch/twiki/bin/viewauth/CMS/TWikiLUM
 if year == '2016':
 	lumi = 36330. #35920.
-	lumiInvfb = '36.33' #'35.9'
+	lumiInvfb = '36.3' #'35.9'
 elif year == '2017':
 	lumi = 41480. #41530.
-	lumiInvfb = '41.48' #'41.5'
+	lumiInvfb = '41.5' #'41.5'
 elif year == '2018':
 	lumi = 59830. #59740.
-	lumiInvfb = '59.83' #'59.7'
+	lumiInvfb = '59.8' #'59.7'
 
 #Muon HLT MC scale factor
 #https://twiki.cern.ch/twiki/bin/view/CMS/MuonReferenceEffsRun2
@@ -82,10 +82,10 @@ singlemuHLTEMU += '+(IsMuon_muon2)*(0.808813*(Eta_muon2>-2.4)*(Eta_muon2<-2.1)+0
 
 #Muon ID, Iso, and Reco MC scale factors
 #https://twiki.cern.ch/twiki/bin/view/CMS/MuonReferenceEffsRun2
-#Not used (SF ~ 1)
+
 singleMuIdSF = '*mu1idSF'
 doubleMuIdSF = '*mu1idSF*mu2idSF'
-#Not used (SF ~ 1)
+
 singleMuIsoSF = '*mu1isoSF'
 doubleMuIsoSF = '*mu1isoSF*mu2isoSF'
 
@@ -144,8 +144,8 @@ else:
 #NormalWeightMuMu = str(lumi)+'*weight_central*((pass_HLTMu50+pass_HLTTkMu50)>0)'+doublemuHLT+doubleMuIdScale+doubleMuIsoScale+trackerHIP1+trackerHIP2
 #NormalWeightMuNu = str(lumi)+'*weight_central*((pass_HLTMu50+pass_HLTTkMu50)>0)'+singlemuHLT+singleMuIdScale+singleMuIsoScale+trackerHIP1
 #NormalWeightEMu = str(lumi)+'*weight_central*((pass_HLTMu50+pass_HLTTkMu50)>0)'+singlemuHLTEMU+MuIdScaleEMU+MuIsoScaleEMU+eleRECOScale+eleHEEPScale+trackerHIPEMU
-NormalWeightMuMu = str(lumi)+'*weight_central'+doublemuHLT+doubleMuRecoSF+trackerHIP1+trackerHIP2+bTagSFmedium
-NormalWeightMuNu = str(lumi)+'*weight_central'+singlemuHLT+singleMuRecoSF+trackerHIP1
+NormalWeightMuMu = str(lumi)+'*weight_central'+doublemuHLT+doubleMuRecoSF+doubleMuIsoSF+doubleMuIdSF+trackerHIP1+trackerHIP2+bTagSFmedium
+NormalWeightMuNu = str(lumi)+'*weight_central'+singlemuHLT+singleMuRecoSF+singleMuIsoSF+singleMuIdSF+trackerHIP1
 #fixme checking eta restriction on muons and electrons to fix r_uu/eu
 muEtaRestrict = '*((IsMuon_muon1>0)*(abs(Eta_muon1)<2.1)+(IsMuon_muon2>0)*(abs(Eta_muon2)<2.1))'
 NormalWeightEMu_ttbar = str(lumi)+'*weight_central'+singlemuHLTEMU+MuIdScaleEMU+MuIsoScaleEMU+eleRECOScale+eleHEEPScale+trackerHIPEMU#+muEtaRestrict
@@ -350,7 +350,7 @@ def main():
 	#version_name = 'Testing_noQCD_14nov' # use sf tag above if this is the real folder
 	os.system('mkdir Results_'+version_name) 
 
-	MuMuOptCutFile = 'Results_'+version_name+'/OptLQ_uujjCuts.txt' # scriptflag
+	MuMuOptCutFile = 'Results_'+version_name+'/OptLQ_uujjCuts_Smoothed_pol2cutoff.txt' # scriptflag
 	MuNuOptCutFile = 'Results_'+version_name+'/OptLQ_uvjjCuts_Smoothed_pol2cutoff.txt' # scriptflag
 
 	#################################################################################
@@ -1029,8 +1029,7 @@ def main():
 		scaleFactors = [Rz_uujj,Rtt_uujj,Rw_uvjj]
 		if not doLongLived :
 			MuMuOptTestCutFile = 'Results_'+version_name+'/OptLQ_uujjCuts_Smoothed_pol2cutoff.txt'
-			#variableSpace = ['M_uu:25:100:1000','St_uujj:100:300:2500','M_uujj2:25:100:1000']
-			variableSpace = ['M_uujj:25:500:2500','St_uujj:100:300:2500',dR_muon1muon2_jet1+':0.5:0:10']
+			variableSpace = ['M_uu:25:100:1000','St_uujj:100:300:2500','M_uujj2:25:100:1000']
 			OptimizeCuts3D(variableSpace,preselectionmumu,NormalWeightMuMu,version_name,scaleFactors,'','uujj')
                         #
                         #scaleFactors = [Rz_uuj,Rtt_uuj,Rw_uvj]
@@ -4018,12 +4017,10 @@ def ModSelection(selection,sysmethod,channel_log):
 			if year =='2016': selection = '(1.012)*'+selection #vary 2016 luminosity up by 1.2%
 			elif year == '2017': selection = '(1.023)*'+selection #vary 2017 luminosity up by 2.3%
 			elif year == '2018': selection = '(1.025)*'+selection #vary 2018 luminosity up by 2.5%
-			#selection = '(1.025)*'+selection
 		if sysmethod == 'LUMIdown':
 			if year =='2016': selection = '(0.988)*'+selection #vary 2016 luminosity down by 1.2%
 			elif year == '2017': selection = '(0.977)*'+selection #vary 2017 luminosity down by 2.3%
 			elif year == '2018': selection = '(0.975)*'+selection #vary 2018 luminosity down by 2.5%
-			#selection = '(0.975)*'+selection
 		if sysmethod == 'MUONIDISOup':
 			if 'uujj' in channel_log:
 				selection = '(1.04)*'+selection
@@ -4108,18 +4105,8 @@ def SysTable(optimlog, selection_uujj,selection_uvjj,NormalDirectory, weight,sys
 	#[[Rw_uvjj,Rw_uvjj_err],[Rtt_uvjj,Rtt_uvjj_err]] = GetMuNuScaleFactors( selection_uvjj, NormalDirectory, munu1,munu2,0)
 
 	# SFs with updated integrated luminosities
-	if year == '2016':
-		[[Rz_uuj,Rz_uuj_err],[Rtt_uuj,Rtt_uuj_err]] = [[0.95,0.015],[0.922,0.012]] #2016 stock NanoAODv7 with 1 btag (uub)
-		[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = [[0.962,0.016],[0.914,0.013]] #2016 stock NanoAODv7 with 1 btag (uubj)
-	elif year == '2017': 
-		[[Rz_uuj,Rz_uuj_err],[Rtt_uuj,Rtt_uuj_err]]  =  [[1.316,0.018],[1.01,0.01]] #2017 stock NanoAODv7 with 1 btag (uub)
-		[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = [[1.305,0.02],[1.011,0.012]] #2017 stock NanoAODv7 with 1 btag (uubj)
-	elif year == '2018':
-		[[Rz_uuj,Rz_uuj_err],[Rtt_uuj,Rtt_uuj_err]]  =  [[1.267,0.015],[0.957,0.008]] #2018 stock NanoAODv7 with 1 btag (uub)
-		[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]]  =  [[1.267,0.016],[0.96,0.01]] #2018 stock NanoAODv7 with 1 btag (uubj)
-	else:
-		[[Rz_uuj,Rz_uuj_err],[Rtt_uuj,Rtt_uuj_err]] = GetMuMuScaleFactors( NormalWeightMuMu+'*'+preselectionmumu_single, NormalDirectory, '(M_uu>80)*(M_uu<100)', '(M_uu>100)*(M_uu<250)',0,0)
-		[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = GetMuMuScaleFactors( NormalWeightMuMu+'*'+preselectionmumu, NormalDirectory, '(M_uu>80)*(M_uu<100)', '(M_uu>100)*(M_uu<250)',0,0)
+	[[Rz_uuj,Rz_uuj_err],[Rtt_uuj,Rtt_uuj_err]] = GetMuMuScaleFactors( NormalWeightMuMu+'*'+preselectionmumu_single, NormalDirectory, '(M_uu>80)*(M_uu<100)', '(M_uu>100)*(M_uu<250)',0,0)
+	[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = GetMuMuScaleFactors( NormalWeightMuMu+'*'+preselectionmumu, NormalDirectory, '(M_uu>80)*(M_uu<100)', '(M_uu>100)*(M_uu<250)',0,0)
 	[[Rw_uvjj,Rw_uvjj_err],[Rtt_uvjj,Rtt_uvjj_err]] = [[1.0,0.0],[1.0,0.0]]
 
 	Rz_uujj_print = str(round(Rz_uujj,3)) + ' $\\pm$ ' + str(round(Rz_uujj_err,3))	
@@ -8010,7 +7997,7 @@ def FixFinalCards(cardsets):
 	for c in cardsets:
 		for line in open(c,'r'):
 			line = line.replace('uujj','_M_')
-			#line = line.replace('uvjj','_BetaHalf_M_')
+			line = line.replace('uvjj','_BetaHalf_M_')
 			fout.write(line)
 	fout.close()
 	return f
