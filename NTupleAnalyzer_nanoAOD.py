@@ -918,8 +918,8 @@ def getMuonSF(_pt,_eta,_phi):
 	#		  Must specify the year being analyzed, as SFs differ for each year.
 	#         Returns array with SFs (ID, iso, etc.) as well as up and down variations
 	#		  of systematic and statisical error for each SF.
-
-    global _year
+	
+	global _year
 
 	tmpMu = TLorentzVector()
 	tmpMu.SetPtEtaPhiM(_pt,_eta,_phi,0)
@@ -1192,7 +1192,7 @@ def TightHighPtIDMuons(T,_met,variation,isdata):
 	#         Also returns modified MET for systematic variations.
 	muons = []
 	muoninds = []
-	_MuonCocktailPt = [T.Muon_tuneRelPt*pt for pt in T.Muon_pt]
+	_MuonCocktailPt = [tunepRelPt*pt for pt, tunepRelPt in zip(T.Muon_pt,T.Muon_tunepRelPt)]
 	_MuonCocktailEta = [eta for eta in T.Muon_eta]
 	_MuonCocktailPhi = [phi for phi in T.Muon_phi]
 
@@ -1201,19 +1201,19 @@ def TightHighPtIDMuons(T,_met,variation,isdata):
     # https://twiki.cern.ch/twiki/bin/view/CMS/MuonLegacy2017#Momentum_Resolution
     # https://twiki.cern.ch/twiki/bin/view/CMS/MuonLegacy2018#Momentum_Resolution
 			
-	if isdata: 
+	if isdata:
 		pass
 	elif _year == '2016': # 2016 requires no smearing to MC
-		pass: 
+		pass 
 	elif _year == '2017' or _year == '2018': # 2017 and 2018 require smearing to MC
 		# Smearing 15%
 		[_MuonCocktailPt, _MuonCocktailEta, _MuonCocktailPhi] = SmearMuonCollections(_MuonCocktailPt, _MuonCocktailEta, _MuonCocktailPhi, False)
 		
-	if variation=='MESup':  
+	if variation=='MESup':
         #_MuonCocktailPt = [(pt + pt*(0.05*pt/1000.0)) for pt in T.MuonCocktailPt]#original
         #_MuonCocktailPt = [(pt + pt*(0.10*pt/1000.0)) for pt in T.MuonCocktailPt]#updated to Zprime 13TeV study number
 		_MuonCocktailPt = [(pt + pt*(0.10*pt/1000.0)) for pt in T.Muon_pt]# fixme 2019
-	elif variation=='MESdown':  
+	elif variation=='MESdown':
         #_MuonCocktailPt = [(pt - pt*(0.05*pt/1000.0)) for pt in T.MuonCocktailPt]
         #_MuonCocktailPt = [(pt - pt*(0.10*pt/1000.0)) for pt in T.MuonCocktailPt]
 		_MuonCocktailPt = [(pt - pt*(0.10*pt/1000.0)) for pt in T.Muon_pt]# fixme 2019
@@ -1326,7 +1326,7 @@ def TightHighPtIDMuons(T,_met,variation,isdata):
 			NewMu = TLorentzVector()
 			OldMu = TLorentzVector()
 			NewMu.SetPtEtaPhiM(_MuonCocktailPt[n],_MuonCocktailEta[n],_MuonCocktailPhi[n],0)
-			OldMu.SetPtEtaPhiM(T.Muon_tuneRelPt[n]*T.Muon_pt[n],T.Muon_eta[n],T.Muon_phi[n],0)#fixme cocktail pt?
+			OldMu.SetPtEtaPhiM(T.Muon_tunepRelPt[n]*T.Muon_pt[n],T.Muon_eta[n],T.Muon_phi[n],0)#fixme cocktail pt?
 
 			_met = PropagatePTChangeToMET(_met,OldMu,NewMu)
 
@@ -1341,10 +1341,6 @@ def TightHighPtIDMuons(T,_met,variation,isdata):
 
 			muoninds.append(n)
 			deltainvpts.append(deltainvpt)
-			
-			print "Smearing of muon",n,"pt collection:", T.Muon_tuneRelPt[n]*T.Muon_pt[n], "-->", _MuonCocktailPt[n]
-			print "Smearing of muon",n,"eta collection:", T.Muon_eta[n], "-->", _MuonCocktailEta[n]
-			print "Smearing of muon",n,"phi collection:", T.Muon_phi[n], "-->", _MuonCocktailPhi[n]
 			
 	return [muons,muoninds,_met,trk_isos,charges,deltainvpts,chi2,pfid,layers]
 
