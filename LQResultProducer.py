@@ -21,15 +21,16 @@ btags = str(options.btags)
 
 # Directory where root files are kept and the tree you want to get root files from
 if year == '2016':
-	NormalDirectory = '/eos/cms/store/group/phys_exotica/leptonsPlusJets/LQ/LQ2/stockNanoTrees/2016/gmadigan/NTupleAnalyzer_nanoAOD_Full2016QuickTest_stockNano_2020_09_18_21_07_21/SummaryFiles'
+	NormalDirectory = '/eos/cms/store/group/phys_exotica/leptonsPlusJets/LQ/LQ2/stockNanoTrees/NanoAODv7/2016/gmadigan/NTupleAnalyzer_nanoAOD_Full2016QuickTest_stockNano_2021_08_20_01_00_251/SummaryFiles' #'/eos/cms/store/group/phys_exotica/leptonsPlusJets/LQ/LQ2/stockNanoTrees/NanoAODv7/2016/gmadigan/NTupleAnalyzer_nanoAOD_Full2016QuickTestBDT_stockNano_2021_04_04_21_08_03/SummaryFiles'
+	#'/eos/cms/store/group/phys_exotica/leptonsPlusJets/LQ/LQ2/stockNanoTrees/NanoAODv7/2016/gmadigan/NTupleAnalyzer_nanoAOD_Full2016QuickTest_stockNano_2021_03_17_18_13_03/SummaryFiles'
 	QCDDirectory    = '/eos/cms/store/group/phys_exotica/leptonsPlusJets/LQ/LQ2/trees/NTupleAnalyzer_nanoAOD_Full2016QCDNonIsoQuickTest_2019_10_14/SummaryFiles' #Placeholder
 	EMuDirectory    = '/eos/cms/store/group/phys_exotica/leptonsPlusJets/LQ/LQ2/trees/NTupleAnalyzer_nanoAOD_Full2016EMuSwitch_2019_10_14/SummaryFiles' #Placeholder
 elif year == '2017':
-	NormalDirectory = '/eos/cms/store/group/phys_exotica/leptonsPlusJets/LQ/LQ2/stockNanoTrees/2017/gmadigan/NTupleAnalyzer_nanoAOD_Full2017QuickTest_stockNano_2020_09_09_23_00_36/SummaryFiles'
+	NormalDirectory = '/eos/cms/store/group/phys_exotica/leptonsPlusJets/LQ/LQ2/stockNanoTrees/NanoAODv7/2017/gmadigan/NTupleAnalyzer_nanoAOD_Full2017QuickTest_stockNano_2021_08_31_23_29_04/SummaryFiles'#'/eos/cms/store/group/phys_exotica/leptonsPlusJets/LQ/LQ2/stockNanoTrees/NanoAODv7/2017/gmadigan/NTupleAnalyzer_nanoAOD_Full2017QuickTest_stockNano_2021_05_24_03_42_56/SummaryFiles'
 	QCDDirectory    = '/eos/cms/store/group/phys_exotica/leptonsPlusJets/LQ/LQ2/trees/NTupleAnalyzer_nanoAOD_Full2016QCDNonIsoQuickTest_2019_10_14/SummaryFiles' #Placeholder
 	EMuDirectory    = '/eos/cms/store/group/phys_exotica/leptonsPlusJets/LQ/LQ2/trees/NTupleAnalyzer_nanoAOD_Full2016EMuSwitch_2019_10_14/SummaryFiles' #Placeholder
 elif year == '2018':
-	NormalDirectory = '/eos/cms/store/group/phys_exotica/leptonsPlusJets/LQ/LQ2/stockNanoTrees/2018/gmadigan/NTupleAnalyzer_nanoAOD_Full2018QuickTest_stockNano_2020_07_05_00_00_41/SummaryFiles'
+	NormalDirectory = '/eos/cms/store/group/phys_exotica/leptonsPlusJets/LQ/LQ2/stockNanoTrees/NanoAODv7/2018/gmadigan/NTupleAnalyzer_nanoAOD_Full2018QuickTest_stockNano_2021_09_10_22_16_12/SummaryFiles'#'/eos/cms/store/group/phys_exotica/leptonsPlusJets/LQ/LQ2/stockNanoTrees/NanoAODv7/2018/gmadigan/NTupleAnalyzer_nanoAOD_Full2018QuickTest_stockNano_2021_07_14_23_55_01/SummaryFiles' #'/eos/cms/store/group/phys_exotica/leptonsPlusJets/LQ/LQ2/stockNanoTrees/2018/gmadigan/NTupleAnalyzer_nanoAOD_2018QuickTest_stockNano_2020_10_12_20_52_28/SummaryFiles'
 	QCDDirectory    = '/eos/cms/store/group/phys_exotica/leptonsPlusJets/LQ/LQ2/trees/NTupleAnalyzer_nanoAOD_Full2016QCDNonIsoQuickTest_2019_10_14/SummaryFiles' #Placeholder
 	EMuDirectory    = '/eos/cms/store/group/phys_exotica/leptonsPlusJets/LQ/LQ2/trees/NTupleAnalyzer_nanoAOD_Full2016EMuSwitch_2019_10_14/SummaryFiles' #Placeholder
 else:
@@ -40,15 +41,16 @@ else:
 TreeName = "PhysicalVariables"
 
 # Integrated luminosity for normalization
+# Udated July 13th 2021: https://twiki.cern.ch/twiki/bin/viewauth/CMS/TWikiLUM
 if year == '2016':
-	lumi = 35920.
-	lumiInvfb = '35.9'
+	lumi = 36330. #35920.
+	lumiInvfb = '36.3' #'35.9'
 elif year == '2017':
-	lumi = 41530.
-	lumiInvfb = '41.5'
+	lumi = 41480. #41530.
+	lumiInvfb = '41.5' #'41.5'
 elif year == '2018':
-	lumi = 59740.
-	lumiInvfb = '59.7'
+	lumi = 59830. #59740.
+	lumiInvfb = '59.8' #'59.7'
 
 #Muon HLT MC scale factor
 #https://twiki.cern.ch/twiki/bin/view/CMS/MuonReferenceEffsRun2
@@ -78,15 +80,17 @@ singlemuHLTEMU  = '*((IsMuon_muon1)*(0.808813*(Eta_muon1>-2.4)*(Eta_muon1<-2.1)+
 singlemuHLTEMU += '+(IsMuon_muon2)*(0.808813*(Eta_muon2>-2.4)*(Eta_muon2<-2.1)+0.840182*(Eta_muon2>-2.1)*(Eta_muon2<-1.6)+0.930111*(Eta_muon2>-1.6)*(Eta_muon2<-1.2)+0.932994*(Eta_muon2>-1.2)*(Eta_muon2<-0.9)+0.944875*(Eta_muon2>-0.9)*(Eta_muon2<-0.3)+0.834415*(Eta_muon2>-0.3)*(Eta_muon2<-0.2)+0.942008*(Eta_muon2>-0.2)*(Eta_muon2<0.)+0.945691*(Eta_muon2>0.)*(Eta_muon2<0.2)+0.852895*(Eta_muon2>0.2)*(Eta_muon2<0.3)+0.944523*(Eta_muon2>0.3)*(Eta_muon2<0.9)+0.930995*(Eta_muon2>0.9)*(Eta_muon2<1.2)+0.922036*(Eta_muon2>1.2)*(Eta_muon2<1.6)+0.850333*(Eta_muon2>1.6)*(Eta_muon2<2.1)+0.791896*(Eta_muon2>2.1)*(Eta_muon2<2.4)))'
 
 
-#Muon ID and Iso MC scale factors
+#Muon ID, Iso, and Reco MC scale factors
 #https://twiki.cern.ch/twiki/bin/view/CMS/MuonReferenceEffsRun2
-#eta-binned
-singleMuIdScale = '*mu1idSF'
-doubleMuIdScale = '*mu1idSF*mu2idSF'
 
-singleMuIsoScale = '*mu1isoSF'
-doubleMuIsoScale = '*mu1isoSF*mu2isoSF'
+singleMuIdSF = '*mu1idSF'
+doubleMuIdSF = '*mu1idSF*mu2idSF'
 
+singleMuIsoSF = '*mu1isoSF'
+doubleMuIsoSF = '*mu1isoSF*mu2isoSF'
+
+singleMuRecoSF = '*mu1recoSF'
+doubleMuRecoSF = '*mu1recoSF*mu2recoSF'
 #eta-binned
 
 MuIdScaleEMU = '*(IsMuon_muon1*(0.969328*(Eta_muon1>-2.4)*(Eta_muon1<-2.1)+0.98193*(Eta_muon1>-2.1)*(Eta_muon1<-1.6)+0.989731*(Eta_muon1>-1.6)*(Eta_muon1<-1.2)+0.975207*(Eta_muon1>-1.2)*(Eta_muon1<-0.9)+0.987146*(Eta_muon1>-0.9)*(Eta_muon1<-0.3)+0.965056*(Eta_muon1>-0.3)*(Eta_muon1<-0.2)+0.988669*(Eta_muon1>-0.2)*(Eta_muon1<0.2)+0.958604*(Eta_muon1>0.2)*(Eta_muon1<0.3)+0.986526*(Eta_muon1>0.3)*(Eta_muon1<0.9)+0.972524*(Eta_muon1>0.9)*(Eta_muon1<1.2)+0.98789*(Eta_muon1>1.2)*(Eta_muon1<1.6)+0.984616*(Eta_muon1>1.6)*(Eta_muon1<2.1)+0.972038*(Eta_muon1>2.1)*(Eta_muon1<2.4))+IsMuon_muon2*(0.969328*(Eta_muon2>-2.4)*(Eta_muon2<-2.1)+0.98193*(Eta_muon2>-2.1)*(Eta_muon2<-1.6)+0.989731*(Eta_muon2>-1.6)*(Eta_muon2<-1.2)+0.975207*(Eta_muon2>-1.2)*(Eta_muon2<-0.9)+0.987146*(Eta_muon2>-0.9)*(Eta_muon2<-0.3)+0.965056*(Eta_muon2>-0.3)*(Eta_muon2<-0.2)+0.988669*(Eta_muon2>-0.2)*(Eta_muon2<0.2)+0.958604*(Eta_muon2>0.2)*(Eta_muon2<0.3)+0.986526*(Eta_muon2>0.3)*(Eta_muon2<0.9)+0.972524*(Eta_muon2>0.9)*(Eta_muon2<1.2)+0.98789*(Eta_muon2>1.2)*(Eta_muon2<1.6)+0.984616*(Eta_muon2>1.6)*(Eta_muon2<2.1)+0.972038*(Eta_muon2>2.1)*(Eta_muon2<2.4)))'
@@ -140,8 +144,8 @@ else:
 #NormalWeightMuMu = str(lumi)+'*weight_central*((pass_HLTMu50+pass_HLTTkMu50)>0)'+doublemuHLT+doubleMuIdScale+doubleMuIsoScale+trackerHIP1+trackerHIP2
 #NormalWeightMuNu = str(lumi)+'*weight_central*((pass_HLTMu50+pass_HLTTkMu50)>0)'+singlemuHLT+singleMuIdScale+singleMuIsoScale+trackerHIP1
 #NormalWeightEMu = str(lumi)+'*weight_central*((pass_HLTMu50+pass_HLTTkMu50)>0)'+singlemuHLTEMU+MuIdScaleEMU+MuIsoScaleEMU+eleRECOScale+eleHEEPScale+trackerHIPEMU
-NormalWeightMuMu = str(lumi)+'*weight_central'+doublemuHLT+doubleMuIdScale+doubleMuIsoScale+trackerHIP1+trackerHIP2+bTagSFmedium
-NormalWeightMuNu = str(lumi)+'*weight_central'+singlemuHLT+singleMuIdScale+singleMuIsoScale+trackerHIP1
+NormalWeightMuMu = str(lumi)+'*weight_central'+doublemuHLT+doubleMuRecoSF+doubleMuIsoSF+doubleMuIdSF+trackerHIP1+trackerHIP2+bTagSFmedium
+NormalWeightMuNu = str(lumi)+'*weight_central'+singlemuHLT+singleMuRecoSF+singleMuIsoSF+singleMuIdSF+trackerHIP1
 #fixme checking eta restriction on muons and electrons to fix r_uu/eu
 muEtaRestrict = '*((IsMuon_muon1>0)*(abs(Eta_muon1)<2.1)+(IsMuon_muon2>0)*(abs(Eta_muon2)<2.1))'
 NormalWeightEMu_ttbar = str(lumi)+'*weight_central'+singlemuHLTEMU+MuIdScaleEMU+MuIsoScaleEMU+eleRECOScale+eleHEEPScale+trackerHIPEMU#+muEtaRestrict
@@ -342,7 +346,7 @@ def main():
 	# for this, and make use of it. e.g. For systematic variations, we can run in batch instead
 	# of running serially, which speeds things up.
 
-	version_name = 'Testing_'+year+'_stockNano' # scriptflag
+	version_name = 'Testing_'+year+'_stockNanoAODv7_HighPtIso' # scriptflag
 	#version_name = 'Testing_noQCD_14nov' # use sf tag above if this is the real folder
 	os.system('mkdir Results_'+version_name) 
 
@@ -554,6 +558,8 @@ def main():
 		lqbinningTT = lqbinning[1:20]
 		lqbinning = lqbinning[1:]
 		bjetweightbinning = [10,.8,1.4]
+		bdtbinning = [40,-1,1]
+			
 		##bosonbinning = [50, 70, 105, 150,200,300,425, 600, 750, 900, 1105, 1330, 1575, 1840, 2125, 2430, 2590]
 		##lqbinning = [50, 75, 105, 175, 280, 405, 550, 715, 900, 1105, 1330, 1575, 1840, 2125, 2430, 2590]
 		#stbinning = [300, 330, 370, 420, 480, 550, 630, 720, 820, 930, 1050, 1180, 1320, 1470, 1630, 1800, 1980, 2170, 2370, 2580, 2800, 3000, 3500]#added 3500	
@@ -575,8 +581,19 @@ def main():
 		munu2plot = munu2#'(MT_uv>70)*(MT_uv<150)*(((CISV_jet1>0.8484)+(CISV_jet2>0.8484))>=1)*(0.561694*((1.+(0.31439*Pt_jet1))/(1.+(0.17756*Pt_jet1))))'#*(CISV_jet1>CISV_jet2)+(0.901114+(1.40704e-05*(Pt_jet2)))*(CISV_jet2>0.8484)*(CISV_jet1<CISV_jet2))'
 		#munu1 = '(MT_uv>70)*(MT_uv<110)*(JetCount<3.5)'
 		#munu2 = '(MT_uv>70)*(MT_uv<110)*(JetCount>3.5)'
-		[[Rz_uuj,Rz_uuj_err],[Rtt_uuj,Rtt_uuj_err]] = GetMuMuScaleFactors( NormalWeightMuMu+'*'+preselectionmumu_single, NormalDirectory, '(M_uu>80)*(M_uu<100)', '(M_uu>100)*(M_uu<250)',0,0)
-		[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = GetMuMuScaleFactors( NormalWeightMuMu+'*'+preselectionmumu, NormalDirectory, '(M_uu>80)*(M_uu<100)', '(M_uu>100)*(M_uu<250)',0,0)
+		# SFs with updated integrated luminosities
+		if year == '2016':
+			[[Rz_uuj,Rz_uuj_err],[Rtt_uuj,Rtt_uuj_err]] = [[0.95,0.015],[0.922,0.012]] #2016 stock NanoAODv7 with 1 btag (uub)
+			[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = [[0.962,0.016],[0.914,0.013]] #2016 stock NanoAODv7 with 1 btag (uubj)
+		elif year == '2017': 
+			[[Rz_uuj,Rz_uuj_err],[Rtt_uuj,Rtt_uuj_err]]  =  [[1.316,0.018],[1.01,0.01]] #2017 stock NanoAODv7 with 1 btag (uub)
+			[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = [[1.305,0.02],[1.011,0.012]] #2017 stock NanoAODv7 with 1 btag (uubj)
+		elif year == '2018':
+			[[Rz_uuj,Rz_uuj_err],[Rtt_uuj,Rtt_uuj_err]]  =  [[1.267,0.015],[0.957,0.008]] #2018 stock NanoAODv7 with 1 btag (uub)
+			[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]]  =  [[1.267,0.016],[0.96,0.01]] #2018 stock NanoAODv7 with 1 btag (uubj)
+		else:
+			[[Rz_uuj,Rz_uuj_err],[Rtt_uuj,Rtt_uuj_err]] = GetMuMuScaleFactors( NormalWeightMuMu+'*'+preselectionmumu_single, NormalDirectory, '(M_uu>80)*(M_uu<100)', '(M_uu>100)*(M_uu<250)',0,0)
+			[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = GetMuMuScaleFactors( NormalWeightMuMu+'*'+preselectionmumu, NormalDirectory, '(M_uu>80)*(M_uu<100)', '(M_uu>100)*(M_uu<250)',0,0)
 		#exit()
 		#[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = [[1.025,0.04],[1.147,0.019]]#TTBar MC, 2016 customNano
 		#[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = [[0.925,0.005],[1.000,0.023]]#TTBarDataDriven
@@ -605,7 +622,37 @@ def main():
 		#MakeEfficiencyPlot(NormalDirectory,NormalWeightMuMu,MuMuOptCutFile,'LQuujj',version_name,1)
 		#MakeEfficiencyPlot(NormalDirectory,NormalWeightMuNu,MuNuOptCutFile,'LQuvjj',version_name,1)
 		#exit()
-
+		MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M300","BDT score (M_{LQ} = 300 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
+		MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M400","BDT score (M_{LQ} = 400 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
+		MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M500","BDT score (M_{LQ} = 500 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
+		MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M600","BDT score (M_{LQ} = 600 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
+		MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M700","BDT score (M_{LQ} = 700 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
+		MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M800","BDT score (M_{LQ} = 800 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
+		MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M900","BDT score (M_{LQ} = 900 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
+		MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M1000","BDT score (M_{LQ} = 1000 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
+		MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M1100","BDT score (M_{LQ} = 1100 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
+		MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M1200","BDT score (M_{LQ} = 1200 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
+		MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M1300","BDT score (M_{LQ} = 1300 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
+		MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M1400","BDT score (M_{LQ} = 1400 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
+		MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M1500","BDT score (M_{LQ} = 1500 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
+		MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M1600","BDT score (M_{LQ} = 1600 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
+		MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M1700","BDT score (M_{LQ} = 1700 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
+		MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M1800","BDT score (M_{LQ} = 1800 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
+		MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M1900","BDT score (M_{LQ} = 1900 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
+		MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M2000","BDT score (M_{LQ} = 2000 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
+		MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M2100","BDT score (M_{LQ} = 2100 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
+		MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M2200","BDT score (M_{LQ} = 2200 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
+		MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M2300","BDT score (M_{LQ} = 2300 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
+		MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M2400","BDT score (M_{LQ} = 2400 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
+		MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M2500","BDT score (M_{LQ} = 2500 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
+		MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M2600","BDT score (M_{LQ} = 2600 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
+		MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M2700","BDT score (M_{LQ} = 2700 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
+		MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M2800","BDT score (M_{LQ} = 2800 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
+		MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M2900","BDT score (M_{LQ} = 2900 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
+		MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M3000","BDT score (M_{LQ} = 3000 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
+		MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M3500","BDT score (M_{LQ} = 3500 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
+		MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M4000","BDT score (M_{LQ} = 4000 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
+		#exit()
 		# Here are a few plots which are zoomed-in on control regions. 
 		MakeBasicPlot("M_uu","M^{#mu#mu} [GeV]",bosonzoombinning_uujj_Z,preselectionmumu,NormalWeightMuMu,NormalDirectory,'controlzoom_ZRegion','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
 		MakeBasicPlot("Pt_miss","E_{T}^{miss} [GeV]",metzoombinning_uujj_Z,preselectionmumu+'*(M_uu>80)*(M_uu<100)*(Pt_miss<100)',NormalWeightMuMu,NormalDirectory,'controlzoom_ZRegion','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
@@ -700,6 +747,7 @@ def main():
 		MakeBasicPlot("DR_muon1jet2","#DeltaR(#mu_{1},j_{2})",drbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
 		MakeBasicPlot("DR_muon2jet1","#DeltaR(#mu_{2},j_{1})",drbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
 		MakeBasicPlot("DR_muon2jet2","#DeltaR(#mu_{2},j_{2})",drbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
+		MakeBasicPlot("DR_dimuonjet1","#DeltaR(#mu_{1}+#mu_{2},j_{1})",drbinning,preselectionmumu+"*(St_uujj>1000)*(M_uujj>1000)*(M_uu>250)",NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
 		MakeBasicPlot("DPhi_muon1met","#Delta #phi (#mu_{1},E_{T}^{miss})",dphibinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
 		MakeBasicPlot("DPhi_jet1met","#Delta#phi(j_{1},E_{T}^{miss})",dphibinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
 		MakeBasicPlot("DPhi_jet2met","#Delta#phi(j_{2},E_{T}^{miss})",dphibinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
@@ -707,7 +755,7 @@ def main():
 		MakeBasicPlot("DPhi_muon1jet2","#Delta#phi(#mu_{1},j_{2})",dphibinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
 		MakeBasicPlot("DPhi_muon2jet1","#Delta#phi(#mu_{2},j_{1})",dphibinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
 		MakeBasicPlot("DPhi_muon2jet2","#Delta#phi(#mu_{2},j_{2})",dphibinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
-
+		exit()
 		# UVJJ plots at preselection
 		
 		stbinning = [280 ,300]
@@ -899,14 +947,14 @@ def main():
 	if False : 
 		#FullAnalysis(MuMuOptCutFile, preselectionmumu,preselectionmunu,NormalDirectory,NormalWeightMuMu,'TTBarDataDriven') # scriptflag 
 		FullAnalysis(MuMuOptCutFile, preselectionmumu,preselectionmunu,NormalDirectory,NormalWeightMuMu,'normal') # scriptflag 
-		FullAnalysis(MuNuOptCutFile, preselectionmumu,preselectionmunu,NormalDirectory,NormalWeightMuNu,'normal')  # scriptflag
+		#FullAnalysis(MuNuOptCutFile, preselectionmumu,preselectionmunu,NormalDirectory,NormalWeightMuNu,'normal')  # scriptflag
 	if False :
  		uujjcardfiles = MuMuOptCutFile.replace('.txt','_systable*.txt')
-		uvjjcardfiles = MuNuOptCutFile.replace('.txt','_systable*.txt')
+		#uvjjcardfiles = MuNuOptCutFile.replace('.txt','_systable*.txt')
 
 		uujjcards = ParseFinalCards(uujjcardfiles)
-		uvjjcards = ParseFinalCards(uvjjcardfiles)
-		finalcards = FixFinalCards([uujjcards,uvjjcards])
+		#uvjjcards = ParseFinalCards(uvjjcardfiles)
+		finalcards = FixFinalCards([uujjcards])
 
 		print 'Final Cards Available in',finalcards
 
@@ -963,7 +1011,7 @@ def main():
 	# This is for Optimization of cuts
 	# ====================================================================================================================================================== #
 
-	if True :
+	if False :
 		doLongLived = False
 		# Get Scale Factors
 		#[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = GetMuMuScaleFactors( NormalWeightMuMu+'*'+preselectionmumu, NormalDirectory, '(M_uu>80)*(M_uu<100)', '(M_uu>100)',0,0)
@@ -996,7 +1044,7 @@ def main():
 			scaleFactors = [Rz_uujj,Rtt_uujj,Rw_uvjj]
 			variableSpace = ['M_uu:15:100:500','St_uujj:15:300:1800','M_uujj2:15:100:900',]
 			OptimizeCuts3D(variableSpace,preselectionmumu,NormalWeightMuMu,version_name,scaleFactors,'','BLuujj')
-	if True:
+	if False:
  		makeOptPlotForPAS(MuMuOptCutFile,'uujj',version_name,0)
 		#makeOptPlotForPAS(MuNuOptCutFile,'uvjj',version_name,1)
 
@@ -3963,10 +4011,16 @@ def ModSelection(selection,sysmethod,channel_log):
 	if 'weight' in selection:
 		#Some updates:
 		#https://indico.cern.ch/event/675475/contributions/2764498/subcontributions/240732/attachments/1547347/2429001/Wprime-muon-Approvalv1.pdf
+
+		#Percent systematic uncertainties of integrated luminosity provided in table, here: https://twiki.cern.ch/twiki/bin/viewauth/CMS/TWikiLUM
 		if sysmethod == 'LUMIup':
-			selection = '(1.025)*'+selection
+			if year =='2016': selection = '(1.012)*'+selection #vary 2016 luminosity up by 1.2%
+			elif year == '2017': selection = '(1.023)*'+selection #vary 2017 luminosity up by 2.3%
+			elif year == '2018': selection = '(1.025)*'+selection #vary 2018 luminosity up by 2.5%
 		if sysmethod == 'LUMIdown':
-			selection = '(0.975)*'+selection
+			if year =='2016': selection = '(0.988)*'+selection #vary 2016 luminosity down by 1.2%
+			elif year == '2017': selection = '(0.977)*'+selection #vary 2017 luminosity down by 2.3%
+			elif year == '2018': selection = '(0.975)*'+selection #vary 2018 luminosity down by 2.5%
 		if sysmethod == 'MUONIDISOup':
 			if 'uujj' in channel_log:
 				selection = '(1.04)*'+selection
@@ -4042,8 +4096,18 @@ def SysTable(optimlog, selection_uujj,selection_uvjj,NormalDirectory, weight,sys
 			munu1 = '(((CISV_jet1>0.5426)+(CISV_jet2>0.5426))<1)*(MT_uv>70)*(MT_uv<110)*(1-((CISV_jet1>0.5426)*(0.887973*((1.+(0.0523821*Pt_jet1))/(1.+(0.0460876*Pt_jet1)))-(0.02891194075345993*(Pt_jet1>50)*(Pt_jet1<70)+0.028121808543801308*(Pt_jet1>70)*(Pt_jet1<100)+0.027028990909457207*(Pt_jet1>100)*(Pt_jet1<140)+0.027206243947148323*(Pt_jet1>140)*(Pt_jet1<200)+0.033642303198575974*(Pt_jet1>200)*(Pt_jet1<300)+0.04273652657866478*(Pt_jet1>300)*(Pt_jet1<600)+0.054665762931108475*(Pt_jet1>600)))))*(1-((CISV_jet2>0.5426)*(0.887973*((1.+(0.0523821*Pt_jet2))/(1.+(0.0460876*Pt_jet2)))-(0.02891194075345993*(Pt_jet2>50)*(Pt_jet2<70)+0.028121808543801308*(Pt_jet2>70)*(Pt_jet2<100)+0.027028990909457207*(Pt_jet2>100)*(Pt_jet2<140)+0.027206243947148323*(Pt_jet2>140)*(Pt_jet2<200)+0.033642303198575974*(Pt_jet2>200)*(Pt_jet2<300)+0.04273652657866478*(Pt_jet2>300)*(Pt_jet2<600)+0.054665762931108475*(Pt_jet2>600)))))'
 			munu2 = '(((CISV_jet1>0.8484)+(CISV_jet2>0.8484))>=1)*(MT_uv>70)*(MT_uv<110)*(1-(1-((CISV_jet1>0.8484)*(0.561694*((1.+(0.31439*Pt_jet1))/(1.+(0.17756*Pt_jet1)))-(0.03711806982755661*(Pt_jet1>50)*(Pt_jet1<70)+0.036822021007537842*(Pt_jet1>70)*(Pt_jet1<100)+0.034397732466459274*(Pt_jet1>100)*(Pt_jet1<140)+0.0362386554479599*(Pt_jet1>140)*(Pt_jet1<200)+0.044985830783843994*(Pt_jet1>200)*(Pt_jet1<300)+0.064243391156196594*(Pt_jet1>300)*(Pt_jet1<600)+0.097131341695785522*(Pt_jet1>600)))))*(1-((CISV_jet2>0.8484)*(0.561694*((1.+(0.31439*Pt_jet2))/(1.+(0.17756*Pt_jet2)))-(0.03711806982755661*(Pt_jet1>50)*(Pt_jet1<70)+0.036822021007537842*(Pt_jet1>70)*(Pt_jet1<100)+0.034397732466459274*(Pt_jet1>100)*(Pt_jet1<140)+0.0362386554479599*(Pt_jet1>140)*(Pt_jet1<200)+0.044985830783843994*(Pt_jet1>200)*(Pt_jet1<300)+0.064243391156196594*(Pt_jet1>300)*(Pt_jet1<600)+0.097131341695785522*(Pt_jet1>600))))))'
 
-	[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = GetMuMuScaleFactors( selection_uujj, NormalDirectory, '(M_uu>80)*(M_uu<100)', '(M_uu>100)',0,0)
-	[[Rw_uvjj,Rw_uvjj_err],[Rtt_uvjj,Rtt_uvjj_err]] = GetMuNuScaleFactors( selection_uvjj, NormalDirectory, munu1,munu2,0)
+	#[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = GetMuMuScaleFactors( selection_uujj, NormalDirectory, '(M_uu>80)*(M_uu<100)', '(M_uu>100)*(M_uu<250)',0,0)
+	#if year == '2016':
+	#	[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = [[1.019,0.017],[1.134,0.013]] #2016 stock NanoAODv7 with 1 btag
+	#else:
+	#	[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = GetMuMuScaleFactors( NormalWeightMuMu+'*'+preselectionmumu, NormalDirectory, '(M_uu>80)*(M_uu<100)', '(M_uu>100)*(M_uu<250)',0,0)
+	#[[Rw_uvjj,Rw_uvjj_err],[Rtt_uvjj,Rtt_uvjj_err]] = [[1.0,0.0],[1.0,0.0]]
+	#[[Rw_uvjj,Rw_uvjj_err],[Rtt_uvjj,Rtt_uvjj_err]] = GetMuNuScaleFactors( selection_uvjj, NormalDirectory, munu1,munu2,0)
+
+	# SFs with updated integrated luminosities
+	[[Rz_uuj,Rz_uuj_err],[Rtt_uuj,Rtt_uuj_err]] = GetMuMuScaleFactors( NormalWeightMuMu+'*'+preselectionmumu_single, NormalDirectory, '(M_uu>80)*(M_uu<100)', '(M_uu>100)*(M_uu<250)',0,0)
+	[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = GetMuMuScaleFactors( NormalWeightMuMu+'*'+preselectionmumu, NormalDirectory, '(M_uu>80)*(M_uu<100)', '(M_uu>100)*(M_uu<250)',0,0)
+	[[Rw_uvjj,Rw_uvjj_err],[Rtt_uvjj,Rtt_uvjj_err]] = [[1.0,0.0],[1.0,0.0]]
 
 	Rz_uujj_print = str(round(Rz_uujj,3)) + ' $\\pm$ ' + str(round(Rz_uujj_err,3))	
 	Rtt_uujj_print = str(round(Rtt_uujj,3)) + ' $\\pm$ ' + str(round(Rtt_uujj_err,3))	
@@ -4097,7 +4161,7 @@ def SysTable(optimlog, selection_uujj,selection_uvjj,NormalDirectory, weight,sys
 	sysfile = optimlog.replace('.txt','_systable_'+sysmethod+'.txt')
 
 	#headers = ['Signal','Data','TTBar','ZJets','WJets','sTop','VV','QCD']
-	headers = ['Signal','Data','TTBar','ZJets','WJets','sTop','VV']
+	headers = ['Signal','Data','TTBar','ZJets','WJets','sTop','VV','TTV']
 
 
 	f = open(sysfile,'w')
@@ -4143,6 +4207,7 @@ def SysTable(optimlog, selection_uujj,selection_uvjj,NormalDirectory, weight,sys
 		rstop = 1
 		rdiboson = 1
 		#rqcd = 1
+		rttv = 1
 		rsig = 1
 		_rt = rt
 		_rw = rw
@@ -4199,9 +4264,9 @@ def SysTable(optimlog, selection_uujj,selection_uvjj,NormalDirectory, weight,sys
 		exec('treefeed = ['+chan+']')
 		treefeed.append(t_SingleMuData)
 		#treefeed.append([t_TTBar,t_ZJets,t_WJets,t_SingleTop,t_DiBoson,t_QCDMu])
-		treefeed.append([t_TTBar,t_ZJets,t_WJets,t_SingleTop,t_DiBoson])
+		treefeed.append([t_TTBar,t_ZJets,t_WJets,t_SingleTop,t_DiBoson,t_TTV])
 		#scalefacs = [rsig,[_rt,_rz,_rw,rstop,rdiboson,rqcd],1]
-		scalefacs = [rsig,[_rt,_rz,_rw,rstop,rdiboson],1]
+		scalefacs = [rsig,[_rt,_rz,_rw,rstop,rdiboson,rttv],1]
 		QuickSysTableLine(treefeed,this_sel,scalefacs,sysfile,chan,rglobals,rglobalb)
 		# break
 
@@ -7397,12 +7462,20 @@ def OptimizeCuts3D(variablespace,presel,weight,tag,scalefacs,cutfile,channel):
 	ftmp = TFile.Open(ftmpname,'RECREATE')
 	optvars = []
 	binnings = []
-	for v in variablespace:
+	for v in variablespace: 
 		v = v.split(':')
-		var = v[0]
-		v0 = float(v[1])
-		v1 = float(v[3])
-		vb = float(v[2])
+		if 'TVector2' in v[0]:
+			tmp = ['','','','']
+			tmp[0]=v[0]+'::'+v[2]+'::'+v[4]
+			tmp[1]=v[5]
+			tmp[2]=v[6]
+			tmp[3]=v[7]
+		else:tmp=v
+		print 'tmp=',tmp
+		var = tmp[0]
+		v0 = float(tmp[1])
+		v1 = float(tmp[3])
+		vb = float(tmp[2])
 		#bins = [int(round((v1-v0)/vb)),v0,v1]#fixme todo original
 		bins = [int(round((v1-vb)/v0)),vb,v1]
 		optvars.append([var,bins]) 
@@ -7586,6 +7659,7 @@ def MakeSmoothCuts(vals,vnames,versionname,signalType,chan,rawmethod):
 		if "Pt_muon2" in a :  x = "p_{T}(#mu_{2})"
 		if "St_uujj" in a :  x = "S_{T}^{#mu#mujj}"
 		if "M_uu" in a :  x = "m_{#mu#mu}"
+		if "M_uujj" in a :  x = "m_{#mu#mujj}"
 		if "M_uujj1" in a :  x = "m_{#muj}_{1}"
 		if "M_uujj2" in a :  x = "m_{#muj}_{2}"
 		if "GoodVertexCount" in a :  x = "N_{Vertices}"
@@ -7597,6 +7671,7 @@ def MakeSmoothCuts(vals,vnames,versionname,signalType,chan,rawmethod):
 		if "MT_uv in" in a :  x = "m_{T}^{#mu#nu}"
 		if "MT_uvjj" in a :  x = "m_{T}^{#muj}"
 		if "M_uvjj" in a :  x = "m_{#muj}"
+		if "DR_dimuonjet1" in a :  x = "#DeltaR (#mu#mu, jet_{1})"
 		xnames.append(x)
 
 	_allvals = sorted(vals,key=lambda vals: vals[0])
@@ -7604,7 +7679,7 @@ def MakeSmoothCuts(vals,vnames,versionname,signalType,chan,rawmethod):
 
 	if 'cutoff' in rawmethod:
 		_vals = []
-		if 'uujj' in chan: cutoffVal=1250
+		if 'uujj' in chan: cutoffVal=1300
 		elif 'uvjj' in chan: cutoffVal=1300
 		for v in _allvals:
 			if v[0] <= cutoffVal :
@@ -8086,6 +8161,8 @@ def blind(h,name,num,tag,chan):
 		blindstart = 800
 	elif 'Pt_muon2' in name:
 		blindstart=300
+	elif 'BDT' in name:
+		blindstart=0
 	if 'final' in tag:
 		blindstart=0
 	for bin in range(h.GetNbinsX()):
@@ -8210,6 +8287,7 @@ def makeOptPlotForPAS(cutlog, channel, version_name, isPAS):
 	hout1.Draw("lp")
 	hout2.Draw("lpsames")
 	hout3.Draw("lpsames")
+	hout1.SetMaximum(2*hout1.GetMaximum())
 	
 	l1=TLatex()
 	l1.SetTextAlign(12)

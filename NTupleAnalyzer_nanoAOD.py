@@ -70,8 +70,7 @@ if LQToBMu_single_bdtswitch:
 	LQToBMu_single_uub_weights = ["",""]
 
 if LQToBMu_pair_bdtswitch:
-	LQToBMu_pair_uubj_weights = ["/eos/user/g/gmadigan/LQ_MVA_Batch/weights_2021_01_11_182754/TMVAClassification_np1__BDTG01_LQuujj_uu_NTrees_MinNodeSize_MaxDepth_AdaBeta_SepType_nCuts_M","_2021_01_11_182754_BDTG01.weights.xml"]
-
+	LQToBMu_pair_uubj_weights = ["/eos/user/g/gmadigan/LQ_MVA_Batch/weights_2021_03_24_004128/TMVAClassification_np1__BDTG01_LQToBMu_pair_uubj_NTrees_MinNodeSize_MaxDepth_AdaBeta_SepType_nCuts_M","_2021_03_24_004128_BDTG01.weights.xml"]
 
 # Get the file, tree, and number of entries
 print name
@@ -161,6 +160,8 @@ _kinematicvariables += ['jetIndex1','jetIndex2']
 _kinematicvariables += ['ptHat']
 _kinematicvariables += ['DeepJet_jet1','DeepJet_jet2']
 _kinematicvariables += ['bTagSF_jet1','bTagSF_jet2']
+_kinematicvariables += ['bTagSF_jet1_up','bTagSF_jet2_up']
+_kinematicvariables += ['bTagSF_jet1_down','bTagSF_jet2_down']
 _kinematicvariables += ['PULoosej1','PUMediumj1','PUTightj1']
 _kinematicvariables += ['PULoosej2','PUMediumj2','PUTightj2']
 _kinematicvariables += ['WorZSystemPt']
@@ -911,31 +912,36 @@ def PropagatePTChangeToMET(met,original_object,varied_object):
 # 			taus.append(ThisTau)
 # 	return taus
 
-def getMuonSF(_pt,_eta):
+def getMuonSF(_pt,_eta,_phi):
 	# Purpose: Takes muon eta and pt and gets scale factors.
 	#         SFs are hardcoded separately for muon reco, high pt ID, iso, and hlt.
 	#		  Must specify the year being analyzed, as SFs differ for each year.
 	#         Returns array with SFs (ID, iso, etc.) as well as up and down variations
 	#		  of systematic and statisical error for each SF.
+	
+	global _year
 
-        global _year
-	# Store the pt ranges for which different scale factors are defined. Different ranges depending on SF, i.e., reco, id and iso, and hlt
-	recoPts = [[50.00,100.00],[100.00,150.00],[150.00,200.00],[200.00,300.00],[300.00,400.00],[400.00,600.00],[600.00,1500.00],[1500.00,3500.00]]
+	tmpMu = TLorentzVector()
+	tmpMu.SetPtEtaPhiM(_pt,_eta,_phi,0)
+	_p = math.sqrt(tmpMu.Px()*tmpMu.Px() + tmpMu.Py()*tmpMu.Py() + tmpMu.Pz()*tmpMu.Pz())
+
+	# Store the pt (or p for reco) ranges for which different scale factors are defined. Different ranges depending on SF, i.e., reco, id and iso, and hlt
+	recoPs = [[50.00,100.00],[100.00,150.00],[150.00,200.00],[200.00,300.00],[300.00,400.00],[400.00,600.00],[600.00,1500.00],[1500.00,3500.00]] # NOT pt--just full momentum (p)
 	hltPts = [[52.00,55.00],[55.00,60.00],[60.00,120.00],[120.00,200.00],[200.00,300.00],[300.00,500.00],[500.00,1000.00]]
 	idAndIsoPts = [[20.00,25.00],[25.00,30.00],[30.00,40.00],[40.00,50.00],[50.00,60.00],[60.00,120.00]]
 	# ensure all muons fall within the SF eta ranges
 	if _eta<=-2.40:_eta=-2.399
 	if _eta>=2.40:_eta=2.399
 	abseta = abs(_eta)
-	recoSFbyPt,highPtIdSFbyPt,relTrkIsoSFbyPt,hltSFbyPt = 1.0,1.0,1.0,1.0
+	recoSFbyP,highPtIdSFbyPt,relTrkIsoSFbyPt,hltSFbyPt = 1.0,1.0,1.0,1.0
 
 	########## Muon POG recommended scale factors by year ###############
 	# Check if muon is in eta range, set list of SFs and errors (syst+stat), sorted by pt.
 	if _year=='2016':
 		# Muon reco SFs
 		# https://twiki.cern.ch/twiki/bin/view/CMS/HighPtMuonReferenceRun2
-		if abseta>=0.00 and abseta<=1.60: recoSFbyPt = [[0.9914, 0.0008],[0.9936, 0.0009],[0.993, 0.001],[0.993, 0.002],[0.990, 0.004],[0.990, 0.003],[0.989, 0.004],[0.8, 0.3]]
-		elif abseta>1.60 and abseta<=2.40: recoSFbyPt = [[1.00, 0.00],[0.993, 0.001],[0.991, 0.001],[0.985, 0.001],[0.981, 0.002],[0.979, 0.004],[0.978, 0.005],[0.9, 0.2]]
+		if abseta>=0.00 and abseta<=1.60: recoSFbyP = [[0.9914, 0.0008],[0.9936, 0.0009],[0.993, 0.001],[0.993, 0.002],[0.990, 0.004],[0.990, 0.003],[0.989, 0.004],[0.8, 0.3]]
+		elif abseta>1.60 and abseta<=2.40: recoSFbyP = [[1.00, 0.00],[0.993, 0.001],[0.991, 0.001],[0.985, 0.001],[0.981, 0.002],[0.979, 0.004],[0.978, 0.005],[0.9, 0.2]]
 		# Muon high pt identification scale factors
 		# Periods B,C,D,E,F: https://gitlab.cern.ch/cms-muonPOG/MuonReferenceEfficiencies/blob/master/EfficienciesStudies/2016_legacy_rereco/systematic/RunBCDEF_SF_ID.json 
 		# Periods G,H: https://gitlab.cern.ch/cms-muonPOG/MuonReferenceEfficiencies/blob/master/EfficienciesStudies/2016_legacy_rereco/systematic/RunGH_SF_ID.json
@@ -1010,8 +1016,8 @@ def getMuonSF(_pt,_eta):
 	if _year=='2017':
 		# Muon reco SFs
 		# https://twiki.cern.ch/twiki/bin/view/CMS/HighPtMuonReferenceRun2
-		if abseta>=0.00 and abseta<=1.60: recoSFbyPt = [[0.9938, 0.0006],[0.9950, 0.0007],[0.996, 0.001],[0.996, 0.001],[0.994, 0.001],[1.003, 0.006],[0.987, 0.003],[0.9, 0.1]]
-		elif abseta>1.60 and abseta<=2.40: recoSFbyPt = [[1.00, 0.00],[0.993, 0.001],[0.989, 0.001],[0.986, 0.001],[0.989, 0.001],[0.983, 0.003],[0.986, 0.006],[1.01, 0.01]]
+		if abseta>=0.00 and abseta<=1.60: recoSFbyP = [[0.9938, 0.0006],[0.9950, 0.0007],[0.996, 0.001],[0.996, 0.001],[0.994, 0.001],[1.003, 0.006],[0.987, 0.003],[0.9, 0.1]]
+		elif abseta>1.60 and abseta<=2.40: recoSFbyP = [[1.00, 0.00],[0.993, 0.001],[0.989, 0.001],[0.986, 0.001],[0.989, 0.001],[0.983, 0.003],[0.986, 0.006],[1.01, 0.01]]
 		# Muon high pt identification scale factors
 		# https://twiki.cern.ch/twiki/pub/CMS/MuonReferenceEffs2017/RunBCDEF_SF_ID_syst.json
 		if abseta>=0.00 and abseta<=0.90: highPtIdSFbyPt = [[0.991, 0.005],[0.987, 0.002],[0.99, 0.02],[0.9905, 0.0008],[0.99, 0.01],[0.992, 0.003]] 
@@ -1034,8 +1040,8 @@ def getMuonSF(_pt,_eta):
 	if _year=='2018':
 		# Muon reco SFs
 		# https://twiki.cern.ch/twiki/bin/view/CMS/HighPtMuonReferenceRun2
-		if abseta>=0.00 and abseta<=1.60: recoSFbyPt = [[0.9943, 0.0007],[0.9948, 0.0007],[0.9950, 0.0009],[0.994, 0.001],[0.9914, 0.0009],[0.993, 0.002],[0.991, 0.004],[1.0, 0.1]]
-		elif abseta>1.60 and abseta<=2.40: recoSFbyPt = [[1.00, 0.00],[0.993, 0.001],[0.990, 0.001],[0.988, 0.001],[0.981, 0.002],[0.983, 0.003],[0.978, 0.006],[0.98, 0.03]]
+		if abseta>=0.00 and abseta<=1.60: recoSFbyP = [[0.9943, 0.0007],[0.9948, 0.0007],[0.9950, 0.0009],[0.994, 0.001],[0.9914, 0.0009],[0.993, 0.002],[0.991, 0.004],[1.0, 0.1]]
+		elif abseta>1.60 and abseta<=2.40: recoSFbyP = [[1.00, 0.00],[0.993, 0.001],[0.990, 0.001],[0.988, 0.001],[0.981, 0.002],[0.983, 0.003],[0.978, 0.006],[0.98, 0.03]]
 		# Muon high pt identification scale factors
 		# https://gitlab.cern.ch/cms-muonPOG/MuonReferenceEfficiencies/blob/master/EfficienciesStudies/2018/jsonfiles/RunABCD_SF_ID.json
 		if abseta>=0.00 and abseta<=0.90: highPtIdSFbyPt = [[0.992, 0.003],[0.992, 0.001],[0.9923, 0.0008],[0.9927, 0.0005],[0.9929, 0.0006],[0.992, 0.003]]
@@ -1058,25 +1064,23 @@ def getMuonSF(_pt,_eta):
 	# Check muon pt and select SF from appropriate pt bin. Different SFs (e.g., reco vs hlt) have different pt ranges/binning. 
 	# Maps ensure double checking of pt bins do not occur (speeds up loop) for different SF types
 	# WARNING! Make sure to check mapping if ANY binning changes
-	lowBndMap1 = {0:0, 1:2, 2:3, 3:4, 4:5, 5:5, 6:6, 7:6}
-	lowBndMap2 = {0:0, 1:4, 2:5, 3:5, 4:5, 5:5, 6:5}
-	i, j, k = 0, 0, 0
-	#print 'pt is ',_pt
-	if _pt<=50.00:_ptTmp=50.01
-	elif _pt>=3500.00:_ptTmp=3499.99
-	else: _ptTmp = _pt
-	for x in recoPts:
-		#print 'i = ',i
-		if _ptTmp>=x[0] and _ptTmp<=x[1]:
+	lowBndMap = {0:0, 1:4, 2:5, 3:5, 4:5, 5:5, 6:5}
+	i = 0 
+	j = 0
+	k = 0
+
+	if _p<=50.00:_pTmp=50.01
+	elif _p>=3500.00:_pTmp=3499.99
+	else: _pTmp = _p
+	for x in recoPs:
+		if _pTmp>=x[0] and _pTmp<=x[1]:
 			break
 		i+=1
-		
+
 	if _pt<=52.00:_ptTmp=52.01
 	elif _pt>=1000.00:_ptTmp=999.99
 	else: _ptTmp = _pt
-	j = lowBndMap1.get(i)
-	for y in hltPts[j:]:
-		#print 'j = ',j
+	for y in hltPts:
 		if _ptTmp>=y[0] and _ptTmp<=y[1]:
 			break
 		j+=1
@@ -1084,15 +1088,14 @@ def getMuonSF(_pt,_eta):
 	if _pt<=20.00:_ptTmp=20.01
 	elif _pt>=120.00:_ptTmp=119.99
 	else: _ptTmp = _pt
-	k = lowBndMap2.get(j)
+	k = lowBndMap.get(j)
 	for z in idAndIsoPts[k:]:
-		#print 'k = ',k
 		if _ptTmp>=z[0] and _ptTmp<=z[1]:
 			break
 		k+=1
 
 	#Get SFs and compute up and down variations (syst+stat errors)
-	recoSFs = recoSFbyPt[i]
+	recoSFs = recoSFbyP[i]
 	recoSF = recoSFs[0]
 	recoSFup   = recoSFs[0]+recoSFs[1]
 	recoSFdown = max(recoSFs[0]-recoSFs[1],0.0)
@@ -1114,6 +1117,72 @@ def getMuonSF(_pt,_eta):
 
 	return [recoSF,recoSFup,recoSFdown,highPtIdSF,highPtIdSFup,highPtIdSFdown,relTrkIsoSF,relTrkIsoSFup,relTrkIsoSFdown,hltSF,hltSFup,hltSFdown]
 
+def MERParametrization(_p, _eta):
+    # Definition of muon momentum resolution parameterization function (sigma): 
+    # https://twiki.cern.ch/twiki/bin/view/CMS/MuonLegacy2016#Momentum_Resolution
+    # https://twiki.cern.ch/twiki/bin/view/CMS/MuonLegacy2017#Momentum_Resolution
+    # https://twiki.cern.ch/twiki/bin/view/CMS/MuonLegacy2018#Momentum_Resolution
+    # Note: _p is muon 3-momentum--not transverse momentum (pt)
+    coeffsAllEta = [[0.0,0.0,0.0,0.0,0.0],[0.0,0.0,0.0,0.0,0.0],[0.0,0.0,0.0,0.0,0.0]]
+    coeffs = coeffsAllEta[0]
+
+    if _year == '2016': 
+        coeffsAllEta = [[0.0061, 0.0001, 0.000000110, 0.0000000000610, 0.0000000000000110],[0.0134, 0.00006, 0.0000000510, 0.0000000000310, 0.00000000000000510],[0.0151, 0.0001, 0.0000000410, 0.00000000000410, -0.0000000000000110]]
+
+    elif _year == '2017':
+        coeffsAllEta = [[0.0053, 0.0001, 0.000000110, 0.0000000000710, 0.0000000000000110],[0.0136, 0.00006, 0.0000000310, 0.00000000000110, 0.00000000000000310],[0.0170, 0.00008, 0.0000000310, 0.0000000000210, 0.0000000000000810]]
+
+    elif _year == '2018':
+        coeffsAllEta = [[0.0062, 0.0001, 0.000000110, 0.0000000000510, 0.00000000000000910],[0.0136, 0.00005, 0.0000000210, 0.00000000000510, 0.0],[0.0174, 0.00009, 0.00000000310, 0.0000000000210, 0.00000000000000510]]
+
+    if abs(_eta) <= 1.2 : coeffs = coeffsAllEta[0]
+    elif 1.2 < abs(_eta) <= 2.1 : coeffs = coeffsAllEta[1]
+    elif 2.1 < abs(_eta) <= 2.4 : coeffs = coeffsAllEta[2]
+
+    sigmaToReturn = coeffs[0] + coeffs[1]*_p - coeffs[2]*_p*_p + coeffs[3]*_p*_p*_p - coeffs[4]*_p*_p*_p*_p
+
+    return sigmaToReturn
+
+def SmearMuonCollections(_ptCollection, _etaCollection, _phiCollection, isSystematic):
+	# Following perscription for muon momentum smearing of 15% from resolution uncertainty
+    # https://twiki.cern.ch/twiki/bin/view/CMS/MuonLegacy2016#Momentum_Resolution
+	# https://twiki.cern.ch/twiki/bin/view/CMS/MuonLegacy2017#Momentum_Resolution
+    # https://twiki.cern.ch/twiki/bin/view/CMS/MuonLegacy2018#Momentum_Resolution
+
+	smearedPtCollection = _ptCollection
+	smearedEtaCollection = _etaCollection
+	smearedPhiCollection = _phiCollection
+
+	# loop through muons
+	for n in range(len(_ptCollection)):
+		if abs(_etaCollection[n]) <= 1.2 and not isSystematic: continue # no smearing if abs(eta) < 1.2
+		elif abs(_etaCollection[n]) > 1.2 or isSystematic:
+			smearConst = 0.57 # resolution smearing of 15% -> 0.57
+			if isSystematic: smearConst = 0.46 # systematics requires 10% smearing -> 0.46
+			smearedLorentz = TLorentzVector()
+			origLorentz = TLorentzVector()
+			origLorentz.SetPtEtaPhiM(_ptCollection[n], _etaCollection[n], _phiCollection[n], 0)
+
+			# Smearing is performed on P, convert from Pt, Eta, Phi to cartesian 3-momentum and back
+			origPx = origLorentz.Px()
+			origPy = origLorentz.Py()
+			origPz = origLorentz.Pz()
+			origP = origLorentz.P()
+			# Smear momenta here
+			smearing = (1 + tRand.Gaus(0.0, MERParametrization(origP, _etaCollection[n])*smearConst))
+			smearedPx = origPx*smearing
+			smearedPy = origPy*smearing
+			smearedPz = origPz*smearing
+			smearedE = math.sqrt(smearedPx*smearedPx + smearedPy*smearedPy + smearedPz*smearedPz)
+			smearedLorentz.SetPxPyPzE(smearedPx, smearedPx, smearedPz, smearedE)
+
+			# Return the smeared Pt, Eta, Phi collections
+			smearedPtCollection[n] = smearedLorentz.Pt()
+			smearedEtaCollection[n] = smearedLorentz.Eta()
+			smearedPhiCollection[n] = smearedLorentz.Phi()
+
+	return [smearedPtCollection, smearedEtaCollection, smearedPhiCollection]
+
 def TightHighPtIDMuons(T,_met,variation,isdata):
 	# Purpose: Gets the collection of muons passing tight muon ID. 
 	#         Returns muons as TLorentzVectors, and indices corrresponding
@@ -1121,24 +1190,43 @@ def TightHighPtIDMuons(T,_met,variation,isdata):
 	#         Also returns modified MET for systematic variations.
 	muons = []
 	muoninds = []
-	if variation=='MESup':	
-		#_MuonCocktailPt = [(pt + pt*(0.05*pt/1000.0)) for pt in T.MuonCocktailPt]#original
-		#_MuonCocktailPt = [(pt + pt*(0.10*pt/1000.0)) for pt in T.MuonCocktailPt]#updated to Zprime 13TeV study number
+	_MuonCocktailPt = [tunepRelPt*pt for pt, tunepRelPt in zip(T.Muon_pt,T.Muon_tunepRelPt)]
+	_MuonCocktailEta = [eta for eta in T.Muon_eta]
+	_MuonCocktailPhi = [phi for phi in T.Muon_phi]
+
+	# Following perscription for muon momentum smearing of 15% from resolution uncertainty
+    # https://twiki.cern.ch/twiki/bin/view/CMS/MuonLegacy2016#Momentum_Resolution
+    # https://twiki.cern.ch/twiki/bin/view/CMS/MuonLegacy2017#Momentum_Resolution
+    # https://twiki.cern.ch/twiki/bin/view/CMS/MuonLegacy2018#Momentum_Resolution
+			
+	if isdata:
+		pass
+	elif _year == '2016': # 2016 requires no smearing to MC
+		pass 
+	elif _year == '2017' or _year == '2018': # 2017 and 2018 require smearing to MC
+		# Smearing 15%
+		[_MuonCocktailPt, _MuonCocktailEta, _MuonCocktailPhi] = SmearMuonCollections(_MuonCocktailPt, _MuonCocktailEta, _MuonCocktailPhi, False)
+		
+	if variation=='MESup':
+        #_MuonCocktailPt = [(pt + pt*(0.05*pt/1000.0)) for pt in T.MuonCocktailPt]#original
+        #_MuonCocktailPt = [(pt + pt*(0.10*pt/1000.0)) for pt in T.MuonCocktailPt]#updated to Zprime 13TeV study number
 		_MuonCocktailPt = [(pt + pt*(0.10*pt/1000.0)) for pt in T.Muon_pt]# fixme 2019
-	elif variation=='MESdown':	
-		#_MuonCocktailPt = [(pt - pt*(0.05*pt/1000.0)) for pt in T.MuonCocktailPt]
-		#_MuonCocktailPt = [(pt - pt*(0.10*pt/1000.0)) for pt in T.MuonCocktailPt]
+	elif variation=='MESdown':
+        #_MuonCocktailPt = [(pt - pt*(0.05*pt/1000.0)) for pt in T.MuonCocktailPt]
+        #_MuonCocktailPt = [(pt - pt*(0.10*pt/1000.0)) for pt in T.MuonCocktailPt]
 		_MuonCocktailPt = [(pt - pt*(0.10*pt/1000.0)) for pt in T.Muon_pt]# fixme 2019
-	elif variation=='MER':	
+	elif variation=='MER':
 		#_MuonCocktailPt = [pt+pt*tRand.Gaus(0.0,  0.01*(pt<=200.0) + (0.04)*(pt>200.0) ) for pt in T.MuonCocktailPt]
 		# Updating to 2016 Zprime
 		#_MuonCocktailPt = [pt+pt*tRand.Gaus(0.0,  (eta<1.4442)*(0.003*(pt<=200.0) + (0.005)*(pt>200.0)*(pt<=500.0) + 0.01*(pt>500.0)) + (eta>1.4442)*(0.006*(pt<=200.0) + (0.01)*(pt>200.0)*(pt<=500.0) + 0.02*(pt>500.0))) for [pt,eta] in [T.MuonCocktailPt,T.MuonCocktailEta]]
-		_MuonCocktailPt = [pt+pt*tRand.Gaus(0.0,  (eta<1.4442)*(0.003*(pt<=200.0) + (0.005)*(pt>200.0)*(pt<=500.0) + 0.01*(pt>500.0)) + (eta>1.4442)*(0.006*(pt<=200.0) + (0.01)*(pt>200.0)*(pt<=500.0) + 0.02*(pt>500.0))) for pt,eta in zip(T.Muon_pt,T.Muon_eta)]
-	else:	
-		_MuonCocktailPt = [pt for pt in T.Muon_pt]# fixme 2019
-
-	if (isdata):
-		_MuonCocktailPt = [pt for pt in T.Muon_pt]# fixme 2019
+		#_MuonCocktailPt = [pt+pt*tRand.Gaus(0.0,  (eta<1.4442)*(0.003*(pt<=200.0) + (0.005)*(pt>200.0)*(pt<=500.0) + 0.01*(pt>500.0)) + (eta>1.4442)*(0.006*(pt<=200.0) + (0.01)*(pt>200.0)*(pt<=500.0) + 0.02*(pt>500.0))) for pt,eta in zip(T.Muon_pt,T.Muon_eta)]
+		
+		# Following perscription for MER systematics of 10% shift uncertainty
+		# https://twiki.cern.ch/twiki/bin/view/CMS/MuonLegacy2016#Momentum_Resolution
+		# https://twiki.cern.ch/twiki/bin/view/CMS/MuonLegacy2017#Momentum_Resolution
+		# https://twiki.cern.ch/twiki/bin/view/CMS/MuonLegacy2018#Momentum_Resolution
+		# Smearing 10%
+		[_MuonCocktailPt, _MuonCocktailEta, _MuonCocktailPhi] = SmearMuonCollections(_MuonCocktailPt, _MuonCocktailEta, _MuonCocktailPhi, True)
 
 	trk_isos = []
 	charges = []
@@ -1150,7 +1238,6 @@ def TightHighPtIDMuons(T,_met,variation,isdata):
 
 	# Loop over muons using the pT array from above
 	for n in range(len(_MuonCocktailPt)):
-
 		# Some muon alignment studies use the inverse diff of the high pT and Trk pT values
 		deltainvpt = -1.0	
 		#if ( T.MuonTrkPt[n] > 0.0 ) and (_MuonCocktailPt[n]>0.0):
@@ -1161,8 +1248,8 @@ def TightHighPtIDMuons(T,_met,variation,isdata):
 		if alignementcorrswitch == True and isdata==False:
 			if abs(deltainvpt) > 0.0000001:
 				__Pt_mu = _MuonCocktailPt[n]
-				__Eta_mu = T.Muon_eta[n]
-				__Phi_mu = T.Muon_phi[n]
+				__Eta_mu = _MuonCocktailEta[n]
+				__Phi_mu = _MuonCocktailPhi[n]
 				__Charge_mu = T.Muon_charge[n]
 				if (__Pt_mu >200)*(abs(__Eta_mu) < 0.9)      : 
 					_MuonCocktailPt[n] =  ( (1.0) / ( -5e-05*__Charge_mu*sin(-1.4514813+__Phi_mu ) + 1.0/__Pt_mu ) ) 
@@ -1173,21 +1260,22 @@ def TightHighPtIDMuons(T,_met,variation,isdata):
 		# For the ID, begin by assuming it passes. Veto if it fails any condition
 		# High PT conditions from https://twiki.cern.ch/twiki/bin/view/CMSPublic/SWGuideMuonId
 		# NTuple definitions in https://raw.githubusercontent.com/CMSLQ/RootTupleMakerV2/master/src/RootTupleMakerV2_Muons.cc
-		Pass = True
+		muonPass = True
 		# A preliminary pT cut. This also encompasses the GlobalMuon conditions, since
 		# all non-global muons have cocktail pT of -1 in the ntuples.
-		Pass *= (_MuonCocktailPt[n] > 45)     
+		muonPass *= (_MuonCocktailPt[n] > 45)     
 		# Eta requirement
-		Pass *= abs(T.Muon_eta[n]) < 2.4
+		muonPass *= (abs(_MuonCocktailEta[n]) < 2.4)
+		# Muon_highPtId and Muon_tkIsoId are stored as type UChar_t (unsigned characters)
+		# passing the objects through a python array and specifying typecode 'B' allows them to be returned as integers
+		# otherwise they are read as empty strings and data cannot be retrieved
+		# -GM
+        #this uses the muon id and iso flags for id and isolation
+		muonPass *= (array.array('B',T.Muon_highPtId[n])[0] > 1) #Muon high Pt Id 1=tracker high pT, 2=global high pT
+		if nonisoswitch != True: muonPass *= (array.array('B',T.Muon_tkIsoId[n])[0] > 0) #TkIso ID (1=TkIsoLoose, 2=TkIsoTight)
 
-                #this uses the muon id flag for id
-	        Pass *= ( T.Muon_highPtId[n] > 1 ) > 0 #Muon high Pt Id 1=tracker high pT, 2=global high pT
-                #fixme relative tracker isolation missing from 10_2_x?
-                #if nonisoswitch != True:
-                #       Pass *= (T.Muon_tkIsoId & 0x1) #TkIso ID (1=TkIsoLoose, 2=TkIsoTight)
-
-	        """
-	        if nonisoswitch != True:
+		"""
+		if nonisoswitch != True:
 		        Pass *= (T.Muon_highPtId[n] > 1) > 0 #Muon high Pt Id 1=tracker high pT, 2=global high pT
                         #Pass *= (T.MuonTrackerIsoSumPT[n]/_MuonCocktailPt[n])<0.1
 		else:	#For QCD study still need ID cuts in order to not apply isolation
@@ -1232,15 +1320,15 @@ def TightHighPtIDMuons(T,_met,variation,isdata):
 			Pass *= (T.MuonTrackerIsoSumPT[n]/_MuonCocktailPt[n])<0.1
 		"""
 		# Propagate MET changes if undergoing systematic variation
-		if (Pass):
+		if muonPass:
 			NewMu = TLorentzVector()
 			OldMu = TLorentzVector()
-			NewMu.SetPtEtaPhiM(_MuonCocktailPt[n],T.Muon_eta[n],T.Muon_phi[n],0)
-			OldMu.SetPtEtaPhiM(T.Muon_pt[n],T.Muon_eta[n],T.Muon_phi[n],0)#fixme cocktail pt?
+			NewMu.SetPtEtaPhiM(_MuonCocktailPt[n],_MuonCocktailEta[n],_MuonCocktailPhi[n],0)
+			OldMu.SetPtEtaPhiM(T.Muon_tunepRelPt[n]*T.Muon_pt[n],T.Muon_eta[n],T.Muon_phi[n],0)#fixme cocktail pt?
 
 			_met = PropagatePTChangeToMET(_met,OldMu,NewMu)
 
-			# Append items to retun if the muon is good
+			# Append items to return if the muon is good
 
 			muons.append(NewMu)
 			trk_isos.append(0.)#T.Muon_tkRelIso)
@@ -1251,7 +1339,7 @@ def TightHighPtIDMuons(T,_met,variation,isdata):
 
 			muoninds.append(n)
 			deltainvpts.append(deltainvpt)
-
+			
 	return [muons,muoninds,_met,trk_isos,charges,deltainvpts,chi2,pfid,layers]
 
 
@@ -1462,6 +1550,8 @@ def TightIDJets(T,met,variation,isdata):
 	NEMFs = []
 	DeepJetScores = []
 	bTagSFs = []
+	bTagSFs_up = []
+	bTagSFs_down = []
 	PUIds = []
 	for n in range(len(_PFJetPt)):
 		if _PFJetPt[n]>40 and abs(T.Jet_eta[n])<2.4 :
@@ -1492,8 +1582,14 @@ def TightIDJets(T,met,variation,isdata):
 				NHFs.append(T.Jet_neHEF[n])
 				NEMFs.append(T.Jet_neEmEF[n])
 				DeepJetScores.append(T.Jet_btagDeepFlavB[n])
-				if 'SingleMuon' in name or 'SingleElectron' in name or 'DoubleMuon' in name or 'DoubleEG' in name: bTagSFs.append(1.0)
-				else: bTagSFs.append(T.Jet_btagSF_deepjet_M[n])
+				if 'SingleMuon' in name or 'SingleElectron' in name or 'DoubleMuon' in name or 'DoubleEG' in name:
+					bTagSFs.append(1.0)
+					bTagSFs_up.append(1.0)
+					bTagSFs_down.append(1.0)
+				else:
+					bTagSFs.append(T.Jet_btagSF_deepjet_M[n])
+					bTagSFs_up.append(T.Jet_btagSF_deepjet_M_up[n])
+					bTagSFs_down.append(T.Jet_btagSF_deepjet_M_down[n])
 				PUIds.append([(T.Jet_puId[n] & 0x4)>0,(T.Jet_puId[n] & 0x2)>0,(T.Jet_puId[n] & 0x1)>0])
 			else:
 				if _PFJetPt[n] > JetFailThreshold:
@@ -1501,7 +1597,8 @@ def TightIDJets(T,met,variation,isdata):
 
 	# print met.Pt()
 
-	return [jets,jetinds,met,JetFailThreshold,NHFs,NEMFs,DeepJetScores,bTagSFs,PUIds]
+	return [jets,jetinds,met,JetFailThreshold,NHFs,NEMFs,DeepJetScores,bTagSFs,bTagSFs_up,bTagSFs_down,PUIds]
+
 def GetLLJJMasses(l1,l2,j1,j2):
 	# Purpose: For LLJJ channels, this function returns two L-J Masses, corresponding to the
 	#         pair of L-Js which minimizes the difference between LQ masses in the event
@@ -1751,7 +1848,7 @@ def compareMatching(mus,matchedMus,jets,matchedJets):
 	else:
 		return 0
 
-def calculateBDTdiscriminant(reader, classifierTag, _bdtvarnames, _Muu, _Muujj, _Muujj1, _Muujj2, _stuujj, _ptmet, _deepJetj1, _deepJetj2, _ptmu1, _ptmu2, _ptj1,_ptj2, _DRu1u2j1):
+def calculateBDTdiscriminant(reader, classifierTag, _bdtvarnames, _Muu, _Muujj, _Muujj1, _Muujj2, _stuujj, _ptmet, _deepJetj1, _deepJetj2, _ptmu1, _ptmu2, _ptj1,_ptj2, _DRdimuj1):
 
 	if 'M_uu' in _bdtvarnames: _bdtvarnames['M_uu'][0] = _Muu
 	if 'M_uujj' in _bdtvarnames: _bdtvarnames['M_uujj'][0] = _Muujj 
@@ -1765,7 +1862,7 @@ def calculateBDTdiscriminant(reader, classifierTag, _bdtvarnames, _Muu, _Muujj, 
 	if 'Pt_muon2' in _bdtvarnames: _bdtvarnames['Pt_muon2'][0] = _ptmu2
 	if 'Pt_jet1' in _bdtvarnames: _bdtvarnames['Pt_jet1'][0] = _ptj1
 	if 'Pt_jet2' in _bdtvarnames: _bdtvarnames['Pt_jet2'][0] = _ptj2
-	if 'DR_muon1muon2jet1' in _bdtvarnames: _bdtvarnames[dR_uu_jet1][0] = _DRu1u2j1
+	if 'DR_dimuonjet1' in _bdtvarnames: _bdtvarnames['DR_dimuonjet1'][0] = _DRdimuj1
 
 	out_bdtdisc = -999.
 	
@@ -1786,7 +1883,7 @@ if LQToBMu_single_bdtswitch:
 	#---Single prod. LQ->bu with uub selection BDT
 	reader_LQToBMu_single_uub = TMVA.Reader("!Color")
 	# the order of the variables matters, need to be the same as when training
-	_bdtvars_uub = ['M_uu', 'M_uujj', 'M_uujj1', 'M_uujj2', 'St_uujj', 'Pt_miss', 'DeepJet_jet1', 'DeepJet_jet2', 'Pt_muon1', 'Pt_muon2', 'Pt_jet1', 'Pt_jet2', 'DR_muon1muon2jet1']
+	_bdtvars_uub = ['M_uu', 'M_uujj', 'M_uujj1', 'M_uujj2', 'St_uujj', 'Pt_miss', 'DeepJet_jet1', 'DeepJet_jet2', 'Pt_muon1', 'Pt_muon2', 'Pt_jet1', 'Pt_jet2', 'DR_dimuonjet1']
 
 	_bdtvarnames_uub = {}
 	for vth in _bdtvars_uub:
@@ -1801,7 +1898,7 @@ if LQToBMu_pair_bdtswitch:
 	#---Pair prod. LQ->bu with uubj selection BDT
 	reader_LQToBMu_pair_uubj = TMVA.Reader("!Color")
 	# the order of the variables matters, need to be the same as when training
-	_bdtvars_uubj = ['M_uu', 'M_uujj', 'M_uujj1', 'M_uujj2', 'St_uujj', 'Pt_miss', 'DeepJet_jet1', 'DeepJet_jet2', 'Pt_muon1', 'Pt_muon2', 'Pt_jet1', 'Pt_jet2', 'DR_muon1muon2jet1']
+	_bdtvars_uubj = ['M_uu', 'M_uujj', 'M_uujj1', 'M_uujj2', 'St_uujj', 'Pt_miss', 'DeepJet_jet1', 'DeepJet_jet2', 'Pt_muon1', 'Pt_muon2', 'Pt_jet1', 'Pt_jet2', 'DR_dimuonjet1']
 
 	_bdtvarnames_uubj = {}
 	for vth in _bdtvars_uubj:
@@ -1809,7 +1906,7 @@ if LQToBMu_pair_bdtswitch:
 		reader_LQToBMu_pair_uubj.AddVariable(vth, _bdtvarnames_uubj[vth])
 	# TMVA.Reader booked with BDT_classifier, input is .weights.xml file
 	for ith in range(len(SignalM)):
-		reader_LQToBMu_pair_uubj.BookMVA(str("BDT_classifier_LQTOBMu_pair_uubj_M" + SignalM[ith]), str(LQToBMu_pair_uubj_weights[0] + SignalM[ith] + LQToBMu_pair_uubj_weights[1]))
+		reader_LQToBMu_pair_uubj.BookMVA(str("BDT_classifier_LQToBMu_pair_uubj_M" + SignalM[ith]), str(LQToBMu_pair_uubj_weights[0] + SignalM[ith] + LQToBMu_pair_uubj_weights[1]))
 
 ##########################################################################################
 ###########      FULL CALCULATION OF ALL VARIABLES, REPEATED FOR EACH SYS   ##############
@@ -1841,12 +1938,12 @@ def FullKinematicCalculation(T,variation):
 	# taus_forjetsep = TausForJetSeparation(T)
 	[electrons,electroninds,met] = HEEPElectrons(T,met,variation)
 	# ID Jets and filter from leptons
-	[jets,jetinds,met,failthreshold,neutralhadronEF,neutralemEF,btagDeepJetScores,btagSFs,PUIds] = TightIDJets(T,met,variation,isData)
+	[jets,jetinds,met,failthreshold,neutralhadronEF,neutralemEF,btagDeepJetScores,btagSFs,btagSFs_up,btagSFs_down,PUIds] = TightIDJets(T,met,variation,isData)
         # Filter jets from good muons and electrons.
         # Filter jets and associated collections - jets must be first element in the array!! (don't put met or failthreshold, they are not arrays)
         # All arrays MUST have same length as the jets, and all associated collections of the jets MUST be added here - think btagging, SF, etc.....
-	[jets,jetinds,neutralhadronEF,neutralemEF,btagDeepJetScores,btagSFs,PUIds] = GeomFilterCollections([jets,jetinds,neutralhadronEF,neutralemEF,btagDeepJetScores,btagSFs,PUIds],muons,0.5)
-        [jets,jetinds,neutralhadronEF,neutralemEF,btagDeepJetScores,btagSFs,PUIds] = GeomFilterCollections([jets,jetinds,neutralhadronEF,neutralemEF,btagDeepJetScores,btagSFs,PUIds],electrons,0.5)
+	[jets,jetinds,neutralhadronEF,neutralemEF,btagDeepJetScores,btagSFs,btagSFs_up,btagSFs_down,PUIds] = GeomFilterCollections([jets,jetinds,neutralhadronEF,neutralemEF,btagDeepJetScores,btagSFs,btagSFs_up,btagSFs_down,PUIds],muons,0.5)
+        [jets,jetinds,neutralhadronEF,neutralemEF,btagDeepJetScores,btagSFs,btagSFs_up,btagSFs_down,PUIds] = GeomFilterCollections([jets,jetinds,neutralhadronEF,neutralemEF,btagDeepJetScores,btagSFs,btagSFs_up,btagSFs_down,PUIds],electrons,0.5)
         # Filter jets only, not associated collections!!
 	#jets = GeomFilterCollection(jets,muons,0.5)
 	#jets = GeomFilterCollection(jets,electrons,0.5)
@@ -1888,6 +1985,8 @@ def FullKinematicCalculation(T,variation):
 		neutralemEF.append(0.0)
 		btagDeepJetScores.append(-5.0)
 		btagSFs.append(-5.0)
+		btagSFs_up.append(-5.0)
+		btagSFs_down.append(-5.0)
 		PUIds.append([-5.0,-5.0,-5.0])
 	if len(jets) < 2 : 
 		jets.append(EmptyLorentz)
@@ -1895,6 +1994,8 @@ def FullKinematicCalculation(T,variation):
 		neutralemEF.append(0.0)		
 		btagDeepJetScores.append(-5.0)
 		btagSFs.append(-5.0)
+		btagSFs_up.append(-5.0)
+		btagSFs_down.append(-5.0)
 		PUIds.append([-5.0,-5.0,-5.0])
 	_ismuon_muon1 = 1.0
 	_ismuon_muon2 = 1.0
@@ -1944,6 +2045,9 @@ def FullKinematicCalculation(T,variation):
 	[_xmiss,_ymiss] = [met.Px(),met.Py()]
 	[_deepJetj1,_deepJetj2] = [btagDeepJetScores[0],btagDeepJetScores[1]]
 	[_btagSF1,_btagSF2] = [btagSFs[0],btagSFs[1]]
+	[_btagSF1_up,_btagSF2_up] = [btagSFs_up[0],btagSFs_up[1]]
+	[_btagSF1_down,_btagSF2_down] = [btagSFs_down[0],btagSFs_down[1]]
+
 	[_PULoosej1,_PUMediumj1,_PUTightj1] = PUIds[0]
 	[_PULoosej2,_PUMediumj2,_PUTightj2] = PUIds[1]
 
@@ -1978,8 +2082,8 @@ def FullKinematicCalculation(T,variation):
 	_DPhiu2j2 = abs(muons[1].DeltaPhi(jets[1]))
 
 	#Get muon scale factors and up, down variations here
-	[_mu1recoSF,_mu1recoSFup,_mu1recoSFdown,_mu1idSF,_mu1idSFup,_mu1idSFdown,_mu1isoSF,_mu1isoSFup,_mu1isoSFdown,_mu1hltSF,_mu1hltSFup,_mu1hltSFdown] = getMuonSF(_ptmu1,_etamu1)
-	[_mu2recoSF,_mu2recoSFup,_mu2recoSFdown,_mu2idSF,_mu2idSFup,_mu2idSFdown,_mu2isoSF,_mu2isoSFup,_mu2isoSFdown,_mu2hltSF,_mu2hltSFup,_mu2hltSFdown] = getMuonSF(_ptmu2,_etamu2)
+	[_mu1recoSF,_mu1recoSFup,_mu1recoSFdown,_mu1idSF,_mu1idSFup,_mu1idSFdown,_mu1isoSF,_mu1isoSFup,_mu1isoSFdown,_mu1hltSF,_mu1hltSFup,_mu1hltSFdown] = getMuonSF(_ptmu1,_etamu1,_phimu1)
+	[_mu2recoSF,_mu2recoSFup,_mu2recoSFdown,_mu2idSF,_mu2idSFup,_mu2idSFdown,_mu2isoSF,_mu2isoSFup,_mu2isoSFdown,_mu2hltSF,_mu2hltSFup,_mu2hltSFdown] = getMuonSF(_ptmu2,_etamu2,_phimu2)
 
 	_Muujj1_gen=0
 	_Muujj2_gen=0
@@ -2049,11 +2153,11 @@ def FullKinematicCalculation(T,variation):
 	
 	if LQToBMu_single_bdtswitch:
 		for m in range(len(_lqtobmu_single_uub_bdt_discrims)):
-			_LQuujj_uu_bdt_discrims[m] = calculateBDTdiscriminant(reader_LQToBMu_single_uub, str("BDT_classifier_LQToBMu_single_uub_M"+SignalM[m]), _bdtvarnames_uub, _Muu, _Muujj, _Muujj1, _Muujj2, _stuujj, _ptmet, _deepJetj1, _deepJetj2, _ptmu1, _ptmu2, _ptj1, _ptj2, _DRu1u2j1)
+			_LQuujj_uu_bdt_discrims[m] = calculateBDTdiscriminant(reader_LQToBMu_single_uub, str("BDT_classifier_LQToBMu_single_uub_M"+SignalM[m]), _bdtvarnames_uub, _Muu, _Muujj, _Muujj1, _Muujj2, _stuujj, _ptmet, _deepJetj1, _deepJetj2, _ptmu1, _ptmu2, _ptj1, _ptj2, _DRdimuj1)
 	
 	if LQToBMu_pair_bdtswitch:
 		for m in range(len(_lqtobmu_pair_uubj_bdt_discrims)):
-			_lqtobmu_pair_uubj_bdt_discrims[m] = calculateBDTdiscriminant(reader_LQToBMu_pair_uubj, str("BDT_classifier_LQToBMu_uubj_M"+SignalM[m]), _bdtvarnames_uubj, _Muu, _Muujj, _Muujj1, _Muujj2, _stuujj, _ptmet, _deepJetj1, _deepJetj2, _ptmu1, _ptmu2, _ptj1, _ptj2, _DRu1u2j1)
+			_lqtobmu_pair_uubj_bdt_discrims[m] = calculateBDTdiscriminant(reader_LQToBMu_pair_uubj, str("BDT_classifier_LQToBMu_pair_uubj_M"+SignalM[m]), _bdtvarnames_uubj, _Muu, _Muujj, _Muujj1, _Muujj2, _stuujj, _ptmet, _deepJetj1, _deepJetj2, _ptmu1, _ptmu2, _ptj1, _ptj2, _DRdimuj1)
 	
 	[_LQToBMu_single_uub_BDT_discrim_M300, _LQToBMu_single_uub_BDT_discrim_M400, _LQToBMu_single_uub_BDT_discrim_M500, _LQToBMu_single_uub_BDT_discrim_M600, _LQToBMu_single_uub_BDT_discrim_M700, _LQToBMu_single_uub_BDT_discrim_M800, _LQToBMu_single_uub_BDT_discrim_M900, _LQToBMu_single_uub_BDT_discrim_M1000, _LQToBMu_single_uub_BDT_discrim_M1100, _LQToBMu_single_uub_BDT_discrim_M1200, _LQToBMu_single_uub_BDT_discrim_M1300, _LQToBMu_single_uub_BDT_discrim_M1400, _LQToBMu_single_uub_BDT_discrim_M1500, _LQToBMu_single_uub_BDT_discrim_M1600, _LQToBMu_single_uub_BDT_discrim_M1700, _LQToBMu_single_uub_BDT_discrim_M1800, _LQToBMu_single_uub_BDT_discrim_M1900, _LQToBMu_single_uub_BDT_discrim_M2000, _LQToBMu_single_uub_BDT_discrim_M2100, _LQToBMu_single_uub_BDT_discrim_M2200, _LQToBMu_single_uub_BDT_discrim_M2300, _LQToBMu_single_uub_BDT_discrim_M2400, _LQToBMu_single_uub_BDT_discrim_M2500, _LQToBMu_single_uub_BDT_discrim_M2600, _LQToBMu_single_uub_BDT_discrim_M2700, _LQToBMu_single_uub_BDT_discrim_M2800, _LQToBMu_single_uub_BDT_discrim_M2900, _LQToBMu_single_uub_BDT_discrim_M3000, _LQToBMu_single_uub_BDT_discrim_M3500, _LQToBMu_single_uub_BDT_discrim_M4000] = _lqtobmu_single_uub_bdt_discrims
 
@@ -2098,6 +2202,8 @@ def FullKinematicCalculation(T,variation):
 	toreturn += [_ptHat]
 	toreturn += [_deepJetj1,_deepJetj2]
 	toreturn += [_btagSF1,_btagSF2]
+	toreturn += [_btagSF1_up,_btagSF2_up]
+	toreturn += [_btagSF1_down,_btagSF2_down]
 	toreturn += [_PULoosej1,_PUMediumj1,_PUTightj1]
 	toreturn += [_PULoosej2,_PUMediumj2,_PUTightj2]
 	toreturn += [_WorZSystemPt]
@@ -2290,7 +2396,7 @@ for n in range(N):
 	t.GetEntry(n)
 	# if n > 1000:  # Testing....
 	# 	break
-	if n%100==0:
+	if n%1000==0 or True:
 		print 'Processing event',n, 'of', N # where we are in the loop...
 
 	
@@ -2327,7 +2433,7 @@ for n in range(N):
 		#	scaleWeights = t.ScaleWeights
 		#scaleWeights = [0,0,0,0,0,0,0,0,0]#fixme have to calculate?
 		scaleWeights = t.LHEScaleWeight
-		if _year == '2017' and 'DYJetsToLL_Pt-' in amcNLOname and len(scaleWeights) == 8: # 2017 Pt-binned DY samples do not include nominal LHE scale weight; set "R1_F1" to 1.0
+		if (_year == '2017' or _year == '2018') and ('DYJetsToLL_Pt-' in amcNLOname or 'WJetsToLNu_' in amcNLOname or 'ZZTo4L' in amcNLOname) and len(scaleWeights) == 8: # 2017 Pt-binned DY, WJets to lv, and ZZ to llll samples and 2018 Pt-binned DY samples do not include nominal LHE scale weight; set "R1_F1" to 1.0
 			Branches['scaleWeight_Up'][0]=       scaleWeights[7]
 			Branches['scaleWeight_Down'][0]=     scaleWeights[0]
 			Branches['scaleWeight_R0p5_F0p5'][0]=scaleWeights[0]
