@@ -1159,26 +1159,21 @@ def SmearMuonCollections(_ptCollection, _etaCollection, _phiCollection, isSystem
 		elif abs(_etaCollection[n]) > 1.2 or isSystematic:
 			smearConst = 0.57 # resolution smearing of 15% -> 0.57
 			if isSystematic: smearConst = 0.46 # systematics requires 10% smearing -> 0.46
-			#print 'pt:',_ptCollection[n]
-			#print 'eta:',_etaCollection[n]
-			#print 'phi:',_phiCollection[n]
 			smearedLorentz = TLorentzVector()
 			origLorentz = TLorentzVector()
 			origLorentz.SetPtEtaPhiM(_ptCollection[n], _etaCollection[n], _phiCollection[n], 0)
-			#print 'origLorentz is',origLorentz
-			# Smearing is performed on 3-momentum, convert from Pt, Eta, Phi to cartesian 4-momentum and back
-			origPx = origLorentz.Px()
-			origPy = origLorentz.Py()
-			origPz = origLorentz.Pz()
 
+			# Smearing is performed on P, convert from Pt, Eta, Phi to cartesian 3-momentum and back
+			origP = origLorentz.P()
 			# Smear momenta here
-			smearedPx = origPx*(1 + tRand.Gaus(0.0, MERParametrization(origPx, _etaCollection[n])*smearConst))
-			smearedPy = origPy*(1 + tRand.Gaus(0.0, MERParametrization(origPy, _etaCollection[n])*smearConst))
-			smearedPz = origPz*(1 + tRand.Gaus(0.0, MERParametrization(origPz, _etaCollection[n])*smearConst))
+			smearing = (1 + tRand.Gaus(0.0, MERParametrization(origP, _etaCollection[n])*smearConst))
+			smearedPx = origPx*smearing
+			smearedPy = origPy*smearing
+			smearedPz = origPz*smearing
 			smearedE = math.sqrt(smearedPx*smearedPx + smearedPy*smearedPy + smearedPz*smearedPz)
-
 			smearedLorentz.SetPxPyPzE(smearedPx, smearedPx, smearedPz, smearedE)
 
+			# Return the smeared Pt, Eta, Phi collections
 			smearedPtCollection[n] = smearedLorentz.Pt()
 			smearedEtaCollection[n] = smearedLorentz.Eta()
 			smearedPhiCollection[n] = smearedLorentz.Phi()
