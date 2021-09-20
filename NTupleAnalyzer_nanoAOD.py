@@ -1164,6 +1164,9 @@ def SmearMuonCollections(_ptCollection, _etaCollection, _phiCollection, isSystem
 			origLorentz.SetPtEtaPhiM(_ptCollection[n], _etaCollection[n], _phiCollection[n], 0)
 
 			# Smearing is performed on P, convert from Pt, Eta, Phi to cartesian 3-momentum and back
+			origPx = origLorentz.Px()
+			origPy = origLorentz.Py()
+			origPz = origLorentz.Pz()
 			origP = origLorentz.P()
 			# Smear momenta here
 			smearing = (1 + tRand.Gaus(0.0, MERParametrization(origP, _etaCollection[n])*smearConst))
