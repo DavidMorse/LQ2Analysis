@@ -21,12 +21,14 @@ btags = str(options.btags)
 
 # Directory where root files are kept and the tree you want to get root files from
 if year == '2016':
-	NormalDirectory = '/eos/cms/store/group/phys_exotica/leptonsPlusJets/LQ/LQ2/stockNanoTrees/NanoAODv7/2016/gmadigan/NTupleAnalyzer_nanoAOD_Full2016QuickTest_stockNano_2021_08_20_01_00_251/SummaryFiles' #'/eos/cms/store/group/phys_exotica/leptonsPlusJets/LQ/LQ2/stockNanoTrees/NanoAODv7/2016/gmadigan/NTupleAnalyzer_nanoAOD_Full2016QuickTestBDT_stockNano_2021_04_04_21_08_03/SummaryFiles'
+	NormalDirectory = '/eos/cms/store/group/phys_exotica/leptonsPlusJets/LQ/LQ2/stockNanoTrees/NanoAODv7/2016/gmadigan/NTupleAnalyzer_nanoAOD_Full2016_BDT_Syst_PDF_stockNano7_2021_09_21_20_32_11/SummaryFiles'
+	#'/eos/cms/store/group/phys_exotica/leptonsPlusJets/LQ/LQ2/stockNanoTrees/NanoAODv7/2016/gmadigan/NTupleAnalyzer_nanoAOD_Full2016QuickTest_stockNano_2021_08_20_01_00_251/SummaryFiles' #'/eos/cms/store/group/phys_exotica/leptonsPlusJets/LQ/LQ2/stockNanoTrees/NanoAODv7/2016/gmadigan/NTupleAnalyzer_nanoAOD_Full2016QuickTestBDT_stockNano_2021_04_04_21_08_03/SummaryFiles'
 	#'/eos/cms/store/group/phys_exotica/leptonsPlusJets/LQ/LQ2/stockNanoTrees/NanoAODv7/2016/gmadigan/NTupleAnalyzer_nanoAOD_Full2016QuickTest_stockNano_2021_03_17_18_13_03/SummaryFiles'
 	QCDDirectory    = '/eos/cms/store/group/phys_exotica/leptonsPlusJets/LQ/LQ2/trees/NTupleAnalyzer_nanoAOD_Full2016QCDNonIsoQuickTest_2019_10_14/SummaryFiles' #Placeholder
 	EMuDirectory    = '/eos/cms/store/group/phys_exotica/leptonsPlusJets/LQ/LQ2/trees/NTupleAnalyzer_nanoAOD_Full2016EMuSwitch_2019_10_14/SummaryFiles' #Placeholder
 elif year == '2017':
-	NormalDirectory = '/eos/cms/store/group/phys_exotica/leptonsPlusJets/LQ/LQ2/stockNanoTrees/NanoAODv7/2017/gmadigan/NTupleAnalyzer_nanoAOD_Full2017QuickTest_stockNano_2021_08_31_23_29_04/SummaryFiles'#'/eos/cms/store/group/phys_exotica/leptonsPlusJets/LQ/LQ2/stockNanoTrees/NanoAODv7/2017/gmadigan/NTupleAnalyzer_nanoAOD_Full2017QuickTest_stockNano_2021_05_24_03_42_56/SummaryFiles'
+	NormalDirectory = '/eos/cms/store/group/phys_exotica/leptonsPlusJets/LQ/LQ2/stockNanoTrees/NanoAODv7/2017/gmadigan/NTupleAnalyzer_nanoAOD_Full2017_BDT_Syst_PDF_stockNano7_2021_09_27_20_39_37/SummaryFiles'
+	#'/eos/cms/store/group/phys_exotica/leptonsPlusJets/LQ/LQ2/stockNanoTrees/NanoAODv7/2017/gmadigan/NTupleAnalyzer_nanoAOD_Full2017QuickTest_stockNano_2021_08_31_23_29_04/SummaryFiles'#'/eos/cms/store/group/phys_exotica/leptonsPlusJets/LQ/LQ2/stockNanoTrees/NanoAODv7/2017/gmadigan/NTupleAnalyzer_nanoAOD_Full2017QuickTest_stockNano_2021_05_24_03_42_56/SummaryFiles'
 	QCDDirectory    = '/eos/cms/store/group/phys_exotica/leptonsPlusJets/LQ/LQ2/trees/NTupleAnalyzer_nanoAOD_Full2016QCDNonIsoQuickTest_2019_10_14/SummaryFiles' #Placeholder
 	EMuDirectory    = '/eos/cms/store/group/phys_exotica/leptonsPlusJets/LQ/LQ2/trees/NTupleAnalyzer_nanoAOD_Full2016EMuSwitch_2019_10_14/SummaryFiles' #Placeholder
 elif year == '2018':
@@ -270,10 +272,15 @@ alignmentuncs = [0.1,1.0,1.0,[0.027,0.027,0.027,0.072,0.205,0.672,1.268,2.592,3.
 # Shape systematics in percent
 
 #2016
-shapesysvar_uujj_zjets  = [0.54, 2.48, 2.28, 2.58, 3.8, 4.13, 2.76, 3.04, 3.18, 3.26, 4.92, 4.79, 6.01, 7.04, 6.74, 5.07, 6.35, 5.83, 7.94, 7.13, 6.72, 8.86, 8.77, 10.59, 8.37, 7.83, 8.14, 9.08, 9.08, 9.08, 9.08, 9.08, 9.08, 9.08, 9.08, 9.08, 9.08, 9.08]
-shapesysvar_uujj_ttjets = [1.23, 3.08, 4.5, 7.53, 11.1, 14.59, 16.1, 17.74, 19.91, 24.51, 27.37, 27.9, 23.69, 22.78, 25.15, 34.55, 31.99, 24.91, 24.91, 8.46, 8.46, 8.47, 8.47, 8.47, 8.47, 8.47, 8.47, 8.47, 8.47, 8.47, 8.47, 8.47, 8.47, 8.47, 8.47, 8.47, 8.47, 8.47]
-shapesysvar_uujj_vv = [7.99, 8.94, 9.31, 11.08, 11.92, 13.12, 13.03, 15.11, 16.95, 18.41, 17.74, 17.92, 19.19, 19.65, 20.35, 19.11, 20.21, 19.49, 18.68, 20.92, 22.11, 21.14, 20.63, 21.67, 21.67, 22.91, 25.29, 26.45, 26.45, 26.45, 26.45, 26.45, 26.45, 26.45, 26.45, 26.45, 26.45, 26.45]
+#shapesysvar_uujj_zjets  = [0.54, 2.48, 2.28, 2.58, 3.8, 4.13, 2.76, 3.04, 3.18, 3.26, 4.92, 4.79, 6.01, 7.04, 6.74, 5.07, 6.35, 5.83, 7.94, 7.13, 6.72, 8.86, 8.77, 10.59, 8.37, 7.83, 8.14, 9.08, 9.08, 9.08, 9.08, 9.08, 9.08, 9.08, 9.08, 9.08, 9.08, 9.08]
+#shapesysvar_uujj_ttjets = [1.23, 3.08, 4.5, 7.53, 11.1, 14.59, 16.1, 17.74, 19.91, 24.51, 27.37, 27.9, 23.69, 22.78, 25.15, 34.55, 31.99, 24.91, 24.91, 8.46, 8.46, 8.47, 8.47, 8.47, 8.47, 8.47, 8.47, 8.47, 8.47, 8.47, 8.47, 8.47, 8.47, 8.47, 8.47, 8.47, 8.47, 8.47]
+#shapesysvar_uujj_vv = [7.99, 8.94, 9.31, 11.08, 11.92, 13.12, 13.03, 15.11, 16.95, 18.41, 17.74, 17.92, 19.19, 19.65, 20.35, 19.11, 20.21, 19.49, 18.68, 20.92, 22.11, 21.14, 20.63, 21.67, 21.67, 22.91, 25.29, 26.45, 26.45, 26.45, 26.45, 26.45, 26.45, 26.45, 26.45, 26.45, 26.45, 26.45]
 
+# 2016 StockNanoAODv7
+if year == '2016':
+	shapesysvar_uujj_zjets  = [105.61, 105.39, 105.68, 105.38, 105.57, 105.65, 105.59, 105.37, 105.99, 105.58, 105.88, 106.09, 105.65, 105.52, 105.68, 106.21, 107.21, 105.79, 105.8, 106.47, 106.59, 0.0, 105.86, 106.47, 105.89, 105.96, 107.44, 106.54, 106.65, 106.14, 106.8]
+	shapesysvar_uujj_ttjets = [101.32, 101.27, 101.33, 101.35, 101.38, 101.54, 101.68, 101.7, 101.7, 101.7, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 101.25, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+	shapesysvar_uujj_vvjets = [6.37, 14.33, 7.21, 5.26, 10.8, 7.36, 54.16, 12.37, 10.57, 17.84, 15.61, 7.2, 0.0, 0.0, 12.52, 137.64, 190.32, 54.57, 190.32, 17.72, 190.32, 19.87, 190.32, 0.0, 24.14, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
 
 shapesysvar_uvjj_wjets  = [1.23, 1.54, 1.67, 3.76, 3.94, 5.6, 8.37, 7.73, 8.33, 5.19, 5.78, 5.47, 8.73, 18.11, 23.3, 12.4, 24.98, 24.79, 29.56, 14.12, 16.29, 11.8, 16.47, 35.87, 65.54, 55.04, 17.6, 18.42, 22.98, 24.6, 13.22, 7.16, 4.7, 5.11, 5.23, 3.57, 3.51, 3.42]
 shapesysvar_uvjj_ttjets = [0.68, 1.13, 2.16, 3.34, 4.42, 6.39, 8.25, 9.47, 10.08, 12.29, 14.62, 15.59, 17.25, 18.12, 21.74, 24.95, 20.29, 21.35, 20.86, 20.49, 14.14, 38.26, 36.05, 36.05, 36.05, 36.05, 38.26, 38.26, 38.26, 38.26, 38.26, 38.26, 41.15, 41.15, 41.15, 41.15, 41.15, 41.15]
@@ -346,7 +353,7 @@ def main():
 	# for this, and make use of it. e.g. For systematic variations, we can run in batch instead
 	# of running serially, which speeds things up.
 
-	version_name = 'Testing_'+year+'_stockNanoAODv7_HighPtIso' # scriptflag
+	version_name = 'Testing_'+year+'_stockNanoAODv7_BDT_Syst_PDF' # scriptflag
 	#version_name = 'Testing_noQCD_14nov' # use sf tag above if this is the real folder
 	os.system('mkdir Results_'+version_name) 
 
@@ -583,8 +590,8 @@ def main():
 		#munu2 = '(MT_uv>70)*(MT_uv<110)*(JetCount>3.5)'
 		# SFs with updated integrated luminosities
 		if year == '2016':
-			[[Rz_uuj,Rz_uuj_err],[Rtt_uuj,Rtt_uuj_err]] = [[0.95,0.015],[0.922,0.012]] #2016 stock NanoAODv7 with 1 btag (uub)
-			[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = [[0.962,0.016],[0.914,0.013]] #2016 stock NanoAODv7 with 1 btag (uubj)
+			[[Rz_uuj,Rz_uuj_err],[Rtt_uuj,Rtt_uuj_err]] = [[0.952,0.019],[0.982,0.013]] #2016 stock NanoAODv7 with 1 btag (uub)
+			[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = [[0.969,0.023],[0.969,0.014]] #2016 stock NanoAODv7 with 1 btag (uubj)
 		elif year == '2017': 
 			[[Rz_uuj,Rz_uuj_err],[Rtt_uuj,Rtt_uuj_err]]  =  [[1.316,0.018],[1.01,0.01]] #2017 stock NanoAODv7 with 1 btag (uub)
 			[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = [[1.305,0.02],[1.011,0.012]] #2017 stock NanoAODv7 with 1 btag (uubj)
@@ -4021,6 +4028,18 @@ def ModSelection(selection,sysmethod,channel_log):
 			if year =='2016': selection = '(0.988)*'+selection #vary 2016 luminosity down by 1.2%
 			elif year == '2017': selection = '(0.977)*'+selection #vary 2017 luminosity down by 2.3%
 			elif year == '2018': selection = '(0.975)*'+selection #vary 2018 luminosity down by 2.5%
+		if sysmethod == 'MUONRECOup':
+			selection = selection.replace('mu1recoSF*mu2recoSF','mu1recoSFup*mu2recoSFup')
+		if sysmethod == 'MUONRECOdown':
+			selection = selection.replace('mu1recoSF*mu2recoSF','mu1recoSFdown*mu2recoSFdown')		
+		if sysmethod == 'MUONISOup':
+			selection = selection.replace('mu1isoSF*mu2isoSF','mu1isoSFup*mu2isoSFup')
+		if sysmethod == 'MUONISOdown':
+			selection = selection.replace('mu1isoSF*mu2isoSF','mu1isoSFdown*mu2isoSFdown')
+		if sysmethod == 'MUONIDup':
+			selection = selection.replace('mu1idSF*mu2idSF','mu1idSFup*mu2idSFup')
+		if sysmethod == 'MUONIDdown':
+			selection = selection.replace('mu1idSF*mu2idSF','mu1idSFdown*mu2idSFdown')
 		if sysmethod == 'MUONIDISOup':
 			if 'uujj' in channel_log:
 				selection = '(1.04)*'+selection
@@ -4044,12 +4063,14 @@ def ModSelection(selection,sysmethod,channel_log):
 		# Per-muon 2% below 300 GeV and +2% -6% above 300 GeV. On top of this, 2% is added resulting from the impact of pre-triggering.
 		if sysmethod == 'MUONHLTup':
 			if 'uujj' in channel_log: #2% pretrigger, +-2% per muon below 300, +2-6% per muon above 300  uujj: x(SF1+SF2-xSF1SF2)
-				selection = '(1.02)*(2-1.02)*1.02*(2-1.02)*'+selection #fixme todo
+				#selection = '(1.02)*(2-1.02)*1.02*(2-1.02)*'+selection #fixme todo
+				selection = selection.replace('(1.0-((1.0-mu1hltSF)*(1.0-mu2hltSF)))', '(1.0-((1.0-mu1hltSFup)*(1.0-mu2hltSFup)))')
 			if 'uvjj' in channel_log: 
 				selection = '(1.02)*(1.02)*'+selection
 		if sysmethod == 'MUONHLTdown':
 			if 'uujj' in channel_log: 
-				selection = '(0.98)*(2-0.98)*(0.98*(2-0.98)*(Pt_muon1<300)+0.94*(2-0.94)*(Pt_muon1>300))*(0.98*(2-0.98)*(Pt_muon2<300)+0.94*(2-0.94)*(Pt_muon2>300))*'+selection
+				#selection = '(0.98)*(2-0.98)*(0.98*(2-0.98)*(Pt_muon1<300)+0.94*(2-0.94)*(Pt_muon1>300))*(0.98*(2-0.98)*(Pt_muon2<300)+0.94*(2-0.94)*(Pt_muon2>300))*'+selection
+				selection = selection.replace('(1.0-((1.0-mu1hltSF)*(1.0-mu2hltSF)))', '(1.0-((1.0-mu1hltSFdown)*(1.0-mu2hltSFdown)))')
 			if 'uvjj' in channel_log: 
 				selection = '(0.98)*(0.98*(Pt_muon1<300)+0.94*(Pt_muon1>300))*'+selection
 		#https://indico.cern.ch/event/675475/contributions/2764498/subcontributions/240732/attachments/1547347/2429001/Wprime-muon-Approvalv1.pdf
@@ -4068,6 +4089,13 @@ def ModSelection(selection,sysmethod,channel_log):
 			selection = selection.replace('weight_central','weight_pu_up')
 		if sysmethod == 'PUdown':
 			selection = selection.replace('weight_central','weight_pu_down')
+
+		if sysmethod == 'BTAGSFup':
+			if year == '2016':
+				selection = selection.replace('*(((DeepJet_jet1>0.3093)+(DeepJet_jet2>0.3093))>0)',bTagSFmediumUp)
+		if sysmethod == 'BTAGSFdown':
+			if year == '2016':
+				selection = selection.replace('*(((DeepJet_jet1>0.3093)+(DeepJet_jet2>0.3093))>0)',bTagSFmediumDown)
 
 	return selection
 
@@ -4134,10 +4162,10 @@ def SysTable(optimlog, selection_uujj,selection_uvjj,NormalDirectory, weight,sys
 
 
 	if sysmethod == 'ZNORMup':   
-		rz *= 1.1#fixme adding this to cover st/muj kinematic difference
+		#rz *= 1.1#fixme adding this to cover st/muj kinematic difference
 		rz += _e_rz 
 	if sysmethod == 'ZNORMdown': 
-		rz *= 0.9#fixme adding this to cover st/muj kinematic difference
+		#rz *= 0.9#fixme adding this to cover st/muj kinematic difference
 		rz += -_e_rz 
 	if sysmethod == 'WNORMup':     
 		rw += _e_rw
@@ -4461,7 +4489,8 @@ def FullAnalysis(optimlog,selection_uujj,selection_uvjj,NormalDirectory,weight,u
         #fixme removing align
 	#_Variations = ['','JESup','JESdown','MESup','MESdown','JERup','JERdown','MER','LUMIup','LUMIdown','PUup','PUdown','ZNORMup','ZNORMdown','WNORMup','WNORMdown','TTNORMup','TTNORMdown','SHAPETT','SHAPEZ','SHAPEW','SHAPEVV','MUONIDISO','MUONHLT','PDF','HIPup','HIPdown']	
 	#Splitting MUONIDISO and MUONHLT into up and down to account for asymmetric high pt corrections
-	_Variations = ['','JESup','JESdown','MESup','MESdown','JERup','JERdown','MER','LUMIup','LUMIdown','PUup','PUdown','ZNORMup','ZNORMdown','WNORMup','WNORMdown','TTNORMup','TTNORMdown','SHAPETT','SHAPEZ','SHAPEW','SHAPEVV','MUONIDISOup','MUONIDISOdown','MUONHLTup','MUONHLTdown','PDF','HIPup','HIPdown','BTAGup','BTAGdown']	
+	#_Variations = ['','JESup','JESdown','MESup','MESdown','JERup','JERdown','MER','LUMIup','LUMIdown','PUup','PUdown','ZNORMup','ZNORMdown','WNORMup','WNORMdown','TTNORMup','TTNORMdown','SHAPETT','SHAPEZ','SHAPEW','SHAPEVV','MUONIDISOup','MUONIDISOdown','MUONHLTup','MUONHLTdown','PDF','HIPup','HIPdown','BTAGup','BTAGdown']
+	_Variations = ['','JESup','JESdown','MESup','MESdown','JERup','JERdown','MER','LUMIup','LUMIdown','PUup','PUdown','ZNORMup','ZNORMdown','TTNORMup','TTNORMdown','SHAPETT','SHAPEZ','SHAPEVV','MUONIDup', 'MUONIDdown', 'MUONISOup', 'MUONISOdown','MUONHLTup','MUONHLTdown','MUONRECOup','MUONRECOdown','PDF','BTAGup','BTAGdown']	
 	for v in _Variations:
 		print ' -'*50
 		print 'Processing table for variation: ',v
@@ -8045,13 +8074,13 @@ def ShapeSystematic(channel,normalWeight,presel,cutFile):
 	#munu2 = '(MT_uv>70)*(MT_uv<110)*(((CISV_jet1>0.8484)+(CISV_jet2>0.8484))>=1)*(0.561694*((1.+(0.31439*Pt_jet1))/(1.+(0.17756*Pt_jet1))))'#*(CISV_jet1>CISV_jet2)+(0.901114+(1.40704e-05*(Pt_jet2)))*(CISV_jet2>0.8484)*(CISV_jet1<CISV_jet2))'
 	#munu1 = '(MT_uv>100)*(MT_uv<150)*(((CISV_jet1>0.5)+(CISV_jet2>0.5))<1)'
 	#munu2 = '(MT_uv>100)*(MT_uv<150)*(((CISV_jet1>0.8484)+(CISV_jet2>0.8484))>=1)*((0.901114+(1.32145e-05*(Pt_jet1))))'#*(CISV_jet1>CISV_jet2)+(0.901114+(1.40704e-05*(Pt_jet2)))*(CISV_jet2>0.8484)*(CISV_jet1<CISV_jet2))'
-	[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = GetMuMuScaleFactors( NormalWeightMuMu+'*'+preselectionmumu, NormalDirectory, '(M_uu>80)*(M_uu<100)', '(M_uu>100)',0,1)
-	[[Rw_uvjj,Rw_uvjj_err],[Rtt_uvjj,Rtt_uvjj_err]] = GetMuNuScaleFactors( NormalWeightMuNu+'*'+preselectionmunu, NormalDirectory,munu1,munu2,1)
-
+	[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = GetMuMuScaleFactors( NormalWeightMuMu+'*'+preselectionmumu, NormalDirectory, '(M_uu>80)*(M_uu<100)', '(M_uu>100)*(M_uu<250)',0,1)
+	#[[Rw_uvjj,Rw_uvjj_err],[Rtt_uvjj,Rtt_uvjj_err]] = GetMuNuScaleFactors( NormalWeightMuNu+'*'+preselectionmunu, NormalDirectory,munu1,munu2,1)
+	[[Rw_uvjj,Rw_uvjj_err],[Rtt_uvjj,Rtt_uvjj_err]] = [[1.0,0.0],[1.0,0.0]]
 	#Get presel scale factors for each weight
 	for weight in scaleWeights:
 		if 'uujj' in channel:
-			[[Rz_diff[weight],Rz_err_diff[weight]],[Rtt_diff[weight],Rtt_err_diff[weight]]] = GetMuMuScaleFactors(NormalWeightMuMu+'*'+preselectionmumu+'*'+weight, NormalDirectory, '(M_uu>80)*(M_uu<100)', '(M_uu>100)',0,1)
+			[[Rz_diff[weight],Rz_err_diff[weight]],[Rtt_diff[weight],Rtt_err_diff[weight]]] = GetMuMuScaleFactors(NormalWeightMuMu+'*'+preselectionmumu+'*'+weight, NormalDirectory, '(M_uu>80)*(M_uu<100)', '(M_uu>100)*(M_uu<250)',0,1)
 		elif 'uvjj' in channel:
 			[[Rw_diff[weight],Rw_err_diff[weight]],[Rtt_diff[weight],Rtt_err_diff[weight]]] = GetMuNuScaleFactors(NormalWeightMuNu+'*'+preselectionmunu+'*'+weight, NormalDirectory, munu1, munu2,1)
 	for selection in Sels :
