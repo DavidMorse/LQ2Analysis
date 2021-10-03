@@ -74,23 +74,62 @@ for c in ['uujj','uvjj']:
 		fout.close()
 
 		# Now, write a csh script for launching the job (same name as .py file, except for extension)
+		#ftcsh = runfile.replace('.py','.tcsh')
+
+		## Open tcsh script
+		#fout = open(ftcsh,'w')
+
+		## Lines for CMSSW setup
+		#fout.write('#!/bin/csh\nsetenv SCRAM_ARCH slc6_amd64_gcc530\ncmsrel CMSSW_8_0_26_patch1\ncd #CMSSW_8_0_26_patch1/src\ncmsenv\ncd '+pwd+'\n')
+		## Line for running the .py file
+		#fout.write('python '+runfile+'\n\n')
+		## Close tcsh script
+		#fout.close()
+		## bsub command
+		#os.system('chmod 755 '+ftcsh)
+		#bsub =  'bsub -q cmscaf1nd -e /dev/null -J '+runfile.split('.')[0]+' < '+ftcsh #was 1nw
+		#print bsub
+		## Run bsub command if using "--launch" argument
+		#if '--launch' in sys.argv:
+		#	os.system(bsub)
+
+
+
+
+		#Run with HTCondor:
+		bjq = '\"longlunch\"'
+		runname = runfile.split('.')[0]
 		ftcsh = runfile.replace('.py','.tcsh')
+		fsub = runfile.replace('.py','.sub')
+		subber = open(ftcsh,'w')
 
-		# Open tcsh script
-		fout = open(ftcsh,'w')
-
-		# Lines for CMSSW setup
-		fout.write('#!/bin/csh\nsetenv SCRAM_ARCH slc6_amd64_gcc530\ncmsrel CMSSW_8_0_26_patch1\ncd CMSSW_8_0_26_patch1/src\ncmsenv\ncd '+pwd+'\n')
-		# Line for running the .py file
-		fout.write('python '+runfile+'\n\n')
-		# Close tcsh script
-		fout.close()
-		# bsub command
-		os.system('chmod 755 '+ftcsh)
-		bsub =  'bsub -q cmscaf1nd -e /dev/null -J '+runfile.split('.')[0]+' < '+ftcsh #was 1nw
-		print bsub
-		# Run bsub command if using "--launch" argument
-		if '--launch' in sys.argv:
-			os.system(bsub)
+		subber.write('#!/bin/tcsh\n\n')
+		subber.write('setenv SCRAM_ARCH slc7_amd64_gcc700\n\n')
+		subber.write('source /cvmfs/cms.cern.ch/cmsset_default.csh\n')
+		subber.write('scram project CMSSW CMSSW_10_6_4\ncd CMSSW_10_6_4/src\n')#')scramv1 runtime -csh\ncd -\n\n')
+		subber.write('cmsenv\n')
+		subber.write('cd '+pwd+'\n')
+		subber.write('python '+runfile+' -y 2016 -b 1\n\n')
 
 
+		subber.close()
+
+		subber = open(fsub,'w')
+		subber.write('executable            = '+ftcsh)
+		subber.write('\narguments             =  $(ClusterID) $(ProcId)')
+		subber.write('\n+JobFlavour           = '+bjq)
+		subber.write('\noutput                 = '+runname+'_out.txt')
+		subber.write('\nerror                  = '+runname+'_err.txt')
+		subber.write('\nlog                    = '+runname+'.log')
+
+		subber.write('\nrequirements = (OpSysAndVer =?= "CentOS7")')
+		subber.write('\nqueue\n')
+
+		subber.close()
+
+		os.system('chmod 777 '+ftcsh)
+		os.system('chmod 777 '+fsub)
+
+		print 'condor_submit '+fsub
+		os.system('condor_submit '+fsub)
+		os.system('sleep 0.4')
