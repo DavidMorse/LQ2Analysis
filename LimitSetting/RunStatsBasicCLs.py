@@ -25,7 +25,7 @@ lqtype = 'LQ'
 
 cdir = ''
 
-fullcardfile = 'FinalCardsLQToBMu_bdt.txt'
+fullcardfile = 'FinalCardsLQ.txt'
 
 if 'do_BetaOne' in str(sys.argv):
 	do_BetaOne = 1

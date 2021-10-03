@@ -128,8 +128,10 @@ def cardtotex(card):
 				sysname = sysname.replace('SHAPE','') + ' Shape'
 			sysnames.append(sysname)
 			#if float(mass)>1500 : continue
-			if gotToBetaHalf!=True : continue #== for mumujj, != for munujj, commented out for both
+			if gotToBetaHalf==True : continue #== for mumujj, != for munujj, commented out for both
 			#print sysname
+                        #if mass=='2300': continue
+                        #if mass=='2900': continue
 			if 'TT Shape' in sysname:
 				if r_b < ttshape[0]:ttshape[0]=r_b
 				if r_b > ttshape[1]:ttshape[1]=r_b
