@@ -25,7 +25,7 @@ lqtype = 'LQ'
 
 cdir = ''
 
-fullcardfile = 'FinalCardsLQ.txt'
+fullcardfile = 'FinalCardsLQToBMu_bdt.txt'
 
 if 'do_BetaOne' in str(sys.argv):
 	do_BetaOne = 1
@@ -217,11 +217,13 @@ if do_BetaOne == 1:
 		EstimationInformation = [' r < 0.000000']
 		if 'LQ' in lqtype:
 			if float(name[x].replace('LQ_M_',''))<900:
-				rmax = float(name[x].replace('LQ_M_',''))/100.#fixme was 10000.0
+				rmax = float(name[x].replace('LQ_M_',''))/300.#fixme was 10000.0
 			elif float(name[x].replace('LQ_M_',''))<1200:
-				rmax = float(name[x].replace('LQ_M_',''))/10.#fixme was 10000.0
+				rmax = float(name[x].replace('LQ_M_',''))/100.#fixme was 10000.0
+			elif float(name[x].replace('LQ_M_',''))<2000:
+				rmax = float(name[x].replace('LQ_M_',''))/1.#fixme was 10000.0
 			else:
-				rmax = float(name[x].replace('LQ_M_',''))/4.#fixme was 10000.0
+				rmax = float(name[x].replace('LQ_M_',''))*10.#fixme was 10000.0
 		if 'BL' in lqtype:
 			rmax = float(name[x].replace('BLCTau'+ctau+'_M_',''))/60.#fixme was 10000.0
 			if '1000' in ctau: rmax = 50000.0
@@ -232,12 +234,12 @@ if do_BetaOne == 1:
 		while 'r < 0.000000' in str(EstimationInformation):
 			ntry += 1
 			rAbsAcc='.00005'
-			print ('combine '+ESTIMATIONMETHOD+' CLSLimits/BetaOne'+cdir+'/confbetaone_'+cdir+'_'+name[x]+'.cfg --rMax '+str(rmax)+'  --rAbsAcc '+rAbsAcc)
-			EstimationInformation = os.popen('combine '+ESTIMATIONMETHOD+' CLSLimits/BetaOne'+cdir+'/confbetaone_'+cdir+'_'+name[x]+'.cfg --rMax '+str(rmax)+' --rAbsAcc '+rAbsAcc).readlines()
+			print ('combine '+ESTIMATIONMETHOD+' CLSLimits/BetaOne'+cdir+'/confbetaone_'+cdir+'_'+name[x]+'.cfg --expectSignal 1'+' --rMax '+str(rmax)+'  --rAbsAcc '+rAbsAcc)
+			EstimationInformation = os.popen('combine '+ESTIMATIONMETHOD+' CLSLimits/BetaOne'+cdir+'/confbetaone_'+cdir+'_'+name[x]+'.cfg  --expectSignal 1'+' --rMax '+str(rmax)+' --rAbsAcc '+rAbsAcc).readlines()
 			#print ('combine '+METHOD.replace('SINGLEPOINT',str(rmax)).replace('CONFIGURATION','CLSLimits/BetaOne'+cdir+'/confbetaone_'+cdir+'_'+name[x]+'.cfg'))
 			#EstimationInformation = os.popen('combine '+METHOD.replace('SINGLEPOINT',str(rmax)).replace('CONFIGURATION','CLSLimits/BetaOne'+cdir+'/confbetaone_'+cdir+'_'+name[x]+'.cfg')).readlines()
 
-			
+			print 'finished combine'
 			if abs(rmax - oldrmax)<.1*rmax:
 				breaker=True		
 				
@@ -338,7 +340,7 @@ if do_BetaOne == 1:
 					values.append(float((line.split('<')[-1]).replace('\n','').split('+/-')[0]))
 
 
-			print 'combine -M HybridNew --rule CLs --frequentist --testStat LHC CLSLimits/BetaOne'+cdir+'/confbetaone_'+cdir+'_'+name[x]+'.cfg -H ProfileLikelihood --fork 4 --rMax '+rMax+' --rAbsAcc '+absAcc+' -T '+t+' --expectedFromGrid 0.5'
+			print 'combine -M ybridNew --rule CLs --frequentist --testStat LHC CLSLimits/BetaOne'+cdir+'/confbetaone_'+cdir+'_'+name[x]+'.cfg -H ProfileLikelihood --fork 4 --rMax '+rMax+' --rAbsAcc '+absAcc+' -T '+t+' --expectedFromGrid 0.5'
 			EstimationInformationExpMed = os.popen('combine -M HybridNew --rule CLs --frequentist --testStat LHC CLSLimits/BetaOne'+cdir+'/confbetaone_'+cdir+'_'+name[x]+'.cfg -H ProfileLikelihood --fork 4 --rMax '+rMax+' --rAbsAcc '+absAcc+' -T '+t+' --expectedFromGrid 0.5').readlines()
 
 			goForLimit = False
