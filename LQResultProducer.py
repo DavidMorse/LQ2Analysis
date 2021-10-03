@@ -272,15 +272,15 @@ alignmentuncs = [0.1,1.0,1.0,[0.027,0.027,0.027,0.072,0.205,0.672,1.268,2.592,3.
 # Shape systematics in percent
 
 #2016
-#shapesysvar_uujj_zjets  = [0.54, 2.48, 2.28, 2.58, 3.8, 4.13, 2.76, 3.04, 3.18, 3.26, 4.92, 4.79, 6.01, 7.04, 6.74, 5.07, 6.35, 5.83, 7.94, 7.13, 6.72, 8.86, 8.77, 10.59, 8.37, 7.83, 8.14, 9.08, 9.08, 9.08, 9.08, 9.08, 9.08, 9.08, 9.08, 9.08, 9.08, 9.08]
-#shapesysvar_uujj_ttjets = [1.23, 3.08, 4.5, 7.53, 11.1, 14.59, 16.1, 17.74, 19.91, 24.51, 27.37, 27.9, 23.69, 22.78, 25.15, 34.55, 31.99, 24.91, 24.91, 8.46, 8.46, 8.47, 8.47, 8.47, 8.47, 8.47, 8.47, 8.47, 8.47, 8.47, 8.47, 8.47, 8.47, 8.47, 8.47, 8.47, 8.47, 8.47]
-#shapesysvar_uujj_vv = [7.99, 8.94, 9.31, 11.08, 11.92, 13.12, 13.03, 15.11, 16.95, 18.41, 17.74, 17.92, 19.19, 19.65, 20.35, 19.11, 20.21, 19.49, 18.68, 20.92, 22.11, 21.14, 20.63, 21.67, 21.67, 22.91, 25.29, 26.45, 26.45, 26.45, 26.45, 26.45, 26.45, 26.45, 26.45, 26.45, 26.45, 26.45]
+shapesysvar_uujj_zjets  = [0.54, 2.48, 2.28, 2.58, 3.8, 4.13, 2.76, 3.04, 3.18, 3.26, 4.92, 4.79, 6.01, 7.04, 6.74, 5.07, 6.35, 5.83, 7.94, 7.13, 6.72, 8.86, 8.77, 10.59, 8.37, 7.83, 8.14, 9.08, 9.08, 9.08, 9.08, 9.08, 9.08, 9.08, 9.08, 9.08, 9.08, 9.08]
+shapesysvar_uujj_ttjets = [1.23, 3.08, 4.5, 7.53, 11.1, 14.59, 16.1, 17.74, 19.91, 24.51, 27.37, 27.9, 23.69, 22.78, 25.15, 34.55, 31.99, 24.91, 24.91, 8.46, 8.46, 8.47, 8.47, 8.47, 8.47, 8.47, 8.47, 8.47, 8.47, 8.47, 8.47, 8.47, 8.47, 8.47, 8.47, 8.47, 8.47, 8.47]
+shapesysvar_uujj_vv = [7.99, 8.94, 9.31, 11.08, 11.92, 13.12, 13.03, 15.11, 16.95, 18.41, 17.74, 17.92, 19.19, 19.65, 20.35, 19.11, 20.21, 19.49, 18.68, 20.92, 22.11, 21.14, 20.63, 21.67, 21.67, 22.91, 25.29, 26.45, 26.45, 26.45, 26.45, 26.45, 26.45, 26.45, 26.45, 26.45, 26.45, 26.45]
 
 # 2016 StockNanoAODv7
-if year == '2016':
-	shapesysvar_uujj_zjets  = [105.61, 105.39, 105.68, 105.38, 105.57, 105.65, 105.59, 105.37, 105.99, 105.58, 105.88, 106.09, 105.65, 105.52, 105.68, 106.21, 107.21, 105.79, 105.8, 106.47, 106.59, 0.0, 105.86, 106.47, 105.89, 105.96, 107.44, 106.54, 106.65, 106.14, 106.8]
-	shapesysvar_uujj_ttjets = [101.32, 101.27, 101.33, 101.35, 101.38, 101.54, 101.68, 101.7, 101.7, 101.7, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 101.25, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
-	shapesysvar_uujj_vvjets = [6.37, 14.33, 7.21, 5.26, 10.8, 7.36, 54.16, 12.37, 10.57, 17.84, 15.61, 7.2, 0.0, 0.0, 12.52, 137.64, 190.32, 54.57, 190.32, 17.72, 190.32, 19.87, 190.32, 0.0, 24.14, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+#if year == '2016':
+#	shapesysvar_uujj_zjets  = [105.61, 105.39, 105.68, 105.38, 105.57, 105.65, 105.59, 105.37, 105.99, 105.58, 105.88, 106.09, 105.65, 105.52, 105.68, 106.21, 107.21, 105.79, 105.8, 106.47, 106.59, 0.0, 105.86, 106.47, 105.89, 105.96, 107.44, 106.54, 106.65, 106.14, 106.8]
+#	shapesysvar_uujj_ttjets = [101.32, 101.27, 101.33, 101.35, 101.38, 101.54, 101.68, 101.7, 101.7, 101.7, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 101.25, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+#	shapesysvar_uujj_vvjets = [6.37, 14.33, 7.21, 5.26, 10.8, 7.36, 54.16, 12.37, 10.57, 17.84, 15.61, 7.2, 0.0, 0.0, 12.52, 137.64, 190.32, 54.57, 190.32, 17.72, 190.32, 19.87, 190.32, 0.0, 24.14, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
 
 shapesysvar_uvjj_wjets  = [1.23, 1.54, 1.67, 3.76, 3.94, 5.6, 8.37, 7.73, 8.33, 5.19, 5.78, 5.47, 8.73, 18.11, 23.3, 12.4, 24.98, 24.79, 29.56, 14.12, 16.29, 11.8, 16.47, 35.87, 65.54, 55.04, 17.6, 18.42, 22.98, 24.6, 13.22, 7.16, 4.7, 5.11, 5.23, 3.57, 3.51, 3.42]
 shapesysvar_uvjj_ttjets = [0.68, 1.13, 2.16, 3.34, 4.42, 6.39, 8.25, 9.47, 10.08, 12.29, 14.62, 15.59, 17.25, 18.12, 21.74, 24.95, 20.29, 21.35, 20.86, 20.49, 14.14, 38.26, 36.05, 36.05, 36.05, 36.05, 38.26, 38.26, 38.26, 38.26, 38.26, 38.26, 41.15, 41.15, 41.15, 41.15, 41.15, 41.15]
@@ -902,29 +902,29 @@ def main():
 		
 		for flag in ['tagfree']:
 
-#			# Preselection plots in the UUJJ channel in the PAS style (no subplot)
-#			MakeBasicPlot("St_uujj","S_{T}^{#mu#mujj} [GeV]",stbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standardPAS_TTBarDataDriven'+flag,'uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,500)
-#			#MakeBasicPlot("Pt_jet1","p_{T}(jet_{1}) [GeV]",ptbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standardPAS_TTBarDataDriven'+flag,'uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,500)
-#			#MakeBasicPlot("Pt_jet2","p_{T}(jet_{2}) [GeV]",ptbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standardPAS_TTBarDataDriven'+flag,'uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,500)
-#			#MakeBasicPlot("Pt_muon1","p_{T}(#mu_{1}) [GeV]",ptbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standardPAS_TTBarDataDriven'+flag,'uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,500)
-#			#MakeBasicPlot("Pt_muon2","p_{T}(#mu_{2}) [GeV]",ptbinning2,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standardPAS_TTBarDataDriven'+flag,'uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,500)
-#			MakeBasicPlot("M_uu","m_{#mu#mu} [GeV]",bosonbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standardPAS_TTBarDataDriven'+flag,'uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,500)
-#			#MakeBasicPlot("MH_uujj","m_{#muj} (lead jet combo) [GeV]",lqbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standardPAS_TTBarDataDriven'+flag,'uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,500)
-#			#MakeBasicPlot("M_uujj1","m_{#muj}_{1} [GeV]",lqbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standardPAS_TTBarDataDriven'+flag,'uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,500)
-#			MakeBasicPlot("M_uujj2","m_{#muj}^{min} [GeV]",lqbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standardPAS_TTBarDataDriven'+flag,'uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,500)
-#			#MakeBasicPlot("JetCount","N_{jet}",nbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standardPAS_TTBarDataDriven'+flag,'uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,500)
-#
-#			# Preselection plots in the UVJJ channel in the PAS style (no subplot)			
-#			#MakeBasicPlot("Pt_jet1","p_{T}(jet_{1}) [GeV]",ptbinning,preselectionmunu,NormalWeightMuNu,NormalDirectory,'standardPAS'+flag,'uvjj',Rz_uujj, Rw_uvjj,Rtt_uvjj,'',version_name,500)
-#			#MakeBasicPlot("Pt_jet2","p_{T}(jet_{2}) [GeV]",ptbinning,preselectionmunu,NormalWeightMuNu,NormalDirectory,'standardPAS'+flag,'uvjj',Rz_uujj, Rw_uvjj,Rtt_uvjj,'',version_name,500)
-#			#MakeBasicPlot("Pt_muon1","p_{T}(#mu_{1}) [GeV]",ptbinning,preselectionmunu,NormalWeightMuNu,NormalDirectory,'standardPAS'+flag,'uvjj',Rz_uujj, Rw_uvjj,Rtt_uvjj,'',version_name,500)
-#			#MakeBasicPlot("Pt_miss","E_{T}^{miss} [GeV]",ptbinning,preselectionmunu,NormalWeightMuNu,NormalDirectory,'standardPAS'+flag,'uvjj',Rz_uujj, Rw_uvjj,Rtt_uvjj,'',version_name,500)
-#			MakeBasicPlot("St_uvjj","S_{T}^{#mu#nujj} [GeV]",stbinning,preselectionmunu,NormalWeightMuNu,NormalDirectory,'standardPAS'+flag,'uvjj',Rz_uujj, Rw_uvjj,Rtt_uvjj,'',version_name,500)
-#			MakeBasicPlot("MT_uv","m_{T}^{#mu#nu} [GeV]",bosonbinning,preselectionmunu,NormalWeightMuNu,NormalDirectory,'standardPAS'+flag,'uvjj',Rz_uujj, Rw_uvjj,Rtt_uvjj,'',version_name,500)
-#			#MakeBasicPlot("MT_uvjj","m_{T}^{#muj} [GeV]",lqbinning,preselectionmunu,NormalWeightMuNu,NormalDirectory,'standardPAS'+flag,'uvjj',Rz_uujj, Rw_uvjj,Rtt_uvjj,'',version_name,500)
+			## Preselection plots in the UUJJ channel in the PAS style (no subplot)
+			#MakeBasicPlot("St_uujj","S_{T}^{#mu#mujj} [GeV]",stbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standardPAS_TTBarDataDriven'+flag,'uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,500)
+			##MakeBasicPlot("Pt_jet1","p_{T}(jet_{1}) [GeV]",ptbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standardPAS_TTBarDataDriven'+flag,'uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,500)
+			##MakeBasicPlot("Pt_jet2","p_{T}(jet_{2}) [GeV]",ptbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standardPAS_TTBarDataDriven'+flag,'uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,500)
+			##MakeBasicPlot("Pt_muon1","p_{T}(#mu_{1}) [GeV]",ptbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standardPAS_TTBarDataDriven'+flag,'uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,500)
+			##MakeBasicPlot("Pt_muon2","p_{T}(#mu_{2}) [GeV]",ptbinning2,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standardPAS_TTBarDataDriven'+flag,'uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,500)
+			#MakeBasicPlot("M_uu","m_{#mu#mu} [GeV]",bosonbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standardPAS_TTBarDataDriven'+flag,'uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,500)
+			##MakeBasicPlot("MH_uujj","m_{#muj} (lead jet combo) [GeV]",lqbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standardPAS_TTBarDataDriven'+flag,'uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,500)
+			##MakeBasicPlot("M_uujj1","m_{#muj}_{1} [GeV]",lqbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standardPAS_TTBarDataDriven'+flag,'uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,500)
+			#MakeBasicPlot("M_uujj2","m_{#muj}^{min} [GeV]",lqbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standardPAS_TTBarDataDriven'+flag,'uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,500)
+			##MakeBasicPlot("JetCount","N_{jet}",nbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standardPAS_TTBarDataDriven'+flag,'uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,500)
+			#
+			## Preselection plots in the UVJJ channel in the PAS style (no subplot)			
+			##MakeBasicPlot("Pt_jet1","p_{T}(jet_{1}) [GeV]",ptbinning,preselectionmunu,NormalWeightMuNu,NormalDirectory,'standardPAS'+flag,'uvjj',Rz_uujj, Rw_uvjj,Rtt_uvjj,'',version_name,500)
+			##MakeBasicPlot("Pt_jet2","p_{T}(jet_{2}) [GeV]",ptbinning,preselectionmunu,NormalWeightMuNu,NormalDirectory,'standardPAS'+flag,'uvjj',Rz_uujj, Rw_uvjj,Rtt_uvjj,'',version_name,500)
+			##MakeBasicPlot("Pt_muon1","p_{T}(#mu_{1}) [GeV]",ptbinning,preselectionmunu,NormalWeightMuNu,NormalDirectory,'standardPAS'+flag,'uvjj',Rz_uujj, Rw_uvjj,Rtt_uvjj,'',version_name,500)
+			##MakeBasicPlot("Pt_miss","E_{T}^{miss} [GeV]",ptbinning,preselectionmunu,NormalWeightMuNu,NormalDirectory,'standardPAS'+flag,'uvjj',Rz_uujj, Rw_uvjj,Rtt_uvjj,'',version_name,500)
+			#MakeBasicPlot("St_uvjj","S_{T}^{#mu#nujj} [GeV]",stbinning,preselectionmunu,NormalWeightMuNu,NormalDirectory,'standardPAS'+flag,'uvjj',Rz_uujj, Rw_uvjj,Rtt_uvjj,'',version_name,500)
+			#MakeBasicPlot("MT_uv","m_{T}^{#mu#nu} [GeV]",bosonbinning,preselectionmunu,NormalWeightMuNu,NormalDirectory,'standardPAS'+flag,'uvjj',Rz_uujj, Rw_uvjj,Rtt_uvjj,'',version_name,500)
+			##MakeBasicPlot("MT_uvjj","m_{T}^{#muj} [GeV]",lqbinning,preselectionmunu,NormalWeightMuNu,NormalDirectory,'standardPAS'+flag,'uvjj',Rz_uujj, Rw_uvjj,Rtt_uvjj,'',version_name,500)
 			#MakeBasicPlot("M_uvjj","m_{#muj} [GeV]",lqbinningPaper,preselectionmunu,NormalWeightMuNu,NormalDirectory,'standardPAS'+flag,'uvjj',Rz_uujj, Rw_uvjj,Rtt_uvjj,'',version_name,500)
-#			#MakeBasicPlot("MH_uvjj","m_{#muj} (lead jet only) [GeV]",lqbinning,preselectionmunu,NormalWeightMuNu,NormalDirectory,'standardPAS'+flag,'uvjj',Rz_uujj, Rw_uvjj,Rtt_uvjj,'',version_name,500)
-#			#MakeBasicPlot("JetCount","N_{jet}",nbinning,preselectionmunu,NormalWeightMuNu,NormalDirectory,'standardPAS'+flag,'uvjj',Rz_uujj, Rw_uvjj,Rtt_uvjj,'',version_name,500)
+			##MakeBasicPlot("MH_uvjj","m_{#muj} (lead jet only) [GeV]",lqbinning,preselectionmunu,NormalWeightMuNu,NormalDirectory,'standardPAS'+flag,'uvjj',Rz_uujj, Rw_uvjj,Rtt_uvjj,'',version_name,500)
+			##MakeBasicPlot("JetCount","N_{jet}",nbinning,preselectionmunu,NormalWeightMuNu,NormalDirectory,'standardPAS'+flag,'uvjj',Rz_uujj, Rw_uvjj,Rtt_uvjj,'',version_name,500)
 			
 			# Full Selection Plots in the PAS style
 			#for lqmass in [200,300,500,650,800,900,1000,1100,1200,1300,1400,1500,1600]:
@@ -951,10 +951,10 @@ def main():
 	# You can run this to make the full set of tables needed to construct the higgs card. This takes a long time!
 	# Alternatively, you can run > python SysBatcher.py --launch to do each table in a separate batch job
 	# When done, proceed to the next step to make higgs limit cards
-	if False : 
-		#FullAnalysis(MuMuOptCutFile, preselectionmumu,preselectionmunu,NormalDirectory,NormalWeightMuMu,'TTBarDataDriven') # scriptflag 
+	if True : 
+		#FullAnalysis(MuMuOptCutFile, preselectionmumu,preselectionmunu,NormalDirectory,NormalWeightMuMu,'TTBarDataDriven') 
 		FullAnalysis(MuMuOptCutFile, preselectionmumu,preselectionmunu,NormalDirectory,NormalWeightMuMu,'normal') # scriptflag 
-		#FullAnalysis(MuNuOptCutFile, preselectionmumu,preselectionmunu,NormalDirectory,NormalWeightMuNu,'normal')  # scriptflag
+		#FullAnalysis(MuNuOptCutFile, preselectionmumu,preselectionmunu,NormalDirectory,NormalWeightMuNu,'normal')
 	if False :
  		uujjcardfiles = MuMuOptCutFile.replace('.txt','_systable*.txt')
 		#uvjjcardfiles = MuNuOptCutFile.replace('.txt','_systable*.txt')
@@ -4092,10 +4092,10 @@ def ModSelection(selection,sysmethod,channel_log):
 
 		if sysmethod == 'BTAGSFup':
 			if year == '2016':
-				selection = selection.replace('*(((DeepJet_jet1>0.3093)+(DeepJet_jet2>0.3093))>0)',bTagSFmediumUp)
+				selection = selection.replace('*(1-(1-(DeepJet_jet1>0.3093)*bTagSF_jet1)*(1-(DeepJet_jet2>0.3093)*bTagSF_jet2))',bTagSFmediumUp)
 		if sysmethod == 'BTAGSFdown':
 			if year == '2016':
-				selection = selection.replace('*(((DeepJet_jet1>0.3093)+(DeepJet_jet2>0.3093))>0)',bTagSFmediumDown)
+				selection = selection.replace('*(1-(1-(DeepJet_jet1>0.3093)*bTagSF_jet1)*(1-(DeepJet_jet2>0.3093)*bTagSF_jet2))',bTagSFmediumDown)
 
 	return selection
 
