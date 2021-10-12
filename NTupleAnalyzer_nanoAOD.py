@@ -9,6 +9,9 @@ from argparse import ArgumentParser
 tRand = TRandom3()
 from random import randint
 from random import normalvariate
+# GE code is in C++. Use the root gInterpreter to import library
+gInterpreter.ProcessLine('#include "GEScaleSyst/GEScaleSyst.cc"')
+
 ##########################################################################################
 #################      SETUP OPTIONS - File, Normalization, etc    #######################
 ##########################################################################################
@@ -1126,25 +1129,22 @@ def MERParametrization(_p, _eta):
     coeffsAllEta = [[0.0,0.0,0.0,0.0,0.0],[0.0,0.0,0.0,0.0,0.0],[0.0,0.0,0.0,0.0,0.0]]
     coeffs = coeffsAllEta[0]
 
-    if _year == '2016': 
-        coeffsAllEta = [[0.0061, 0.0001, 0.000000110, 0.0000000000610, 0.0000000000000110],[0.0134, 0.00006, 0.0000000510, 0.0000000000310, 0.00000000000000510],[0.0151, 0.0001, 0.0000000410, 0.00000000000410, -0.0000000000000110]]
+    if _year == '2016': coeffsAllEta = [[0.0062, 0.0001, -1.0e-7, 5.7e-11, -1.1e-14],[0.0134, 0.00006, -4.7e-8, 2.6e-11, -5e-15],[0.0151, 0.000114, -3.7e-8, 3.9e-12, 1e-15]]
 
-    elif _year == '2017':
-        coeffsAllEta = [[0.0053, 0.0001, 0.000000110, 0.0000000000710, 0.0000000000000110],[0.0136, 0.00006, 0.0000000310, 0.00000000000110, 0.00000000000000310],[0.0170, 0.00008, 0.0000000310, 0.0000000000210, 0.0000000000000810]]
+    elif _year == '2017': coeffsAllEta = [[0.0053, 0.00011, -1.3e-7, 6.9e-11, -1.3e-14],[0.000063, 0.000063, -2.6e-8, -1.3e-12, 3e-15],[0.0170, 0.000084, 2.6e-9, -2.3e-11, 8e-15]]
 
-    elif _year == '2018':
-        coeffsAllEta = [[0.0062, 0.0001, 0.000000110, 0.0000000000510, 0.00000000000000910],[0.0136, 0.00005, 0.0000000210, 0.00000000000510, 0.0],[0.0174, 0.00009, 0.00000000310, 0.0000000000210, 0.00000000000000510]]
+    elif _year == '2018': coeffsAllEta = [[0.0062, 0.000096, -9.7e-8, 4.9e-11, -9e-15],[0.0136, 0.000052, -2.4e-8, 5.0e-12, 0.0],[0.0174, 0.000087, -3.3e-9, -1.6e-11, 5e-15]]
 
-    if abs(_eta) <= 1.2 : coeffs = coeffsAllEta[0]
-    elif 1.2 < abs(_eta) <= 2.1 : coeffs = coeffsAllEta[1]
-    elif 2.1 < abs(_eta) <= 2.4 : coeffs = coeffsAllEta[2]
+    if abs(_eta) < 1.2 : coeffs = coeffsAllEta[0]
+    elif 1.2 <= abs(_eta) < 2.1 : coeffs = coeffsAllEta[1]
+    elif 2.1 <= abs(_eta) < 2.4 : coeffs = coeffsAllEta[2]
 
-    sigmaToReturn = coeffs[0] + coeffs[1]*_p - coeffs[2]*_p*_p + coeffs[3]*_p*_p*_p - coeffs[4]*_p*_p*_p*_p
+    sigmaToReturn = coeffs[0] + coeffs[1]*_p + coeffs[2]*_p*_p + coeffs[3]*_p*_p*_p + coeffs[4]*_p*_p*_p*_p
 
     return sigmaToReturn
 
 def SmearMuonCollections(_ptCollection, _etaCollection, _phiCollection, isSystematic):
-	# Following perscription for muon momentum smearing of 15% from resolution uncertainty
+	# Following perscription for muon momentum smearing of 15% from resolution uncertainty and 10% for systematic uncertainty
     # https://twiki.cern.ch/twiki/bin/view/CMS/MuonLegacy2016#Momentum_Resolution
 	# https://twiki.cern.ch/twiki/bin/view/CMS/MuonLegacy2017#Momentum_Resolution
     # https://twiki.cern.ch/twiki/bin/view/CMS/MuonLegacy2018#Momentum_Resolution
@@ -1154,11 +1154,15 @@ def SmearMuonCollections(_ptCollection, _etaCollection, _phiCollection, isSystem
 	smearedPhiCollection = _phiCollection
 
 	# loop through muons
+	Plist = []
+	smearedPlist = []
+	smearingList = []
 	for n in range(len(_ptCollection)):
-		if abs(_etaCollection[n]) <= 1.2 and not isSystematic: continue # no smearing if abs(eta) < 1.2
-		elif abs(_etaCollection[n]) > 1.2 or isSystematic:
+		smearConst = 0.0
+		if abs(_etaCollection[n]) < 1.2 and not isSystematic: continue # no resolution smearing if abs(eta) < 1.2
+		elif abs(_etaCollection[n]) >= 1.2 or isSystematic:
 			smearConst = 0.57 # resolution smearing of 15% -> 0.57
-			if isSystematic: smearConst = 0.46 # systematics requires 10% smearing -> 0.46
+			if isSystematic: smearConst = 0.46 # systematics requires 10% shift -> 0.46
 			smearedLorentz = TLorentzVector()
 			origLorentz = TLorentzVector()
 			origLorentz.SetPtEtaPhiM(_ptCollection[n], _etaCollection[n], _phiCollection[n], 0)
@@ -1174,7 +1178,7 @@ def SmearMuonCollections(_ptCollection, _etaCollection, _phiCollection, isSystem
 			smearedPy = origPy*smearing
 			smearedPz = origPz*smearing
 			smearedE = math.sqrt(smearedPx*smearedPx + smearedPy*smearedPy + smearedPz*smearedPz)
-			smearedLorentz.SetPxPyPzE(smearedPx, smearedPx, smearedPz, smearedE)
+			smearedLorentz.SetPxPyPzE(smearedPx, smearedPy, smearedPz, smearedE)
 
 			# Return the smeared Pt, Eta, Phi collections
 			smearedPtCollection[n] = smearedLorentz.Pt()
@@ -1183,17 +1187,47 @@ def SmearMuonCollections(_ptCollection, _etaCollection, _phiCollection, isSystem
 
 	return [smearedPtCollection, smearedEtaCollection, smearedPhiCollection]
 
+def SortCollections(listOfCollections):
+	# Takes a list of collections (e.g., pT, eta, phi)
+	# and sorts the first collection while also sorting 
+	# the other collections accordingly.
+	# Returns the reordered collections as a list
+
+	zippedCollections = zip(*listOfCollections) # zip unpacked (*) collections together into a list of tuples
+	sortedCollections = sorted(zippedCollections, reverse=True) # reorder all collections simultaniously by pT
+	unzippedCollections = zip(*sortedCollections) # unzip collections; still a list of tuples
+	returnListOfCollections = map(list, unzippedCollections) # Map list of tuples back into separate lists and unpack as collections
+
+	return returnListOfCollections
+
 def TightHighPtIDMuons(T,_met,variation,isdata):
-	# Purpose: Gets the collection of muons passing tight muon ID. 
+	# Purpose: Gets the collection of muons passing high-pT muon ID and relative track Iso. 
+	#		  Applies muon momentum resolution smearing.
 	#         Returns muons as TLorentzVectors, and indices corrresponding
 	#         to the surviving muons of the muon collection. 
 	#         Also returns modified MET for systematic variations.
 	muons = []
 	muoninds = []
+
+	# Collections get reordered several times--establish all necessary quantities here so they can be sorted
 	_MuonCocktailPt = [tunepRelPt*pt for pt, tunepRelPt in zip(T.Muon_pt,T.Muon_tunepRelPt)]
 	_MuonCocktailEta = [eta for eta in T.Muon_eta]
 	_MuonCocktailPhi = [phi for phi in T.Muon_phi]
+	_MuonCocktailCharge = [q for q in T.Muon_charge]
+	# Muon_highPtId and Muon_tkIsoId are stored as type UChar_t (unsigned characters)
+	# passing the objects through a python array and specifying typecode 'B' allows them to be returned as integers
+	# otherwise they are read as empty strings and data cannot be retrieved
+	_MuonCocktailID = array.array('B',T.Muon_highPtId).tolist()
+	_MuonCocktailIso = array.array('B',T.Muon_tkIsoId).tolist()
 
+	_preSmearCocktailPt = _MuonCocktailPt
+	_preSmearCocktailEta = _MuonCocktailEta
+	_preSmearCocktailPhi = _MuonCocktailPhi
+
+	# Reorder the muon collections by the TuneP pT (high pT -> low pT)
+	# Make sure Pt cocktail is first element in list!
+	_MuonCocktailPt, _MuonCocktailEta, _MuonCocktailPhi, _MuonCocktailCharge, _MuonCocktailID, _MuonCocktailIso, _preSmearCocktailPt, _preSmearCocktailEta, _preSmearCocktailPhi = SortCollections([_MuonCocktailPt, _MuonCocktailEta, _MuonCocktailPhi, _MuonCocktailCharge, _MuonCocktailID, _MuonCocktailIso, _preSmearCocktailPt, _preSmearCocktailEta, _preSmearCocktailPhi])
+	
 	# Following perscription for muon momentum smearing of 15% from resolution uncertainty
     # https://twiki.cern.ch/twiki/bin/view/CMS/MuonLegacy2016#Momentum_Resolution
     # https://twiki.cern.ch/twiki/bin/view/CMS/MuonLegacy2017#Momentum_Resolution
@@ -1201,32 +1235,65 @@ def TightHighPtIDMuons(T,_met,variation,isdata):
 			
 	if isdata:
 		pass
-	elif _year == '2016': # 2016 requires no smearing to MC
-		pass 
-	elif _year == '2017' or _year == '2018': # 2017 and 2018 require smearing to MC
-		# Smearing 15%
-		[_MuonCocktailPt, _MuonCocktailEta, _MuonCocktailPhi] = SmearMuonCollections(_MuonCocktailPt, _MuonCocktailEta, _MuonCocktailPhi, False)
-		
-	if variation=='MESup':
-        #_MuonCocktailPt = [(pt + pt*(0.05*pt/1000.0)) for pt in T.MuonCocktailPt]#original
-        #_MuonCocktailPt = [(pt + pt*(0.10*pt/1000.0)) for pt in T.MuonCocktailPt]#updated to Zprime 13TeV study number
-		_MuonCocktailPt = [(pt + pt*(0.10*pt/1000.0)) for pt in T.Muon_pt]# fixme 2019
-	elif variation=='MESdown':
-        #_MuonCocktailPt = [(pt - pt*(0.05*pt/1000.0)) for pt in T.MuonCocktailPt]
-        #_MuonCocktailPt = [(pt - pt*(0.10*pt/1000.0)) for pt in T.MuonCocktailPt]
-		_MuonCocktailPt = [(pt - pt*(0.10*pt/1000.0)) for pt in T.Muon_pt]# fixme 2019
-	elif variation=='MER':
-		#_MuonCocktailPt = [pt+pt*tRand.Gaus(0.0,  0.01*(pt<=200.0) + (0.04)*(pt>200.0) ) for pt in T.MuonCocktailPt]
-		# Updating to 2016 Zprime
-		#_MuonCocktailPt = [pt+pt*tRand.Gaus(0.0,  (eta<1.4442)*(0.003*(pt<=200.0) + (0.005)*(pt>200.0)*(pt<=500.0) + 0.01*(pt>500.0)) + (eta>1.4442)*(0.006*(pt<=200.0) + (0.01)*(pt>200.0)*(pt<=500.0) + 0.02*(pt>500.0))) for [pt,eta] in [T.MuonCocktailPt,T.MuonCocktailEta]]
-		#_MuonCocktailPt = [pt+pt*tRand.Gaus(0.0,  (eta<1.4442)*(0.003*(pt<=200.0) + (0.005)*(pt>200.0)*(pt<=500.0) + 0.01*(pt>500.0)) + (eta>1.4442)*(0.006*(pt<=200.0) + (0.01)*(pt>200.0)*(pt<=500.0) + 0.02*(pt>500.0))) for pt,eta in zip(T.Muon_pt,T.Muon_eta)]
-		
-		# Following perscription for MER systematics of 10% shift uncertainty
-		# https://twiki.cern.ch/twiki/bin/view/CMS/MuonLegacy2016#Momentum_Resolution
-		# https://twiki.cern.ch/twiki/bin/view/CMS/MuonLegacy2017#Momentum_Resolution
-		# https://twiki.cern.ch/twiki/bin/view/CMS/MuonLegacy2018#Momentum_Resolution
-		# Smearing 10%
-		[_MuonCocktailPt, _MuonCocktailEta, _MuonCocktailPhi] = SmearMuonCollections(_MuonCocktailPt, _MuonCocktailEta, _MuonCocktailPhi, True)
+	else:
+		if _year == '2016': # 2016 requires no smearing to MC
+			pass 
+		elif _year == '2017' or _year == '2018': # 2017 and 2018 require smearing to MC
+			# Smearing 15%
+			[_MuonCocktailPt, _MuonCocktailEta, _MuonCocktailPhi] = SmearMuonCollections(_MuonCocktailPt, _MuonCocktailEta, _MuonCocktailPhi, False)
+		# Reorder the collections by the MER smeared pT (high pT -> low pT)
+		# Make sure Pt cocktail is first element in list!
+		_MuonCocktailPt, _MuonCocktailEta, _MuonCocktailPhi, _MuonCocktailCharge, _MuonCocktailID, _MuonCocktailIso, _preSmearCocktailPt, _preSmearCocktailEta, _preSmearCocktailPhi = SortCollections([_MuonCocktailPt, _MuonCocktailEta, _MuonCocktailPhi, _MuonCocktailCharge, _MuonCocktailID, _MuonCocktailIso, _preSmearCocktailPt, _preSmearCocktailEta, _preSmearCocktailPhi])
+
+		print "Muon pT = ",_MuonCocktailPt
+		if variation=='MESup':
+
+			# Using Generalized Endpoint method, see: 
+			# https://twiki.cern.ch/twiki/bin/view/CMS/MuonLegacy2016#Momentum_Scale
+			# https://twiki.cern.ch/twiki/bin/view/CMS/MuonLegacy2017#Momentum_Scale
+			# https://twiki.cern.ch/twiki/bin/view/CMS/MuonLegacy2018#Momentum_Scale
+
+			# Must have GEScaleSyst directory cloned into LQ2Analysis13TeV directory from:
+			# https://gitlab.cern.ch/cms-muonPOG/GeneralizedEndpoint/GEScaleSyst
+			# Returns systematic on pT
+
+			GE = GEScaleSyst(_year)
+			GE.SetVerbose(0) #No need to print for every muon
+			# mode = 0, icopy = 1: kappa + 1 sigma variation
+			_MuonCocktailPt = [GE.GEScaleCorrPt(pt, eta, phi, charge, 0, 1) for pt, eta, phi, charge in zip(_MuonCocktailPt, _MuonCocktailEta, _MuonCocktailPhi, _MuonCocktailCharge)]
+
+		elif variation=='MESdown':
+        	#_MuonCocktailPt = [(pt - pt*(0.05*pt/1000.0)) for pt in T.MuonCocktailPt]
+        	#_MuonCocktailPt = [(pt - pt*(0.10*pt/1000.0)) for pt in T.MuonCocktailPt]
+			#_MuonCocktailPt = [(pt - pt*(0.10*pt/1000.0)) for pt in T.Muon_pt]# fixme 2019
+
+			# Using Generalized Endpoint method, see: 
+			# https://twiki.cern.ch/twiki/bin/view/CMS/MuonLegacy2016#Momentum_Scale
+			# https://twiki.cern.ch/twiki/bin/view/CMS/MuonLegacy2017#Momentum_Scale
+			# https://twiki.cern.ch/twiki/bin/view/CMS/MuonLegacy2018#Momentum_Scale
+
+			# Must have GEScaleSyst directory cloned into LQ2Analysis13TeV directory from:
+			# https://gitlab.cern.ch/cms-muonPOG/GeneralizedEndpoint/GEScaleSyst
+			# Returns systematic on pT
+			
+			GE = GEScaleSyst(_year)
+			GE.SetVerbose(0) #No need to print for every muon
+			# mode = 0, icopy = 2: kappa - 1 sigma variation
+			_MuonCocktailPt = [GE.GEScaleCorrPt(pt, eta, phi, charge, 0, 2) for pt, eta, phi, charge in zip(_MuonCocktailPt, _MuonCocktailEta, _MuonCocktailPhi, _MuonCocktailCharge)]
+
+
+		elif variation=='MER':
+			#_MuonCocktailPt = [pt+pt*tRand.Gaus(0.0,  0.01*(pt<=200.0) + (0.04)*(pt>200.0) ) for pt in T.MuonCocktailPt]
+			# Updating to 2016 Zprime
+			#_MuonCocktailPt = [pt+pt*tRand.Gaus(0.0,  (eta<1.4442)*(0.003*(pt<=200.0) + (0.005)*(pt>200.0)*(pt<=500.0) + 0.01*(pt>500.0)) + (eta>1.4442)*(0.006*(pt<=200.0) + (0.01)*(pt>200.0)*(pt<=500.0) + 0.02*	(pt>500.0))) for [pt,eta] in [T.MuonCocktailPt,T.MuonCocktailEta]]
+			#_MuonCocktailPt = [pt+pt*tRand.Gaus(0.0,  (eta<1.4442)*(0.003*(pt<=200.0) + (0.005)*(pt>200.0)*(pt<=500.0) + 0.01*(pt>500.0)) + (eta>1.4442)*(0.006*(pt<=200.0) + (0.01)*(pt>200.0)*(pt<=500.0) + 0.02*	(pt>500.0))) for pt,eta in zip(T.Muon_pt,T.Muon_eta)]
+
+			# Following perscription for MER systematics of 10% shift uncertainty
+			# https://twiki.cern.ch/twiki/bin/view/CMS/MuonLegacy2016#Momentum_Resolution
+			# https://twiki.cern.ch/twiki/bin/view/CMS/MuonLegacy2017#Momentum_Resolution
+			# https://twiki.cern.ch/twiki/bin/view/CMS/MuonLegacy2018#Momentum_Resolution
+			# Smearing 10%
+			[_MuonCocktailPt, _MuonCocktailEta, _MuonCocktailPhi] = SmearMuonCollections(_MuonCocktailPt, _MuonCocktailEta, _MuonCocktailPhi, True)
 
 	trk_isos = []
 	charges = []
@@ -1250,7 +1317,7 @@ def TightHighPtIDMuons(T,_met,variation,isdata):
 				__Pt_mu = _MuonCocktailPt[n]
 				__Eta_mu = _MuonCocktailEta[n]
 				__Phi_mu = _MuonCocktailPhi[n]
-				__Charge_mu = T.Muon_charge[n]
+				__Charge_mu = _MuonCocktailCharge[n]
 				if (__Pt_mu >200)*(abs(__Eta_mu) < 0.9)      : 
 					_MuonCocktailPt[n] =  ( (1.0) / ( -5e-05*__Charge_mu*sin(-1.4514813+__Phi_mu ) + 1.0/__Pt_mu ) ) 
 				#deltainvpt = ( 1.0/T.MuonTrkPt[n] - 1.0/_MuonCocktailPt[n])
@@ -1258,7 +1325,8 @@ def TightHighPtIDMuons(T,_met,variation,isdata):
 
 
 		# For the ID, begin by assuming it passes. Veto if it fails any condition
-		# High PT conditions from https://twiki.cern.ch/twiki/bin/view/CMSPublic/SWGuideMuonId
+		# FOR RUN I: High PT conditions from https://twiki.cern.ch/twiki/bin/view/CMSPublic/SWGuideMuonId
+		# FOR RUN II: High PT conditions from https://twiki.cern.ch/twiki/bin/view/CMS/SWGuideMuonIdRun2
 		# NTuple definitions in https://raw.githubusercontent.com/CMSLQ/RootTupleMakerV2/master/src/RootTupleMakerV2_Muons.cc
 		muonPass = True
 		# A preliminary pT cut. This also encompasses the GlobalMuon conditions, since
@@ -1266,13 +1334,9 @@ def TightHighPtIDMuons(T,_met,variation,isdata):
 		muonPass *= (_MuonCocktailPt[n] > 45)     
 		# Eta requirement
 		muonPass *= (abs(_MuonCocktailEta[n]) < 2.4)
-		# Muon_highPtId and Muon_tkIsoId are stored as type UChar_t (unsigned characters)
-		# passing the objects through a python array and specifying typecode 'B' allows them to be returned as integers
-		# otherwise they are read as empty strings and data cannot be retrieved
-		# -GM
-        #this uses the muon id and iso flags for id and isolation
-		muonPass *= (array.array('B',T.Muon_highPtId[n])[0] > 1) #Muon high Pt Id 1=tracker high pT, 2=global high pT
-		if nonisoswitch != True: muonPass *= (array.array('B',T.Muon_tkIsoId[n])[0] > 0) #TkIso ID (1=TkIsoLoose, 2=TkIsoTight)
+        # This uses the muon id and iso flags for id and isolation
+		muonPass *= (_MuonCocktailID[n] > 1) #Muon high Pt Id 1=tracker high pT, 2=global high pT
+		if nonisoswitch != True: muonPass *= (_MuonCocktailIso[n] > 0) #TkIso ID (1=TkIsoLoose, 2=TkIsoTight)
 
 		"""
 		if nonisoswitch != True:
@@ -1324,7 +1388,7 @@ def TightHighPtIDMuons(T,_met,variation,isdata):
 			NewMu = TLorentzVector()
 			OldMu = TLorentzVector()
 			NewMu.SetPtEtaPhiM(_MuonCocktailPt[n],_MuonCocktailEta[n],_MuonCocktailPhi[n],0)
-			OldMu.SetPtEtaPhiM(T.Muon_tunepRelPt[n]*T.Muon_pt[n],T.Muon_eta[n],T.Muon_phi[n],0)#fixme cocktail pt?
+			OldMu.SetPtEtaPhiM(_preSmearCocktailPt[n], _preSmearCocktailEta[n], _preSmearCocktailPhi[n],0)#fixme cocktail pt?
 
 			_met = PropagatePTChangeToMET(_met,OldMu,NewMu)
 
@@ -1335,7 +1399,7 @@ def TightHighPtIDMuons(T,_met,variation,isdata):
 			chi2.append(0.)#T.MuonGlobalChi2[n])
 			pfid.append(0.)#T.MuonIsPF[n])
 			layers.append(0.)#T.MuonTrackLayersWithMeasurement[n])
-			charges.append(T.Muon_charge[n])
+			charges.append(_MuonCocktailCharge[n])
 
 			muoninds.append(n)
 			deltainvpts.append(deltainvpt)
