@@ -1188,10 +1188,10 @@ def SmearMuonCollections(_ptCollection, _etaCollection, _phiCollection, isSystem
 	return [smearedPtCollection, smearedEtaCollection, smearedPhiCollection]
 
 def SortCollections(listOfCollections):
-	# Takes a list of collections (e.g., pT, eta, phi)
-	# and sorts the first collection while also sorting 
-	# the other collections accordingly.
-	# Returns the reordered collections as a list
+	# Takes a list of collections (e.g., pT, eta, phi) and sorts the first collection by value (high to low).
+	# Simultaniously, the other collections are reordered identically to the first. 
+	# Returns the reordered collections as a list.
+	# Make sure Pt cocktailis the first collection in ListOfCollections!
 
 	zippedCollections = zip(*listOfCollections) # zip unpacked (*) collections together into a list of tuples
 	sortedCollections = sorted(zippedCollections, reverse=True) # reorder all collections simultaniously by pT
