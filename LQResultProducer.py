@@ -143,13 +143,32 @@ else:
 #NormalWeightMuMu = str(lumi)+'*weight_central*((pass_HLTMu50+pass_HLTTkMu50)>0)'+doublemuHLT+doubleMuIdScale+doubleMuIsoScale+trackerHIP1+trackerHIP2
 #NormalWeightMuNu = str(lumi)+'*weight_central*((pass_HLTMu50+pass_HLTTkMu50)>0)'+singlemuHLT+singleMuIdScale+singleMuIsoScale+trackerHIP1
 #NormalWeightEMu = str(lumi)+'*weight_central*((pass_HLTMu50+pass_HLTTkMu50)>0)'+singlemuHLTEMU+MuIdScaleEMU+MuIsoScaleEMU+eleRECOScale+eleHEEPScale+trackerHIPEMU
-NormalWeightMuMu = str(lumi)+'*weight_central'+doublemuHLT+doubleMuRecoSF+doubleMuIsoSF+doubleMuIdSF+trackerHIP1+trackerHIP2+bTagSFmedium
-NormalWeightMuNu = str(lumi)+'*weight_central'+singlemuHLT+singleMuRecoSF+singleMuIsoSF+singleMuIdSF+trackerHIP1
+NormalWeightMuMu = str(lumi)+'*weight_central'+doublemuHLT+doubleMuRecoSF+doubleMuIsoSF+doubleMuIdSF+bTagSFmedium
+NormalWeightMuNu = str(lumi)+'*weight_central'+singlemuHLT+singleMuRecoSF+singleMuIsoSF+singleMuIdSF
+if year == '2016' or year == '2017': NormalWeightMuMu += '*prefireWeight'
+
 #fixme checking eta restriction on muons and electrons to fix r_uu/eu
 muEtaRestrict = '*((IsMuon_muon1>0)*(abs(Eta_muon1)<2.1)+(IsMuon_muon2>0)*(abs(Eta_muon2)<2.1))'
 NormalWeightEMu_ttbar = str(lumi)+'*weight_central'+singlemuHLTEMU+MuIdScaleEMU+MuIsoScaleEMU+eleRECOScale+eleHEEPScale+trackerHIPEMU#+muEtaRestrict
 NormalWeightEMu = str(lumi)+'*weight_central'+singlemuHLTEMU+MuIdScaleEMU+MuIsoScaleEMU+eleRECOScale+eleHEEPScale+trackerHIPEMU#+muEtaRestrict
 NormalWeightEMuNoHLT = str(lumi)+'*weight_central'+MuIdScaleEMU+MuIsoScaleEMU+eleRECOScale+eleHEEPScale+trackerHIPEMU#+muEtaRestrict#fixme do we need scale factors here?
+
+# This is for HEM 15/16 failure Study
+HEMStudy = False
+
+HEM1516Failure_runNum = '319077'
+HEM1516Failure_eta_low = '-3.0'
+HEM1516Failure_eta_high = '-1.3'
+HEM1516Failure_phi_low = '-1.57'
+HEM1516Failure_phi_high = '-0.87'
+
+HEM1516Failure_eta_jet1_sel = '(Eta_jet1<='+HEM1516Failure_eta_low+')+(Eta_jet1>='+HEM1516Failure_eta_high+')'
+HEM1516Failure_eta_jet2_sel = '(Eta_jet2<='+HEM1516Failure_eta_low+')+(Eta_jet2>='+HEM1516Failure_eta_high+')'
+HEM1516Failure_phi_jet1_sel = '(Phi_jet1<='+HEM1516Failure_phi_low+')+(Phi_jet1>='+HEM1516Failure_phi_high+')'
+HEM1516Failure_phi_jet2_sel = '(Phi_jet2<='+HEM1516Failure_phi_low+')+(Phi_jet2>='+HEM1516Failure_phi_high+')'
+HEM1516Failure_runNum_sel = '('+HEM1516Failure_runNum+'>run_number)'
+
+HEM1516Failure_sel = '*((('+HEM1516Failure_eta_jet1_sel+'+'+HEM1516Failure_phi_jet1_sel+')*('+HEM1516Failure_eta_jet2_sel+'+'+HEM1516Failure_phi_jet2_sel+'))>0)'
 
 #ZptReweight = '*(0.95-0.1*TMath::Erf((Pt_mu1mu2_gen-14.0)/8.8))'
 
@@ -179,6 +198,8 @@ preselectionmumu += passfilter
 preselectionmunu += passfilter
 preselectionemu  += passfilter
 
+if HEMStudy:
+	preselectionmumu += HEM1516Failure_sel
 
 munu1 = '(MT_uv>70)*(MT_uv<110)*(((CISV_jet1>0.5426)+(CISV_jet2>0.5426))<1)*(2-0.887973*((1.+(0.0523821*Pt_jet1))/(1.+(0.0460876*Pt_jet1))))'
 munu2 = '(MT_uv>70)*(MT_uv<110)*(((CISV_jet1>0.8484)+(CISV_jet2>0.8484))>=1)*(0.561694*((1.+(0.31439*Pt_jet1))/(1.+(0.17756*Pt_jet1))))'#*(CISV_jet1>CISV_jet2)+(0.901114+(1.40704e-05*(Pt_jet2)))*(CISV_jet2>0.8484)*(CISV_jet1<CISV_jet2))'
@@ -227,9 +248,11 @@ if useDataDrivenTTbar:
 #emu_id_eff_err = 0.00267688208321#eta-binned muon ID/ISO SF
 emu_id_eff_err = 0.00276041064762
 # Next are the PDF uncertainties. 
-pdf_MASS   =[ 200, 250, 300 , 350 , 400 , 450 , 500 , 550 , 600 , 650 , 700 , 750 , 800 , 850 , 900 , 950 , 1000 , 1050 , 1100 , 1150 , 1200 , 1250, 1300, 1350, 1400, 1450, 1500, 1550, 1600, 1650, 1700, 1750, 1800, 1850, 1900, 1950, 2000]               
+#pdf_MASS   =[ 200, 250, 300 , 350 , 400 , 450 , 500 , 550 , 600 , 650 , 700 , 750 , 800 , 850 , 900 , 950 , 1000 , 1050 , 1100 , 1150 , 1200 , 1250, 1300, 1350, 1400, 1450, 1500, 1550, 1600, 1650, 1700, 1750, 1800, 1850, 1900, 1950, 2000]               
 pdf_MASS_displaced = [ 200, 300, 400, 500, 600, 700, 800, 900, 1000, 1100, 1200 ]
 pdf_MASS_displaced_extended = [ 100, 125, 150, 200, 300, 400, 500, 600, 700, 800, 900, 1000, 1100, 1200 ]
+
+pdf_MASS = [300,400,500,600,700,800,900,1000,1100,1200,1300,1400,1500,1600,1700,1800,1900,2000,2100,2200,2300,2400,2500,2600,2700,2800,2900,3000,3500,4000]
 
 pdf_uvjj_QCD = [1.06,1.06,1.06,1.46,2.3,3.67,4.72,4.72,4.72,4.72,4.72,4.72,4.72,4.72,4.72,4.72,4.72,4.72,4.72,4.72,4.72,4.72,4.72,4.72,4.72,4.72,4.72,4.72,4.72,4.72,4.72,4.72,4.72,4.72,4.72,4.72,4.72]
 pdf_uvjj_WJets = [1.06,1.06,1.06,1.46,2.3,3.67,4.72,4.72,4.72,4.72,4.72,4.72,4.72,4.72,4.72,4.72,4.72,4.72,4.72,4.72,4.72,4.72,4.72,4.72,4.72,4.72,4.72,4.72,4.72,4.72,4.72,4.72,4.72,4.72,4.72,4.72,4.72]
@@ -239,6 +262,7 @@ pdf_uvjj_ZJets = [2.98,2.98,2.98,3.15,3.49,3.49,3.49,3.49,3.49,3.49,3.49,3.49,3.
 pdf_uvjj_VV = [3.35,3.35,3.35,3.41,3.62,3.73,4.03,4.03,4.03,4.03,4.03,4.03,4.03,4.03,4.03,4.03,4.03,4.03,4.03,4.03,4.03,4.03,4.03,4.03,4.03,4.03,4.03,4.03,4.03,4.03,4.03,4.03,4.03,4.03,4.03,4.03,4.03]
 
 pdf_uvjj_Signal = [0.35,0.35,0.35,0.53,0.83,0.83,0.83,0.83,0.83,0.83,0.83,0.84,1.21,1.21,1.62,1.62,2.22,2.35,2.35,2.35,2.35,2.35,2.35,2.35,2.35,2.35,2.35,2.35,2.35,2.35,2.35,2.35,2.35,2.35,2.35,2.35,2.35]
+pdf_uujj_Signal = [2.36,2.44,3.81,3.81,3.81,3.81,3.81,3.96,3.96,3.96,3.96,3.96,3.96,3.96,3.96,3.96,3.96,3.96,3.96,3.96,3.96,3.96,3.96,3.96,3.96,3.96,3.96,3.96,3.96,3.96]
 #pdf_uujj_Signal = [2.0 for x in pdf_MASS]               
 #pdf_uvjj_Signal = [3.0 for x in pdf_MASS]               
 
@@ -269,15 +293,35 @@ alignmentuncs = [0.1,1.0,1.0,[0.027,0.027,0.027,0.072,0.205,0.672,1.268,2.592,3.
 # Shape systematics in percent
 
 #2016
-shapesysvar_uujj_zjets  = [0.54, 2.48, 2.28, 2.58, 3.8, 4.13, 2.76, 3.04, 3.18, 3.26, 4.92, 4.79, 6.01, 7.04, 6.74, 5.07, 6.35, 5.83, 7.94, 7.13, 6.72, 8.86, 8.77, 10.59, 8.37, 7.83, 8.14, 9.08, 9.08, 9.08, 9.08, 9.08, 9.08, 9.08, 9.08, 9.08, 9.08, 9.08]
-shapesysvar_uujj_ttjets = [1.23, 3.08, 4.5, 7.53, 11.1, 14.59, 16.1, 17.74, 19.91, 24.51, 27.37, 27.9, 23.69, 22.78, 25.15, 34.55, 31.99, 24.91, 24.91, 8.46, 8.46, 8.47, 8.47, 8.47, 8.47, 8.47, 8.47, 8.47, 8.47, 8.47, 8.47, 8.47, 8.47, 8.47, 8.47, 8.47, 8.47, 8.47]
-shapesysvar_uujj_vv = [7.99, 8.94, 9.31, 11.08, 11.92, 13.12, 13.03, 15.11, 16.95, 18.41, 17.74, 17.92, 19.19, 19.65, 20.35, 19.11, 20.21, 19.49, 18.68, 20.92, 22.11, 21.14, 20.63, 21.67, 21.67, 22.91, 25.29, 26.45, 26.45, 26.45, 26.45, 26.45, 26.45, 26.45, 26.45, 26.45, 26.45, 26.45]
+#shapesysvar_uujj_zjets  = [0.54, 2.48, 2.28, 2.58, 3.8, 4.13, 2.76, 3.04, 3.18, 3.26, 4.92, 4.79, 6.01, 7.04, 6.74, 5.07, 6.35, 5.83, 7.94, 7.13, 6.72, 8.86, 8.77, 10.59, 8.37, 7.83, 8.14, 9.08, 9.08, 9.08, 9.08, 9.08, 9.08, 9.08, 9.08, 9.08, 9.08, 9.08]
+#shapesysvar_uujj_ttjets = [1.23, 3.08, 4.5, 7.53, 11.1, 14.59, 16.1, 17.74, 19.91, 24.51, 27.37, 27.9, 23.69, 22.78, 25.15, 34.55, 31.99, 24.91, 24.91, 8.46, 8.46, 8.47, 8.47, 8.47, 8.47, 8.47, 8.47, 8.47, 8.47, 8.47, 8.47, 8.47, 8.47, 8.47, 8.47, 8.47, 8.47, 8.47]
+#shapesysvar_uujj_vv = [7.99, 8.94, 9.31, 11.08, 11.92, 13.12, 13.03, 15.11, 16.95, 18.41, 17.74, 17.92, 19.19, 19.65, 20.35, 19.11, 20.21, 19.49, 18.68, 20.92, 22.11, 21.14, 20.63, 21.67, 21.67, 22.91, 25.29, 26.45, 26.45, 26.45, 26.45, 26.45, 26.45, 26.45, 26.45, 26.45, 26.45, 26.45]
 
-# 2016 StockNanoAODv7
-#if year == '2016':
-#	shapesysvar_uujj_zjets  = [105.61, 105.39, 105.68, 105.38, 105.57, 105.65, 105.59, 105.37, 105.99, 105.58, 105.88, 106.09, 105.65, 105.52, 105.68, 106.21, 107.21, 105.79, 105.8, 106.47, 106.59, 0.0, 105.86, 106.47, 105.89, 105.96, 107.44, 106.54, 106.65, 106.14, 106.8]
-#	shapesysvar_uujj_ttjets = [101.32, 101.27, 101.33, 101.35, 101.38, 101.54, 101.68, 101.7, 101.7, 101.7, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 101.25, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
-#	shapesysvar_uujj_vvjets = [6.37, 14.33, 7.21, 5.26, 10.8, 7.36, 54.16, 12.37, 10.57, 17.84, 15.61, 7.2, 0.0, 0.0, 12.52, 137.64, 190.32, 54.57, 190.32, 17.72, 190.32, 19.87, 190.32, 0.0, 24.14, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+# 2016-2018 stock NanoAODv7
+if year == '2016':
+	#shapesysvar_uujj_zjets  = [0.86, 6.76, 12.96, 11.0, 1.51, 2.12, 1.44, 15.43, 6.02, 8.87, 5.17, 7.69, 5.01, 7.62, 8.73, 9.98, 27.61, 4.34, 4.4, 14.44, 16.57, 0.0, 5.06, 14.53, 5.66, 5.86, 31.67, 15.83, 17.63, 11.78, 20.32]
+	#shapesysvar_uujj_ttjets = [0.89, 2.65, 1.59, 3.36, 5.78, 17.97, 27.99, 29.7, 29.7, 29.7, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 16.02, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+	#shapesysvar_uujj_vv = [6.37, 14.33, 7.21, 5.26, 10.8, 7.36, 54.16, 12.37, 10.57, 17.84, 15.61, 7.2, 0.0, 0.0, 12.52, 137.64, 190.32, 54.57, 190.32, 17.72, 190.32, 19.87, 190.32, 0.0, 24.14, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+	# For BDT Study
+	#shapesysvar_uujj_zjets  = [1.03, 6.71, 6.71, 6.71, 6.71, 6.71, 6.71, 6.71, 6.71, 6.71, 6.71, 6.71, 6.71, 6.71, 6.71, 6.71, 6.71, 6.71, 6.71, 6.71, 6.71, 6.71, 6.71, 6.71, 6.71, 6.71, 6.71, 6.71, 6.71, 6.71, 6.71]
+	#shapesysvar_uujj_ttjets = [1.55, 2.17, 2.17, 2.17, 2.17, 2.17, 2.17, 2.17, 2.17, 2.17, 2.17, 2.17, 2.17, 2.17, 2.17, 2.17, 2.17, 2.17, 2.17, 2.17, 2.17, 2.17, 2.17, 2.17, 2.17, 2.17, 2.17, 2.17, 2.17, 2.17, 2.17]
+	#shapesysvar_uujj_vv = [6.37, 14.33, 14.33, 14.33, 14.33, 14.33, 14.33, 14.33, 14.33, 14.33, 14.33, 14.33, 14.33, 14.33, 14.33, 14.33, 14.33, 14.33, 14.33, 14.33, 14.33, 14.33, 14.33, 14.33, 14.33, 14.33, 14.33, 14.33, 14.33, 14.33, 14.33]
+	#Shift Down
+	#shapesysvar_uujj_zjets  = [1.12, 6.99, 6.99, 13.14, 11.18, 1.67, 2.1, 1.24, 15.6, 6.01, 9.05, 5.15, 7.48, 5.2, 7.81, 8.91, 9.76, 27.35, 4.33, 4.38, 14.21, 16.33, 0.0, 5.04, 14.3, 5.65, 5.84, 31.41, 15.6, 17.4, 11.51]
+	#shapesysvar_uujj_ttjets = [1.08, 2.47, 2.47, 1.78, 3.98, 5.98, 18.19, 28.23, 29.94, 29.94, 29.94, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 15.86, 0.0, 0.0, 0.0, 0.0, 0.0]
+	#shapesysvar_uujj_vv = [6.37, 14.33, 14.33, 7.21, 5.26, 10.8, 7.36, 54.16, 12.37, 10.57, 17.84, 15.61, 7.2, 0.0, 0.0, 12.52, 137.64, 190.32, 54.57, 190.32, 17.72, 190.32, 19.87, 190.32, 0.0, 24.14, 0.0, 0.0, 0.0, 0.0, 0.0]
+	#Shift Up
+	shapesysvar_uujj_zjets  = [0.79, 12.36, 10.39, 1.9, 1.72, 1.48, 14.84, 6.71, 8.24, 4.78, 8.44, 4.36, 6.98, 8.09, 10.74, 28.49, 4.46, 4.0, 15.23, 17.37, 0.0, 4.67, 15.32, 5.27, 6.15, 32.58, 16.63, 18.44, 11.82, 21.15, 21.15]
+	shapesysvar_uujj_ttjets = [0.61, 1.64, 3.25, 5.49, 17.64, 27.63, 29.34, 29.34, 29.34, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 16.26, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+	shapesysvar_uujj_vv = [6.37, 7.21, 5.26, 10.8, 7.36, 54.16, 12.37, 10.57, 17.84, 15.61, 7.2, 0.0, 0.0, 12.52, 137.64, 190.32, 54.57, 190.32, 17.72, 190.32, 19.87, 190.32, 0.0, 24.14, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+elif year == '2017':
+	shapesysvar_uujj_zjets  = [1.09, 5.27, 2.71, 5.6, 4.14, 8.17, 9.8, 9.37, 7.09, 3.41, 5.63, 7.44, 3.6, 3.8, 6.35, 10.41, 9.5, 6.88, 6.46, 6.5, 12.86, 4.73, 16.14, 8.54, 7.26, 12.47, 9.15, 7.02, 9.5, 12.59, 10.08]
+	shapesysvar_uujj_ttjets = [0.52, 3.51, 2.2, 4.01, 9.58, 14.59, 27.04, 26.24, 27.6, 26.81, 34.26, 0.0, 31.54, 41.42, 0.0, 41.06, 39.86, 0.0, 0.0, 45.6, 0.0, 46.04, 44.85, 0.0, 7.04, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+	shapesysvar_uujj_vv = [8.44, 0.0, 0.0, 0.0, 0.0, 24.38, 0.0, 36.61, 0.0, 40.64, 36.61, 0.0, 36.61, 36.61, 0.0, 36.61, 36.61, 0.0, 36.61, 36.61, 0.0, 36.61, 36.61, 0.0, 49.58, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+elif year == '2018':
+	shapesysvar_uujj_zjets  = [0.71, 18.05, 12.01, 3.44, 3.08, 10.29, 16.11, 12.96, 11.36, 9.56, 14.69, 32.89, 8.85, 67.36, 15.34, 6.85, 7.03, 15.16, 10.87, 11.92, 17.76, 15.28, 7.81, 8.28, 11.1, 16.34, 15.66, 20.69, 9.19, 0.0, 0.0]
+	shapesysvar_uujj_ttjets = [0.51, 3.4, 4.19, 5.9, 8.16, 12.85, 12.5, 22.86, 24.13, 16.93, 16.34, 22.92, 3.24, 16.86, 16.86, 12.79, 19.25, 16.86, 16.86, 26.76, 16.86, 26.76, 22.92, 22.92, 7.41, 16.86, 16.86, 30.23, 36.8, 0.0, 0.0]
+	shapesysvar_uujj_vv = [13.0, 21.32, 19.64, 36.65, 31.49, 0.0, 35.66, 35.66, 30.32, 42.95, 20.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 42.95, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
 
 shapesysvar_uvjj_wjets  = [1.23, 1.54, 1.67, 3.76, 3.94, 5.6, 8.37, 7.73, 8.33, 5.19, 5.78, 5.47, 8.73, 18.11, 23.3, 12.4, 24.98, 24.79, 29.56, 14.12, 16.29, 11.8, 16.47, 35.87, 65.54, 55.04, 17.6, 18.42, 22.98, 24.6, 13.22, 7.16, 4.7, 5.11, 5.23, 3.57, 3.51, 3.42]
 shapesysvar_uvjj_ttjets = [0.68, 1.13, 2.16, 3.34, 4.42, 6.39, 8.25, 9.47, 10.08, 12.29, 14.62, 15.59, 17.25, 18.12, 21.74, 24.95, 20.29, 21.35, 20.86, 20.49, 14.14, 38.26, 36.05, 36.05, 36.05, 36.05, 38.26, 38.26, 38.26, 38.26, 38.26, 38.26, 41.15, 41.15, 41.15, 41.15, 41.15, 41.15]
@@ -587,14 +631,14 @@ def main():
 		#munu2 = '(MT_uv>70)*(MT_uv<110)*(JetCount>3.5)'
 		# SFs with updated integrated luminosities
 		if year == '2016':
-			[[Rz_uuj,Rz_uuj_err],[Rtt_uuj,Rtt_uuj_err]] = [[0.978,0.015],[0.992,0.013]] #2016 stock NanoAODv7 with 1 btag (uub)
-			[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = [[0.99,0.016],[0.984,0.014]] #2016 stock NanoAODv7 with 1 btag (uubj)
-		elif year == '2017': 
-			[[Rz_uuj,Rz_uuj_err],[Rtt_uuj,Rtt_uuj_err]]  =  [[1.377,0.018],[1.081,0.011]] #2017 stock NanoAODv7 with 1 btag (uub)
-			[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = [[ 1.367,0.02],[1.082,0.012]] #2017 stock NanoAODv7 with 1 btag (uubj)
+			[[Rz_uuj,Rz_uuj_err],[Rtt_uuj,Rtt_uuj_err]] = [[1.002,0.015],[1.01,0.013]] #2016 stock NanoAODv7 with 1 btag (uub) 
+			[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = [[1.016,0.017],[1.003,0.014]] #2016 stock NanoAODv7 with 1 btag (uubj) (Rz_uujj = 89% purity, Rtt_uujj = 91% purity)
+		elif year == '2017':
+			[[Rz_uuj,Rz_uuj_err],[Rtt_uuj,Rtt_uuj_err]]  =  [[1.406,0.019],[1.101,0.011]] #2017 stock NanoAODv7 with 1 btag (uub)
+			[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = [[1.396,0.02],[1.104,0.012]] #2017 stock NanoAODv7 with 1 btag (uubj) (Rz_uujj = 91% purity, Rtt_uujj = 89% purity)
 		elif year == '2018':
-			[[Rz_uuj,Rz_uuj_err],[Rtt_uuj,Rtt_uuj_err]]  =  [[ 1.334,0.016],[1.033,0.009]] #2018 stock NanoAODv7 with 1 btag (uub)
-			[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]]  =  [[1.336,0.017],[1.033,0.01]] #2018 stock NanoAODv7 with 1 btag (uubj)
+			[[Rz_uuj,Rz_uuj_err],[Rtt_uuj,Rtt_uuj_err]]  =  [[1.325,0.016],[1.026,0.009]] #2018 stock NanoAODv7 with 1 btag (uub)
+			[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]]  =  [[1.326,0.017],[1.027,0.01]] #2018 stock NanoAODv7 with 1 btag (uubj) (Rz_uujj = 91% purity, Rtt_uujj = 92% purity)
 		else:
 			[[Rz_uuj,Rz_uuj_err],[Rtt_uuj,Rtt_uuj_err]] = GetMuMuScaleFactors( NormalWeightMuMu+'*'+preselectionmumu_single, NormalDirectory, '(M_uu>80)*(M_uu<100)', '(M_uu>100)*(M_uu<250)',0,0)
 			[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = GetMuMuScaleFactors( NormalWeightMuMu+'*'+preselectionmumu, NormalDirectory, '(M_uu>80)*(M_uu<100)', '(M_uu>100)*(M_uu<250)',0,0)
@@ -656,7 +700,7 @@ def main():
 		MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M3000","BDT score (M_{LQ} = 3000 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
 		MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M3500","BDT score (M_{LQ} = 3500 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
 		MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M4000","BDT score (M_{LQ} = 4000 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
-		#exit()
+		exit()
 		# Here are a few plots which are zoomed-in on control regions. 
 		MakeBasicPlot("M_uu","M^{#mu#mu} [GeV]",bosonzoombinning_uujj_Z,preselectionmumu,NormalWeightMuMu,NormalDirectory,'controlzoom_ZRegion','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
 		MakeBasicPlot("Pt_miss","E_{T}^{miss} [GeV]",metzoombinning_uujj_Z,preselectionmumu+'*(M_uu>80)*(M_uu<100)*(Pt_miss<100)',NormalWeightMuMu,NormalDirectory,'controlzoom_ZRegion','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
@@ -1017,6 +1061,7 @@ def main():
 
 	if False :
 		doLongLived = False
+		optimizeBDT = True
 		# Get Scale Factors
 		#[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = GetMuMuScaleFactors( NormalWeightMuMu+'*'+preselectionmumu, NormalDirectory, '(M_uu>80)*(M_uu<100)', '(M_uu>100)',0,0)
 		#[[Rw_uvjj,Rw_uvjj_err],[Rtt_uvjj,Rtt_uvjj_err]] = GetMuNuScaleFactors( NormalWeightMuNu+'*'+preselectionmunu, NormalDirectory, munu1, munu2,0)#fixme todo varying control sample MT window
@@ -1031,7 +1076,12 @@ def main():
 
 
 		scaleFactors = [Rz_uujj,Rtt_uujj,Rw_uvjj]
-		if not doLongLived :
+		# Optimize final selection cuts on BDT score
+		if optimizeBDT:
+			cutFileBDT = 'Results_'+version_name+'/Log_LQuujj_BDT_Cuts.txt'
+			BDTbins = [0.9,1.0,0.001]
+			OptimizeCutsBDT(BDTbins,preselectionmumu,NormalWeightMuMu,version_name,scaleFactors,cutFileBDT,'uujj')
+		elif not doLongLived :
 			MuMuOptTestCutFile = 'Results_'+version_name+'/OptLQ_uujjCuts_Smoothed_pol2cutoff.txt'
 			variableSpace = ['M_uu:25:100:1000','St_uujj:100:300:2500','M_uujj2:25:100:1000']
 			OptimizeCuts3D(variableSpace,preselectionmumu,NormalWeightMuMu,version_name,scaleFactors,'','uujj')
@@ -4087,6 +4137,11 @@ def ModSelection(selection,sysmethod,channel_log):
 		if sysmethod == 'PUdown':
 			selection = selection.replace('weight_central','weight_pu_down')
 
+		if sysmethod == 'PREFIREup':
+			selection = selection.replace('prefireWeight','prefireWeight_up')
+		if sysmethod == 'PREFIREdown':
+			selection = selection.replace('prefireWeight','prefireWeight_down')
+
 		if sysmethod == 'BTAGSFup':
 			if year == '2016':
 				selection = selection.replace('*(1-(1-(DeepJet_jet1>0.3093)*bTagSF_jet1)*(1-(DeepJet_jet2>0.3093)*bTagSF_jet2))',bTagSFmediumUp)
@@ -4609,9 +4664,14 @@ def GetMuMuScaleFactors( selection, FileDirectory, controlregion_1, controlregio
 	selection_data = selection.split('*(fact')[0]
 	selection_data = selection.split('*scaleWeight')[0]
 
-	N1 = QuickEntries(t_SingleMuData,selection_data + '*' + controlregion_1+dataHLT,1.0)
-	print selection_data + '*' + controlregion_1+dataHLT
-	N2 = QuickEntries(t_SingleMuData,selection_data + '*' + controlregion_2+dataHLT,1.0)
+	if HEMStudy:
+		N1 = QuickEntries(t_SingleMuData,selection_data + '*' + HEM1516Failure_runNum_sel +  '*' + controlregion_1+dataHLT,1.0)
+		print selection_data + '*' + HEM1516Failure_runNum_sel + '*' + controlregion_1+dataHLT
+		N2 = QuickEntries(t_SingleMuData,selection_data + '*' + HEM1516Failure_runNum_sel +  '*' + controlregion_2+dataHLT,1.0)
+	else:
+		N1 = QuickEntries(t_SingleMuData,selection_data + '*' + controlregion_1+dataHLT,1.0)
+		print selection_data + '*' + controlregion_1+dataHLT
+		N2 = QuickEntries(t_SingleMuData,selection_data + '*' + controlregion_2+dataHLT,1.0)
 
 	Z1 = QuickIntegral(t_ZJets,selection + '*' + controlregion_1,1.0)
 	T1 = QuickIntegral(t_TTBar,selection + '*' + controlregion_1,1.0)
@@ -5318,6 +5378,23 @@ def MakeBasicPlot(recovariable,xlabel,presentationbinning,selection,weight,FileD
 	print "  Preparing basic histo for "+channel+":"+recovariable+"...  "
 	# Create Canvas
 	yaxismin = .13333
+
+	# Extend the y-axis down for higher mass (low stats) BDT scores
+	if 'BDT_discrim_M' in recovariable:
+		BDTmass = int(recovariable.split('BDT_discrim_M')[-1])
+		if BDTmass < 600: continue
+		elif BDTmass < 900: yaxismin *= 0.1
+		elif BDTmass < 1200: yaxismin *= 0.01
+		elif BDTmass < 1500: yaxismin *= 0.001
+		elif BDTmass < 1800: yaxismin *= 0.0001
+		elif BDTmass < 2100: yaxismin *= 0.00001
+		elif BDTmass < 2400: yaxismin *= 0.000001
+		elif BDTmass < 2700: yaxismin *= 0.0000001
+		elif BDTmass < 3000: yaxismin *= 0.00000001
+		elif BDTmass < 3500: yaxismin *= 0.000000001
+		elif BDTmass < 4000: yaxismin *= 0.0000000001
+		elif BDTmass == 4000: yaxismin *= 0.00000000001
+
 	perc = 0.0
 	betamarker = '#beta = '
 	isDisplaced=False
@@ -5479,7 +5556,13 @@ def MakeBasicPlot(recovariable,xlabel,presentationbinning,selection,weight,FileD
 	print 'Doing Projections'
 	### Make the plots without variable bins!
 	hs_rec_WJets=CreateHisto('hs_rec_WJets','W+Jets',t_W,recovariable,presentationbinning,selection+'*('+str(wscale)+')*'+weight,WStackStyle,Label)
-	hs_rec_Data=CreateHisto('hs_rec_Data','Data',t_SingleMuData,recovariable,presentationbinning,selection+dataHLT,DataRecoStyle,Label)
+	
+	# For HEM 15/16 failure study
+	if HEMStudy:
+		hs_rec_Data=CreateHisto('hs_rec_Data','Data',t_SingleMuData,recovariable,presentationbinning,selection+dataHLT+'*'+HEM1516Failure_runNum_sel,DataRecoStyle,Label)
+	else:
+		hs_rec_Data=CreateHisto('hs_rec_Data','Data',t_SingleMuData,recovariable,presentationbinning,selection+dataHLT,DataRecoStyle,Label)
+	
 	hs_rec_DiBoson=CreateHisto('hs_rec_DiBoson','DiBoson',t_DiBoson,recovariable,presentationbinning,selection+'*'+weight,DiBosonStackStyle,Label)
 	hs_rec_ZJets=CreateHisto('hs_rec_ZJets','Z+Jets',t_Z,recovariable,presentationbinning,selection+'*('+str(zscale)+')*'+weight,ZStackStyle,Label)
 	print 'Doing ttbar:'
@@ -5515,13 +5598,18 @@ def MakeBasicPlot(recovariable,xlabel,presentationbinning,selection,weight,FileD
 	sig2name = ''
 
 	if channel == 'uujj':
-		sig1name = 'm_{LQ} = 1500 GeV, '+betamarker
-		sig2name = 'm_{LQ} = 2000 GeV, '+betamarker
 		if 'final' not in tagname:
-			hs_rec_Signal=CreateHisto('hs_rec_Signal',sig1name,t_LQuujj1500,recovariable,presentationbinning,selection+'*'+weight,SignalStyle,Label)
-			hs_rec_Signal2=CreateHisto('hs_rec_Signal2',sig2name,t_LQuujj2000,recovariable,presentationbinning,selection+'*'+weight,SignalStyle2,Label)
-			print 'signal1,',sig1name,':',hs_rec_Signal.Integral()
-			print 'signal2,',sig2name,':',hs_rec_Signal2.Integral()
+			if 'BDT_discrim_M' in recovariable:
+				sig1name = 'm_{LQ} = '+str(BDTmass)+' GeV, '+betamarker
+				exec('_stree = t_LQ'+channel+str(BDTmass))
+				hs_rec_Signal=CreateHisto('hs_rec_Signal',sig1name,_stree,recovariable,presentationbinning,selection+'*'+weight,SignalStyle,Label)
+			else:
+				sig1name = 'm_{LQ} = 300 GeV, '+betamarker
+				sig2name = 'm_{LQ} = 900 GeV, '+betamarker
+				hs_rec_Signal=CreateHisto('hs_rec_Signal',sig1name,t_LQuujj300,recovariable,presentationbinning,selection+'*'+weight,SignalStyle,Label)
+				hs_rec_Signal2=CreateHisto('hs_rec_Signal2',sig2name,t_LQuujj900,recovariable,presentationbinning,selection+'*'+weight,SignalStyle2,Label)
+				print 'signal1,',sig1name,':',hs_rec_Signal.Integral()
+				print 'signal2,',sig2name,':',hs_rec_Signal2.Integral()
 		if 'final' in tagname:
 			exec ("_stree = t_LQ"+channel+str(plotmass))
 			hs_rec_Signal=CreateHisto('hs_rec_Signal','m_{LQ} = '+str(plotmass)+' GeV, '+betamarker,_stree,recovariable,presentationbinning,selection+'*'+weight,SignalStyle,Label)
@@ -5779,7 +5867,7 @@ def MakeBasicPlot(recovariable,xlabel,presentationbinning,selection,weight,FileD
 
 	MCStack=BeautifyStack(MCStack,Label)
 	hs_rec_Signal.Draw("HISTSAME")
-	if 'final' not in tagname:
+	if 'final' not in tagname and 'BDT_discrim' not in recovariable:
 		hs_rec_Signal2.Draw("HISTSAME")
  	if 'PAS' in tagname and 'final' in tagname:
 		# sysTop.Draw("F")
@@ -5797,7 +5885,7 @@ def MakeBasicPlot(recovariable,xlabel,presentationbinning,selection,weight,FileD
 	hs_rec_Data_tgraph = TGraphAsymmErrors(hs_rec_Data)
 	blinded=True
 	if 'BDT' in tagname: blinded=True
-	if 'final' not in tagname:
+	if 'final' not in tagname and 'BDT_discrim' not in recovariable:
 		setZeroBinErrors_tgraph(hs_rec_Data,hs_rec_Data_tgraph,MCStack,hs_rec_Signal,hs_rec_Signal2,blinded)
 	else:
 	       	setZeroBinErrors_tgraph(hs_rec_Data,hs_rec_Data_tgraph,MCStack,hs_rec_Signal,hs_rec_Signal,blinded)
@@ -5835,7 +5923,8 @@ def MakeBasicPlot(recovariable,xlabel,presentationbinning,selection,weight,FileD
 		if 'PAS' in tagname:
 			leg.AddEntry(hs_bgband,'Unc. (stat + syst)')
 		leg.AddEntry(hs_rec_Signal,sig1name,"l")
-		leg.AddEntry(hs_rec_Signal2,sig2name,"l")
+		if 'BDT_discrim_M' not in recovariable:
+			leg.AddEntry(hs_rec_Signal2,sig2name,"l")
 	else:
 		if 'PAS' in tagname:
 			leg.AddEntry(hs_bgband,'Unc. (stat + syst)')
@@ -7438,6 +7527,18 @@ def TH2toCutRes(th2,thname, addon):
 
 	return res
 
+def TH1toCutRes(th1,thname):
+	res = []
+
+	# print th2.Integral()
+	nx = th1.GetNbinsX()+1
+	for x in range(nx):
+		if x == 0 : continue
+		if th1.Integral(x,nx)>0:
+			res.append([thname,[th1.GetXaxis().GetBinCenter(x) - 0.5*th1.GetXaxis().GetBinWidth(x)],th1.Integral(x,nx)])
+		else:
+			res.append([thname,[th1.GetXaxis().GetBinCenter(x) - 0.5*th1.GetXaxis().GetBinWidth(x)],0])#fixme avoiding negative integrals because it goes into a log calculation
+	return res
 
 def GetRatesFromTH2(sigs,baks,_presel,_weight,_hvars,addon,scalefac):
 	for f in NormalFiles:
@@ -7466,6 +7567,32 @@ def GetRatesFromTH2(sigs,baks,_presel,_weight,_hvars,addon,scalefac):
 		# break
 	return allinfo
 
+def GetRatesFromTH1(sigs,baks,_presel,_weight,_vars,scalefac):
+	for f in NormalFiles:
+		_tree = 't_'+f.split('/')[-1].replace(".root","")
+		_treeTmp = _tree+"_tmp"
+		_prefix = ''# +'root://eoscms//eos/cms'*('/store' in NormalDirectory)#fixme removing since eos is hosted on /eos now
+		#print(_tree+" = TFile.Open(\""+_prefix+NormalDirectory+"/"+f.replace("\n","")+"\",\"READ\")"+".Get(\""+TreeName+"\")")
+	        #print (_treeTmp+" = TFile.Open(\""+_prefix+NormalDirectory+"/"+f.replace("\n","")+"\",\"READ\")")
+		exec (_treeTmp+" = TFile.Open(\""+_prefix+NormalDirectory+"/"+f.replace("\n","")+"\",\"READ\")")
+	        #print (_tree+" = "+_treeTmp+".Get(\""+TreeName+"\")")
+		exec (_tree+" = "+_treeTmp+".Get(\""+TreeName+"\")")
+
+	b1 = ConvertBinning(_vars[1])
+	#b2 = ConvertBinning(_hvars[1][1])
+	v1 = (_vars[0])
+	#v2 = (_hvars[1][0])
+	allinfo = []
+	for t in sigs+baks:
+		print 'Checking:',t
+		h = 'h_'+t
+		#print( h + ' = TH2D("'+h+'","'+h+'",len(b1)-1,array(\'d\',b1),len(b2)-1,array(\'d\',b2))')
+		exec(  h + ' = TH1D("'+h+'","'+h+'",len(b1)-1,array(\'d\',b1))')
+		#print( t+'.Project("'+h+'","'+v2+':'+v1+'","'+_presel+'*('+_weight+'*'+scalefac+')")')
+		exec(  t+'.Project("'+h+'","'+v1+'","'+_presel+'*('+_weight+'*'+scalefac+')")')
+		exec( 'allinfo += TH1toCutRes ('+h+',"'+h+'")')
+		# break
+	return allinfo
 
 def OptimizeCuts3D(variablespace,presel,weight,tag,scalefacs,cutfile,channel):
 
@@ -7587,7 +7714,7 @@ def OptimizeCuts3D(variablespace,presel,weight,tag,scalefacs,cutfile,channel):
 
 	# Get LQ cross sections from ntuple info csv files 
 	channelDict = {'uujj':'pair','uuj':'single','1':'BMu','2':'BMu','0':'SMu'}
-	with open('NTupleInfo'+year+'Full_stockNano.csv','read') as NTupleInfocsv:
+	with open('NTupleInfo'+year+'Full_stockNano.csv','r') as NTupleInfocsv:
 		xsecs = [float(line.split(',')[1]) for line in NTupleInfocsv if 'LQTo'+channelDict[btags] in line and channelDict[channel] in line]
 	NTupleInfocsv.close()
 
@@ -7634,6 +7761,245 @@ def OptimizeCuts3D(variablespace,presel,weight,tag,scalefacs,cutfile,channel):
 	cuts = MakeSmoothCuts(valuetable,[minvar[0],hvars[0][0], hvars[1][0]],tag,signalType,channel,'lincutoff')
 
 	return cuts
+
+def OptimizeCutsBDT(bins,presel,weight,tag,scalefacs,cutfile,channel):
+
+	# Function to optimize cuts on the BDT scores of each signal mass.
+	# Collects number of events in the SM backgrounds and signal sample of mass M
+	# corresponding to a cut on the BDT score trained on a signal mass M.
+	# Cut values range and bind width set by the 'bins' variable.
+	# Stores event counts in a log file, i.e., 'cutfile' whose lines
+	# are executables that will eventually create and fill a nested dictionary 
+	# for each SM background and signal. 
+	# Loads cutfile and executes each line, i.e., fills the dictionaries
+	# with the event counts for each variable and cut.
+	# For each BDT score, loop through cuts and optimize the cut value on
+	# a figure of merit.
+	# Uses Punzi significance as figure of merit.
+	# Return a list of the 'best' cut for each variable (BDT score)
+
+	# Open up root files and get trees
+	for f in NormalFiles:
+		_tree = 't_'+f.split('/')[-1].replace(".root","")
+		_treeTmp = _tree+"_tmp"
+		print(_tree+" = TFile.Open(\""+NormalDirectory+"/"+f.replace("\n","")+"\",\"READ\")"+".Get(\""+TreeName+"\")")
+		exec (_treeTmp+" = TFile.Open(\""+NormalDirectory+"/"+f.replace("\n","")+"\",\"READ\")")
+		exec (_tree+" = "+_treeTmp+".Get(\""+TreeName+"\")")
+
+	# Information for signal type, channel, b-jet tag requirements, BDT variable, etc.
+	signalType = 'LQ'
+	channelDict = {'uujj':'pair','uuj':'single','1':'BMu','2':'BMu','0':'SMu'}
+	BDTstring = 'LQToBMu_pair_uubj_BDT_discrim_M'
+
+	# Create list of background samples (e.g., 'ZJets')
+	backgrounds =  [ x.replace('\n','') for x in  ['DiBoson','WJets','TTBar','ZJets','SingleTop','TTV']]
+	# Create list of signal samples (e.g., 'LQuujj300')
+	signals =  [ (x.replace('.root','').replace('\n','').replace(' ','').replace('\t',''),int(x.replace('.root','').replace('\n','').replace(signalType+channel,''))) for x in  os.popen('ls '+NormalDirectory+'| grep root | grep '+signalType+channel+' ').readlines()]
+
+	# Sort the signal samples by mass
+	signals = [x for (x,y) in sorted(signals, key = lambda element : element[1])]
+
+	# Set each scale factor
+	[R_z,R_tt,R_w] = scalefacs
+
+	# Get number of bins
+	lowBound = bins[0]
+	upBound = bins[1]
+	binWidth = bins[2]
+	binning = [int(round((upBound-lowBound)/binWidth)),lowBound,upBound]
+
+	# Set bin range and number of bins in 'binning'
+	nBins = binning[0]
+	binLow = binning[1]
+	binHigh = binning[2]
+
+	# This section creates the cutfile if no file is passed through the function
+	if cutfile=='':
+
+		# Name and open the log file (eventually the cutfile)
+		logfile = 'Results_'+tag+'/Log_'+signalType+channel+'_BDT'+'_Cuts.txt'
+		l = open(logfile,'w')
+
+		# Write lines that will initialize dictionaries, one for each SM background and signal
+		for sample in backgrounds+signals:
+			l.write('events_'+sample+' = {}\n')
+
+		# Loop through each signal sample that we want to optimize a cut for
+		for signal in signals:
+			# Only need to optimize a cut on the BDT score with the same mass as the signal sample
+			# cutMass = signalMass
+			# (no need to optimize a cut on BDT(M_LQ=300 GeV) with a 400 GeV LQ sample)
+
+			# Get BDT/signal mass and BDT variable name (variable to cut on)
+			cutMass = signal.replace('LQuujj','')
+			cutVariable = BDTstring+cutMass
+
+			# List of cuts as strings, e.g., '(LQToBMu_pair_uubj_BDT_discrim_M300>-1.0)'
+			cuts = ['('+cutVariable+'>'+str(x)+')' for x in ConvertBinning(binning)]
+			print 'Get cuts on M_LQ = ',cutMass,' GeV:'
+
+			# Samples we want event counts of, i.e., SM backgrounds and current signal mass
+			samples = backgrounds+[signal]
+			for sample in samples:
+				print 'Sample: ',sample
+
+				# Write lines to create nested dictionaries; in each sample dictionary: key = cut varible, value = subdictionary
+				# Sample dictionaries have the 'events_' prefix
+				l.write('events_'+sample+'[\''+cutVariable+'\'] = {}\n')
+
+				# Loop through cuts here
+				for cut in cuts:
+					print 'Applying cut: ',cut
+
+					# Tree ('t_' prefix) and Histogram ('h_' prefix) names for current sample
+					t_sample = 't_'+sample
+					h_sample = 'h_'+sample
+
+					# Set Z+Jets and tt-bar scale factores
+					scalefac = '1.0'
+					if 'ZJets' in sample: scalefac = str(R_z)
+					if 'TTBar' in sample: scalefac = str(R_tt)
+
+					# Here we create 1-dimensional histogram with the binning we desire
+					exec( h_sample + ' = TH1D("'+h_sample+'","'+h_sample+'",'+str(nBins)+','+str(binLow)+','+str(binHigh)+')' )
+
+					# Then project the BDT score variable onto the histogram with preselection cuts, weights, scale factors
+					# and importantly, the final selection cut we are looping through 
+					exec( t_sample + '.Project("'+h_sample+'","'+cutVariable+'","'+presel+'*'+cut+'*('+weight+'*'+scalefac+')")' )
+
+					# Get the number of events for the given cut with 'Integral'
+					# Note 1: Integrates to get area (not 'generated' event count which is different)
+					# Note 2: Integrates between bin indicies, not x-axis values
+					exec( 'nBins = '+h_sample+'.GetNbinsX()+1')
+					exec( 'Int = ' + h_sample + '.Integral(1,'+str(nBins)+')' )
+					cutVal = cut.split('>')[-1].rstrip(')')
+
+					# Write lines that will fill subdictionaries; each subdictionary: key = cut value, value = number of sample events
+					l.write('events_'+sample+'[\''+cutVariable+'\'][\''+cutVal+'\'] = '+str(Int)+'\n')
+
+		# Make sure to close log file!
+		l.close()
+
+		# Set cutfile to log file (only if cutfile is not passed in function)
+		cutfile = logfile
+
+	print 'Getting log ... '
+
+	# Open cutfile
+	nf = os.popen('cat '+cutfile+' | wc -l').readlines()[0]
+	nf = int(nf)
+	nd = 0
+
+	# Loop through each line of cutfile
+	for c in open(cutfile,'r'):
+		nd += 1
+		if nd%100==0:
+			# Prints periodic status as percentage
+			print str(100*round( (1.0*nd)/(1.0*nf),3 )), '% complete'
+
+		# Executes each line in cutfile
+		# Initializes a dictionary for each sample
+		# Fills each dictionary with subdictionaries corresponding to each BDT variable
+		# Fills each subdictionary with the number of events corresponding to each cut
+		exec(c)
+
+	# Initialize a dictionary to store all signal dictionaries (e.g., events_LQuujj300, ...) containing event counts for all cut values
+	signalEventsAll = {}
+
+	# Initialize a dictionary to store all SM background dictionaries (e.g., events_ZJets, ...) containing event counts for all cut values
+	backgroundEventsAll = {}
+
+	# Assign signal dictionary with key = 'signal' (e.g., 'LQuujj') and value = subdictionary (e.g., events_LQuujj300)
+	for signal in signals:
+		exec('signalEventsAll[signal] = events_'+signal )
+
+	# Assign background dictionary with key = 'background' (e.g., 'ZJets') and value = subdictionary (e.g., events_ZJets)
+	for background in backgrounds:
+		exec('backgroundEventsAll[background] = events_'+background )
+
+	# Table (list) that will store the cut values
+	valuetable = []
+
+	xsecs = {}
+
+	# Get LQ cross sections from ntuple info csv files
+	# Store in a dictionary with key = 'signal' (e.g., 'LQuujj300') and value = xsec
+	with open('NTupleInfo'+year+'Full_stockNano.csv','r') as NTupleInfocsv:
+		for line in NTupleInfocsv:
+			if signalType+'To'+channelDict[btags] in line and channelDict[channel] in line:
+				xsecs[signalType+channel+line.split(',')[0].split('-')[-1].split('_')[0]] = float(line.split(',')[1])
+				#xsecs = {signalType+channel+line.split(',')[0].split('-')[-1].split('_')[0] : float(line.split(',')[1]) for line in NTupleInfocsv if signalType+'To'+channelDict[btags] in line and channelDict[channel] in line}
+
+	# Get a list of the cut values, i.e., bin edges (e.g., -1.0, -0.95, ..., 0.95, 1.0)
+	binList = [str(b) for b in ConvertBinning(binning)]
+
+	# Loop to optimze the cut value for each signal hypothesis
+	# Use the Punzi significance as a figure of merit (FOM)
+
+	# Start by looping through 'signal' keys (e.g., 'LQuujj300')
+	# This also determines which variable will be cut on, i.e., 'LQToBMu_pair_uubj_BDT_discrim_M' + signal mass
+	# Sort dictionary by signal mass first
+	#for signal in sorted(signalEventsAll.items(), key=lambda signal: int(signal.strip(signalType+channel)) ):
+	for signal in signalEventsAll:
+		# Initalize
+		maxPunziFOM = -99999
+		bestCutVal = 0
+
+		# Get signal mass as a string
+		signalMass = signal.strip(signalType+channel)
+
+		# Loop through each cut value
+		for cutValue in binList:
+
+			# Number of signal events when cut (cutValue) is applied to variable 'LQToBMu_pair_uubj_BDT_discrim_M'+signalMass, e.g., (LQToBMu_pair_uubj_BDT_discrim_M300 > 0.0)
+			nSignal = signalEventsAll[signal][BDTstring+signalMass][str(cutValue)]
+
+			# Initialize background events
+			nBackground = 0.0
+
+			# Get original number of signal events from luminosity x cross section (lumi is a global variable)
+			nSignalOrig = xsecs[signal]*lumi
+
+			# Loop through 'background' keys (e.g., 'ZJets')
+			# Add event counts of all the backgrounds together (ZJets + TTBar + DiBoson + ...) for the current cut
+			for background in backgroundEventsAll:
+				nBackground += backgroundEventsAll[background][BDTstring+signalMass][str(cutValue)]
+			if nSignal + nBackground < 0.001:
+				continue
+
+			# Initialize the signal efficiency
+			nSignalEff  = nSignal / nSignalOrig
+
+			# Initialize the FOM value
+			punziFOM = 0
+
+			# Prevents negative event counts from amc@NLO backgrounds and division by zero
+			if nBackground > 0.0:
+				# Calculate the FOM for cut value using the definition of the Punzi significance
+				punziFOM = nSignalEff/(2.5+math.sqrt(nBackground))
+
+			# Optimization test; compare current FOM to the best FOM for each cut value
+			if punziFOM > maxPunziFOM :
+				# Update current FOM value as the 'maximized' FOM value
+				maxPunziFOM = punziFOM
+				# Update current cut value as the 'best' cut value
+				bestCutVal = cutValue
+
+		# String with optimized cut for current signal mass
+		opt = 'opt_'+signal + ' = (' + BDTstring+signalMass + '>' + str(bestCutVal) + ')\n'  
+		print opt
+
+		# Save optimized cut string to list along with mass and then sort by mass
+		valuetable.append((int(signalMass),opt))
+		valuetable = sorted(valuetable)
+
+	# Here we write the cuts to a log file
+	with open('Results_'+tag+'/Opt'+signalType+'_'+channel+'Cuts_BDT.txt','w') as optimlog:
+		for mass in range(len(valuetable)):
+			# Write string to optimization log file
+			optimlog.write(valuetable[mass][1])
+
+	# No return
 
 def ReDoOptFits(OptFile):
 	tag = OptFile.split('/')[0]
@@ -8189,7 +8555,12 @@ def blind(h,name,num,tag,chan):
 	elif 'Pt_muon2' in name:
 		blindstart=300
 	elif 'BDT' in name:
-		blindstart=0
+		if name == 'LQToBMu_pair_uubj_BDT_discrim_M300':
+			blindstart= -0.8
+		elif name == 'LQToBMu_pair_uubj_BDT_discrim_M400':
+			blindstart= -0.4
+		else:
+			blindstart=-0.0001
 	if 'final' in tag:
 		blindstart=0
 	for bin in range(h.GetNbinsX()):
@@ -8212,7 +8583,7 @@ def makeOptPlotForPAS(cutlog, channel, version_name, isPAS):
 	pad1.Draw()
 	gStyle.SetOptStat(0)
 
-	with open(cutlog,'read') as cutlogfile:
+	with open(cutlog,'r') as cutlogfile:
 		masses = [int(re.search('[0-9]+',line).group(0)) for line in cutlogfile]
 	cutlogfile.close()
 
