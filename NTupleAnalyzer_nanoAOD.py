@@ -71,7 +71,7 @@ print 'AlignmentCorr Switch = ', alignementcorrswitch
 
 #Switches to add BDT discriminants
 LQToBMu_single_bdtswitch = False
-LQToBMu_pair_bdtswitch = True
+LQToBMu_pair_bdtswitch = False
 
 if LQToBMu_single_bdtswitch:
 	LQToBMu_single_uub_weights = ["",""]
@@ -1160,7 +1160,7 @@ def SmearMuonCollections(_ptCollection, _etaCollection, _phiCollection, isSystem
 	Plist = []
 	smearedPlist = []
 	smearingList = []
-	if not isSystematic and year == '2016': continue
+	if not isSystematic and year == '2016': pass
 	else:
 		for n in range(len(_ptCollection)):
 			smearConst = 0.0
