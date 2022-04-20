@@ -7725,7 +7725,6 @@ def OptimizeCuts3D(variablespace,presel,weight,tag,scalefacs,cutfile,channel):
 	return cuts
 
 def OptimizeCutsBDT(bins,presel,weight,tag,scalefacs,cutfile,channel):
-	import json
 	# Function to optimize cuts on the BDT scores of each signal mass.
 	# Collects number of events in the SM backgrounds and signal sample of mass M
 	# corresponding to a cut on the BDT score trained on a signal mass M.
@@ -7882,7 +7881,7 @@ def OptimizeCutsBDT(bins,presel,weight,tag,scalefacs,cutfile,channel):
 	# Table (list) that will store the cut values
 	valuetable = []
 
-	xsecs = { "TotalBkg": 0.0}
+	xsecs = {}
 
 	# Get LQ cross sections from ntuple info csv files
 	# Store in a dictionary with key = 'signal' (e.g., 'LQuujj300') and value = xsec
@@ -7890,8 +7889,6 @@ def OptimizeCutsBDT(bins,presel,weight,tag,scalefacs,cutfile,channel):
 		for line in NTupleInfocsv:
 			if signalType+'To'+channelDict[btags] in line and channelDict[channel] in line and '#' not in line:
 				xsecs[signalType+channel+line.split(',')[0].split('-')[-1].split('_')[0]] = float(line.split(',')[1])
-			elif any(bkg in line for bkg in backgrounds) and '#' not in line:
-				xsecs["TotalBkg"] += float(line.split(',')[1])
 
 
 	# Get a list of the cut values, i.e., bin edges (e.g., -1.0, -0.95, ..., 0.95, 1.0)
@@ -7908,8 +7905,6 @@ def OptimizeCutsBDT(bins,presel,weight,tag,scalefacs,cutfile,channel):
 		# Initalize
 		maxPunziFOM = -99999
 		bestCutVal = 0
-		bestSignalEff = 0
-		bestBackgroundEff = 0
 
 		# Get signal mass as a string
 		signalMass = signal.strip(signalType+channel)
@@ -7926,9 +7921,6 @@ def OptimizeCutsBDT(bins,presel,weight,tag,scalefacs,cutfile,channel):
 			# Get original number of signal events from luminosity x cross section (lumi is a global variable)
 			nSignalOrig = xsecs[signal]*lumi
 
-			# Get original number of background events from luminosity x cross section (lumi is a global variable)
-			nBackgroundOrig = xsecs["TotalBkg"]*lumi
-
 			# Loop through 'background' keys (e.g., 'ZJets')
 			# Add event counts of all the backgrounds together (ZJets + TTBar + DiBoson + ...) for the current cut
 			for background in backgroundEventsAll:
@@ -7938,9 +7930,6 @@ def OptimizeCutsBDT(bins,presel,weight,tag,scalefacs,cutfile,channel):
 
 			# Initialize the signal efficiency
 			nSignalEff  = nSignal / nSignalOrig
-
-			# Initialize the background efficiency (just stored; not used in optimization)
-			nBackgroundEff = nBackground / nBackgroundOrig
 
 			# Initialize the FOM value
 			punziFOM = 0
@@ -7956,9 +7945,6 @@ def OptimizeCutsBDT(bins,presel,weight,tag,scalefacs,cutfile,channel):
 				maxPunziFOM = punziFOM
 				# Update current cut value as the 'best' cut value
 				bestCutVal = cutValue
-				# Set signal and background efficiencies for the "best" cut
-				bestSignalEff = nSignalEff
-				bestBackgroundEff = nBackgroundEff
 
 		# String with optimized cut for current signal mass
 		opt = 'opt_'+signal + ' = (' + BDTstring+signalMass + '>' + str(bestCutVal) + ')\n'  
@@ -7967,18 +7953,12 @@ def OptimizeCutsBDT(bins,presel,weight,tag,scalefacs,cutfile,channel):
 		# Save optimized cut string to list along with mass and then sort by mass
 		valuetable.append((int(signalMass),opt))
 		valuetable = sorted(valuetable)
-		efficiencies["signal"][signalMass] = bestSignalEff
-		efficiencies["background"][signalMass] = bestBackgroundEff
 
 	# Here we write the cuts to a log file
 	with open('Results_'+tag+'/Opt'+signalType+'_'+channel+'Cuts_BDT.txt','w') as optimlog:
 		for mass in range(len(valuetable)):
 			# Write string to optimization log file
-			optimlog.write(valuetable[mass][1])
-
-	# Write the efficiencies to a json for plotting
-	with open('Results'+tag+'/Opt'+signalType+'_'+channel+'Efficiencies_BDT.json','w') as efficiencylog:
-		json.dump(efficiencies, efficiencylog, indent=4)
+			optimlog.write(valuetable[mass][1]
 
 	# No return
 
