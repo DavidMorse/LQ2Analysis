@@ -677,184 +677,153 @@ def main():
 		#MakeEfficiencyPlot(NormalDirectory,NormalWeightMuMu,MuMuOptCutFile,'LQuujj',version_name,1)
 		#MakeEfficiencyPlot(NormalDirectory,NormalWeightMuNu,MuNuOptCutFile,'LQuvjj',version_name,1)
 		#exit()
-		#MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M300","BDT score (M_{LQ} = 300 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
-		#MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M400","BDT score (M_{LQ} = 400 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
-		#MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M500","BDT score (M_{LQ} = 500 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
-		#MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M600","BDT score (M_{LQ} = 600 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
-		#MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M700","BDT score (M_{LQ} = 700 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
-		#MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M800","BDT score (M_{LQ} = 800 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
-		#MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M900","BDT score (M_{LQ} = 900 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
-		#MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M1000","BDT score (M_{LQ} = 1000 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
-		#MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M1100","BDT score (M_{LQ} = 1100 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
-		#MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M1200","BDT score (M_{LQ} = 1200 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
-		#MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M1300","BDT score (M_{LQ} = 1300 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
-		#MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M1400","BDT score (M_{LQ} = 1400 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
-		#MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M1500","BDT score (M_{LQ} = 1500 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
-		#MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M1600","BDT score (M_{LQ} = 1600 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
-		#MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M1700","BDT score (M_{LQ} = 1700 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
-		#MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M1800","BDT score (M_{LQ} = 1800 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
-		#MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M1900","BDT score (M_{LQ} = 1900 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
-		#MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M2000","BDT score (M_{LQ} = 2000 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
-		#MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M2100","BDT score (M_{LQ} = 2100 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
-		#MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M2200","BDT score (M_{LQ} = 2200 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
-		#MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M2300","BDT score (M_{LQ} = 2300 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
-		#MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M2400","BDT score (M_{LQ} = 2400 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
-		#MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M2500","BDT score (M_{LQ} = 2500 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
-		MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M2600","BDT score (M_{LQ} = 2600 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
-		#MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M2700","BDT score (M_{LQ} = 2700 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
-		#MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M2800","BDT score (M_{LQ} = 2800 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
-		#MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M2900","BDT score (M_{LQ} = 2900 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
-		#MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M3000","BDT score (M_{LQ} = 3000 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
-		#MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M3500","BDT score (M_{LQ} = 3500 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
-		#MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M4000","BDT score (M_{LQ} = 4000 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
-		#exit()
-		## Here are a few plots which are zoomed-in on control regions. 
-		#MakeBasicPlot("M_uu","M^{#mu#mu} [GeV]",bosonzoombinning_uujj_Z,preselectionmumu,NormalWeightMuMu,NormalDirectory,'controlzoom_ZRegion','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
-		#MakeBasicPlot("Pt_miss","E_{T}^{miss} [GeV]",metzoombinning_uujj_Z,preselectionmumu+'*(M_uu>80)*(M_uu<100)*(Pt_miss<100)',NormalWeightMuMu,NormalDirectory,'controlzoom_ZRegion','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
-		#MakeBasicPlot("M_uu","M^{#mu#mu} [GeV]",bosonzoombinning_uujj_TT,preselectionmumu+'*(M_uu>100)*(Pt_miss>=100)',NormalWeightMuMu,NormalDirectory,'controlzoom_TTRegion','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
-		#MakeBasicPlot("Pt_miss","E_{T}^{miss} [GeV]",metzoombinning_uujj_TT,preselectionmumu+'*(M_uu>100)*(Pt_miss>=100)',NormalWeightMuMu,NormalDirectory,'controlzoom_TTRegion','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
-		#MakeBasicPlot("GoodVertexCount","N_{Vertices}",vbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'linscale','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
-		##MakeBasicPlot("CISV_jet1","Jet1 CSV score",bjetbinning,preselectionmunu+'*(MT_uv>70)*(MT_uv<150)*(JetCount<3.5)',NormalWeightMuNu,NormalDirectory,'controlzoom_WRegion','uvjj',Rz_uujj, Rw_uvjj,Rtt_uvjj,'',version_name,850)
-		##MakeBasicPlot("CISV_jet2","Jet2 CSV score",bjetbinning,preselectionmunu+'*(MT_uv>70)*(MT_uv<150)*(JetCount<3.5)',NormalWeightMuNu,NormalDirectory,'controlzoom_WRegion','uvjj',Rz_uujj, Rw_uvjj,Rtt_uvjj,'',version_name,850)
-		##MakeBasicPlot("CISV_jet1","Jet1 CSV score",bjetbinning,preselectionmunu+'*(MT_uv>70)*(MT_uv<150)*(JetCount>3.5)',NormalWeightMuNu,NormalDirectory,'controlzoom_TTRegion','uvjj',Rz_uujj, Rw_uvjj,Rtt_uvjj,'',version_name,850)
-		##MakeBasicPlot("CISV_jet2","Jet2 CSV score",bjetbinning,preselectionmunu+'*(MT_uv>70)*(MT_uv<150)*(JetCount>3.5)',NormalWeightMuNu,NormalDirectory,'controlzoom_TTRegion','uvjj',Rz_uujj, Rw_uvjj,Rtt_uvjj,'',version_name,850)
-		#
-		#bosonzoombinning_uvjj = [40,70,150]
-		###MakeBasicPlot("MT_uv","M_{T}^{#mu#nu} [GeV]",bosonzoombinning_uvjj,preselectionmunu+'*(MT_uv>70)*(MT_uv<110)*(JetCount<3.5)*(((CISV_jet1>0.5426)+(CISV_jet2>0.5426))<1)',NormalWeightMuNu,NormalDirectory,'controlzoom_WRegion','uvjj',Rz_uujj, Rw_uvjj,Rtt_uvjj,'',version_name,850)
-		###MakeBasicPlot("MT_uv","M_{T}^{#mu#nu} [GeV]",bosonzoombinning_uvjj,preselectionmunu+'*(MT_uv>70)*(MT_uv<110)*(JetCount>3.5)*(((CISV_jet1>0.8484)+(CISV_jet2>0.8484))>=1)',NormalWeightMuNu,NormalDirectory,'controlzoom_TTRegion','uvjj',Rz_uujj, Rw_uvjj,Rtt_uvjj,'',version_name,850)
-		##MakeBasicPlot("MT_uv","M_{T}^{#mu#nu} [GeV]",bosonzoombinning_uvjj,preselectionmunu+'*'+munu1plot,NormalWeightMuNu,NormalDirectory,'controlzoom_WRegion','uvjj',Rz_uujj, Rw_uvjj,Rtt_uvjj,'',version_name,850)
-		##MakeBasicPlot("MT_uv","M_{T}^{#mu#nu} [GeV]",bosonzoombinning_uvjj,preselectionmunu+'*'+munu2plot,NormalWeightMuNu,NormalDirectory,'controlzoom_TTRegion','uvjj',Rz_uujj, Rw_uvjj,Rtt_uvjj,'',version_name,850)
-		##MakeBasicPlot("MT_uv","M_{T}^{#mu#nu} [GeV]",bosonslopebinning_uvjj, preselectionmunu,NormalWeightMuNu,NormalDirectory,'controlzoom_SlopeRegion','uvjj',Rz_uujj, Rw_uvjj,Rtt_uvjj,'',version_name,850)
-		##MakeBasicPlot("M_uvjj","M_{#muj} [GeV]",massslopebining_uvjj,preselectionmunu,NormalWeightMuNu,NormalDirectory,'controlzoom_SlopeRegion','uvjj',Rz_uujj, Rw_uvjj,Rtt_uvjj,'',version_name,850)
-		#"""
-		## TTBar comparison between emu data and mumuMC
-		#[[Rz_uujj_emu,Rz_uujj_err_emu],[Rtt_uujj_emu,Rtt_uujj_err_emu]] = GetMuMuScaleFactors( NormalWeightMuMu+'*'+preselectionmumu, NormalDirectory, '(M_uu>80)*(M_uu<100)', '(M_uu>100)',0,0)
-		#
-		#MakeBasicPlotEMuMuMu("St_uujj","S_{T}^{#mu#mujj} [GeV]",stbinningTT,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard_TTBarDataDriven_EMuMuMu','uujj',Rz_uujj, Rz_uujj_emu,Rtt_uujj_emu,'',version_name,1000)
-		#MakeBasicPlotEMuMuMu("M_uu","M^{#mu#mu} [GeV]",bosonbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard_TTBarDataDriven_EMuMuMu','uujj',Rz_uujj, Rz_uujj_emu,Rtt_uujj_emu,'',version_name,1000)
-		#MakeBasicPlotEMuMuMu("M_uujj1","M_{#muj}_{1} [GeV]",lqbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard_TTBarDataDriven_EMuMuMu','uujj',Rz_uujj, Rz_uujj_emu,Rtt_uujj_emu,'',version_name,1000)
-		#MakeBasicPlotEMuMuMu("M_uujj2","M_{#muj}_{2} [GeV]",lqbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard_TTBarDataDriven_EMuMuMu','uujj',Rz_uujj, Rz_uujj_emu,Rtt_uujj_emu,'',version_name,1000)
-		#MakeBasicPlotEMuMuMu("Pt_miss","E_{T}^{miss} [GeV]",[50,0,1000],preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard_TTBarDataDriven_EMuMuMu','uujj',Rz_uujj, Rz_uujj_emu,Rtt_uujj_emu,'',version_name,1000)
-		#MakeBasicPlotEMuMuMu("Eta_jet1","#eta(jet_{1}) [GeV]",etabinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard_TTBarDataDriven_EMuMuMu','uujj',Rz_uujj, Rz_uujj_emu,Rtt_uujj_emu,'',version_name,1000)
-		#MakeBasicPlotEMuMuMu("Eta_jet2","#eta(jet_{2}) [GeV]",etabinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard_TTBarDataDriven_EMuMuMu','uujj',Rz_uujj, Rz_uujj_emu,Rtt_uujj_emu,'',version_name,1000)
-		#MakeBasicPlotEMuMuMu("Eta_muon1","#eta(#mu_{1}) [GeV]",etabinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard_TTBarDataDriven_EMuMuMu','uujj',Rz_uujj, Rz_uujj_emu,Rtt_uujj_emu,'',version_name,1000)
-		#MakeBasicPlotEMuMuMu("Eta_muon2","#eta(#mu_{2}) [GeV]",etabinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard_TTBarDataDriven_EMuMuMu','uujj',Rz_uujj, Rz_uujj_emu,Rtt_uujj_emu,'',version_name,1000)	
-		#MakeBasicPlotEMuMuMu("DR_muon1muon2","#DeltaR(#mu_{1},#mu_{2})",drbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard_TTBarDataDriven_EMuMuMu','uujj',Rz_uujj, Rz_uujj_emu,Rtt_uujj_emu,'',version_name,1000)
-		#MakeBasicPlotEMuMuMu("Pt_jet1","p_{T}(jet_{1}) [GeV]",ptbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard_TTBarDataDriven_EMuMuMu','uujj',Rz_uujj, Rz_uujj_emu,Rtt_uujj_emu,'',version_name,1000)
-		#MakeBasicPlotEMuMuMu("Pt_jet2","p_{T}(jet_{2}) [GeV]",ptbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard_TTBarDataDriven_EMuMuMu','uujj',Rz_uujj, Rz_uujj_emu,Rtt_uujj_emu,'',version_name,1000)
-		#MakeBasicPlotEMuMuMu("Pt_muon1","p_{T}(#mu_{1}) [GeV]",ptbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard_TTBarDataDriven_EMuMuMu','uujj',Rz_uujj, Rz_uujj_emu,Rtt_uujj_emu,'',version_name,1000)
-		#MakeBasicPlotEMuMuMu("Pt_muon2","p_{T}(#mu_{2}) [GeV]",ptbinning2,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard_TTBarDataDriven_EMuMuMu','uujj',Rz_uujj, Rz_uujj_emu,Rtt_uujj_emu,'',version_name,1000)
-		#
-		#for lqmass in [200,500,600,700,900] :
-		#	MakeBasicPlotEMuMuMu("St_uujj","S_{T}^{#mu#mujj} [GeV]",stbinningTT,preselectionmumu,NormalWeightMuMu,NormalDirectory,'finalTTBarDataDriven_EMuMuMu'+str(lqmass),'uujj',Rz_uujj, Rz_uujj_emu,Rtt_uujj_emu,MuMuOptCutFile,version_name,lqmass)
-		#	MakeBasicPlotEMuMuMu("M_uu","M^{#mu#mu} [GeV]",bosonbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'finalTTBarDataDriven_EMuMuMu'+str(lqmass),'uujj',Rz_uujj, Rz_uujj_emu,Rtt_uujj_emu,MuMuOptCutFile,version_name,lqmass)
-		#	
-		#	MakeBasicPlotEMuMuMu("M_uujj1","M_{#muj}_{1} [GeV]",lqbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'finalTTBarDataDriven_EMuMuMu'+str(lqmass),'uujj',Rz_uujj, Rz_uujj_emu,Rtt_uujj_emu,MuMuOptCutFile,version_name,lqmass)
-		#	MakeBasicPlotEMuMuMu("M_uujj2","M_{#muj}_{2} [GeV]",lqbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'finalTTBarDataDriven_EMuMuMu'+str(lqmass),'uujj',Rz_uujj, Rz_uujj_emu,Rtt_uujj_emu,MuMuOptCutFile,version_name,lqmass)
-		#	MakeBasicPlotEMuMuMu("Pt_miss","E_{T}^{miss} [GeV]",[50,0,lqmass],preselectionmumu,NormalWeightMuMu,NormalDirectory,'finalTTBarDataDriven_EMuMuMu'+str(lqmass),'uujj',Rz_uujj, Rz_uujj_emu,Rtt_uujj_emu,MuMuOptCutFile,version_name,lqmass)
-		#	MakeBasicPlotEMuMuMu("Eta_jet1","#eta(jet_{1}) [GeV]",etabinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'finalTTBarDataDriven_EMuMuMu'+str(lqmass),'uujj',Rz_uujj, Rz_uujj_emu,Rtt_uujj_emu,MuMuOptCutFile,version_name,lqmass)
-		#	MakeBasicPlotEMuMuMu("Eta_jet2","#eta(jet_{2}) [GeV]",etabinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'finalTTBarDataDriven_EMuMuMu'+str(lqmass),'uujj',Rz_uujj, Rz_uujj_emu,Rtt_uujj_emu,MuMuOptCutFile,version_name,lqmass)
-		#	MakeBasicPlotEMuMuMu("Eta_muon1","#eta(#mu_{1}) [GeV]",etabinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'finalTTBarDataDriven_EMuMuMu'+str(lqmass),'uujj',Rz_uujj, Rz_uujj_emu,Rtt_uujj_emu,MuMuOptCutFile,version_name,lqmass)
-		#	MakeBasicPlotEMuMuMu("Eta_muon2","#eta(#mu_{2}) [GeV]",etabinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'finalTTBarDataDriven_EMuMuMu'+str(lqmass),'uujj',Rz_uujj, Rz_uujj_emu,Rtt_uujj_emu,MuMuOptCutFile,version_name,lqmass)	
-		#	MakeBasicPlotEMuMuMu("DR_muon1muon2","#DeltaR(#mu_{1},#mu_{2})",drbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'finalTTBarDataDriven_EMuMuMu'+str(lqmass),'uujj',Rz_uujj, Rz_uujj_emu,Rtt_uujj_emu,MuMuOptCutFile,version_name,lqmass)
-		#	MakeBasicPlotEMuMuMu("Pt_jet1","p_{T}(jet_{1}) [GeV]",ptbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'finalTTBarDataDriven_EMuMuMu'+str(lqmass),'uujj',Rz_uujj, Rz_uujj_emu,Rtt_uujj_emu,MuMuOptCutFile,version_name,lqmass)
-		#	MakeBasicPlotEMuMuMu("Pt_jet2","p_{T}(jet_{2}) [GeV]",ptbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'finalTTBarDataDriven_EMuMuMu'+str(lqmass),'uujj',Rz_uujj, Rz_uujj_emu,Rtt_uujj_emu,MuMuOptCutFile,version_name,lqmass)
-		#	MakeBasicPlotEMuMuMu("Pt_muon1","p_{T}(#mu_{1}) [GeV]",ptbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'finalTTBarDataDriven_EMuMuMu'+str(lqmass),'uujj',Rz_uujj, Rz_uujj_emu,Rtt_uujj_emu,MuMuOptCutFile,version_name,lqmass)
-		#	MakeBasicPlotEMuMuMu("Pt_muon2","p_{T}(#mu_{2}) [GeV]",ptbinning2,preselectionmumu,NormalWeightMuMu,NormalDirectory,'finalTTBarDataDriven_EMuMuMu'+str(lqmass),'uujj',Rz_uujj, Rz_uujj_emu,Rtt_uujj_emu,MuMuOptCutFile,version_name,lqmass)
-		#"""	
-		## UUJJ plots at preselection, Note that putting 'TTBarDataDriven' in the name turns on the use of data-driven ttbar e-mu sample in place of MC
-		#
-		##preselectionmumu += '*(M_uu>50)*(M_uu<80)'#fixme this is for control region checks
-		#MakeBasicPlot("DeepJet_jet1","Jet1 DeepJet score",bjetbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
-		#MakeBasicPlot("DeepJet_jet2","Jet2 DeepJet score",bjetbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
-		#MakeBasicPlot(bTagSFmedium[1:],"B-Tag SF Weight",bjetweightbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
-		#MakeBasicPlot("Pt_jet1+Pt_jet2","p_{T}(jet_{1})+p_{T}(jet_{2}) [GeV]",ptbinning2,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
-		#MakeBasicPlot("Pt_muon1+Pt_muon2","p_{T}(#mu_{1})+p_{T}(#mu_{2}) [GeV]",ptbinning2,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
-		#MakeBasicPlot("GoodVertexCount","N_{Vertices}",vbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
-		#MakeBasicPlot("Pt_jet1","p_{T}(jet_{1}) [GeV]",ptbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
-		#MakeBasicPlot("Pt_jet2","p_{T}(jet_{2}) [GeV]",ptbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
-		#MakeBasicPlot("Pt_muon1","p_{T}(#mu_{1}) [GeV]",ptbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
-		#MakeBasicPlot("Pt_muon2","p_{T}(#mu_{2}) [GeV]",ptbinning2,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
-		#MakeBasicPlot("Pt_miss","E_{T}^{miss} [GeV]",[50,0,1000],preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
-		#MakeBasicPlot("Phi_miss","#phi^{miss} [GeV]",[100,-3.1416,3.1416],preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
-		#MakeBasicPlot("Eta_jet1","#eta(jet_{1}) [GeV]",etabinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
-		#MakeBasicPlot("Eta_jet2","#eta(jet_{2}) [GeV]",etabinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
-		#MakeBasicPlot("Eta_muon1","#eta(#mu_{1}) [GeV]",etabinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
-		#MakeBasicPlot("Eta_muon2","#eta(#mu_{2}) [GeV]",etabinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)	
-		#MakeBasicPlot("Phi_jet1","#phi(jet_{1}) [GeV]",phibinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
-		#MakeBasicPlot("Phi_jet2","#phi(jet_{2}) [GeV]",phibinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
-		#MakeBasicPlot("Phi_muon1","#phi(#mu_{1}) [GeV]",phibinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
-		#MakeBasicPlot("Phi_muon2","#phi(#mu_{2}) [GeV]",phibinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)	
-		#MakeBasicPlot("St_uujj","S_{T}^{#mu#mujj} [GeV]",stbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
-		#MakeBasicPlot("M_uu","M^{#mu#mu} [GeV]",bosonbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
-		#MakeBasicPlot("M_uujj2","M_{#muj}_{2} [GeV]",lqbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
-		#MakeBasicPlot("M_jj","M_{jj} [GeV]",bosonbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
-		#MakeBasicPlot("MH_uujj","M_{#muj} (lead jet combo) [GeV]",lqbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
-		#MakeBasicPlot("M_uujjavg","M_{#muj}_{avg} [GeV]",lqbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
-		#MakeBasicPlot("M_uujj1","M_{#muj}_{1} [GeV]",lqbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
-		#MakeBasicPlot("M_uujj","M_{#mu#mujj} [GeV]",lqbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
-		#MakeBasicPlot("JetCount","N_{jet}",nbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
-		#[[Rz_uujj_muCount,Rz_uujj_muCount_err],[Rtt_uujj_muCount,Rtt_uujj_muCount_err]] = GetMuMuScaleFactors( NormalWeightMuMu+'*'+preselectionmumu, NormalDirectory, '(M_uu>80)*(M_uu<100)', '(M_uu>100)',0,0)
-		#MakeBasicPlot("MuonCount","N_{#mu}",nbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj_muCount, Rw_uvjj,Rtt_uujj_muCount,'',version_name,1000)#removing TTBarDataDriven cause this makes weird muon count comparison
-		#MakeBasicPlot("ElectronCount","N_{e}",nbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)#removing TTBarDataDriven cause this makes weird muon count comparison
-		#MakeBasicPlot("DR_muon1muon2","#DeltaR(#mu_{1},#mu_{2})",drbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
-		#MakeBasicPlot("DR_muon1jet1","#DeltaR(#mu_{1},j_{1})",drbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
-		#MakeBasicPlot("DR_muon1jet2","#DeltaR(#mu_{1},j_{2})",drbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
-		#MakeBasicPlot("DR_muon2jet1","#DeltaR(#mu_{2},j_{1})",drbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
-		#MakeBasicPlot("DR_muon2jet2","#DeltaR(#mu_{2},j_{2})",drbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
-		#MakeBasicPlot("DR_dimuonjet1","#DeltaR(#mu_{1}+#mu_{2},j_{1})",drbinning,preselectionmumu+"*(St_uujj>1000)*(M_uujj>1000)*(M_uu>250)",NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
-		#MakeBasicPlot("DPhi_muon1met","#Delta #phi (#mu_{1},E_{T}^{miss})",dphibinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
-		#MakeBasicPlot("DPhi_jet1met","#Delta#phi(j_{1},E_{T}^{miss})",dphibinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
-		#MakeBasicPlot("DPhi_jet2met","#Delta#phi(j_{2},E_{T}^{miss})",dphibinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
-		#MakeBasicPlot("DPhi_muon1jet1","#Delta#phi(#mu_{1},j_{1})",dphibinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
-		#MakeBasicPlot("DPhi_muon1jet2","#Delta#phi(#mu_{1},j_{2})",dphibinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
-		#MakeBasicPlot("DPhi_muon2jet1","#Delta#phi(#mu_{2},j_{1})",dphibinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
-		#MakeBasicPlot("DPhi_muon2jet2","#Delta#phi(#mu_{2},j_{2})",dphibinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
-		#exit()
-		## UVJJ plots at preselection
-		#
-		#stbinning = [280 ,300]
-		#lqbinning = [-20,0]
-		#for x in range(18):
-		#	stbinning.append(stbinning[-1]+45+stbinning[-1]-stbinning[-2])
-		#for x in range(20):
-		#	lqbinning.append(lqbinning[-1]+20+lqbinning[-1]-lqbinning[-2])
-		#stbinning = stbinning[1:]
-		#lqbinning = lqbinning[1:]
-		#bosonbinning = [50,60,70,80,90,100,110,120]
-		#for x in range(55):
-		#	if bosonbinning[-1]<1600:
-		#		bosonbinning.append(bosonbinning[-1]+ (bosonbinning[-1] - bosonbinning[-2])*1.3 )#was 1.2	       	
-		#bosonbinning = [round(x) for x in bosonbinning]
-		#"""
-		#MakeBasicPlot("MT_uv","M_{T}^{#mu#nu} [GeV]",bosonbinning,preselectionmunu,NormalWeightMuNu,NormalDirectory,'standard','uvjj',Rz_uujj, Rw_uvjj,Rtt_uvjj,'',version_name,850)
-		#MakeBasicPlot("Pt_jet1","p_{T}(jet_{1}) [GeV]",ptbinning,preselectionmunu,NormalWeightMuNu,NormalDirectory,'standard','uvjj',Rz_uujj, Rw_uvjj,Rtt_uvjj,'',version_name,850)
-		#MakeBasicPlot("Pt_jet2","p_{T}(jet_{2}) [GeV]",ptbinning,preselectionmunu,NormalWeightMuNu,NormalDirectory,'standard','uvjj',Rz_uujj, Rw_uvjj,Rtt_uvjj,'',version_name,850)
-		#MakeBasicPlot("Pt_muon1","p_{T}(#mu_{1}) [GeV]",ptbinning,preselectionmunu,NormalWeightMuNu,NormalDirectory,'standard','uvjj',Rz_uujj, Rw_uvjj,Rtt_uvjj,'',version_name,850)
-		#MakeBasicPlot("Pt_miss","E_{T}^{miss} [GeV]",ptbinning,preselectionmunu,NormalWeightMuNu,NormalDirectory,'standard','uvjj',Rz_uujj, Rw_uvjj,Rtt_uvjj,'',version_name,850)
-		#MakeBasicPlot("Eta_jet1","#eta(jet_{1}) [GeV]",etabinning,preselectionmunu,NormalWeightMuNu,NormalDirectory,'standard','uvjj',Rz_uujj, Rw_uvjj,Rtt_uvjj,'',version_name,850)
-		#MakeBasicPlot("Eta_jet2","#eta(jet_{2}) [GeV]",etabinning,preselectionmunu,NormalWeightMuNu,NormalDirectory,'standard','uvjj',Rz_uujj, Rw_uvjj,Rtt_uvjj,'',version_name,850)
-		#MakeBasicPlot("Eta_muon1","#eta(#mu_{1}) [GeV]",etabinning,preselectionmunu,NormalWeightMuNu,NormalDirectory,'standard','uvjj',Rz_uujj, Rw_uvjj,Rtt_uvjj,'',version_name,850)
-		#MakeBasicPlot("Phi_jet1","#phi(jet_{1}) [GeV]",phibinning,preselectionmunu,NormalWeightMuNu,NormalDirectory,'standard','uvjj',Rz_uujj, Rw_uvjj,Rtt_uvjj,'',version_name,850)
-		#MakeBasicPlot("Phi_jet2","#phi(jet_{2}) [GeV]",phibinning,preselectionmunu,NormalWeightMuNu,NormalDirectory,'standard','uvjj',Rz_uujj, Rw_uvjj,Rtt_uvjj,'',version_name,850)
-		#MakeBasicPlot("Phi_muon1","#phi(#mu_{1}) [GeV]",phibinning,preselectionmunu,NormalWeightMuNu,NormalDirectory,'standard','uvjj',Rz_uujj, Rw_uvjj,Rtt_uvjj,'',version_name,850)
-		#MakeBasicPlot("Phi_miss","#phi^{miss} [GeV]",[100,-3.1416,3.1416],preselectionmunu,NormalWeightMuNu,NormalDirectory,'standard','uvjj',Rz_uujj, Rw_uvjj,Rtt_uvjj,'',version_name,850)
-		#MakeBasicPlot("St_uvjj","S_{T}^{#mu#nujj} [GeV]",stbinning,preselectionmunu,NormalWeightMuNu,NormalDirectory,'standard','uvjj',Rz_uujj, Rw_uvjj,Rtt_uvjj,'',version_name,850)
-		#MakeBasicPlot("MT_uvjj","M_{T}^{#muj} [GeV]",lqbinning,preselectionmunu,NormalWeightMuNu,NormalDirectory,'standard','uvjj',Rz_uujj, Rw_uvjj,Rtt_uvjj,'',version_name,850)
-		#MakeBasicPlot("M_uvjj","M_{#muj} [GeV]",lqbinning,preselectionmunu,NormalWeightMuNu,NormalDirectory,'standard','uvjj',Rz_uujj, Rw_uvjj,Rtt_uvjj,'',version_name,850)
-		#MakeBasicPlot("MH_uvjj","M_{#muj} (lead jet only) [GeV]",lqbinning,preselectionmunu,NormalWeightMuNu,NormalDirectory,'standard','uvjj',Rz_uujj, Rw_uvjj,Rtt_uvjj,'',version_name,850)
-		#MakeBasicPlot("GoodVertexCount","N_{Vertices}",vbinning,preselectionmunu,NormalWeightMuNu,NormalDirectory,'standard','uvjj',Rz_uujj, Rw_uvjj,Rtt_uvjj,'',version_name,850)
-		#MakeBasicPlot("JetCount","N_{jet}",nbinning,preselectionmunu,NormalWeightMuNu,NormalDirectory,'standard','uvjj',Rz_uujj, Rw_uvjj,Rtt_uvjj,'',version_name,850)
-		#MakeBasicPlot("MuonCount","N_{#mu}",nbinning,preselectionmunu,NormalWeightMuNu,NormalDirectory,'standard','uvjj',Rz_uujj, Rw_uvjj,Rtt_uvjj,'',version_name,850)
-		#MakeBasicPlot("ElectronCount","N_{e}",nbinning,preselectionmunu,NormalWeightMuNu,NormalDirectory,'standard','uvjj',Rz_uujj, Rw_uvjj,Rtt_uvjj,'',version_name,850)
-		#MakeBasicPlot("DPhi_muon1met","#Delta#phi (#mu_{1},E_{T}^{miss})",dphibinning,preselectionmunu,NormalWeightMuNu,NormalDirectory,'standard','uvjj',Rz_uujj, Rw_uvjj,Rtt_uvjj,'',version_name,850)
-		#MakeBasicPlot("DPhi_jet1met","#Delta#phi(j_{1},E_{T}^{miss})",dphibinning,preselectionmunu,NormalWeightMuNu,NormalDirectory,'standard','uvjj',Rz_uujj, Rw_uvjj,Rtt_uvjj,'',version_name,850)
-		#MakeBasicPlot("DPhi_jet2met","#Delta#phi(j_{2},E_{T}^{miss})",dphibinning,preselectionmunu,NormalWeightMuNu,NormalDirectory,'standard','uvjj',Rz_uujj, Rw_uvjj,Rtt_uvjj,'',version_name,850)
-		#MakeBasicPlot("DR_muon1jet1","#DeltaR(#mu_{1},j_{1})",drbinning,preselectionmunu,NormalWeightMuNu,NormalDirectory,'standard','uvjj',Rz_uujj, Rw_uvjj,Rtt_uvjj,'',version_name,850)
-		#MakeBasicPlot("DR_muon1jet2","#DeltaR(#mu_{1},j_{2})",drbinning,preselectionmunu,NormalWeightMuNu,NormalDirectory,'standard','uvjj',Rz_uujj, Rw_uvjj,Rtt_uvjj,'',version_name,850)
-		#MakeBasicPlot("DPhi_muon1jet1","#Delta #phi(#mu,j_{1})",dphibinning,preselectionmunu,NormalWeightMuNu,NormalDirectory,'standard','uvjj',Rz_uujj, Rw_uvjj,Rtt_uvjj,'',version_name,850)
-		#MakeBasicPlot("DPhi_muon1jet2","#Delta #phi(#mu,j_{2})",dphibinning,preselectionmunu,NormalWeightMuNu,NormalDirectory,'standard','uvjj',Rz_uujj, Rw_uvjj,Rtt_uvjj,'',version_name,850)
-		#"""
+		# Here are a few plots which are zoomed-in on control regions. 
+		MakeBasicPlot("M_uu","M^{#mu#mu} [GeV]",bosonzoombinning_uujj_Z,preselectionmumu,NormalWeightMuMu,NormalDirectory,'controlzoom_ZRegion','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
+		MakeBasicPlot("Pt_miss","E_{T}^{miss} [GeV]",metzoombinning_uujj_Z,preselectionmumu+'*(M_uu>80)*(M_uu<100)*(Pt_miss<100)',NormalWeightMuMu,NormalDirectory,'controlzoom_ZRegion','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
+		MakeBasicPlot("M_uu","M^{#mu#mu} [GeV]",bosonzoombinning_uujj_TT,preselectionmumu+'*(M_uu>100)*(Pt_miss>=100)',NormalWeightMuMu,NormalDirectory,'controlzoom_TTRegion','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
+		MakeBasicPlot("Pt_miss","E_{T}^{miss} [GeV]",metzoombinning_uujj_TT,preselectionmumu+'*(M_uu>100)*(Pt_miss>=100)',NormalWeightMuMu,NormalDirectory,'controlzoom_TTRegion','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
+		MakeBasicPlot("GoodVertexCount","N_{Vertices}",vbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'linscale','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
+		#MakeBasicPlot("CISV_jet1","Jet1 CSV score",bjetbinning,preselectionmunu+'*(MT_uv>70)*(MT_uv<150)*(JetCount<3.5)',NormalWeightMuNu,NormalDirectory,'controlzoom_WRegion','uvjj',Rz_uujj, Rw_uvjj,Rtt_uvjj,'',version_name,850)
+		#MakeBasicPlot("CISV_jet2","Jet2 CSV score",bjetbinning,preselectionmunu+'*(MT_uv>70)*(MT_uv<150)*(JetCount<3.5)',NormalWeightMuNu,NormalDirectory,'controlzoom_WRegion','uvjj',Rz_uujj, Rw_uvjj,Rtt_uvjj,'',version_name,850)
+		#MakeBasicPlot("CISV_jet1","Jet1 CSV score",bjetbinning,preselectionmunu+'*(MT_uv>70)*(MT_uv<150)*(JetCount>3.5)',NormalWeightMuNu,NormalDirectory,'controlzoom_TTRegion','uvjj',Rz_uujj, Rw_uvjj,Rtt_uvjj,'',version_name,850)
+		#MakeBasicPlot("CISV_jet2","Jet2 CSV score",bjetbinning,preselectionmunu+'*(MT_uv>70)*(MT_uv<150)*(JetCount>3.5)',NormalWeightMuNu,NormalDirectory,'controlzoom_TTRegion','uvjj',Rz_uujj, Rw_uvjj,Rtt_uvjj,'',version_name,850)
+		
+		bosonzoombinning_uvjj = [40,70,150]
+		##MakeBasicPlot("MT_uv","M_{T}^{#mu#nu} [GeV]",bosonzoombinning_uvjj,preselectionmunu+'*(MT_uv>70)*(MT_uv<110)*(JetCount<3.5)*(((CISV_jet1>0.5426)+(CISV_jet2>0.5426))<1)',NormalWeightMuNu,NormalDirectory,'controlzoom_WRegion','uvjj',Rz_uujj, Rw_uvjj,Rtt_uvjj,'',version_name,850)
+		##MakeBasicPlot("MT_uv","M_{T}^{#mu#nu} [GeV]",bosonzoombinning_uvjj,preselectionmunu+'*(MT_uv>70)*(MT_uv<110)*(JetCount>3.5)*(((CISV_jet1>0.8484)+(CISV_jet2>0.8484))>=1)',NormalWeightMuNu,NormalDirectory,'controlzoom_TTRegion','uvjj',Rz_uujj, Rw_uvjj,Rtt_uvjj,'',version_name,850)
+		#MakeBasicPlot("MT_uv","M_{T}^{#mu#nu} [GeV]",bosonzoombinning_uvjj,preselectionmunu+'*'+munu1plot,NormalWeightMuNu,NormalDirectory,'controlzoom_WRegion','uvjj',Rz_uujj, Rw_uvjj,Rtt_uvjj,'',version_name,850)
+		#MakeBasicPlot("MT_uv","M_{T}^{#mu#nu} [GeV]",bosonzoombinning_uvjj,preselectionmunu+'*'+munu2plot,NormalWeightMuNu,NormalDirectory,'controlzoom_TTRegion','uvjj',Rz_uujj, Rw_uvjj,Rtt_uvjj,'',version_name,850)
+		#MakeBasicPlot("MT_uv","M_{T}^{#mu#nu} [GeV]",bosonslopebinning_uvjj, preselectionmunu,NormalWeightMuNu,NormalDirectory,'controlzoom_SlopeRegion','uvjj',Rz_uujj, Rw_uvjj,Rtt_uvjj,'',version_name,850)
+		#MakeBasicPlot("M_uvjj","M_{#muj} [GeV]",massslopebining_uvjj,preselectionmunu,NormalWeightMuNu,NormalDirectory,'controlzoom_SlopeRegion','uvjj',Rz_uujj, Rw_uvjj,Rtt_uvjj,'',version_name,850)
+		"""
+		# TTBar comparison between emu data and mumuMC
+		[[Rz_uujj_emu,Rz_uujj_err_emu],[Rtt_uujj_emu,Rtt_uujj_err_emu]] = GetMuMuScaleFactors( NormalWeightMuMu+'*'+preselectionmumu, NormalDirectory, '(M_uu>80)*(M_uu<100)', '(M_uu>100)',0,0)
+		
+		MakeBasicPlotEMuMuMu("St_uujj","S_{T}^{#mu#mujj} [GeV]",stbinningTT,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard_TTBarDataDriven_EMuMuMu','uujj',Rz_uujj, Rz_uujj_emu,Rtt_uujj_emu,'',version_name,1000)
+		MakeBasicPlotEMuMuMu("M_uu","M^{#mu#mu} [GeV]",bosonbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard_TTBarDataDriven_EMuMuMu','uujj',Rz_uujj, Rz_uujj_emu,Rtt_uujj_emu,'',version_name,1000)
+		MakeBasicPlotEMuMuMu("M_uujj1","M_{#muj}_{1} [GeV]",lqbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard_TTBarDataDriven_EMuMuMu','uujj',Rz_uujj, Rz_uujj_emu,Rtt_uujj_emu,'',version_name,1000)
+		MakeBasicPlotEMuMuMu("M_uujj2","M_{#muj}_{2} [GeV]",lqbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard_TTBarDataDriven_EMuMuMu','uujj',Rz_uujj, Rz_uujj_emu,Rtt_uujj_emu,'',version_name,1000)
+		MakeBasicPlotEMuMuMu("Pt_miss","E_{T}^{miss} [GeV]",[50,0,1000],preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard_TTBarDataDriven_EMuMuMu','uujj',Rz_uujj, Rz_uujj_emu,Rtt_uujj_emu,'',version_name,1000)
+		MakeBasicPlotEMuMuMu("Eta_jet1","#eta(jet_{1}) [GeV]",etabinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard_TTBarDataDriven_EMuMuMu','uujj',Rz_uujj, Rz_uujj_emu,Rtt_uujj_emu,'',version_name,1000)
+		MakeBasicPlotEMuMuMu("Eta_jet2","#eta(jet_{2}) [GeV]",etabinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard_TTBarDataDriven_EMuMuMu','uujj',Rz_uujj, Rz_uujj_emu,Rtt_uujj_emu,'',version_name,1000)
+		MakeBasicPlotEMuMuMu("Eta_muon1","#eta(#mu_{1}) [GeV]",etabinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard_TTBarDataDriven_EMuMuMu','uujj',Rz_uujj, Rz_uujj_emu,Rtt_uujj_emu,'',version_name,1000)
+		MakeBasicPlotEMuMuMu("Eta_muon2","#eta(#mu_{2}) [GeV]",etabinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard_TTBarDataDriven_EMuMuMu','uujj',Rz_uujj, Rz_uujj_emu,Rtt_uujj_emu,'',version_name,1000)	
+		MakeBasicPlotEMuMuMu("DR_muon1muon2","#DeltaR(#mu_{1},#mu_{2})",drbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard_TTBarDataDriven_EMuMuMu','uujj',Rz_uujj, Rz_uujj_emu,Rtt_uujj_emu,'',version_name,1000)
+		MakeBasicPlotEMuMuMu("Pt_jet1","p_{T}(jet_{1}) [GeV]",ptbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard_TTBarDataDriven_EMuMuMu','uujj',Rz_uujj, Rz_uujj_emu,Rtt_uujj_emu,'',version_name,1000)
+		MakeBasicPlotEMuMuMu("Pt_jet2","p_{T}(jet_{2}) [GeV]",ptbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard_TTBarDataDriven_EMuMuMu','uujj',Rz_uujj, Rz_uujj_emu,Rtt_uujj_emu,'',version_name,1000)
+		MakeBasicPlotEMuMuMu("Pt_muon1","p_{T}(#mu_{1}) [GeV]",ptbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard_TTBarDataDriven_EMuMuMu','uujj',Rz_uujj, Rz_uujj_emu,Rtt_uujj_emu,'',version_name,1000)
+		MakeBasicPlotEMuMuMu("Pt_muon2","p_{T}(#mu_{2}) [GeV]",ptbinning2,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard_TTBarDataDriven_EMuMuMu','uujj',Rz_uujj, Rz_uujj_emu,Rtt_uujj_emu,'',version_name,1000)
+		
+		for lqmass in [200,500,600,700,900] :
+			MakeBasicPlotEMuMuMu("St_uujj","S_{T}^{#mu#mujj} [GeV]",stbinningTT,preselectionmumu,NormalWeightMuMu,NormalDirectory,'finalTTBarDataDriven_EMuMuMu'+str(lqmass),'uujj',Rz_uujj, Rz_uujj_emu,Rtt_uujj_emu,MuMuOptCutFile,version_name,lqmass)
+			MakeBasicPlotEMuMuMu("M_uu","M^{#mu#mu} [GeV]",bosonbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'finalTTBarDataDriven_EMuMuMu'+str(lqmass),'uujj',Rz_uujj, Rz_uujj_emu,Rtt_uujj_emu,MuMuOptCutFile,version_name,lqmass)
+			
+			MakeBasicPlotEMuMuMu("M_uujj1","M_{#muj}_{1} [GeV]",lqbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'finalTTBarDataDriven_EMuMuMu'+str(lqmass),'uujj',Rz_uujj, Rz_uujj_emu,Rtt_uujj_emu,MuMuOptCutFile,version_name,lqmass)
+			MakeBasicPlotEMuMuMu("M_uujj2","M_{#muj}_{2} [GeV]",lqbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'finalTTBarDataDriven_EMuMuMu'+str(lqmass),'uujj',Rz_uujj, Rz_uujj_emu,Rtt_uujj_emu,MuMuOptCutFile,version_name,lqmass)
+			MakeBasicPlotEMuMuMu("Pt_miss","E_{T}^{miss} [GeV]",[50,0,lqmass],preselectionmumu,NormalWeightMuMu,NormalDirectory,'finalTTBarDataDriven_EMuMuMu'+str(lqmass),'uujj',Rz_uujj, Rz_uujj_emu,Rtt_uujj_emu,MuMuOptCutFile,version_name,lqmass)
+			MakeBasicPlotEMuMuMu("Eta_jet1","#eta(jet_{1}) [GeV]",etabinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'finalTTBarDataDriven_EMuMuMu'+str(lqmass),'uujj',Rz_uujj, Rz_uujj_emu,Rtt_uujj_emu,MuMuOptCutFile,version_name,lqmass)
+			MakeBasicPlotEMuMuMu("Eta_jet2","#eta(jet_{2}) [GeV]",etabinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'finalTTBarDataDriven_EMuMuMu'+str(lqmass),'uujj',Rz_uujj, Rz_uujj_emu,Rtt_uujj_emu,MuMuOptCutFile,version_name,lqmass)
+			MakeBasicPlotEMuMuMu("Eta_muon1","#eta(#mu_{1}) [GeV]",etabinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'finalTTBarDataDriven_EMuMuMu'+str(lqmass),'uujj',Rz_uujj, Rz_uujj_emu,Rtt_uujj_emu,MuMuOptCutFile,version_name,lqmass)
+			MakeBasicPlotEMuMuMu("Eta_muon2","#eta(#mu_{2}) [GeV]",etabinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'finalTTBarDataDriven_EMuMuMu'+str(lqmass),'uujj',Rz_uujj, Rz_uujj_emu,Rtt_uujj_emu,MuMuOptCutFile,version_name,lqmass)	
+			MakeBasicPlotEMuMuMu("DR_muon1muon2","#DeltaR(#mu_{1},#mu_{2})",drbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'finalTTBarDataDriven_EMuMuMu'+str(lqmass),'uujj',Rz_uujj, Rz_uujj_emu,Rtt_uujj_emu,MuMuOptCutFile,version_name,lqmass)
+			MakeBasicPlotEMuMuMu("Pt_jet1","p_{T}(jet_{1}) [GeV]",ptbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'finalTTBarDataDriven_EMuMuMu'+str(lqmass),'uujj',Rz_uujj, Rz_uujj_emu,Rtt_uujj_emu,MuMuOptCutFile,version_name,lqmass)
+			MakeBasicPlotEMuMuMu("Pt_jet2","p_{T}(jet_{2}) [GeV]",ptbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'finalTTBarDataDriven_EMuMuMu'+str(lqmass),'uujj',Rz_uujj, Rz_uujj_emu,Rtt_uujj_emu,MuMuOptCutFile,version_name,lqmass)
+			MakeBasicPlotEMuMuMu("Pt_muon1","p_{T}(#mu_{1}) [GeV]",ptbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'finalTTBarDataDriven_EMuMuMu'+str(lqmass),'uujj',Rz_uujj, Rz_uujj_emu,Rtt_uujj_emu,MuMuOptCutFile,version_name,lqmass)
+			MakeBasicPlotEMuMuMu("Pt_muon2","p_{T}(#mu_{2}) [GeV]",ptbinning2,preselectionmumu,NormalWeightMuMu,NormalDirectory,'finalTTBarDataDriven_EMuMuMu'+str(lqmass),'uujj',Rz_uujj, Rz_uujj_emu,Rtt_uujj_emu,MuMuOptCutFile,version_name,lqmass)
+		"""	
+		# UUJJ plots at preselection, Note that putting 'TTBarDataDriven' in the name turns on the use of data-driven ttbar e-mu sample in place of MC
+		
+		#preselectionmumu += '*(M_uu>50)*(M_uu<80)'#fixme this is for control region checks
+		MakeBasicPlot("DeepJet_jet1","Jet1 DeepJet score",bjetbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
+		MakeBasicPlot("DeepJet_jet2","Jet2 DeepJet score",bjetbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
+		MakeBasicPlot(bTagSFmedium[1:],"B-Tag SF Weight",bjetweightbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
+		MakeBasicPlot("Pt_jet1+Pt_jet2","p_{T}(jet_{1})+p_{T}(jet_{2}) [GeV]",ptbinning2,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
+		MakeBasicPlot("Pt_muon1+Pt_muon2","p_{T}(#mu_{1})+p_{T}(#mu_{2}) [GeV]",ptbinning2,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
+		MakeBasicPlot("GoodVertexCount","N_{Vertices}",vbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
+		MakeBasicPlot("Pt_jet1","p_{T}(jet_{1}) [GeV]",ptbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
+		MakeBasicPlot("Pt_jet2","p_{T}(jet_{2}) [GeV]",ptbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
+		MakeBasicPlot("Pt_muon1","p_{T}(#mu_{1}) [GeV]",ptbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
+		MakeBasicPlot("Pt_muon2","p_{T}(#mu_{2}) [GeV]",ptbinning2,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
+		MakeBasicPlot("Pt_miss","E_{T}^{miss} [GeV]",[50,0,1000],preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
+		MakeBasicPlot("Phi_miss","#phi^{miss} [GeV]",[100,-3.1416,3.1416],preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
+		MakeBasicPlot("Eta_jet1","#eta(jet_{1}) [GeV]",etabinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
+		MakeBasicPlot("Eta_jet2","#eta(jet_{2}) [GeV]",etabinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
+		MakeBasicPlot("Eta_muon1","#eta(#mu_{1}) [GeV]",etabinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
+		MakeBasicPlot("Eta_muon2","#eta(#mu_{2}) [GeV]",etabinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)	
+		MakeBasicPlot("Phi_jet1","#phi(jet_{1}) [GeV]",phibinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
+		MakeBasicPlot("Phi_jet2","#phi(jet_{2}) [GeV]",phibinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
+		MakeBasicPlot("Phi_muon1","#phi(#mu_{1}) [GeV]",phibinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
+		MakeBasicPlot("Phi_muon2","#phi(#mu_{2}) [GeV]",phibinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)	
+		MakeBasicPlot("St_uujj","S_{T}^{#mu#mujj} [GeV]",stbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
+		MakeBasicPlot("M_uu","M^{#mu#mu} [GeV]",bosonbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
+		MakeBasicPlot("M_uujj2","M_{#muj}_{2} [GeV]",lqbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
+		MakeBasicPlot("M_jj","M_{jj} [GeV]",bosonbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
+		MakeBasicPlot("MH_uujj","M_{#muj} (lead jet combo) [GeV]",lqbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
+		MakeBasicPlot("M_uujjavg","M_{#muj}_{avg} [GeV]",lqbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
+		MakeBasicPlot("M_uujj1","M_{#muj}_{1} [GeV]",lqbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
+		MakeBasicPlot("M_uujj","M_{#mu#mujj} [GeV]",lqbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
+		MakeBasicPlot("JetCount","N_{jet}",nbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
+		[[Rz_uujj_muCount,Rz_uujj_muCount_err],[Rtt_uujj_muCount,Rtt_uujj_muCount_err]] = GetMuMuScaleFactors( NormalWeightMuMu+'*'+preselectionmumu, NormalDirectory, '(M_uu>80)*(M_uu<100)', '(M_uu>100)',0,0)
+		MakeBasicPlot("MuonCount","N_{#mu}",nbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj_muCount, Rw_uvjj,Rtt_uujj_muCount,'',version_name,1000)#removing TTBarDataDriven cause this makes weird muon count comparison
+		MakeBasicPlot("ElectronCount","N_{e}",nbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)#removing TTBarDataDriven cause this makes weird muon count comparison
+		MakeBasicPlot("DR_muon1muon2","#DeltaR(#mu_{1},#mu_{2})",drbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
+		MakeBasicPlot("DR_muon1jet1","#DeltaR(#mu_{1},j_{1})",drbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
+		MakeBasicPlot("DR_muon1jet2","#DeltaR(#mu_{1},j_{2})",drbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
+		MakeBasicPlot("DR_muon2jet1","#DeltaR(#mu_{2},j_{1})",drbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
+		MakeBasicPlot("DR_muon2jet2","#DeltaR(#mu_{2},j_{2})",drbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
+		MakeBasicPlot("DR_dimuonjet1","#DeltaR(#mu_{1}+#mu_{2},j_{1})",drbinning,preselectionmumu+"*(St_uujj>1000)*(M_uujj>1000)*(M_uu>250)",NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
+		MakeBasicPlot("DPhi_muon1met","#Delta #phi (#mu_{1},E_{T}^{miss})",dphibinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
+		MakeBasicPlot("DPhi_jet1met","#Delta#phi(j_{1},E_{T}^{miss})",dphibinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
+		MakeBasicPlot("DPhi_jet2met","#Delta#phi(j_{2},E_{T}^{miss})",dphibinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
+		MakeBasicPlot("DPhi_muon1jet1","#Delta#phi(#mu_{1},j_{1})",dphibinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
+		MakeBasicPlot("DPhi_muon1jet2","#Delta#phi(#mu_{1},j_{2})",dphibinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
+		MakeBasicPlot("DPhi_muon2jet1","#Delta#phi(#mu_{2},j_{1})",dphibinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
+		MakeBasicPlot("DPhi_muon2jet2","#Delta#phi(#mu_{2},j_{2})",dphibinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
+		exit()
+		# UVJJ plots at preselection
+		
+		stbinning = [280 ,300]
+		lqbinning = [-20,0]
+		for x in range(18):
+			stbinning.append(stbinning[-1]+45+stbinning[-1]-stbinning[-2])
+		for x in range(20):
+			lqbinning.append(lqbinning[-1]+20+lqbinning[-1]-lqbinning[-2])
+		stbinning = stbinning[1:]
+		lqbinning = lqbinning[1:]
+		bosonbinning = [50,60,70,80,90,100,110,120]
+		for x in range(55):
+			if bosonbinning[-1]<1600:
+				bosonbinning.append(bosonbinning[-1]+ (bosonbinning[-1] - bosonbinning[-2])*1.3 )#was 1.2	       	
+		bosonbinning = [round(x) for x in bosonbinning]
+		"""
+		MakeBasicPlot("MT_uv","M_{T}^{#mu#nu} [GeV]",bosonbinning,preselectionmunu,NormalWeightMuNu,NormalDirectory,'standard','uvjj',Rz_uujj, Rw_uvjj,Rtt_uvjj,'',version_name,850)
+		MakeBasicPlot("Pt_jet1","p_{T}(jet_{1}) [GeV]",ptbinning,preselectionmunu,NormalWeightMuNu,NormalDirectory,'standard','uvjj',Rz_uujj, Rw_uvjj,Rtt_uvjj,'',version_name,850)
+		MakeBasicPlot("Pt_jet2","p_{T}(jet_{2}) [GeV]",ptbinning,preselectionmunu,NormalWeightMuNu,NormalDirectory,'standard','uvjj',Rz_uujj, Rw_uvjj,Rtt_uvjj,'',version_name,850)
+		MakeBasicPlot("Pt_muon1","p_{T}(#mu_{1}) [GeV]",ptbinning,preselectionmunu,NormalWeightMuNu,NormalDirectory,'standard','uvjj',Rz_uujj, Rw_uvjj,Rtt_uvjj,'',version_name,850)
+		MakeBasicPlot("Pt_miss","E_{T}^{miss} [GeV]",ptbinning,preselectionmunu,NormalWeightMuNu,NormalDirectory,'standard','uvjj',Rz_uujj, Rw_uvjj,Rtt_uvjj,'',version_name,850)
+		MakeBasicPlot("Eta_jet1","#eta(jet_{1}) [GeV]",etabinning,preselectionmunu,NormalWeightMuNu,NormalDirectory,'standard','uvjj',Rz_uujj, Rw_uvjj,Rtt_uvjj,'',version_name,850)
+		MakeBasicPlot("Eta_jet2","#eta(jet_{2}) [GeV]",etabinning,preselectionmunu,NormalWeightMuNu,NormalDirectory,'standard','uvjj',Rz_uujj, Rw_uvjj,Rtt_uvjj,'',version_name,850)
+		MakeBasicPlot("Eta_muon1","#eta(#mu_{1}) [GeV]",etabinning,preselectionmunu,NormalWeightMuNu,NormalDirectory,'standard','uvjj',Rz_uujj, Rw_uvjj,Rtt_uvjj,'',version_name,850)
+		MakeBasicPlot("Phi_jet1","#phi(jet_{1}) [GeV]",phibinning,preselectionmunu,NormalWeightMuNu,NormalDirectory,'standard','uvjj',Rz_uujj, Rw_uvjj,Rtt_uvjj,'',version_name,850)
+		MakeBasicPlot("Phi_jet2","#phi(jet_{2}) [GeV]",phibinning,preselectionmunu,NormalWeightMuNu,NormalDirectory,'standard','uvjj',Rz_uujj, Rw_uvjj,Rtt_uvjj,'',version_name,850)
+		MakeBasicPlot("Phi_muon1","#phi(#mu_{1}) [GeV]",phibinning,preselectionmunu,NormalWeightMuNu,NormalDirectory,'standard','uvjj',Rz_uujj, Rw_uvjj,Rtt_uvjj,'',version_name,850)
+		MakeBasicPlot("Phi_miss","#phi^{miss} [GeV]",[100,-3.1416,3.1416],preselectionmunu,NormalWeightMuNu,NormalDirectory,'standard','uvjj',Rz_uujj, Rw_uvjj,Rtt_uvjj,'',version_name,850)
+		MakeBasicPlot("St_uvjj","S_{T}^{#mu#nujj} [GeV]",stbinning,preselectionmunu,NormalWeightMuNu,NormalDirectory,'standard','uvjj',Rz_uujj, Rw_uvjj,Rtt_uvjj,'',version_name,850)
+		MakeBasicPlot("MT_uvjj","M_{T}^{#muj} [GeV]",lqbinning,preselectionmunu,NormalWeightMuNu,NormalDirectory,'standard','uvjj',Rz_uujj, Rw_uvjj,Rtt_uvjj,'',version_name,850)
+		MakeBasicPlot("M_uvjj","M_{#muj} [GeV]",lqbinning,preselectionmunu,NormalWeightMuNu,NormalDirectory,'standard','uvjj',Rz_uujj, Rw_uvjj,Rtt_uvjj,'',version_name,850)
+		MakeBasicPlot("MH_uvjj","M_{#muj} (lead jet only) [GeV]",lqbinning,preselectionmunu,NormalWeightMuNu,NormalDirectory,'standard','uvjj',Rz_uujj, Rw_uvjj,Rtt_uvjj,'',version_name,850)
+		MakeBasicPlot("GoodVertexCount","N_{Vertices}",vbinning,preselectionmunu,NormalWeightMuNu,NormalDirectory,'standard','uvjj',Rz_uujj, Rw_uvjj,Rtt_uvjj,'',version_name,850)
+		MakeBasicPlot("JetCount","N_{jet}",nbinning,preselectionmunu,NormalWeightMuNu,NormalDirectory,'standard','uvjj',Rz_uujj, Rw_uvjj,Rtt_uvjj,'',version_name,850)
+		MakeBasicPlot("MuonCount","N_{#mu}",nbinning,preselectionmunu,NormalWeightMuNu,NormalDirectory,'standard','uvjj',Rz_uujj, Rw_uvjj,Rtt_uvjj,'',version_name,850)
+		MakeBasicPlot("ElectronCount","N_{e}",nbinning,preselectionmunu,NormalWeightMuNu,NormalDirectory,'standard','uvjj',Rz_uujj, Rw_uvjj,Rtt_uvjj,'',version_name,850)
+		MakeBasicPlot("DPhi_muon1met","#Delta#phi (#mu_{1},E_{T}^{miss})",dphibinning,preselectionmunu,NormalWeightMuNu,NormalDirectory,'standard','uvjj',Rz_uujj, Rw_uvjj,Rtt_uvjj,'',version_name,850)
+		MakeBasicPlot("DPhi_jet1met","#Delta#phi(j_{1},E_{T}^{miss})",dphibinning,preselectionmunu,NormalWeightMuNu,NormalDirectory,'standard','uvjj',Rz_uujj, Rw_uvjj,Rtt_uvjj,'',version_name,850)
+		MakeBasicPlot("DPhi_jet2met","#Delta#phi(j_{2},E_{T}^{miss})",dphibinning,preselectionmunu,NormalWeightMuNu,NormalDirectory,'standard','uvjj',Rz_uujj, Rw_uvjj,Rtt_uvjj,'',version_name,850)
+		MakeBasicPlot("DR_muon1jet1","#DeltaR(#mu_{1},j_{1})",drbinning,preselectionmunu,NormalWeightMuNu,NormalDirectory,'standard','uvjj',Rz_uujj, Rw_uvjj,Rtt_uvjj,'',version_name,850)
+		MakeBasicPlot("DR_muon1jet2","#DeltaR(#mu_{1},j_{2})",drbinning,preselectionmunu,NormalWeightMuNu,NormalDirectory,'standard','uvjj',Rz_uujj, Rw_uvjj,Rtt_uvjj,'',version_name,850)
+		MakeBasicPlot("DPhi_muon1jet1","#Delta #phi(#mu,j_{1})",dphibinning,preselectionmunu,NormalWeightMuNu,NormalDirectory,'standard','uvjj',Rz_uujj, Rw_uvjj,Rtt_uvjj,'',version_name,850)
+		MakeBasicPlot("DPhi_muon1jet2","#Delta #phi(#mu,j_{2})",dphibinning,preselectionmunu,NormalWeightMuNu,NormalDirectory,'standard','uvjj',Rz_uujj, Rw_uvjj,Rtt_uvjj,'',version_name,850)
+		"""
 
 		# Full Selection Plots
 		for lqmass in [300,400,500,600,700,800,900,1000,1100,1200,1300,1400,1500,1600,1700,1800,1900,2000,2100,2200,2300,2400,2500]:
@@ -7755,263 +7724,263 @@ def OptimizeCuts3D(variablespace,presel,weight,tag,scalefacs,cutfile,channel):
 
 	return cuts
 
-#def OptimizeCutsBDT(bins,presel,weight,tag,scalefacs,cutfile,channel):
-#	import json
-#	# Function to optimize cuts on the BDT scores of each signal mass.
-#	# Collects number of events in the SM backgrounds and signal sample of mass M
-#	# corresponding to a cut on the BDT score trained on a signal mass M.
-#	# Cut values range and bind width set by the 'bins' variable.
-#	# Stores event counts in a log file, i.e., 'cutfile' whose lines
-#	# are executables that will eventually create and fill a nested dictionary 
-#	# for each SM background and signal. 
-#	# Loads cutfile and executes each line, i.e., fills the dictionaries
-#	# with the event counts for each variable and cut.
-#	# For each BDT score, loop through cuts and optimize the cut value on
-#	# a figure of merit.
-#	# Uses Punzi significance as figure of merit.
-#	# Return a list of the 'best' cut for each variable (BDT score)
-#
-#	# Open up root files and get trees
-#	for f in NormalFiles:
-#		_tree = 't_'+f.split('/')[-1].replace(".root","")
-#		_treeTmp = _tree+"_tmp"
-#		print(_tree+" = TFile.Open(\""+NormalDirectory+"/"+f.replace("\n","")+"\",\"READ\")"+".Get(\""+TreeName+"\")")
-#		exec (_treeTmp+" = TFile.Open(\""+NormalDirectory+"/"+f.replace("\n","")+"\",\"READ\")")
-#		exec (_tree+" = "+_treeTmp+".Get(\""+TreeName+"\")")
-#
-#	# Information for signal type, channel, b-jet tag requirements, BDT variable, etc.
-#	signalType = 'LQ'
-#	channelDict = {'uujj':'pair','uuj':'single','1':'BMu','2':'BMu','0':'SMu'}
-#	BDTstring = 'LQToBMu_pair_uubj_BDT_discrim_M'
-#
-#	# Create list of background samples (e.g., 'ZJets')
-#	backgrounds =  [ x.replace('\n','') for x in  ['DiBoson','WJets','TTBar','ZJets','SingleTop','TTV']]
-#	# Create list of signal samples (e.g., 'LQuujj300')
-#	signals =  [ (x.replace('.root','').replace('\n','').replace(' ','').replace('\t',''),int(x.replace('.root','').replace('\n','').replace(signalType+channel,''))) for x in  os.popen('ls '+NormalDirectory+'| #grep root | grep '+signalType+channel+' ').readlines()]
-#
-#	# Sort the signal samples by mass
-#	signals = [x for (x,y) in sorted(signals, key = lambda element : element[1])]
-#
-#	# Set each scale factor
-#	[R_z,R_tt,R_w] = scalefacs
-#
-#	# Get number of bins
-#	lowBound = bins[0]
-#	upBound = bins[1]
-#	binWidth = bins[2]
-#	binning = [int(round((upBound-lowBound)/binWidth)),lowBound,upBound]
-#
-#	# Set bin range and number of bins in 'binning'
-#	nBins = binning[0]
-#	binLow = binning[1]
-#	binHigh = binning[2]
-#
-#	# This section creates the cutfile if no file is passed through the function
-#	if cutfile=='':
-#
-#		# Name and open the log file (eventually the cutfile)
-#		logfile = 'Results_'+tag+'/Log_'+signalType+channel+'_BDT'+'_Cuts.txt'
-#		l = open(logfile,'w')
-#
-#		# Write lines that will initialize dictionaries, one for each SM background and signal
-#		for sample in backgrounds+signals:
-#			l.write('events_'+sample+' = {}\n')
-#
-#		# Loop through each signal sample that we want to optimize a cut for
-#		for signal in signals:
-#			# Only need to optimize a cut on the BDT score with the same mass as the signal sample
-#			# cutMass = signalMass
-#			# (no need to optimize a cut on BDT(M_LQ=300 GeV) with a 400 GeV LQ sample)
-#
-#			# Get BDT/signal mass and BDT variable name (variable to cut on)
-#			cutMass = signal.replace('LQuujj','')
-#			cutVariable = BDTstring+cutMass
-#
-#			# List of cuts as strings, e.g., '(LQToBMu_pair_uubj_BDT_discrim_M300>-1.0)'
-#			cuts = ['('+cutVariable+'>'+str(x)+')' for x in ConvertBinning(binning)]
-#			print 'Get cuts on M_LQ = ',cutMass,' GeV:'
-#
-#			# Samples we want event counts of, i.e., SM backgrounds and current signal mass
-#			samples = backgrounds+[signal]
-#			for sample in samples:
-#				print 'Sample: ',sample
-#
-#				# Write lines to create nested dictionaries; in each sample dictionary: key = cut varible, value = subdictionary
-#				# Sample dictionaries have the 'events_' prefix
-#				l.write('events_'+sample+'[\''+cutVariable+'\'] = {}\n')
-#
-#				# Loop through cuts here
-#				for cut in cuts:
-#					print 'Applying cut: ',cut
-#
-#					# Tree ('t_' prefix) and Histogram ('h_' prefix) names for current sample
-#					t_sample = 't_'+sample
-#					h_sample = 'h_'+sample
-#
-#					# Set Z+Jets and tt-bar scale factores
-#					scalefac = '1.0'
-#					if 'ZJets' in sample: scalefac = str(R_z)
-#					if 'TTBar' in sample: scalefac = str(R_tt)
-#
-#					# Here we create 1-dimensional histogram with the binning we desire
-#					exec( h_sample + ' = TH1D("'+h_sample+'","'+h_sample+'",'+str(nBins)+','+str(binLow)+','+str(binHigh)+')' )
-#
-#					# Then project the BDT score variable onto the histogram with preselection cuts, weights, scale factors
-#					# and importantly, the final selection cut we are looping through 
-#					exec( t_sample + '.Project("'+h_sample+'","'+cutVariable+'","'+presel+'*'+cut+'*('+weight+'*'+scalefac+')")' )
-#
-#					# Get the number of events for the given cut with 'Integral'
-#					# Note 1: Integrates to get area (not 'generated' event count which is different)
-#					# Note 2: Integrates between bin indicies, not x-axis values
-#					exec( 'nBins = '+h_sample+'.GetNbinsX()+1')
-#					exec( 'Int = ' + h_sample + '.Integral(1,'+str(nBins)+')' )
-#					cutVal = cut.split('>')[-1].rstrip(')')
-#
-#					# Write lines that will fill subdictionaries; each subdictionary: key = cut value, value = number of sample events
-#					l.write('events_'+sample+'[\''+cutVariable+'\'][\''+cutVal+'\'] = '+str(Int)+'\n')
-#
-#		# Make sure to close log file!
-#		l.close()
-#
-#		# Set cutfile to log file (only if cutfile is not passed in function)
-#		cutfile = logfile
-#
-#	print 'Getting log ... '
-#
-#	# Open cutfile
-#	nf = os.popen('cat '+cutfile+' | wc -l').readlines()[0]
-#	nf = int(nf)
-#	nd = 0
-#
-#	# Loop through each line of cutfile
-#	for c in open(cutfile,'r'):
-#		nd += 1
-#		if nd%100==0:
-#			# Prints periodic status as percentage
-#			print str(100*round( (1.0*nd)/(1.0*nf),3 )), '% complete'
-#
-#		# Executes each line in cutfile
-#		# Initializes a dictionary for each sample
-#		# Fills each dictionary with subdictionaries corresponding to each BDT variable
-#		# Fills each subdictionary with the number of events corresponding to each cut
-#		exec(c)
-#
-#	# Initialize a dictionary to store all signal dictionaries (e.g., events_LQuujj300, ...) containing event counts for all cut values
-#	signalEventsAll = {}
-#
-#	# Initialize a dictionary to store all SM background dictionaries (e.g., events_ZJets, ...) containing event counts for all cut values
-#	backgroundEventsAll = {}
-#
-#	# Assign signal dictionary with key = 'signal' (e.g., 'LQuujj') and value = subdictionary (e.g., events_LQuujj300)
-#	for signal in signals:
-#		exec('signalEventsAll[signal] = events_'+signal )
-#
-#	# Assign background dictionary with key = 'background' (e.g., 'ZJets') and value = subdictionary (e.g., events_ZJets)
-#	for background in backgrounds:
-#		exec('backgroundEventsAll[background] = events_'+background )
-#
-#	# Table (list) that will store the cut values
-#	valuetable = []
-#
-#	xsecs = { "TotalBkg": 0.0}
-#
-#	# Get LQ cross sections from ntuple info csv files
-#	# Store in a dictionary with key = 'signal' (e.g., 'LQuujj300') and value = xsec
-#	with open('NTupleInfo'+year+'Full_stockNano.csv','r') as NTupleInfocsv:
-#		for line in NTupleInfocsv:
-#			if signalType+'To'+channelDict[btags] in line and channelDict[channel] in line and '#' not in line:
-#				xsecs[signalType+channel+line.split(',')[0].split('-')[-1].split('_')[0]] = float(line.split(',')[1])
-#			elif any(bkg in line for bkg in backgrounds) and '#' not in line:
-#				xsecs["TotalBkg"] += float(line.split(',')[1])
-#
-#
-#	# Get a list of the cut values, i.e., bin edges (e.g., -1.0, -0.95, ..., 0.95, 1.0)
-#	binList = [str(b) for b in ConvertBinning(binning)]
-#
-#	# Loop to optimze the cut value for each signal hypothesis
-#	# Use the Punzi significance as a figure of merit (FOM)
-#
-#	# Start by looping through 'signal' keys (e.g., 'LQuujj300')
-#	# This also determines which variable will be cut on, i.e., 'LQToBMu_pair_uubj_BDT_discrim_M' + signal mass
-#	# Sort dictionary by signal mass first
-#	#for signal in sorted(signalEventsAll.items(), key=lambda signal: int(signal.strip(signalType+channel)) ):
-#	for signal in signalEventsAll:
-#		# Initalize
-#		maxPunziFOM = -99999
-#		bestCutVal = 0
-#		bestSignalEff = 0
-#		bestBackgroundEff = 0
-#
-#		# Get signal mass as a string
-#		signalMass = signal.strip(signalType+channel)
-#
-#		# Loop through each cut value
-#		for cutValue in binList:
-#
-#			# Number of signal events when cut (cutValue) is applied to variable 'LQToBMu_pair_uubj_BDT_discrim_M'+signalMass, e.g., (LQToBMu_pair_uubj_BDT_discrim_M300 > 0.0)
-#			nSignal = signalEventsAll[signal][BDTstring+signalMass][str(cutValue)]
-#
-#			# Initialize background events
-#			nBackground = 0.0
-#
-#			# Get original number of signal events from luminosity x cross section (lumi is a global variable)
-#			nSignalOrig = xsecs[signal]*lumi
-#
-#			# Get original number of background events from luminosity x cross section (lumi is a global variable)
-#			nBackgroundOrig = xsecs["TotalBkg"]*lumi
-#
-#			# Loop through 'background' keys (e.g., 'ZJets')
-#			# Add event counts of all the backgrounds together (ZJets + TTBar + DiBoson + ...) for the current cut
-#			for background in backgroundEventsAll:
-#				nBackground += backgroundEventsAll[background][BDTstring+signalMass][str(cutValue)]
-#			if nSignal + nBackground < 0.001:
-#				continue
-#
-#			# Initialize the signal efficiency
-#			nSignalEff  = nSignal / nSignalOrig
-#
-#			# Initialize the background efficiency (just stored; not used in optimization)
-#			nBackgroundEff = nBackground / nBackgroundOrig
-#
-#			# Initialize the FOM value
-#			punziFOM = 0
-#
-#			# Prevents negative event counts from amc@NLO backgrounds and division by zero
-#			if nBackground > 0.0:
-#				# Calculate the FOM for cut value using the definition of the Punzi significance
-#				punziFOM = nSignalEff/(2.5+math.sqrt(nBackground))
-#
-#			# Optimization test; compare current FOM to the best FOM for each cut value
-#			if punziFOM > maxPunziFOM :
-#				# Update current FOM value as the 'maximized' FOM value
-#				maxPunziFOM = punziFOM
-#				# Update current cut value as the 'best' cut value
-#				bestCutVal = cutValue
-#				# Set signal and background efficiencies for the "best" cut
-#				bestSignalEff = nSignalEff
-#				bestBackgroundEff = nBackgroundEff
-#
-#		# String with optimized cut for current signal mass
-#		opt = 'opt_'+signal + ' = (' + BDTstring+signalMass + '>' + str(bestCutVal) + ')\n'  
-#		print opt
-#
-#		# Save optimized cut string to list along with mass and then sort by mass
-#		valuetable.append((int(signalMass),opt))
-#		valuetable = sorted(valuetable)
-#		efficiencies["signal"][signalMass] = bestSignalEff
-#		efficiencies["background"][signalMass] = bestBackgroundEff
-#
-#	# Here we write the cuts to a log file
-#	with open('Results_'+tag+'/Opt'+signalType+'_'+channel+'Cuts_BDT.txt','w') as optimlog:
-#		for mass in range(len(valuetable)):
-#			# Write string to optimization log file
-#			optimlog.write(valuetable[mass][1])
-#
-#	# Write the efficiencies to a json for plotting
-#	with open('Results'+tag+'/Opt'+signalType+'_'+channel+'Efficiencies_BDT.json','w') as efficiencylog:
-#		json.dump(efficiencies, efficiencylog, indent=4)
-#
-#	# No return
+def OptimizeCutsBDT(bins,presel,weight,tag,scalefacs,cutfile,channel):
+	import json
+	# Function to optimize cuts on the BDT scores of each signal mass.
+	# Collects number of events in the SM backgrounds and signal sample of mass M
+	# corresponding to a cut on the BDT score trained on a signal mass M.
+	# Cut values range and bind width set by the 'bins' variable.
+	# Stores event counts in a log file, i.e., 'cutfile' whose lines
+	# are executables that will eventually create and fill a nested dictionary 
+	# for each SM background and signal. 
+	# Loads cutfile and executes each line, i.e., fills the dictionaries
+	# with the event counts for each variable and cut.
+	# For each BDT score, loop through cuts and optimize the cut value on
+	# a figure of merit.
+	# Uses Punzi significance as figure of merit.
+	# Return a list of the 'best' cut for each variable (BDT score)
+
+	# Open up root files and get trees
+	for f in NormalFiles:
+		_tree = 't_'+f.split('/')[-1].replace(".root","")
+		_treeTmp = _tree+"_tmp"
+		print(_tree+" = TFile.Open(\""+NormalDirectory+"/"+f.replace("\n","")+"\",\"READ\")"+".Get(\""+TreeName+"\")")
+		exec (_treeTmp+" = TFile.Open(\""+NormalDirectory+"/"+f.replace("\n","")+"\",\"READ\")")
+		exec (_tree+" = "+_treeTmp+".Get(\""+TreeName+"\")")
+
+	# Information for signal type, channel, b-jet tag requirements, BDT variable, etc.
+	signalType = 'LQ'
+	channelDict = {'uujj':'pair','uuj':'single','1':'BMu','2':'BMu','0':'SMu'}
+	BDTstring = 'LQToBMu_pair_uubj_BDT_discrim_M'
+
+	# Create list of background samples (e.g., 'ZJets')
+	backgrounds =  [ x.replace('\n','') for x in  ['DiBoson','WJets','TTBar','ZJets','SingleTop','TTV']]
+	# Create list of signal samples (e.g., 'LQuujj300')
+	signals =  [ (x.replace('.root','').replace('\n','').replace(' ','').replace('\t',''),int(x.replace('.root','').replace('\n','').replace(signalType+channel,''))) for x in  os.popen('ls '+NormalDirectory+'| grep root | grep '+signalType+channel+' ').readlines()]
+
+	# Sort the signal samples by mass
+	signals = [x for (x,y) in sorted(signals, key = lambda element : element[1])]
+
+	# Set each scale factor
+	[R_z,R_tt,R_w] = scalefacs
+
+	# Get number of bins
+	lowBound = bins[0]
+	upBound = bins[1]
+	binWidth = bins[2]
+	binning = [int(round((upBound-lowBound)/binWidth)),lowBound,upBound]
+
+	# Set bin range and number of bins in 'binning'
+	nBins = binning[0]
+	binLow = binning[1]
+	binHigh = binning[2]
+
+	# This section creates the cutfile if no file is passed through the function
+	if cutfile=='':
+
+		# Name and open the log file (eventually the cutfile)
+		logfile = 'Results_'+tag+'/Log_'+signalType+channel+'_BDT'+'_Cuts.txt'
+		l = open(logfile,'w')
+
+		# Write lines that will initialize dictionaries, one for each SM background and signal
+		for sample in backgrounds+signals:
+			l.write('events_'+sample+' = {}\n')
+
+		# Loop through each signal sample that we want to optimize a cut for
+		for signal in signals:
+			# Only need to optimize a cut on the BDT score with the same mass as the signal sample
+			# cutMass = signalMass
+			# (no need to optimize a cut on BDT(M_LQ=300 GeV) with a 400 GeV LQ sample)
+
+			# Get BDT/signal mass and BDT variable name (variable to cut on)
+			cutMass = signal.replace('LQuujj','')
+			cutVariable = BDTstring+cutMass
+
+			# List of cuts as strings, e.g., '(LQToBMu_pair_uubj_BDT_discrim_M300>-1.0)'
+			cuts = ['('+cutVariable+'>'+str(x)+')' for x in ConvertBinning(binning)]
+			print 'Get cuts on M_LQ = ',cutMass,' GeV:'
+
+			# Samples we want event counts of, i.e., SM backgrounds and current signal mass
+			samples = backgrounds+[signal]
+			for sample in samples:
+				print 'Sample: ',sample
+
+				# Write lines to create nested dictionaries; in each sample dictionary: key = cut varible, value = subdictionary
+				# Sample dictionaries have the 'events_' prefix
+				l.write('events_'+sample+'[\''+cutVariable+'\'] = {}\n')
+
+				# Loop through cuts here
+				for cut in cuts:
+					print 'Applying cut: ',cut
+
+					# Tree ('t_' prefix) and Histogram ('h_' prefix) names for current sample
+					t_sample = 't_'+sample
+					h_sample = 'h_'+sample
+
+					# Set Z+Jets and tt-bar scale factores
+					scalefac = '1.0'
+					if 'ZJets' in sample: scalefac = str(R_z)
+					if 'TTBar' in sample: scalefac = str(R_tt)
+
+					# Here we create 1-dimensional histogram with the binning we desire
+					exec( h_sample + ' = TH1D("'+h_sample+'","'+h_sample+'",'+str(nBins)+','+str(binLow)+','+str(binHigh)+')' )
+
+					# Then project the BDT score variable onto the histogram with preselection cuts, weights, scale factors
+					# and importantly, the final selection cut we are looping through 
+					exec( t_sample + '.Project("'+h_sample+'","'+cutVariable+'","'+presel+'*'+cut+'*('+weight+'*'+scalefac+')")' )
+
+					# Get the number of events for the given cut with 'Integral'
+					# Note 1: Integrates to get area (not 'generated' event count which is different)
+					# Note 2: Integrates between bin indicies, not x-axis values
+					exec( 'nBins = '+h_sample+'.GetNbinsX()+1')
+					exec( 'Int = ' + h_sample + '.Integral(1,'+str(nBins)+')' )
+					cutVal = cut.split('>')[-1].rstrip(')')
+
+					# Write lines that will fill subdictionaries; each subdictionary: key = cut value, value = number of sample events
+					l.write('events_'+sample+'[\''+cutVariable+'\'][\''+cutVal+'\'] = '+str(Int)+'\n')
+
+		# Make sure to close log file!
+		l.close()
+
+		# Set cutfile to log file (only if cutfile is not passed in function)
+		cutfile = logfile
+
+	print 'Getting log ... '
+
+	# Open cutfile
+	nf = os.popen('cat '+cutfile+' | wc -l').readlines()[0]
+	nf = int(nf)
+	nd = 0
+
+	# Loop through each line of cutfile
+	for c in open(cutfile,'r'):
+		nd += 1
+		if nd%100==0:
+			# Prints periodic status as percentage
+			print str(100*round( (1.0*nd)/(1.0*nf),3 )), '% complete'
+
+		# Executes each line in cutfile
+		# Initializes a dictionary for each sample
+		# Fills each dictionary with subdictionaries corresponding to each BDT variable
+		# Fills each subdictionary with the number of events corresponding to each cut
+		exec(c)
+
+	# Initialize a dictionary to store all signal dictionaries (e.g., events_LQuujj300, ...) containing event counts for all cut values
+	signalEventsAll = {}
+
+	# Initialize a dictionary to store all SM background dictionaries (e.g., events_ZJets, ...) containing event counts for all cut values
+	backgroundEventsAll = {}
+
+	# Assign signal dictionary with key = 'signal' (e.g., 'LQuujj') and value = subdictionary (e.g., events_LQuujj300)
+	for signal in signals:
+		exec('signalEventsAll[signal] = events_'+signal )
+
+	# Assign background dictionary with key = 'background' (e.g., 'ZJets') and value = subdictionary (e.g., events_ZJets)
+	for background in backgrounds:
+		exec('backgroundEventsAll[background] = events_'+background )
+
+	# Table (list) that will store the cut values
+	valuetable = []
+
+	xsecs = { "TotalBkg": 0.0}
+
+	# Get LQ cross sections from ntuple info csv files
+	# Store in a dictionary with key = 'signal' (e.g., 'LQuujj300') and value = xsec
+	with open('NTupleInfo'+year+'Full_stockNano.csv','r') as NTupleInfocsv:
+		for line in NTupleInfocsv:
+			if signalType+'To'+channelDict[btags] in line and channelDict[channel] in line and '#' not in line:
+				xsecs[signalType+channel+line.split(',')[0].split('-')[-1].split('_')[0]] = float(line.split(',')[1])
+			elif any(bkg in line for bkg in backgrounds) and '#' not in line:
+				xsecs["TotalBkg"] += float(line.split(',')[1])
+
+
+	# Get a list of the cut values, i.e., bin edges (e.g., -1.0, -0.95, ..., 0.95, 1.0)
+	binList = [str(b) for b in ConvertBinning(binning)]
+
+	# Loop to optimze the cut value for each signal hypothesis
+	# Use the Punzi significance as a figure of merit (FOM)
+
+	# Start by looping through 'signal' keys (e.g., 'LQuujj300')
+	# This also determines which variable will be cut on, i.e., 'LQToBMu_pair_uubj_BDT_discrim_M' + signal mass
+	# Sort dictionary by signal mass first
+	#for signal in sorted(signalEventsAll.items(), key=lambda signal: int(signal.strip(signalType+channel)) ):
+	for signal in signalEventsAll:
+		# Initalize
+		maxPunziFOM = -99999
+		bestCutVal = 0
+		bestSignalEff = 0
+		bestBackgroundEff = 0
+
+		# Get signal mass as a string
+		signalMass = signal.strip(signalType+channel)
+
+		# Loop through each cut value
+		for cutValue in binList:
+
+			# Number of signal events when cut (cutValue) is applied to variable 'LQToBMu_pair_uubj_BDT_discrim_M'+signalMass, e.g., (LQToBMu_pair_uubj_BDT_discrim_M300 > 0.0)
+			nSignal = signalEventsAll[signal][BDTstring+signalMass][str(cutValue)]
+
+			# Initialize background events
+			nBackground = 0.0
+
+			# Get original number of signal events from luminosity x cross section (lumi is a global variable)
+			nSignalOrig = xsecs[signal]*lumi
+
+			# Get original number of background events from luminosity x cross section (lumi is a global variable)
+			nBackgroundOrig = xsecs["TotalBkg"]*lumi
+
+			# Loop through 'background' keys (e.g., 'ZJets')
+			# Add event counts of all the backgrounds together (ZJets + TTBar + DiBoson + ...) for the current cut
+			for background in backgroundEventsAll:
+				nBackground += backgroundEventsAll[background][BDTstring+signalMass][str(cutValue)]
+			if nSignal + nBackground < 0.001:
+				continue
+
+			# Initialize the signal efficiency
+			nSignalEff  = nSignal / nSignalOrig
+
+			# Initialize the background efficiency (just stored; not used in optimization)
+			nBackgroundEff = nBackground / nBackgroundOrig
+
+			# Initialize the FOM value
+			punziFOM = 0
+
+			# Prevents negative event counts from amc@NLO backgrounds and division by zero
+			if nBackground > 0.0:
+				# Calculate the FOM for cut value using the definition of the Punzi significance
+				punziFOM = nSignalEff/(2.5+math.sqrt(nBackground))
+
+			# Optimization test; compare current FOM to the best FOM for each cut value
+			if punziFOM > maxPunziFOM :
+				# Update current FOM value as the 'maximized' FOM value
+				maxPunziFOM = punziFOM
+				# Update current cut value as the 'best' cut value
+				bestCutVal = cutValue
+				# Set signal and background efficiencies for the "best" cut
+				bestSignalEff = nSignalEff
+				bestBackgroundEff = nBackgroundEff
+
+		# String with optimized cut for current signal mass
+		opt = 'opt_'+signal + ' = (' + BDTstring+signalMass + '>' + str(bestCutVal) + ')\n'  
+		print opt
+
+		# Save optimized cut string to list along with mass and then sort by mass
+		valuetable.append((int(signalMass),opt))
+		valuetable = sorted(valuetable)
+		efficiencies["signal"][signalMass] = bestSignalEff
+		efficiencies["background"][signalMass] = bestBackgroundEff
+
+	# Here we write the cuts to a log file
+	with open('Results_'+tag+'/Opt'+signalType+'_'+channel+'Cuts_BDT.txt','w') as optimlog:
+		for mass in range(len(valuetable)):
+			# Write string to optimization log file
+			optimlog.write(valuetable[mass][1])
+
+	# Write the efficiencies to a json for plotting
+	with open('Results'+tag+'/Opt'+signalType+'_'+channel+'Efficiencies_BDT.json','w') as efficiencylog:
+		json.dump(efficiencies, efficiencylog, indent=4)
+
+	# No return
 
 def ReDoOptFits(OptFile):
 	tag = OptFile.split('/')[0]
