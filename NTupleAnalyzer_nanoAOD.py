@@ -9,6 +9,12 @@ from argparse import ArgumentParser
 tRand = TRandom3()
 from random import randint
 from random import normalvariate
+from random import uniform
+
+# GE code is in C++. Use the root gInterpreter to import library
+gInterpreter.ProcessLine('#include "GEScaleSyst/GEScaleSyst.cc"')
+# Rochester code in C++. Use the root gInterpreter to import library
+gInterpreter.ProcessLine('#include "roccor/RoccoR.cc"')
 
 ##########################################################################################
 #################      SETUP OPTIONS - File, Normalization, etc    #######################
@@ -29,7 +35,7 @@ parser.add_argument("-y", "--year", dest="year", help="option to pick running ye
 
 options = parser.parse_args()
 dopdf = int(options.pdf)==1
-_year = options.year
+year = options.year
 
 # Here we get the file name, and adjust it accordingly for EOS, castor, or local directory
 name = options.filename
@@ -205,6 +211,7 @@ _flagDoubles = ['run_number','event_number','lumi_number']
 _flags = ['pass_HLTIsoMu27','pass_HLTMu45_eta2p1','pass_HLTMu50','pass_HLTMu55','pass_HLTTkMu50','pass_HLTOldMu100','pass_HLTTkMu100','GoodVertexCount']
 _flags += ['passPrimaryVertex','passTriggerObjectMatching','passDataCert']
 _flags += ['Flag_BadChargedCandidateFilter','Flag_BadChargedCandidateSummer16Filter','Flag_BadPFMuonFilter','Flag_BadPFMuonSummer16Filter','Flag_CSCTightHalo2015Filter','Flag_CSCTightHaloFilter','Flag_CSCTightHaloTrkMuUnvetoFilter','Flag_EcalDeadCellBoundaryEnergyFilter','Flag_EcalDeadCellTriggerPrimitiveFilter','Flag_HBHENoiseFilter','Flag_HBHENoiseIsoFilter','Flag_HcalStripHaloFilter','Flag_METFilters','Flag_chargedHadronTrackResolutionFilter','Flag_ecalBadCalibFilter','Flag_ecalBadCalibFilterV2','Flag_ecalLaserCorrFilter','Flag_eeBadScFilter','Flag_globalSuperTightHalo2016Filter','Flag_globalTightHalo2016Filter','Flag_goodVertices','Flag_hcalLaserEventFilter','Flag_muonBadTrackFilter','Flag_trkPOGFilters','Flag_trkPOG_logErrorTooManyClusters','Flag_trkPOG_manystripclus53X','Flag_trkPOG_toomanystripclus53X']
+_flags += ['Flag_dataYear2016','Flag_dataYear2017','Flag_dataYear2018']
 _variations = ['','JESup','JESdown','MESup','MESdown','JERup','JERdown','MER']
 if nonisoswitch==True or emuswitch==True or quicktestswitch==True:
 	print 'NOT performing systematics...'
@@ -919,8 +926,6 @@ def getMuonSF(_pt,_eta,_phi):
 	#		  Must specify the year being analyzed, as SFs differ for each year.
 	#         Returns array with SFs (ID, iso, etc.) as well as up and down variations
 	#		  of systematic and statisical error for each SF.
-	
-	global _year
 
 	tmpMu = TLorentzVector()
 	tmpMu.SetPtEtaPhiM(_pt,_eta,_phi,0)
@@ -938,7 +943,7 @@ def getMuonSF(_pt,_eta,_phi):
 
 	########## Muon POG recommended scale factors by year ###############
 	# Check if muon is in eta range, set list of SFs and errors (syst+stat), sorted by pt.
-	if _year=='2016':
+	if year=='2016':
 		# Muon reco SFs
 		# https://twiki.cern.ch/twiki/bin/view/CMS/HighPtMuonReferenceRun2
 		if abseta>=0.00 and abseta<=1.60: recoSFbyP = [[0.9914, 0.0008],[0.9936, 0.0009],[0.993, 0.001],[0.993, 0.002],[0.990, 0.004],[0.990, 0.003],[0.989, 0.004],[0.8, 0.3]]
@@ -1014,7 +1019,7 @@ def getMuonSF(_pt,_eta,_phi):
 		elif abseta>1.20 and abseta<2.10: hltSFbyPt = [[0.996, 0.01],[1.005, 0.009],[0.990, 0.003],[0.988, 0.005],[0.977, 0.01],[1.010, 0.02],[1.020, 0.1]]
 		elif abseta>2.10 and abseta<2.40: hltSFbyPt = [[0.934, 0.03],[0.954, 0.02],[0.948, 0.007],[0.935, 0.01],[0.888, 0.03],[0.953, 0.07],[1.134, 0.5]]
 
-	if _year=='2017':
+	if year=='2017':
 		# Muon reco SFs
 		# https://twiki.cern.ch/twiki/bin/view/CMS/HighPtMuonReferenceRun2
 		if abseta>=0.00 and abseta<=1.60: recoSFbyP = [[0.9938, 0.0006],[0.9950, 0.0007],[0.996, 0.001],[0.996, 0.001],[0.994, 0.001],[1.003, 0.006],[0.987, 0.003],[0.9, 0.1]]
@@ -1038,7 +1043,7 @@ def getMuonSF(_pt,_eta,_phi):
 		elif abseta>1.20 and abseta<2.10: hltSFbyPt = [[0.980, 0.01],[0.981, 0.008],[0.985, 0.003],[0.991, 0.004],[0.986, 0.007],[1.002, 0.02],[0.922, 0.08]]
 		elif abseta>2.10 and abseta<2.40: hltSFbyPt = [[0.869, 0.04],[0.864, 0.02],[0.926, 0.007],[0.992, 0.01],[1.023, 0.02],[0.905, 0.06],[0.424, 0.5]]
 
-	if _year=='2018':
+	if year=='2018':
 		# Muon reco SFs
 		# https://twiki.cern.ch/twiki/bin/view/CMS/HighPtMuonReferenceRun2
 		if abseta>=0.00 and abseta<=1.60: recoSFbyP = [[0.9943, 0.0007],[0.9948, 0.0007],[0.9950, 0.0009],[0.994, 0.001],[0.9914, 0.0009],[0.993, 0.002],[0.991, 0.004],[1.0, 0.1]]
@@ -1127,11 +1132,11 @@ def MERParametrization(_p, _eta):
     coeffsAllEta = [[0.0,0.0,0.0,0.0,0.0],[0.0,0.0,0.0,0.0,0.0],[0.0,0.0,0.0,0.0,0.0]]
     coeffs = coeffsAllEta[0]
 
-    if _year == '2016': coeffsAllEta = [[0.0062, 0.0001, -1.0e-7, 5.7e-11, -1.1e-14],[0.0134, 0.00006, -4.7e-8, 2.6e-11, -5e-15],[0.0151, 0.000114, -3.7e-8, 3.9e-12, 1e-15]]
+    if year == '2016': coeffsAllEta = [[0.0062, 0.0001, -1.0e-7, 5.7e-11, -1.1e-14],[0.0134, 0.00006, -4.7e-8, 2.6e-11, -5e-15],[0.0151, 0.000114, -3.7e-8, 3.9e-12, 1e-15]]
 
-    elif _year == '2017': coeffsAllEta = [[0.0053, 0.00011, -1.3e-7, 6.9e-11, -1.3e-14],[0.000063, 0.000063, -2.6e-8, -1.3e-12, 3e-15],[0.0170, 0.000084, 2.6e-9, -2.3e-11, 8e-15]]
+    elif year == '2017': coeffsAllEta = [[0.0053, 0.00011, -1.3e-7, 6.9e-11, -1.3e-14],[0.000063, 0.000063, -2.6e-8, -1.3e-12, 3e-15],[0.0170, 0.000084, 2.6e-9, -2.3e-11, 8e-15]]
 
-    elif _year == '2018': coeffsAllEta = [[0.0062, 0.000096, -9.7e-8, 4.9e-11, -9e-15],[0.0136, 0.000052, -2.4e-8, 5.0e-12, 0.0],[0.0174, 0.000087, -3.3e-9, -1.6e-11, 5e-15]]
+    elif year == '2018': coeffsAllEta = [[0.0062, 0.000096, -9.7e-8, 4.9e-11, -9e-15],[0.0136, 0.000052, -2.4e-8, 5.0e-12, 0.0],[0.0174, 0.000087, -3.3e-9, -1.6e-11, 5e-15]]
 
     if abs(_eta) < 1.2 : coeffs = coeffsAllEta[0]
     elif 1.2 <= abs(_eta) < 2.1 : coeffs = coeffsAllEta[1]
@@ -1155,33 +1160,35 @@ def SmearMuonCollections(_ptCollection, _etaCollection, _phiCollection, isSystem
 	Plist = []
 	smearedPlist = []
 	smearingList = []
-	for n in range(len(_ptCollection)):
-		smearConst = 0.0
-		if abs(_etaCollection[n]) < 1.2 and not isSystematic: continue # no resolution smearing if abs(eta) < 1.2
-		elif abs(_etaCollection[n]) >= 1.2 or isSystematic:
-			smearConst = 0.57 # resolution smearing of 15% -> 0.57
-			if isSystematic: smearConst = 0.46 # systematics requires 10% shift -> 0.46
-			smearedLorentz = TLorentzVector()
-			origLorentz = TLorentzVector()
-			origLorentz.SetPtEtaPhiM(_ptCollection[n], _etaCollection[n], _phiCollection[n], 0)
+	if not isSystematic and year == '2016': continue
+	else:
+		for n in range(len(_ptCollection)):
+			smearConst = 0.0
+			if abs(_etaCollection[n]) < 1.2 and not isSystematic: continue # no resolution smearing if abs(eta) < 1.2
+			elif abs(_etaCollection[n]) >= 1.2 or isSystematic:
+				smearConst = 0.57 # resolution smearing of 15% -> 0.57
+				if isSystematic: smearConst = 0.46 # systematics requires 10% shift -> 0.46
+				smearedLorentz = TLorentzVector()
+				origLorentz = TLorentzVector()
+				origLorentz.SetPtEtaPhiM(_ptCollection[n], _etaCollection[n], _phiCollection[n], 0)
 
-			# Smearing is performed on P, convert from Pt, Eta, Phi to cartesian 3-momentum and back
-			origPx = origLorentz.Px()
-			origPy = origLorentz.Py()
-			origPz = origLorentz.Pz()
-			origP = origLorentz.P()
-			# Smear momenta here
-			smearing = (1 + tRand.Gaus(0.0, MERParametrization(origP, _etaCollection[n])*smearConst))
-			smearedPx = origPx*smearing
-			smearedPy = origPy*smearing
-			smearedPz = origPz*smearing
-			smearedE = math.sqrt(smearedPx*smearedPx + smearedPy*smearedPy + smearedPz*smearedPz)
-			smearedLorentz.SetPxPyPzE(smearedPx, smearedPy, smearedPz, smearedE)
+				# Smearing is performed on P, convert from Pt, Eta, Phi to cartesian 3-momentum and back
+				origPx = origLorentz.Px()
+				origPy = origLorentz.Py()
+				origPz = origLorentz.Pz()
+				origP = origLorentz.P()
+				# Smear momenta here
+				smearing = (1 + tRand.Gaus(0.0, MERParametrization(origP, _etaCollection[n])*smearConst))
+				smearedPx = origPx*smearing
+				smearedPy = origPy*smearing
+				smearedPz = origPz*smearing
+				smearedE = math.sqrt(smearedPx*smearedPx + smearedPy*smearedPy + smearedPz*smearedPz)
+				smearedLorentz.SetPxPyPzE(smearedPx, smearedPy, smearedPz, smearedE)
 
-			# Return the smeared Pt, Eta, Phi collections
-			smearedPtCollection[n] = smearedLorentz.Pt()
-			smearedEtaCollection[n] = smearedLorentz.Eta()
-			smearedPhiCollection[n] = smearedLorentz.Phi()
+				# Return the smeared Pt, Eta, Phi collections
+				smearedPtCollection[n] = smearedLorentz.Pt()
+				smearedEtaCollection[n] = smearedLorentz.Eta()
+				smearedPhiCollection[n] = smearedLorentz.Phi()
 
 	return [smearedPtCollection, smearedEtaCollection, smearedPhiCollection]
 
@@ -1198,6 +1205,65 @@ def SortCollections(listOfCollections):
 
 	return returnListOfCollections
 
+def GetRochesterSys(_ptCollection, _etaCollection, _phiCollection, _chargeCollection, _genPtCollection, _nTrkLayersCollection, _randList, sys):
+	# Using Rochester method, see:
+	# https://twiki.cern.ch/twiki/bin/viewauth/CMS/RochcorMuon
+
+	# RoccoR package supplies functions to compute corrections:
+	# https://gitlab.cern.ch/akhukhun/roccor
+
+	# Correct pT for each systematic variation "s" and take the difference from the nominal value
+	# For statistical uncertainties take RMS of nominal - corrected pT for each "m" = 0 to 99 
+	# Sum differences (including statistical uncertainty) in quadrature to get total systematic uncertainty
+	# Add to nominal pT for "up" systematic estimate
+
+	# Corrections are year-based
+	if year == '2016': rc = RoccoR("roccor/RoccoR2016.txt")
+	elif year == '2017': rc = RoccoR("roccor/RoccoR2017.txt")
+	elif year == '2018': rc = RoccoR("roccor/RoccoR2018UL.txt")
+
+	for i in range(len(_ptCollection)):
+		pt = _ptCollection[i]
+		if pt < 200:
+			eta = _etaCollection[i]
+			phi = _phiCollection[i]
+			Q = _chargeCollection[i]
+			GenPt = _genPtCollection[i]
+			nl = _nTrkLayersCollection[i]
+			u = _randList[i]
+
+			MESpT_syst = []
+			MESpT_stat = []
+
+			# loop through all systematic contributions "s" (plus statistical) 
+			for s in range(6):
+				# s=1: nominal corrections
+				if s == 0: continue
+				elif s == 1:
+					# for statistical uncertainties (s=1), loop through m = 0-99 and take RMS
+					for m in range(100):
+						# If no gen muon found, use kSmearMC with uniformly random number (0,1) instead of kSpreadMC
+						# Random number is the SAME as used in nominal Rochester correction
+						if GenPt > 0: statdiff = pt - pt*rc.kSpreadMC(Q, pt, eta, phi, GenPt, s, m)*rc.kScaleDT(Q, pt, eta, phi, 0, 0)/rc.kScaleDT(Q, pt, eta, phi, s, m)
+						else: statdiff = pt - pt*rc.kSmearMC(Q, pt, eta, phi, nl, u, s, m)*rc.kScaleDT(Q, pt, eta, phi, 0, 0)/rc.kScaleDT(Q, pt, eta, phi, s, m)
+						MESpT_stat.append(statdiff)
+
+					# Get RMS of statistical variations
+					MESpT_StatRMS = math.sqrt(sum([statPt*statPt for statPt in MESpT_stat])/100.0)
+					MESpT_syst.append(MESpT_StatRMS)
+
+				else:
+					# If no gen muon found, use kSmearMC with uniformly random number (0,1) instead of kSpreadMC
+					if GenPt > 0: sysdiff = pt - pt*rc.kSpreadMC(Q, pt, eta, phi, GenPt, s, 0)*rc.kScaleDT(Q, pt, eta, phi, 0, 0)/rc.kScaleDT(Q, pt, eta, phi, s, 0)
+					else: sysdiff = pt - pt*rc.kSmearMC(Q, pt, eta, phi, nl, u, s, 0)*rc.kScaleDT(Q, pt, eta, phi, 0, 0)/rc.kScaleDT(Q, pt, eta, phi, s, 0)
+					MESpT_syst.append(sysdiff)
+
+			# Get total "up" or "down" MES systematic variation
+			if "MESup" in sys: _ptCollection[i] = pt + math.sqrt(sum([varPt*varPt for varPt in MESpT_syst]))
+			if "MESdown" in sys: _ptCollection[i] = pt - math.sqrt(sum([varPt*varPt for varPt in MESpT_syst]))
+			
+	return _ptCollection
+
 def TightHighPtIDMuons(T,_met,variation,isdata):
 	# Purpose: Gets the collection of muons passing high-pT muon ID and relative track Iso. 
 	#		  Applies muon momentum resolution smearing.
@@ -1208,12 +1274,20 @@ def TightHighPtIDMuons(T,_met,variation,isdata):
 	muoninds = []
 
 	# Collections get reordered several times--establish all necessary quantities here so they can be sorted
-
+	muonDict = {}
 	# Use TuneP momentum
 	_MuonCocktailPt = [tunepRelPt*pt for pt, tunepRelPt in zip(T.Muon_pt,T.Muon_tunepRelPt)]
 	_MuonCocktailEta = [eta for eta in T.Muon_eta]
 	_MuonCocktailPhi = [phi for phi in T.Muon_phi]
 	_MuonCocktailCharge = [q for q in T.Muon_charge]
+	_randList = [uniform() for pt in T.Muon_pt]
+
+	# These are used for Rochester (scale) corrections
+	_MuonCocktailNTrackerLayers = [nl for nl in T.Muon_nTrackerLayers]
+	# Gen pT won't get used for any calculations unless MC
+	# If no gen info found, set pT to -999 (negative value is important to keep later)
+	_MuonCocktailGenPt = [-999 for pt in T.Muon_pt]
+	if not isdata: _MuonCocktailGenPt = [T.GenPart_pt[genInd] if 0 <= genInd < T.nGenPart else -999 for genInd in T.Muon_genPartIdx]
 
 	# Muon_highPtId and Muon_tkIsoId are stored as type UChar_t (unsigned characters)
 	# passing the objects through a python array and specifying typecode 'B' allows them to be returned as integers
@@ -1228,27 +1302,48 @@ def TightHighPtIDMuons(T,_met,variation,isdata):
 
 	# Reorder the muon collections by the TuneP pT (high pT -> low pT)
 	# Make sure Pt cocktail is first element in list!
-	_MuonCocktailPt, _MuonCocktailEta, _MuonCocktailPhi, _MuonCocktailCharge, _MuonCocktailID, _MuonCocktailIso, _preSmearCocktailPt, _preSmearCocktailEta, _preSmearCocktailPhi = SortCollections([_MuonCocktailPt, _MuonCocktailEta, _MuonCocktailPhi, _MuonCocktailCharge, _MuonCocktailID, _MuonCocktailIso, _preSmearCocktailPt, _preSmearCocktailEta, _preSmearCocktailPhi])
+	_MuonCocktailPt, _MuonCocktailEta, _MuonCocktailPhi, _MuonCocktailCharge, _randList, _MuonCocktailID, _MuonCocktailIso, _preSmearCocktailPt, _preSmearCocktailEta, _preSmearCocktailPhi = SortCollections([_MuonCocktailPt, _MuonCocktailEta, _MuonCocktailPhi, _MuonCocktailCharge, _randList, _MuonCocktailID, _MuonCocktailIso, _preSmearCocktailPt, _preSmearCocktailEta, _preSmearCocktailPhi])
 
 	# Following perscription for muon momentum smearing of 15% from resolution uncertainty
     # https://twiki.cern.ch/twiki/bin/view/CMS/MuonLegacy2016#Momentum_Resolution
     # https://twiki.cern.ch/twiki/bin/view/CMS/MuonLegacy2017#Momentum_Resolution
     # https://twiki.cern.ch/twiki/bin/view/CMS/MuonLegacy2018#Momentum_Resolution
 
+	# Load Rochester tables for correct data year
+	if year == '2016': rc = RoccoR("roccor/RoccoR2016.txt")
+	elif year == '2017': rc = RoccoR("roccor/RoccoR2017.txt")
+	elif year == '2018': rc = RoccoR("roccor/RoccoR2018UL.txt")
+
 	if isdata:
-		pass
+		# Correct muon pT scale with Rochester corrections if pT < 200 GeV
+		_MuonCocktailPt = [rc.kScaleDT(Q, pt, eta, phi, s=0, m=0)*pt if pt < 200 else pt for pt, eta, phi, Q in zip(_MuonCocktailPt, _MuonCocktailEta, _MuonCocktailPhi, _MuonCocktailCharge)]
+
+		# Reorder the collections after Rochester scale corrections (high pT -> low pT)
+		# Make sure Pt cocktail is first element in list!
+		_MuonCocktailPt, _MuonCocktailEta, _MuonCocktailPhi, _MuonCocktailCharge, _randList, _MuonCocktailID, _MuonCocktailIso, _preSmearCocktailPt, _preSmearCocktailEta, _preSmearCocktailPhi = SortCollections([_MuonCocktailPt, _MuonCocktailEta, _MuonCocktailPhi, _MuonCocktailCharge, _randList, _MuonCocktailID, _MuonCocktailIso, _preSmearCocktailPt, _preSmearCocktailEta, _preSmearCocktailPhi])
+
 	else:
-		# 2016 requires no extra resolution smearing to MC 
-		if _year == '2016': pass
+		# Correct muon pT scale and resolution with Rochester corrections if pT < 200 GeV
+		# If gen particle is found, use kSpreadMC, otherwise use kSmearMC
+		_MuonCocktailPt = [rc.kSpreadMC(Q, pt, eta, phi, genPt, s=0, m=0)*pt if pt < 200 and genPt > 0 else rc.kSmearMC(Q, pt, eta, phi, nl, u, s=0, m=0)*pt if pt < 200 and genPt < 0 else pt for pt, eta, phi, Q, u, genPt, nl in zip(_MuonCocktailPt, _MuonCocktailEta, _MuonCocktailPhi, _MuonCocktailCharge, _randList, _MuonCocktailGenPt, _MuonCocktailNTrackerLayers)]
+
 		# Extra resolution smearing 15%
-		elif _year == '2017' or _year == '2018': [_MuonCocktailPt, _MuonCocktailEta, _MuonCocktailPhi] = SmearMuonCollections(_MuonCocktailPt, _MuonCocktailEta, _MuonCocktailPhi, False)
+		[_MuonCocktailPt, _MuonCocktailEta, _MuonCocktailPhi] = SmearMuonCollections(_MuonCocktailPt, _MuonCocktailEta, _MuonCocktailPhi, False)
 
 		# Reorder the collections after extra resolution corrections (high pT -> low pT)
 		# Make sure Pt cocktail is first element in list!
-		_MuonCocktailPt, _MuonCocktailEta, _MuonCocktailPhi, _MuonCocktailCharge, _MuonCocktailID, _MuonCocktailIso, _preSmearCocktailPt, _preSmearCocktailEta, _preSmearCocktailPhi = SortCollections([_MuonCocktailPt, _MuonCocktailEta, _MuonCocktailPhi, _MuonCocktailCharge, _MuonCocktailID, _MuonCocktailIso, _preSmearCocktailPt, _preSmearCocktailEta, _preSmearCocktailPhi])
+		_MuonCocktailPt, _MuonCocktailEta, _MuonCocktailPhi, _MuonCocktailCharge, _randList, _MuonCocktailID, _MuonCocktailIso, _preSmearCocktailPt, _preSmearCocktailEta, _preSmearCocktailPhi = SortCollections([_MuonCocktailPt, _MuonCocktailEta, _MuonCocktailPhi, _MuonCocktailCharge, _randList, _MuonCocktailID, _MuonCocktailIso, _preSmearCocktailPt, _preSmearCocktailEta, _preSmearCocktailPhi])
 
-		if variation == 'MESup': pass
-		elif variation == 'MESdown': pass
+		if 'MES' in variation: 
+			# Perform Rochester scale systematics here with the "variation" list
+			# Will only apply to muons with pT < 200 GeV; pT check built into GetRochesterSys()
+			# Technically Rochester corrects for muon resolution AND muon scale, 
+			# but as there is no way to seperate out the systematics,
+			# the Rochester resolution systematics are absorbed in the MES variations
+			_MuonCocktailPt = GetRochesterSys(_MuonCocktailPt, _MuonCocktailEta, _MuonCocktailPhi, _MuonCocktailCharge, _MuonCocktailGenPt, _MuonCocktailNTrackerLayers, _randList, variation)
+
+			# Do not resort collections while computing systematics
+
 		elif variation=='MER':
 			# Following perscription for MER systematics of 10% shift uncertainty
 			# https://twiki.cern.ch/twiki/bin/view/CMS/MuonLegacy2016#Momentum_Resolution
@@ -1257,6 +1352,7 @@ def TightHighPtIDMuons(T,_met,variation,isdata):
 
 			# Smearing 10%
 			[_MuonCocktailPt, _MuonCocktailEta, _MuonCocktailPhi] = SmearMuonCollections(_MuonCocktailPt, _MuonCocktailEta, _MuonCocktailPhi, True)
+			# Do not resort collections while computing systematics
 
 	trk_isos = []
 	charges = []
@@ -2343,7 +2439,12 @@ def GeomFilterCollections(collections_to_clean,good_collection,dRcut):
 def MetVector(T):
 	# Purpose: Creates a TLorentzVector representing the MET. No pseudorapidity, obviously.
 	met = TLorentzVector()
-	met.SetPtEtaPhiM(T.MET_pt,0,T.MET_phi,0)
+	# Apply correction to EE noise issue in 2017 data and MC
+	if year == "2017":
+		met.SetPtEtaPhiM(T.METFixEE2017_pt,0,T.METFixEE2017_phi,0)
+	else:
+		met.SetPtEtaPhiM(T.MET_pt,0,T.MET_phi,0)
+
 	return met
 
 
@@ -2438,6 +2539,19 @@ for n in range(N):
 		#Branches['weight_central_2012D'][0] = startingweight*GetPUWeight(t,'Central','2012D')
 		Branches['weight_nopu'][0] = 1.0#startingweight*t.genWeight
 		Branches['weight_topPt'][0]= 1.0#_TopPtFactor*startingweight*t.genWeight
+
+		Branches['scaleWeight_Up'][0]=       1.0
+		Branches['scaleWeight_Down'][0]=     1.0
+		Branches['scaleWeight_R1_F1'][0]=    1.0
+		Branches['scaleWeight_R1_F2'][0]=    1.0
+		Branches['scaleWeight_R1_F0p5'][0]=  1.0
+		Branches['scaleWeight_R2_F1'][0]=    1.0
+		Branches['scaleWeight_R2_F2'][0]=    1.0
+		Branches['scaleWeight_R2_F0p5'][0]=  1.0
+		Branches['scaleWeight_R0p5_F1'][0]=  1.0
+		Branches['scaleWeight_R0p5_F2'][0]=  1.0
+		Branches['scaleWeight_R0p5_F0p5'][0]=1.0
+		
 	else:
 		Branches['weight_central'][0] = startingweight*t.genWeight*t.puWeight
 		Branches['weight_pu_down'][0] = startingweight*t.genWeight*t.puWeightDown
@@ -2460,7 +2574,7 @@ for n in range(N):
 		#	scaleWeights = t.ScaleWeights
 		#scaleWeights = [0,0,0,0,0,0,0,0,0]#fixme have to calculate?
 		scaleWeights = t.LHEScaleWeight
-		if (_year == '2017' or _year == '2018') and ('DYJetsToLL_Pt-' in amcNLOname or 'WJetsToLNu_' in amcNLOname or 'ZZTo4L' in amcNLOname) and len(scaleWeights) == 8: # 2017 Pt-binned DY, WJets to lv, and ZZ to llll samples and 2018 Pt-binned DY samples do not include nominal LHE scale weight; set "R1_F1" to 1.0
+		if (year == '2017' or year == '2018') and ('DYJetsToLL_Pt-' in amcNLOname or 'WJetsToLNu_' in amcNLOname or 'ZZTo4L' in amcNLOname) and len(scaleWeights) == 8: # 2017 Pt-binned DY, WJets to lv, and ZZ to llll samples and 2018 Pt-binned DY samples do not include nominal LHE scale weight; set "R1_F1" to 1.0
 			Branches['scaleWeight_Up'][0]=       scaleWeights[7]
 			Branches['scaleWeight_Down'][0]=     scaleWeights[0]
 			Branches['scaleWeight_R0p5_F0p5'][0]=scaleWeights[0]
@@ -2581,6 +2695,9 @@ for n in range(N):
 	if ( (isData) and (CheckRunLumiCert(t.run,t.luminosityBlock) == False) ) : 	
 		Branches['passDataCert'][0] = 0
 
+	Branches['Flag_dataYear2016'][0] = bool(year=='2016')
+	Branches['Flag_dataYear2017'][0] = bool(year=='2017')
+	Branches['Flag_dataYear2018'][0] = bool(year=='2018')
 
 	## ===========================  Calculate everything!  ============================= ##
 
