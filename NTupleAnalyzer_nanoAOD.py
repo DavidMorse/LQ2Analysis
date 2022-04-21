@@ -9,12 +9,11 @@ from argparse import ArgumentParser
 tRand = TRandom3()
 from random import randint
 from random import normalvariate
-from random import uniform
 
 # GE code is in C++. Use the root gInterpreter to import library
-gInterpreter.ProcessLine('#include "GEScaleSyst/GEScaleSyst.cc"')
+gInterpreter.ProcessLine('#include "/afs/cern.ch/work/g/gmadigan/CMS/Analysis/Leptoquarks/MakeTreesStockNanoAODv6_2/LQ2Analysis13TeV/GEScaleSyst/GEScaleSyst.cc"')
 # Rochester code in C++. Use the root gInterpreter to import library
-gInterpreter.ProcessLine('#include "roccor/RoccoR.cc"')
+gInterpreter.ProcessLine('#include "/afs/cern.ch/work/g/gmadigan/CMS/Analysis/Leptoquarks/MakeTreesStockNanoAODv6_2/LQ2Analysis13TeV/roccor/RoccoR.cc"')
 
 ##########################################################################################
 #################      SETUP OPTIONS - File, Normalization, etc    #######################
@@ -116,7 +115,7 @@ junkfile2 = str(randint(100000000,1000000000))+indicator+'junk.root'
 # At least one 45 GeV jet - offline cut is 50
 fj2 = TFile.Open(junkfile2,'RECREATE')
 t = t1.CopyTree('Jet_pt[]>45')
-N = t.GetEntries()
+N = 1000 #t.GetEntries()
 
 # Print the reduction status
 print 'Original events:          ',No
@@ -1280,7 +1279,7 @@ def TightHighPtIDMuons(T,_met,variation,isdata):
 	_MuonCocktailEta = [eta for eta in T.Muon_eta]
 	_MuonCocktailPhi = [phi for phi in T.Muon_phi]
 	_MuonCocktailCharge = [q for q in T.Muon_charge]
-	_randList = [uniform() for pt in T.Muon_pt]
+	_randList = [tRand.Rndm() for pt in T.Muon_pt]
 
 	# These are used for Rochester (scale) corrections
 	_MuonCocktailNTrackerLayers = [nl for nl in T.Muon_nTrackerLayers]
@@ -1316,7 +1315,7 @@ def TightHighPtIDMuons(T,_met,variation,isdata):
 
 	if isdata:
 		# Correct muon pT scale with Rochester corrections if pT < 200 GeV
-		_MuonCocktailPt = [rc.kScaleDT(Q, pt, eta, phi, s=0, m=0)*pt if pt < 200 else pt for pt, eta, phi, Q in zip(_MuonCocktailPt, _MuonCocktailEta, _MuonCocktailPhi, _MuonCocktailCharge)]
+		_MuonCocktailPt = [rc.kScaleDT(Q, pt, eta, phi, 0, 0)*pt if pt < 200 else pt for pt, eta, phi, Q in zip(_MuonCocktailPt, _MuonCocktailEta, _MuonCocktailPhi, _MuonCocktailCharge)]
 
 		# Reorder the collections after Rochester scale corrections (high pT -> low pT)
 		# Make sure Pt cocktail is first element in list!
@@ -1325,7 +1324,7 @@ def TightHighPtIDMuons(T,_met,variation,isdata):
 	else:
 		# Correct muon pT scale and resolution with Rochester corrections if pT < 200 GeV
 		# If gen particle is found, use kSpreadMC, otherwise use kSmearMC
-		_MuonCocktailPt = [rc.kSpreadMC(Q, pt, eta, phi, genPt, s=0, m=0)*pt if pt < 200 and genPt > 0 else rc.kSmearMC(Q, pt, eta, phi, nl, u, s=0, m=0)*pt if pt < 200 and genPt < 0 else pt for pt, eta, phi, Q, u, genPt, nl in zip(_MuonCocktailPt, _MuonCocktailEta, _MuonCocktailPhi, _MuonCocktailCharge, _randList, _MuonCocktailGenPt, _MuonCocktailNTrackerLayers)]
+		_MuonCocktailPt = [rc.kSpreadMC(Q, pt, eta, phi, genPt, 0, 0)*pt if pt < 200 and genPt > 0 else rc.kSmearMC(Q, pt, eta, phi, nl, u, 0, 0)*pt if pt < 200 and genPt < 0 else pt for pt, eta, phi, Q, u, genPt, nl in zip(_MuonCocktailPt, _MuonCocktailEta, _MuonCocktailPhi, _MuonCocktailCharge, _randList, _MuonCocktailGenPt, _MuonCocktailNTrackerLayers)]
 
 		# Extra resolution smearing 15%
 		[_MuonCocktailPt, _MuonCocktailEta, _MuonCocktailPhi] = SmearMuonCollections(_MuonCocktailPt, _MuonCocktailEta, _MuonCocktailPhi, False)
