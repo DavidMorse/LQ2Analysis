@@ -115,7 +115,7 @@ junkfile2 = str(randint(100000000,1000000000))+indicator+'junk.root'
 # At least one 45 GeV jet - offline cut is 50
 fj2 = TFile.Open(junkfile2,'RECREATE')
 t = t1.CopyTree('Jet_pt[]>45')
-N = 1000 #t.GetEntries()
+N = t.GetEntries()
 
 # Print the reduction status
 print 'Original events:          ',No
@@ -1217,9 +1217,9 @@ def GetRochesterSys(_ptCollection, _etaCollection, _phiCollection, _chargeCollec
 	# Add to nominal pT for "up" systematic estimate
 
 	# Corrections are year-based
-	if year == '2016': rc = RoccoR("roccor/RoccoR2016.txt")
-	elif year == '2017': rc = RoccoR("roccor/RoccoR2017.txt")
-	elif year == '2018': rc = RoccoR("roccor/RoccoR2018UL.txt")
+	if year == '2016': rc = RoccoR("/afs/cern.ch/work/g/gmadigan/CMS/Analysis/Leptoquarks/MakeTreesStockNanoAODv6_2/LQ2Analysis13TeV/roccor/RoccoR2016.txt")
+	elif year == '2017': rc = RoccoR("/afs/cern.ch/work/g/gmadigan/CMS/Analysis/Leptoquarks/MakeTreesStockNanoAODv6_2/LQ2Analysis13TeV/roccor/RoccoR2017.txt")
+	elif year == '2018': rc = RoccoR("/afs/cern.ch/work/g/gmadigan/CMS/Analysis/Leptoquarks/MakeTreesStockNanoAODv6_2/LQ2Analysis13TeV/roccor/RoccoR2018UL.txt")
 
 	for i in range(len(_ptCollection)):
 		pt = _ptCollection[i]
@@ -1309,9 +1309,9 @@ def TightHighPtIDMuons(T,_met,variation,isdata):
     # https://twiki.cern.ch/twiki/bin/view/CMS/MuonLegacy2018#Momentum_Resolution
 
 	# Load Rochester tables for correct data year
-	if year == '2016': rc = RoccoR("roccor/RoccoR2016.txt")
-	elif year == '2017': rc = RoccoR("roccor/RoccoR2017.txt")
-	elif year == '2018': rc = RoccoR("roccor/RoccoR2018UL.txt")
+	if year == '2016': rc = RoccoR("/afs/cern.ch/work/g/gmadigan/CMS/Analysis/Leptoquarks/MakeTreesStockNanoAODv6_2/LQ2Analysis13TeV/roccor/RoccoR2016.txt")
+	elif year == '2017': rc = RoccoR("/afs/cern.ch/work/g/gmadigan/CMS/Analysis/Leptoquarks/MakeTreesStockNanoAODv6_2/LQ2Analysis13TeV/roccor/RoccoR2017.txt")
+	elif year == '2018': rc = RoccoR("/afs/cern.ch/work/g/gmadigan/CMS/Analysis/Leptoquarks/MakeTreesStockNanoAODv6_2/LQ2Analysis13TeV/roccor/RoccoR2018UL.txt")
 
 	if isdata:
 		# Correct muon pT scale with Rochester corrections if pT < 200 GeV
