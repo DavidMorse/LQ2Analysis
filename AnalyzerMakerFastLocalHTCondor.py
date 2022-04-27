@@ -510,6 +510,7 @@ def MakeJobs(njobs):
 		subber.write('\ncp -r '+thisdir+'/weights_classification .\n\n')
 		subber.write('\ncp '+thisdir+'/cMVAv2_Moriond17_B_H.csv .\n\n')
 		subber.write('\ncp '+thisdir+'/CSVv2_Moriond17_B_H.csv .\n\n')
+		subber.write('\ncp -r '+thisdir+'/RoccoR .\n\n')
 		#subber.write('\ncp '+thisdir+'/*.so .\n\n')
 		#subber.write('\ncp '+thisdir+'/libCond* .\n\n')
 		#subber.write('\ncp '+thisdir+'/libCondFormatsPhysicsToolsObjects.so .\n\n')
