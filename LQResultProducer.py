@@ -13,11 +13,17 @@ global preselectionmumu
 # Input Options - file, cross-section, number of events
 parser = ArgumentParser()
 parser.add_argument("-y", "--year", dest="year", help="option to pick running year (2016,2017,2018)", metavar="YEAR")
-parser.add_argument("-b", "--btags", dest="btags", help="option to pick minimum number of b-tagged jets required (0,1,2)", metavar="BTAGS", default="0")
+parser.add_argument("-b", "--btags", dest="btags", help="option to pick minimum number of b-tagged jets required (0,1,2)", metavar="BTAGS")
 options = parser.parse_args()
 year = str(options.year)
 btags = str(options.btags)
 
+if year not in ['2016','2017','2018']: 
+	print "Please enter year with argument '-y' [2016, 2017, 2018]\nExiting..."
+	exit()
+if btags not in ['0','1','2']:
+	print "Please enter b tag requirement with argument '-b' [0, 1, 2]\nExiting..."
+	exit()
 
 # Directory where root files are kept and the tree you want to get root files from
 if year == '2016':
