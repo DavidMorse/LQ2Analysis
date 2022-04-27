@@ -10,10 +10,8 @@ tRand = TRandom3()
 from random import randint
 from random import normalvariate
 
-# GE code is in C++. Use the root gInterpreter to import library
-gInterpreter.ProcessLine('#include "/afs/cern.ch/work/g/gmadigan/CMS/Analysis/Leptoquarks/MakeTreesStockNanoAODv6_2/LQ2Analysis13TeV/GEScaleSyst/GEScaleSyst.cc"')
 # Rochester code in C++. Use the root gInterpreter to import library
-gInterpreter.ProcessLine('#include "/afs/cern.ch/work/g/gmadigan/CMS/Analysis/Leptoquarks/MakeTreesStockNanoAODv6_2/LQ2Analysis13TeV/roccor/RoccoR.cc"')
+gInterpreter.ProcessLine('#include "RoccoR/RoccoR.cc"')
 
 ##########################################################################################
 #################      SETUP OPTIONS - File, Normalization, etc    #######################
@@ -1217,9 +1215,9 @@ def GetRochesterSys(_ptCollection, _etaCollection, _phiCollection, _chargeCollec
 	# Add to nominal pT for "up" systematic estimate
 
 	# Corrections are year-based
-	if year == '2016': rc = RoccoR("/afs/cern.ch/work/g/gmadigan/CMS/Analysis/Leptoquarks/MakeTreesStockNanoAODv6_2/LQ2Analysis13TeV/roccor/RoccoR2016.txt")
-	elif year == '2017': rc = RoccoR("/afs/cern.ch/work/g/gmadigan/CMS/Analysis/Leptoquarks/MakeTreesStockNanoAODv6_2/LQ2Analysis13TeV/roccor/RoccoR2017.txt")
-	elif year == '2018': rc = RoccoR("/afs/cern.ch/work/g/gmadigan/CMS/Analysis/Leptoquarks/MakeTreesStockNanoAODv6_2/LQ2Analysis13TeV/roccor/RoccoR2018UL.txt")
+	if year == '2016': rc = RoccoR("RoccoR/RoccoR2016.txt")
+	elif year == '2017': rc = RoccoR("RoccoR/RoccoR2017.txt")
+	elif year == '2018': rc = RoccoR("RoccoR/RoccoR2018UL.txt")
 
 	for i in range(len(_ptCollection)):
 		pt = _ptCollection[i]
@@ -1309,9 +1307,9 @@ def TightHighPtIDMuons(T,_met,variation,isdata):
     # https://twiki.cern.ch/twiki/bin/view/CMS/MuonLegacy2018#Momentum_Resolution
 
 	# Load Rochester tables for correct data year
-	if year == '2016': rc = RoccoR("/afs/cern.ch/work/g/gmadigan/CMS/Analysis/Leptoquarks/MakeTreesStockNanoAODv6_2/LQ2Analysis13TeV/roccor/RoccoR2016.txt")
-	elif year == '2017': rc = RoccoR("/afs/cern.ch/work/g/gmadigan/CMS/Analysis/Leptoquarks/MakeTreesStockNanoAODv6_2/LQ2Analysis13TeV/roccor/RoccoR2017.txt")
-	elif year == '2018': rc = RoccoR("/afs/cern.ch/work/g/gmadigan/CMS/Analysis/Leptoquarks/MakeTreesStockNanoAODv6_2/LQ2Analysis13TeV/roccor/RoccoR2018UL.txt")
+	if year == '2016': rc = RoccoR("RoccoR/RoccoR2016.txt")
+	elif year == '2017': rc = RoccoR("RoccoR/RoccoR2017.txt")
+	elif year == '2018': rc = RoccoR("RoccoR/RoccoR2018UL.txt")
 
 	if isdata:
 		# Correct muon pT scale with Rochester corrections if pT < 200 GeV
