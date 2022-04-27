@@ -128,7 +128,7 @@ def tableentryfromraw(rates, stats, syss,flagsys):
 def cardtotex(card):
 	# print '  --------------------------------------------------   '
 	global do_PAS
-	mass,sig,zjets,ttbar,ttv,vv,wjets,stop,totB=[],[],[],[],[],[],[],[],[]
+	mass,sig,zjets,ttbar,wjets,vv,stop,totB=[],[],[],[],[],[],[],[]
 	sysnames = []
 	signalsystematics = []
 	backgroundsystematics = []
@@ -156,7 +156,7 @@ def cardtotex(card):
 			if do_PAS: backcols = [['Z+Jets',['ZJets']],['$\\ttbar$',['TTBar']],['VV',['VV']],['Other BG',['WJets','sTop']]]
 			#backcols = [['Z+Jets',['ZJets']],['$\\ttbar$',['TTBar']],['Other BG',['WJets','sTop','VV','QCD']]]
 			#backcols = [['Z+Jets',['ZJets']],['$\\ttbar$',['TTBar']],['W+Jets',['WJets']],['sTop',['sTop']],['VV',['VV']],['QCD',['QCD']]]
-			if not do_PAS: backcols = [['Z+Jets',['ZJets']],['$\\ttbar$',['TTBar']],['$\\ttbar$V',['TTV']],['VV',['VV']],['W+Jets',['WJets']],['sTop',['sTop']]]
+			if not do_PAS: backcols = [['Z+Jets',['ZJets']],['$\\ttbar$',['TTBar']],['W+Jets',['WJets']],['sTop',['sTop']],['VV',['VV']]]
 
 		if texchan == 'uvjj':
 			if do_PAS: backcols = [['W+Jets',['WJets']],['$\\ttbar$',['TTBar']],['VV',['VV']],['Other BG',['ZJets','sTop']]]
@@ -174,11 +174,8 @@ def cardtotex(card):
 			staterr = []
 			entry = line.split()
 			for e in entry:
-				if 'stat' not in e and 'gmN' not in e:
-					if 'e-' in e:
-						staterr.append(float(e))
-					elif '-' not in e:
-						staterr.append(float(e))
+				if 'stat' not in e and 'gmN' not in e and '-' not in e:
+					staterr.append(float(e))
 			staterrs.append(staterr)
 
 	systematics = syssummary(systable)
