@@ -1121,8 +1121,8 @@ def main():
 	# This is for scale factor studies
 	# ====================================================================================================================================================== #
 
-	if False:
-		
+	if True:
+		"""
 		mtCR = '*(MT_uv>70)*(MT_uv<110)'
 		mtSR = '*(((MT_uv>50)*(MT_uv<70)+(MT_uv>110))>0)'
 		preselectionmunu = '((Pt_muon1>53)*(Pt_muon2<53)*(Pt_miss>55)*(Pt_jet1>50)*(Pt_jet2>50)*(Pt_ele1<53)*(St_uvjj>300)*(DPhi_muon1met>0.8)*(DPhi_jet1met>0.5))'
@@ -1152,13 +1152,23 @@ def main():
 			print 'x=',x,'CR=',W1,'SR=',W2,'CR/SR=',W2[0]/W1[0],'+-',(1/W1[0])*math.sqrt((W2[0]*W2[0]*W1[1]*W1[1]/(W1[0]*W1[0]))+(W2[1]*W2[1]))
 
 		exit()
+                """
 		print 'Nominal uujj:'
-		[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = GetMuMuScaleFactors( NormalWeightMuMu+'*'+preselectionmumu, NormalDirectory, '(M_uu>80)*(M_uu<100)', '(M_uu>100)',1,0)
-		for stRange in [['300','500'],['500','750'],['750','1250'],['1250','99999']]:
+		[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = GetMuMuScaleFactors( NormalWeightMuMu+'*'+preselectionmumu, NormalDirectory, '(M_uu>80)*(M_uu<100)', '(M_uu>100)*(M_uu<250)',0,0)
+                #exit()
+                print 'Now do binning'
+                """
+                for muPtRange in [['50','85'],['85','110'],['110','160'],['160','99999']]:
+                        ptCut = '*(Pt_muon1>'+muPtRange[0]+')*(Pt_muon1<'+muPtRange[1]+')'
+                        print '*********',ptCut
+			[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = GetMuMuScaleFactors( NormalWeightMuMu+'*'+preselectionmumu+ptCut, NormalDirectory, '(M_uu>80)*(M_uu<100)', '(M_uu>100)*(M_uu<250)',0,1)
+                """
+		for stRange in [['300','400'],['400','650'],['650','900'],['900','99999']]:
 			stCut = '*(St_uujj>'+stRange[0]+')*(St_uujj<'+stRange[1]+')'
 			print '*********',stCut
 			[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = GetMuMuScaleFactors( NormalWeightMuMu+'*'+preselectionmumu+stCut, NormalDirectory, '(M_uu>80)*(M_uu<100)', '(M_uu>100)',1,1)
-		for mujRange in [['0','250'],['250','750'],['750','99999']]:
+		"""
+                for mujRange in [['0','250'],['250','750'],['750','99999']]:
 			mujCut = '*(M_uujj2>'+mujRange[0]+')*(M_uujj2<'+mujRange[1]+')'
 			print '*********',mujCut
 			[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = GetMuMuScaleFactors( NormalWeightMuMu+'*'+preselectionmumu+mujCut, NormalDirectory, '(M_uu>80)*(M_uu<100)', '(M_uu>100)',1,1)
@@ -1166,7 +1176,7 @@ def main():
 			stCut = '*(St_uvjj>'+stRange[0]+')*(St_uvjj<'+stRange[1]+')'
 			print '*********',stCut
 			[[Rw_uvjj,Rw_uvjj_err],[Rtt_uvjj,Rtt_uvjj_err]] = GetMuNuScaleFactors( NormalWeightMuNu+'*'+preselectionmunu+stCut, NormalDirectory, munu1, munu2,1)
-
+                """
 	# ====================================================================================================================================================== #
 	# This is for  spurious events
 	# ====================================================================================================================================================== #
@@ -4706,7 +4716,7 @@ def GetMuMuScaleFactors( selection, FileDirectory, controlregion_1, controlregio
 	zvals = []
 	tvals = []
 
-	if isQuick: loops=50
+	if isQuick: loops=100
 	else: loops=10000
 	for x in range(loops):
 		variation = (GetScaleFactors(RR(N1),RR(N2),RR(Z1),RR(Z2),RR(T1),RR(T2),Other1[0],Other2[0]))
@@ -5382,7 +5392,7 @@ def MakeBasicPlot(recovariable,xlabel,presentationbinning,selection,weight,FileD
 	# Extend the y-axis down for higher mass (low stats) BDT scores
 	if 'BDT_discrim_M' in recovariable:
 		BDTmass = int(recovariable.split('BDT_discrim_M')[-1])
-		if BDTmass < 600: continue
+		if BDTmass < 600: pass
 		elif BDTmass < 900: yaxismin *= 0.1
 		elif BDTmass < 1200: yaxismin *= 0.01
 		elif BDTmass < 1500: yaxismin *= 0.001
