@@ -76,6 +76,11 @@ if LQToBMu_single_bdtswitch:
 if LQToBMu_pair_bdtswitch:
 	LQToBMu_pair_uubj_weights = ["/eos/user/g/gmadigan/LQ_MVA_Batch/weights_2021_09_21_175759/TMVAClassification_np1__LQToBMu_pair_uubj__M","_2021_09_21_175759_BDTG.weights.xml"]
 
+# Faster to load Rochester corrections once than per event
+if year == '2016': rc = RoccoR("RoccoR/RoccoR2016.txt")
+elif year == '2017': rc = RoccoR("RoccoR/RoccoR2017.txt")
+elif year == '2018': rc = RoccoR("RoccoR/RoccoR2018UL.txt")
+
 # Get the file, tree, and number of entries
 print name
 
@@ -1214,11 +1219,6 @@ def GetRochesterSys(_ptCollection, _etaCollection, _phiCollection, _chargeCollec
 	# Sum differences (including statistical uncertainty) in quadrature to get total systematic uncertainty
 	# Add to nominal pT for "up" systematic estimate
 
-	# Corrections are year-based
-	if year == '2016': rc = RoccoR("RoccoR/RoccoR2016.txt")
-	elif year == '2017': rc = RoccoR("RoccoR/RoccoR2017.txt")
-	elif year == '2018': rc = RoccoR("RoccoR/RoccoR2018UL.txt")
-
 	for i in range(len(_ptCollection)):
 		pt = _ptCollection[i]
 		if pt < 200:
@@ -1305,11 +1305,6 @@ def TightHighPtIDMuons(T,_met,variation,isdata):
     # https://twiki.cern.ch/twiki/bin/view/CMS/MuonLegacy2016#Momentum_Resolution
     # https://twiki.cern.ch/twiki/bin/view/CMS/MuonLegacy2017#Momentum_Resolution
     # https://twiki.cern.ch/twiki/bin/view/CMS/MuonLegacy2018#Momentum_Resolution
-
-	# Load Rochester tables for correct data year
-	if year == '2016': rc = RoccoR("RoccoR/RoccoR2016.txt")
-	elif year == '2017': rc = RoccoR("RoccoR/RoccoR2017.txt")
-	elif year == '2018': rc = RoccoR("RoccoR/RoccoR2018UL.txt")
 
 	if isdata:
 		# Correct muon pT scale with Rochester corrections if pT < 200 GeV
