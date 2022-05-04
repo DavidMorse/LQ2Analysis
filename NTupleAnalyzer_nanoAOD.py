@@ -321,7 +321,7 @@ def GetPURescalingFactors(puversion):
 def GetPDFWeightVars(T):
 	# Purpose: Determine all the branch names needed to store the PDFWeights 
 	#         for CTEQ, MMTH, and NNPDF in flat (non vector) form. 
-	if T.run>1:
+	if T.run>1 or isData:
 		return []
 	else:
 		T.GetEntry(1)
