@@ -60,20 +60,28 @@ if "QuickTest" in options.dir:
 alignementcorrswitch = False
 if "AlignmentCorr" in options.dir:
 	alignementcorrswitch = True
+# Will add BDT weights if turned on
+bdtswitch = False
+if "BDT" in options.dir:
+	bdtswitch = True
 
 print 'EMu Switch = ', emuswitch
 print 'NonIso Switch = ', nonisoswitch
 print 'Quick Switch (No Sys) = ', quicktestswitch
 print 'AlignmentCorr Switch = ', alignementcorrswitch
+print 'BDT Switch = ', bdtswitch
 
-#Switches to add BDT discriminants
+channel = 'LQToBMu_pair' # hardcode for now, could add as an in-line argument when multiple signals used
+
 LQToBMu_single_bdtswitch = False
 LQToBMu_pair_bdtswitch = False
 
-if LQToBMu_single_bdtswitch:
+if bdtswitch and 'LQToBMu_single' in channel:
+	LQToBMu_single_bdtswitch = True
 	LQToBMu_single_uub_weights = ["",""]
 
-if LQToBMu_pair_bdtswitch:
+if bdtswitch and 'LQToBMu_pair' in channel:
+	LQToBMu_pair_bdtswitch = True
 	LQToBMu_pair_uubj_weights = ["/eos/user/g/gmadigan/LQ_MVA_Batch/weights_2021_09_21_175759/TMVAClassification_np1__LQToBMu_pair_uubj__M","_2021_09_21_175759_BDTG.weights.xml"]
 
 # Faster to load Rochester corrections once than per event
