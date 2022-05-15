@@ -27,15 +27,15 @@ if btags not in ['0','1','2']:
 
 # Directory where root files are kept and the tree you want to get root files from
 if year == '2016':
-	NormalDirectory = '/eos/cms/store/group/phys_exotica/leptonsPlusJets/LQ/LQ2/stockNanoTrees/NanoAODv7/2016/gmadigan/NTupleAnalyzer_nanoAOD_Full2016updatedMER_SysBDT_stockNano_2021_11_03_08_40_52/SummaryFiles'
+	NormalDirectory = '/eos/cms/store/group/phys_exotica/leptonsPlusJets/LQ/LQ2/stockNanoTrees/NanoAODv7/2016/gmadigan/NTupleAnalyzer_nanoAOD_QuickTest2016_TrainTestBDTs_RochesterSys_stockNano_2022_04_22_18_24_35/SummaryFiles'
 	QCDDirectory    = '/eos/cms/store/group/phys_exotica/leptonsPlusJets/LQ/LQ2/trees/NTupleAnalyzer_nanoAOD_Full2016QCDNonIsoQuickTest_2019_10_14/SummaryFiles' #Placeholder
 	EMuDirectory    = '/eos/cms/store/group/phys_exotica/leptonsPlusJets/LQ/LQ2/trees/NTupleAnalyzer_nanoAOD_Full2016EMuSwitch_2019_10_14/SummaryFiles' #Placeholder
 elif year == '2017':
-	NormalDirectory = '/eos/cms/store/group/phys_exotica/leptonsPlusJets/LQ/LQ2/stockNanoTrees/NanoAODv7/2017/gmadigan/NTupleAnalyzer_nanoAOD_Full2017updatedMER_SysBDT_stockNano_2021_11_06_12_12_51/SummaryFiles'
+	NormalDirectory = '/eos/cms/store/group/phys_exotica/leptonsPlusJets/LQ/LQ2/stockNanoTrees/NanoAODv7/2017/gmadigan/NTupleAnalyzer_nanoAOD_QuickTest2017_TrainTestBDTs_RochesterSys_stockNano_2022_04_27/SummaryFiles'
 	QCDDirectory    = '/eos/cms/store/group/phys_exotica/leptonsPlusJets/LQ/LQ2/trees/NTupleAnalyzer_nanoAOD_Full2016QCDNonIsoQuickTest_2019_10_14/SummaryFiles' #Placeholder
 	EMuDirectory    = '/eos/cms/store/group/phys_exotica/leptonsPlusJets/LQ/LQ2/trees/NTupleAnalyzer_nanoAOD_Full2016EMuSwitch_2019_10_14/SummaryFiles' #Placeholder
 elif year == '2018':
-	NormalDirectory = '/eos/cms/store/group/phys_exotica/leptonsPlusJets/LQ/LQ2/stockNanoTrees/NanoAODv7/2018/gmadigan/NTupleAnalyzer_nanoAOD_Full2018updatedMER_SysBDT_stockNano_2021_11_03_22_52_50/SummaryFiles'
+	NormalDirectory = '/eos/cms/store/group/phys_exotica/leptonsPlusJets/LQ/LQ2/stockNanoTrees/NanoAODv7/2018/gmadigan/NTupleAnalyzer_nanoAOD_QuickTest2018_TrainTestBDTs_RochesterSys_stockNano_2022_04_30_18_55_52/SummaryFiles'
 	QCDDirectory    = '/eos/cms/store/group/phys_exotica/leptonsPlusJets/LQ/LQ2/trees/NTupleAnalyzer_nanoAOD_Full2016QCDNonIsoQuickTest_2019_10_14/SummaryFiles' #Placeholder
 	EMuDirectory    = '/eos/cms/store/group/phys_exotica/leptonsPlusJets/LQ/LQ2/trees/NTupleAnalyzer_nanoAOD_Full2016EMuSwitch_2019_10_14/SummaryFiles' #Placeholder
 else:
@@ -638,14 +638,14 @@ def main():
 		#munu2 = '(MT_uv>70)*(MT_uv<110)*(JetCount>3.5)'
 		# SFs with updated integrated luminosities
 		if year == '2016':
-			[[Rz_uuj,Rz_uuj_err],[Rtt_uuj,Rtt_uuj_err]] = [[1.002,0.015],[1.01,0.013]] #2016 stock NanoAODv7 with 1 btag (uub) 
-			[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = [[1.016,0.017],[1.003,0.014]] #2016 stock NanoAODv7 with 1 btag (uubj) (Rz_uujj = 89% purity, Rtt_uujj = 91% purity)
+			[[Rz_uuj,Rz_uuj_err],[Rtt_uuj,Rtt_uuj_err]] = [[1.007,0.015],[0.966,0.012]] #2016 stock NanoAODv7 with 1 btag (uub) 
+			[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = [[1.022,0.017],[0.958,0.014]] #2016 stock NanoAODv7 with 1 btag (uubj) (Rz_uujj = 89% purity, Rtt_uujj = 91% purity)
 		elif year == '2017':
-			[[Rz_uuj,Rz_uuj_err],[Rtt_uuj,Rtt_uuj_err]]  =  [[1.406,0.019],[1.101,0.011]] #2017 stock NanoAODv7 with 1 btag (uub)
-			[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = [[1.396,0.02],[1.104,0.012]] #2017 stock NanoAODv7 with 1 btag (uubj) (Rz_uujj = 91% purity, Rtt_uujj = 89% purity)
+			[[Rz_uuj,Rz_uuj_err],[Rtt_uuj,Rtt_uuj_err]]  =  [[1.38,0.019],[1.053,0.011]] #2017 stock NanoAODv7 with 1 btag (uub)
+			[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = [[1.37,0.02],[1.056,0.012]] #2017 stock NanoAODv7 with 1 btag (uubj) (Rz_uujj = 91% purity, Rtt_uujj = 89% purity)
 		elif year == '2018':
-			[[Rz_uuj,Rz_uuj_err],[Rtt_uuj,Rtt_uuj_err]]  =  [[1.325,0.016],[1.026,0.009]] #2018 stock NanoAODv7 with 1 btag (uub)
-			[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]]  =  [[1.326,0.017],[1.027,0.01]] #2018 stock NanoAODv7 with 1 btag (uubj) (Rz_uujj = 91% purity, Rtt_uujj = 92% purity)
+			[[Rz_uuj,Rz_uuj_err],[Rtt_uuj,Rtt_uuj_err]]  =  [[1.298,0.015],[0.979,0.009]] #2018 stock NanoAODv7 with 1 btag (uub)
+			[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]]  =  [[1.3,0.017],[0.98,0.01]] #2018 stock NanoAODv7 with 1 btag (uubj) (Rz_uujj = 91% purity, Rtt_uujj = 92% purity)
 		else:
 			[[Rz_uuj,Rz_uuj_err],[Rtt_uuj,Rtt_uuj_err]] = GetMuMuScaleFactors( NormalWeightMuMu+'*'+preselectionmumu_single, NormalDirectory, '(M_uu>80)*(M_uu<100)', '(M_uu>100)*(M_uu<250)',0,0)
 			[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = GetMuMuScaleFactors( NormalWeightMuMu+'*'+preselectionmumu, NormalDirectory, '(M_uu>80)*(M_uu<100)', '(M_uu>100)*(M_uu<250)',0,0)
@@ -1116,7 +1116,7 @@ def main():
 	# This is for scale factor studies
 	# ====================================================================================================================================================== #
 
-	if True:
+	if False:
 		"""
 		mtCR = '*(MT_uv>70)*(MT_uv<110)'
 		mtSR = '*(((MT_uv>50)*(MT_uv<70)+(MT_uv>110))>0)'
