@@ -60,21 +60,34 @@ if "QuickTest" in options.dir:
 alignementcorrswitch = False
 if "AlignmentCorr" in options.dir:
 	alignementcorrswitch = True
+# Will add BDT weights if turned on
+bdtswitch = False
+if "BDT" in options.dir:
+	bdtswitch = True
 
 print 'EMu Switch = ', emuswitch
 print 'NonIso Switch = ', nonisoswitch
 print 'Quick Switch (No Sys) = ', quicktestswitch
 print 'AlignmentCorr Switch = ', alignementcorrswitch
+print 'BDT Switch = ', bdtswitch
 
-#Switches to add BDT discriminants
+channel = 'LQToBMu_pair' # hardcode for now, could add as an in-line argument when multiple signals used
+
 LQToBMu_single_bdtswitch = False
 LQToBMu_pair_bdtswitch = False
 
-if LQToBMu_single_bdtswitch:
+if bdtswitch and 'LQToBMu_single' in channel:
+	LQToBMu_single_bdtswitch = True
 	LQToBMu_single_uub_weights = ["",""]
 
-if LQToBMu_pair_bdtswitch:
-	LQToBMu_pair_uubj_weights = ["/eos/user/g/gmadigan/LQ_MVA_Batch/weights_2021_09_21_175759/TMVAClassification_np1__LQToBMu_pair_uubj__M","_2021_09_21_175759_BDTG.weights.xml"]
+if bdtswitch and 'LQToBMu_pair' in channel:
+	LQToBMu_pair_bdtswitch = True
+	LQToBMu_pair_uubj_weights = ["/eos/user/g/gmadigan/LQ_MVA_Batch/weights_FullRun2_2022_05_14_154330/TMVAClassificationRun2Combined_np1__LQToBMu_pair_uubj__M","_2022_05_14_154330_BDTG.weights.xml"]
+
+# Faster to load Rochester corrections once than per event
+if year == '2016': rc = RoccoR("RoccoR/RoccoR2016.txt")
+elif year == '2017': rc = RoccoR("RoccoR/RoccoR2017.txt")
+elif year == '2018': rc = RoccoR("RoccoR/RoccoR2018UL.txt")
 
 # Get the file, tree, and number of entries
 print name
@@ -1214,11 +1227,6 @@ def GetRochesterSys(_ptCollection, _etaCollection, _phiCollection, _chargeCollec
 	# Sum differences (including statistical uncertainty) in quadrature to get total systematic uncertainty
 	# Add to nominal pT for "up" systematic estimate
 
-	# Corrections are year-based
-	if year == '2016': rc = RoccoR("RoccoR/RoccoR2016.txt")
-	elif year == '2017': rc = RoccoR("RoccoR/RoccoR2017.txt")
-	elif year == '2018': rc = RoccoR("RoccoR/RoccoR2018UL.txt")
-
 	for i in range(len(_ptCollection)):
 		pt = _ptCollection[i]
 		if pt < 200:
@@ -1305,11 +1313,6 @@ def TightHighPtIDMuons(T,_met,variation,isdata):
     # https://twiki.cern.ch/twiki/bin/view/CMS/MuonLegacy2016#Momentum_Resolution
     # https://twiki.cern.ch/twiki/bin/view/CMS/MuonLegacy2017#Momentum_Resolution
     # https://twiki.cern.ch/twiki/bin/view/CMS/MuonLegacy2018#Momentum_Resolution
-
-	# Load Rochester tables for correct data year
-	if year == '2016': rc = RoccoR("RoccoR/RoccoR2016.txt")
-	elif year == '2017': rc = RoccoR("RoccoR/RoccoR2017.txt")
-	elif year == '2018': rc = RoccoR("RoccoR/RoccoR2018UL.txt")
 
 	if isdata:
 		# Correct muon pT scale with Rochester corrections if pT < 200 GeV
