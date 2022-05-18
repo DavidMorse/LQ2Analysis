@@ -1971,7 +1971,7 @@ def compareMatching(mus,matchedMus,jets,matchedJets):
 	else:
 		return 0
 
-def calculateBDTdiscriminant(reader, classifierTag, _bdtvarnames, _Muu, _Muujj, _Muujj1, _Muujj2, _stuujj, _ptmet, _deepJetj1, _deepJetj2, _ptmu1, _ptmu2, _ptj1,_ptj2, _DRdimuj1):
+def calculateBDTdiscriminant(reader, classifierTag, _bdtvarnames, _Muu, _Muujj, _Muujj1, _Muujj2, _stuujj, _ptmet, _ptmu1, _ptmu2, _ptj1,_ptj2, _DRdimuj1):
 
 	if 'M_uu' in _bdtvarnames: _bdtvarnames['M_uu'][0] = _Muu
 	if 'M_uujj' in _bdtvarnames: _bdtvarnames['M_uujj'][0] = _Muujj 
@@ -1979,8 +1979,6 @@ def calculateBDTdiscriminant(reader, classifierTag, _bdtvarnames, _Muu, _Muujj, 
 	if 'M_uujj2' in _bdtvarnames: _bdtvarnames['M_uujj2'][0] = _Muujj2
 	if 'St_uujj' in _bdtvarnames: _bdtvarnames['St_uujj'][0] = _stuujj
 	if 'Pt_miss' in _bdtvarnames: _bdtvarnames['Pt_miss'][0] = _ptmet
-	if 'DeepJet_jet1' in _bdtvarnames: _bdtvarnames['DeepJet_jet1'][0] = _deepJetj1
-	if 'DeepJet_jet2' in _bdtvarnames: _bdtvarnames['DeepJet_jet2'][0] = _deepJetj2
 	if 'Pt_muon1' in _bdtvarnames: _bdtvarnames['Pt_muon1'][0] = _ptmu1
 	if 'Pt_muon2' in _bdtvarnames: _bdtvarnames['Pt_muon2'][0] = _ptmu2
 	if 'Pt_jet1' in _bdtvarnames: _bdtvarnames['Pt_jet1'][0] = _ptj1
@@ -2006,7 +2004,7 @@ if LQToBMu_single_bdtswitch:
 	#---Single prod. LQ->bu with uub selection BDT
 	reader_LQToBMu_single_uub = TMVA.Reader("!Color")
 	# the order of the variables matters, need to be the same as when training
-	_bdtvars_uub = ['M_uu', 'M_uujj', 'M_uujj1', 'M_uujj2', 'St_uujj', 'Pt_miss', 'DeepJet_jet1', 'DeepJet_jet2', 'Pt_muon1', 'Pt_muon2', 'Pt_jet1', 'Pt_jet2', 'DR_dimuonjet1']
+	_bdtvars_uub = ['M_uu', 'M_uujj', 'M_uujj1', 'M_uujj2', 'St_uujj', 'Pt_miss', 'Pt_muon1', 'Pt_muon2', 'Pt_jet1', 'Pt_jet2', 'DR_dimuonjet1']
 
 	_bdtvarnames_uub = {}
 	for vth in _bdtvars_uub:
@@ -2021,7 +2019,7 @@ if LQToBMu_pair_bdtswitch:
 	#---Pair prod. LQ->bu with uubj selection BDT
 	reader_LQToBMu_pair_uubj = TMVA.Reader("!Color")
 	# the order of the variables matters, need to be the same as when training
-	_bdtvars_uubj = ['M_uu', 'M_uujj', 'M_uujj1', 'M_uujj2', 'St_uujj', 'Pt_miss', 'DeepJet_jet1', 'DeepJet_jet2', 'Pt_muon1', 'Pt_muon2', 'Pt_jet1', 'Pt_jet2', 'DR_dimuonjet1']
+	_bdtvars_uubj = ['M_uu', 'M_uujj', 'M_uujj1', 'M_uujj2', 'St_uujj', 'Pt_miss', 'Pt_muon1', 'Pt_muon2', 'Pt_jet1', 'Pt_jet2', 'DR_dimuonjet1']
 
 	_bdtvarnames_uubj = {}
 	for vth in _bdtvars_uubj:
@@ -2276,11 +2274,11 @@ def FullKinematicCalculation(T,variation):
 	
 	if LQToBMu_single_bdtswitch:
 		for m in range(len(_lqtobmu_single_uub_bdt_discrims)):
-			_LQuujj_uu_bdt_discrims[m] = calculateBDTdiscriminant(reader_LQToBMu_single_uub, str("BDT_classifier_LQToBMu_single_uub_M"+SignalM[m]), _bdtvarnames_uub, _Muu, _Muujj, _Muujj1, _Muujj2, _stuujj, _ptmet, _deepJetj1, _deepJetj2, _ptmu1, _ptmu2, _ptj1, _ptj2, _DRdimuj1)
+			_LQuujj_uu_bdt_discrims[m] = calculateBDTdiscriminant(reader_LQToBMu_single_uub, str("BDT_classifier_LQToBMu_single_uub_M"+SignalM[m]), _bdtvarnames_uub, _Muu, _Muujj, _Muujj1, _Muujj2, _stuujj, _ptmet, _ptmu1, _ptmu2, _ptj1, _ptj2, _DRdimuj1)
 	
 	if LQToBMu_pair_bdtswitch:
 		for m in range(len(_lqtobmu_pair_uubj_bdt_discrims)):
-			_lqtobmu_pair_uubj_bdt_discrims[m] = calculateBDTdiscriminant(reader_LQToBMu_pair_uubj, str("BDT_classifier_LQToBMu_pair_uubj_M"+SignalM[m]), _bdtvarnames_uubj, _Muu, _Muujj, _Muujj1, _Muujj2, _stuujj, _ptmet, _deepJetj1, _deepJetj2, _ptmu1, _ptmu2, _ptj1, _ptj2, _DRdimuj1)
+			_lqtobmu_pair_uubj_bdt_discrims[m] = calculateBDTdiscriminant(reader_LQToBMu_pair_uubj, str("BDT_classifier_LQToBMu_pair_uubj_M"+SignalM[m]), _bdtvarnames_uubj, _Muu, _Muujj, _Muujj1, _Muujj2, _stuujj, _ptmet, _ptmu1, _ptmu2, _ptj1, _ptj2, _DRdimuj1)
 	
 	[_LQToBMu_single_uub_BDT_discrim_M300, _LQToBMu_single_uub_BDT_discrim_M400, _LQToBMu_single_uub_BDT_discrim_M500, _LQToBMu_single_uub_BDT_discrim_M600, _LQToBMu_single_uub_BDT_discrim_M700, _LQToBMu_single_uub_BDT_discrim_M800, _LQToBMu_single_uub_BDT_discrim_M900, _LQToBMu_single_uub_BDT_discrim_M1000, _LQToBMu_single_uub_BDT_discrim_M1100, _LQToBMu_single_uub_BDT_discrim_M1200, _LQToBMu_single_uub_BDT_discrim_M1300, _LQToBMu_single_uub_BDT_discrim_M1400, _LQToBMu_single_uub_BDT_discrim_M1500, _LQToBMu_single_uub_BDT_discrim_M1600, _LQToBMu_single_uub_BDT_discrim_M1700, _LQToBMu_single_uub_BDT_discrim_M1800, _LQToBMu_single_uub_BDT_discrim_M1900, _LQToBMu_single_uub_BDT_discrim_M2000, _LQToBMu_single_uub_BDT_discrim_M2100, _LQToBMu_single_uub_BDT_discrim_M2200, _LQToBMu_single_uub_BDT_discrim_M2300, _LQToBMu_single_uub_BDT_discrim_M2400, _LQToBMu_single_uub_BDT_discrim_M2500, _LQToBMu_single_uub_BDT_discrim_M2600, _LQToBMu_single_uub_BDT_discrim_M2700, _LQToBMu_single_uub_BDT_discrim_M2800, _LQToBMu_single_uub_BDT_discrim_M2900, _LQToBMu_single_uub_BDT_discrim_M3000, _LQToBMu_single_uub_BDT_discrim_M3500, _LQToBMu_single_uub_BDT_discrim_M4000] = _lqtobmu_single_uub_bdt_discrims
 
