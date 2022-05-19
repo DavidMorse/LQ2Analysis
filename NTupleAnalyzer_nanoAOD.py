@@ -949,7 +949,11 @@ def getMuonSF(_pt,_eta,_phi):
 	if _eta<=-2.40:_eta=-2.399
 	if _eta>=2.40:_eta=2.399
 	abseta = abs(_eta)
-	recoSFbyP,highPtIdSFbyPt,relTrkIsoSFbyPt,hltSFbyPt = 1.0,1.0,1.0,1.0
+
+	recoSFbyP = [[1.0,0.0],[1.0,0.0],[1.0,0.0],[1.0,0.0],[1.0,0.0],[1.0,0.0],[1.0,0.0],[1.0,0.0]]
+	highPtIdSFbyPt = [[1.0,0.0],[1.0,0.0],[1.0,0.0],[1.0,0.0],[1.0,0.0],[1.0,0.0]]
+	relTrkIsoSFbyPt = [[1.0,0.0],[1.0,0.0],[1.0,0.0],[1.0,0.0],[1.0,0.0],[1.0,0.0]]
+	hltSFbyPt = [[1.0,0.0],[1.0,0.0],[1.0,0.0],[1.0,0.0],[1.0,0.0],[1.0,0.0],[1.0,0.0]]
 
 	########## Muon POG recommended scale factors by year ###############
 	# Check if muon is in eta range, set list of SFs and errors (syst+stat), sorted by pt.
