@@ -82,7 +82,7 @@ if bdtswitch and 'LQToBMu_single' in channel:
 
 if bdtswitch and 'LQToBMu_pair' in channel:
 	LQToBMu_pair_bdtswitch = True
-	LQToBMu_pair_uubj_weights = ["/eos/user/g/gmadigan/LQ_MVA_Batch/weights_FullRun2_2022_05_14_154330/TMVAClassificationRun2Combined_np1__LQToBMu_pair_uubj__M","_2022_05_14_154330_BDTG.weights.xml"]
+	LQToBMu_pair_uubj_weights = ["weights_FullRun2_2022_05_14_154330/TMVAClassificationRun2Combined_np1__LQToBMu_pair_uubj__M","_2022_05_14_154330_BDTG.weights.xml"]
 
 # Faster to load Rochester corrections once than per event
 if year == '2016': rc = RoccoR("RoccoR/RoccoR2016.txt")
