@@ -8,38 +8,59 @@ plt.rcParams['text.usetex'] = True
 ############################################################## Get statistical uncertainties ###############################################################
 ############################################################################################################################################################
 
+# 2016
+
+# Background
 statLowBkg2016 = [0.63,1.1,0.52,0.45,0.356,0.206,0.211,0.044,0.041,0.07,0.033,0.016,0.023,0.034,0.016,0.034,0.01,0.011,0.022,0.0191,0.044,0.0096,0.0119,0.69,0.011,0.068,0.01,0.0067,0.0034,0.0028]
 statHighBkg2016 = [0.63,1.1,0.52,0.45,0.356,0.206,0.211,0.194,0.193,0.201,0.192,0.189,0.19,0.192,0.19,0.192,0.189,0.189,0.19,0.1898,0.194,0.1891,0.1892,0.69,0.189,0.201,0.189,0.1889,0.1889,0.1889]
-statSig2016 = [410,140,44,17,6.6,2.8,1.4,0.91,0.32,0.16,0.08,0.042,0.023,0.012,0.0068,0.0,0.002,0.001,0.001,0.0,0.0002,0.0001,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0]
 eventsBkg2016 = [2.54,8.29,3.53,3.23,1.432,0.826,1.22,0.733,0.596,0.67,0.409,0.202,0.29,0.379,0.223,0.345,0.091,0.104,0.11,0.0405,0.102,0.0726,0.0845,3.05,0.057,0.168,0.054,0.031,0.0075,0.0075]
 
-statLowBkg2016 = [s/n for n,s in zip(eventsBkg2016,statLowBkg2016)]
-statHighBkg2016 = [s/n for n,s in zip(eventsBkg2016,statHighBkg2016)]
+statLowBkg2016 = [100.0*s/n if n > 0 else 0 for n,s in zip(eventsBkg2016,statLowBkg2016)]
+statHighBkg2016 = [100.0*s/n if n > 0 else 0 for n,s in zip(eventsBkg2016,statHighBkg2016)]
 
-statLowSig2016 = [s/n for n,s in zip(eventsSig2016,statLowSig2016)]
-statHighSig2016 = [s/n for n,s in zip(eventsSig2016,statHighSig2016)]
+# Signal
+statLowSig2016 = [410,140,44,17,6.6,2.8,1.4,0.91,0.32,0.16,0.08,0.042,0.023,0.012,0.0068,0.0,0.002,0.001,0.001,0.0,0.0002,0.0001,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0]
+statHighSig2016 = [410,140,44,17,6.6,2.8,1.4,0.91,0.32,0.16,0.08,0.042,0.023,0.012,0.0068,0.0,0.002,0.001,0.001,0.0,0.0002,0.0001,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0]
+eventsSig2016 = [29130,15640,5754,2363,959.4,450.2,231.1,100.94,53.07,27.29,14.088,7.501,4.031,2.169,1.1964,0.65,0.349,0.196,0.109,0.059,0.0325,0.018,0.01,0.0056,0.0,0.0,0.0,0.0,0.0,0.0]
 
+statLowSig2016 = [100.0*s/n if n > 0 else 0 for n,s in zip(eventsSig2016,statLowSig2016)]
+statHighSig2016 = [100.0*s/n if n > 0 else 0 for n,s in zip(eventsSig2016,statHighSig2016)]
+
+# 2017
+
+# Background
 statLowBkg2017 = [0.63,1.1,0.52,0.45,0.356,0.206,0.211,0.044,0.041,0.07,0.033,0.016,0.023,0.034,0.016,0.034,0.01,0.011,0.022,0.0191,0.044,0.0096,0.0119,0.69,0.011,0.068,0.01,0.0067,0.0034,0.0028]
 statHighBkg2017 = [0.63,1.1,0.52,0.45,0.356,0.206,0.211,0.194,0.193,0.201,0.192,0.189,0.19,0.192,0.19,0.192,0.189,0.189,0.19,0.1898,0.194,0.1891,0.1892,0.69,0.189,0.201,0.189,0.1889,0.1889,0.1889]
-statSig2017 = [410,140,44,17,6.6,2.8,1.4,0.91,0.32,0.16,0.08,0.042,0.023,0.012,0.0068,0.0,0.002,0.001,0.001,0.0,0.0002,0.0001,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0]
 eventsBkg2017 = [2.54,8.29,3.53,3.23,1.432,0.826,1.22,0.733,0.596,0.67,0.409,0.202,0.29,0.379,0.223,0.345,0.091,0.104,0.11,0.0405,0.102,0.0726,0.0845,3.05,0.057,0.168,0.054,0.031,0.0075,0.0075]
 
-statLowBkg2017 = [s/n for n,s in zip(eventsBkg2017,statLowBkg2017)]
-statHighBkg2017 = [s/n for n,s in zip(eventsBkg2017,statHighBkg2017)]
+statLowBkg2017 = [100.0*s/n if n > 0 else 0 for n,s in zip(eventsBkg2017,statLowBkg2017)]
+statHighBkg2017 = [100.0*s/n if n > 0 else 0 for n,s in zip(eventsBkg2017,statHighBkg2017)]
 
-statLowSig2017 = [s/n for n,s in zip(eventsSig2017,statLowSig2017)]
-statHighSig2017 = [s/n for n,s in zip(eventsSig2017,statHighSig2017)]
+# Signal
+statLowSig2017 = [410,140,44,17,6.6,2.8,1.4,0.91,0.32,0.16,0.08,0.042,0.023,0.012,0.0068,0.0,0.002,0.001,0.001,0.0,0.0002,0.0001,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0]
+statHighSig2017 = [410,140,44,17,6.6,2.8,1.4,0.91,0.32,0.16,0.08,0.042,0.023,0.012,0.0068,0.0,0.002,0.001,0.001,0.0,0.0002,0.0001,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0]
+eventsSig2017 = [29130,15640,5754,2363,959.4,450.2,231.1,100.94,53.07,27.29,14.088,7.501,4.031,2.169,1.1964,0.65,0.349,0.196,0.109,0.059,0.0325,0.018,0.01,0.0056,0.0,0.0,0.0,0.0,0.0,0.0]
 
+statLowSig2017 = [100.0*s/n if n > 0 else 0 for n,s in zip(eventsSig2017,statLowSig2017)]
+statHighSig2017 = [100.0*s/n if n > 0 else 0 for n,s in zip(eventsSig2017,statHighSig2017)]
+
+# 2018
+
+# Background
 statLowBkg2018 = [0.63,1.1,0.52,0.45,0.356,0.206,0.211,0.044,0.041,0.07,0.033,0.016,0.023,0.034,0.016,0.034,0.01,0.011,0.022,0.0191,0.044,0.0096,0.0119,0.69,0.011,0.068,0.01,0.0067,0.0034,0.0028]
 statHighBkg2018 = [0.63,1.1,0.52,0.45,0.356,0.206,0.211,0.194,0.193,0.201,0.192,0.189,0.19,0.192,0.19,0.192,0.189,0.189,0.19,0.1898,0.194,0.1891,0.1892,0.69,0.189,0.201,0.189,0.1889,0.1889,0.1889]
-statSig2018 = [410,140,44,17,6.6,2.8,1.4,0.91,0.32,0.16,0.08,0.042,0.023,0.012,0.0068,0.0,0.002,0.001,0.001,0.0,0.0002,0.0001,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0]
 eventsBkg2018 = [2.54,8.29,3.53,3.23,1.432,0.826,1.22,0.733,0.596,0.67,0.409,0.202,0.29,0.379,0.223,0.345,0.091,0.104,0.11,0.0405,0.102,0.0726,0.0845,3.05,0.057,0.168,0.054,0.031,0.0075,0.0075]
 
-statLowBkg2018 = [s/n for n,s in zip(eventsBkg2018,statLowBkg2018)]
-statHighBkg2018 = [s/n for n,s in zip(eventsBkg2018,statHighBkg2018)]
+statLowBkg2018 = [100.0*s/n if n > 0 else 0 for n,s in zip(eventsBkg2018,statLowBkg2018)]
+statHighBkg2018 = [100.0*s/n if n > 0 else 0 for n,s in zip(eventsBkg2018,statHighBkg2018)]
 
-statLowSig2018 = [s/n for n,s in zip(eventsSig2018,statLowSig2018)]
-statHighSig2018 = [s/n for n,s in zip(eventsSig2018,statHighSig2018)]
+# Signal
+statLowSig2018 = [410,140,44,17,6.6,2.8,1.4,0.91,0.32,0.16,0.08,0.042,0.023,0.012,0.0068,0.0,0.002,0.001,0.001,0.0,0.0002,0.0001,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0]
+statHighSig2018 = [410,140,44,17,6.6,2.8,1.4,0.91,0.32,0.16,0.08,0.042,0.023,0.012,0.0068,0.0,0.002,0.001,0.001,0.0,0.0002,0.0001,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0]
+eventsSig2018 = [29130,15640,5754,2363,959.4,450.2,231.1,100.94,53.07,27.29,14.088,7.501,4.031,2.169,1.1964,0.65,0.349,0.196,0.109,0.059,0.0325,0.018,0.01,0.0056,0.0,0.0,0.0,0.0,0.0,0.0]
+
+statLowSig2018 = [100.0*s/n if n > 0 else 0 for n,s in zip(eventsSig2018,statLowSig2018)]
+statHighSig2018 = [100.0*s/n if n > 0 else 0 for n,s in zip(eventsSig2018,statHighSig2018)]
 
 ############################################################################################################################################################
 ########################################################################## Setup ###########################################################################
@@ -55,6 +76,7 @@ massValues = [int(m) for m in plotMasses]
 sysVars = ["BTAG","JER","JES","LUMI","MER","MES","MUONHLT","MUONID","MUONISO","MUONRECO","PDF","PU","TT Normalization","TT Shape","VV Shape","Z Normalization","Z Shape","Total"]
 # listed in order as plotted from base to top of bar chart
 sysVarsToPlot = ["Other","MUONRECO","PU","Z Shape"]
+sysVarsToPlot += ["Stat High", "Stat Low"]
 # When plotting, these systematic variations are grouped in one category. Makes plot cleaner.
 otherSys = [sys for sys in sysVars if sys not in sysVarsToPlot and sys != "Total"]
 
@@ -63,6 +85,7 @@ nColors = len(sysVars)-len(otherSys) # all variations (18) - other variations (1
 colors_2016 = plt.cm.BuPu(np.linspace(0.25, 1, nColors))
 colors_2017 = plt.cm.OrRd(np.linspace(0.25, 1, nColors))
 colors_2018 = plt.cm.YlGn(np.linspace(0.25, 1, nColors))
+colors_stat = ["red","cyan"]
 
 colorsHist = {"2016":"blue", "2017": "red", "2018": "limegreen"}
 
@@ -120,7 +143,7 @@ sysDict = {year:{mass:{sysVar:{} for sysVar in sysVars} for mass in masses} for 
 # Just run once. Parses tex file for systematics and loads into a JSON
 # Can turn off after first run as JSON file will be loaded when needed for plotting
 
-if True:
+if False:
 
     # Open tex file with tables of systematics and store each line as list entry. Makes it easier to parse
     systematics = []
@@ -156,21 +179,14 @@ if True:
 
 
     for i,mass in enumerate(masses):
-        sysDict["2016"][mass]["Stat High"] = {"signal": statHighSig2016[i]}
-        sysDict["2017"][mass]["Stat High"] = {"signal": statHighSig2017[i]}
-        sysDict["2018"][mass]["Stat High"] = {"signal": statHighSig2018[i]}
 
-        sysDict["2016"][mass]["Stat High"] = {"background": statHighBkg2016[i]}
-        sysDict["2017"][mass]["Stat High"] = {"background": statHighBkg2017[i]}
-        sysDict["2018"][mass]["Stat High"] = {"background": statHighBkg2018[i]}
+        sysDict["2016"][mass]["Stat Low"] = {"signal": statLowSig2016[i], "background": statLowBkg2016[i]}
+        sysDict["2017"][mass]["Stat Low"] = {"signal": statLowSig2017[i], "background": statLowBkg2017[i]}
+        sysDict["2018"][mass]["Stat Low"] = {"signal": statLowSig2018[i], "background": statLowBkg2018[i]}
 
-        sysDict["2016"][mass]["Stat Low"] = {"signal": statLowSig2016[i]}
-        sysDict["2017"][mass]["Stat Low"] = {"signal": statLowSig2017[i]}
-        sysDict["2018"][mass]["Stat Low"] = {"signal": statLowSig2018[i]}
-
-        sysDict["2016"][mass]["Stat Low"] = {"background": statLowBkg2016[i]}
-        sysDict["2017"][mass]["Stat Low"] = {"background": statLowBkg2017[i]}
-        sysDict["2018"][mass]["Stat Low"] = {"background": statLowBkg2018[i]}
+        sysDict["2016"][mass]["Stat High"] = {"signal": statHighSig2016[i], "background": statHighBkg2016[i]}
+        sysDict["2017"][mass]["Stat High"] = {"signal": statHighSig2017[i], "background": statHighBkg2017[i]}
+        sysDict["2018"][mass]["Stat High"] = {"signal": statHighSig2018[i], "background": statHighBkg2018[i]}
 
     with open("sysTables.json",'w') as sysJson:
         json.dump(sysDict, sysJson, indent=4)
@@ -209,32 +225,46 @@ for year in sysDict:
 ############################################################################################################################################################
 
 # Plots relative uncertainty of each source for a specified year and mc type (sig/bkg) accross the LQ mass range
-def PlotBarChartYear(year,mcType,sysVars,barWidth,colors,xaxismax,yaxismax):
+def PlotBarChartYear(year,mcType,sysVars,barWidth,colors,colorsStat,xaxismax,yaxismax):
     print "Plotting bar chart of "+year+" "+mcType+" systematics..."
+
+    binning = np.arange(50,6050,100)
 
     fig = plt.figure()
     ax = fig.add_subplot(1, 1, 1)
 
     y_offset = np.zeros(len(massValues))
     for i,sys in enumerate(sysVars):
-        relSys = [s*s/t if t > 0 else 0 for s,t in zip(sysDataDict[year][sys][mcType],sysDataDict[year]["Total"][mcType])]
-        ax.bar(massValues, relSys, width=barWidth, bottom=y_offset, align="center", color=colors[i], label=sysVarLabel[sys])
-        y_offset += relSys
+        if "Stat" not in sys:
+            relSys = [s*s/t if t > 0 else 0 for s,t in zip(sysDataDict[year][sys][mcType],sysDataDict[year]["Total"][mcType])]
+            ax.bar(massValues, relSys, width=barWidth, bottom=y_offset, align="center", color=colors[i], label=sysVarLabel[sys])
+            y_offset += relSys
+    
+    for sys in sysVars:
+        if "Stat" in sys:
+            sign = "+"
+            color = "red"
+            if "Low" in sys:
+                sign = r"$-$"
+                color = "cyan"
+            stat = sysDataDict[year][sys][mcType]
+            ax.hist(massValues, bins=binning, weights=stat, color=color, histtype="step", label=sign+"stat", ls="--")
+
 
     # Plotting options
     ax.set_ylabel(r"$\sigma^2/\sigma_{\rm total}$", fontsize=14)
     ax.set_xlabel("LQ Mass [GeV]", fontsize=14)
 
-    ax.xaxis.set_major_locator(MultipleLocator(500))
-    ax.xaxis.set_major_formatter(FormatStrFormatter('%d'))
-    ax.xaxis.set_minor_locator(MultipleLocator(100))
-
-
-    if yaxismax < 1: ticklabstrform = '%.1f'
-    else: ticklabstrform = '%d'
-    ax.yaxis.set_major_locator(MultipleLocator(yaxismax*0.2))
-    ax.yaxis.set_major_formatter(FormatStrFormatter(ticklabstrform))
-    ax.yaxis.set_minor_locator(MultipleLocator(yaxismax*0.05))
+    #ax.xaxis.set_major_locator(MultipleLocator(500))
+    #ax.xaxis.set_major_formatter(FormatStrFormatter('%d'))
+    #ax.xaxis.set_minor_locator(MultipleLocator(100))
+    #
+    #
+    #if yaxismax < 1: ticklabstrform = '%.1f'
+    #else: ticklabstrform = '%d'
+    #ax.yaxis.set_major_locator(MultipleLocator(yaxismax*0.2))
+    #ax.yaxis.set_major_formatter(FormatStrFormatter(ticklabstrform))
+    #ax.yaxis.set_minor_locator(MultipleLocator(yaxismax*0.05))
 
     ax.tick_params(which='major',direction='in', length=10)
     ax.tick_params(which='minor',direction='in', length=5)
@@ -303,10 +333,10 @@ def PlotHistVar(sysVar,mcType,colors,xaxismax,yaxismax):
 ####################################################################### Plotting here ######################################################################
 ############################################################################################################################################################
 
-PlotBarChartYear("2016","background",sysVarsToPlot,90,colors_2016,6000,50)
-PlotBarChartYear("2017","background",sysVarsToPlot,90,colors_2017,6000,25)
-PlotBarChartYear("2018","background",sysVarsToPlot,90,colors_2018,6000,40)
+PlotBarChartYear("2016","background",sysVarsToPlot,90,colors_2016,colors_stat,6000,1000)
+#PlotBarChartYear("2017","background",sysVarsToPlot,90,colors_2017,6000,25)
+#PlotBarChartYear("2018","background",sysVarsToPlot,90,colors_2018,6000,40)
 
-PlotHistVar("MUONRECO","background",colorsHist,6000,20)
-PlotHistVar("PU","background",colorsHist,6000,30)
-PlotHistVar("Z Shape","background",colorsHist,6000,30)
+#PlotHistVar("MUONRECO","background",colorsHist,6000,20)
+#PlotHistVar("PU","background",colorsHist,6000,30)
+#PlotHistVar("Z Shape","background",colorsHist,6000,30)
