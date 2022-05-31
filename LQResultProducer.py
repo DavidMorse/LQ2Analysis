@@ -638,14 +638,14 @@ def main():
 		#munu2 = '(MT_uv>70)*(MT_uv<110)*(JetCount>3.5)'
 		# SFs with updated integrated luminosities
 		if year == '2016':
-			[[Rz_uuj,Rz_uuj_err],[Rtt_uuj,Rtt_uuj_err]] = [[1.007,0.015],[0.966,0.012]] #2016 stock NanoAODv7 with 1 btag (uub) 
-			[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = [[1.022,0.017],[0.958,0.014]] #2016 stock NanoAODv7 with 1 btag (uubj) (Rz_uujj = 89% purity, Rtt_uujj = 91% purity)
+			[[Rz_uuj,Rz_uuj_err],[Rtt_uuj,Rtt_uuj_err]] = [[1.005,0.015],[0.968,0.013]] #2016 stock NanoAODv7 with 1 btag (uub) 
+			[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = [[1.02,0.017],[0.961,0.014]] #2016 stock NanoAODv7 with 1 btag (uubj) (Rz_uujj = 89% purity, Rtt_uujj = 91% purity)
 		elif year == '2017':
-			[[Rz_uuj,Rz_uuj_err],[Rtt_uuj,Rtt_uuj_err]]  =  [[1.38,0.019],[1.053,0.011]] #2017 stock NanoAODv7 with 1 btag (uub)
-			[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = [[1.37,0.02],[1.056,0.012]] #2017 stock NanoAODv7 with 1 btag (uubj) (Rz_uujj = 91% purity, Rtt_uujj = 89% purity)
+			[[Rz_uuj,Rz_uuj_err],[Rtt_uuj,Rtt_uuj_err]]  =  [[1.382,0.019],[1.057,0.011]] #2017 stock NanoAODv7 with 1 btag (uub)
+			[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = [[1.371,0.021],[1.061,0.012]] #2017 stock NanoAODv7 with 1 btag (uubj) (Rz_uujj = 91% purity, Rtt_uujj = 89% purity)
 		elif year == '2018':
-			[[Rz_uuj,Rz_uuj_err],[Rtt_uuj,Rtt_uuj_err]]  =  [[1.298,0.015],[0.979,0.009]] #2018 stock NanoAODv7 with 1 btag (uub)
-			[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]]  =  [[1.3,0.017],[0.98,0.01]] #2018 stock NanoAODv7 with 1 btag (uubj) (Rz_uujj = 91% purity, Rtt_uujj = 92% purity)
+			[[Rz_uuj,Rz_uuj_err],[Rtt_uuj,Rtt_uuj_err]]  =  [[1.3,0.015],[0.979,0.009]] #2018 stock NanoAODv7 with 1 btag (uub)
+			[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]]  =  [[1.302,0.017],[0.981,0.01]] #2018 stock NanoAODv7 with 1 btag (uubj) (Rz_uujj = 91% purity, Rtt_uujj = 92% purity)
 		else:
 			[[Rz_uuj,Rz_uuj_err],[Rtt_uuj,Rtt_uuj_err]] = GetMuMuScaleFactors( NormalWeightMuMu+'*'+preselectionmumu_single, NormalDirectory, '(M_uu>80)*(M_uu<100)', '(M_uu>100)*(M_uu<250)',0,0)
 			[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = GetMuMuScaleFactors( NormalWeightMuMu+'*'+preselectionmumu, NormalDirectory, '(M_uu>80)*(M_uu<100)', '(M_uu>100)*(M_uu<250)',0,0)
@@ -732,6 +732,38 @@ def main():
 			MakeBasicPlotEMuMuMu("Pt_muon2","p_{T}(#mu_{2}) [GeV]",ptbinning2,preselectionmumu,NormalWeightMuMu,NormalDirectory,'finalTTBarDataDriven_EMuMuMu'+str(lqmass),'uujj',Rz_uujj, Rz_uujj_emu,Rtt_uujj_emu,MuMuOptCutFile,version_name,lqmass)
 		"""	
 		# UUJJ plots at preselection, Note that putting 'TTBarDataDriven' in the name turns on the use of data-driven ttbar e-mu sample in place of MC
+		
+		# Plot uubj BDT scores
+		MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M300","BDT score (M_{\rm LQ} = 300 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
+		MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M400","BDT score (M_{\rm LQ} = 400 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
+		MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M500","BDT score (M_{\rm LQ} = 500 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
+		MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M600","BDT score (M_{\rm LQ} = 600 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
+		MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M700","BDT score (M_{\rm LQ} = 700 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
+		MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M800","BDT score (M_{\rm LQ} = 800 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
+		MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M900","BDT score (M_{\rm LQ} = 900 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
+		MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M1000","BDT score (M_{\rm LQ} = 1000 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
+		MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M1100","BDT score (M_{\rm LQ} = 1100 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
+		MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M1200","BDT score (M_{\rm LQ} = 1200 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
+		MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M1300","BDT score (M_{\rm LQ} = 1300 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
+		MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M1400","BDT score (M_{\rm LQ} = 1400 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
+		MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M1500","BDT score (M_{\rm LQ} = 1500 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
+		MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M1600","BDT score (M_{\rm LQ} = 1600 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
+		MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M1700","BDT score (M_{\rm LQ} = 1700 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
+		MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M1800","BDT score (M_{\rm LQ} = 1800 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
+		MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M1900","BDT score (M_{\rm LQ} = 1900 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
+		MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M2000","BDT score (M_{\rm LQ} = 2000 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
+		MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M2100","BDT score (M_{\rm LQ} = 2100 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
+		MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M2200","BDT score (M_{\rm LQ} = 2200 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
+		MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M2300","BDT score (M_{\rm LQ} = 2300 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
+		MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M2400","BDT score (M_{\rm LQ} = 2400 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
+		MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M2500","BDT score (M_{\rm LQ} = 2500 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
+		MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M2600","BDT score (M_{\rm LQ} = 2600 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
+		MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M2700","BDT score (M_{\rm LQ} = 2700 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
+		MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M2800","BDT score (M_{\rm LQ} = 2800 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
+		MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M2900","BDT score (M_{\rm LQ} = 2900 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
+		MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M3000","BDT score (M_{\rm LQ} = 3000 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
+		MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M3500","BDT score (M_{\rm LQ} = 3500 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
+		MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M4000","BDT score (M_{\rm LQ} = 4000 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
 		
 		#preselectionmumu += '*(M_uu>50)*(M_uu<80)'#fixme this is for control region checks
 		MakeBasicPlot("DeepJet_jet1","Jet1 DeepJet score",bjetbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
