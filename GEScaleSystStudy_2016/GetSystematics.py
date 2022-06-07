@@ -201,22 +201,33 @@ fileTypes = bkgTypes+sigTypes
 
 lqMasses = ['300','400','500','600','700','800','900','1000','1100','1200','1300','1400','1500','1600','1700','1800','1900','2100','2200','2300','2400','2500','2600','2700','2800','2900','3000','3500','4000']
 
-for icopy in loop:
-	for ftype in fileTypes:
-		name = ftype + "_GEcopy" + str(icopy)
+if False:
+	for icopy in loop:
+		for ftype in fileTypes:
+			name = ftype + "_GEcopy" + str(icopy)
 
-		# Open all ROOT files for GE copy "copy"
-		# Tree names look like, e.g., f_ZJets_GEcopy0
-		f = "f_" + name
-		print 'Opening ', directories[str(icopy)] + '/' + ftype + '.root', ' as ', f
-		exec(f + " = TFile.Open(\"" + directories[str(icopy)] + "/" + ftype + ".root\",\"READ\")")
+			# Open all ROOT files for GE copy "copy"
+			# Tree names look like, e.g., f_ZJets_GEcopy0
+			f = "f_" + name
+			print 'Opening ', directories[str(icopy)] + '/' + ftype + '.root', ' as ', f
+			exec(f + " = TFile.Open(\"" + directories[str(icopy)] + "/" + ftype + ".root\",\"READ\")")
 
-		# Get PhysicalVariables tree from each file of GE copy "copy"
-		# Tree names look like, e.g., t_ZJets_GEcopy0
-		t = "t_" + name
-		exec(t + " = " + f + ".Get(\"PhysicalVariables\")")
+			# Get PhysicalVariables tree from each file of GE copy "copy"
+			# Tree names look like, e.g., t_ZJets_GEcopy0
+			t = "t_" + name
+			exec(t + " = " + f + ".Get(\"PhysicalVariables\")")
 
-def GetGEScaleSysPresel(selection,weight,bkgnormsf,finalsel,json_name):
+def QuickIntegral(tree,selection,scalefac):
+
+	# print selection+'*'+str(scalefac)
+	h = TH1D('h','h',1,-1,3)
+	h.Sumw2()
+	tree.Project('h','1.0',selection+'*'+str(scalefac))
+	I = h.GetBinContent(1)
+	E = h.GetBinError(1)
+	return [I,E]
+
+def GetGEScaleSysPresel(selection,weight,bkgnormsf,json_name):
 
 	if json_name is '':
 		print 'Using selection:'
@@ -255,10 +266,17 @@ def GetGEScaleSysPresel(selection,weight,bkgnormsf,finalsel,json_name):
 
 	for bkg in bkgTypes:
 		outSysPresel[bkg] = {}
+
 		bkgNom = 0.0
 		bkgGEcopyMean = 0.0
-		totalBkgSys = 0.0
+
+		totBkgNom = 0.0
+		totBkgGEcopyMean = 0.0
+		totBkgDiff = 0.0
+		totBkgSys = 0.0
+
 		Ncopies = 0
+
 		for icopy in loop:
 			if icopy is 50:
 				bkgNom += json_data[str(icopy)][bkg][0]
@@ -268,7 +286,7 @@ def GetGEScaleSysPresel(selection,weight,bkgnormsf,finalsel,json_name):
 	
 		bkgGEcopyMean *= 0.02
 		bkgDiff = bkgNom-bkgGEcopyMean
-		bkgSyst = 100.0*abs(bkgDiff)/bkgNom
+		bkgSys = 100.0*abs(bkgDiff)/bkgNom
 
 		outSysPresel[bkg] = {"nominal events": bkgNom, "mean events": bkgGEcopyMean, "difference": bkgDiff, "systematic": bkgSys}
 		
@@ -276,16 +294,19 @@ def GetGEScaleSysPresel(selection,weight,bkgnormsf,finalsel,json_name):
 		totBkgGEcopyMean += bkgGEcopyMean
 		totBkgDiff += bkgDiff
 
-	totBkgSyst = 100.0*abs(totBkgDiff)/totBkgNom
+	totBkgSys = 100.0*abs(totBkgDiff)/totBkgNom
 	outSysPresel["Background"] = {"nominal events": totBkgNom, "mean events": totBkgGEcopyMean, "difference": totBkgDiff, "systematic": totBkgSys}
 
 	# signals
 
 	for sig in sigTypes:
 		outSysPresel[sig] = {}
+
 		sigNom = 0.0
 		sigGEcopyMean = 0.0
+
 		Ncopies = 0
+
 		for icopy in loop:
 			if icopy is 50:
 				sigNom += json_data[str(icopy)][sig][0]
@@ -299,9 +320,9 @@ def GetGEScaleSysPresel(selection,weight,bkgnormsf,finalsel,json_name):
 
 		outSysPresel[sig] = {"nominal events": sigNom, "mean events": sigGEcopyMean, "difference": sigDiff, "systematic": sigSys}
 
-	results_name = 'GEScaleSysPresel.txt'
+	results_name = 'GEScaleSysPresel.json'
 
-	with open(results_name) as outjson:
+	with open(results_name,'w') as outjson:
 		json.dump(outSysPresel,outjson,indent=4)
 
-GetGEScaleSysPresel(preselection,eventWeights,bkgSFs,"")
+GetGEScaleSysPresel(preselection,eventWeights,bkgSFs,"EventCountsPresel.json")
