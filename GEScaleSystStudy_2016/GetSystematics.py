@@ -85,11 +85,11 @@ preselection = '((Pt_muon1>53)*(Pt_muon2>53)*(Pt_jet1>50)*(Pt_jet2>50)*(St_uujj>
 ######################################
 
 bkgSFs = {
-        "R_tt_err": 0.013859999999999604, 
-        "R_z": 1.015770098706867, 
-        "R_tt": 0.9538052042826998, 
-        "R_z_err": 0.016999999999999477
-    } 
+		"R_tt_err": 0.013859999999999604, 
+		"R_z": 1.015770098706867, 
+		"R_tt": 0.9538052042826998, 
+		"R_z_err": 0.016999999999999477
+	} 
 
 ###########################################
 ###  Final selection cuts defined here  ###
@@ -246,62 +246,62 @@ def GetGEScaleSysPresel(selection,weight,bkgnormsf,finalsel,json_name):
 
 	with open(json_name, 'r') as infile:
 		json_data =	json.load(infile)
+		
+	print 'Doing calculations...\n'
 
-    print 'Doing calculations...\n'
+	outSysPresel = {}
 
-    outSysPresel = {}
+	# background
 
-    # background
-
-    for bkg in bkgTypes:
-        outSysPresel[bkg] = {}
-        bkgNom = 0.0
-	    bkgGEcopyMean = 0.0
-        totalBkgSys = 0.0
-        Ncopies = 0
-	    for icopy in loop:
+	for bkg in bkgTypes:
+		outSysPresel[bkg] = {}
+		bkgNom = 0.0
+		bkgGEcopyMean = 0.0
+		totalBkgSys = 0.0
+		Ncopies = 0
+		for icopy in loop:
 			if icopy is 50:
-				bkgNom += outSysPresel[str(icopy)][bkg][0]
+				bkgNom += json_data[str(icopy)][bkg][0]
 			else:
 				Ncopies += 1
-				bkgGEcopyMean += outSysPresel[str(icopy)][bkg][0]
+				bkgGEcopyMean += json_data[str(icopy)][bkg][0]
 	
-	    bkgGEcopyMean *= 0.02
-	    bkgDiff = bkgNom-bkgGEcopyMean
-	    bkgSyst = 100.0*abs(bkgDiff)/bkgNom
+		bkgGEcopyMean *= 0.02
+		bkgDiff = bkgNom-bkgGEcopyMean
+		bkgSyst = 100.0*abs(bkgDiff)/bkgNom
 
-        outSysPresel[bkg] = {"nominal events": bkgNom, "mean events": bkgGEcopyMean, "difference": bkgDiff, "systematic": bkgSys}
-        
-        totBkgNom += bkgNom
-        totBkgGEcopyMean += bkgGEcopyMean
-        totBkgDiff += bkgDiff
+		outSysPresel[bkg] = {"nominal events": bkgNom, "mean events": bkgGEcopyMean, "difference": bkgDiff, "systematic": bkgSys}
+		
+		totBkgNom += bkgNom
+		totBkgGEcopyMean += bkgGEcopyMean
+		totBkgDiff += bkgDiff
 
-    totBkgSyst = 100.0*abs(totBkgDiff)/totBkgNom
-    outSysPresel["Background"] = {"nominal events": totBkgNom, "mean events": totBkgGEcopyMean, "difference": totBkgDiff, "systematic": totBkgSys}
+	totBkgSyst = 100.0*abs(totBkgDiff)/totBkgNom
+	outSysPresel["Background"] = {"nominal events": totBkgNom, "mean events": totBkgGEcopyMean, "difference": totBkgDiff, "systematic": totBkgSys}
 
-    # signals
+	# signals
 
-    for sig in sigTypes:
-        outSysPresel[sig] = {}
-        sigNom = 0.0
-	    sigGEcopyMean = 0.0
-	    Ncopies = 0
-	    for icopy in loop:
+	for sig in sigTypes:
+		outSysPresel[sig] = {}
+		sigNom = 0.0
+		sigGEcopyMean = 0.0
+		Ncopies = 0
+		for icopy in loop:
 			if icopy is 50:
-				sigNom += outSysPresel[str(icopy)][sig][0]
+				sigNom += json_data[str(icopy)][sig][0]
 			else:
 				Ncopies += 1
-				sigGEcopyMean += outSysPresel[str(icopy)][sig][0]
+				sigGEcopyMean += json_data[str(icopy)][sig][0]
 
-	    sigGEcopyMean *= 0.02
-	    sigDiff = abs(sigNom-sigGEcopyMean)
-	    sigSys = 100.0*sigDiff/sigNom
+		sigGEcopyMean *= 0.02
+		sigDiff = abs(sigNom-sigGEcopyMean)
+		sigSys = 100.0*sigDiff/sigNom
 
-        outSysPresel[sig] = {"nominal events": sigNom, "mean events": sigGEcopyMean, "difference": sigDiff, "systematic": sigSys}
+		outSysPresel[sig] = {"nominal events": sigNom, "mean events": sigGEcopyMean, "difference": sigDiff, "systematic": sigSys}
 
 	results_name = 'GEScaleSysPresel.txt'
 
-    with open(results_name) as outjson:
-        json.dump(outSysPresel,outjson,indent=4)
+	with open(results_name) as outjson:
+		json.dump(outSysPresel,outjson,indent=4)
 
 GetGEScaleSysPresel(preselection,eventWeights,bkgSFs,"")
