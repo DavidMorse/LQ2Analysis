@@ -5645,10 +5645,10 @@ def MakeBasicPlot(recovariable,xlabel,presentationbinning,selection,weight,FileD
 				exec('_stree = t_LQ'+channel+str(BDTmass))
 				hs_rec_Signal=CreateHisto('hs_rec_Signal',sig1name,_stree,recovariable,presentationbinning,selection+'*'+weight,SignalStyle,Label)
 			else:
-				sig1name = 'm_{LQ} = 300 GeV, '+betamarker
-				sig2name = 'm_{LQ} = 900 GeV, '+betamarker
-				hs_rec_Signal=CreateHisto('hs_rec_Signal',sig1name,t_LQuujj300,recovariable,presentationbinning,selection+'*'+weight,SignalStyle,Label)
-				hs_rec_Signal2=CreateHisto('hs_rec_Signal2',sig2name,t_LQuujj900,recovariable,presentationbinning,selection+'*'+weight,SignalStyle2,Label)
+				sig1name = 'm_{LQ} = 1500 GeV, '+betamarker
+				sig2name = 'm_{LQ} = 2000 GeV, '+betamarker
+				hs_rec_Signal=CreateHisto('hs_rec_Signal',sig1name,t_LQuujj1500,recovariable,presentationbinning,selection+'*'+weight,SignalStyle,Label)
+				hs_rec_Signal2=CreateHisto('hs_rec_Signal2',sig2name,t_LQuujj2000,recovariable,presentationbinning,selection+'*'+weight,SignalStyle2,Label)
 				print 'signal1,',sig1name,':',hs_rec_Signal.Integral()
 				print 'signal2,',sig2name,':',hs_rec_Signal2.Integral()
 		if 'final' in tagname:
