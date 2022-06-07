@@ -269,7 +269,7 @@ def PlotBarChartYear(year,mcType,sysVars,barWidth,colors,colorsStat,xaxismax,yax
     ax.tick_params(which='major',direction='in', length=10)
     ax.tick_params(which='minor',direction='in', length=5)
 
-    setLog = False
+    setLog = True
     if setLog:
         ax.set_ylim([1, 1000])
         ax.set_yscale('log')
@@ -285,7 +285,7 @@ def PlotBarChartYear(year,mcType,sysVars,barWidth,colors,colorsStat,xaxismax,yax
 
 
 # Plots relative uncertainty of each year for a specified systematic source and mc type (sig/bkg) accross the LQ mass range
-def PlotHistVar(sysVar,mcType,colors,xaxismax,yaxismax):
+def PlotHistVar(sysVar,mcType,colors,colorsStat,xaxismax,yaxismax):
     print "Plotting histogram of "+sysVar+" "+mcType+" systematics..."
 
     binning = np.arange(50,6050,100)
@@ -295,8 +295,13 @@ def PlotHistVar(sysVar,mcType,colors,xaxismax,yaxismax):
 
     for i,year in enumerate(years):
         relSys = [s*s/t if t >0 else 0 for s,t in zip(sysDataDict[year][sysVar][mcType],sysDataDict[year]["Total"][mcType])]
-        #ax.hist(massValues, bins=binning, weights=relSys, color=colors[year], histtype="step", label=year+" sys")
-        ax.hist(massValues, bins=binning, weights=relSys, color=colors[year], histtype="step", label=year+" stat", ls="--")
+        ax.hist(massValues, bins=binning, weights=relSys, color=colors[year], histtype="step", label=year+" stat", ls="-")
+
+        statHigh = sysDataDict[year]["Stat High"][mcType]
+        ax.hist(massValues, bins=binning, weights=statHigh, color=colorsStat[0], histtype="step", label="+ "+year+" stat", ls="--")
+        statLow = sysDataDict[year]["Stat Low"][mcType]
+        ax.hist(massValues, bins=binning, weights=statLow, color=colorsStat[1], histtype="step", label="- "+year+" stat", ls="--")
+
 
     # Plotting options
     ax.set_ylabel(r"$\sigma^2/\sigma_{\rm total}$", fontsize=14)
@@ -315,7 +320,7 @@ def PlotHistVar(sysVar,mcType,colors,xaxismax,yaxismax):
     ax.tick_params(which='major',direction='in', length=10)
     ax.tick_params(which='minor',direction='in', length=5)
 
-    setLog = False
+    setLog = True
     if setLog:
         ax.set_ylim([1, 1000])
         ax.set_yscale('log')
@@ -333,10 +338,10 @@ def PlotHistVar(sysVar,mcType,colors,xaxismax,yaxismax):
 ####################################################################### Plotting here ######################################################################
 ############################################################################################################################################################
 
-PlotBarChartYear("2016","background",sysVarsToPlot,90,colors_2016,colors_stat,6000,1000)
-#PlotBarChartYear("2017","background",sysVarsToPlot,90,colors_2017,6000,25)
-#PlotBarChartYear("2018","background",sysVarsToPlot,90,colors_2018,6000,40)
+#PlotBarChartYear("2016","background",sysVarsToPlot,90,colors_2016,colors_stat,6000,1000)
+#PlotBarChartYear("2017","background",sysVarsToPlot,90,colors_2017,colors_stat,6000,25)
+#PlotBarChartYear("2018","background",sysVarsToPlot,90,colors_2018,colors_stat,6000,40)
 
-#PlotHistVar("MUONRECO","background",colorsHist,6000,20)
-#PlotHistVar("PU","background",colorsHist,6000,30)
-#PlotHistVar("Z Shape","background",colorsHist,6000,30)
+PlotHistVar("MUONRECO","background",colorsHist,colors_stat,6000,20)
+#PlotHistVar("PU","background",colorsHist,colors_stat,6000,30)
+#PlotHistVar("Z Shape","background",colorsHist,colors_stat,6000,30)
