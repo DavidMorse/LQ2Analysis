@@ -1107,7 +1107,7 @@ def main():
 		if optimizeBDT:
 			cutFileBDT = 'Results_'+version_name+'/Log_LQuujj_BDT_Cuts.txt'
 			BDTbins = [0.9,1.0,0.001]
-			OptimizeCutsBDT(BDTbins,preselectionmumu,NormalWeightMuMu,version_name,scaleFactors,cutFileBDT,'uujj')
+			OptimizeCutsBDT(BDTbins,preselectionmumu,NormalWeightMuMu,version_name,scaleFactors,'','uujj')
 		elif not doLongLived :
 			MuMuOptTestCutFile = 'Results_'+version_name+'/OptLQ_uujjCuts_Smoothed_pol2cutoff.txt'
 			variableSpace = ['M_uu:25:100:1000','St_uujj:100:300:2500','M_uujj2:25:100:1000']
@@ -6261,13 +6261,16 @@ def MakeBasicPlot(recovariable,xlabel,presentationbinning,selection,weight,FileD
 		l.DrawLine(pad1.GetUxmax(), pad1.GetUymin(), pad1.GetUxmax(), pad1.GetUymax())
 	print 'Saving as: ',
 	if isDisplaced: channel='displaced'
+	os.system('mkdir Results_'+version_name+'/Plots')
 	if 'final' not in tagname:
-		c1.Print('Results_'+version_name+'/BasicLQ_'+channel+'_'+recovariable+'_'+tagname+'.pdf')
-		c1.Print('Results_'+version_name+'/BasicLQ_'+channel+'_'+recovariable+'_'+tagname+'.png')
+		os.system('mkdir Results_'+version_name+'/Plots/Preselection')
+		c1.Print('Results_'+version_name+'/Plots/Preselection/BasicLQ_'+channel+'_'+recovariable+'_'+tagname+'.pdf')
+		c1.Print('Results_'+version_name+'/Plots/Preselection/BasicLQ_'+channel+'_'+recovariable+'_'+tagname+'.png')
 		print 'Results_'+version_name+'/BasicLQ_'+channel+'_'+recovariable+'_'+tagname+'.pdf',
 	else:
-		c1.Print('Results_'+version_name+'/BasicLQ_'+channel+'_'+recovariable+'_'+tagname+str(plotmass)+'.pdf')
-		c1.Print('Results_'+version_name+'/BasicLQ_'+channel+'_'+recovariable+'_'+tagname+str(plotmass)+'.png')	
+		os.system('mkdir Results_'+version_name+'/Plots/Final')
+		c1.Print('Results_'+version_name+'/Plots/Final/BasicLQ_'+channel+'_'+recovariable+'_'+tagname+str(plotmass)+'.pdf')
+		c1.Print('Results_'+version_name+'/Plots/Final/BasicLQ_'+channel+'_'+recovariable+'_'+tagname+str(plotmass)+'.png')	
 		print 'Results_'+version_name+'/BasicLQ_'+channel+'_'+recovariable+'_'+tagname+str(plotmass)+'.pdf',
 	print ' ...Done.'
 
