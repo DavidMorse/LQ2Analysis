@@ -8407,7 +8407,7 @@ def ParseFinalCards(cardcoll):
 	return finalcards
 
 def FixFinalCards(cardsets):
-	f = cardsets[0].split('/')[0]+'/FinalCardsLQ.txt'
+	f = cardsets[0].split('/')[0]+'/FinalCardsLQ_'+year+'.txt'
 	fout = open(f,'w')
 	for c in cardsets:
 		for line in open(c,'r'):
