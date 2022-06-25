@@ -427,8 +427,9 @@ def main():
 	#version_name = 'Testing_noQCD_14nov' # use sf tag above if this is the real folder
 	os.system('mkdir Results_'+version_name) 
 
-	os.system('mkdir Results_'+version_name+'/Optimization')
-	MuMuOptCutFile = 'Results_'+version_name+'/Optimization/Opt_LQuujj_BDT_Cuts.txt' # scriptflag
+	MuMuOptCutDir = 'Optimization_Presel'
+	os.system('mkdir Results_'+version_name+'/'+MuMuOptCutDir)
+	MuMuOptCutFile = 'Results_'+version_name+'/'+MuMuOptCutDir+'/Opt_LQuujj_BDT_Cuts.txt' # scriptflag
 	#MuMuOptCutFile = 'Results_'+version_name+'/OptLQ_uujjCuts_Smoothed_pol2cutoff.txt'
 	MuNuOptCutFile = 'Results_'+version_name+'/OptLQ_uvjjCuts_Smoothed_pol2cutoff.txt' # scriptflag
 
@@ -1158,7 +1159,7 @@ def main():
 	# ====================================================================================================================================================== #
 
 	if False :
-		MuMuOptTestCutFile = 'Results_'+version_name+'/Optimization/Opt_LQuujj_BDT_Cuts.txt' #OptLQ_uujjCuts_Smoothed_pol2cutoff.txt'
+		MuMuOptTestCutFile = 'Results_'+version_name+'/'+MuMuOptCutDir+'/Opt_LQuujj_BDT_Cuts.txt' #OptLQ_uujjCuts_Smoothed_pol2cutoff.txt'
 		MuNuOptTestCutFile = 'Results_'+version_name+'/OptLQ_uvjjCuts_Smoothed_pol2cutoff.txt'
 		# Get Scale Factors
 		#[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = GetMuMuScaleFactors( NormalWeightMuMu+'*'+preselectionmumu, NormalDirectory, '(M_uu>80)*(M_uu<100)', '(M_uu>100)',0,1)
@@ -8416,7 +8417,7 @@ def ParseFinalCards(cardcoll):
 	return finalcards
 
 def FixFinalCards(cardsets):
-	f = cardsets[0].split('/')[0]+'/FinalCardsLQ_'+year+'.txt'
+	f = cardsets[0].split('/')[0]+'/'+MuMuOptCutDir+'/FinalCardsLQ_'+year+'.txt'
 	fout = open(f,'w')
 	for c in cardsets:
 		for line in open(c,'r'):
