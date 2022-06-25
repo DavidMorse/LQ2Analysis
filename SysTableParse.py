@@ -3,6 +3,7 @@ import sys
 import math
 
 sysfile = sys.argv[1]
+year = '2016'
 
 info = [line for line in open(sysfile,'r')]
 
@@ -257,8 +258,8 @@ def cardtotex(card):
 				btags.append(r_b)
 
 
-
-	textable = '\\begin{table}[htbp]\n\\begin{center}\n'
+	textable = r'%'+year+r'% %'+mass+r'%'+'\n'
+	textable += '\\begin{table}[htbp]\n\\begin{center}\n'
 	textable += '\\caption{Systematic uncertainties and their effects on signal ($S$) and background ($B$) in the '+chan+' channel for $M_{LQ}='+mass+'$~GeV final selection. All uncertainties are symmetric.}\n'
 	textable += '\\begin{tabular}{|lcc|}\n\\hline\n'
 
@@ -290,7 +291,7 @@ def cardtotex(card):
 
 	systot_s = str(round(100*(math.sqrt( (sum([float(x)*float(x)*.01*.01  for x in signalsystematics ])) )),2))
 	systot_b = str(round(100*(math.sqrt( (sum([float(x)*float(x)*.01*.01  for x in backgroundsystematics ])) )),2))
-	textable += '\\hline\n Total & '+systot_s + ' & ' + systot_b + '\\\\ \\hline\n'
+	textable += '\\hline\nTotal & '+systot_s + ' & ' + systot_b + '\\\\ \\hline\n'
 	textable += '\\end{tabular}\n\\label{tab:SysUncertainties_'+texchan+'_'+mass+'}\n\\end{center}\n\\end{table}\n\n'
 
 	# if '300' in mass or '500' in mass or '700' in mass or '1000' in mass:
