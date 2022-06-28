@@ -2,7 +2,12 @@ from matplotlib import pyplot as plt
 from matplotlib.ticker import *
 import numpy as np
 import json
+import sys
 plt.rcParams['text.usetex'] = True
+
+sysfile = sys.argv[1]
+outJson = "SysTablesAll.json"
+if "Pre" in sysfile: outJson = "SysTablesAll_Presel.json"
 
 ############################################################################################################################################################
 ############################################################## Get statistical uncertainties ###############################################################
@@ -85,7 +90,7 @@ nColors = len(sysVars)-len(otherSys) # all variations (18) - other variations (1
 colors_2016 = plt.cm.BuPu(np.linspace(0.25, 1, nColors))
 colors_2017 = plt.cm.OrRd(np.linspace(0.25, 1, nColors))
 colors_2018 = plt.cm.YlGn(np.linspace(0.25, 1, nColors))
-colors_stat = ["red","cyan"]
+colors_stat = ["magenta","cyan"]
 
 colorsHist = {"2016":"blue", "2017": "red", "2018": "limegreen"}
 
@@ -147,13 +152,13 @@ if False:
 
     # Open tex file with tables of systematics and store each line as list entry. Makes it easier to parse
     systematics = []
-    with open("SysTables.tex","r") as fsystables:
+    with open(sysfile,"r") as fsystables:
         for line in fsystables:
             systematics.append(line)
 
     # Parse the systematics tables line by line and extract the data. Put in sysDict
     for i, line in enumerate(systematics):
-        if "%" in line: 
+        if "%" in line and "\%" not in line: 
             year = line.split("%")[1].strip()
             mass = line.split("%")[-2].strip()
 
@@ -188,7 +193,7 @@ if False:
         sysDict["2017"][mass]["Stat High"] = {"signal": statHighSig2017[i], "background": statHighBkg2017[i]}
         sysDict["2018"][mass]["Stat High"] = {"signal": statHighSig2018[i], "background": statHighBkg2018[i]}
 
-    with open("sysTables.json",'w') as sysJson:
+    with open(outJson,'w') as sysJson:
         json.dump(sysDict, sysJson, indent=4)
 
 ############################################################################################################################################################
@@ -198,7 +203,7 @@ if False:
 # Fill new dict with different structure (values in a list, for plotting)--filled to ensure list is filled in order of increasing mass
 # Also add an "other" category that is the sum of a subset of systematics (smaller contributions defined in otherSys list)
 
-with open("sysTables.json",'r') as sysJson:
+with open(outJson,'r') as sysJson:
     sysDict = json.load(sysJson)
 
 sysDataDict = {}
@@ -243,10 +248,10 @@ def PlotBarChartYear(year,mcType,sysVars,barWidth,colors,colorsStat,xaxismax,yax
     for sys in sysVars:
         if "Stat" in sys:
             sign = "+"
-            color = "red"
+            color = colorsStat[0]
             if "Low" in sys:
                 sign = r"$-$"
-                color = "cyan"
+                color = colorsStat[1]
             stat = sysDataDict[year][sys][mcType]
             ax.hist(massValues, bins=binning, weights=stat, color=color, histtype="step", label=sign+"stat", ls="--")
 
@@ -338,10 +343,10 @@ def PlotHistVar(sysVar,mcType,colors,colorsStat,xaxismax,yaxismax):
 ####################################################################### Plotting here ######################################################################
 ############################################################################################################################################################
 
-#PlotBarChartYear("2016","background",sysVarsToPlot,90,colors_2016,colors_stat,6000,1000)
-#PlotBarChartYear("2017","background",sysVarsToPlot,90,colors_2017,colors_stat,6000,25)
-#PlotBarChartYear("2018","background",sysVarsToPlot,90,colors_2018,colors_stat,6000,40)
+PlotBarChartYear("2016","background",sysVarsToPlot,90,colors_2016,colors_stat,6000,1000)
+PlotBarChartYear("2017","background",sysVarsToPlot,90,colors_2017,colors_stat,6000,25)
+PlotBarChartYear("2018","background",sysVarsToPlot,90,colors_2018,colors_stat,6000,40)
 
 PlotHistVar("MUONRECO","background",colorsHist,colors_stat,6000,20)
-#PlotHistVar("PU","background",colorsHist,colors_stat,6000,30)
-#PlotHistVar("Z Shape","background",colorsHist,colors_stat,6000,30)
+PlotHistVar("PU","background",colorsHist,colors_stat,6000,30)
+PlotHistVar("Z Shape","background",colorsHist,colors_stat,6000,30)
