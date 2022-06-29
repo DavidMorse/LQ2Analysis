@@ -12,13 +12,13 @@ sysTabSubDir = sysTabFile.split('/')[1]
 sysTabFileName = sysTabFile.split('/')[-1].split('_')[0]
 
 sysTabAllYears = "SysTablesStatAll.json"
-jsonOut = {'2016':{},'2017':{},'2018':{}}
+outStatJson = {'2016':{},'2017':{},'2018':{}}
 
 for year in years:
     sysTabFile = year.join(sysTabRootDir)+'/'+sysTabSubDir+'/'+sysTabFileName+'_'+year+'.json'
-    with open(sysTabFile,'r') as inSysTexFile:
-        jsonOut[year] = json.load(inSysTexFile)
+    with open(sysTabFile,'r') as inStatJson:
+        outStatJson[year] = json.load(inStatJson)
 
-with open(sysTabAllYears,'w') as inSysTabAllYears:
-    json.dumps(jsonOut,inSysTabAllYears,indent=4)
+with open(sysTabAllYears,'w') as statAllOutFile:
+    json.dump(outStatJson,statAllOutFile,indent=4)
 
