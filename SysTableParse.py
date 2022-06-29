@@ -3,6 +3,9 @@ import sys
 import math
 
 sysfile = sys.argv[1]
+year = '2016'
+getYear = sysfile.split('/')[-1].split('_')[-1].split('.')[0]
+if getYear in ['2016','2017','2018']: year = getYear
 
 info = [line for line in open(sysfile,'r')]
 
@@ -257,10 +260,10 @@ def cardtotex(card):
 				btags.append(r_b)
 
 
-
-	textable = '\\begin{table}[htbp]\n\\begin{center}\n'
-	textable += '\\caption{Systematic uncertainties and their effects on signal ($S$) and background ($B$) in the '+chan+' channel for $M_{LQ}='+mass+'$~GeV final selection. All uncertainties are symmetric.}\n'
-	textable += '\\begin{tabular}{|lcc|}\n\\hline\n'
+	textable = r'%'+year+r'% %'+mass+r'%'+'\n'
+	textable += '\\begin{table}[htbp]\n\\begin{center}\n'
+	textable += '\\caption{Systematic uncertainties and their effects on signal ($S$) and background ($B$) in '+year+' for $M_{LQ}='+mass+'$~GeV final selection. All uncertainties are symmetric.}\n'
+	textable += '\\begin{tabular}{lcc}\n\\hline\\hline\n'
 
 	textable += 'Systematic & Signal (\%) & Background (\%) \\\\ \\hline \n'
 	textablelines = []
@@ -290,13 +293,27 @@ def cardtotex(card):
 
 	systot_s = str(round(100*(math.sqrt( (sum([float(x)*float(x)*.01*.01  for x in signalsystematics ])) )),2))
 	systot_b = str(round(100*(math.sqrt( (sum([float(x)*float(x)*.01*.01  for x in backgroundsystematics ])) )),2))
-	textable += '\\hline\n Total & '+systot_s + ' & ' + systot_b + '\\\\ \\hline\n'
+	textable += 'Total & '+systot_s + ' & ' + systot_b + '\\\\ \\hline \\hline\n'
 	textable += '\\end{tabular}\n\\label{tab:SysUncertainties_'+texchan+'_'+mass+'}\n\\end{center}\n\\end{table}\n\n'
 
 	# if '300' in mass or '500' in mass or '700' in mass or '1000' in mass:
 	#if '400' in mass or '650' in mass:
 	print textable
+
+	with open(sysTableTex,'a') as outtex:
+		outtex.write(textable)
+
 	return [mass,str(round(float(systot_b),2)) ]
+	
+sysTableTex = ''
+sysTableTex += sysfile.strip(sysfile.split('/')[-1]).strip('/')
+if sysTableTex == '':
+	sysTableTex = '.'
+else:
+	sysTableTex += '/SysTables_'+year+'.tex'
+
+with open(sysTableTex,'w') as outtex:
+	pass
 
 totinfo = []
 for card in cards:
