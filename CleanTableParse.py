@@ -333,6 +333,6 @@ print fancyTable(cleaninfo)
 year = '2016'
 getYear = sysfile.split('/')[-1].split('_')[-1].split('.')[0]
 if getYear in ['2016','2017','2018']: year = getYear
-outfile = '/'.join(sysfile.split('/')[:-1])+"/CleanTable_"+year
+outfile = '/'.join(sysfile.split('/')[:-1])+"/CleanTable_"+year+"tex"
 with open(outfile,'w') as of:
     of.write(fancyTable(cleaninfo))
