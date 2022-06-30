@@ -21,6 +21,9 @@ with open(cleantablefile,"r") as infile:
 
         allStats[mass] = {"signal":{},"background":{}}
 
+        sigEvents = sigStr.split('$')[0].strip()
+        bkgEvents = bkgStr.split('$')[0].strip()
+
         if r"$\pm$" in sigStr:
             sigStat = sigStr.split(r"$\pm$")[-1].strip()
             sigStatHigh = sigStat
@@ -41,8 +44,10 @@ with open(cleantablefile,"r") as infile:
             bkgStatHigh = str([abs(float(n)) for n in bkgStatVals if "+" in n][0])
             bkgStatLow = str([abs(float(n)) for n in bkgStatVals if "-" in n][0])
         
+        allStats[mass]["signal"]["events"] = float(sigEvents)
         allStats[mass]["signal"]["high"] = float(sigStatHigh)
         allStats[mass]["signal"]["low"] = float(sigStatLow)
+        allStats[mass]["background"]["events"] = float(bkgEvents)
         allStats[mass]["background"]["high"] = float(bkgStatHigh)
         allStats[mass]["background"]["low"] = float(bkgStatLow)
 
