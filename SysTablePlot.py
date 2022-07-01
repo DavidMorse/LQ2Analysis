@@ -19,8 +19,11 @@ else:
 print "Sys input file is",sysfile
 print "Stat input file is:",statfile
 
+selection = ""
 outJson = "SysTablesAll.json"
-if "Pre" in sysfile: outJson = "SysTablesAll_Presel.json"
+if "Pre" in sysfile: 
+    outJson = "SysTablesAll_Presel.json"
+    selection = "_Presel"
 
 ############################################################################################################################################################
 ########################################################################## Setup ###########################################################################
@@ -302,8 +305,8 @@ def PlotBarChartYear(year,mcType,sysVars,barWidth,colors,colorsStat,xaxismax,ymi
     plt.legend(ncol=1, title=year)
 
     # Save plot as a pdf
-    print "Saving as SysTablesPlot_"+year+"_"+mcTypeAbr[mcType]+".pdf"
-    plt.savefig("SysTablesPlot_"+year+"_"+mcTypeAbr[mcType]+".pdf")
+    print "Saving as SysTablesPlot_"+year+"_"+mcTypeAbr[mcType]+selection+".pdf"
+    plt.savefig("SysTablesPlot_"+year+"_"+mcTypeAbr[mcType]+selection+".pdf")
 
 
 # Plots relative uncertainty of each year for a specified systematic source and mc type (sig/bkg) accross the LQ mass range

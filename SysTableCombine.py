@@ -11,6 +11,8 @@ sysTabSubDir = sysTabFile.split('/')[1]
 sysTabFileName = sysTabFile.split('/')[-1].split('_')[0]
 
 sysTabAllYears = "SysTablesYearSeparated.tex"
+if "Presel" in sysTabFile:
+    sysTabAllYears = sysTabAllYears.split('.')[0]+"_Presel."+sysTabAllYears.split('.')[-1]
 
 with open(sysTabAllYears,'w'):
     pass
@@ -70,5 +72,9 @@ for mass in masses:
 
     fullTables += tableStr
 
-with open("SysTablesYearCombined.tex","w") as outFile:
+sysTabYearComb = "SysTablesYearCombined.tex"
+if "Presel" in sysTabFile:
+    sysTabYearComb = sysTabYearComb.split('.')[0]+"_Presel."+sysTabYearComb.split('.')[-1]
+
+with open(sysTabYearComb,"w") as outFile:
     outFile.write(fullTables)

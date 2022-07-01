@@ -12,6 +12,8 @@ sysTabSubDir = sysTabFile.split('/')[1]
 sysTabFileName = sysTabFile.split('/')[-1].split('_')[0]
 
 sysTabAllYears = "SysTablesStatAll.json"
+if "Presel" in sysTabFile:
+    sysTabAllYears = sysTabAllYears.split('.')[0]+"_Presel."+sysTabAllYears.split('.')[-1]
 outStatJson = {'2016':{},'2017':{},'2018':{}}
 
 for year in years:
