@@ -2,6 +2,23 @@ import os
 import sys
 import math
 import random
+from argparse import ArgumentParser
+
+# Get year and b tag requirement
+# Input Options - data-taking year and b tag requirement
+parser = ArgumentParser()
+parser.add_argument("-y", "--year", dest="year", help="option to pick running year (2016,2017,2018)", metavar="YEAR")
+parser.add_argument("-b", "--btags", dest="btags", help="option to pick minimum number of b-tagged jets required (0,1,2)", metavar="BTAGS")
+options = parser.parse_args()
+year = str(options.year)
+btags = str(options.btags)
+
+if year not in ['2016','2017','2018']: 
+	print "Please enter year with argument '-y' [2016, 2017, 2018]\nExiting..."
+	exit()
+if btags not in ['0','1','2']:
+	print "Please enter b tag requirement with argument '-b' [0, 1, 2]\nExiting..."
+	exit()
 
 # Read teh LQ Result Producer
 f = [line for line in open('LQResultProducer.py','r')]
@@ -20,7 +37,7 @@ tmpnum = 1
 
 
 # Loop over channels and systematic variations
-for c in ['uujj','uvjj']:
+for c in ['uujj']:
 	for v in _Variations:
 		tmpnum += 1
 		# this will be the new .py file for this channel/variation
@@ -109,7 +126,7 @@ for c in ['uujj','uvjj']:
 		subber.write('scram project CMSSW CMSSW_10_6_4\ncd CMSSW_10_6_4/src\n')#')scramv1 runtime -csh\ncd -\n\n')
 		subber.write('cmsenv\n')
 		subber.write('cd '+pwd+'\n')
-		subber.write('python '+runfile+' -y 2016 -b 1\n\n')
+		subber.write('python '+runfile+' -y '+year+' -b '+btags+'\n\n')
 
 
 		subber.close()
