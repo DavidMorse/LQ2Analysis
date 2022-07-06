@@ -37,7 +37,7 @@ tmpnum = 1
 
 
 # Loop over channels and systematic variations
-for c in ['uujj']:
+for c in ['uujj']: #,'uvjj']:
 	for v in _Variations:
 		tmpnum += 1
 		# this will be the new .py file for this channel/variation
