@@ -446,7 +446,7 @@ def main():
 	os.system('mkdir Results_'+version_name) 
 
 	global MuMuOptCutDir
-	MuMuOptCutDir = 'Optimization_Presel' # scriptflag
+	MuMuOptCutDir = 'Optimization' # scriptflag
 	os.system('mkdir Results_'+version_name+'/'+MuMuOptCutDir) # scriptflag
 	MuMuOptCutFile = 'Results_'+version_name+'/'+MuMuOptCutDir+'/Opt_LQuujj_BDT_Cuts.txt' # scriptflag
 	#MuMuOptCutFile = 'Results_'+version_name+'/OptLQ_uujjCuts_Smoothed_pol2cutoff.txt'
@@ -778,36 +778,36 @@ def main():
 		# UUJJ plots at preselection, Note that putting 'TTBarDataDriven' in the name turns on the use of data-driven ttbar e-mu sample in place of MC
 		
 		# Plot uubj BDT scores
-		MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M300","BDT score (M_{\rm LQ} = 300 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
-		MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M400","BDT score (M_{\rm LQ} = 400 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
-		MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M500","BDT score (M_{\rm LQ} = 500 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
-		MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M600","BDT score (M_{\rm LQ} = 600 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
-		MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M700","BDT score (M_{\rm LQ} = 700 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
-		MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M800","BDT score (M_{\rm LQ} = 800 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
-		MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M900","BDT score (M_{\rm LQ} = 900 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
-		MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M1000","BDT score (M_{\rm LQ} = 1000 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
-		MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M1100","BDT score (M_{\rm LQ} = 1100 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
-		MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M1200","BDT score (M_{\rm LQ} = 1200 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
-		MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M1300","BDT score (M_{\rm LQ} = 1300 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
-		MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M1400","BDT score (M_{\rm LQ} = 1400 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
-		MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M1500","BDT score (M_{\rm LQ} = 1500 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
-		MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M1600","BDT score (M_{\rm LQ} = 1600 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
-		MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M1700","BDT score (M_{\rm LQ} = 1700 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
-		MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M1800","BDT score (M_{\rm LQ} = 1800 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
-		MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M1900","BDT score (M_{\rm LQ} = 1900 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
-		MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M2000","BDT score (M_{\rm LQ} = 2000 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
-		MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M2100","BDT score (M_{\rm LQ} = 2100 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
-		MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M2200","BDT score (M_{\rm LQ} = 2200 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
-		MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M2300","BDT score (M_{\rm LQ} = 2300 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
-		MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M2400","BDT score (M_{\rm LQ} = 2400 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
-		MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M2500","BDT score (M_{\rm LQ} = 2500 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
-		MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M2600","BDT score (M_{\rm LQ} = 2600 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
-		MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M2700","BDT score (M_{\rm LQ} = 2700 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
-		MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M2800","BDT score (M_{\rm LQ} = 2800 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
-		MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M2900","BDT score (M_{\rm LQ} = 2900 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
-		MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M3000","BDT score (M_{\rm LQ} = 3000 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
-		MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M3500","BDT score (M_{\rm LQ} = 3500 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
-		MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M4000","BDT score (M_{\rm LQ} = 4000 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
+		MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M300","BDT score (M_{LQ} = 300 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
+		MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M400","BDT score (M_{LQ} = 400 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
+		MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M500","BDT score (M_{LQ} = 500 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
+		MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M600","BDT score (M_{LQ} = 600 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
+		MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M700","BDT score (M_{LQ} = 700 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
+		MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M800","BDT score (M_{LQ} = 800 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
+		MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M900","BDT score (M_{LQ} = 900 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
+		MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M1000","BDT score (M_{LQ} = 1000 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
+		MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M1100","BDT score (M_{LQ} = 1100 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
+		MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M1200","BDT score (M_{LQ} = 1200 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
+		MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M1300","BDT score (M_{LQ} = 1300 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
+		MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M1400","BDT score (M_{LQ} = 1400 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
+		MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M1500","BDT score (M_{LQ} = 1500 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
+		MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M1600","BDT score (M_{LQ} = 1600 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
+		MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M1700","BDT score (M_{LQ} = 1700 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
+		MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M1800","BDT score (M_{LQ} = 1800 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
+		MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M1900","BDT score (M_{LQ} = 1900 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
+		MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M2000","BDT score (M_{LQ} = 2000 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
+		MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M2100","BDT score (M_{LQ} = 2100 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
+		MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M2200","BDT score (M_{LQ} = 2200 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
+		MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M2300","BDT score (M_{LQ} = 2300 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
+		MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M2400","BDT score (M_{LQ} = 2400 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
+		MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M2500","BDT score (M_{LQ} = 2500 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
+		MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M2600","BDT score (M_{LQ} = 2600 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
+		MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M2700","BDT score (M_{LQ} = 2700 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
+		MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M2800","BDT score (M_{LQ} = 2800 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
+		MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M2900","BDT score (M_{LQ} = 2900 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
+		MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M3000","BDT score (M_{LQ} = 3000 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
+		MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M3500","BDT score (M_{LQ} = 3500 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
+		MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M4000","BDT score (M_{LQ} = 4000 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
 		
 		#preselectionmumu += '*(M_uu>50)*(M_uu<80)'#fixme this is for control region checks
 		MakeBasicPlot("DeepJet_jet1","Jet1 DeepJet score",bjetbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj, Rw_uvjj,Rtt_uujj,'',version_name,1000)
@@ -6310,12 +6310,12 @@ def MakeBasicPlot(recovariable,xlabel,presentationbinning,selection,weight,FileD
 		os.system('mkdir Results_'+version_name+'/Plots/Preselection')
 		c1.Print('Results_'+version_name+'/Plots/Preselection/BasicLQ_'+channel+'_'+recovariable+'_'+tagname+'.pdf')
 		c1.Print('Results_'+version_name+'/Plots/Preselection/BasicLQ_'+channel+'_'+recovariable+'_'+tagname+'.png')
-		print 'Results_'+version_name+'/BasicLQ_'+channel+'_'+recovariable+'_'+tagname+'.pdf',
+		print 'Results_'+version_name+'/Plots/Preselection/BasicLQ_'+channel+'_'+recovariable+'_'+tagname+'.pdf',
 	else:
 		os.system('mkdir Results_'+version_name+'/Plots/Final')
 		c1.Print('Results_'+version_name+'/Plots/Final/BasicLQ_'+channel+'_'+recovariable+'_'+tagname+str(plotmass)+'.pdf')
 		c1.Print('Results_'+version_name+'/Plots/Final/BasicLQ_'+channel+'_'+recovariable+'_'+tagname+str(plotmass)+'.png')	
-		print 'Results_'+version_name+'/BasicLQ_'+channel+'_'+recovariable+'_'+tagname+str(plotmass)+'.pdf',
+		print 'Results_'+version_name+'/Plots/Final/BasicLQ_'+channel+'_'+recovariable+'_'+tagname+str(plotmass)+'.pdf',
 	print ' ...Done.'
 
 	return resstring
