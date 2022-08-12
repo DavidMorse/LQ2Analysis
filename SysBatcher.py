@@ -2,6 +2,12 @@ import os
 import sys
 import math
 import random
+from argparse import ArgumentParser
+
+parser = ArgumentParser()
+parser.add_argument("-y", "--year", dest="year", help="option to pick running year (2016,2017,2018,comb)", metavar="YEAR")
+options = parser.parse_args()
+year = str(options.year)
 
 # Read teh LQ Result Producer
 f = [line for line in open('LQResultProducer.py','r')]
@@ -109,7 +115,7 @@ for c in ['uujj','uvjj']:
 		subber.write('scram project CMSSW CMSSW_10_6_4\ncd CMSSW_10_6_4/src\n')#')scramv1 runtime -csh\ncd -\n\n')
 		subber.write('cmsenv\n')
 		subber.write('cd '+pwd+'\n')
-		subber.write('python '+runfile+' -y 2016 -b 1\n\n')
+		subber.write('python '+runfile+' -y '+str(year)+' -b 1\n\n')
 
 
 		subber.close()
