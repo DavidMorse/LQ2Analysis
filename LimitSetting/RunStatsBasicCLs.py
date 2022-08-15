@@ -20,12 +20,13 @@ do_BetaHalf = 0
 do_combo = 0
 do_observedonly = 0
 do_fullHybrid = 0
+year = '2016'
 
 lqtype = 'LQ'
 
 cdir = ''
 
-fullcardfile = 'FinalCardsLQ.txt'
+fullcardfile = 'FinalCardsLQ_2017_21Nov2021.txt'
 
 if 'do_BetaOne' in str(sys.argv):
 	do_BetaOne = 1
@@ -99,6 +100,8 @@ for x in range(len(sys.argv)):
 		print fullcardfile
 	if '--cardFile' in sys.argv[x]:
 		fullcardfile = sys.argv[x+1]
+                
+print 'Using cardfile:',fullcardfile
 
 
 from ROOT import *
@@ -116,8 +119,7 @@ cr = '  \n'
 fullcards = open(fullcardfile,'r')
 mycards = []
 for line in fullcards:
-	mycards.append(line.replace('\n',''))
-
+	mycards.append((line.replace('\n','')).replace('\r',''))
 digis = '0123456789'
 name = []
 for x in mycards:
@@ -182,7 +184,7 @@ if do_BetaOne == 1:
 		print 'Calculating limit for: ' + name[x]
 		f = open('CLSLimits/BetaOne'+cdir+'/confbetaone_'+cdir+'_'+name[x]+'.cfg','w')
 		count = 0
-		# print name[x]
+		#print name[x]
 
 		for l in mycards:
 			if '.txt' in l and name[x] in l and str(name[x]+'0') not in l:
@@ -223,7 +225,7 @@ if do_BetaOne == 1:
 			elif float(name[x].replace('LQ_M_',''))<2000:
 				rmax = float(name[x].replace('LQ_M_',''))/1.#fixme was 10000.0
 			else:
-				rmax = float(name[x].replace('LQ_M_',''))*10.#fixme was 10000.0
+				rmax = float(name[x].replace('LQ_M_',''))*5.#fixme was 10000.0
 		if 'BL' in lqtype:
 			rmax = float(name[x].replace('BLCTau'+ctau+'_M_',''))/60.#fixme was 10000.0
 			if '1000' in ctau: rmax = 50000.0
@@ -233,12 +235,13 @@ if do_BetaOne == 1:
 
 		while 'r < 0.000000' in str(EstimationInformation):
 			ntry += 1
-			rAbsAcc='.00005'
+			rAbsAcc='.000005'
 			print ('combine '+ESTIMATIONMETHOD+' CLSLimits/BetaOne'+cdir+'/confbetaone_'+cdir+'_'+name[x]+'.cfg --expectSignal 1'+' --rMax '+str(rmax)+'  --rAbsAcc '+rAbsAcc)
-			EstimationInformation = os.popen('combine '+ESTIMATIONMETHOD+' CLSLimits/BetaOne'+cdir+'/confbetaone_'+cdir+'_'+name[x]+'.cfg  --expectSignal 1'+' --rMax '+str(rmax)+' --rAbsAcc '+rAbsAcc).readlines()
+			EstimationInformation = os.popen('combine '+ESTIMATIONMETHOD+' CLSLimits/BetaOne'+cdir+'/confbetaone_'+cdir+'_'+name[x]+'.cfg  --expectSignal 1'+' --rMax '+str(rmax)+' --rAbsAcc '+rAbsAcc+' --run blind').readlines()
 			#print ('combine '+METHOD.replace('SINGLEPOINT',str(rmax)).replace('CONFIGURATION','CLSLimits/BetaOne'+cdir+'/confbetaone_'+cdir+'_'+name[x]+'.cfg'))
 			#EstimationInformation = os.popen('combine '+METHOD.replace('SINGLEPOINT',str(rmax)).replace('CONFIGURATION','CLSLimits/BetaOne'+cdir+'/confbetaone_'+cdir+'_'+name[x]+'.cfg')).readlines()
 
+                        #print EstimationInformation
 			print 'finished combine'
 			if abs(rmax - oldrmax)<.1*rmax:
 				breaker=True		
@@ -1134,23 +1137,6 @@ if do_BetaOne == 1:
 		BetaOne68up = BetaOne68upFreq
 		BetaOneExp = BetaOneExpFreq
 
-	""" #this forces full frequentist numbers, for debug only!!!!!
-	BetaOneObs=[0.0161333,0.0222778,0.0325743,0.0287169,0.0427955,0.0563732,0.0985827,0.107538,0.0689978,0.0704858,0.0951772,0.0562328,0.0742788,0.155248,0.297074,0.416619,0.616364,0.754957,1.18599,1.63864,2.24592,3.05085,4.0465,5.35043,7.43943,9.86311,13.0268,17.3833,23.7057,31.2027,40.5222,52.7824,65.5765,87.5617,113.665,145.293]
-	BetaOneExp=[0.0161333,0.0222778,0.0325743,0.0261063,0.0427955,0.0563732,0.0985827,0.107538,0.0871123,0.0818301,0.140715,0.233073,0.237573,0.312821,0.473387,0.569133,0.739147,0.965,1.19466,1.6893,2.30857,3.12596,4.07343,5.49307,7.45881,10.018,13.2597,17.7412,23.7644,31.0221,40.5541,52.0931,66.6952,88.0526,114.258,145.614]
-	BetaOne95down=[0.0146666,0.0202525,0.029613,0.0261063,0.038905,0.0512484,0.0985827,0.0977615,0.0689978,0.0704858,0.0951772,0.0562328,0.141484,0.134548,0.220986,0.178896,0.5625,0.429404,1.10192,1.50365,2.1208,2.52304,3.30532,4.85585,1.9375,6.9375,10.687,11.2083,16.875,23.6216,35.5151,27.75,35.75,81.3184,96,78.5]
-	BetaOne95up=[0.0161333,0.0222778,0.0325743,0.0383946,0.0416932,0.0563732,0.0985827,0.107538,0.210443,0.162695,0.244514,0.343005,0.493853,0.658422,0.896758,1.09965,1.39442,1.86306,2.52479,3.10726,3.77142,5.08304,6.71948,8.89365,11.7869,14.9383,19.7768,26.4506,36.2427,47.1721,62.3196,80.5311,100.226,129.002,172.503,222.686]
-	BetaOne68down=[0.0161333,0.0202525,0.0325743,0.0261063,0.0427955,0.0512484,0.0896206,0.107538,0.0689978,0.0775344,0.104695,0.182757,0.227629,0.26595,0.29768,0.423436,0.599192,0.833182,0.957425,1.61476,2.13222,2.97599,3.88326,5.42208,7.15502,9.34878,12.5097,16.1206,21.8197,30.9357,39.386,50.1704,62.1227,81.7405,106.001,138.732]
-	BetaOne68up=[0.0161333,0.0222778,0.0325743,0.0287169,0.0427955,0.0563732,0.0985827,0.107538,0.119188,0.214982,0.23563,0.277755,0.366026,0.46488,0.659875,0.758715,1.00295,1.28995,1.73287,2.20742,2.96546,3.8963,4.8401,6.35464,7.95792,10.4933,13.9028,18.6661,24.638,32.5644,41.9212,55.487,69.9285,92.5461,131.921,154.5]
-	"""
-	"""
-	BetaOneObs=[0.00337497,0.00528537,0.00563805,0.0063007,0.0154518,0.0183806,1,1,0.0256572,1,1,1,0.095678,1,0.183845,0.266256,0.376661,0.536032,0.712807,1.01754,1.40151,1.74116,2.4473,3.19369,4.19512,5.7253,7.36247]
-	BetaOneExp=[0.00215584,0.00350429,0.00610975,0.00669651,0.00996291,0.0146051,1,1,0.0381526,1,1,1,0.12008,1,0.18842,0.284579,0.397132,0.552828,0.759062,0.976061,1.36696,1.83624,2.48911,3.24192,4.56676,5.906,7.79122]
-	BetaOne95down=[0.0005625,0.0009625,0.0025797,0.00365232,0.00588033,0.00647565,1,1,0.0117757,1,1,1,0.0576592,1,0.180088,0.250458,0.344953,0.371792,0.485097,0.795125,1.07839,1.33799,2.11223,3.05854,3.53961,5.18035,6.88719]
-	BetaOne95up=[0.00351553,0.00772683,0.0116678,0.0148868,0.0192507,0.0287299,1,1,0.0749284,1,1,1,0.237561,1,0.408785,0.539455,0.737447,0.994581,1.29892,1.61168,2.16319,3.02884,3.97738,5.10845,6.997,9.19097,11.9202]
-	BetaOne68down=[0.0016875,0.00300861,0.00491832,0.00553063,0.00714953,0.00886906,1,1,0.0268735,1,1,1,0.0929572,1,0.190388,0.255829,0.374185,0.516423,0.727265,0.869662,1.28806,1.72316,2.34321,3.09237,4.22282,5.6168,7.43491]
-	BetaOne68up=[0.00414217,0.00560656,0.00878666,0.0102076,0.014222,0.0205062,1,1,0.0547201,1,1,1,0.16145,1,0.286939,0.386529,0.5316,0.716605,1.00278,1.18532,1.62138,2.02156,3.06847,3.43869,4.64943,6.23836,7.6491]
-	"""
-
 	ob = BetaOneObs 
 	down2 = BetaOne95down 
 	up2 = BetaOne95up 
@@ -1165,7 +1151,10 @@ if do_BetaOne == 1:
 			sigma.append(xsTh[x]*fac)
 	for x in range(len(masses)):
 		excurve += str(float(med[x])*float(sigma[x])) + ' , ' 
-		obcurve += str(float(ob[x])*float(sigma[x])) + ' , ' 
+		if len(ob)>0:
+                        obcurve += str(float(ob[x])*float(sigma[x])) + ' , ' 
+                else:
+                        obcurve += '0 , '
 		band1sigma += str(float(down1[x])*float(sigma[x])) + ' , ' 
 		band1sigma1 += str(float(down1[x])*float(sigma[x])) + ' , ' 
 		band2sigma += str(float(down2[x])*float(sigma[x])) + ' , ' 

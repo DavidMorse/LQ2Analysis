@@ -1116,7 +1116,7 @@ def main():
 	# This is for scale factor studies
 	# ====================================================================================================================================================== #
 
-	if False:
+	if True:
 		"""
 		mtCR = '*(MT_uv>70)*(MT_uv<110)'
 		mtSR = '*(((MT_uv>50)*(MT_uv<70)+(MT_uv>110))>0)'
@@ -1153,25 +1153,33 @@ def main():
                 #exit()
                 print 'Now do binning'
                 """
-                for muPtRange in [['50','85'],['85','110'],['110','160'],['160','99999']]:
+                for muPtRange in [['50','85'],['85','110'],['110','160'],['160','200'],['200','99999']]:
                         ptCut = '*(Pt_muon1>'+muPtRange[0]+')*(Pt_muon1<'+muPtRange[1]+')'
                         print '*********',ptCut
 			[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = GetMuMuScaleFactors( NormalWeightMuMu+'*'+preselectionmumu+ptCut, NormalDirectory, '(M_uu>80)*(M_uu<100)', '(M_uu>100)*(M_uu<250)',0,1)
                 """
+                """
 		for stRange in [['300','400'],['400','650'],['650','900'],['900','99999']]:
 			stCut = '*(St_uujj>'+stRange[0]+')*(St_uujj<'+stRange[1]+')'
 			print '*********',stCut
-			[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = GetMuMuScaleFactors( NormalWeightMuMu+'*'+preselectionmumu+stCut, NormalDirectory, '(M_uu>80)*(M_uu<100)', '(M_uu>100)',1,1)
+			[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = GetMuMuScaleFactors( NormalWeightMuMu+'*'+preselectionmumu+stCut, NormalDirectory, '(M_uu>80)*(M_uu<100)', '(M_uu>100)*(M_uu<250)',1,1)
 		"""
+                """
                 for mujRange in [['0','250'],['250','750'],['750','99999']]:
 			mujCut = '*(M_uujj2>'+mujRange[0]+')*(M_uujj2<'+mujRange[1]+')'
 			print '*********',mujCut
-			[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = GetMuMuScaleFactors( NormalWeightMuMu+'*'+preselectionmumu+mujCut, NormalDirectory, '(M_uu>80)*(M_uu<100)', '(M_uu>100)',1,1)
+			[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = GetMuMuScaleFactors( NormalWeightMuMu+'*'+preselectionmumu+mujCut, NormalDirectory, '(M_uu>80)*(M_uu<100)', '(M_uu>100)*(M_uu<250)',1,1)
 		for stRange in [['300','500'],['500','750'],['750','99999']]:
 			stCut = '*(St_uvjj>'+stRange[0]+')*(St_uvjj<'+stRange[1]+')'
 			print '*********',stCut
 			[[Rw_uvjj,Rw_uvjj_err],[Rtt_uvjj,Rtt_uvjj_err]] = GetMuNuScaleFactors( NormalWeightMuNu+'*'+preselectionmunu+stCut, NormalDirectory, munu1, munu2,1)
                 """
+                
+                for Range in [['0','100'],['100','200'],['200','400'],['400','99999']]:
+			Cut = '*(Pt_jet1>'+Range[0]+')*(Pt_jet1<'+Range[1]+')'
+			print '*********',Cut
+			[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = GetMuMuScaleFactors( NormalWeightMuMu+'*'+preselectionmumu+Cut, NormalDirectory, '(M_uu>80)*(M_uu<100)', '(M_uu>100)*(M_uu<250)',1,1)
+                
 	# ====================================================================================================================================================== #
 	# This is for  spurious events
 	# ====================================================================================================================================================== #
@@ -2640,8 +2648,8 @@ def PDF4LHCUncStudy(MuMuOptCutFile,MuNuOptCutFile,versionname):
 		exec (_tree+" = "+_treeTmp+".Get(\""+TreeName+"\")")
 
 	N_cteq = 53
-	N_nnpdf = 101
-	N_mmth = 51
+	N_nnpdf = 33
+        N_mmth = 51
 
 	#cteqweights = ['*(factor_cteq_'+str(n+1)+'/factor_cteq_1)' for n in range(N_cteq)]
 	#nnpdfweights = ['*(factor_nnpdf_'+str(n+1)+'/factor_cteq_1)' for n in range(N_nnpdf)]
@@ -2652,7 +2660,7 @@ def PDF4LHCUncStudy(MuMuOptCutFile,MuNuOptCutFile,versionname):
 	#nnpdfweights = ['*(factor_nnpdf_'+str(n+1+N_nnpdf)+')' for n in range(N_nnpdf)]
 	#mmthweights = ['*(factor_mmth_'+str(n+1+N_mmth)+')' for n in range(N_mmth)]
 	cteqweights = ['*(factor_cteq_'+str(n+1)+')' for n in range(N_cteq)]
-	nnpdfweights = [['*(factor_nnpdf_'+str(n+1)+')','*(abs(factor_nnpdf_'+str(n+1)+')<100)'] for n in range(N_nnpdf)]
+	nnpdfweights = [['*(factor_pdf_'+str(n+1)+')','*(abs(factor_pdf_'+str(n+1)+')<100)'] for n in range(N_nnpdf)]
 	#nnpdfNoInf   = ['*((factor_nnpdf_'+str(n+1)+')<100)' for n in range(N_nnpdf)]
 	mmthweights = ['*(factor_mmth_'+str(n+1)+')' for n in range(N_mmth)]
 
@@ -2686,21 +2694,18 @@ def PDF4LHCUncStudy(MuMuOptCutFile,MuNuOptCutFile,versionname):
 	# UUJJ CHANNEL SYSTEMATICS
 
 	#treenames = ['ZJets','TTBar','WJets','VV','sTop','QCD','Signal']#original
-	#treenames = ['ZJets','TTBar']#,'Signal']#fixme removing signal
-	#treenames = ['WJets','VV','sTop','QCD']
-	treenames = ['WJets','VV','sTop']
+	#treenames = ['ZJets','TTBar','WJets','VV']#removing QCD, signal, sTop
+	treenames = ['WJets','Signal']
 	uncnames = ['pdf_uujj_'+x for x in treenames]
 	#trees  = [[t_ZJets]]
        	#trees  = [[t_ZJets],[t_TTBar],[t_WJets],[t_DiBoson],[t_SingleTop],[t_QCDMu]]#original
-	#trees  = [[t_ZJets],[t_TTBar]]
-	#trees = [[t_WJets],[t_DiBoson],[t_SingleTop],[t_QCDMu]]
-	trees = [[t_WJets],[t_DiBoson],[t_SingleTop]]
+       	#trees  = [[t_ZJets],[t_TTBar],[t_WJets],[t_DiBoson]]#removing QCD, sTop
+	trees = [[t_WJets]]
 	#treesNames = [['t_WJets'],['t_ZJets'],['t_DiBoson'],['t_SingleTop'],['t_QCDMu']]#original
-	#treesNames = [['t_ZJets'],['t_TTBar']]
-	#treesNames = [['t_WJets'],['t_DiBoson'],['t_SingleTop'],['t_QCDMu']]
-	treesNames = [['t_WJets'],['t_DiBoson'],['t_SingleTop']]
-	#trees.append([t_LQuujj200,t_LQuujj250,t_LQuujj300,t_LQuujj350,t_LQuujj400,t_LQuujj450,t_LQuujj500,t_LQuujj550,t_LQuujj600,t_LQuujj650,t_LQuujj700,t_LQuujj750,t_LQuujj800,t_LQuujj850,t_LQuujj900,t_LQuujj950,t_LQuujj1000,t_LQuujj1050,t_LQuujj1100,t_LQuujj1150,t_LQuujj1200,t_LQuujj1250,t_LQuujj1300,t_LQuujj1350,t_LQuujj1400,t_LQuujj1450,t_LQuujj1500,t_LQuujj1550,t_LQuujj1600,t_LQuujj1650,t_LQuujj1700,t_LQuujj1750,t_LQuujj1800,t_LQuujj1850,t_LQuujj1900,t_LQuujj1950,t_LQuujj2000])
-	#treesNames.append(['t_LQuujj200','t_LQuujj250','t_LQuujj300','t_LQuujj350','t_LQuujj400','t_LQuujj450','t_LQuujj500','t_LQuujj550','t_LQuujj600','t_LQuujj650','t_LQuujj700','t_LQuujj750','t_LQuujj800','t_LQuujj850','t_LQuujj900','t_LQuujj950','t_LQuujj1000','t_LQuujj1050','t_LQuujj1100','t_LQuujj1150','t_LQuujj1200','t_LQuujj1250','t_LQuujj1300','t_LQuujj1350','t_LQuujj1400','t_LQuujj1450','t_LQuujj1500','t_LQuujj1550','t_LQuujj1600','t_LQuujj1650','t_LQuujj1700','t_LQuujj1750','t_LQuujj1800','t_LQuujj1850','t_LQuujj1900','t_LQuujj1950','t_LQuujj2000'])
+	#treesNames = [['t_ZJets'],['t_TTBar'],['t_WJets'],['t_DiBoson']]#removing QCD, sTop
+	treesNames = [['t_WJets']]
+	trees.append([t_LQuujj300,t_LQuujj400,t_LQuujj500,t_LQuujj600,t_LQuujj700,t_LQuujj800,t_LQuujj900,t_LQuujj1000,t_LQuujj1100,t_LQuujj1200,t_LQuujj1300,t_LQuujj1400,t_LQuujj1500,t_LQuujj1600,t_LQuujj1700,t_LQuujj1800,t_LQuujj1900,t_LQuujj2000,t_LQuujj2100,t_LQuujj2200,t_LQuujj2300,t_LQuujj2400,t_LQuujj2500,t_LQuujj2600,t_LQuujj2700,t_LQuujj2800,t_LQuujj2900,t_LQuujj3000,t_LQuujj3500,t_LQuujj4000])
+	treesNames.append(['t_LQuujj300','t_LQuujj400','t_LQuujj500','t_LQuujj600','t_LQuujj700','t_LQuujj800','t_LQuujj900','t_LQuujj1000','t_LQuujj1100','t_LQuujj1200','t_LQuujj1300','t_LQuujj1400','t_LQuujj1500','t_LQuujj1600','t_LQuujj1700','t_LQuujj1800','t_LQuujj1900','t_LQuujj2000','t_LQuujj2100','t_LQuujj2200','t_LQuujj2300','t_LQuujj2400','t_LQuujj2500','t_LQuujj2600','t_LQuujj2700','t_LQuujj2800','t_LQuujj2900','t_LQuujj3000','t_LQuujj3500','t_LQuujj4000'])
 
 	
 	# ================================================================================================================
@@ -2756,13 +2761,16 @@ def PDF4LHCUncStudy(MuMuOptCutFile,MuNuOptCutFile,versionname):
 				#print 'presel varied:',presel_varied_nnpdf_values
 			# Copy tree to new final selection tree
 			_tnewsel = _t.CopyTree(preselectionmumu+'*'+_sel[1])
+                        print preselectionmumu+'*'+_sel[1]
 			if _tnewsel.GetEntries()<50 and ResultDict[uncnames[ii]+'_uujj']['nnpdf'] != []:#fixme changed 100 to 50
+                                print 'only ',_tnewsel.GetEntries(),'entries, using previous mass point....'
 				#ResultDict[uncnames[ii]+'_uujj']['cteq'].append(  ResultDict[uncnames[ii]+'_uujj']['cteq'][-1] )
 				#ResultDict[uncnames[ii]+'_uujj']['mmth'].append(  ResultDict[uncnames[ii]+'_uujj']['mmth'][-1] )
 				ResultDict[uncnames[ii]+'_uujj']['nnpdf'].append( ResultDict[uncnames[ii]+'_uujj']['nnpdf'][-1] )					
 				continue
 			# Get the final-selection integrals
 			finsel_central_value=QuickIntegral(_tnewsel,NormalWeightMuMu,1.0)[0]
+                        #print finsel_central_value
 			#if 'Signal' in uncnames[ii]:
 			#	finsel_varied_cteq_values = [QuickIntegral(_tnewsel,NormalWeightMuMu+_fact,1.0)[0] for _fact in cteqweightsSig]#fixme update when names are uniform across samples
 			#	finsel_varied_nnpdf_values = [QuickIntegral(_tnewsel,NormalWeightMuMu+_fact,1.0)[0] for _fact in nnpdfweightsSig]
@@ -2781,6 +2789,7 @@ def PDF4LHCUncStudy(MuMuOptCutFile,MuNuOptCutFile,versionname):
 				finsel_varied_nnpdf_values = [finsel_varied_nnpdf_values[jj]/presel_varied_nnpdf_values[jj] for jj in range(len(presel_varied_nnpdf_values))]
 
 			if finsel_central_value >0.0:
+                                #print 'central:',finsel_central_value,' first variation:',finsel_varied_nnpdf_values[0]
 				# Get the variations w.r.t the central member
 				#finsel_varied_cteq_diffs = [abs(x - finsel_central_value)/finsel_central_value for x in  finsel_varied_cteq_values]
 				#finsel_varied_mmth_diffs = [abs(x - finsel_central_value)/finsel_central_value for x in  finsel_varied_mmth_values]
@@ -2804,12 +2813,17 @@ def PDF4LHCUncStudy(MuMuOptCutFile,MuNuOptCutFile,versionname):
 				#print finsel_varied_nnpdf_diffs
 				#print finsel_varied_nnpdf_values
 				systematic = str(round(100.0*max(finsel_varied_nnpdf_diffs),3))
-				if float(systematic) < float(old_systematic):
-					systematic = str(old_systematic)
+                                #print systematic
+				#if float(systematic) < float(old_systematic):
+				#	systematic = str(old_systematic)
 
 				if float(systematic) > 100.0:
 					systematic = '100.0'
-			else:
+                        elif ResultDict[uncnames[ii]+'_uujj']['nnpdf'] == []:
+                                sfinsel_varied_nnpdf_diffs = [0.0 for x in  finsel_varied_nnpdf_values]
+                                ResultDict[uncnames[ii]+'_uujj']['nnpdf'].append([100*jj for jj in sfinsel_varied_nnpdf_diffs]  )		
+
+                        else:
 				#ResultDict[uncnames[ii]+'_uujj']['cteq'].append(  ResultDict[uncnames[ii]+'_uujj']['cteq'][-1] )
 				#ResultDict[uncnames[ii]+'_uujj']['mmth'].append(  ResultDict[uncnames[ii]+'_uujj']['mmth'][-1] )
 				ResultDict[uncnames[ii]+'_uujj']['nnpdf'].append( ResultDict[uncnames[ii]+'_uujj']['nnpdf'][-1] )		
@@ -2817,11 +2831,12 @@ def PDF4LHCUncStudy(MuMuOptCutFile,MuNuOptCutFile,versionname):
 			print systematic+'%'
 			result += systematic+','
 			junkfile.Close()
+                        os.remove(junkfile.name)
 
 
 		result = result[:-1]+']'
 		ResultList.append(result)
-	
+	"""
 	# ================================================================================================================
 	# UVJJ CHANNEL SYSTEMATICS
 
@@ -2934,7 +2949,8 @@ def PDF4LHCUncStudy(MuMuOptCutFile,MuNuOptCutFile,versionname):
 
 		result = result[:-1]+']'
 		ResultList.append(result)
-	
+	"""
+
 	json_name = 'Results_'+versionname+'/PDFVariationsDictionary.json'
 	print ' -------- Creating JSON file:',json_name
 	import json
@@ -4072,32 +4088,49 @@ def ModSelection(selection,sysmethod,channel_log):
 		#https://indico.cern.ch/event/675475/contributions/2764498/subcontributions/240732/attachments/1547347/2429001/Wprime-muon-Approvalv1.pdf
 
 		#Percent systematic uncertainties of integrated luminosity provided in table, here: https://twiki.cern.ch/twiki/bin/viewauth/CMS/TWikiLUM
-		if sysmethod == 'LUMIup':
-			if year =='2016': selection = '(1.012)*'+selection #vary 2016 luminosity up by 1.2%
-			elif year == '2017': selection = '(1.023)*'+selection #vary 2017 luminosity up by 2.3%
-			elif year == '2018': selection = '(1.025)*'+selection #vary 2018 luminosity up by 2.5%
-		if sysmethod == 'LUMIdown':
-			if year =='2016': selection = '(0.988)*'+selection #vary 2016 luminosity down by 1.2%
-			elif year == '2017': selection = '(0.977)*'+selection #vary 2017 luminosity down by 2.3%
-			elif year == '2018': selection = '(0.975)*'+selection #vary 2018 luminosity down by 2.5%
-		if sysmethod == 'MUONRECOup':
+                #Uncorrelated 2016  1.0%, Uncorrelated 2017  2.0%, Uncorrelated 2018  1.5%
+                #Correlated 2016,2017,2018   0.6,0.9,2.0%
+                #Correlated 2017,2018      0.6,0.2%
+		if sysmethod == 'LUMIup':#fully correlated
+			if year =='2016': selection = '(1.006)*'+selection 
+			elif year == '2017': selection = '(1.009)*'+selection
+			elif year == '2018': selection = '(1.02)*'+selection
+		if sysmethod == 'LUMIdown':#fully correlated
+			if year =='2016': selection = '(0.994)*'+selection
+			elif year == '2017': selection = '(0.991)*'+selection
+			elif year == '2018': selection = '(0.98)*'+selection
+		if (sysmethod == 'LUMIup16' or sysmethod == 'LUMIup17' or sysmethod == 'LUMIup18') :#fully un-correlated
+			if year =='2016': selection = '(1.01)*'+selection 
+			elif year == '2017': selection = '(1.02)*'+selection
+			elif year == '2018': selection = '(1.015)*'+selection
+		if (sysmethod == 'LUMIdown16' or sysmethod == 'LUMIdown17' or sysmethod == 'LUMIdown18'):#fully un-correlated
+			if year =='2016': selection = '(0.99)*'+selection
+			elif year == '2017': selection = '(0.98)*'+selection
+			elif year == '2018': selection = '(0.985)*'+selection
+		if sysmethod == 'LUMIup1718':#partially correlated, 2017 2018 only
+			if year == '2017': selection = '(1.006)*'+selection
+			elif year == '2018': selection = '(1.002)*'+selection
+		if sysmethod == 'LUMIdown1718':#partially correlated, 2017 2018 only
+			if year == '2017': selection = '(0.994)*'+selection
+			elif year == '2018': selection = '(0.998)*'+selection
+		if 'MUONRECOup' in sysmethod :
 			selection = selection.replace('mu1recoSF*mu2recoSF','mu1recoSFup*mu2recoSFup')
-		if sysmethod == 'MUONRECOdown':
+		if 'MUONRECOdown' in sysmethod :
 			selection = selection.replace('mu1recoSF*mu2recoSF','mu1recoSFdown*mu2recoSFdown')		
-		if sysmethod == 'MUONISOup':
+		if 'MUONISOup' in sysmethod :
 			selection = selection.replace('mu1isoSF*mu2isoSF','mu1isoSFup*mu2isoSFup')
-		if sysmethod == 'MUONISOdown':
+		if 'MUONISOdown' in sysmethod :
 			selection = selection.replace('mu1isoSF*mu2isoSF','mu1isoSFdown*mu2isoSFdown')
-		if sysmethod == 'MUONIDup':
+		if 'MUONIDup' in sysmethod :
 			selection = selection.replace('mu1idSF*mu2idSF','mu1idSFup*mu2idSFup')
-		if sysmethod == 'MUONIDdown':
+		if 'MUONIDdown' in sysmethod :
 			selection = selection.replace('mu1idSF*mu2idSF','mu1idSFdown*mu2idSFdown')
-		if sysmethod == 'MUONIDISOup':
+		if 'MUONIDISOup' in sysmethod :
 			if 'uujj' in channel_log:
 				selection = '(1.04)*'+selection
 			if 'uvjj' in channel_log: 
 				selection = '(1.02)*'+selection
-		if sysmethod == 'MUONIDISOdown':
+		if 'MUONIDISOdown' in sysmethod :
 			if 'uujj' in channel_log:
 				#selection = '(1.05)*'+selection #normally 1% for ID and 0.5% for ISO, why 5%?
 				#selection = '((1.05)*((Pt_muon1*cosh(Eta_muon1))<100)*((Pt_muon2*cosh(Eta_muon2))<100) + (0.9936-3.71e-06*(Pt_muon1*cosh(Eta_muon1)))*(abs(Eta_muon1)<1.6)*((Pt_muon1*cosh(Eta_muon1))>100)*(1.025)*((Pt_muon2*cosh(Eta_muon2))<100) + (0.9936-3.71e-06*(Pt_muon1*cosh(Eta_muon1)))*(abs(Eta_muon1)<1.6)*((Pt_muon1*cosh(Eta_muon1))>100)*((Pt_muon2*cosh(Eta_muon2))>100)*(0.9936-3.71e-06*(Pt_muon2*cosh(Eta_muon2)))*(abs(Eta_muon2)<1.6) + (0.9936-3.71e-06*(Pt_muon1*cosh(Eta_muon1)))*(abs(Eta_muon1)<1.6)*((Pt_muon1*cosh(Eta_muon1))>100)*((Pt_muon2*cosh(Eta_muon2))>100)*((Pt_muon2*cosh(Eta_muon2))<200)*(1.025)*(abs(Eta_muon2)>1.6) + (0.9936-3.71e-06*(Pt_muon1*cosh(Eta_muon1)))*(abs(Eta_muon1)<1.6)*((Pt_muon1*cosh(Eta_muon1))>100)*((Pt_muon2*cosh(Eta_muon2))>200)*((0.9784-4.73e-5*(Pt_muon2*cosh(Eta_muon2)))/(0.9908-1.26e-5*(Pt_muon2*cosh(Eta_muon2))))*(abs(Eta_muon2)>1.6) + (1.025)*(abs(Eta_muon1)>1.6)*((Pt_muon1*cosh(Eta_muon1))>100)*((Pt_muon1*cosh(Eta_muon1))<200)*(1.025)*((Pt_muon2*cosh(Eta_muon2))<100) + (1.025)*(abs(Eta_muon1)>1.6)*((Pt_muon1*cosh(Eta_muon1))>100)*((Pt_muon1*cosh(Eta_muon1))<200)*((Pt_muon2*cosh(Eta_muon2))>100)*(0.9936-3.71e-06*(Pt_muon2*cosh(Eta_muon2)))*(abs(Eta_muon2)<1.6) + (1.025)*(abs(Eta_muon1)>1.6)*((Pt_muon1*cosh(Eta_muon1))>100)*((Pt_muon1*cosh(Eta_muon1))<200)*((Pt_muon2*cosh(Eta_muon2))>100)*((Pt_muon2*cosh(Eta_muon2))<200)*(1.025)*(abs(Eta_muon2)>1.6) + (1.025)*(abs(Eta_muon1)>1.6)*((Pt_muon1*cosh(Eta_muon1))>100)*((Pt_muon1*cosh(Eta_muon1))<200)*((Pt_muon2*cosh(Eta_muon2))>200)*((0.9784-4.73e-5*(Pt_muon2*cosh(Eta_muon2)))/(0.9908-1.26e-5*(Pt_muon2*cosh(Eta_muon2))))*(abs(Eta_muon2)>1.6) + ((0.9784-4.73e-5*(Pt_muon1*cosh(Eta_muon1)))/(0.9908-1.26e-5*(Pt_muon1*cosh(Eta_muon1))))*(abs(Eta_muon1)>1.6)*((Pt_muon1*cosh(Eta_muon1))>200)*(1.025)*((Pt_muon2*cosh(Eta_muon2))<100) + ((0.9784-4.73e-5*(Pt_muon1*cosh(Eta_muon1)))/(0.9908-1.26e-5*(Pt_muon1*cosh(Eta_muon1))))*(abs(Eta_muon1)>1.6)*((Pt_muon1*cosh(Eta_muon1))>200)*((Pt_muon2*cosh(Eta_muon2))>100)*(0.9936-3.71e-06*(Pt_muon2*cosh(Eta_muon2)))*(abs(Eta_muon2)<1.6) + ((0.9784-4.73e-5*(Pt_muon1*cosh(Eta_muon1)))/(0.9908-1.26e-5*(Pt_muon1*cosh(Eta_muon1))))*(abs(Eta_muon1)>1.6)*((Pt_muon1*cosh(Eta_muon1))>200)*((Pt_muon2*cosh(Eta_muon2))>100)*((Pt_muon2*cosh(Eta_muon2))<200)*(1.025)*(abs(Eta_muon2)>1.6) + ((0.9784-4.73e-5*(Pt_muon1*cosh(Eta_muon1)))/(0.9908-1.26e-5*(Pt_muon1*cosh(Eta_muon1))))*(abs(Eta_muon1)>1.6)*((Pt_muon1*cosh(Eta_muon1))>200)*((Pt_muon2*cosh(Eta_muon2))>200)*((0.9784-4.73e-5*(Pt_muon2*cosh(Eta_muon2)))/(0.9908-1.26e-5*(Pt_muon2*cosh(Eta_muon2))))*(abs(Eta_muon2)>1.6))*'+selection
@@ -4107,50 +4140,53 @@ def ModSelection(selection,sysmethod,channel_log):
 				#selection = '((1.025)*((Pt_muon1*cosh(Eta_muon1))<100) + (0.9936-3.71e-06*(Pt_muon1*cosh(Eta_muon1)))*(abs(Eta_muon1)<1.6)*((Pt_muon1*cosh(Eta_muon1))>100) + (1.025)*(abs(Eta_muon1)>1.6)*((Pt_muon1*cosh(Eta_muon1))>100)*((Pt_muon1*cosh(Eta_muon1))<200) + ((0.9784-4.73e-5*(Pt_muon1*cosh(Eta_muon1)))/(0.9908-1.26e-5*(Pt_muon1*cosh(Eta_muon1))))*(abs(Eta_muon1)>1.6)*((Pt_muon1*cosh(Eta_muon1))>200))*'+selection
 				selection = '(0.98)*(((Pt_muon1*cosh(Eta_muon1))<100) + (0.9936-3.71e-06*(Pt_muon1*cosh(Eta_muon1)))*(abs(Eta_muon1)<1.6)*((Pt_muon1*cosh(Eta_muon1))>100) + (abs(Eta_muon1)>1.6)*((Pt_muon1*cosh(Eta_muon1))>100)*((Pt_muon1*cosh(Eta_muon1))<200) + ((0.9784-4.73e-5*(Pt_muon1*cosh(Eta_muon1)))/(0.9908-1.26e-5*(Pt_muon1*cosh(Eta_muon1))))*(abs(Eta_muon1)>1.6)*((Pt_muon1*cosh(Eta_muon1))>200))*'+selection
 
-		#if sysmethod == 'MUONHLT':
+		#if 'MUONHLT':
 		#	if 'uujj' in channel_log: 
 		#		selection = '(1.02)*'+selection#was 1.005? AN says 1% per muon
 		#	if 'uvjj' in channel_log: 
 		#		selection = '(1.01)*'+selection# was 1.015?
 		# Per-muon 2% below 300 GeV and +2% -6% above 300 GeV. On top of this, 2% is added resulting from the impact of pre-triggering.
-		if sysmethod == 'MUONHLTup':
+		if 'MUONHLTup' in sysmethod :
 			if 'uujj' in channel_log: #2% pretrigger, +-2% per muon below 300, +2-6% per muon above 300  uujj: x(SF1+SF2-xSF1SF2)
 				#selection = '(1.02)*(2-1.02)*1.02*(2-1.02)*'+selection #fixme todo
 				selection = selection.replace('(1.0-((1.0-mu1hltSF)*(1.0-mu2hltSF)))', '(1.0-((1.0-mu1hltSFup)*(1.0-mu2hltSFup)))')
 			if 'uvjj' in channel_log: 
 				selection = '(1.02)*(1.02)*'+selection
-		if sysmethod == 'MUONHLTdown':
+		if 'MUONHLTdown' in sysmethod :
 			if 'uujj' in channel_log: 
 				#selection = '(0.98)*(2-0.98)*(0.98*(2-0.98)*(Pt_muon1<300)+0.94*(2-0.94)*(Pt_muon1>300))*(0.98*(2-0.98)*(Pt_muon2<300)+0.94*(2-0.94)*(Pt_muon2>300))*'+selection
 				selection = selection.replace('(1.0-((1.0-mu1hltSF)*(1.0-mu2hltSF)))', '(1.0-((1.0-mu1hltSFdown)*(1.0-mu2hltSFdown)))')
 			if 'uvjj' in channel_log: 
 				selection = '(0.98)*(0.98*(Pt_muon1<300)+0.94*(Pt_muon1>300))*'+selection
 		#https://indico.cern.ch/event/675475/contributions/2764498/subcontributions/240732/attachments/1547347/2429001/Wprime-muon-Approvalv1.pdf
-		if sysmethod == 'HIPup ':#Per-muon uncertainty: 0.5% (pT < 300 GeV), 1% (pT > 300 GeV)
+		if 'HIPup' in sysmethod :#Per-muon uncertainty: 0.5% (pT < 300 GeV), 1% (pT > 300 GeV)
 			if 'uujj' in channel_log: 
 				selection = '((1.005*(Pt_muon1<300)+1.01*(Pt_muon1>300))*(1.005*(Pt_muon2<300)+1.01*(Pt_muon2>300)))*'+selection
 			if 'uvjj' in channel_log: 
 				selection = '(1.005*(Pt_muon1<300)+1.01*(Pt_muon1>300))*'+selection
-		if sysmethod == 'HIPdown':
+		if 'HIPdown' in sysmethod :
 			if 'uujj' in channel_log: 
 				selection = '((0.995*(Pt_muon1<300)+0.99*(Pt_muon1>300))*(0.995*(Pt_muon2<300)+0.99*(Pt_muon2>300)))*'+selection
 			if 'uvjj' in channel_log: 
 				selection = '(0.995*(Pt_muon1<300)+0.99*(Pt_muon1>300))*'+selection
 
-		if sysmethod == 'PUup':
+		if 'PUup' in sysmethod :
 			selection = selection.replace('weight_central','weight_pu_up')
-		if sysmethod == 'PUdown':
+		if 'PUdown' in sysmethod :
 			selection = selection.replace('weight_central','weight_pu_down')
-
-		if sysmethod == 'PREFIREup':
+                if 'TOPPTup' in sysmethod :
+			selection = selection.replace('weight_topPt','weight_topPt_up')
+                if 'TOPPTdown' in sysmethod :
+			selection = selection.replace('weight_topPt','weight_topPt_down')
+		if 'PREFIREup' in sysmethod :
 			selection = selection.replace('prefireWeight','prefireWeight_up')
-		if sysmethod == 'PREFIREdown':
+		if 'PREFIREdown' in sysmethod :
 			selection = selection.replace('prefireWeight','prefireWeight_down')
 
-		if sysmethod == 'BTAGSFup':
+		if 'BTAGSFup' in sysmethod :
 			if year == '2016':
 				selection = selection.replace('*(1-(1-(DeepJet_jet1>0.3093)*bTagSF_jet1)*(1-(DeepJet_jet2>0.3093)*bTagSF_jet2))',bTagSFmediumUp)
-		if sysmethod == 'BTAGSFdown':
+		if 'BTAGSFdown' in sysmethod :
 			if year == '2016':
 				selection = selection.replace('*(1-(1-(DeepJet_jet1>0.3093)*bTagSF_jet1)*(1-(DeepJet_jet2>0.3093)*bTagSF_jet2))',bTagSFmediumDown)
 
@@ -4218,29 +4254,29 @@ def SysTable(optimlog, selection_uujj,selection_uvjj,NormalDirectory, weight,sys
 	rglobalb = 1.0
 
 
-	if sysmethod == 'ZNORMup':   
-		#rz *= 1.1#fixme adding this to cover st/muj kinematic difference
+	if 'ZNORMup' in sysmethod :   
+		#rz *= 1.1# adding this to cover st/muj kinematic difference
 		rz += _e_rz 
-	if sysmethod == 'ZNORMdown': 
-		#rz *= 0.9#fixme adding this to cover st/muj kinematic difference
+	if 'ZNORMdown' in sysmethod : 
+		#rz *= 0.9# adding this to cover st/muj kinematic difference
 		rz += -_e_rz 
-	if sysmethod == 'WNORMup':     
+	if 'WNORMup' in sysmethod :     
 		rw += _e_rw
-	if sysmethod == 'WNORMdown':  
+	if 'WNORMdown' in sysmethod :  
 		rw += -_e_rw 
-	if sysmethod == 'TTNORMup':  
+	if 'TTNORMup' in sysmethod :  
 		rt += _e_rt
-	if sysmethod == 'TTNORMdown':  
+	if 'TTNORMdown' in sysmethod :  
 		rt += -_e_rt 	
 
-	#if sysmethod == 'SHAPETT' : 
+	#if 'SHAPETT' in sysmethod : 
 		#if 'uujj' in optimlog: 
 		#	rt = (1.+.01*shapesys_uujj_ttbar )*rt
 		#if 'uvjj' in optimlog: 
 		#	rt = (1.+.01*shapesys_uvjj_ttbar )*rt
 
-	# if sysmethod == 'SHAPEZ'  : rz = (1.+.01*shapesys_uujj_zjets)*rz
-	# if sysmethod == 'SHAPEW'  : rw = (1.+.01*shapesys_uvjj_wjets)*rw
+	# if 'SHAPEZ' in sysmethod : rz = (1.+.01*shapesys_uujj_zjets)*rz
+	# if 'SHAPEW' in sysmethod : rw = (1.+.01*shapesys_uvjj_wjets)*rw
 
 
 	sysfile = optimlog.replace('.txt','_systable_'+sysmethod+'.txt')
@@ -4279,7 +4315,7 @@ def SysTable(optimlog, selection_uujj,selection_uvjj,NormalDirectory, weight,sys
 				nalign = ii
 		print nalign
 
-		if sysmethod == 'ALIGN':
+		if 'ALIGN' in sysmethod :
 			if 'uujj' in optimlog:
 				rglobals = 1.0 + alignmentcorrs[0]*.01
 				rglobalb = 1.0 + alignmentcorrs[1]*.01
@@ -4298,9 +4334,9 @@ def SysTable(optimlog, selection_uujj,selection_uvjj,NormalDirectory, weight,sys
 		_rw = rw
 		_rz = rz
                 #for shape, do nalign+1 because the first entry is preselection
-		if sysmethod == 'SHAPETT':#fixme added this for 2015 method
-			#if 'uujj' in optimlog:
-			#	_rt *= (1.0+shapesysvar_uujj_ttjets[nalign+1]*0.01)#fixme check - do we need? ttbar is from data.....
+		if sysmethod == 'SHAPETT':
+			if 'uujj' in optimlog:
+				_rt *= (1.0+shapesysvar_uujj_ttjets[nalign+1]*0.01)
 			if 'uvjj' in optimlog:
 				_rt *= (1.0+shapesysvar_uvjj_ttjets[nalign+1]*0.01)
 
@@ -4327,7 +4363,7 @@ def SysTable(optimlog, selection_uujj,selection_uvjj,NormalDirectory, weight,sys
 			if 'uvjj' in optimlog:
 				rdiboson *= (1.0+shapesysvar_uvjj_vv[nalign+1]*0.01)
 
-		if 'PDF'  in sysmethod:
+		if 'PDF' in sysmethod:
 			if 'uujj' in optimlog:
 				_rt      *= (1.0+pdf_uujj_TTBar[nalign]*0.01)
 				_rz      *= (1.0+pdf_uujj_ZJets[nalign]*0.01)
@@ -4539,6 +4575,7 @@ def SysTableTTDD(optimlog, selection_uujj,selection_uvjj,NormalDirectory, weight
 		# break
 
 def FullAnalysis(optimlog,selection_uujj,selection_uvjj,NormalDirectory,weight,usedd):
+        global year
 	TTDD = False
 	if usedd=='TTBarDataDriven':
 		TTDD=True
@@ -4547,7 +4584,12 @@ def FullAnalysis(optimlog,selection_uujj,selection_uvjj,NormalDirectory,weight,u
 	#_Variations = ['','JESup','JESdown','MESup','MESdown','JERup','JERdown','MER','LUMIup','LUMIdown','PUup','PUdown','ZNORMup','ZNORMdown','WNORMup','WNORMdown','TTNORMup','TTNORMdown','SHAPETT','SHAPEZ','SHAPEW','SHAPEVV','MUONIDISO','MUONHLT','PDF','HIPup','HIPdown']	
 	#Splitting MUONIDISO and MUONHLT into up and down to account for asymmetric high pt corrections
 	#_Variations = ['','JESup','JESdown','MESup','MESdown','JERup','JERdown','MER','LUMIup','LUMIdown','PUup','PUdown','ZNORMup','ZNORMdown','WNORMup','WNORMdown','TTNORMup','TTNORMdown','SHAPETT','SHAPEZ','SHAPEW','SHAPEVV','MUONIDISOup','MUONIDISOdown','MUONHLTup','MUONHLTdown','PDF','HIPup','HIPdown','BTAGup','BTAGdown']
-	_Variations = ['','JESup','JESdown','MESup','MESdown','JERup','JERdown','MER','LUMIup','LUMIdown','PUup','PUdown','ZNORMup','ZNORMdown','TTNORMup','TTNORMdown','SHAPETT','SHAPEZ','SHAPEVV','MUONIDup', 'MUONIDdown', 'MUONISOup', 'MUONISOdown','MUONHLTup','MUONHLTdown','MUONRECOup','MUONRECOdown','PDF','BTAGup','BTAGdown']	
+	if year=="2016":
+                _Variations = ['','JESup','JESdown','MESup','MESdown','JERup','JERdown','MER','LUMIup','LUMIdown','LUMIup16','LUMIdown16','PUup','PUdown','ZNORMup','ZNORMdown','TTNORMup','TTNORMdown','SHAPETT','SHAPEZ','SHAPEVV','MUONIDup', 'MUONIDdown', 'MUONISOup', 'MUONISOdown','MUONHLTup','MUONHLTdown','MUONRECOup','MUONRECOdown','PDF','BTAGup','BTAGdown','TOPPTup','TOPPTdown']
+	elif year=="2017":
+                _Variations = ['','JESup17','JESdown17','MESup17','MESdown17','JERup17','JERdown17','MER17','LUMIup','LUMIdown','LUMIup17','LUMIdown17','LUMIup1718','LUMIdown1718','PUup','PUdown','ZNORMup17','ZNORMdown17','TTNORMup17','TTNORMdown17','SHAPETT','SHAPEZ','SHAPEVV','MUONIDup17', 'MUONIDdown17', 'MUONISOup17', 'MUONISOdown17','MUONHLTup17','MUONHLTdown17','MUONRECOup17','MUONRECOdown17','PDF','BTAGup17','BTAGdown17','TOPPTup','TOPPTdown']
+        elif year=="2018":
+                _Variations = ['','JESup18','JESdown18','MESup18','MESdown18','JERup18','JERdown18','MER18','LUMIup','LUMIdown','LUMIup18','LUMIdown18','LUMIup1718','LUMIdown1718','PUup','PUdown','ZNORMup18','ZNORMdown18','TTNORMup18','TTNORMdown18','SHAPETT','SHAPEZ','SHAPEVV','MUONIDup18', 'MUONIDdown18', 'MUONISOup18', 'MUONISOdown18','MUONHLTup18','MUONHLTdown18','MUONRECOup18','MUONRECOdown18','PDF','BTAGup18','BTAGdown18','TOPPTup','TOPPTdown']	
 	for v in _Variations:
 		print ' -'*50
 		print 'Processing table for variation: ',v
