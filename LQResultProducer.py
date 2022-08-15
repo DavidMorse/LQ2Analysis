@@ -1180,8 +1180,11 @@ def main():
 
 		exit()
                 """
+                nominalZ , nominalTT , binnedValsZ , binnedValsTT = [],[],[],[]
 		print 'Nominal uujj:'
 		[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = GetMuMuScaleFactors( NormalWeightMuMu+'*'+preselectionmumu, NormalDirectory, '(M_uu>80)*(M_uu<100)', '(M_uu>100)*(M_uu<250)',0,0)
+                nominalZ=[Rz_uujj,Rz_uujj_err]
+                nominalTT=[Rtt_uujj,Rtt_uujj_err]
                 #exit()
                 print 'Now do binning'
                 """
@@ -1189,29 +1192,52 @@ def main():
                         ptCut = '*(Pt_muon1>'+muPtRange[0]+')*(Pt_muon1<'+muPtRange[1]+')'
                         print '*********',ptCut
 			[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = GetMuMuScaleFactors( NormalWeightMuMu+'*'+preselectionmumu+ptCut, NormalDirectory, '(M_uu>80)*(M_uu<100)', '(M_uu>100)*(M_uu<250)',0,1)
+                        binnedValsZ.append([Rz_uujj,Rz_uujj_err])
+                        binnedValsTT.append([Rtt_uujj,Rtt_uujj_err])
                 """
                 """
 		for stRange in [['300','400'],['400','650'],['650','900'],['900','99999']]:
 			stCut = '*(St_uujj>'+stRange[0]+')*(St_uujj<'+stRange[1]+')'
 			print '*********',stCut
 			[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = GetMuMuScaleFactors( NormalWeightMuMu+'*'+preselectionmumu+stCut, NormalDirectory, '(M_uu>80)*(M_uu<100)', '(M_uu>100)*(M_uu<250)',1,1)
+                        binnedValsZ.append([Rz_uujj,Rz_uujj_err])
+                        binnedValsTT.append([Rtt_uujj,Rtt_uujj_err])
 		"""
                 """
                 for mujRange in [['0','250'],['250','750'],['750','99999']]:
 			mujCut = '*(M_uujj2>'+mujRange[0]+')*(M_uujj2<'+mujRange[1]+')'
 			print '*********',mujCut
 			[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = GetMuMuScaleFactors( NormalWeightMuMu+'*'+preselectionmumu+mujCut, NormalDirectory, '(M_uu>80)*(M_uu<100)', '(M_uu>100)*(M_uu<250)',1,1)
+                        binnedValsZ.append([Rz_uujj,Rz_uujj_err])
+                        binnedValsTT.append([Rtt_uujj,Rtt_uujj_err])
+                """
+                """
 		for stRange in [['300','500'],['500','750'],['750','99999']]:
 			stCut = '*(St_uvjj>'+stRange[0]+')*(St_uvjj<'+stRange[1]+')'
 			print '*********',stCut
 			[[Rw_uvjj,Rw_uvjj_err],[Rtt_uvjj,Rtt_uvjj_err]] = GetMuNuScaleFactors( NormalWeightMuNu+'*'+preselectionmunu+stCut, NormalDirectory, munu1, munu2,1)
+                        binnedValsZ.append([Rz_uujj,Rz_uujj_err])
+                        binnedValsTT.append([Rtt_uujj,Rtt_uujj_err])
                 """
                 
                 for Range in [['0','100'],['100','200'],['200','400'],['400','99999']]:
 			Cut = '*(Pt_jet1>'+Range[0]+')*(Pt_jet1<'+Range[1]+')'
 			print '*********',Cut
 			[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = GetMuMuScaleFactors( NormalWeightMuMu+'*'+preselectionmumu+Cut, NormalDirectory, '(M_uu>80)*(M_uu<100)', '(M_uu>100)*(M_uu<250)',1,1)
-                
+                        binnedValsZ.append([Rz_uujj,Rz_uujj_err])
+                        binnedValsTT.append([Rtt_uujj,Rtt_uujj_err])
+                print '---------------------------------------------'
+                print 'nominal Z/TT' , nominalZ , nominalTT
+                print 'binning Z:'
+                for n in range(len(binnedValsZ)):
+                        print binnedValsZ[n][0],','
+                for n in range(len(binnedValsZ)):
+                        print binnedValsZ[n][1],','
+                print 'binning TT:'
+                for n in range(len(binnedValsTT)):
+                        print binnedValsTT[n][0],','
+                for n in range(len(binnedValsTT)):
+                        print binnedValsTT[n][1],','
 	# ====================================================================================================================================================== #
 	# This is for  spurious events
 	# ====================================================================================================================================================== #
