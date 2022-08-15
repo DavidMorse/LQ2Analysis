@@ -32,7 +32,11 @@ parser.add_argument("-y", "--year", dest="year", help="option to pick running ye
 
 options = parser.parse_args()
 dopdf = int(options.pdf)==1
-year = options.year
+if options.year in ['2016','2017','2018']:
+        year = options.year
+else:
+        print 'Must specify running year. Options are 2016,2017,2018. Exiting!'
+        exit()
 
 # Here we get the file name, and adjust it accordingly for EOS, castor, or local directory
 name = options.filename
@@ -94,14 +98,14 @@ print name
 
 fin = TFile.Open(name,"READ")
 
-_TopPtFactor = 1.0
+#_TopPtFactor = 1.0
 hev = fin.Get('EventCounter')
 NORIG = hev.GetBinContent(1)
-SumOfTopPtReweights = hev.GetBinContent(4)
-if 'SingleMuon' in name or 'SingleElectron' in name or 'DoubleMuon' in name or 'DoubleEG' in name:
-	_TopPtFactor = 1.0
-elif SumOfTopPtReweights != 0.0:
-	_TopPtFactor = float(NORIG)/float(SumOfTopPtReweights)
+#SumOfTopPtReweights = hev.GetBinContent(4)
+#if 'SingleMuon' in name or 'SingleElectron' in name or 'DoubleMuon' in name or 'DoubleEG' in name:
+#	_TopPtFactor = 1.0
+#elif SumOfTopPtReweights != 0.0:
+#	_TopPtFactor = float(NORIG)/float(SumOfTopPtReweights)
 #print '_TopPtFactor:',_TopPtFactor
 
 # Typical event weight, sigma*lumi/Ngenerated
@@ -216,7 +220,7 @@ _kinematicvariables += ['LQToBMu_pair_uubj_BDT_discrim_M2400', 'LQToBMu_pair_uub
 _kinematicvariables += ['LQToBMu_pair_uubj_BDT_discrim_M2700', 'LQToBMu_pair_uubj_BDT_discrim_M2800', 'LQToBMu_pair_uubj_BDT_discrim_M2900']
 _kinematicvariables += ['LQToBMu_pair_uubj_BDT_discrim_M3000', 'LQToBMu_pair_uubj_BDT_discrim_M3500', 'LQToBMu_pair_uubj_BDT_discrim_M4000']
 
-_weights = ['scaleWeight_Up','scaleWeight_Down','scaleWeight_R1_F1','scaleWeight_R1_F2','scaleWeight_R1_F0p5','scaleWeight_R2_F1','scaleWeight_R2_F2','scaleWeight_R2_F0p5','scaleWeight_R0p5_F1','scaleWeight_R0p5_F2','scaleWeight_R0p5_F0p5','scaleWeight_R2_F2','weight_amcNLO','weight_nopu','weight_central', 'weight_pu_up', 'weight_pu_down','weight_topPt','prefireWeight','prefireWeight_up','prefireWeight_down']
+_weights = ['scaleWeight_Up','scaleWeight_Down','scaleWeight_R1_F1','scaleWeight_R1_F2','scaleWeight_R1_F0p5','scaleWeight_R2_F1','scaleWeight_R2_F2','scaleWeight_R2_F0p5','scaleWeight_R0p5_F1','scaleWeight_R0p5_F2','scaleWeight_R0p5_F0p5','scaleWeight_R2_F2','weight_amcNLO','weight_nopu','weight_central', 'weight_pu_up', 'weight_pu_down','weight_topPt','weight_topPt_up','weight_topPt_down','prefireWeight','prefireWeight_up','prefireWeight_down']
 _flagDoubles = ['run_number','event_number','lumi_number']
 _flags = ['pass_HLTIsoMu27','pass_HLTMu45_eta2p1','pass_HLTMu50','pass_HLTMu55','pass_HLTTkMu50','pass_HLTOldMu100','pass_HLTTkMu100','GoodVertexCount']
 _flags += ['passPrimaryVertex','passTriggerObjectMatching','passDataCert']
@@ -2496,6 +2500,39 @@ def GetLLJJMasses3Jets(l1,l2,j1,j2,j3):
 	pair.append(mh)
 	return pair
 
+def getTopPtReweight(T):
+        global year
+        if ('TTTo' not in name) and ('TT_' not in name) :
+                return (1.0, 1.0, 1.0)
+        # Using HH->bbWW example: https://github.com/FlorianBury/HHbbWWAnalysis/blob/aaad8763c2fcadfff45d6c008de6df3940ace1ae/BaseHHtobbWW.py#L1037
+        # https://twiki.cern.ch/twiki/bin/viewauth/CMS/TopPtReweighting#Use_case_3_ttbar_MC_is_used_to_m -> do not use when ttbar is background
+        # Correct : https://indico.cern.ch/event/904971/contributions/3857701/attachments/2036949/3410728/TopPt_20.05.12.pdf
+        #       -> Weight formula           : slide 2
+        #       -> top/antitop SF           : slide 12 bottom left 
+        #       -> 2016 CUET extra addition : slide 13 bottom left 
+        topPt , topPtWeight = 0 , 1.0
+        antitopPt , antitopPtWeight = 0 , 1.0
+        eventWeight = 1.0
+        # Get tops #
+        for n in range(T.nGenPart):
+                if (T.GenPart_pdgId[n]==6) and (T.GenPart_statusFlags[n] & ( 0x1 << 13)) :
+                        topPt = T.GenPart_pt[n]
+                if (T.GenPart_pdgId[n]==-6) and (T.GenPart_statusFlags[n] & ( 0x1 << 13)) :
+                        antitopPt = T.GenPart_pt[n]
+                if topPt>0 and antitopPt>0 :
+                        break
+        if topPt>0 and antitopPt>0 :
+                topPtWeight = math.exp(-2.02274e-01 + 1.09734e-04*topPt + -1.30088e-07*topPt**2 + (5.83494e+01/(topPt+1.96252e+02)))
+                antitopPtWeight = math.exp(-2.02274e-01 + 1.09734e-04*antitopPt + -1.30088e-07*antitopPt**2 + (5.83494e+01/(antitopPt+1.96252e+02)))
+        eventWeight = math.sqrt(topPtWeight*antitopPtWeight)
+        if year == '2016' :
+                topPtWeight = 1.04554e+00 + 5.19012e-02*math.tanh(-1.72927e+00 + 2.57113e-03*topPt)
+                antitopPtWeight = 1.04554e+00 + 5.19012e-02*math.tanh(-1.72927e+00 + 2.57113e-03*antitopPt)
+                eventWeight *= math.sqrt(topPtWeight*antitopPtWeight)
+        #print eventWeight
+        return (eventWeight , eventWeight*eventWeight , 1.0)
+      
+
 
 ##########################################################################################
 #################    BELOW IS THE ACTUAL LOOP OVER ENTRIES         #######################
@@ -2535,12 +2572,12 @@ for n in range(N):
 	# print '-----'
 	# Assign Weights
 	if 'SingleMuon' in name or 'SingleElectron' in name or 'DoubleMuon' in name or 'DoubleEG' in name:
-		Branches['weight_central'][0] = 1.0#startingweight*t.genWeight*t.puWeight#GetPUWeight(t,'Central','Basic')
-		Branches['weight_pu_down'][0] = 1.0#startingweight*t.genWeight*t.puWeightUp#GetPUWeight(t,'SysDown','Basic')
-		Branches['weight_pu_up'][0] = 1.0#startingweight*t.genWeight*t.puWeightDown#GetPUWeight(t,'SysUp','Basic')
-		#Branches['weight_central_2012D'][0] = startingweight*GetPUWeight(t,'Central','2012D')
-		Branches['weight_nopu'][0] = 1.0#startingweight*t.genWeight
-		Branches['weight_topPt'][0]= 1.0#_TopPtFactor*startingweight*t.genWeight
+		Branches['weight_central'][0] = 1.0
+		Branches['weight_pu_down'][0] = 1.0
+		Branches['weight_pu_up'][0] = 1.0
+		#Branches['weight_central_2012D'][0] = 1.0
+		Branches['weight_nopu'][0] = 1.0
+		Branches['weight_topPt'][0] , Branches['weight_topPt_up'][0] , Branches['weight_topPt_down'][0]= 1.0 , 1.0 , 1.0
 
 		Branches['scaleWeight_Up'][0]=       1.0
 		Branches['scaleWeight_Down'][0]=     1.0
@@ -2560,7 +2597,10 @@ for n in range(N):
 		Branches['weight_pu_up'][0] = startingweight*t.genWeight*t.puWeightUp
 		#Branches['weight_central_2012D'][0] = startingweight*GetPUWeight(t,'Central','2012D')
 		Branches['weight_nopu'][0] = startingweight*t.genWeight
-		Branches['weight_topPt'][0]=_TopPtFactor*startingweight*t.genWeight*t.puWeight
+                if ('TTTo' in name) or ('TT_' in name) :
+                        Branches['weight_topPt'][0] , Branches['weight_topPt_up'][0] , Branches['weight_topPt_down'][0] = getTopPtReweight(t)
+                else :
+                        Branches['weight_topPt'][0] , Branches['weight_topPt_up'][0] , Branches['weight_topPt_down'][0]= 1.0 , 1.0 , 1.0
 
 		#if 'amcatnlo' in amcNLOname :
 		#	Branches['weight_central'][0]*=t.amcNLOWeight
