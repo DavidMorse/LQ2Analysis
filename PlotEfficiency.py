@@ -28,14 +28,14 @@ sysTabEnhancedPresel2016 = "Results_Testing_2016_stockNanoAODv7_Run2CombBDT_Full
 
 cleanTabPresel2017 = "Results_Testing_2017_stockNanoAODv7_Run2CombBDT_FullSys_PDF/Optimization_Presel/CleanTable_2017.tex" # Initial events and stat error on initial events (evaluated at preselection)
 cleanTabFinal2017 = "Results_Testing_2017_stockNanoAODv7_Run2CombBDT_FullSys_PDF/Optimization/CleanTable_2017.tex" # Final events and stat error on final events (evaluated at final selection)
-sysTabPresel2016 = "Results_Testing_2017_stockNanoAODv7_Run2CombBDT_FullSys_PDF/Optimization_Presel/SysTables_2017.tex" # Sys error on initial events (evaluated at preselection)
+sysTabPresel2017 = "Results_Testing_2017_stockNanoAODv7_Run2CombBDT_FullSys_PDF/Optimization_Presel/SysTables_2017.tex" # Sys error on initial events (evaluated at preselection)
 sysTabEnhancedPresel2017 = "Results_Testing_2017_stockNanoAODv7_Run2CombBDT_FullSys_PDF/Optimization_EnhancedPresel/SysTables_2017.tex" # Sys error on final events (evaluated at enhanced selection)
 
 # 2018
 
 cleanTabPresel2018 = "Results_Testing_2018_stockNanoAODv7_Run2CombBDT_FullSys_PDF/Optimization_Presel/CleanTable_2018.tex" # Initial events and stat error on initial events (evaluated at preselection)
 cleanTabFinal2018 = "Results_Testing_2018_stockNanoAODv7_Run2CombBDT_FullSys_PDF/Optimization/CleanTable_2018.tex" # Final events and stat error on final events (evaluated at final selection)
-sysTabPresel2016 = "Results_Testing_2018_stockNanoAODv7_Run2CombBDT_FullSys_PDF/Optimization_Presel/SysTables_2018.tex" # Sys error on initial events (evaluated at preselection)
+sysTabPresel2018 = "Results_Testing_2018_stockNanoAODv7_Run2CombBDT_FullSys_PDF/Optimization_Presel/SysTables_2018.tex" # Sys error on initial events (evaluated at preselection)
 sysTabEnhancedPresel2018 = "Results_Testing_2018_stockNanoAODv7_Run2CombBDT_FullSys_PDF/Optimization_EnhancedPresel/SysTables_2018.tex" # Sys error on final events (evaluated at enhanced selection)
 
 # Set LQ masses, here
