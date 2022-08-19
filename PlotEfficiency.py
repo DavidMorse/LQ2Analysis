@@ -220,43 +220,42 @@ def PlotEfficiencies(efficiency2016,efficiency2017,efficiency2018):
     fig = plt.figure()
     ax1 = fig.add_subplot(1,1,1)
 
-    sig2016 = ax1.plot(x,ySig2016,'-',linewidth=1, label="2016 Signal",color='tab:red')
-    sigSysUp2016 = ax1.plot(x,effErrSig2016_up,'--',linewidth=1, label="2016 Signal",color='tab:red')
-    sigSysDown2016 = ax1.plot(x,effErrSig2016_down,'--',linewidth=1, label="2016 Signal",color='tab:red')
+    bkg2016 = ax1.plot(x,yBkg2016,'-',linewidth=1, label="2016 Background",color='tab:blue')
+    bkgSysUp2016 = ax1.plot(x,effErrBkg2016_up,'--',linewidth=1, label="2016 Background",color='tab:blue')
+    bkgSysDown2016 = ax1.plot(x,effErrBkg2016_down,'--',linewidth=1, label="2016 Background",color='tab:blue')
 
-    sig2017 = ax1.plot(x,ySig2017,'-',linewidth=1, label="2017 Signal",color='tab:orange')
-    sigSysUp2017 = ax1.plot(x,effErrSig2017_up,'--',linewidth=1, label="2017 Signal",color='tab:orange')
-    sigSysDown2017 = ax1.plot(x,effErrSig2017_down,'--',linewidth=1, label="2017 Signal",color='tab:orange')
+    bkg2017 = ax1.plot(x,yBkg2017,'-',linewidth=1, label="2017 Background",color='tab:green')
+    bkgSysUp2017 = ax1.plot(x,effErrBkg2017_up,'--',linewidth=1, label="2017 Background",color='tab:green')
+    bkgSysDown2017 = ax1.plot(x,effErrBkg2017_down,'--',linewidth=1, label="2017 Background",color='tab:green')
 
-    sig2018 = ax1.plot(x,ySig2018,'-',linewidth=1, label="2018 Signal",color='tab:pink')
-    sigSysUp2018 = ax1.plot(x,effErrSig2018_up,'--',linewidth=1, label="2018 Signal",color='tab:pink')
-    sigSysDown2018 = ax1.plot(x,effErrSig2018_down,'--',linewidth=1, label="2018 Signal",color='tab:pink')
-
+    bkg2018 = ax1.plot(x,yBkg2018,'-',linewidth=1, label="2018 Background",color='tab:cyan')
+    bkgSysUp2018 = ax1.plot(x,effErrBkg2018_up,'--',linewidth=1, label="2018 Background",color='tab:cyan')
+    bkgSysDown2018 = ax1.plot(x,effErrBkg2018_down,'--',linewidth=1, label="2018 Background",color='tab:cyan')
 
     ax2 = ax1.twinx()
-    bkg2016 = ax2.plot(x,yBkg2016,'-',linewidth=1, label="2016 Background",color='tab:blue')
-    bkgSysUp2016 = ax2.plot(x,effErrBkg2016_up,'--',linewidth=1, label="2016 Background",color='tab:blue')
-    bkgSysDown2016 = ax2.plot(x,effErrBkg2016_down,'--',linewidth=1, label="2016 Background",color='tab:blue')
+    sig2016 = ax2.plot(x,ySig2016,'-',linewidth=1, label="2016 Signal",color='tab:red')
+    sigSysUp2016 = ax2.plot(x,effErrSig2016_up,'--',linewidth=1, label="2016 Signal",color='tab:red')
+    sigSysDown2016 = ax2.plot(x,effErrSig2016_down,'--',linewidth=1, label="2016 Signal",color='tab:red')
 
-    bkg2017 = ax2.plot(x,yBkg2017,'-',linewidth=1, label="2017 Background",color='tab:green')
-    bkgSysUp2017 = ax2.plot(x,effErrBkg2017_up,'--',linewidth=1, label="2017 Background",color='tab:green')
-    bkgSysDown2017 = ax2.plot(x,effErrBkg2017_down,'--',linewidth=1, label="2017 Background",color='tab:green')
+    sig2017 = ax2.plot(x,ySig2017,'-',linewidth=1, label="2017 Signal",color='tab:orange')
+    sigSysUp2017 = ax2.plot(x,effErrSig2017_up,'--',linewidth=1, label="2017 Signal",color='tab:orange')
+    sigSysDown2017 = ax2.plot(x,effErrSig2017_down,'--',linewidth=1, label="2017 Signal",color='tab:orange')
 
-    bkg2018 = ax2.plot(x,yBkg2018,'-',linewidth=1, label="2018 Background",color='tab:cyan')
-    bkgSysUp2018 = ax2.plot(x,effErrBkg2018_up,'--',linewidth=1, label="2018 Background",color='tab:cyan')
-    bkgSysDown2018 = ax2.plot(x,effErrBkg2018_down,'--',linewidth=1, label="2018 Background",color='tab:cyan')
+    sig2018 = ax2.plot(x,ySig2018,'-',linewidth=1, label="2018 Signal",color='tab:pink')
+    sigSysUp2018 = ax2.plot(x,effErrSig2018_up,'--',linewidth=1, label="2018 Signal",color='tab:pink')
+    sigSysDown2018 = ax2.plot(x,effErrSig2018_down,'--',linewidth=1, label="2018 Signal",color='tab:pink')
 
 
-    ax1.set_ylabel("Signal Efficiency",fontsize=16)
-    ax2.set_ylabel("Background Efficiency",fontsize=16)
+    ax1.set_ylabel("Background Efficiency",fontsize=16)
+    ax2.set_ylabel("Signal Efficiency",fontsize=16)
     ax1.set_xlabel(r"$M_{LQ}$ [GeV]",fontsize=16)
 
-    ax2.xaxis.major.formatter._useMathText = True
-    ax2.ticklabel_format(style='sci', axis='y', scilimits=(0,0))
+    ax1.xaxis.major.formatter._useMathText = True
+    ax1.ticklabel_format(style='sci', axis='y', scilimits=(0,0))
 
     sigbkg = sig2016+bkg2016+sig2017+bkg2017+sig2018+bkg2018
     labels = [x.get_label() for x in sigbkg]
-    ax1.legend(sigbkg, labels, loc=7)
+    ax2.legend(sigbkg, labels, loc=9)
 
     #plt.yscale(value="log")
     fig.tight_layout()
