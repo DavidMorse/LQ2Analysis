@@ -65,9 +65,9 @@ alignementcorrswitch = False
 if "AlignmentCorr" in options.dir:
 	alignementcorrswitch = True
 # Will add BDT weights if turned on
-bdtswitch = False
-if "BDT" in options.dir:
-	bdtswitch = True
+bdtswitch = True
+if "NoBDT" in options.dir:
+	bdtswitch = False
 
 print 'EMu Switch = ', emuswitch
 print 'NonIso Switch = ', nonisoswitch

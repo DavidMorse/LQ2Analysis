@@ -197,9 +197,9 @@ bTagselmedium = "*((Flag_dataYear2016"+bTagselmedium2016+")+(Flag_dataYear2017"+
 #NormalWeightMuNu = str(lumi)+'*weight_central*((pass_HLTMu50+pass_HLTTkMu50)>0)'+singlemuHLT+singleMuIdScale+singleMuIsoScale+trackerHIP1
 #NormalWeightEMu = str(lumi)+'*weight_central*((pass_HLTMu50+pass_HLTTkMu50)>0)'+singlemuHLTEMU+MuIdScaleEMU+MuIsoScaleEMU+eleRECOScale+eleHEEPScale+trackerHIPEMU
 
-NormalWeight2016 = "(Flag_dataYear2016*("+str(lumi2016)+"*weight_central*prefireWeight"+bTagSFmedium2016+"))"
-NormalWeight2017 = "(Flag_dataYear2017*("+str(lumi2017)+"*weight_central*prefireWeight"+bTagSFmedium2017+"))"
-NormalWeight2018 = "(Flag_dataYear2018*("+str(lumi2018)+"*weight_central"+bTagSFmedium2018+"))"
+NormalWeight2016 = "(Flag_dataYear2016*("+str(lumi2016)+"*weight_topPt*prefireWeight"+bTagSFmedium2016+"))"
+NormalWeight2017 = "(Flag_dataYear2017*("+str(lumi2017)+"*weight_topPt*prefireWeight"+bTagSFmedium2017+"))"
+NormalWeight2018 = "(Flag_dataYear2018*("+str(lumi2018)+"*weight_topPt"+bTagSFmedium2018+"))"
 
 NormalWeightMuMu = 	"("+NormalWeight2016+"+"+NormalWeight2017+"+"+NormalWeight2018+")"+doublemuHLT+doubleMuRecoSF+doubleMuIsoSF+doubleMuIdSF
 NormalWeightMuNu = str(lumi)+'*weight_central'+singlemuHLT+singleMuRecoSF+singleMuIsoSF+singleMuIdSF
@@ -4225,7 +4225,7 @@ def ModSelection(selection,sysmethod,channel_log):
 	_kinematicvariables += ['M_uujj1','M_uujj2','M_uujjavg','MT_uvjj1','MT_uvjj2','M_uvjj','MT_uvjj']
 	_kinematicvariables += ['M_uu','MT_uv']
 	_kinematicvariables += ['DR_muon1muon2','DPhi_muon1met','DPhi_jet1met']
-	_weights = ['weight_nopu','weight_central', 'weight_pu_up', 'weight_pu_down']
+	_weights = ['weight_nopu','weight_topPt', 'weight_pu_up', 'weight_pu_down']
 	_variations = ['','JESup','JESdown','MESup','MESdown','JERup','JERdown','MER']	
 	selsplit = []
 	selchars = ''
@@ -4340,9 +4340,9 @@ def ModSelection(selection,sysmethod,channel_log):
 				selection = '(0.995*(Pt_muon1<300)+0.99*(Pt_muon1>300))*'+selection
 
 		if 'PUup' in sysmethod :
-			selection = selection.replace('weight_central','weight_pu_up')
+			selection = selection.replace('weight_topPt','weight_pu_up')
 		if 'PUdown' in sysmethod :
-			selection = selection.replace('weight_central','weight_pu_down')
+			selection = selection.replace('weight_topPt','weight_pu_down')
                 if 'TOPPTup' in sysmethod :
 			selection = selection.replace('weight_topPt','weight_topPt_up')
                 if 'TOPPTdown' in sysmethod :
