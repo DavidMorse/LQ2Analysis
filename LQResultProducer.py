@@ -201,9 +201,8 @@ NormalWeight2016 = "(Flag_dataYear2016*("+str(lumi2016)+"*weight_topPt*prefireWe
 NormalWeight2017 = "(Flag_dataYear2017*("+str(lumi2017)+"*weight_topPt*prefireWeight"+bTagSFmedium2017+"))"
 NormalWeight2018 = "(Flag_dataYear2018*("+str(lumi2018)+"*weight_topPt"+bTagSFmedium2018+"))"
 
-NormalWeightMuMu = 	"("+NormalWeight2016+"+"+NormalWeight2017+"+"+NormalWeight2018+")"+doublemuHLT+doubleMuRecoSF+doubleMuIsoSF+doubleMuIdSF
+NormalWeightMuMu = "("+NormalWeight2016+"+"+NormalWeight2017+"+"+NormalWeight2018+")"+doublemuHLT+doubleMuRecoSF+doubleMuIsoSF+doubleMuIdSF
 NormalWeightMuNu = str(lumi)+'*weight_central'+singlemuHLT+singleMuRecoSF+singleMuIsoSF+singleMuIdSF
-#if year == '2016' or year == '2017': NormalWeightMuMu += '*prefireWeight'
 
 #fixme checking eta restriction on muons and electrons to fix r_uu/eu
 muEtaRestrict = '*((IsMuon_muon1>0)*(abs(Eta_muon1)<2.1)+(IsMuon_muon2>0)*(abs(Eta_muon2)<2.1))'
@@ -247,7 +246,7 @@ passfilter += '*(Flag_BadPFMuonFilter)'#*Flag_BadChargedHadron)'
 
 # This defines the preselections for the mu-mu, mu-nu, and e-mu samples
 preselectionmumu_single = '((Pt_muon1>53)*(Pt_muon2>53)*(Pt_jet1>50)*(St_uujj>250)*(M_uu>50)*(DR_muon1muon2>0.3)'+bTagselmedium+')'
-preselectionmumu = '((Pt_muon1>53)*(Pt_muon2>53)*(Pt_jet1>50)*(Pt_jet2>50)*(St_uujj>300)*(M_uu>50)*(DR_muon1muon2>0.3)'+bTagselmedium+')'
+preselectionmumu = '((Pt_muon1>53)*(Pt_muon2>53)*(Pt_jet1>50)*(Pt_jet2>50)*(St_uujj>300)*(M_uu>50)*(DR_muon1muon2>0.3)*((MuonCount+ElectronCount)<3)'+bTagselmedium+')'
 preselectionmunu = '((Pt_muon1>53)*(Pt_muon2<53)*(Pt_miss>55)*(Pt_jet1>50)*(Pt_jet2>50)*(Pt_ele1<53)*(St_uvjj>300)*(MT_uv>50.0)*(DPhi_muon1met>0.8)*(DPhi_jet1met>0.5))'
 preselectionemu  = '((Pt_muon1>53)*(Pt_muon2>53)*(Pt_jet1>50)*(Pt_jet2>50)*(St_uujj>300)*(M_uu>50)*(DR_muon1muon2>0.3))'
 
