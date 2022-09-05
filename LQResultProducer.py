@@ -736,8 +736,8 @@ def main():
 		#munu2 = '(MT_uv>70)*(MT_uv<110)*(JetCount>3.5)'
 		# SFs with updated integrated luminosities
 		if year == '2016':
-			[[Rz_uuj,Rz_uuj_err],[Rtt_uuj,Rtt_uuj_err]] = [[1.005,0.015],[0.968,0.013]] #2016 stock NanoAODv7 with 1 btag (uub) 
-			[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = [[1.02,0.017],[0.961,0.014]] #2016 stock NanoAODv7 with 1 btag (uubj) (Rz_uujj = 89% purity, Rtt_uujj = 91% purity)
+			[[Rz_uuj,Rz_uuj_err],[Rtt_uuj,Rtt_uuj_err]] = [[1.004,0.016],[0.997,0.013]] #2016 stock NanoAODv7 with 1 btag (uub) 
+			[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = [[1.02,0.017],[0.991,0.015]] #2016 stock NanoAODv7 with 1 btag (uubj) (Rz_uujj = 89% purity, Rtt_uujj = 91% purity)
 		elif year == '2017':
 			[[Rz_uuj,Rz_uuj_err],[Rtt_uuj,Rtt_uuj_err]]  =  [[1.382,0.019],[1.057,0.011]] #2017 stock NanoAODv7 with 1 btag (uub)
 			[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = [[1.371,0.021],[1.061,0.012]] #2017 stock NanoAODv7 with 1 btag (uubj) (Rz_uujj = 91% purity, Rtt_uujj = 89% purity)
@@ -745,8 +745,8 @@ def main():
 			[[Rz_uuj,Rz_uuj_err],[Rtt_uuj,Rtt_uuj_err]]  =  [[1.3,0.015],[0.979,0.009]] #2018 stock NanoAODv7 with 1 btag (uub)
 			[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]]  =  [[1.302,0.017],[0.981,0.01]] #2018 stock NanoAODv7 with 1 btag (uubj) (Rz_uujj = 91% purity, Rtt_uujj = 92% purity)
 		elif "comb" in year:
-			[[Rz_uuj_2016,Rz_uuj_2016_err],[Rtt_uuj_2016,Rtt_uuj_2016_err]] = [[1.005,0.015],[0.968,0.013]] #2016 stock NanoAODv7 with 1 btag (uub) 
-			[[Rz_uujj_2016,Rz_uujj_2016_err],[Rtt_uujj_2016,Rtt_uujj_2016_err]] = [[1.02,0.017],[0.961,0.014]] #2016 stock NanoAODv7 with 1 btag (uubj) (Rz_uujj = 89% purity, Rtt_uujj = 91% purity)
+			[[Rz_uuj_2016,Rz_uuj_2016_err],[Rtt_uuj_2016,Rtt_uuj_2016_err]] = [[1.004,0.016],[0.997,0.013]] #2016 stock NanoAODv7 with 1 btag (uub) 
+			[[Rz_uujj_2016,Rz_uujj_2016_err],[Rtt_uujj_2016,Rtt_uujj_2016_err]] = [[1.02,0.017],[0.991,0.015]] #2016 stock NanoAODv7 with 1 btag (uubj) (Rz_uujj = 89% purity, Rtt_uujj = 91% purity)
 			[[Rz_uuj_2017,Rz_uuj_2017_err],[Rtt_uuj_2017,Rtt_uuj_2017_err]]  =  [[1.382,0.019],[1.057,0.011]] #2017 stock NanoAODv7 with 1 btag (uub)
 			[[Rz_uujj_2017,Rz_uujj_2017_err],[Rtt_uujj_2017,Rtt_uujj_2017_err]] = [[1.371,0.021],[1.061,0.012]] #2017 stock NanoAODv7 with 1 btag (uubj) (Rz_uujj = 91% purity, Rtt_uujj = 89% purity)
 			[[Rz_uuj_2018,Rz_uuj_2018_err],[Rtt_uuj_2018,Rtt_uuj_2018_err]]  =  [[1.3,0.015],[0.979,0.009]] #2018 stock NanoAODv7 with 1 btag (uub)
@@ -4267,18 +4267,18 @@ def ModSelection(selection,sysmethod,channel_log):
 			if year =='2016': selection = '(0.994)*'+selection
 			elif year == '2017': selection = '(0.991)*'+selection
 			elif year == '2018': selection = '(0.98)*'+selection
-		if (sysmethod == 'LUMIup16' or sysmethod == 'LUMIup17' or sysmethod == 'LUMIup18') :#fully un-correlated
+		if (sysmethod == 'LUMI16up' or sysmethod == 'LUMI17up' or sysmethod == 'LUMI18up') :#fully un-correlated
 			if year =='2016': selection = '(1.01)*'+selection 
 			elif year == '2017': selection = '(1.02)*'+selection
 			elif year == '2018': selection = '(1.015)*'+selection
-		if (sysmethod == 'LUMIdown16' or sysmethod == 'LUMIdown17' or sysmethod == 'LUMIdown18'):#fully un-correlated
+		if (sysmethod == 'LUMI16down' or sysmethod == 'LUMI17down' or sysmethod == 'LUMI18down'):#fully un-correlated
 			if year =='2016': selection = '(0.99)*'+selection
 			elif year == '2017': selection = '(0.98)*'+selection
 			elif year == '2018': selection = '(0.985)*'+selection
-		if sysmethod == 'LUMIup1718':#partially correlated, 2017 2018 only
+		if sysmethod == 'LUMI1718up':#partially correlated, 2017 2018 only
 			if year == '2017': selection = '(1.006)*'+selection
 			elif year == '2018': selection = '(1.002)*'+selection
-		if sysmethod == 'LUMIdown1718':#partially correlated, 2017 2018 only
+		if sysmethod == 'LUMI1718down':#partially correlated, 2017 2018 only
 			if year == '2017': selection = '(0.994)*'+selection
 			elif year == '2018': selection = '(0.998)*'+selection
 		if 'MUONRECOup' in sysmethod :
@@ -4752,12 +4752,17 @@ def FullAnalysis(optimlog,selection_uujj,selection_uvjj,NormalDirectory,weight,u
 	#_Variations = ['','JESup','JESdown','MESup','MESdown','JERup','JERdown','MER','LUMIup','LUMIdown','PUup','PUdown','ZNORMup','ZNORMdown','WNORMup','WNORMdown','TTNORMup','TTNORMdown','SHAPETT','SHAPEZ','SHAPEW','SHAPEVV','MUONIDISO','MUONHLT','PDF','HIPup','HIPdown']	
 	#Splitting MUONIDISO and MUONHLT into up and down to account for asymmetric high pt corrections
 	#_Variations = ['','JESup','JESdown','MESup','MESdown','JERup','JERdown','MER','LUMIup','LUMIdown','PUup','PUdown','ZNORMup','ZNORMdown','WNORMup','WNORMdown','TTNORMup','TTNORMdown','SHAPETT','SHAPEZ','SHAPEW','SHAPEVV','MUONIDISOup','MUONIDISOdown','MUONHLTup','MUONHLTdown','PDF','HIPup','HIPdown','BTAGup','BTAGdown']
-	if year=="2016":
-                _Variations = ['','JESup','JESdown','MESup','MESdown','JERup','JERdown','MER','LUMIup','LUMIdown','LUMIup16','LUMIdown16','PUup','PUdown','ZNORMup','ZNORMdown','TTNORMup','TTNORMdown','SHAPETT','SHAPEZ','SHAPEVV','MUONIDup', 'MUONIDdown', 'MUONISOup', 'MUONISOdown','MUONHLTup','MUONHLTdown','MUONRECOup','MUONRECOdown','PDF','BTAGup','BTAGdown','TOPPTup','TOPPTdown']
-	elif year=="2017":
-                _Variations = ['','JESup17','JESdown17','MESup17','MESdown17','JERup17','JERdown17','MER17','LUMIup','LUMIdown','LUMIup17','LUMIdown17','LUMIup1718','LUMIdown1718','PUup','PUdown','ZNORMup17','ZNORMdown17','TTNORMup17','TTNORMdown17','SHAPETT','SHAPEZ','SHAPEVV','MUONIDup17', 'MUONIDdown17', 'MUONISOup17', 'MUONISOdown17','MUONHLTup17','MUONHLTdown17','MUONRECOup17','MUONRECOdown17','PDF','BTAGup17','BTAGdown17','TOPPTup','TOPPTdown']
-        elif year=="2018":
-                _Variations = ['','JESup18','JESdown18','MESup18','MESdown18','JERup18','JERdown18','MER18','LUMIup','LUMIdown','LUMIup18','LUMIdown18','LUMIup1718','LUMIdown1718','PUup','PUdown','ZNORMup18','ZNORMdown18','TTNORMup18','TTNORMdown18','SHAPETT','SHAPEZ','SHAPEVV','MUONIDup18', 'MUONIDdown18', 'MUONISOup18', 'MUONISOdown18','MUONHLTup18','MUONHLTdown18','MUONRECOup18','MUONRECOdown18','PDF','BTAGup18','BTAGdown18','TOPPTup','TOPPTdown']	
+
+	_Variations2016 = ['','JESup','JESdown','MESup','MESdown','JERup','JERdown','MER','LUMIup','LUMIdown','LUMI16up','LUMI16down','PUup','PUdown','ZNORMup','ZNORMdown','TTNORMup','TTNORMdown','SHAPETT','SHAPEZ','SHAPEVV','MUONIDup', 'MUONIDdown', 'MUONISOup', 'MUONISOdown','MUONHLTup','MUONHLTdown','MUONRECOup','MUONRECOdown','PDF','BTAGup','BTAGdown','TOPPTup','TOPPTdown']
+
+	_Variations2017 = ['','JES17up','JES17down','MES17up','MES17down','JER17up','JER17down','MER17','LUMIup','LUMIdown','LUMI17up','LUMI17down','LUMI1718up','LUMI1718down','PUup','PUdown','ZNORM17up','ZNORM17down','TTNORM17up','TTNORM17down','SHAPETT','SHAPEZ','SHAPEVV','MUONID17up', 'MUONID17down', 'MUONISO17up', 'MUONISO17down','MUONHLT17up','MUONHLT17down','MUONRECO17up','MUONRECO17down','PDF','BTAG17up','BTAG17down','TOPPTup','TOPPTdown']
+
+	_Variations2018 = ['','JES18up','JES18down','MES18up','MES18down','JER18up','JER18down','MER18','LUMIup','LUMIdown','LUMI18up','LUMI18down','LUMI1718up','LUMI1718down','PUup','PUdown','ZNORM18up','ZNORM18down','TTNORM18up','TTNORM18down','SHAPETT','SHAPEZ','SHAPEVV','MUONID18up', 'MUONID18down', 'MUONISO18up', 'MUONISO18down','MUONHLT18up','MUONHLT18down','MUONRECO18up','MUONRECO18down','PDF','BTAG18up','BTAG18down','TOPPTup','TOPPTdown']
+
+	if year == '2016': _Variations = _Variations2016
+	if year == '2017': _Variations = _Variations2017	
+	if year == '2018': _Variations = _Variations2018	
+
 	for v in _Variations:
 		print ' -'*50
 		print 'Processing table for variation: ',v
