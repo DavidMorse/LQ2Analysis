@@ -42,8 +42,13 @@ with open('Results_Testing_'+year+'_stockNanoAODv7_Run2CombBDT_FullSys_PDF/Optim
                 rateLine = i
             if i == rateLine+1:
                 for sysLine in SysLines[mass]:
-                    print sysLine
-                    outFile.write(sysLine+'\n')
+                    sysLine = sysLine+' '
+                    if 'TOPPT' in sysLine:
+                        newSysLine = sysLine.replace('2.0 ','1 ')
+                    else:
+                        newSysLine = sysLine
+                    print newSysLine.strip()
+                    outFile.write(newSysLine.strip()+'\n')
 
 
 
