@@ -22,7 +22,10 @@ for year in years:
     sysTabFile = year.join(sysTabRootDir)+'/'+sysTabSubDir+'/'+sysTabFileName+'_'+year+'.tex'
     with open(sysTabFile,'r') as inSysTexFile:
         for line in inSysTexFile:
-            tableStrToWrite += line
+            if 'LUMI16' in line or 'LUMI17' in line or 'LUMI18' in line or 'LUMI1718' in line:
+                continue
+            else:
+                tableStrToWrite += line
     with open(sysTabAllYears,'a') as inSysTabAllYears:
         inSysTabAllYears.write(tableStrToWrite)
 
@@ -47,8 +50,8 @@ for mass in masses:
             if "%2018% %"+mass+"%" in line:
                 start2018 = i+7
             lines.append(line)
-        for sys in range(18):
-            sysName = lines[start2016+sys].split("&")[0].strip()
+        for sys in range(19):
+            sysName = lines[start2016+sys].split("&")[0].strip().replace('16','').replace('17','').replace('18','')
 
             sig2016 = lines[start2016+sys].split("&")[1].strip()
             bkg2016 = lines[start2016+sys].split("&")[2].split(r"\\")[0].strip()
@@ -58,7 +61,7 @@ for mass in masses:
 
             sig2018 = lines[start2018+sys].split("&")[1].strip()
             bkg2018 = lines[start2018+sys].split("&")[2].split(r"\\")[0].strip()
-            if sys != 17:
+            if sys != 18:
                 tableStr += "\t\t\t"+sysName+" & "+sig2016+" & "+bkg2016+" & "+sig2017+" & "+bkg2017+" & "+sig2018+" & "+bkg2018+r" \\"+"\n"
             else:
                 tableStr += "\t\t\t"+sysName+" & "+sig2016+" & "+bkg2016+" & "+sig2017+" & "+bkg2017+" & "+sig2018+" & "+bkg2018+r" \\"+" \hline \hline\n"
