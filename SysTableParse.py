@@ -31,6 +31,7 @@ mers=[]
 mess=[]
 muids=[]
 muisos=[]
+murecos=[]
 pdfs=[]
 pus=[]
 ttnorms=[]
@@ -53,6 +54,7 @@ mer=[999.,0.]
 mes=[999.,0.]
 muid=[999.,0.]
 muiso=[999.,0.]
+mureco=[999.,0.]
 pdf=[999.,0.]
 pu=[999.,0.]
 ttnorm=[999.,0.]
@@ -75,6 +77,7 @@ merSig=[999.,0.]
 mesSig=[999.,0.]
 muidSig=[999.,0.]
 muisoSig=[999.,0.]
+murecoSig=[999.,0.]
 pdfSig=[999.,0.]
 puSig=[999.,0.]
 ttnormSig=[999.,0.]
@@ -88,6 +91,10 @@ vvshapeSig=[999.,0.]
 hipSig=[999.,0.]
 btagSig=[999.,0.]
 topptSig=[999.,0.]
+
+systot = []
+systotSig = []
+
 gotToBetaHalf=False
 def cardtotex(card):
 	# print '  --------------------------------------------------   '
@@ -204,6 +211,13 @@ def cardtotex(card):
 				if r_s < trigSig[0]:trigSig[0]=r_s
 				if r_s > trigSig[1]:trigSig[1]=r_s
 				trigs.append(r_b)
+			if sysname == 'MUONRECO': 
+				sysname = 'Muon Reco'
+				if r_b < mureco[0]:mureco[0]=r_b
+				if r_b > mureco[1]:mureco[1]=r_b
+				if r_s < murecoSig[0]:murecoSig[0]=r_s
+				if r_s > murecoSig[1]:murecoSig[1]=r_s
+				murecos.append(r_b)
 			#if sysname == 'ALIGN':
 			#	sysname = 'Misalignment'
 			#	if r_b < align[0]:align[0]=r_b
@@ -314,7 +328,8 @@ def cardtotex(card):
 	systot_b = str(round(100*(math.sqrt( (sum([float(x)*float(x)*.01*.01  for x in backgroundsystematics ])) )),2))
 	textable += 'Total & '+systot_s + ' & ' + systot_b + '\\\\ \\hline \\hline\n'
 	textable += '\\end{tabular}\n\\label{tab:SysUncertainties_'+texchan+'_'+mass+'}\n\\end{center}\n\\end{table}\n\n'
-
+	systotSig.append(systot_s)
+	systot.append(systot_b)
 	# if '300' in mass or '500' in mass or '700' in mass or '1000' in mass:
 	#if '400' in mass or '650' in mass:
 	print textable
@@ -323,7 +338,7 @@ def cardtotex(card):
 		outtex.write(textable)
 
 	return [mass,str(round(float(systot_b),2)) ]
-	
+
 sysTableTex = ''
 sysTableTex += sysfile.strip(sysfile.split('/')[-1]).strip('/')
 if sysTableTex == '':
@@ -355,37 +370,45 @@ print '\n Deliniation of systematics list'
 for ii in range(len(totinfo)):
 	print cards[ii][0].replace('\n',''), sysuncs[ii]
 
-for x in [jer,jes,lumi,align,mer,mes,muid,muiso,pdf,pu,trig,hip,btag,ttnorm,ttshape,wnorm,wshape,znorm,zshape,vvshape,toppt,jerSig,jesSig,lumiSig,alignSig,merSig,mesSig,muidSig,muisoSig,pdfSig,puSig,trigSig,hipSig,btagSig,ttnormSig,ttshapeSig,wnormSig,wshapeSig,znormSig,zshapeSig,vvshapeSig,topptSig] :
+for x in [jer,jes,lumi,align,mer,mes,muid,muiso,mureco,pdf,pu,trig,hip,btag,ttnorm,ttshape,wnorm,wshape,znorm,zshape,vvshape,toppt,jerSig,jesSig,lumiSig,alignSig,merSig,mesSig,muidSig,muisoSig,murecoSig,pdfSig,puSig,trigSig,hipSig,btagSig,ttnormSig,ttshapeSig,wnormSig,wshapeSig,znormSig,zshapeSig,vvshapeSig,topptSig] :
 	if x[0]==999.0: x[0]=0.0
 
-print 'Range of systematics:'
-print '|  systematic uncertainty |  Signal min - max  |  Background min - max  |'
-print '|  Jet energy resolution  |  ', jerSig[0],'-',jerSig[1],'  |  ',jer[0],'-',jer[1],'  |'
-print '|  Jet energy scale       |  ', jesSig[0],'-',jesSig[1],'  |  ',jes[0],'-',jes[1],'  |'
-print '|  Luminosity             |  ', lumiSig[0],'-',lumiSig[1],'    |  ',lumi[0],'-',lumi[1],'  |'
-#print '|  Misalignment           |  ', alignSig[0],'-',alignSig[1],'  |  ',align[0],'-',align[1],'  |'
-print '|  Muon energy resolution |  ', merSig[0],'-',merSig[1],'  |  ',mer[0],'-',mer[1],'  |'
-print '|  Muon energy scale      |  ', mesSig[0],'-',mesSig[1],'  |  ',mes[0],'-',mes[1],'  |'
-print '|  Muon ID                |  ', muidSig[0],'-',muidSig[1],'  |  ',muid[0],'-',muid[1],'  |'
-print '|  Muon Isolation         |  ', muisoSig[0],'-',muisoSig[1],'  |  ',muiso[0],'-',muiso[1],'  |'
-print '|  PDF                    |  ', pdfSig[0],'-',pdfSig[1],'  |  ',pdf[0],'-',pdf[1],'  |'
-print '|  PileUp                 |  ', puSig[0],'-',puSig[1],'  |  ',pu[0],'-',pu[1],'  |'
-print '|  Muon HLT               |  ', trigSig[0],'-',trigSig[1],'  |  ',trig[0],'-',trig[1],'  |'
-#print '|  Tracking efficiency    |  ', hipSig[0],'-',hipSig[1],'  |  ',hip[0],'-',hip[1],'  |'
-print '|  b-tagging efficiency   |  ', btagSig[0],'-',btagSig[1],'  |  ',btag[0],'-',btag[1],'  |'
-print '|  TT normalization       |  ', ttnormSig[0],'-',ttnormSig[1],'  |  ',ttnorm[0],'-',ttnorm[1],'  |'
-print '|  TT shape               |  ', ttshapeSig[0],'-',ttshapeSig[1],'  |  ',ttshape[0],'-',ttshape[1],'  |'
-#print '|  W normalization        |  ', wnormSig[0],'-',wnormSig[1],'  |  ',wnorm[0],'-',wnorm[1],'  |'
-#print '|  W shape                |  ', wshapeSig[0],'-',wshapeSig[1],'  |  ',wshape[0],'-',wshape[1],'  |'
-print '|  Z normalization        |  ', znormSig[0],'-',znormSig[1],'  |  ',znorm[0],'-',znorm[1],'  |'
-print '|  Z shape                |  ', zshapeSig[0],'-',zshapeSig[1],'  |  ',zshape[0],'-',zshape[1],'  |'
-print '|  Diboson shape          |  ', vvshapeSig[0],'-',vvshapeSig[1],'  |  ',vvshape[0],'-',vvshape[1],'  |'
-print '|  Top pT                 |  ', topptSig[0],'-',topptSig[1],'  |  ',toppt[0],'-',toppt[1],'  |'
 
-print '\n\n'
+SysRangeTable = '\\begin{table}[htbp]\n\\begin{center}\n'
+SysRangeTable += '\\caption{Range of systematic uncertainties on signal (Sig.) and background (Bkg.) in '+year+'.}\n'
+SysRangeTable += '\\begin{tabular}{lcc}\n\\hline\\hline\n'
+SysRangeTable += 'Systematic		&  Sig. (min - max) [\%] &  Bkg. (min - max) [\%] ' + r' \\ \hline' + '\n'
+SysRangeTable += 'b-jet tagging		& ' + str(btagSig[0]) + '-' + str(btagSig[1]) + ' & ' + str(btag[0]) + '-' + str(btag[1]) + r' \\' + '\n'
+SysRangeTable += 'Jet energy resolution  	& ' + str(jerSig[0]) + '-' + str(jerSig[1]) + ' & ' + str(jer[0]) + '-' + str(jer[1]) + r' \\' + '\n'
+SysRangeTable += 'Jet energy scale       	& ' + str(jesSig[0]) + '-' + str(jesSig[1]) + ' & ' + str(jes[0]) + '-' + str(jes[1]) + r' \\' + '\n'
+SysRangeTable += 'Luminosity             	& ' + str(lumiSig[0]) + '-' + str(lumiSig[1]) + ' & ' + str(lumi[0]) + '-' + str(lumi[1]) + r' \\' + '\n'
+SysRangeTable += 'Muon energy resolution 	& ' + str(merSig[0]) + '-' + str(merSig[1]) + ' & ' + str(mer[0]) + '-' + str(mer[1]) + r' \\' + '\n'
+SysRangeTable += 'Muon energy scale      	& ' + str(mesSig[0]) + '-' + str(mesSig[1]) + ' & ' + str(mes[0]) + '-' + str(mes[1]) + r' \\' + '\n'
+SysRangeTable += 'Muon trigger           	& ' + str(trigSig[0]) + '-' + str(trigSig[1]) + ' & ' + str(trig[0]) + '-' + str(trig[1]) + r' \\' + '\n'
+SysRangeTable += 'Muon identification    	& ' + str(muidSig[0]) + '-' + str(muidSig[1]) + ' & ' + str(muid[0]) + '-' + str(muid[1]) + r' \\' + '\n'
+SysRangeTable += 'Muon isolation         	& ' + str(muisoSig[0]) + '-' + str(muisoSig[1]) + ' & ' + str(muiso[0]) + '-' + str(muiso[1]) + r' \\' + '\n'
+SysRangeTable += 'Muon reconstruction    	& ' + str(murecoSig[0]) + '-' + str(murecoSig[1]) + ' & ' + str(mureco[0]) + '-' + str(mureco[1]) + r' \\' + '\n'
+SysRangeTable += 'PDF                    	& ' + str(pdfSig[0]) + '-' + str(pdfSig[1]) + ' & ' + str(pdf[0]) + '-' + str(pdf[1]) + r' \\' + '\n'
+SysRangeTable += 'Pile-up                	& ' + str(puSig[0]) + '-' + str(puSig[1]) + ' & ' + str(pu[0]) + '-' + str(pu[1]) + r' \\' + '\n'
+SysRangeTable += 'Top pT reweighting     	& ' + str(topptSig[0]) + '-' + str(topptSig[1]) + ' & ' + str(toppt[0]) + '-' + str(toppt[1]) + r' \\' + '\n'
+SysRangeTable += 'TT normalization       	& ' + str(ttnormSig[0]) + '-' + str(ttnormSig[1]) + ' & ' + str(ttnorm[0]) + '-' + str(ttnorm[1]) + r' \\' + '\n'
+SysRangeTable += 'TT shape               	& ' + str(ttshapeSig[0]) + '-' + str(ttshapeSig[1]) + ' & ' + str(ttshape[0]) + '-' + str(ttshape[1]) + r' \\' + '\n'
+SysRangeTable += 'Diboson shape          	& ' + str(vvshapeSig[0]) + '-' + str(vvshapeSig[1]) + ' & ' + str(vvshape[0]) + '-' + str(vvshape[1]) + r' \\' + '\n'
+SysRangeTable += 'Z normalization        	& ' + str(znormSig[0]) + '-' + str(znormSig[1]) + ' & ' + str(znorm[0]) + '-' + str(znorm[1]) + r' \\' + '\n'
+SysRangeTable += 'Z shape                	& ' + str(zshapeSig[0]) + '-' + str(zshapeSig[1]) + ' & ' + str(zshape[0]) + '-' + str(zshape[1]) + r' \\ \hline\hline' + '\n'
+#SysRangeTable += 'Total                 	& ' + str(systotSig[0]) + '-' + str(systotSig[-1]) + ' & ' + str(systot[0]) + '-' + str(systot[-1]) + r' \\ \hline\hline' + '\n'
+SysRangeTable += '\\end{tabular}\n\\label{tab:SysRanges'+year+'}\n\\end{center}\n\\end{table}\n\n'
+
+print '\n'
+print SysRangeTable
+
+with open(sysTableTex.replace('SysTables','SysRangesTable'),'w') as outFile:
+	outFile.write(SysRangeTable)
+
+#print '\n\n'
 systos = ['jers','jess','lumis','aligns','mers','mess','muids','muisos','pdfs','pus','ttnorms','ttshapes','trigs','wnorms','wshapes','znorms','zshapes','vvshapes','hips','btags','toppts']
 i=0
 for x in [jers,jess,lumis,aligns,mers,mess,muids,muisos,pdfs,pus,ttnorms,ttshapes,trigs,wnorms,wshapes,znorms,zshapes,vvshapes,hips,btags,toppts]:
-	print systos[i],'= ',
+	#print systos[i],'= ',
 	i=i+1
-	print x
+	#print x
