@@ -23,9 +23,13 @@ for x in info:
 			card.append(x)
 cards.append(card)
 
+lumis=[]
+lumi16s=[]
+lumi17s=[]
+lumi18s=[]
+lumi1718s=[]
 jers=[]
 jess=[]
-lumis=[]
 aligns=[]
 mers=[]
 mess=[]
@@ -46,9 +50,13 @@ hips=[]
 btags=[]
 toppts=[]
 
+lumi=[999.,0.]
+lumi16=[999.,0.]
+lumi17=[999.,0.]
+lumi18=[999.,0.]
+lumi1718=[999.,0.]
 jer=[999.,0.]
 jes=[999.,0.]
-lumi=[999.,0.]
 align=[999.,0.]
 mer=[999.,0.]
 mes=[999.,0.]
@@ -69,9 +77,13 @@ hip=[999.,0.]
 btag=[999.,0.]
 toppt=[999.,0.]
 
+lumiSig=[999.,0.]
+lumi16Sig=[999.,0.]
+lumi17Sig=[999.,0.]
+lumi18Sig=[999.,0.]
+lumi1718Sig=[999.,0.]
 jerSig=[999.,0.]
 jesSig=[999.,0.]
-lumiSig=[999.,0.]
 alignSig=[999.,0.]
 merSig=[999.,0.]
 mesSig=[999.,0.]
@@ -139,15 +151,46 @@ def cardtotex(card):
 			r_b=float(relative_b)
 			r_s=float(relative_s)
 			sysname = vals[0]
-			sysname = sysname.replace('NORM',' Normalization')
-			if 'SHAPE' in sysname:
-				sysname = sysname.replace('SHAPE','') + ' Shape'
+			#sysname = sysname.replace('NORM',' Normalization')
+			#if 'SHAPE' in sysname:
+			#	sysname = sysname.replace('SHAPE','') + ' Shape'
 			sysnames.append(sysname)
 			#if float(mass)>1500 : continue
 			if gotToBetaHalf==True : continue #== for mumujj, != for munujj, commented out for both
 			#print sysname
                         #if mass=='2300': continue
                         #if mass=='2900': continue
+			if sysname == 'LUMI': 
+				sysname = 'Lumi'
+				if r_b < lumi[0]:lumi[0]=r_b
+				if r_b > lumi[1]:lumi[1]=r_b
+				if r_s < lumiSig[0]:lumiSig[0]=r_s
+				if r_s > lumiSig[1]:lumiSig[1]=r_s
+				lumis.append(r_b)
+			if sysname == 'LUMI16': 
+				if r_b < lumi16[0]:lumi16[0]=r_b
+				if r_b > lumi16[1]:lumi16[1]=r_b
+				if r_s < lumi16Sig[0]:lumi16Sig[0]=r_s
+				if r_s > lumi16Sig[1]:lumi16Sig[1]=r_s
+				lumi16s.append(r_b)
+			if sysname == 'LUMI17': 
+				if r_b < lumi17[0]:lumi17[0]=r_b
+				if r_b > lumi17[1]:lumi17[1]=r_b
+				if r_s < lumi17Sig[0]:lumi17Sig[0]=r_s
+				if r_s > lumi17Sig[1]:lumi17Sig[1]=r_s
+				lumi17s.append(r_b)
+			if sysname == 'LUMI18': 
+				if r_b < lumi18[0]:lumi18[0]=r_b
+				if r_b > lumi18[1]:lumi18[1]=r_b
+				if r_s < lumi18Sig[0]:lumi18Sig[0]=r_s
+				if r_s > lumi18Sig[1]:lumi18Sig[1]=r_s
+				lumi18s.append(r_b)
+			if sysname == 'LUMI1718': 
+				if r_b < lumi1718[0]:lumi1718[0]=r_b
+				if r_b > lumi1718[1]:lumi1718[1]=r_b
+				if r_s < lumi1718Sig[0]:lumi1718Sig[0]=r_s
+				if r_s > lumi1718Sig[1]:lumi1718Sig[1]=r_s
+				lumi1718s.append(r_b)
 			if 'TT Shape' in sysname:
 				if r_b < ttshape[0]:ttshape[0]=r_b
 				if r_b > ttshape[1]:ttshape[1]=r_b
@@ -190,102 +233,95 @@ def cardtotex(card):
 				if r_s < znormSig[0]:znormSig[0]=r_s
 				if r_s > znormSig[1]:znormSig[1]=r_s
 				znorms.append(r_b)
-			if sysname == 'MUONID':
+			if 'MUONID' in sysname:
 				sysname = 'Muon ID'
 				if r_b < muid[0]:muid[0]=r_b
 				if r_b > muid[1]:muid[1]=r_b
 				if r_s < muidSig[0]:muidSig[0]=r_s
 				if r_s > muidSig[1]:muidSig[1]=r_s
 				muids.append(r_b)
-			if sysname == 'MUONISO':
+			if 'MUONISO' in sysname:
 				sysname = 'Muon ISO'
 				if r_b < muiso[0]:muiso[0]=r_b
 				if r_b > muiso[1]:muiso[1]=r_b
 				if r_s < muisoSig[0]:muisoSig[0]=r_s
 				if r_s > muisoSig[1]:muisoSig[1]=r_s
 				muisos.append(r_b)
-			if sysname == 'MUONHLT': 
+			if 'MUONHLT' in sysname: 
 				sysname = 'Trigger'
 				if r_b < trig[0]:trig[0]=r_b
 				if r_b > trig[1]:trig[1]=r_b
 				if r_s < trigSig[0]:trigSig[0]=r_s
 				if r_s > trigSig[1]:trigSig[1]=r_s
 				trigs.append(r_b)
-			if sysname == 'MUONRECO': 
+			if 'MUONRECO' in sysname:
 				sysname = 'Muon Reco'
 				if r_b < mureco[0]:mureco[0]=r_b
 				if r_b > mureco[1]:mureco[1]=r_b
 				if r_s < murecoSig[0]:murecoSig[0]=r_s
 				if r_s > murecoSig[1]:murecoSig[1]=r_s
 				murecos.append(r_b)
-			#if sysname == 'ALIGN':
+			#if 'ALIGN':
 			#	sysname = 'Misalignment'
 			#	if r_b < align[0]:align[0]=r_b
 			#	if r_b > align[1]:align[1]=r_b
 			#	if r_s < alignSig[0]:alignSig[0]=r_s
 			#	if r_s > alignSig[1]:alignSig[1]=r_s
 			#	aligns.append(r_b)
-			if sysname == 'JES':
+			if 'JES' in sysname:
 				sysname = 'Jet Energy Scale'
 				if r_b < jes[0]:jes[0]=r_b
 				if r_b > jes[1]:jes[1]=r_b
 				if r_s < jesSig[0]:jesSig[0]=r_s
 				if r_s > jesSig[1]:jesSig[1]=r_s
 				jess.append(r_b)
-			if sysname == 'JER':
+			if 'JER' in sysname:
 				sysname = 'Jet Energy Resolution'
 				if r_b < jer[0]:jer[0]=r_b
 				if r_b > jer[1]:jer[1]=r_b
 				if r_s < jerSig[0]:jerSig[0]=r_s
 				if r_s > jerSig[1]:jerSig[1]=r_s
 				jers.append(r_b)
-			if sysname == 'MES':
+			if 'MES' in sysname:
 				sysname = 'Muon Energy Scale'
 				if r_b < mes[0]:mes[0]=r_b
 				if r_b > mes[1]:mes[1]=r_b
 				if r_s < mesSig[0]:mesSig[0]=r_s
 				if r_s > mesSig[1]:mesSig[1]=r_s
 				mess.append(r_b)
-			if sysname == 'MER':
+			if 'MER' in sysname:
 				sysname = 'Muon Energy Resolution'
 				if r_b < mer[0]:mer[0]=r_b
 				if r_b > mer[1]:mer[1]=r_b
 				if r_s < merSig[0]:merSig[0]=r_s
 				if r_s > merSig[1]:merSig[1]=r_s
 				mers.append(r_b)
-			if sysname == 'PU':
+			if 'PU' in sysname:
 				sysname = 'PileUp'
 				if r_b < pu[0]:pu[0]=r_b
 				if r_b > pu[1]:pu[1]=r_b
 				if r_s < puSig[0]:puSig[0]=r_s
 				if r_s > puSig[1]:puSig[1]=r_s
 				pus.append(r_b)
-			if sysname == 'LUMI': 
-				sysname = 'Lumi'
-				if r_b < lumi[0]:lumi[0]=r_b
-				if r_b > lumi[1]:lumi[1]=r_b
-				if r_s < lumiSig[0]:lumiSig[0]=r_s
-				if r_s > lumiSig[1]:lumiSig[1]=r_s
-				lumis.append(r_b)
-			if sysname == 'PDF': 
+			if 'PDF' in sysname:
 				if r_b < pdf[0]:pdf[0]=r_b
 				if r_b > pdf[1]:pdf[1]=r_b
 				if r_s < pdfSig[0]:pdfSig[0]=r_s
 				if r_s > pdfSig[1]:pdfSig[1]=r_s
 				pdfs.append(r_b)
-			if sysname == 'HIP': 
+			if 'HIP' in sysname:
 				if r_b < hip[0]:hip[0]=r_b
 				if r_b > hip[1]:hip[1]=r_b
 				if r_s < hipSig[0]:hipSig[0]=r_s
 				if r_s > hipSig[1]:hipSig[1]=r_s
 				hips.append(r_b)
-			if sysname == 'BTAG': 
+			if 'BTAG' in sysname:
 				if r_b < btag[0]:btag[0]=r_b
 				if r_b > btag[1]:btag[1]=r_b
 				if r_s < btagSig[0]:btagSig[0]=r_s
 				if r_s > btagSig[1]:btagSig[1]=r_s
 				btags.append(r_b)
-			if sysname == 'TOPPT': 
+			if 'TOPPT' in sysname:
 				if r_b < toppt[0]:toppt[0]=r_b
 				if r_b > toppt[1]:toppt[1]=r_b
 				if r_s < topptSig[0]:topptSig[0]=r_s
@@ -370,7 +406,7 @@ print '\n Deliniation of systematics list'
 for ii in range(len(totinfo)):
 	print cards[ii][0].replace('\n',''), sysuncs[ii]
 
-for x in [jer,jes,lumi,align,mer,mes,muid,muiso,mureco,pdf,pu,trig,hip,btag,ttnorm,ttshape,wnorm,wshape,znorm,zshape,vvshape,toppt,jerSig,jesSig,lumiSig,alignSig,merSig,mesSig,muidSig,muisoSig,murecoSig,pdfSig,puSig,trigSig,hipSig,btagSig,ttnormSig,ttshapeSig,wnormSig,wshapeSig,znormSig,zshapeSig,vvshapeSig,topptSig] :
+for x in [jer,jes,lumi,lumi16,lumi17,lumi18,lumi1718,align,mer,mes,muid,muiso,mureco,pdf,pu,trig,hip,btag,ttnorm,ttshape,wnorm,wshape,znorm,zshape,vvshape,toppt,jerSig,jesSig,lumiSig,lumi16Sig,lumi17Sig,lumi18Sig,lumi1718Sig,alignSig,merSig,mesSig,muidSig,muisoSig,murecoSig,pdfSig,puSig,trigSig,hipSig,btagSig,ttnormSig,ttshapeSig,wnormSig,wshapeSig,znormSig,zshapeSig,vvshapeSig,topptSig] :
 	if x[0]==999.0: x[0]=0.0
 
 
@@ -381,7 +417,12 @@ SysRangeTable += 'Systematic		&  Sig. (min - max) [\%] &  Bkg. (min - max) [\%] 
 SysRangeTable += 'b-jet tagging		& ' + str(btagSig[0]) + '-' + str(btagSig[1]) + ' & ' + str(btag[0]) + '-' + str(btag[1]) + r' \\' + '\n'
 SysRangeTable += 'Jet energy resolution  	& ' + str(jerSig[0]) + '-' + str(jerSig[1]) + ' & ' + str(jer[0]) + '-' + str(jer[1]) + r' \\' + '\n'
 SysRangeTable += 'Jet energy scale       	& ' + str(jesSig[0]) + '-' + str(jesSig[1]) + ' & ' + str(jes[0]) + '-' + str(jes[1]) + r' \\' + '\n'
-SysRangeTable += 'Luminosity             	& ' + str(lumiSig[0]) + '-' + str(lumiSig[1]) + ' & ' + str(lumi[0]) + '-' + str(lumi[1]) + r' \\' + '\n'
+if year == '2016': SysRangeTable += 'Luminosity (uncorrelated) & ' + str(lumi16Sig[0]) + '-' + str(lumi16Sig[1]) + ' & ' + str(lumi16[0]) + '-' + str(lumi16[1]) + r' \\' + '\n'
+if year == '2017': SysRangeTable += 'Luminosity (uncorrelated) & ' + str(lumi17Sig[0]) + '-' + str(lumi17Sig[1]) + ' & ' + str(lumi17[0]) + '-' + str(lumi17[1]) + r' \\' + '\n'
+if year == '2018': SysRangeTable += 'Luminosity (uncorrelated) & ' + str(lumi18Sig[0]) + '-' + str(lumi18Sig[1]) + ' & ' + str(lumi18[0]) + '-' + str(lumi18[1]) + r' \\' + '\n'
+if year == '2017': SysRangeTable += 'Luminosity (2018-correlated)   & ' + str(lumi1718Sig[0]) + '-' + str(lumi1718Sig[1]) + ' & ' + str(lumi1718[0]) + '-' + str(lumi1718[1]) + r' \\' + '\n'
+if year == '2018': SysRangeTable += 'Luminosity (2017-correlated)   & ' + str(lumi1718Sig[0]) + '-' + str(lumi1718Sig[1]) + ' & ' + str(lumi1718[0]) + '-' + str(lumi1718[1]) + r' \\' + '\n'
+SysRangeTable += 'Luminosity (fully correlated) 	& ' + str(lumiSig[0]) + '-' + str(lumiSig[1]) + ' & ' + str(lumi[0]) + '-' + str(lumi[1]) + r' \\' + '\n'
 SysRangeTable += 'Muon energy resolution 	& ' + str(merSig[0]) + '-' + str(merSig[1]) + ' & ' + str(mer[0]) + '-' + str(mer[1]) + r' \\' + '\n'
 SysRangeTable += 'Muon energy scale      	& ' + str(mesSig[0]) + '-' + str(mesSig[1]) + ' & ' + str(mes[0]) + '-' + str(mes[1]) + r' \\' + '\n'
 SysRangeTable += 'Muon trigger           	& ' + str(trigSig[0]) + '-' + str(trigSig[1]) + ' & ' + str(trig[0]) + '-' + str(trig[1]) + r' \\' + '\n'
@@ -406,9 +447,9 @@ with open(sysTableTex.replace('SysTables','SysRangesTable'),'w') as outFile:
 	outFile.write(SysRangeTable)
 
 #print '\n\n'
-systos = ['jers','jess','lumis','aligns','mers','mess','muids','muisos','pdfs','pus','ttnorms','ttshapes','trigs','wnorms','wshapes','znorms','zshapes','vvshapes','hips','btags','toppts']
+systos = ['jers','jess','lumis','lumi16s','lumi17s','lumi18s','lumi1718s','aligns','mers','mess','muids','muisos','pdfs','pus','ttnorms','ttshapes','trigs','wnorms','wshapes','znorms','zshapes','vvshapes','hips','btags','toppts']
 i=0
-for x in [jers,jess,lumis,aligns,mers,mess,muids,muisos,pdfs,pus,ttnorms,ttshapes,trigs,wnorms,wshapes,znorms,zshapes,vvshapes,hips,btags,toppts]:
-	#print systos[i],'= ',
+for x in [jers,jess,lumis,lumi16s,lumi17s,lumi18s,lumi1718s,aligns,mers,mess,muids,muisos,pdfs,pus,ttnorms,ttshapes,trigs,wnorms,wshapes,znorms,zshapes,vvshapes,hips,btags,toppts]:
+	print systos[i],'= ',
 	i=i+1
-	#print x
+	print x
