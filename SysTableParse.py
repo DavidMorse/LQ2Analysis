@@ -38,6 +38,7 @@ muisos=[]
 murecos=[]
 pdfs=[]
 pus=[]
+prefires=[]
 ttnorms=[]
 ttshapes=[]
 trigs=[]
@@ -65,6 +66,7 @@ muiso=[999.,0.]
 mureco=[999.,0.]
 pdf=[999.,0.]
 pu=[999.,0.]
+prefire=[999.,0.]
 ttnorm=[999.,0.]
 ttshape=[999.,0.]
 trig=[999.,0.]
@@ -92,6 +94,7 @@ muisoSig=[999.,0.]
 murecoSig=[999.,0.]
 pdfSig=[999.,0.]
 puSig=[999.,0.]
+prefireSig=[999.,0.]
 ttnormSig=[999.,0.]
 ttshapeSig=[999.,0.]
 trigSig=[999.,0.]
@@ -160,26 +163,26 @@ def cardtotex(card):
 			#print sysname
                         #if mass=='2300': continue
                         #if mass=='2900': continue
-			if sysname == 'LUMI': 
+			if sysname == 'LUMICorr': 
 				sysname = 'Lumi'
 				if r_b < lumi[0]:lumi[0]=r_b
 				if r_b > lumi[1]:lumi[1]=r_b
 				if r_s < lumiSig[0]:lumiSig[0]=r_s
 				if r_s > lumiSig[1]:lumiSig[1]=r_s
 				lumis.append(r_b)
-			if sysname == 'LUMI16': 
+			if sysname == 'LUMI16Uncorr':
 				if r_b < lumi16[0]:lumi16[0]=r_b
 				if r_b > lumi16[1]:lumi16[1]=r_b
 				if r_s < lumi16Sig[0]:lumi16Sig[0]=r_s
 				if r_s > lumi16Sig[1]:lumi16Sig[1]=r_s
 				lumi16s.append(r_b)
-			if sysname == 'LUMI17': 
+			if sysname == 'LUMI17Uncorr': 
 				if r_b < lumi17[0]:lumi17[0]=r_b
 				if r_b > lumi17[1]:lumi17[1]=r_b
 				if r_s < lumi17Sig[0]:lumi17Sig[0]=r_s
 				if r_s > lumi17Sig[1]:lumi17Sig[1]=r_s
 				lumi17s.append(r_b)
-			if sysname == 'LUMI18': 
+			if sysname == 'LUMI18Uncorr': 
 				if r_b < lumi18[0]:lumi18[0]=r_b
 				if r_b > lumi18[1]:lumi18[1]=r_b
 				if r_s < lumi18Sig[0]:lumi18Sig[0]=r_s
@@ -191,43 +194,43 @@ def cardtotex(card):
 				if r_s < lumi1718Sig[0]:lumi1718Sig[0]=r_s
 				if r_s > lumi1718Sig[1]:lumi1718Sig[1]=r_s
 				lumi1718s.append(r_b)
-			if 'TT Shape' in sysname:
+			if 'SHAPETT' in sysname:
 				if r_b < ttshape[0]:ttshape[0]=r_b
 				if r_b > ttshape[1]:ttshape[1]=r_b
 				if r_s < ttshapeSig[0]:ttshapeSig[0]=r_s
 				if r_s > ttshapeSig[1]:ttshapeSig[1]=r_s
 				ttshapes.append(r_b)
-			if 'W Shape' in sysname:
+			if 'SHAPEW' in sysname:
 				if r_b < wshape[0]:wshape[0]=r_b
 				if r_b > wshape[1]:wshape[1]=r_b
 				if r_s < wshapeSig[0]:wshapeSig[0]=r_s
 				if r_s > wshapeSig[1]:wshapeSig[1]=r_s
 				wshapes.append(r_b)
-			if 'Z Shape' in sysname:
+			if 'SHAPEZ' in sysname:
 				if r_b < zshape[0]:zshape[0]=r_b
 				if r_b > zshape[1]:zshape[1]=r_b
 				if r_s < zshapeSig[0]:zshapeSig[0]=r_s
 				if r_s > zshapeSig[1]:zshapeSig[1]=r_s
 				zshapes.append(r_b)
-			if 'VV Shape' in sysname:
+			if 'SHAPEVV' in sysname:
 				if r_b < vvshape[0]:vvshape[0]=r_b
 				if r_b > vvshape[1]:vvshape[1]=r_b
 				if r_s < vvshapeSig[0]:vvshapeSig[0]=r_s
 				if r_s > vvshapeSig[1]:vvshapeSig[1]=r_s
 				vvshapes.append(r_b)
-			if 'TT Normalization' in sysname:
+			if 'TTNORM' in sysname:
 				if r_b < ttnorm[0]:ttnorm[0]=r_b
 				if r_b > ttnorm[1]:ttnorm[1]=r_b
 				if r_s < ttnormSig[0]:ttnormSig[0]=r_s
 				if r_s > ttnormSig[1]:ttnormSig[1]=r_s
 				ttnorms.append(r_b)
-			if 'W Normalization' in sysname:
+			if 'WNORM' in sysname:
 				if r_b < wnorm[0]:wnorm[0]=r_b
 				if r_b > wnorm[1]:wnorm[1]=r_b
 				if r_s < wnormSig[0]:wnormSig[0]=r_s
 				if r_s > wnormSig[1]:wnormSig[1]=r_s
 				wnorms.append(r_b)
-			if 'Z Normalization' in sysname:
+			if 'ZNORM' in sysname:
 				if r_b < znorm[0]:znorm[0]=r_b
 				if r_b > znorm[1]:znorm[1]=r_b
 				if r_s < znormSig[0]:znormSig[0]=r_s
@@ -327,6 +330,12 @@ def cardtotex(card):
 				if r_s < topptSig[0]:topptSig[0]=r_s
 				if r_s > topptSig[1]:topptSig[1]=r_s
 				toppts.append(r_b)
+			if 'PREFIRE' in sysname:
+				if r_b < prefire[0]:prefire[0]=r_b
+				if r_b > prefire[1]:prefire[1]=r_b
+				if r_s < prefireSig[0]:prefireSig[0]=r_s
+				if r_s > prefireSig[1]:prefireSig[1]=r_s
+				prefires.append(r_b)
 
 
 	textable = r'%'+year+r'% %'+mass+r'%'+'\n'
@@ -406,7 +415,7 @@ print '\n Deliniation of systematics list'
 for ii in range(len(totinfo)):
 	print cards[ii][0].replace('\n',''), sysuncs[ii]
 
-for x in [jer,jes,lumi,lumi16,lumi17,lumi18,lumi1718,align,mer,mes,muid,muiso,mureco,pdf,pu,trig,hip,btag,ttnorm,ttshape,wnorm,wshape,znorm,zshape,vvshape,toppt,jerSig,jesSig,lumiSig,lumi16Sig,lumi17Sig,lumi18Sig,lumi1718Sig,alignSig,merSig,mesSig,muidSig,muisoSig,murecoSig,pdfSig,puSig,trigSig,hipSig,btagSig,ttnormSig,ttshapeSig,wnormSig,wshapeSig,znormSig,zshapeSig,vvshapeSig,topptSig] :
+for x in [jer,jes,lumi,lumi16,lumi17,lumi18,lumi1718,align,mer,mes,muid,muiso,mureco,pdf,pu,prefire,trig,hip,btag,ttnorm,ttshape,wnorm,wshape,znorm,zshape,vvshape,toppt,jerSig,jesSig,lumiSig,lumi16Sig,lumi17Sig,lumi18Sig,lumi1718Sig,alignSig,merSig,mesSig,muidSig,muisoSig,murecoSig,pdfSig,puSig,prefireSig,trigSig,hipSig,btagSig,ttnormSig,ttshapeSig,wnormSig,wshapeSig,znormSig,zshapeSig,vvshapeSig,topptSig] :
 	if x[0]==999.0: x[0]=0.0
 
 
@@ -431,6 +440,7 @@ SysRangeTable += 'Muon isolation         	& ' + str(muisoSig[0]) + '-' + str(mui
 SysRangeTable += 'Muon reconstruction    	& ' + str(murecoSig[0]) + '-' + str(murecoSig[1]) + ' & ' + str(mureco[0]) + '-' + str(mureco[1]) + r' \\' + '\n'
 SysRangeTable += 'PDF                    	& ' + str(pdfSig[0]) + '-' + str(pdfSig[1]) + ' & ' + str(pdf[0]) + '-' + str(pdf[1]) + r' \\' + '\n'
 SysRangeTable += 'Pile-up                	& ' + str(puSig[0]) + '-' + str(puSig[1]) + ' & ' + str(pu[0]) + '-' + str(pu[1]) + r' \\' + '\n'
+SysRangeTable += 'Prefire weighting			& ' + str(prefireSig[0]) + '-' +  str(prefireSig[1]) + ' & ' + str(prefire[0]) + '-' +  str(prefire[1]) + r' \\' + '\n'
 SysRangeTable += 'Top pT reweighting     	& ' + str(topptSig[0]) + '-' + str(topptSig[1]) + ' & ' + str(toppt[0]) + '-' + str(toppt[1]) + r' \\' + '\n'
 SysRangeTable += 'TT normalization       	& ' + str(ttnormSig[0]) + '-' + str(ttnormSig[1]) + ' & ' + str(ttnorm[0]) + '-' + str(ttnorm[1]) + r' \\' + '\n'
 SysRangeTable += 'TT shape               	& ' + str(ttshapeSig[0]) + '-' + str(ttshapeSig[1]) + ' & ' + str(ttshape[0]) + '-' + str(ttshape[1]) + r' \\' + '\n'
@@ -447,9 +457,9 @@ with open(sysTableTex.replace('SysTables','SysRangesTable'),'w') as outFile:
 	outFile.write(SysRangeTable)
 
 #print '\n\n'
-systos = ['jers','jess','lumis','lumi16s','lumi17s','lumi18s','lumi1718s','aligns','mers','mess','muids','muisos','pdfs','pus','ttnorms','ttshapes','trigs','wnorms','wshapes','znorms','zshapes','vvshapes','hips','btags','toppts']
+systos = ['jers','jess','lumis','lumi16s','lumi17s','lumi18s','lumi1718s','aligns','mers','mess','muids','muisos','pdfs','pus','prefires','ttnorms','ttshapes','trigs','wnorms','wshapes','znorms','zshapes','vvshapes','hips','btags','toppts']
 i=0
-for x in [jers,jess,lumis,lumi16s,lumi17s,lumi18s,lumi1718s,aligns,mers,mess,muids,muisos,pdfs,pus,ttnorms,ttshapes,trigs,wnorms,wshapes,znorms,zshapes,vvshapes,hips,btags,toppts]:
+for x in [jers,jess,lumis,lumi16s,lumi17s,lumi18s,lumi1718s,aligns,mers,mess,muids,muisos,pdfs,pus,prefires,ttnorms,ttshapes,trigs,wnorms,wshapes,znorms,zshapes,vvshapes,hips,btags,toppts]:
 	print systos[i],'= ',
 	i=i+1
 	print x
