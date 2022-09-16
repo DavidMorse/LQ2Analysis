@@ -156,34 +156,34 @@ if btags == '0':
 
 elif btags == '1':
 	bTagSFmedium2016 = '*(1-(1-(DeepJet_jet1>'+deepJetWPmedium2016+')*bTagSF_jet1)*(1-(DeepJet_jet2>'+deepJetWPmedium2016+')*bTagSF_jet2))'
-	bTagSFmedium2016Up = '*(1-(1-(DeepJet_jet1>'+deepJetWPmedium2016+')*bTagSF_jet1Up)*(1-(DeepJet_jet2>'+deepJetWPmedium2016+')*bTagSF_jet2Up))'
-	bTagSFmedium2016Down = '*(1-(1-(DeepJet_jet1>'+deepJetWPmedium2016+')*bTagSF_jet1Down)*(1-(DeepJet_jet2>'+deepJetWPmedium2016+')*bTagSF_jet2Down))'
+	bTagSFmedium2016Up = '*(1-(1-(DeepJet_jet1>'+deepJetWPmedium2016+')*bTagSF_jet1_up)*(1-(DeepJet_jet2>'+deepJetWPmedium2016+')*bTagSF_jet2_up))'
+	bTagSFmedium2016Down = '*(1-(1-(DeepJet_jet1>'+deepJetWPmedium2016+')*bTagSF_jet1_down)*(1-(DeepJet_jet2>'+deepJetWPmedium2016+')*bTagSF_jet2_down))'
 	bTagselmedium2016 = '*(((DeepJet_jet1>'+deepJetWPmedium2016+')+(DeepJet_jet2>'+deepJetWPmedium2016+'))>0)'
 
 	bTagSFmedium2017 = '*(1-(1-(DeepJet_jet1>'+deepJetWPmedium2017+')*bTagSF_jet1)*(1-(DeepJet_jet2>'+deepJetWPmedium2017+')*bTagSF_jet2))'
-	bTagSFmedium2017Up = '*(1-(1-(DeepJet_jet1>'+deepJetWPmedium2017+')*bTagSF_jet1Up)*(1-(DeepJet_jet2>'+deepJetWPmedium2017+')*bTagSF_jet2Up))'
-	bTagSFmedium2017Down = '*(1-(1-(DeepJet_jet1>'+deepJetWPmedium2017+')*bTagSF_jet1Down)*(1-(DeepJet_jet2>'+deepJetWPmedium2017+')*bTagSF_jet2Down))'
+	bTagSFmedium2017Up = '*(1-(1-(DeepJet_jet1>'+deepJetWPmedium2017+')*bTagSF_jet1_up)*(1-(DeepJet_jet2>'+deepJetWPmedium2017+')*bTagSF_jet2_up))'
+	bTagSFmedium2017Down = '*(1-(1-(DeepJet_jet1>'+deepJetWPmedium2017+')*bTagSF_jet1_down)*(1-(DeepJet_jet2>'+deepJetWPmedium2017+')*bTagSF_jet2_down))'
 	bTagselmedium2017 = '*(((DeepJet_jet1>'+deepJetWPmedium2017+')+(DeepJet_jet2>'+deepJetWPmedium2017+'))>0)'
 
 	bTagSFmedium2018 = '*(1-(1-(DeepJet_jet1>'+deepJetWPmedium2018+')*bTagSF_jet1)*(1-(DeepJet_jet2>'+deepJetWPmedium2018+')*bTagSF_jet2))'
-	bTagSFmedium2018Up = '*(1-(1-(DeepJet_jet1>'+deepJetWPmedium2018+')*bTagSF_jet1Up)*(1-(DeepJet_jet2>'+deepJetWPmedium2018+')*bTagSF_jet2Up))'
-	bTagSFmedium2018Down = '*(1-(1-(DeepJet_jet1>'+deepJetWPmedium2018+')*bTagSF_jet1Down)*(1-(DeepJet_jet2>'+deepJetWPmedium2018+')*bTagSF_jet2Down))'
+	bTagSFmedium2018Up = '*(1-(1-(DeepJet_jet1>'+deepJetWPmedium2018+')*bTagSF_jet1_up)*(1-(DeepJet_jet2>'+deepJetWPmedium2018+')*bTagSF_jet2_up))'
+	bTagSFmedium2018Down = '*(1-(1-(DeepJet_jet1>'+deepJetWPmedium2018+')*bTagSF_jet1_down)*(1-(DeepJet_jet2>'+deepJetWPmedium2018+')*bTagSF_jet2_down))'
 	bTagselmedium2018 = '*(((DeepJet_jet1>'+deepJetWPmedium2018+')+(DeepJet_jet2>'+deepJetWPmedium2018+'))>0)'
 
 elif btags == '2':
 	bTagSFmedium2016 = '*(DeepJet_jet1>'+deepJetWPmedium2016+')*(DeepJet_jet2>'+deepJetWPmedium2016+')*(1-(1-bTagSF_jet1)*(1-bTagSF_jet2))'
-	bTagSFmedium2016Up = '*(DeepJet_jet1>'+deepJetWPmedium2016+')*(DeepJet_jet2>'+deepJetWPmedium2016+')*(1-(1-bTagSF_jet1Up)*(1-bTagSF_jet2Up))'
-	bTagSFmedium2016Down = '*(DeepJet_jet1>'+deepJetWPmedium2016+')*(DeepJet_jet2>'+deepJetWPmedium2016+')*(1-(1-bTagSF_jet1Down)*(1-bTagSF_jet2Down))'
+	bTagSFmedium2016Up = '*(DeepJet_jet1>'+deepJetWPmedium2016+')*(DeepJet_jet2>'+deepJetWPmedium2016+')*(1-(1-bTagSF_jet1_up)*(1-bTagSF_jet2_up))'
+	bTagSFmedium2016Down = '*(DeepJet_jet1>'+deepJetWPmedium2016+')*(DeepJet_jet2>'+deepJetWPmedium2016+')*(1-(1-bTagSF_jet1_down)*(1-bTagSF_jet2_down))'
 	bTagselmedium2016 = '*(((DeepJet_jet1>'+deepJetWPmedium2016+')+(DeepJet_jet2>'+deepJetWPmedium2016+'))>1)'
 
 	bTagSFmedium2017 = '*(DeepJet_jet1>'+deepJetWPmedium2017+')*(DeepJet_jet2>'+deepJetWPmedium2017+')*(1-(1-bTagSF_jet1)*(1-bTagSF_jet2))'
-	bTagSFmedium2017Up = '*(DeepJet_jet1>'+deepJetWPmedium2017+')*(DeepJet_jet2>'+deepJetWPmedium2017+')*(1-(1-bTagSF_jet1Up)*(1-bTagSF_jet2Up))'
-	bTagSFmedium2017Down = '*(DeepJet_jet1>'+deepJetWPmedium2017+')*(DeepJet_jet2>'+deepJetWPmedium2017+')*(1-(1-bTagSF_jet1Down)*(1-bTagSF_jet2Down))'
+	bTagSFmedium2017Up = '*(DeepJet_jet1>'+deepJetWPmedium2017+')*(DeepJet_jet2>'+deepJetWPmedium2017+')*(1-(1-bTagSF_jet1_up)*(1-bTagSF_jet2_up))'
+	bTagSFmedium2017Down = '*(DeepJet_jet1>'+deepJetWPmedium2017+')*(DeepJet_jet2>'+deepJetWPmedium2017+')*(1-(1-bTagSF_jet1_down)*(1-bTagSF_jet2_down))'
 	bTagselmedium2017 = '*(((DeepJet_jet1>'+deepJetWPmedium2017+')+(DeepJet_jet2>'+deepJetWPmedium2017+'))>1)'
 
 	bTagSFmedium2018 = '*(DeepJet_jet1>'+deepJetWPmedium2018+')*(DeepJet_jet2>'+deepJetWPmedium2018+')*(1-(1-bTagSF_jet1)*(1-bTagSF_jet2))'
-	bTagSFmedium2018Up = '*(DeepJet_jet1>'+deepJetWPmedium2018+')*(DeepJet_jet2>'+deepJetWPmedium2018+')*(1-(1-bTagSF_jet1Up)*(1-bTagSF_jet2Up))'
-	bTagSFmedium2018Down = '*(DeepJet_jet1>'+deepJetWPmedium2018+')*(DeepJet_jet2>'+deepJetWPmedium2018+')*(1-(1-bTagSF_jet1Down)*(1-bTagSF_jet2Down))'
+	bTagSFmedium2018Up = '*(DeepJet_jet1>'+deepJetWPmedium2018+')*(DeepJet_jet2>'+deepJetWPmedium2018+')*(1-(1-bTagSF_jet1_up)*(1-bTagSF_jet2_up))'
+	bTagSFmedium2018Down = '*(DeepJet_jet1>'+deepJetWPmedium2018+')*(DeepJet_jet2>'+deepJetWPmedium2018+')*(1-(1-bTagSF_jet1_down)*(1-bTagSF_jet2_down))'
 	bTagselmedium2018 = '*(((DeepJet_jet1>'+deepJetWPmedium2018+')+(DeepJet_jet2>'+deepJetWPmedium2018+'))>1)'
 
 else:
@@ -201,9 +201,8 @@ NormalWeight2016 = "(Flag_dataYear2016*("+str(lumi2016)+"*weight_topPt*prefireWe
 NormalWeight2017 = "(Flag_dataYear2017*("+str(lumi2017)+"*weight_topPt*prefireWeight"+bTagSFmedium2017+"))"
 NormalWeight2018 = "(Flag_dataYear2018*("+str(lumi2018)+"*weight_topPt"+bTagSFmedium2018+"))"
 
-NormalWeightMuMu = 	"("+NormalWeight2016+"+"+NormalWeight2017+"+"+NormalWeight2018+")"+doublemuHLT+doubleMuRecoSF+doubleMuIsoSF+doubleMuIdSF
+NormalWeightMuMu = "("+NormalWeight2016+"+"+NormalWeight2017+"+"+NormalWeight2018+")"+doublemuHLT+doubleMuRecoSF+doubleMuIsoSF+doubleMuIdSF
 NormalWeightMuNu = str(lumi)+'*weight_central'+singlemuHLT+singleMuRecoSF+singleMuIsoSF+singleMuIdSF
-#if year == '2016' or year == '2017': NormalWeightMuMu += '*prefireWeight'
 
 #fixme checking eta restriction on muons and electrons to fix r_uu/eu
 muEtaRestrict = '*((IsMuon_muon1>0)*(abs(Eta_muon1)<2.1)+(IsMuon_muon2>0)*(abs(Eta_muon2)<2.1))'
@@ -247,7 +246,7 @@ passfilter += '*(Flag_BadPFMuonFilter)'#*Flag_BadChargedHadron)'
 
 # This defines the preselections for the mu-mu, mu-nu, and e-mu samples
 preselectionmumu_single = '((Pt_muon1>53)*(Pt_muon2>53)*(Pt_jet1>50)*(St_uujj>250)*(M_uu>50)*(DR_muon1muon2>0.3)'+bTagselmedium+')'
-preselectionmumu = '((Pt_muon1>53)*(Pt_muon2>53)*(Pt_jet1>50)*(Pt_jet2>50)*(St_uujj>300)*(M_uu>50)*(DR_muon1muon2>0.3)'+bTagselmedium+')'
+preselectionmumu = '((Pt_muon1>53)*(Pt_muon2>53)*(Pt_jet1>50)*(Pt_jet2>50)*(St_uujj>300)*(M_uu>50)*(DR_muon1muon2>0.3)*((MuonCount+ElectronCount)<3)'+bTagselmedium+')'
 preselectionmunu = '((Pt_muon1>53)*(Pt_muon2<53)*(Pt_miss>55)*(Pt_jet1>50)*(Pt_jet2>50)*(Pt_ele1<53)*(St_uvjj>300)*(MT_uv>50.0)*(DPhi_muon1met>0.8)*(DPhi_jet1met>0.5))'
 preselectionemu  = '((Pt_muon1>53)*(Pt_muon2>53)*(Pt_jet1>50)*(Pt_jet2>50)*(St_uujj>300)*(M_uu>50)*(DR_muon1muon2>0.3))'
 
@@ -376,16 +375,22 @@ if year == '2016':
 	#shapesysvar_uujj_vv = [6.37, 7.21, 5.26, 10.8, 7.36, 54.16, 12.37, 10.57, 17.84, 15.61, 7.2, 0.0, 0.0, 12.52, 137.64, 190.32, 54.57, 190.32, 17.72, 190.32, 19.87, 190.32, 0.0, 24.14, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
 	
 	# Run 2 combined BDTs
-	shapesysvar_uujj_zjets  = [0.88, 15.92, 13.88, 6.57, 4.79, 2.21, 12.2, 10.68, 6.62, 5.76, 6.59, 26.73, 9.51, 3.65, 9.55, 20.96, 9.8, 8.08, 19.69, 31.76, 559.13, 15.44, 12.76, 8.72, 5.51, 1247.13, 58.4, 11.34, 16.24, 0.0, 41.84]
-	shapesysvar_uujj_wjets  = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
-	shapesysvar_uujj_ttjets = [0.79, 4.74, 4.38, 11.95, 7.18, 29.77, 29.77, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
-	shapesysvar_uujj_vv = [6.29, 20.8, 6.03, 17.39, 12.63, 0.0, 29.74, 19.27, 9.61, 6.4, 9.61, 0.0, 4.8, 17.72, 17.72, 46.98, 0.0, 17.72, 0.0, 17.72, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+	#shapesysvar_uujj_zjets  = [0.88, 15.92, 13.88, 6.57, 4.79, 2.21, 12.2, 10.68, 6.62, 5.76, 6.59, 26.73, 9.51, 3.65, 9.55, 20.96, 9.8, 8.08, 19.69, 31.76, 559.13, 15.44, 12.76, 8.72, 5.51, 1247.13, 58.4, 11.34, 16.24, 0.0, 41.84]
+	#shapesysvar_uujj_wjets  = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+	#shapesysvar_uujj_ttjets = [0.79, 4.74, 4.38, 11.95, 7.18, 29.77, 29.77, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+	#shapesysvar_uujj_vv = [6.29, 20.8, 6.03, 17.39, 12.63, 0.0, 29.74, 19.27, 9.61, 6.4, 9.61, 0.0, 4.8, 17.72, 17.72, 46.98, 0.0, 17.72, 0.0, 17.72, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
 
 	# Preselection
 	#shapesysvar_uujj_zjets  = [0.91, 4.21, 4.15, 2.02, 4.92, 6.1, 5.35, 3.09, 3.29, 12.01, 5.04, 5.88, 5.78, 6.51, 6.97, 7.26, 6.29, 7.37, 8.17, 6.61, 5.65, 6.7, 5.63, 12.5, 9.44, 11.29, 12.03, 11.79, 14.14, 10.54, 14.29]
 	#shapesysvar_uujj_wjets  = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
 	#shapesysvar_uujj_ttjets = [0.66, 1.5, 1.5, 1.56, 2.69, 3.91, 5.28, 6.87, 8.61, 10.45, 12.83, 13.78, 14.68, 18.15, 20.22, 20.13, 18.62, 22.32, 21.36, 24.46, 23.6, 22.73, 15.5, 12.58, 21.16, 16.04, 0.0, 0.0, 0.0, 0.0, 0.0]
 	#shapesysvar_uujj_vv = [6.29, 6.24, 6.32, 6.47, 7.52, 8.52, 7.38, 7.89, 10.2, 13.69, 14.41, 13.94, 14.26, 13.48, 7.09, 8.47, 8.29, 15.72, 17.44, 17.01, 16.56, 15.6, 26.57, 27.81, 28.3, 30.51, 30.51, 31.47, 27.25, 27.75, 0.0]
+
+	# Enhanced selection
+	shapesysvar_uujj_zjets  = [1.08, 4.28, 4.21, 2.37, 4.94, 6.11, 5.34, 2.98, 3.24, 11.98, 4.92, 5.8, 5.68, 6.42, 6.72, 6.98, 6.3, 7.38, 8.18, 6.64, 5.69, 6.75, 5.66, 12.62, 9.58, 11.44, 12.18, 11.97, 14.2, 10.59, 14.35]
+	shapesysvar_uujj_wjets  = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+	shapesysvar_uujj_ttjets = [0.83, 1.3, 1.32, 1.78, 3.03, 4.26, 5.63, 7.22, 8.97, 10.83, 13.2, 14.14, 15.04, 18.54, 20.59, 20.51, 18.97, 22.67, 21.59, 24.79, 23.94, 23.07, 15.81, 12.88, 21.47, 16.34, 0.0, 0.0, 0.0, 0.0, 0.0]
+	shapesysvar_uujj_vv = [5.99, 5.55, 5.64, 5.82, 6.88, 7.83, 6.51, 7.04, 9.25, 12.74, 13.47, 12.68, 13.01, 12.03, 5.62, 6.81, 6.07, 13.44, 15.34, 14.54, 13.76, 12.51, 24.4, 25.8, 26.34, 30.01, 30.01, 31.41, 24.62, 23.91, 0.0]
 
 elif year == '2017':
 	# 2016 BDTs
@@ -394,16 +399,22 @@ elif year == '2017':
 	#shapesysvar_uujj_vv = [8.44, 0.0, 0.0, 0.0, 0.0, 24.38, 0.0, 36.61, 0.0, 40.64, 36.61, 0.0, 36.61, 36.61, 0.0, 36.61, 36.61, 0.0, 36.61, 36.61, 0.0, 36.61, 36.61, 0.0, 49.58, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
 
 	# Run 2 combined BDTs
-	shapesysvar_uujj_zjets  = [0.83, 6.55, 7.23, 3.68, 11.92, 8.59, 11.0, 8.41, 16.26, 12.95, 20.55, 4069.34, 22.36, 24.61, 6.5, 5.29, 16.62, 16.09, 8.49, 7.24, 110.12, 110.92, 0.0, 15.88, 0.0, 10.99, 36.83, 0.0, 10.02, 0.0, 178.94]
-	shapesysvar_uujj_wjets  = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
-	shapesysvar_uujj_ttjets = [0.84, 5.42, 1.71, 14.14, 22.86, 27.68, 25.87, 25.04, 40.78, 34.24, 40.43, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
-	shapesysvar_uujj_vv = [5.86, 5.69, 6.38, 12.62, 132.41, 19.49, 10.88, 65.54, 23.17, 168.37, 727.88, 20.85, 16.51, 36.62, 35.96, 49.9, 20.79, 20.79, 49.9, 49.9, 49.9, 0.0, 49.9, 0.0, 49.9, 0.0, 0.0, 49.9, 49.9, 49.9, 49.9]
+	#shapesysvar_uujj_zjets  = [0.83, 6.55, 7.23, 3.68, 11.92, 8.59, 11.0, 8.41, 16.26, 12.95, 20.55, 4069.34, 22.36, 24.61, 6.5, 5.29, 16.62, 16.09, 8.49, 7.24, 110.12, 110.92, 0.0, 15.88, 0.0, 10.99, 36.83, 0.0, 10.02, 0.0, 178.94]
+	#shapesysvar_uujj_wjets  = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+	#shapesysvar_uujj_ttjets = [0.84, 5.42, 1.71, 14.14, 22.86, 27.68, 25.87, 25.04, 40.78, 34.24, 40.43, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+	#hapesysvar_uujj_vv = [5.86, 5.69, 6.38, 12.62, 132.41, 19.49, 10.88, 65.54, 23.17, 168.37, 727.88, 20.85, 16.51, 36.62, 35.96, 49.9, 20.79, 20.79, 49.9, 49.9, 49.9, 0.0, 49.9, 0.0, 49.9, 0.0, 0.0, 49.9, 49.9, 49.9, 49.9]
 
 	# preselection
 	#shapesysvar_uujj_zjets  = [0.88, 5.91, 6.08, 5.69, 7.74, 5.27, 4.64, 1.93, 3.13, 4.57, 6.83, 11.21, 9.46, 7.18, 7.41, 7.97, 9.57, 10.6, 12.21, 8.92, 7.05, 7.35, 12.47, 9.23, 10.73, 13.0, 7.44, 10.34, 9.3, 7.14, 6.12]
 	#shapesysvar_uujj_wjets  = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
 	#shapesysvar_uujj_ttjets = [0.39, 1.61, 1.61, 1.7, 1.75, 2.13, 3.83, 6.12, 8.15, 10.21, 12.29, 13.84, 15.03, 16.52, 17.79, 18.85, 19.54, 21.22, 23.71, 25.36, 25.84, 29.15, 31.37, 30.9, 33.85, 38.89, 38.4, 37.98, 36.06, 37.29, 42.92]
 	#shapesysvar_uujj_vv = [5.86, 4.68, 4.66, 4.22, 4.68, 5.8, 4.5, 5.57, 7.21, 9.64, 8.4, 10.55, 12.56, 12.85, 12.94, 13.48, 15.44, 16.96, 16.94, 18.09, 19.5, 20.2, 16.8, 15.98, 21.65, 21.65, 23.83, 23.83, 46.8, 46.82, 49.9]
+
+	# Enhanced selection
+	shapesysvar_uujj_zjets  = [0.75, 6.31, 6.49, 6.09, 8.12, 5.69, 5.1, 2.02, 2.97, 4.43, 6.69, 11.07, 9.31, 7.05, 7.27, 7.83, 9.43, 10.45, 12.06, 8.78, 6.91, 7.21, 12.33, 9.09, 10.59, 12.86, 7.41, 10.06, 9.02, 7.36, 6.34]
+	shapesysvar_uujj_wjets  = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+	shapesysvar_uujj_ttjets = [0.62, 1.92, 1.92, 2.0, 2.06, 2.36, 3.84, 6.12, 8.14, 10.18, 12.26, 13.81, 15.0, 16.49, 17.76, 18.82, 19.52, 21.08, 23.56, 25.19, 25.68, 29.02, 31.18, 30.68, 33.63, 38.74, 38.24, 37.8, 35.85, 37.08, 42.78]
+	shapesysvar_uujj_vv = [5.83, 4.6, 4.58, 4.12, 4.55, 5.74, 4.42, 5.79, 7.08, 9.49, 8.36, 10.53, 12.56, 12.84, 12.99, 13.56, 15.61, 16.98, 16.87, 17.97, 19.38, 20.08, 16.61, 15.98, 21.65, 21.65, 23.83, 23.83, 46.8, 46.82, 49.9]
 
 elif year == '2018':
 	# 2016 BDTs
@@ -412,16 +423,22 @@ elif year == '2018':
 	#shapesysvar_uujj_vv = [13.0, 21.32, 19.64, 36.65, 31.49, 0.0, 35.66, 35.66, 30.32, 42.95, 20.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 42.95, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
 
 	# Run 2 combined BDTs
-	shapesysvar_uujj_zjets  = [0.7, 12.06, 11.05, 13.61, 47.85, 162.92, 52.76, 9.72, 192.26, 38.46, 0.0, 40.23, 57.91, 81.14, 8.03, 17.96, 16.67, 17.01, 19.52, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
-	shapesysvar_uujj_wjets  = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
-	shapesysvar_uujj_ttjets = [0.71, 1.49, 4.28, 1.16, 17.73, 12.97, 22.33, 20.67, 36.79, 11.79, 0.0, 0.0, 29.25, 0.0, 22.0, 29.25, 15.98, 0.0, 15.98, 15.98, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
-	shapesysvar_uujj_vv = [6.81, 13.28, 13.42, 6.94, 8.12, 27.47, 27.71, 25.91, 33.56, 24.16, 25.63, 37.96, 32.88, 0.0, 14.89, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 32.24, 22.9, 18.26, 0.0, 0.0, 0.0, 42.64, 42.64, 37.96]
+	#shapesysvar_uujj_zjets  = [0.7, 12.06, 11.05, 13.61, 47.85, 162.92, 52.76, 9.72, 192.26, 38.46, 0.0, 40.23, 57.91, 81.14, 8.03, 17.96, 16.67, 17.01, 19.52, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+	#shapesysvar_uujj_wjets  = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+	#shapesysvar_uujj_ttjets = [0.71, 1.49, 4.28, 1.16, 17.73, 12.97, 22.33, 20.67, 36.79, 11.79, 0.0, 0.0, 29.25, 0.0, 22.0, 29.25, 15.98, 0.0, 15.98, 15.98, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+	#shapesysvar_uujj_vv = [6.81, 13.28, 13.42, 6.94, 8.12, 27.47, 27.71, 25.91, 33.56, 24.16, 25.63, 37.96, 32.88, 0.0, 14.89, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 32.24, 22.9, 18.26, 0.0, 0.0, 0.0, 42.64, 42.64, 37.96]
 
 	# Preselection
 	#shapesysvar_uujj_zjets  = [0.86, 7.36, 7.06, 6.27, 4.33, 4.61, 4.92, 5.24, 2.85, 3.63, 2.54, 5.27, 6.2, 4.32, 5.37, 6.32, 7.03, 9.56, 5.55, 8.42, 12.41, 13.02, 11.91, 13.27, 14.09, 10.02, 13.17, 13.24, 15.16, 15.76, 7.14]
 	#shapesysvar_uujj_wjets  = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
 	#shapesysvar_uujj_ttjets = [0.84, 1.87, 1.88, 1.96, 1.91, 2.42, 3.69, 5.62, 8.18, 10.01, 11.67, 13.43, 15.23, 17.52, 18.21, 19.57, 19.68, 19.81, 19.58, 20.52, 20.62, 20.24, 16.85, 19.44, 31.6, 35.43, 35.0, 36.27, 40.86, 47.11, 46.42]
 	#shapesysvar_uujj_vv = [6.81, 8.92, 8.96, 7.64, 8.68, 9.53, 13.36, 12.81, 15.69, 14.19, 12.93, 13.49, 12.55, 14.07, 14.65, 22.39, 21.58, 18.54, 23.65, 26.93, 19.83, 18.93, 25.26, 25.06, 26.92, 16.79, 15.63, 12.43, 12.43, 15.02, 18.26]
+
+	# Enhanced selection
+	shapesysvar_uujj_zjets  = [0.69, 7.55, 7.26, 6.47, 4.31, 4.58, 4.95, 5.27, 2.88, 3.71, 2.55, 5.29, 6.15, 4.49, 5.48, 6.49, 7.05, 9.64, 5.5, 8.37, 12.36, 13.2, 12.11, 13.48, 14.31, 9.96, 13.46, 13.52, 15.48, 15.95, 7.86]
+	shapesysvar_uujj_wjets  = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+	shapesysvar_uujj_ttjets = [0.78, 2.06, 2.07, 2.15, 2.1, 2.44, 3.79, 5.76, 8.32, 10.04, 11.7, 13.47, 15.25, 17.49, 18.2, 19.56, 19.63, 19.73, 19.54, 20.48, 20.64, 20.19, 16.91, 19.49, 31.6, 35.41, 34.99, 36.24, 40.97, 47.3, 46.37]
+	shapesysvar_uujj_vv = [6.63, 8.79, 8.83, 7.4, 8.52, 9.42, 13.42, 12.8, 15.71, 14.15, 12.69, 13.08, 12.32, 13.84, 14.37, 22.56, 21.74, 18.46, 23.33, 26.87, 18.24, 17.52, 24.21, 24.25, 26.2, 14.14, 12.13, 12.08, 12.08, 15.02, 18.26]
 
 shapesysvar_uvjj_wjets  = [1.23, 1.54, 1.67, 3.76, 3.94, 5.6, 8.37, 7.73, 8.33, 5.19, 5.78, 5.47, 8.73, 18.11, 23.3, 12.4, 24.98, 24.79, 29.56, 14.12, 16.29, 11.8, 16.47, 35.87, 65.54, 55.04, 17.6, 18.42, 22.98, 24.6, 13.22, 7.16, 4.7, 5.11, 5.23, 3.57, 3.51, 3.42]
 shapesysvar_uvjj_ttjets = [0.68, 1.13, 2.16, 3.34, 4.42, 6.39, 8.25, 9.47, 10.08, 12.29, 14.62, 15.59, 17.25, 18.12, 21.74, 24.95, 20.29, 21.35, 20.86, 20.49, 14.14, 38.26, 36.05, 36.05, 36.05, 36.05, 38.26, 38.26, 38.26, 38.26, 38.26, 38.26, 41.15, 41.15, 41.15, 41.15, 41.15, 41.15]
@@ -495,14 +512,14 @@ def main():
 	# for this, and make use of it. e.g. For systematic variations, we can run in batch instead
 	# of running serially, which speeds things up.
 
-	version_name = 'Testing_'+year+'_stockNanoAODv7_Run2CombBDT_FullSys_PDF' # scriptflag
+	version_name = year # scriptflag
 	#version_name = 'Testing_noQCD_14nov' # use sf tag above if this is the real folder
 	os.system('mkdir Results_'+version_name) 
 
 	global MuMuOptCutDir
-	MuMuOptCutDir = 'Optimization' # scriptflag
+	MuMuOptCutDir = 'Enhanced_selection' # scriptflag
 	os.system('mkdir Results_'+version_name+'/'+MuMuOptCutDir) # scriptflag
-	MuMuOptCutFile = 'Results_'+version_name+'/'+MuMuOptCutDir+'/Opt_LQuujj_BDT_Cuts.txt' # scriptflag
+	MuMuOptCutFile = 'Results_'+version_name+'/'+MuMuOptCutDir+'/Opt_LQuujj_Cuts.txt' # scriptflag
 	#MuMuOptCutFile = 'Results_'+version_name+'/OptLQ_uujjCuts_Smoothed_pol2cutoff.txt'
 	MuNuOptCutFile = 'Results_'+version_name+'/OptLQ_uvjjCuts_Smoothed_pol2cutoff.txt' # scriptflag
 
@@ -737,21 +754,21 @@ def main():
 		#munu2 = '(MT_uv>70)*(MT_uv<110)*(JetCount>3.5)'
 		# SFs with updated integrated luminosities
 		if year == '2016':
-			[[Rz_uuj,Rz_uuj_err],[Rtt_uuj,Rtt_uuj_err]] = [[1.005,0.015],[0.968,0.013]] #2016 stock NanoAODv7 with 1 btag (uub) 
-			[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = [[1.02,0.017],[0.961,0.014]] #2016 stock NanoAODv7 with 1 btag (uubj) (Rz_uujj = 89% purity, Rtt_uujj = 91% purity)
+			[[Rz_uuj,Rz_uuj_err],[Rtt_uuj,Rtt_uuj_err]] = [[1.004,0.016],[0.997,0.013]] #2016 stock NanoAODv7 with 1 btag (uub) 
+			[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = [[1.02,0.017],[0.991,0.015]] #2016 stock NanoAODv7 with 1 btag (uubj) (Rz_uujj = 89% purity, Rtt_uujj = 87% purity)
 		elif year == '2017':
-			[[Rz_uuj,Rz_uuj_err],[Rtt_uuj,Rtt_uuj_err]]  =  [[1.382,0.019],[1.057,0.011]] #2017 stock NanoAODv7 with 1 btag (uub)
-			[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = [[1.371,0.021],[1.061,0.012]] #2017 stock NanoAODv7 with 1 btag (uubj) (Rz_uujj = 91% purity, Rtt_uujj = 89% purity)
+			[[Rz_uuj,Rz_uuj_err],[Rtt_uuj,Rtt_uuj_err]]  =  [[1.38,0.019],[1.09,0.011]] #2017 stock NanoAODv7 with 1 btag (uub)
+			[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = [[1.367,0.02],[1.098,0.013]] #2017 stock NanoAODv7 with 1 btag (uubj) (Rz_uujj = 89% purity, Rtt_uujj = 89% purity)
 		elif year == '2018':
-			[[Rz_uuj,Rz_uuj_err],[Rtt_uuj,Rtt_uuj_err]]  =  [[1.3,0.015],[0.979,0.009]] #2018 stock NanoAODv7 with 1 btag (uub)
-			[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]]  =  [[1.302,0.017],[0.981,0.01]] #2018 stock NanoAODv7 with 1 btag (uubj) (Rz_uujj = 91% purity, Rtt_uujj = 92% purity)
+			[[Rz_uuj,Rz_uuj_err],[Rtt_uuj,Rtt_uuj_err]]  =  [[1.298,0.015],[1.01,0.009]] #2018 stock NanoAODv7 with 1 btag (uub)
+			[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]]  =  [[1.299,0.017],[1.015,0.01]] #2018 stock NanoAODv7 with 1 btag (uubj) (Rz_uujj = 88% purity, Rtt_uujj = 88% purity)
 		elif "comb" in year:
-			[[Rz_uuj_2016,Rz_uuj_2016_err],[Rtt_uuj_2016,Rtt_uuj_2016_err]] = [[1.005,0.015],[0.968,0.013]] #2016 stock NanoAODv7 with 1 btag (uub) 
-			[[Rz_uujj_2016,Rz_uujj_2016_err],[Rtt_uujj_2016,Rtt_uujj_2016_err]] = [[1.02,0.017],[0.961,0.014]] #2016 stock NanoAODv7 with 1 btag (uubj) (Rz_uujj = 89% purity, Rtt_uujj = 91% purity)
-			[[Rz_uuj_2017,Rz_uuj_2017_err],[Rtt_uuj_2017,Rtt_uuj_2017_err]]  =  [[1.382,0.019],[1.057,0.011]] #2017 stock NanoAODv7 with 1 btag (uub)
-			[[Rz_uujj_2017,Rz_uujj_2017_err],[Rtt_uujj_2017,Rtt_uujj_2017_err]] = [[1.371,0.021],[1.061,0.012]] #2017 stock NanoAODv7 with 1 btag (uubj) (Rz_uujj = 91% purity, Rtt_uujj = 89% purity)
-			[[Rz_uuj_2018,Rz_uuj_2018_err],[Rtt_uuj_2018,Rtt_uuj_2018_err]]  =  [[1.3,0.015],[0.979,0.009]] #2018 stock NanoAODv7 with 1 btag (uub)
-			[[Rz_uujj_2018,Rz_uujj_2018_err],[Rtt_uujj_2018,Rtt_uujj_2018_err]]  =  [[1.302,0.017],[0.981,0.01]] #2018 stock NanoAODv7 with 1 btag (uubj) (Rz_uujj = 91% purity, Rtt_uujj = 92% purity)
+			[[Rz_uuj_2016,Rz_uuj_2016_err],[Rtt_uuj_2016,Rtt_uuj_2016_err]] = [[1.004,0.016],[0.997,0.013]] #2016 stock NanoAODv7 with 1 btag (uub) 
+			[[Rz_uujj_2016,Rz_uujj_2016_err],[Rtt_uujj_2016,Rtt_uujj_2016_err]] = [[1.02,0.017],[0.991,0.015]] #2016 stock NanoAODv7 with 1 btag (uubj) (Rz_uujj = 89% purity, Rtt_uujj = 87% purity)
+			[[Rz_uuj_2017,Rz_uuj_2017_err],[Rtt_uuj_2017,Rtt_uuj_2017_err]]  =  [[1.38,0.019],[1.09,0.011]] #2017 stock NanoAODv7 with 1 btag (uub)
+			[[Rz_uujj_2017,Rz_uujj_2017_err],[Rtt_uujj_2017,Rtt_uujj_2017_err]] = [[1.367,0.02],[1.098,0.013]] #2017 stock NanoAODv7 with 1 btag (uubj) (Rz_uujj = 89% purity, Rtt_uujj = 89% purity)
+			[[Rz_uuj_2018,Rz_uuj_2018_err],[Rtt_uuj_2018,Rtt_uuj_2018_err]]  =  [[1.298,0.015],[1.01,0.009]] #2018 stock NanoAODv7 with 1 btag (uub)
+			[[Rz_uujj_2018,Rz_uujj_2018_err],[Rtt_uujj_2018,Rtt_uujj_2018_err]]  =  [[1.299,0.017],[1.015,0.01]] #2018 stock NanoAODv7 with 1 btag (uubj) (Rz_uujj = 88% purity, Rtt_uujj = 88% purity)
 
 			Rz_uuj = "((Flag_dataYear2016*"+str(Rz_uuj_2016)+")+(Flag_dataYear2017*"+str(Rz_uuj_2017)+")+(Flag_dataYear2018*"+str(Rz_uuj_2018)+"))"
 			Rtt_uuj = "((Flag_dataYear2016*"+str(Rtt_uuj_2016)+")+(Flag_dataYear2017*"+str(Rtt_uuj_2017)+")+(Flag_dataYear2018*"+str(Rtt_uuj_2018)+"))"
@@ -1216,7 +1233,7 @@ def main():
 		scaleFactors = [Rz_uujj,Rtt_uujj,Rw_uvjj]
 		# Optimize final selection cuts on BDT score
 		if optimizeBDT:
-			cutFileBDT = 'Results_'+version_name+'/Log_LQuujj_BDT_Cuts.txt'
+			cutFileBDT = 'Results_'+version_name+'/Log_LQuujj_Cuts.txt'
 			BDTbins = [0.9,1.0,0.001]
 			OptimizeCutsBDT(BDTbins,preselectionmumu,NormalWeightMuMu,version_name,scaleFactors,'','uujj')
 		elif not doLongLived :
@@ -1245,7 +1262,7 @@ def main():
 	# ====================================================================================================================================================== #
 
 	if False :
-		MuMuOptTestCutFile = 'Results_'+version_name+'/'+MuMuOptCutDir+'/Opt_LQuujj_BDT_Cuts.txt' #OptLQ_uujjCuts_Smoothed_pol2cutoff.txt'
+		MuMuOptTestCutFile = 'Results_'+version_name+'/'+MuMuOptCutDir+'/Opt_LQuujj_Cuts.txt' #OptLQ_uujjCuts_Smoothed_pol2cutoff.txt'
 		MuNuOptTestCutFile = 'Results_'+version_name+'/OptLQ_uvjjCuts_Smoothed_pol2cutoff.txt'
 		# Get Scale Factors
 		#[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = GetMuMuScaleFactors( NormalWeightMuMu+'*'+preselectionmumu, NormalDirectory, '(M_uu>80)*(M_uu<100)', '(M_uu>100)',0,1)
@@ -4224,9 +4241,23 @@ def ModSelection(selection,sysmethod,channel_log):
 	_kinematicvariables += ['St_eejj','St_evjj']
 	_kinematicvariables += ['M_uujj1','M_uujj2','M_uujjavg','MT_uvjj1','MT_uvjj2','M_uvjj','MT_uvjj']
 	_kinematicvariables += ['M_uu','MT_uv']
+	_kinematicvariables += ['M_uujj']
 	_kinematicvariables += ['DR_muon1muon2','DPhi_muon1met','DPhi_jet1met']
-	_weights = ['weight_nopu','weight_topPt', 'weight_pu_up', 'weight_pu_down']
-	_variations = ['','JESup','JESdown','MESup','MESdown','JERup','JERdown','MER']	
+	_kinematicvariables += ['mu1recoSF','mu1idSF','mu1isoSF','mu1hltSF','mu2recoSF','mu2idSF','mu2isoSF','mu2hltSF']
+	_kinematicvariables += ['DeepJet_jet1','DeepJet_jet2','bTagSF_jet1','bTagSF_jet2']
+	_kinematicvariables += ['MuonCount','ElectronCount']
+	_kinematicvariables += ['LQToBMu_pair_uubj_BDT_discrim_M300', 'LQToBMu_pair_uubj_BDT_discrim_M400', 'LQToBMu_pair_uubj_BDT_discrim_M500']
+	_kinematicvariables += ['LQToBMu_pair_uubj_BDT_discrim_M600', 'LQToBMu_pair_uubj_BDT_discrim_M700', 'LQToBMu_pair_uubj_BDT_discrim_M800']
+	_kinematicvariables += ['LQToBMu_pair_uubj_BDT_discrim_M900', 'LQToBMu_pair_uubj_BDT_discrim_M1000', 'LQToBMu_pair_uubj_BDT_discrim_M1100']
+	_kinematicvariables += ['LQToBMu_pair_uubj_BDT_discrim_M1200', 'LQToBMu_pair_uubj_BDT_discrim_M1300', 'LQToBMu_pair_uubj_BDT_discrim_M1400']
+	_kinematicvariables += ['LQToBMu_pair_uubj_BDT_discrim_M1500', 'LQToBMu_pair_uubj_BDT_discrim_M1600', 'LQToBMu_pair_uubj_BDT_discrim_M1700']
+	_kinematicvariables += ['LQToBMu_pair_uubj_BDT_discrim_M1800', 'LQToBMu_pair_uubj_BDT_discrim_M1900', 'LQToBMu_pair_uubj_BDT_discrim_M2000']
+	_kinematicvariables += ['LQToBMu_pair_uubj_BDT_discrim_M2100', 'LQToBMu_pair_uubj_BDT_discrim_M2200', 'LQToBMu_pair_uubj_BDT_discrim_M2300']
+	_kinematicvariables += ['LQToBMu_pair_uubj_BDT_discrim_M2400', 'LQToBMu_pair_uubj_BDT_discrim_M2500', 'LQToBMu_pair_uubj_BDT_discrim_M2600']
+	_kinematicvariables += ['LQToBMu_pair_uubj_BDT_discrim_M2700', 'LQToBMu_pair_uubj_BDT_discrim_M2800', 'LQToBMu_pair_uubj_BDT_discrim_M2900']
+	_kinematicvariables += ['LQToBMu_pair_uubj_BDT_discrim_M3000', 'LQToBMu_pair_uubj_BDT_discrim_M3500', 'LQToBMu_pair_uubj_BDT_discrim_M4000']
+	_weights = ['weight_nopu','weight_topPt', 'weight_pu_up', 'weight_pu_down','prefireWeight']
+	_variations = ['','JESup','JES17up','JES18up','JESdown','JES17down','JES18down','MESup','MES17up','MES18up','MESdown','MES17down','MES18down','JERup','JER17up','JER18up','JERdown','JER17down','JER18down','MER','MER17','MER18']	
 	selsplit = []
 	selchars = ''
 	alphabet = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_'
@@ -4245,7 +4276,7 @@ def ModSelection(selection,sysmethod,channel_log):
 			for sobj in selsplit:
 				for k in _kinematicvariables:
 					if sobj == k:
-						sobj = k+sysmethod
+						sobj = k+sysmethod.replace('17','').replace('18','')
 				outsel += sobj
 	if outsel != '':
 		selection=outsel
@@ -4260,54 +4291,54 @@ def ModSelection(selection,sysmethod,channel_log):
                 #Uncorrelated 2016  1.0%, Uncorrelated 2017  2.0%, Uncorrelated 2018  1.5%
                 #Correlated 2016,2017,2018   0.6,0.9,2.0%
                 #Correlated 2017,2018      0.6,0.2%
-		if sysmethod == 'LUMIup':#fully correlated
+		if sysmethod == 'LUMICorrup':#fully correlated
 			if year =='2016': selection = '(1.006)*'+selection 
 			elif year == '2017': selection = '(1.009)*'+selection
 			elif year == '2018': selection = '(1.02)*'+selection
-		if sysmethod == 'LUMIdown':#fully correlated
+		if sysmethod == 'LUMICorrdown':#fully correlated
 			if year =='2016': selection = '(0.994)*'+selection
 			elif year == '2017': selection = '(0.991)*'+selection
 			elif year == '2018': selection = '(0.98)*'+selection
-		if (sysmethod == 'LUMIup16' or sysmethod == 'LUMIup17' or sysmethod == 'LUMIup18') :#fully un-correlated
+		if (sysmethod == 'LUMI16Uncorrup' or sysmethod == 'LUMI17Uncorrup' or sysmethod == 'LUMI18Uncorrup') :#fully un-correlated
 			if year =='2016': selection = '(1.01)*'+selection 
 			elif year == '2017': selection = '(1.02)*'+selection
 			elif year == '2018': selection = '(1.015)*'+selection
-		if (sysmethod == 'LUMIdown16' or sysmethod == 'LUMIdown17' or sysmethod == 'LUMIdown18'):#fully un-correlated
+		if (sysmethod == 'LUMI16Uncorrdown' or sysmethod == 'LUMI17Uncorrdown' or sysmethod == 'LUMI18Uncorrdown'):#fully un-correlated
 			if year =='2016': selection = '(0.99)*'+selection
 			elif year == '2017': selection = '(0.98)*'+selection
 			elif year == '2018': selection = '(0.985)*'+selection
-		if sysmethod == 'LUMIup1718':#partially correlated, 2017 2018 only
+		if sysmethod == 'LUMI1718up':#partially correlated, 2017 2018 only
 			if year == '2017': selection = '(1.006)*'+selection
 			elif year == '2018': selection = '(1.002)*'+selection
-		if sysmethod == 'LUMIdown1718':#partially correlated, 2017 2018 only
+		if sysmethod == 'LUMI1718down':#partially correlated, 2017 2018 only
 			if year == '2017': selection = '(0.994)*'+selection
 			elif year == '2018': selection = '(0.998)*'+selection
-		if 'MUONRECOup' in sysmethod :
+		if 'MUONRECO' in sysmethod and 'up' in sysmethod:
 			selection = selection.replace('mu1recoSF*mu2recoSF','mu1recoSFup*mu2recoSFup')
-		if 'MUONRECOdown' in sysmethod :
+		if 'MUONRECO' in sysmethod and 'down' in sysmethod:
 			selection = selection.replace('mu1recoSF*mu2recoSF','mu1recoSFdown*mu2recoSFdown')		
-		if 'MUONISOup' in sysmethod :
+		if 'MUONISO' in sysmethod and 'up' in sysmethod:
 			selection = selection.replace('mu1isoSF*mu2isoSF','mu1isoSFup*mu2isoSFup')
-		if 'MUONISOdown' in sysmethod :
+		if 'MUONISO' in sysmethod and 'down' in sysmethod:
 			selection = selection.replace('mu1isoSF*mu2isoSF','mu1isoSFdown*mu2isoSFdown')
-		if 'MUONIDup' in sysmethod :
+		if 'MUONID' in sysmethod and 'up' in sysmethod:
 			selection = selection.replace('mu1idSF*mu2idSF','mu1idSFup*mu2idSFup')
-		if 'MUONIDdown' in sysmethod :
+		if 'MUONID' in sysmethod and 'down' in sysmethod:
 			selection = selection.replace('mu1idSF*mu2idSF','mu1idSFdown*mu2idSFdown')
-		if 'MUONIDISOup' in sysmethod :
-			if 'uujj' in channel_log:
-				selection = '(1.04)*'+selection
-			if 'uvjj' in channel_log: 
-				selection = '(1.02)*'+selection
-		if 'MUONIDISOdown' in sysmethod :
-			if 'uujj' in channel_log:
-				#selection = '(1.05)*'+selection #normally 1% for ID and 0.5% for ISO, why 5%?
-				#selection = '((1.05)*((Pt_muon1*cosh(Eta_muon1))<100)*((Pt_muon2*cosh(Eta_muon2))<100) + (0.9936-3.71e-06*(Pt_muon1*cosh(Eta_muon1)))*(abs(Eta_muon1)<1.6)*((Pt_muon1*cosh(Eta_muon1))>100)*(1.025)*((Pt_muon2*cosh(Eta_muon2))<100) + (0.9936-3.71e-06*(Pt_muon1*cosh(Eta_muon1)))*(abs(Eta_muon1)<1.6)*((Pt_muon1*cosh(Eta_muon1))>100)*((Pt_muon2*cosh(Eta_muon2))>100)*(0.9936-3.71e-06*(Pt_muon2*cosh(Eta_muon2)))*(abs(Eta_muon2)<1.6) + (0.9936-3.71e-06*(Pt_muon1*cosh(Eta_muon1)))*(abs(Eta_muon1)<1.6)*((Pt_muon1*cosh(Eta_muon1))>100)*((Pt_muon2*cosh(Eta_muon2))>100)*((Pt_muon2*cosh(Eta_muon2))<200)*(1.025)*(abs(Eta_muon2)>1.6) + (0.9936-3.71e-06*(Pt_muon1*cosh(Eta_muon1)))*(abs(Eta_muon1)<1.6)*((Pt_muon1*cosh(Eta_muon1))>100)*((Pt_muon2*cosh(Eta_muon2))>200)*((0.9784-4.73e-5*(Pt_muon2*cosh(Eta_muon2)))/(0.9908-1.26e-5*(Pt_muon2*cosh(Eta_muon2))))*(abs(Eta_muon2)>1.6) + (1.025)*(abs(Eta_muon1)>1.6)*((Pt_muon1*cosh(Eta_muon1))>100)*((Pt_muon1*cosh(Eta_muon1))<200)*(1.025)*((Pt_muon2*cosh(Eta_muon2))<100) + (1.025)*(abs(Eta_muon1)>1.6)*((Pt_muon1*cosh(Eta_muon1))>100)*((Pt_muon1*cosh(Eta_muon1))<200)*((Pt_muon2*cosh(Eta_muon2))>100)*(0.9936-3.71e-06*(Pt_muon2*cosh(Eta_muon2)))*(abs(Eta_muon2)<1.6) + (1.025)*(abs(Eta_muon1)>1.6)*((Pt_muon1*cosh(Eta_muon1))>100)*((Pt_muon1*cosh(Eta_muon1))<200)*((Pt_muon2*cosh(Eta_muon2))>100)*((Pt_muon2*cosh(Eta_muon2))<200)*(1.025)*(abs(Eta_muon2)>1.6) + (1.025)*(abs(Eta_muon1)>1.6)*((Pt_muon1*cosh(Eta_muon1))>100)*((Pt_muon1*cosh(Eta_muon1))<200)*((Pt_muon2*cosh(Eta_muon2))>200)*((0.9784-4.73e-5*(Pt_muon2*cosh(Eta_muon2)))/(0.9908-1.26e-5*(Pt_muon2*cosh(Eta_muon2))))*(abs(Eta_muon2)>1.6) + ((0.9784-4.73e-5*(Pt_muon1*cosh(Eta_muon1)))/(0.9908-1.26e-5*(Pt_muon1*cosh(Eta_muon1))))*(abs(Eta_muon1)>1.6)*((Pt_muon1*cosh(Eta_muon1))>200)*(1.025)*((Pt_muon2*cosh(Eta_muon2))<100) + ((0.9784-4.73e-5*(Pt_muon1*cosh(Eta_muon1)))/(0.9908-1.26e-5*(Pt_muon1*cosh(Eta_muon1))))*(abs(Eta_muon1)>1.6)*((Pt_muon1*cosh(Eta_muon1))>200)*((Pt_muon2*cosh(Eta_muon2))>100)*(0.9936-3.71e-06*(Pt_muon2*cosh(Eta_muon2)))*(abs(Eta_muon2)<1.6) + ((0.9784-4.73e-5*(Pt_muon1*cosh(Eta_muon1)))/(0.9908-1.26e-5*(Pt_muon1*cosh(Eta_muon1))))*(abs(Eta_muon1)>1.6)*((Pt_muon1*cosh(Eta_muon1))>200)*((Pt_muon2*cosh(Eta_muon2))>100)*((Pt_muon2*cosh(Eta_muon2))<200)*(1.025)*(abs(Eta_muon2)>1.6) + ((0.9784-4.73e-5*(Pt_muon1*cosh(Eta_muon1)))/(0.9908-1.26e-5*(Pt_muon1*cosh(Eta_muon1))))*(abs(Eta_muon1)>1.6)*((Pt_muon1*cosh(Eta_muon1))>200)*((Pt_muon2*cosh(Eta_muon2))>200)*((0.9784-4.73e-5*(Pt_muon2*cosh(Eta_muon2)))/(0.9908-1.26e-5*(Pt_muon2*cosh(Eta_muon2))))*(abs(Eta_muon2)>1.6))*'+selection
-				selection = '(0.96)*((1.0)*((Pt_muon1*cosh(Eta_muon1))<100)*((Pt_muon2*cosh(Eta_muon2))<100) + ((Pt_muon1*cosh(Eta_muon1))<100)*((Pt_muon2*cosh(Eta_muon2))>100)*(0.9936-3.71e-06*(Pt_muon2*cosh(Eta_muon2)))*(abs(Eta_muon2)<1.6) + ((Pt_muon1*cosh(Eta_muon1))<100)*((Pt_muon2*cosh(Eta_muon2))>100)*((Pt_muon2*cosh(Eta_muon2))<200)*(abs(Eta_muon2)>1.6) + ((Pt_muon1*cosh(Eta_muon1))<100)*((Pt_muon1*cosh(Eta_muon1))>100)*((Pt_muon2*cosh(Eta_muon2))>200)*((0.9784-4.73e-5*(Pt_muon2*cosh(Eta_muon2)))/(0.9908-1.26e-5*(Pt_muon2*cosh(Eta_muon2))))*(abs(Eta_muon2)>1.6)+ (0.9936-3.71e-06*(Pt_muon1*cosh(Eta_muon1)))*(abs(Eta_muon1)<1.6)*((Pt_muon1*cosh(Eta_muon1))>100)*((Pt_muon2*cosh(Eta_muon2))<100) + (0.9936-3.71e-06*(Pt_muon1*cosh(Eta_muon1)))*(abs(Eta_muon1)<1.6)*((Pt_muon1*cosh(Eta_muon1))>100)*((Pt_muon2*cosh(Eta_muon2))>100)*(0.9936-3.71e-06*(Pt_muon2*cosh(Eta_muon2)))*(abs(Eta_muon2)<1.6) + (0.9936-3.71e-06*(Pt_muon1*cosh(Eta_muon1)))*(abs(Eta_muon1)<1.6)*((Pt_muon1*cosh(Eta_muon1))>100)*((Pt_muon2*cosh(Eta_muon2))>100)*((Pt_muon2*cosh(Eta_muon2))<200)*(abs(Eta_muon2)>1.6) + (0.9936-3.71e-06*(Pt_muon1*cosh(Eta_muon1)))*(abs(Eta_muon1)<1.6)*((Pt_muon1*cosh(Eta_muon1))>100)*((Pt_muon2*cosh(Eta_muon2))>200)*((0.9784-4.73e-5*(Pt_muon2*cosh(Eta_muon2)))/(0.9908-1.26e-5*(Pt_muon2*cosh(Eta_muon2))))*(abs(Eta_muon2)>1.6) + (abs(Eta_muon1)>1.6)*((Pt_muon1*cosh(Eta_muon1))>100)*((Pt_muon1*cosh(Eta_muon1))<200)*((Pt_muon2*cosh(Eta_muon2))<100) + (abs(Eta_muon1)>1.6)*((Pt_muon1*cosh(Eta_muon1))>100)*((Pt_muon1*cosh(Eta_muon1))<200)*((Pt_muon2*cosh(Eta_muon2))>100)*(0.9936-3.71e-06*(Pt_muon2*cosh(Eta_muon2)))*(abs(Eta_muon2)<1.6) + (abs(Eta_muon1)>1.6)*((Pt_muon1*cosh(Eta_muon1))>100)*((Pt_muon1*cosh(Eta_muon1))<200)*((Pt_muon2*cosh(Eta_muon2))>100)*((Pt_muon2*cosh(Eta_muon2))<200)*(abs(Eta_muon2)>1.6) + (abs(Eta_muon1)>1.6)*((Pt_muon1*cosh(Eta_muon1))>100)*((Pt_muon1*cosh(Eta_muon1))<200)*((Pt_muon2*cosh(Eta_muon2))>200)*((0.9784-4.73e-5*(Pt_muon2*cosh(Eta_muon2)))/(0.9908-1.26e-5*(Pt_muon2*cosh(Eta_muon2))))*(abs(Eta_muon2)>1.6) + ((0.9784-4.73e-5*(Pt_muon1*cosh(Eta_muon1)))/(0.9908-1.26e-5*(Pt_muon1*cosh(Eta_muon1))))*(abs(Eta_muon1)>1.6)*((Pt_muon1*cosh(Eta_muon1))>200)*((Pt_muon2*cosh(Eta_muon2))<100) + ((0.9784-4.73e-5*(Pt_muon1*cosh(Eta_muon1)))/(0.9908-1.26e-5*(Pt_muon1*cosh(Eta_muon1))))*(abs(Eta_muon1)>1.6)*((Pt_muon1*cosh(Eta_muon1))>200)*((Pt_muon2*cosh(Eta_muon2))>100)*(0.9936-3.71e-06*(Pt_muon2*cosh(Eta_muon2)))*(abs(Eta_muon2)<1.6) + ((0.9784-4.73e-5*(Pt_muon1*cosh(Eta_muon1)))/(0.9908-1.26e-5*(Pt_muon1*cosh(Eta_muon1))))*(abs(Eta_muon1)>1.6)*((Pt_muon1*cosh(Eta_muon1))>200)*((Pt_muon2*cosh(Eta_muon2))>100)*((Pt_muon2*cosh(Eta_muon2))<200)*(abs(Eta_muon2)>1.6) + ((0.9784-4.73e-5*(Pt_muon1*cosh(Eta_muon1)))/(0.9908-1.26e-5*(Pt_muon1*cosh(Eta_muon1))))*(abs(Eta_muon1)>1.6)*((Pt_muon1*cosh(Eta_muon1))>200)*((Pt_muon2*cosh(Eta_muon2))>200)*((0.9784-4.73e-5*(Pt_muon2*cosh(Eta_muon2)))/(0.9908-1.26e-5*(Pt_muon2*cosh(Eta_muon2))))*(abs(Eta_muon2)>1.6))*'+selection
-			if 'uvjj' in channel_log: 
-				#selection = '(1.025)*'+selection
-				#selection = '((1.025)*((Pt_muon1*cosh(Eta_muon1))<100) + (0.9936-3.71e-06*(Pt_muon1*cosh(Eta_muon1)))*(abs(Eta_muon1)<1.6)*((Pt_muon1*cosh(Eta_muon1))>100) + (1.025)*(abs(Eta_muon1)>1.6)*((Pt_muon1*cosh(Eta_muon1))>100)*((Pt_muon1*cosh(Eta_muon1))<200) + ((0.9784-4.73e-5*(Pt_muon1*cosh(Eta_muon1)))/(0.9908-1.26e-5*(Pt_muon1*cosh(Eta_muon1))))*(abs(Eta_muon1)>1.6)*((Pt_muon1*cosh(Eta_muon1))>200))*'+selection
-				selection = '(0.98)*(((Pt_muon1*cosh(Eta_muon1))<100) + (0.9936-3.71e-06*(Pt_muon1*cosh(Eta_muon1)))*(abs(Eta_muon1)<1.6)*((Pt_muon1*cosh(Eta_muon1))>100) + (abs(Eta_muon1)>1.6)*((Pt_muon1*cosh(Eta_muon1))>100)*((Pt_muon1*cosh(Eta_muon1))<200) + ((0.9784-4.73e-5*(Pt_muon1*cosh(Eta_muon1)))/(0.9908-1.26e-5*(Pt_muon1*cosh(Eta_muon1))))*(abs(Eta_muon1)>1.6)*((Pt_muon1*cosh(Eta_muon1))>200))*'+selection
+		#if 'MUONIDISO' in sysmethod and 'up' in sysmethod:
+		#	if 'uujj' in channel_log:
+		#		selection = '(1.04)*'+selection
+		#	if 'uvjj' in channel_log: 
+		#		selection = '(1.02)*'+selection
+		#if 'MUONIDISO' in sysmethod and 'down' in sysmethod:
+		#	if 'uujj' in channel_log:
+		#		#selection = '(1.05)*'+selection #normally 1% for ID and 0.5% for ISO, why 5%?
+		#		#selection = '((1.05)*((Pt_muon1*cosh(Eta_muon1))<100)*((Pt_muon2*cosh(Eta_muon2))<100) + (0.9936-3.71e-06*(Pt_muon1*cosh(Eta_muon1)))*(abs(Eta_muon1)<1.6)*((Pt_muon1*cosh(Eta_muon1))>100)*(1.025)*((Pt_muon2*cosh(Eta_muon2))<100) + (0.9936-3.71e-06*(Pt_muon1*cosh(Eta_muon1)))*(abs(Eta_muon1)<1.6)*((Pt_muon1*cosh(Eta_muon1))>100)*((Pt_muon2*cosh(Eta_muon2))>100)*(0.9936-3.71e-06*(Pt_muon2*cosh(Eta_muon2)))*(abs(Eta_muon2)<1.6) + (0.9936-3.71e-06*(Pt_muon1*cosh(Eta_muon1)))*(abs(Eta_muon1)<1.6)*((Pt_muon1*cosh(Eta_muon1))>100)*((Pt_muon2*cosh(Eta_muon2))>100)*((Pt_muon2*cosh(Eta_muon2))<200)*(1.025)*(abs(Eta_muon2)>1.6) + (0.9936-3.71e-06*(Pt_muon1*cosh(Eta_muon1)))*(abs(Eta_muon1)<1.6)*((Pt_muon1*cosh(Eta_muon1))>100)*((Pt_muon2*cosh(Eta_muon2))>200)*((0.9784-4.73e-5*(Pt_muon2*cosh(Eta_muon2)))/(0.9908-1.26e-5*(Pt_muon2*cosh(Eta_muon2))))*(abs(Eta_muon2)>1.6) + (1.025)*(abs(Eta_muon1)>1.6)*((Pt_muon1*cosh(Eta_muon1))>100)*((Pt_muon1*cosh(Eta_muon1))<200)*(1.025)*((Pt_muon2*cosh(Eta_muon2))<100) + (1.025)*(abs(Eta_muon1)>1.6)*((Pt_muon1*cosh(Eta_muon1))>100)*((Pt_muon1*cosh(Eta_muon1))<200)*((Pt_muon2*cosh(Eta_muon2))>100)*(0.9936-3.71e-06*(Pt_muon2*cosh(Eta_muon2)))*(abs(Eta_muon2)<1.6) + (1.025)*(abs(Eta_muon1)>1.6)*((Pt_muon1*cosh(Eta_muon1))>100)*((Pt_muon1*cosh(Eta_muon1))<200)*((Pt_muon2*cosh(Eta_muon2))>100)*((Pt_muon2*cosh(Eta_muon2))<200)*(1.025)*(abs(Eta_muon2)>1.6) + (1.025)*(abs(Eta_muon1)>1.6)*((Pt_muon1*cosh(Eta_muon1))>100)*((Pt_muon1*cosh(Eta_muon1))<200)*((Pt_muon2*cosh(Eta_muon2))>200)*((0.9784-4.73e-5*(Pt_muon2*cosh(Eta_muon2)))/(0.9908-1.26e-5*(Pt_muon2*cosh(Eta_muon2))))*(abs(Eta_muon2)>1.6) + ((0.9784-4.73e-5*(Pt_muon1*cosh(Eta_muon1)))/(0.9908-1.26e-5*(Pt_muon1*cosh(Eta_muon1))))*(abs(Eta_muon1)>1.6)*((Pt_muon1*cosh(Eta_muon1))>200)*(1.025)*((Pt_muon2*cosh(Eta_muon2))<100) + ((0.9784-4.73e-5*(Pt_muon1*cosh(Eta_muon1)))/(0.9908-1.26e-5*(Pt_muon1*cosh(Eta_muon1))))*(abs(Eta_muon1)>1.6)*((Pt_muon1*cosh(Eta_muon1))>200)*((Pt_muon2*cosh(Eta_muon2))>100)*(0.9936-3.71e-06*(Pt_muon2*cosh(Eta_muon2)))*(abs(Eta_muon2)<1.6) + ((0.9784-4.73e-5*(Pt_muon1*cosh(Eta_muon1)))/(0.9908-1.26e-5*(Pt_muon1*cosh(Eta_muon1))))*(abs(Eta_muon1)>1.6)*((Pt_muon1*cosh(Eta_muon1))>200)*((Pt_muon2*cosh(Eta_muon2))>100)*((Pt_muon2*cosh(Eta_muon2))<200)*(1.025)*(abs(Eta_muon2)>1.6) + ((0.9784-4.73e-5*(Pt_muon1*cosh(Eta_muon1)))/(0.9908-1.26e-5*(Pt_muon1*cosh(Eta_muon1))))*(abs(Eta_muon1)>1.6)*((Pt_muon1*cosh(Eta_muon1))>200)*((Pt_muon2*cosh(Eta_muon2))>200)*((0.9784-4.73e-5*(Pt_muon2*cosh(Eta_muon2)))/(0.9908-1.26e-5*(Pt_muon2*cosh(Eta_muon2))))*(abs(Eta_muon2)>1.6))*'+selection
+		#		selection = '(0.96)*((1.0)*((Pt_muon1*cosh(Eta_muon1))<100)*((Pt_muon2*cosh(Eta_muon2))<100) + ((Pt_muon1*cosh(Eta_muon1))<100)*((Pt_muon2*cosh(Eta_muon2))>100)*(0.9936-3.71e-06*(Pt_muon2*cosh(Eta_muon2)))*(abs(Eta_muon2)<1.6) + ((Pt_muon1*cosh(Eta_muon1))<100)*((Pt_muon2*cosh(Eta_muon2))>100)*((Pt_muon2*cosh(Eta_muon2))<200)*(abs(Eta_muon2)>1.6) + ((Pt_muon1*cosh(Eta_muon1))<100)*((Pt_muon1*cosh(Eta_muon1))>100)*((Pt_muon2*cosh(Eta_muon2))>200)*((0.9784-4.73e-5*(Pt_muon2*cosh(Eta_muon2)))/(0.9908-1.26e-5*(Pt_muon2*cosh(Eta_muon2))))*(abs(Eta_muon2)>1.6)+ (0.9936-3.71e-06*(Pt_muon1*cosh(Eta_muon1)))*(abs(Eta_muon1)<1.6)*((Pt_muon1*cosh(Eta_muon1))>100)*((Pt_muon2*cosh(Eta_muon2))<100) + (0.9936-3.71e-06*(Pt_muon1*cosh(Eta_muon1)))*(abs(Eta_muon1)<1.6)*((Pt_muon1*cosh(Eta_muon1))>100)*((Pt_muon2*cosh(Eta_muon2))>100)*(0.9936-3.71e-06*(Pt_muon2*cosh(Eta_muon2)))*(abs(Eta_muon2)<1.6) + (0.9936-3.71e-06*(Pt_muon1*cosh(Eta_muon1)))*(abs(Eta_muon1)<1.6)*((Pt_muon1*cosh(Eta_muon1))>100)*((Pt_muon2*cosh(Eta_muon2))>100)*((Pt_muon2*cosh(Eta_muon2))<200)*(abs(Eta_muon2)>1.6) + (0.9936-3.71e-06*(Pt_muon1*cosh(Eta_muon1)))*(abs(Eta_muon1)<1.6)*((Pt_muon1*cosh(Eta_muon1))>100)*((Pt_muon2*cosh(Eta_muon2))>200)*((0.9784-4.73e-5*(Pt_muon2*cosh(Eta_muon2)))/(0.9908-1.26e-5*(Pt_muon2*cosh(Eta_muon2))))*(abs(Eta_muon2)>1.6) + (abs(Eta_muon1)>1.6)*((Pt_muon1*cosh(Eta_muon1))>100)*((Pt_muon1*cosh(Eta_muon1))<200)*((Pt_muon2*cosh(Eta_muon2))<100) + (abs(Eta_muon1)>1.6)*((Pt_muon1*cosh(Eta_muon1))>100)*((Pt_muon1*cosh(Eta_muon1))<200)*((Pt_muon2*cosh(Eta_muon2))>100)*(0.9936-3.71e-06*(Pt_muon2*cosh(Eta_muon2)))*(abs(Eta_muon2)<1.6) + (abs(Eta_muon1)>1.6)*((Pt_muon1*cosh(Eta_muon1))>100)*((Pt_muon1*cosh(Eta_muon1))<200)*((Pt_muon2*cosh(Eta_muon2))>100)*((Pt_muon2*cosh(Eta_muon2))<200)*(abs(Eta_muon2)>1.6) + (abs(Eta_muon1)>1.6)*((Pt_muon1*cosh(Eta_muon1))>100)*((Pt_muon1*cosh(Eta_muon1))<200)*((Pt_muon2*cosh(Eta_muon2))>200)*((0.9784-4.73e-5*(Pt_muon2*cosh(Eta_muon2)))/(0.9908-1.26e-5*(Pt_muon2*cosh(Eta_muon2))))*(abs(Eta_muon2)>1.6) + ((0.9784-4.73e-5*(Pt_muon1*cosh(Eta_muon1)))/(0.9908-1.26e-5*(Pt_muon1*cosh(Eta_muon1))))*(abs(Eta_muon1)>1.6)*((Pt_muon1*cosh(Eta_muon1))>200)*((Pt_muon2*cosh(Eta_muon2))<100) + ((0.9784-4.73e-5*(Pt_muon1*cosh(Eta_muon1)))/(0.9908-1.26e-5*(Pt_muon1*cosh(Eta_muon1))))*(abs(Eta_muon1)>1.6)*((Pt_muon1*cosh(Eta_muon1))>200)*((Pt_muon2*cosh(Eta_muon2))>100)*(0.9936-3.71e-06*(Pt_muon2*cosh(Eta_muon2)))*(abs(Eta_muon2)<1.6) + ((0.9784-4.73e-5*(Pt_muon1*cosh(Eta_muon1)))/(0.9908-1.26e-5*(Pt_muon1*cosh(Eta_muon1))))*(abs(Eta_muon1)>1.6)*((Pt_muon1*cosh(Eta_muon1))>200)*((Pt_muon2*cosh(Eta_muon2))>100)*((Pt_muon2*cosh(Eta_muon2))<200)*(abs(Eta_muon2)>1.6) + ((0.9784-4.73e-5*(Pt_muon1*cosh(Eta_muon1)))/(0.9908-1.26e-5*(Pt_muon1*cosh(Eta_muon1))))*(abs(Eta_muon1)>1.6)*((Pt_muon1*cosh(Eta_muon1))>200)*((Pt_muon2*cosh(Eta_muon2))>200)*((0.9784-4.73e-5*(Pt_muon2*cosh(Eta_muon2)))/(0.9908-1.26e-5*(Pt_muon2*cosh(Eta_muon2))))*(abs(Eta_muon2)>1.6))*'+selection
+		#	if 'uvjj' in channel_log: 
+		#		#selection = '(1.025)*'+selection
+		#		#selection = '((1.025)*((Pt_muon1*cosh(Eta_muon1))<100) + (0.9936-3.71e-06*(Pt_muon1*cosh(Eta_muon1)))*(abs(Eta_muon1)<1.6)*((Pt_muon1*cosh(Eta_muon1))>100) + (1.025)*(abs(Eta_muon1)>1.6)*((Pt_muon1*cosh(Eta_muon1))>100)*((Pt_muon1*cosh(Eta_muon1))<200) + ((0.9784-4.73e-5*(Pt_muon1*cosh(Eta_muon1)))/(0.9908-1.26e-5*(Pt_muon1*cosh(Eta_muon1))))*(abs(Eta_muon1)>1.6)*((Pt_muon1*cosh(Eta_muon1))>200))*'+selection
+		#		selection = '(0.98)*(((Pt_muon1*cosh(Eta_muon1))<100) + (0.9936-3.71e-06*(Pt_muon1*cosh(Eta_muon1)))*(abs(Eta_muon1)<1.6)*((Pt_muon1*cosh(Eta_muon1))>100) + (abs(Eta_muon1)>1.6)*((Pt_muon1*cosh(Eta_muon1))>100)*((Pt_muon1*cosh(Eta_muon1))<200) + ((0.9784-4.73e-5*(Pt_muon1*cosh(Eta_muon1)))/(0.9908-1.26e-5*(Pt_muon1*cosh(Eta_muon1))))*(abs(Eta_muon1)>1.6)*((Pt_muon1*cosh(Eta_muon1))>200))*'+selection
 
 		#if 'MUONHLT':
 		#	if 'uujj' in channel_log: 
@@ -4315,49 +4346,58 @@ def ModSelection(selection,sysmethod,channel_log):
 		#	if 'uvjj' in channel_log: 
 		#		selection = '(1.01)*'+selection# was 1.015?
 		# Per-muon 2% below 300 GeV and +2% -6% above 300 GeV. On top of this, 2% is added resulting from the impact of pre-triggering.
-		if 'MUONHLTup' in sysmethod :
+		if 'MUONHLT' in sysmethod and 'up' in sysmethod:
 			if 'uujj' in channel_log: #2% pretrigger, +-2% per muon below 300, +2-6% per muon above 300  uujj: x(SF1+SF2-xSF1SF2)
 				#selection = '(1.02)*(2-1.02)*1.02*(2-1.02)*'+selection #fixme todo
 				selection = selection.replace('(1.0-((1.0-mu1hltSF)*(1.0-mu2hltSF)))', '(1.0-((1.0-mu1hltSFup)*(1.0-mu2hltSFup)))')
 			if 'uvjj' in channel_log: 
 				selection = '(1.02)*(1.02)*'+selection
-		if 'MUONHLTdown' in sysmethod :
+		if 'MUONHLT' in sysmethod and 'down' in sysmethod:
 			if 'uujj' in channel_log: 
 				#selection = '(0.98)*(2-0.98)*(0.98*(2-0.98)*(Pt_muon1<300)+0.94*(2-0.94)*(Pt_muon1>300))*(0.98*(2-0.98)*(Pt_muon2<300)+0.94*(2-0.94)*(Pt_muon2>300))*'+selection
 				selection = selection.replace('(1.0-((1.0-mu1hltSF)*(1.0-mu2hltSF)))', '(1.0-((1.0-mu1hltSFdown)*(1.0-mu2hltSFdown)))')
 			if 'uvjj' in channel_log: 
 				selection = '(0.98)*(0.98*(Pt_muon1<300)+0.94*(Pt_muon1>300))*'+selection
 		#https://indico.cern.ch/event/675475/contributions/2764498/subcontributions/240732/attachments/1547347/2429001/Wprime-muon-Approvalv1.pdf
-		if 'HIPup' in sysmethod :#Per-muon uncertainty: 0.5% (pT < 300 GeV), 1% (pT > 300 GeV)
-			if 'uujj' in channel_log: 
-				selection = '((1.005*(Pt_muon1<300)+1.01*(Pt_muon1>300))*(1.005*(Pt_muon2<300)+1.01*(Pt_muon2>300)))*'+selection
-			if 'uvjj' in channel_log: 
-				selection = '(1.005*(Pt_muon1<300)+1.01*(Pt_muon1>300))*'+selection
-		if 'HIPdown' in sysmethod :
-			if 'uujj' in channel_log: 
-				selection = '((0.995*(Pt_muon1<300)+0.99*(Pt_muon1>300))*(0.995*(Pt_muon2<300)+0.99*(Pt_muon2>300)))*'+selection
-			if 'uvjj' in channel_log: 
-				selection = '(0.995*(Pt_muon1<300)+0.99*(Pt_muon1>300))*'+selection
+		#if 'HIPup' in sysmethod :#Per-muon uncertainty: 0.5% (pT < 300 GeV), 1% (pT > 300 GeV)
+		#	if 'uujj' in channel_log: 
+		#		selection = '((1.005*(Pt_muon1<300)+1.01*(Pt_muon1>300))*(1.005*(Pt_muon2<300)+1.01*(Pt_muon2>300)))*'+selection
+		#	if 'uvjj' in channel_log: 
+		#		selection = '(1.005*(Pt_muon1<300)+1.01*(Pt_muon1>300))*'+selection
+		#if 'HIPdown' in sysmethod :
+		#	if 'uujj' in channel_log: 
+		#		selection = '((0.995*(Pt_muon1<300)+0.99*(Pt_muon1>300))*(0.995*(Pt_muon2<300)+0.99*(Pt_muon2>300)))*'+selection
+		#	if 'uvjj' in channel_log: 
+		#		selection = '(0.995*(Pt_muon1<300)+0.99*(Pt_muon1>300))*'+selection
 
-		if 'PUup' in sysmethod :
+		if 'PU' in sysmethod and 'up' in sysmethod:
 			selection = selection.replace('weight_topPt','weight_pu_up')
-		if 'PUdown' in sysmethod :
+		if 'PU' in sysmethod and 'down' in sysmethod:
 			selection = selection.replace('weight_topPt','weight_pu_down')
-                if 'TOPPTup' in sysmethod :
+		if 'TOPPT' in sysmethod and 'up' in sysmethod:
 			selection = selection.replace('weight_topPt','weight_topPt_up')
-                if 'TOPPTdown' in sysmethod :
+		if 'TOPPT' in sysmethod and 'down' in sysmethod:
 			selection = selection.replace('weight_topPt','weight_topPt_down')
-		if 'PREFIREup' in sysmethod :
-			selection = selection.replace('prefireWeight','prefireWeight_up')
-		if 'PREFIREdown' in sysmethod :
-			selection = selection.replace('prefireWeight','prefireWeight_down')
-
-		if 'BTAGSFup' in sysmethod :
+		if 'PREFIRE' in sysmethod and 'up' in sysmethod:
+			if year == '2016' or year == '2017':
+				selection = selection.replace('prefireWeight','prefireWeight_up')
+		if 'PREFIRE' in sysmethod and 'down' in sysmethod:
+			if year == '2016' or year == '2017':
+				selection = selection.replace('prefireWeight','prefireWeight_down')
+		if 'BTAG' in sysmethod and 'up' in sysmethod:
 			if year == '2016':
-				selection = selection.replace('*(1-(1-(DeepJet_jet1>0.3093)*bTagSF_jet1)*(1-(DeepJet_jet2>0.3093)*bTagSF_jet2))',bTagSFmediumUp)
-		if 'BTAGSFdown' in sysmethod :
+				selection = selection.replace('*(1-(1-(DeepJet_jet1>0.3093)*bTagSF_jet1)*(1-(DeepJet_jet2>0.3093)*bTagSF_jet2))',bTagSFmedium2016Up)
+			if year == '2017':
+				selection = selection.replace('*(1-(1-(DeepJet_jet1>0.3033)*bTagSF_jet1)*(1-(DeepJet_jet2>0.3033)*bTagSF_jet2))',bTagSFmedium2017Up)
+			if year == '2018':
+				selection = selection.replace('*(1-(1-(DeepJet_jet1>0.2770)*bTagSF_jet1)*(1-(DeepJet_jet2>0.2770)*bTagSF_jet2))',bTagSFmedium2018Up)
+		if 'BTAG' in sysmethod and 'down' in sysmethod:
 			if year == '2016':
-				selection = selection.replace('*(1-(1-(DeepJet_jet1>0.3093)*bTagSF_jet1)*(1-(DeepJet_jet2>0.3093)*bTagSF_jet2))',bTagSFmediumDown)
+				selection = selection.replace('*(1-(1-(DeepJet_jet1>0.3093)*bTagSF_jet1)*(1-(DeepJet_jet2>0.3093)*bTagSF_jet2))',bTagSFmedium2016Down)
+			if year == '2017':
+				selection = selection.replace('*(1-(1-(DeepJet_jet1>0.3033)*bTagSF_jet1)*(1-(DeepJet_jet2>0.3033)*bTagSF_jet2))',bTagSFmedium2017Down)
+			if year == '2018':
+				selection = selection.replace('*(1-(1-(DeepJet_jet1>0.2770)*bTagSF_jet1)*(1-(DeepJet_jet2>0.2770)*bTagSF_jet2))',bTagSFmedium2018Down)
 
 	return selection
 
@@ -4753,12 +4793,17 @@ def FullAnalysis(optimlog,selection_uujj,selection_uvjj,NormalDirectory,weight,u
 	#_Variations = ['','JESup','JESdown','MESup','MESdown','JERup','JERdown','MER','LUMIup','LUMIdown','PUup','PUdown','ZNORMup','ZNORMdown','WNORMup','WNORMdown','TTNORMup','TTNORMdown','SHAPETT','SHAPEZ','SHAPEW','SHAPEVV','MUONIDISO','MUONHLT','PDF','HIPup','HIPdown']	
 	#Splitting MUONIDISO and MUONHLT into up and down to account for asymmetric high pt corrections
 	#_Variations = ['','JESup','JESdown','MESup','MESdown','JERup','JERdown','MER','LUMIup','LUMIdown','PUup','PUdown','ZNORMup','ZNORMdown','WNORMup','WNORMdown','TTNORMup','TTNORMdown','SHAPETT','SHAPEZ','SHAPEW','SHAPEVV','MUONIDISOup','MUONIDISOdown','MUONHLTup','MUONHLTdown','PDF','HIPup','HIPdown','BTAGup','BTAGdown']
-	if year=="2016":
-                _Variations = ['','JESup','JESdown','MESup','MESdown','JERup','JERdown','MER','LUMIup','LUMIdown','LUMIup16','LUMIdown16','PUup','PUdown','ZNORMup','ZNORMdown','TTNORMup','TTNORMdown','SHAPETT','SHAPEZ','SHAPEVV','MUONIDup', 'MUONIDdown', 'MUONISOup', 'MUONISOdown','MUONHLTup','MUONHLTdown','MUONRECOup','MUONRECOdown','PDF','BTAGup','BTAGdown','TOPPTup','TOPPTdown']
-	elif year=="2017":
-                _Variations = ['','JESup17','JESdown17','MESup17','MESdown17','JERup17','JERdown17','MER17','LUMIup','LUMIdown','LUMIup17','LUMIdown17','LUMIup1718','LUMIdown1718','PUup','PUdown','ZNORMup17','ZNORMdown17','TTNORMup17','TTNORMdown17','SHAPETT','SHAPEZ','SHAPEVV','MUONIDup17', 'MUONIDdown17', 'MUONISOup17', 'MUONISOdown17','MUONHLTup17','MUONHLTdown17','MUONRECOup17','MUONRECOdown17','PDF','BTAGup17','BTAGdown17','TOPPTup','TOPPTdown']
-        elif year=="2018":
-                _Variations = ['','JESup18','JESdown18','MESup18','MESdown18','JERup18','JERdown18','MER18','LUMIup','LUMIdown','LUMIup18','LUMIdown18','LUMIup1718','LUMIdown1718','PUup','PUdown','ZNORMup18','ZNORMdown18','TTNORMup18','TTNORMdown18','SHAPETT','SHAPEZ','SHAPEVV','MUONIDup18', 'MUONIDdown18', 'MUONISOup18', 'MUONISOdown18','MUONHLTup18','MUONHLTdown18','MUONRECOup18','MUONRECOdown18','PDF','BTAGup18','BTAGdown18','TOPPTup','TOPPTdown']	
+
+	_Variations2016 = ['','JESup','JESdown','MESup','MESdown','JERup','JERdown','MER','LUMICorrup','LUMICorrdown','LUMI16Uncorrup','LUMI16Uncorrdown','PUup','PUdown','ZNORMup','ZNORMdown','TTNORMup','TTNORMdown','SHAPETT','SHAPEZ','SHAPEVV','MUONIDup', 'MUONIDdown', 'MUONISOup', 'MUONISOdown','MUONHLTup','MUONHLTdown','MUONRECOup','MUONRECOdown','PDF','BTAGup','BTAGdown','TOPPTup','TOPPTdown','PREFIREup','PREFIREdown']
+
+	_Variations2017 = ['','JES17up','JES17down','MES17up','MES17down','JER17up','JER17down','MER17','LUMICorrup','LUMICorrdown','LUMI17Uncorrup','LUMI17Uncorrdown','LUMI1718up','LUMI1718down','PUup','PUdown','ZNORM17up','ZNORM17down','TTNORM17up','TTNORM17down','SHAPETT','SHAPEZ','SHAPEVV','MUONID17up', 'MUONID17down', 'MUONISO17up', 'MUONISO17down','MUONHLT17up','MUONHLT17down','MUONRECO17up','MUONRECO17down','PDF','BTAG17up','BTAG17down','TOPPT17up','TOPPT17down','PREFIRE17up','PREFIRE17down']
+
+	_Variations2018 = ['','JES18up','JES18down','MES18up','MES18down','JER18up','JER18down','MER18','LUMICorrup','LUMICorrdown','LUMI18Uncorrup','LUMI18Uncorrdown','LUMI1718up','LUMI1718down','PUup','PUdown','ZNORM18up','ZNORM18down','TTNORM18up','TTNORM18down','SHAPETT','SHAPEZ','SHAPEVV','MUONID18up', 'MUONID18down', 'MUONISO18up', 'MUONISO18down','MUONHLT18up','MUONHLT18down','MUONRECO18up','MUONRECO18down','PDF','BTAG18up','BTAG18down','TOPPT18up','TOPPT18down','PREFIRE18up','PREFIRE18down']
+
+	if year == '2016': _Variations = _Variations2016
+	if year == '2017': _Variations = _Variations2017	
+	if year == '2018': _Variations = _Variations2018	
+
 	for v in _Variations:
 		print ' -'*50
 		print 'Processing table for variation: ',v
@@ -6442,15 +6487,22 @@ def MakeBasicPlot(recovariable,xlabel,presentationbinning,selection,weight,FileD
 	if isDisplaced: channel='displaced'
 	os.system('mkdir Results_'+version_name+'/Plots')
 	if 'final' not in tagname:
-		os.system('mkdir Results_'+version_name+'/Plots/Preselection')
-		c1.Print('Results_'+version_name+'/Plots/Preselection/BasicLQ_'+channel+'_'+recovariable+'_'+tagname+'.pdf')
-		c1.Print('Results_'+version_name+'/Plots/Preselection/BasicLQ_'+channel+'_'+recovariable+'_'+tagname+'.png')
-		print 'Results_'+version_name+'/Plots/Preselection/BasicLQ_'+channel+'_'+recovariable+'_'+tagname+'.pdf',
+		if 'enhanced' in tagname:
+			os.system('mkdir Results_'+version_name+'/Plots/Enhanced_selection')
+			c1.Print('Results_'+version_name+'/Plots/Enhanced_selection/BasicLQ_'+channel+'_'+recovariable+'_'+tagname+'.pdf')
+			c1.Print('Results_'+version_name+'/Plots/Enhanced_selection/BasicLQ_'+channel+'_'+recovariable+'_'+tagname+'.png')
+			print 'Results_'+version_name+'/Plots/Enhanced_selection/BasicLQ_'+channel+'_'+recovariable+'_'+tagname+'.pdf',
+		else:
+			os.system('mkdir Results_'+version_name+'/Plots/Preselection')
+			c1.Print('Results_'+version_name+'/Plots/Preselection/BasicLQ_'+channel+'_'+recovariable+'_'+tagname+'.pdf')
+			c1.Print('Results_'+version_name+'/Plots/Preselection/BasicLQ_'+channel+'_'+recovariable+'_'+tagname+'.png')
+			print 'Results_'+version_name+'/Plots/Preselection/BasicLQ_'+channel+'_'+recovariable+'_'+tagname+'.pdf',
+
 	else:
-		os.system('mkdir Results_'+version_name+'/Plots/Final')
-		c1.Print('Results_'+version_name+'/Plots/Final/BasicLQ_'+channel+'_'+recovariable+'_'+tagname+str(plotmass)+'.pdf')
-		c1.Print('Results_'+version_name+'/Plots/Final/BasicLQ_'+channel+'_'+recovariable+'_'+tagname+str(plotmass)+'.png')	
-		print 'Results_'+version_name+'/Plots/Final/BasicLQ_'+channel+'_'+recovariable+'_'+tagname+str(plotmass)+'.pdf',
+		os.system('mkdir Results_'+version_name+'/Plots/Final_selection')
+		c1.Print('Results_'+version_name+'/Plots/Final_selection/BasicLQ_'+channel+'_'+recovariable+'_'+tagname+str(plotmass)+'.pdf')
+		c1.Print('Results_'+version_name+'/Plots/Final_selection/BasicLQ_'+channel+'_'+recovariable+'_'+tagname+str(plotmass)+'.png')	
+		print 'Results_'+version_name+'/Plots/Final_selection/BasicLQ_'+channel+'_'+recovariable+'_'+tagname+str(plotmass)+'.pdf',
 	print ' ...Done.'
 
 	return resstring
