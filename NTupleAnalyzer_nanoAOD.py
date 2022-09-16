@@ -2593,14 +2593,14 @@ for n in range(N):
 		
 	else:
 		Branches['weight_central'][0] = startingweight*t.genWeight*t.puWeight
-		Branches['weight_pu_down'][0] = startingweight*t.genWeight*t.puWeightDown
-		Branches['weight_pu_up'][0] = startingweight*t.genWeight*t.puWeightUp
 		#Branches['weight_central_2012D'][0] = startingweight*GetPUWeight(t,'Central','2012D')
-		Branches['weight_nopu'][0] = startingweight*t.genWeight
-                if ('TTTo' in name) or ('TT_' in name) :
-                        Branches['weight_topPt'][0] , Branches['weight_topPt_up'][0] , Branches['weight_topPt_down'][0] = getTopPtReweight(t)
-                else :
-                        Branches['weight_topPt'][0] , Branches['weight_topPt_up'][0] , Branches['weight_topPt_down'][0]= 1.0 , 1.0 , 1.0
+                topPtFact , topPtFactUp , topPtFactDown  = getTopPtReweight(t)#returns weights for TTBar and 1,1,1 for non-TTBar
+                Branches['weight_topPt'][0] = topPtFact*startingweight*t.genWeight*t.puWeight
+                Branches['weight_topPt_up'][0] = topPtFactUp*startingweight*t.genWeight*t.puWeight
+                Branches['weight_topPt_down'][0] = topPtFactDown*startingweight*t.genWeight*t.puWeight
+                Branches['weight_pu_down'][0] = topPtFact*startingweight*t.genWeight*t.puWeightDown
+                Branches['weight_pu_up'][0] = topPtFact*startingweight*t.genWeight*t.puWeightUp
+                Branches['weight_nopu'][0] = topPtFact*startingweight*t.genWeight
 
 		#if 'amcatnlo' in amcNLOname :
 		#	Branches['weight_central'][0]*=t.amcNLOWeight
