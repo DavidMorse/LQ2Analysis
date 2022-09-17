@@ -1,5 +1,6 @@
 import os
 import sys
+import json
 
 sysTabFile = sys.argv[1]
 
@@ -10,28 +11,189 @@ sysTabRootDir = [sysTabFile.split('/')[0].split(y) for y in years if y in sysTab
 sysTabSubDir = sysTabFile.split('/')[1]
 sysTabFileName = sysTabFile.split('/')[-1].split('_')[0]
 
-sysTabAllYears = "SysTablesYearSeparated.tex"
-if "Presel" in sysTabFile:
-    sysTabAllYears = sysTabAllYears.split('.')[0]+"_Presel."+sysTabAllYears.split('.')[-1]
+#sysTabAllYears = "SysTablesYearSeparated.tex"
+#if "Presel" in sysTabFile:
+#    sysTabAllYears = sysTabAllYears.split('.')[0]+"_Presel."+sysTabAllYears.split('.')[-1]
 
-with open(sysTabAllYears,'w'):
-    pass
+#with open(sysTabAllYears,'w'):
+#    pass
 
+# Compare this list to keys in sysDict (in loop below)
+sysToInclude = [
+    "BTAG",
+    "JER",
+    "JES",
+    "LUMI16Uncorr",
+    "LUMI17Uncorr",
+    "LUMI18Uncorr",
+    "LUMI1718",
+    "LUMICorr",
+    "MER",
+    "MES",
+    "MUONHLT",
+    "MUONID",
+    "MUONISO",
+    "MUONRECO",
+    "PDF",
+    "PREFIRE",
+    "PU",
+    "SHAPETT",
+    "SHAPEVV",
+    "SHAPEZ",
+    "TOPPT",
+    "TTNORM",
+    "ZNORM",
+    "Total"
+]
+
+
+sysDict = {}
 for year in years:
-    tableStrToWrite = ''
+    
+    sysDict[year] = {
+        "BTAG": {"Signal": [], "Background": []},
+        "JER": {"Signal": [], "Background": []},
+        "JES": {"Signal": [], "Background": []},
+        "LUMI16Uncorr": {"Signal": [], "Background": []},
+        "LUMI17Uncorr": {"Signal": [], "Background": []},
+        "LUMI18Uncorr": {"Signal": [], "Background": []},
+        "LUMI1718": {"Signal": [], "Background": []},
+        "LUMICorr": {"Signal": [], "Background": []},
+        "MER": {"Signal": [], "Background": []},
+        "MES": {"Signal": [], "Background": []},
+        "MUONHLT": {"Signal": [], "Background": []},
+        "MUONID": {"Signal": [], "Background": []},
+        "MUONISO": {"Signal": [], "Background": []},
+        "MUONRECO": {"Signal": [], "Background": []},
+        "PDF": {"Signal": [], "Background": []},
+        "PREFIRE": {"Signal": [], "Background": []},
+        "PU": {"Signal": [], "Background": []},
+        "SHAPETT": {"Signal": [], "Background": []},
+        "SHAPEVV": {"Signal": [], "Background": []},
+        "SHAPEZ": {"Signal": [], "Background": []},
+        "TOPPT": {"Signal": [], "Background": []},
+        "TTNORM": {"Signal": [], "Background": []},
+        "ZNORM": {"Signal": [], "Background": []},
+        "Total": {"Signal": [], "Background": []}
+    }
+
     sysTabFile = year.join(sysTabRootDir)+'/'+sysTabSubDir+'/'+sysTabFileName+'_'+year+'.tex'
     with open(sysTabFile,'r') as inSysTexFile:
         for line in inSysTexFile:
-            if 'LUMI16' in line or 'LUMI17' in line or 'LUMI18' in line or 'LUMI1718' in line:
-                continue
-            else:
-                tableStrToWrite += line
-    with open(sysTabAllYears,'a') as inSysTabAllYears:
-        inSysTabAllYears.write(tableStrToWrite)
+            if "BTAG" in line: 
+                sysDict[year]["BTAG"]["Signal"].append(line.split("&")[1])
+                sysDict[year]["BTAG"]["Background"].append(line.split("&")[2].split(r'\\')[0])
+            if "JER" in line: 
+                sysDict[year]["JER"]["Signal"].append(line.split("&")[1])
+                sysDict[year]["JER"]["Background"].append(line.split("&")[2].split(r'\\')[0])
+            if "JES" in line: 
+                sysDict[year]["JES"]["Signal"].append(line.split("&")[1])
+                sysDict[year]["JES"]["Background"].append(line.split("&")[2].split(r'\\')[0])
+            if year == '2016':
+                if "LUMI16Uncorr" in line: 
+                    sysDict[year]["LUMI16Uncorr"]["Signal"].append(line.split("&")[1])
+                    sysDict[year]["LUMI16Uncorr"]["Background"].append(line.split("&")[2].split(r'\\')[0])
+                    sysDict[year]["LUMI17Uncorr"]["Signal"].append("xx")
+                    sysDict[year]["LUMI17Uncorr"]["Background"].append("xx")
+                    sysDict[year]["LUMI18Uncorr"]["Signal"].append("xx")
+                    sysDict[year]["LUMI18Uncorr"]["Background"].append("xx")
+                    sysDict[year]["LUMI1718"]["Signal"].append("xx")
+                    sysDict[year]["LUMI1718"]["Background"].append("xx")
+            if year == '2017':
+                if "LUMI17Uncorr" in line: 
+                    sysDict[year]["LUMI16Uncorr"]["Signal"].append("xx")
+                    sysDict[year]["LUMI16Uncorr"]["Background"].append("xx")
+                    sysDict[year]["LUMI17Uncorr"]["Signal"].append(line.split("&")[1])
+                    sysDict[year]["LUMI17Uncorr"]["Background"].append(line.split("&")[2].split(r'\\')[0])
+                    sysDict[year]["LUMI18Uncorr"]["Signal"].append("xx")
+                    sysDict[year]["LUMI18Uncorr"]["Background"].append("xx")
+                if "LUMI1718" in line:
+                    sysDict[year]["LUMI1718"]["Signal"].append(line.split("&")[1])
+                    sysDict[year]["LUMI1718"]["Background"].append(line.split("&")[2].split(r'\\')[0])
+            if year == '2018':
+                if "LUMI18Uncorr" in line: 
+                    sysDict[year]["LUMI16Uncorr"]["Signal"].append("xx")
+                    sysDict[year]["LUMI16Uncorr"]["Background"].append("xx")
+                    sysDict[year]["LUMI17Uncorr"]["Signal"].append("xx")
+                    sysDict[year]["LUMI17Uncorr"]["Background"].append("xx")
+                    sysDict[year]["LUMI18Uncorr"]["Signal"].append(line.split("&")[1])
+                    sysDict[year]["LUMI18Uncorr"]["Background"].append(line.split("&")[2].split(r'\\')[0])
+                if "LUMI1718" in line:
+                    sysDict[year]["LUMI1718"]["Signal"].append(line.split("&")[1])
+                    sysDict[year]["LUMI1718"]["Background"].append(line.split("&")[2].split(r'\\')[0])
+            if "LUMICorr" in line: 
+                sysDict[year]["LUMICorr"]["Signal"].append(line.split("&")[1])
+                sysDict[year]["LUMICorr"]["Background"].append(line.split("&")[2].split(r'\\')[0])
+            if "MER" in line: 
+                sysDict[year]["MER"]["Signal"].append(line.split("&")[1])
+                sysDict[year]["MER"]["Background"].append(line.split("&")[2].split(r'\\')[0])
+            if "MES" in line: 
+                sysDict[year]["MES"]["Signal"].append(line.split("&")[1])
+                sysDict[year]["MES"]["Background"].append(line.split("&")[2].split(r'\\')[0])
+            if "MUONHLT" in line: 
+                sysDict[year]["MUONHLT"]["Signal"].append(line.split("&")[1])
+                sysDict[year]["MUONHLT"]["Background"].append(line.split("&")[2].split(r'\\')[0])
+            if "MUONID" in line: 
+                sysDict[year]["MUONID"]["Signal"].append(line.split("&")[1])
+                sysDict[year]["MUONID"]["Background"].append(line.split("&")[2].split(r'\\')[0])
+            if "MUONISO" in line: 
+                sysDict[year]["MUONISO"]["Signal"].append(line.split("&")[1])
+                sysDict[year]["MUONISO"]["Background"].append(line.split("&")[2].split(r'\\')[0])
+            if "MUONRECO" in line: 
+                sysDict[year]["MUONRECO"]["Signal"].append(line.split("&")[1])
+                sysDict[year]["MUONRECO"]["Background"].append(line.split("&")[2].split(r'\\')[0])
+            if "PDF" in line: 
+                sysDict[year]["PDF"]["Signal"].append(line.split("&")[1])
+                sysDict[year]["PDF"]["Background"].append(line.split("&")[2].split(r'\\')[0])
+            if "PREFIRE" in line:
+                if year == "2018":
+                    sysDict[year]["PREFIRE"]["Signal"].append("xx")
+                    sysDict[year]["PREFIRE"]["Background"].append("xx")
+                else:
+                    sysDict[year]["PREFIRE"]["Signal"].append(line.split("&")[1])
+                    sysDict[year]["PREFIRE"]["Background"].append(line.split("&")[2].split(r'\\')[0])
+            if "PU" in line: 
+                sysDict[year]["PU"]["Signal"].append(line.split("&")[1])
+                sysDict[year]["PU"]["Background"].append(line.split("&")[2].split(r'\\')[0])
+            if "SHAPETT" in line: 
+                sysDict[year]["SHAPETT"]["Signal"].append(line.split("&")[1])
+                sysDict[year]["SHAPETT"]["Background"].append(line.split("&")[2].split(r'\\')[0])
+            if "SHAPEVV" in line: 
+                sysDict[year]["SHAPEVV"]["Signal"].append(line.split("&")[1])
+                sysDict[year]["SHAPEVV"]["Background"].append(line.split("&")[2].split(r'\\')[0])
+            if "SHAPEZ" in line: 
+                sysDict[year]["SHAPEZ"]["Signal"].append(line.split("&")[1])
+                sysDict[year]["SHAPEZ"]["Background"].append(line.split("&")[2].split(r'\\')[0])
+            if "TOPPT" in line: 
+                sysDict[year]["TOPPT"]["Signal"].append(line.split("&")[1])
+                sysDict[year]["TOPPT"]["Background"].append(line.split("&")[2].split(r'\\')[0])
+            if "TTNORM" in line: 
+                sysDict[year]["TTNORM"]["Signal"].append(line.split("&")[1])
+                sysDict[year]["TTNORM"]["Background"].append(line.split("&")[2].split(r'\\')[0])
+            if "ZNORM" in line: 
+                sysDict[year]["ZNORM"]["Signal"].append(line.split("&")[1])
+                sysDict[year]["ZNORM"]["Background"].append(line.split("&")[2].split(r'\\')[0])
+            if "Total" in line: 
+                sysDict[year]["Total"]["Signal"].append(line.split("&")[1])
+                sysDict[year]["Total"]["Background"].append(line.split("&")[2].split(r'\\')[0])
+
+
+#for year in years:
+#    tableStrToWrite = ''
+#    sysTabFile = year.join(sysTabRootDir)+'/'+sysTabSubDir+'/'+sysTabFileName+'_'+year+'.tex'
+#    with open(sysTabFile,'r') as inSysTexFile:
+#        for line in inSysTexFile:
+#            tableStrToWrite += line
+#    with open(sysTabAllYears,'a') as inSysTabAllYears:
+#        inSysTabAllYears.write(tableStrToWrite)
+
+#with open(sysTabAllYears,'w') as inSysTabAllYears:
+#    inSysTabAllYears.dump(sysDict)
+#
 
 fullTables = ""
 
-for mass in masses:
+for i, mass in enumerate(masses):
     tableStr = "%"+mass+"\n"
     tableStr += r"\b"+"egin{table}[htbp]\n"
     tableStr += "\t"+r"\b"+"egin{center}\n"
@@ -40,31 +202,19 @@ for mass in masses:
     tableStr += "\t\t\t\hline \hline\n"
     tableStr += "\t\t\t& \multicolumn{2}{c}{2016} & \multicolumn{2}{c}{2017} & \multicolumn{2}{c}{2018} "+r"\\"+"\n"
     tableStr += "\t\t\tSystematic & Sig. (\%) & Bkg. (\%) & Sig. (\%) & Bkg. (\%) & Sig. (\%) & Bkg. (\%) "+r"\\"+" \hline\n"
-    with open(sysTabAllYears,"r") as systables:
-        lines = []
-        for i, line in enumerate(systables):
-            if "%2016% %"+mass+"%" in line:
-                start2016 = i+7
-            if "%2017% %"+mass+"%" in line:
-                start2017 = i+7
-            if "%2018% %"+mass+"%" in line:
-                start2018 = i+7
-            lines.append(line)
-        for sys in range(19):
-            sysName = lines[start2016+sys].split("&")[0].strip().replace('16','').replace('17','').replace('18','')
 
-            sig2016 = lines[start2016+sys].split("&")[1].strip()
-            bkg2016 = lines[start2016+sys].split("&")[2].split(r"\\")[0].strip()
+    for j, sysName in enumerate(sysToInclude):
+        sig2016 = sysDict["2016"][sysName]["Signal"][i]
+        bkg2016 = sysDict["2016"][sysName]["Background"][i]
+        sig2017 = sysDict["2017"][sysName]["Signal"][i]
+        bkg2017 = sysDict["2017"][sysName]["Background"][i]
+        sig2018 = sysDict["2018"][sysName]["Signal"][i]
+        bkg2018 = sysDict["2018"][sysName]["Background"][i]
+        if j < len(sysToInclude)-1:
+            tableStr += "\t\t\t"+sysName+" & "+sig2016+" & "+bkg2016+" & "+sig2017+" & "+bkg2017+" & "+sig2018+" & "+bkg2018+r" \\"+"\n"
+        else:
+            tableStr += "\t\t\t"+sysName+" & "+sig2016+" & "+bkg2016+" & "+sig2017+" & "+bkg2017+" & "+sig2018+" & "+bkg2018+r" \\"+" \hline \hline\n"
 
-            sig2017 = lines[start2017+sys].split("&")[1].strip()
-            bkg2017 = lines[start2017+sys].split("&")[2].split(r"\\")[0].strip()
-
-            sig2018 = lines[start2018+sys].split("&")[1].strip()
-            bkg2018 = lines[start2018+sys].split("&")[2].split(r"\\")[0].strip()
-            if sys != 18:
-                tableStr += "\t\t\t"+sysName+" & "+sig2016+" & "+bkg2016+" & "+sig2017+" & "+bkg2017+" & "+sig2018+" & "+bkg2018+r" \\"+"\n"
-            else:
-                tableStr += "\t\t\t"+sysName+" & "+sig2016+" & "+bkg2016+" & "+sig2017+" & "+bkg2017+" & "+sig2018+" & "+bkg2018+r" \\"+" \hline \hline\n"
     tableStr += "\t\t\end{tabular}\n"
     tableStr += "\t\t\label{tab:SysUncertainties_"+mass+"}\n"
     tableStr += "\t\end{center}\n"
@@ -76,8 +226,8 @@ for mass in masses:
     fullTables += tableStr
 
 sysTabYearComb = "SysTablesYearCombined.tex"
-if "Presel" in sysTabFile:
-    sysTabYearComb = sysTabYearComb.split('.')[0]+"_Presel."+sysTabYearComb.split('.')[-1]
+#if "Presel" in sysTabFile:
+#    sysTabYearComb = sysTabYearComb.split('.')[0]+"_Presel."+sysTabYearComb.split('.')[-1]
 
 with open(sysTabYearComb,"w") as outFile:
     outFile.write(fullTables)

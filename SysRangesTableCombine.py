@@ -39,6 +39,8 @@ MUONID=[]
 MUONISO=[]
 MUONRECO=[]
 PDF=[]
+PREFIRE=[]
+PU=[]
 BTAG=[]
 TOPPT=[]
 TTNORM=[]
@@ -71,9 +73,11 @@ with open(sysRangeTabAllYears,'r') as inSysRangeTabAllYears:
             MUONRECO.append(line.split('&')[1].strip()+' & '+line.split('&')[2].split(r'\\')[0].strip())
         if 'PDF' in line:
             PDF.append(line.split('&')[1].strip()+' & '+line.split('&')[2].split(r'\\')[0].strip())
-        if 'Pile-up' in line:
-            BTAG.append(line.split('&')[1].strip()+' & '+line.split('&')[2].split(r'\\')[0].strip())
-        if 'Top pT reweighting' in line:
+        if 'Prefire weighting' in line:
+            PREFIRE.append(line.split('&')[1].strip()+' & '+line.split('&')[2].split(r'\\')[0].strip())
+        if 'Pileup' in line:
+            PU.append(line.split('&')[1].strip()+' & '+line.split('&')[2].split(r'\\')[0].strip())
+        if 'Top $p_T$ reweighting' in line:
             TOPPT.append(line.split('&')[1].strip()+' & '+line.split('&')[2].split(r'\\')[0].strip())
         if 'TT normalization' in line:
             TTNORM.append(line.split('&')[1].strip()+' & '+line.split('&')[2].split(r'\\')[0].strip())
@@ -106,7 +110,8 @@ fullSysRangeTable += '\t\t\tMuon identification & ' + MUONID[0] + ' & ' + MUONID
 fullSysRangeTable += '\t\t\tMuon isolation & ' + MUONISO[0] + ' & ' + MUONISO[1] + ' & ' + MUONISO[2] + r' \\' + '\n'
 fullSysRangeTable += '\t\t\tMuon reconstruction & ' + MUONRECO[0] + ' & ' + MUONRECO[1] + ' & ' + MUONRECO[2] + r' \\' + '\n'
 fullSysRangeTable += '\t\t\tPDF & ' + PDF[0] + ' & ' + PDF[1] + ' & ' + PDF[2] + r' \\' + '\n'
-fullSysRangeTable += '\t\t\tPile-up & ' + BTAG[0] + ' & ' + BTAG[1] + ' & ' + BTAG[2] + r' \\' + '\n'
+fullSysRangeTable += '\t\t\tPrefire reweighting & ' + PREFIRE[0] + ' & ' + PREFIRE[1] + ' & ' + PREFIRE[2] + r' \\' + '\n'
+fullSysRangeTable += '\t\t\tPileup & ' + PU[0] + ' & ' + PU[1] + ' & ' + PU[2] + r' \\' + '\n'
 fullSysRangeTable += '\t\t\tTop pT reweighting & ' + TOPPT[0] + ' & ' + TOPPT[1] + ' & ' + TOPPT[2] + r' \\' + '\n'
 fullSysRangeTable += '\t\t\tTT normalization & ' + TTNORM[0] + ' & ' + TTNORM[1] + ' & ' + TTNORM[2] + r' \\' + '\n'
 fullSysRangeTable += '\t\t\tTT shape & ' + TTSHAPE[0] + ' & ' + TTSHAPE[1] + ' & ' + TTSHAPE[2] + r' \\' + '\n'
@@ -121,10 +126,8 @@ fullSysRangeTable += r'\end{table}' + '\n'
 
 print fullSysRangeTable
 
-exit()
-sysTabYearComb = "SysTablesYearCombined.tex"
-if "Presel" in sysTabFile:
-    sysTabYearComb = sysTabYearComb.split('.')[0]+"_Presel."+sysTabYearComb.split('.')[-1]
+
+sysTabYearComb = "SysRangesYearCombined.tex"
 
 with open(sysTabYearComb,"w") as outFile:
-    outFile.write(fullTables)
+    outFile.write(fullSysRangeTable)
