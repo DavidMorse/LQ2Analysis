@@ -11,7 +11,7 @@ sysTabRootDir = [sysTabFile.split('/')[0].split(y) for y in years if y in sysTab
 sysTabSubDir = sysTabFile.split('/')[1]
 sysTabFileName = sysTabFile.split('/')[-1].split('_')[0]
 
-#sysTabAllYears = "SysTablesYearSeparated.tex"
+
 #if "Presel" in sysTabFile:
 #    sysTabAllYears = sysTabAllYears.split('.')[0]+"_Presel."+sysTabAllYears.split('.')[-1]
 
@@ -187,8 +187,9 @@ for year in years:
 #    with open(sysTabAllYears,'a') as inSysTabAllYears:
 #        inSysTabAllYears.write(tableStrToWrite)
 
-#with open(sysTabAllYears,'w') as inSysTabAllYears:
-#    inSysTabAllYears.dump(sysDict)
+sysTabAllYears = "SystematicsAllYears.json"
+with open(sysTabAllYears,'w') as inSysTabAllYears:
+    json.dump(sysDict,inSysTabAllYears,indent=4)
 #
 
 fullTables = ""
