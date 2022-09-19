@@ -3,6 +3,7 @@ import sys
 import math
 
 sysfile = sys.argv[1]
+year = '2016'
 
 year = sysfile.split('/')[-1].split('_')[-1].split('.')[0]
 
