@@ -20,13 +20,10 @@ do_BetaHalf = 0
 do_combo = 0
 do_observedonly = 0
 do_fullHybrid = 0
-year = '2016'
 
+fullcardfile = 'FinalCardsLQ_2016.txt'
 lqtype = 'LQ'
-
 cdir = ''
-
-fullcardfile = 'FinalCardsLQ_2017_21Nov2021.txt'
 
 if 'do_BetaOne' in str(sys.argv):
 	do_BetaOne = 1
@@ -82,6 +79,8 @@ for x in range(len(sys.argv)):
 		os.system('mkdir CLSLimits/BetaHalf'+cdir)
 		os.system('mkdir CLSLimits/Combo'+cdir)
 
+	if sys.argv[x] == '-d':
+		fullcardfile = sys.argv[x+1]
 	if sys.argv[x] == '-n':
 		numdo = int(sys.argv[x+1])
 	if sys.argv[x] == '-q':
