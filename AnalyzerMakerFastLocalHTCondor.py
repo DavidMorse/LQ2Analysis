@@ -534,9 +534,12 @@ def MakeJobs(njobs):
 		#tomorrow     = 1 day
 		#testmatch    = 3 days
 		#nextweek     = 1 week
-		subber.write('\noutput                 = '+thiseos+'_'+str(Nj))
-		subber.write('\nerror                  = '+thiseos+'_'+str(Nj))
-		subber.write('\nlog                    = '+thiseos+'_'+str(Nj)+'.log')
+                # Turn these on if jobs are failing due to memory limits
+                #subber.write('\nrequest_memory          = 4000MB')
+                #subber.write('\nrequest_disk            = 4000MB')
+		subber.write('\noutput                  = '+thiseos+'_'+str(Nj))
+		subber.write('\nerror                   = '+thiseos+'_'+str(Nj))
+		subber.write('\nlog                     = '+thiseos+'_'+str(Nj)+'.log')
 		#subber.write('\non_exit_remove         = (ExitBySignal == False) && (ExitCode == 0)')
 		#subber.write('\nmax_retries            = 3')
 		#subber.write('\nrequirements = Machine =!= LastRemoteHost')

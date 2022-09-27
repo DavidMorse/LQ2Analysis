@@ -40,7 +40,7 @@ elif year == '2018':
 	QCDDirectory    = '/eos/cms/store/group/phys_exotica/leptonsPlusJets/LQ/LQ2/trees/NTupleAnalyzer_nanoAOD_Full2016QCDNonIsoQuickTest_2019_10_14/SummaryFiles' #Placeholder
 	EMuDirectory    = '/eos/cms/store/group/phys_exotica/leptonsPlusJets/LQ/LQ2/trees/NTupleAnalyzer_nanoAOD_Full2016EMuSwitch_2019_10_14/SummaryFiles' #Placeholder
 elif "comb" in year:
-	NormalDirectory = '/eos/cms/store/group/phys_exotica/leptonsPlusJets/LQ/LQ2/comboTrees/SummaryFiles/'
+	NormalDirectory = '/eos/cms/store/group/phys_exotica/leptonsPlusJets/LQ/LQ2/comboTrees/SummaryFiles'
 	QCDDirectory    = '/eos/cms/store/group/phys_exotica/leptonsPlusJets/LQ/LQ2/trees/NTupleAnalyzer_nanoAOD_Full2016QCDNonIsoQuickTest_2019_10_14/SummaryFiles' #Placeholder
 	EMuDirectory    = '/eos/cms/store/group/phys_exotica/leptonsPlusJets/LQ/LQ2/trees/NTupleAnalyzer_nanoAOD_Full2016EMuSwitch_2019_10_14/SummaryFiles' #Placeholder
 else:
@@ -197,9 +197,9 @@ bTagselmedium = "*((Flag_dataYear2016"+bTagselmedium2016+")+(Flag_dataYear2017"+
 #NormalWeightMuNu = str(lumi)+'*weight_central*((pass_HLTMu50+pass_HLTTkMu50)>0)'+singlemuHLT+singleMuIdScale+singleMuIsoScale+trackerHIP1
 #NormalWeightEMu = str(lumi)+'*weight_central*((pass_HLTMu50+pass_HLTTkMu50)>0)'+singlemuHLTEMU+MuIdScaleEMU+MuIsoScaleEMU+eleRECOScale+eleHEEPScale+trackerHIPEMU
 
-NormalWeight2016 = "(Flag_dataYear2016*("+str(lumi2016)+"*weight_central*prefireWeight"+bTagSFmedium2016+"))"
-NormalWeight2017 = "(Flag_dataYear2017*("+str(lumi2017)+"*weight_central*prefireWeight"+bTagSFmedium2017+"))"
-NormalWeight2018 = "(Flag_dataYear2018*("+str(lumi2018)+"*weight_central"+bTagSFmedium2018+"))"
+NormalWeight2016 = "(Flag_dataYear2016*("+str(lumi2016)+"*weight_topPt*prefireWeight"+bTagSFmedium2016+"))"
+NormalWeight2017 = "(Flag_dataYear2017*("+str(lumi2017)+"*weight_topPt*prefireWeight"+bTagSFmedium2017+"))"
+NormalWeight2018 = "(Flag_dataYear2018*("+str(lumi2018)+"*weight_topPt"+bTagSFmedium2018+"))"
 
 NormalWeightMuMu = 	"("+NormalWeight2016+"+"+NormalWeight2017+"+"+NormalWeight2018+")"+doublemuHLT+doubleMuRecoSF+doubleMuIsoSF+doubleMuIdSF
 NormalWeightMuNu = str(lumi)+'*weight_central'+singlemuHLT+singleMuRecoSF+singleMuIsoSF+singleMuIdSF
@@ -306,41 +306,56 @@ if useDataDrivenTTbar:
 #emu_id_eff_err = 0.00270930206375 #HEEP tag not cuts - NLO vv
 #emu_id_eff_err = 0.00267688208321#eta-binned muon ID/ISO SF
 emu_id_eff_err = 0.00276041064762
+
 # Next are the PDF uncertainties. 
-#pdf_MASS   =[ 200, 250, 300 , 350 , 400 , 450 , 500 , 550 , 600 , 650 , 700 , 750 , 800 , 850 , 900 , 950 , 1000 , 1050 , 1100 , 1150 , 1200 , 1250, 1300, 1350, 1400, 1450, 1500, 1550, 1600, 1650, 1700, 1750, 1800, 1850, 1900, 1950, 2000]               
+pdf_MASS = [300,400,500,600,700,800,900,1000,1100,1200,1300,1400,1500,1600,1700,1800,1900,2000,2100,2200,2300,2400,2500,2600,2700,2800,2900,3000,3500,4000]
 pdf_MASS_displaced = [ 200, 300, 400, 500, 600, 700, 800, 900, 1000, 1100, 1200 ]
 pdf_MASS_displaced_extended = [ 100, 125, 150, 200, 300, 400, 500, 600, 700, 800, 900, 1000, 1100, 1200 ]
 
-pdf_MASS = [300,400,500,600,700,800,900,1000,1100,1200,1300,1400,1500,1600,1700,1800,1900,2000,2100,2200,2300,2400,2500,2600,2700,2800,2900,3000,3500,4000]
+#old 2016 values
+pdf_uujj_Signal = [2.36,2.44,3.81,3.81,3.81,3.81,3.81,3.96,3.96,3.96,3.96,3.96,3.96,3.96,3.96,3.96,3.96,3.96,3.96,3.96,3.96,3.96,3.96,3.96,3.96,3.96,3.96,3.96,3.96,3.96]
+pdf_uujj_TTBar = [1.61,1.74,2.01,2.39,2.85,3.24,3.48,4.0,4.22,4.22,4.22,4.22,4.22,4.22,4.22,4.22,4.22,4.22,4.22,4.22,4.22,4.22,4.22,4.22,4.22,4.22,4.22,4.22,4.22,4.22,4.22,4.22,4.22,4.22,4.22,4.22,4.22]
+pdf_uujj_ZJets = [0.51,1.08,1.47,1.78,1.86,2.3,2.67,2.77,2.77,2.97,2.97,3.5,3.5,3.56,3.57,3.57,3.86,4.01,4.2,4.2,4.7,5.14,5.14,5.14,5.14,5.14,5.14,5.14,5.14,5.14,5.14,5.14,5.14,5.14,5.14,5.14,5.14]
+pdf_uujj_WJets = [8.04,8.04,9.05,9.05,9.05,9.05,9.05,9.05,9.05,9.05,9.05,9.05,9.05,9.05,9.05,9.05,9.05,9.05,9.05,9.05,9.05,9.05,9.05,9.05,9.05,9.05,9.05,9.05,9.05,9.05,9.05,9.05,9.05,9.05,9.05,9.05,9.05]
+pdf_uujj_VV = [1.54,1.57,1.85,2.46,3.33,3.33,3.33,3.33,3.33,3.33,3.33,3.33,3.33,3.33,3.33,3.33,3.33,3.33,3.33,3.33,3.33,3.33,3.33,3.33,3.33,3.33,3.33,3.33,3.33,3.33,3.33,3.33,3.33,3.33,3.33,3.33,3.33]
+pdf_uujj_sTop = [0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0]
+pdf_uujj_TTV_uujj = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+pdf_uujj_QCD = [0.32,0.32,0.32,0.32,0.32,0.32,0.32,0.32,0.32,0.32,0.32,0.32,0.32,0.32,0.32,0.32,0.32,0.32,0.32,0.32,0.32,0.32,0.32,0.32,0.32,0.32,0.32,0.32,0.32,0.32,0.32,0.32,0.32,0.32,0.32,0.32,0.32]
 
+if year == '2016':
+        pdf_uujj_Signal_uujj = [8.28,8.28,8.28,8.28,8.28,8.28,8.28,9.43,9.51,10.19,13.61,15.84,17.74,22.37,24.66,33.73,39.05,47.41,53.81,62.91,67.83,74.65,81.78,88.43,93.78,99.26,100.,100.,100.,100.]
+        pdf_uujj_TTBar_uujj = [1.96,1.96,2.03,2.18,2.41,2.68,2.97,3.23,3.49,3.81,3.96,4.41,4.58,4.58,4.84,5.46,5.46,5.46,5.46,5.46,5.46,5.46,5.46,5.46,5.46,5.46,5.46,5.46,5.46,5.46]
+        pdf_uujj_ZJets_uujj = [1.47,1.47,1.55,1.55,1.55,1.55,1.55,1.55,1.74,1.78,1.78,1.83,1.86,1.86,1.93,2.18,2.28,2.5,2.85,3.19,3.59,3.9,3.9,4.99,4.99,5.41,6.15,7.96,9.69,9.69]
+        pdf_uujj_WJets_uujj = [3.46,3.46,3.46,3.46,3.46,3.46,3.46,3.46,3.46,3.46,3.46,3.46,3.46,3.46,3.46,3.46,3.46,3.46,3.46,3.46,3.46,3.46,3.46,3.46,3.46,3.46,3.46,3.46,3.46,3.46]
+        pdf_uujj_VV_uujj = [1.05,1.05,1.06,1.06,1.06,1.06,1.19,1.19,1.28,1.41,1.41,1.71,1.84,2.46,2.7,2.7,2.7,2.7,2.7,2.7,2.7,2.7,2.7,2.7,2.7,2.7,2.7,2.7,2.7,2.7]
+        pdf_uujj_sTop_uujj = [7.1,7.1,7.23,7.6,8.18,8.69,9.42,10.31,11.28,11.93,12.81,13.45,13.96,16.75,16.75,16.75,16.75,16.75,16.75,16.75,16.75,16.75,16.75,16.75,16.75,16.75,16.75,16.75,16.75,16.75]
+        pdf_uujj_TTV_uujj = [1.92,1.93,1.99,2.16,2.37,2.53,2.73,2.74,2.95,3.16,3.16,3.65,3.65,3.98,4.08,4.08,4.08,5.84,6.28,8.06,27.04,62.15,62.15,62.15,62.15,62.15,62.15,62.15,62.15,62.15]
+elif year == '2017':
+        pdf_uujj_Signal_uujj = [7.78,7.78,7.87,7.87,7.87,7.87,7.87,9.26,10.06,10.06,10.06,16.42,20.19,25.03,28.57,35.85,42.13,49.23,56.8,63.7,49.7,78.7,85.7,92.8,71.6,100.,100.,100.,100.,100.]
+        pdf_uujj_TTBar_uujj = [2.42,2.43,2.64,3.09,3.72,4.33,4.92,5.57,6.06,6.65,7.16,7.62,7.88,8.34,8.34,9.25,9.81,10.11,10.71,10.71,11.24,11.67,11.67,11.67,11.67,11.67,11.67,11.67,11.67,11.67]
+        pdf_uujj_ZJets_uujj = [3.03,3.06,3.11,3.22,4.18,4.66,5.38,5.38,6.14,6.14,6.14,6.14,6.14,6.85,6.85,6.85,6.85,6.87,7.35,7.35,7.55,8.32,8.32,8.32,8.32,8.32,8.32,8.32,8.32,8.32]
+        pdf_uujj_WJets_uujj = [4.57,4.57,4.57,4.57,4.57,4.57,4.57,4.57,4.57,4.57,4.57,4.57,4.57,4.57,4.57,4.57,4.57,4.57,4.57,4.57,4.57,4.57,4.57,4.57,4.57,4.57,4.57,4.57,4.57,4.57]
+        pdf_uujj_VV_uujj = [1.23,1.23,1.64,1.67,1.84,2.61,3.58,3.94,4.59,5.19,5.19,6.73,6.93,8.09,8.09,8.58,8.58,8.58,8.58,8.58,8.58,8.58,8.58,8.58,8.58,8.58,8.58,8.58,8.58,8.58]
+        pdf_uujj_TTV_uujj = [4.5,4.52,4.67,5.01,5.47,6.0,6.7,7.02,7.39,7.54,7.89,8.29,8.98,8.98,8.98,8.98,8.98,8.98,8.98,8.98,10.66,10.66,10.66,14.72,15.18,15.18,15.18,15.18,15.18,15.18]
+        pdf_uujj_sTop_uujj = [6.96,6.97,7.15,7.65,8.39,8.84,9.63,10.46,11.11,11.87,12.84,14.11,14.59,15.57,16.96,16.96,16.96,16.96,16.96,16.96,16.96,16.96,16.96,16.96,16.96,16.96,16.96,16.96,16.96,16.96]
+elif year == '2018':
+        pdf_uujj_Signal_uujj = [9.72,9.72,9.72,9.72,9.72,10.59,11.96,13.41,15.17,17.69,21.05,25.09,29.32,35.0,41.74,48.16,55.45,63.75,77.67,87.35,94.71,100.,100.,100.,100.,100.,100.,100.,100.,100.]
+        pdf_uujj_TTBar_uujj = [2.54,2.55,2.77,3.24,3.83,4.43,4.98,5.57,6.15,6.65,6.97,7.51,8.09,8.65,8.8,8.8,8.92,9.58,9.58,9.61,9.61,10.47,10.47,10.47,10.47,10.47,10.47,10.47,10.47,10.47]
+        pdf_uujj_ZJets_uujj = [2.68,2.68,2.97,3.55,4.14,4.78,4.78,4.99,4.99,5.42,6.59,7.46,8.43,10.25,11.8,11.8,12.6,14.78,14.78,14.78,14.78,14.78,14.78,14.78,14.78,14.78,14.78,14.78,14.78,14.78]
+        pdf_uujj_WJets_uujj = [3.66,3.66,3.66,3.66,3.66,3.66,3.66,3.66,3.66,3.66,3.66,3.66,3.66,3.66,3.66,3.66,3.66,3.66,3.66,3.66,3.66,3.66,3.66,3.66,3.66,3.66,3.66,3.66,3.66,3.66]
+        pdf_uujj_VV_uujj = [0.96,0.96,1.04,1.17,1.4,1.65,2.37,3.29,4.03,4.47,5.75,6.55,6.97,7.75,7.75,7.75,7.75,7.75,7.75,8.05,8.05,8.05,8.05,8.05,8.05,8.05,8.05,8.05,8.05,8.05]
+        pdf_uujj_TTV_uujj = [4.87,4.87,5.08,5.54,6.18,6.62,7.33,8.24,8.34,8.97,9.45,9.65,10.73,10.73,12.1,13.36,15.24,16.79,17.56,17.56,17.73,18.89,20.46,20.47,21.26,27.73,27.73,27.73,27.73,27.73]
+        pdf_uujj_sTop_uujj = [7.1,7.1,7.23,7.6,8.18,8.69,9.42,10.31,11.28,11.93,12.81,13.45,13.96,16.75,16.75,16.75,16.75,16.75,16.75,16.75,16.75,16.75,16.75,16.75,16.75,16.75,16.75,16.75,16.75,16.75]
+
+
+#placeholders for uvjj analysis
 pdf_uvjj_QCD = [1.06,1.06,1.06,1.46,2.3,3.67,4.72,4.72,4.72,4.72,4.72,4.72,4.72,4.72,4.72,4.72,4.72,4.72,4.72,4.72,4.72,4.72,4.72,4.72,4.72,4.72,4.72,4.72,4.72,4.72,4.72,4.72,4.72,4.72,4.72,4.72,4.72]
 pdf_uvjj_WJets = [1.06,1.06,1.06,1.46,2.3,3.67,4.72,4.72,4.72,4.72,4.72,4.72,4.72,4.72,4.72,4.72,4.72,4.72,4.72,4.72,4.72,4.72,4.72,4.72,4.72,4.72,4.72,4.72,4.72,4.72,4.72,4.72,4.72,4.72,4.72,4.72,4.72]
 pdf_uvjj_sTop = [8.78,8.78,8.78,8.78,8.78,8.78,8.78,8.78,8.78,8.78,8.78,8.78,8.78,8.78,8.78,8.78,8.78,8.78,8.78,8.78,8.78,8.78,8.78,8.78,8.78,8.78,8.78,8.78,8.78,8.78,8.78,8.78,8.78,8.78,8.78,8.78,8.78]
 pdf_uvjj_TTBar = [2.18,2.18,2.18,3.54,5.16,6.33,7.34,10.01,14.36,14.36,14.36,14.36,14.36,14.36,14.36,14.36,14.36,14.36,14.36,14.36,14.36,14.36,14.36,14.36,14.36,14.36,14.36,14.36,14.36,14.36,14.36,14.36,14.36,14.36,14.36,14.36,14.36]
 pdf_uvjj_ZJets = [2.98,2.98,2.98,3.15,3.49,3.49,3.49,3.49,3.49,3.49,3.49,3.49,3.49,3.49,3.49,3.49,3.49,3.49,3.49,3.49,3.49,3.49,3.49,3.49,3.49,3.49,3.49,3.49,3.49,3.49,3.49,3.49,3.49,3.49,3.49,3.49,3.49]
 pdf_uvjj_VV = [3.35,3.35,3.35,3.41,3.62,3.73,4.03,4.03,4.03,4.03,4.03,4.03,4.03,4.03,4.03,4.03,4.03,4.03,4.03,4.03,4.03,4.03,4.03,4.03,4.03,4.03,4.03,4.03,4.03,4.03,4.03,4.03,4.03,4.03,4.03,4.03,4.03]
-
 pdf_uvjj_Signal = [0.35,0.35,0.35,0.53,0.83,0.83,0.83,0.83,0.83,0.83,0.83,0.84,1.21,1.21,1.62,1.62,2.22,2.35,2.35,2.35,2.35,2.35,2.35,2.35,2.35,2.35,2.35,2.35,2.35,2.35,2.35,2.35,2.35,2.35,2.35,2.35,2.35]
-pdf_uujj_Signal = [2.36,2.44,3.81,3.81,3.81,3.81,3.81,3.96,3.96,3.96,3.96,3.96,3.96,3.96,3.96,3.96,3.96,3.96,3.96,3.96,3.96,3.96,3.96,3.96,3.96,3.96,3.96,3.96,3.96,3.96]
-#pdf_uujj_Signal = [2.0 for x in pdf_MASS]               
-#pdf_uvjj_Signal = [3.0 for x in pdf_MASS]               
-
-
-#2016
-pdf_uujj_TTBar = [1.61,1.74,2.01,2.39,2.85,3.24,3.48,4.0,4.22,4.22,4.22,4.22,4.22,4.22,4.22,4.22,4.22,4.22,4.22,4.22,4.22,4.22,4.22,4.22,4.22,4.22,4.22,4.22,4.22,4.22,4.22,4.22,4.22,4.22,4.22,4.22,4.22]
-pdf_uujj_ZJets = [0.51,1.08,1.47,1.78,1.86,2.3,2.67,2.77,2.77,2.97,2.97,3.5,3.5,3.56,3.57,3.57,3.86,4.01,4.2,4.2,4.7,5.14,5.14,5.14,5.14,5.14,5.14,5.14,5.14,5.14,5.14,5.14,5.14,5.14,5.14,5.14,5.14]
-pdf_uujj_QCD = [0.32,0.32,0.32,0.32,0.32,0.32,0.32,0.32,0.32,0.32,0.32,0.32,0.32,0.32,0.32,0.32,0.32,0.32,0.32,0.32,0.32,0.32,0.32,0.32,0.32,0.32,0.32,0.32,0.32,0.32,0.32,0.32,0.32,0.32,0.32,0.32,0.32]
-pdf_uujj_VV = [1.54,1.57,1.85,2.46,3.33,3.33,3.33,3.33,3.33,3.33,3.33,3.33,3.33,3.33,3.33,3.33,3.33,3.33,3.33,3.33,3.33,3.33,3.33,3.33,3.33,3.33,3.33,3.33,3.33,3.33,3.33,3.33,3.33,3.33,3.33,3.33,3.33]
-pdf_uujj_sTop = [0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0]
-pdf_uujj_WJets = [8.04,8.04,9.05,9.05,9.05,9.05,9.05,9.05,9.05,9.05,9.05,9.05,9.05,9.05,9.05,9.05,9.05,9.05,9.05,9.05,9.05,9.05,9.05,9.05,9.05,9.05,9.05,9.05,9.05,9.05,9.05,9.05,9.05,9.05,9.05,9.05,9.05]
-
-
-pdf_uvjj_TTBar = [0.66,1.01,1.4,1.79,2.17,2.67,2.68,3.21,3.47,3.47,3.47,3.55,3.55,3.55,3.55,3.55,3.55,3.55,3.55,3.55,3.55,3.55,3.55,3.55,3.55,3.55,3.55,3.55,3.55,3.55,3.55,3.55,3.55,3.55,3.55,3.55,3.55]
-pdf_uvjj_WJets = [1.16,1.25,2.1,4.02,4.21,6.58,9.27,9.27,10.29,16.62,24.26,38.25,55.28,55.28,55.28,55.28,55.28,55.28,55.28,55.28,55.28,55.28,55.28,55.28,55.28,55.28,55.28,55.28,55.28,55.28,55.28,55.28,55.28,55.28,55.28,55.28,55.28]#74.27,88.09,88.09,88.09,88.09,88.09,88.09,88.09,88.09,88.09,88.09,88.09,88.09,88.09,88.09,88.09,88.09,88.09,88.09,88.09,88.09,88.09,88.09,88.09]
-pdf_uvjj_QCD = [0.12,0.14,0.14,0.14,0.14,0.19,0.24,0.46,0.47,0.47,0.49,0.54,0.61,0.69,0.71,0.71,0.71,0.71,0.71,0.71,0.71,0.71,0.71,0.71,0.71,0.71,0.71,0.71,0.71,0.71,0.71,0.71,0.71,0.71,0.71,0.71,0.71]
-pdf_uvjj_sTop = [0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0]
-pdf_uvjj_VV = [1.64,1.69,1.75,1.86,1.95,2.19,2.29,2.54,2.54,2.54,2.54,2.54,2.54,2.54,2.54,2.54,2.54,2.54,2.54,2.54,2.54,2.54,2.54,2.54,2.54,2.54,2.54,2.54,2.54,2.54,2.54,2.54,2.54,2.54,2.54,2.54,2.54]
-
 
 # These are the total background uncertainties. They are used just to make some error bands on plots. 
 totunc_uujj = [5.02, 5.28, 5.42, 5.8, 6.16, 6.81, 7.74, 8.72, 9.46, 9.47, 9.83, 10.5, 11.65, 9.13, 10.39, 12.17, 11.6, 12.58, 12.27, 14.08, 16.11, 16.09, 15.8, 12.07, 11.88, 11.03, 11.75, 11.75, 12.32, 11.75, 11.75, 11.75, 11.75, 11.75, 11.75, 11.75, 11.75]
@@ -495,7 +510,7 @@ def main():
 	# for this, and make use of it. e.g. For systematic variations, we can run in batch instead
 	# of running serially, which speeds things up.
 
-	version_name = 'Testing_'+year+'_stockNanoAODv7_Run2CombBDT_FullSys_PDF' # scriptflag
+	version_name = 'Testing_'+year # scriptflag
 	#version_name = 'Testing_noQCD_14nov' # use sf tag above if this is the real folder
 	os.system('mkdir Results_'+version_name) 
 
@@ -1259,7 +1274,7 @@ def main():
 	# This is for scale factor studies
 	# ====================================================================================================================================================== #
 
-	if True:
+	if False:
 		"""
 		mtCR = '*(MT_uv>70)*(MT_uv<110)'
 		mtSR = '*(((MT_uv>50)*(MT_uv<70)+(MT_uv>110))>0)'
@@ -1337,6 +1352,7 @@ def main():
 			[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = GetMuMuScaleFactors( NormalWeightMuMu+'*'+preselectionmumu+Cut, NormalDirectory, '(M_uu>80)*(M_uu<100)', '(M_uu>100)*(M_uu<250)',1,1)
                         binnedValsZ.append([Rz_uujj,Rz_uujj_err])
                         binnedValsTT.append([Rtt_uujj,Rtt_uujj_err])
+                
                 print '---------------------------------------------'
                 print 'nominal Z/TT' , nominalZ , nominalTT
                 print 'binning Z:'
@@ -2862,21 +2878,23 @@ def PDF4LHCUncStudy(MuMuOptCutFile,MuNuOptCutFile,versionname):
 
 	# UUJJ CHANNEL SYSTEMATICS
 
-	#treenames = ['ZJets','TTBar','WJets','VV','sTop','QCD','Signal']#original
-	#treenames = ['ZJets','TTBar','WJets','VV']#removing QCD, signal, sTop
-	treenames = ['WJets','Signal']
-	uncnames = ['pdf_uujj_'+x for x in treenames]
-	#trees  = [[t_ZJets]]
-       	#trees  = [[t_ZJets],[t_TTBar],[t_WJets],[t_DiBoson],[t_SingleTop],[t_QCDMu]]#original
-       	#trees  = [[t_ZJets],[t_TTBar],[t_WJets],[t_DiBoson]]#removing QCD, sTop
-	trees = [[t_WJets]]
-	#treesNames = [['t_WJets'],['t_ZJets'],['t_DiBoson'],['t_SingleTop'],['t_QCDMu']]#original
-	#treesNames = [['t_ZJets'],['t_TTBar'],['t_WJets'],['t_DiBoson']]#removing QCD, sTop
-	treesNames = [['t_WJets']]
-	trees.append([t_LQuujj300,t_LQuujj400,t_LQuujj500,t_LQuujj600,t_LQuujj700,t_LQuujj800,t_LQuujj900,t_LQuujj1000,t_LQuujj1100,t_LQuujj1200,t_LQuujj1300,t_LQuujj1400,t_LQuujj1500,t_LQuujj1600,t_LQuujj1700,t_LQuujj1800,t_LQuujj1900,t_LQuujj2000,t_LQuujj2100,t_LQuujj2200,t_LQuujj2300,t_LQuujj2400,t_LQuujj2500,t_LQuujj2600,t_LQuujj2700,t_LQuujj2800,t_LQuujj2900,t_LQuujj3000,t_LQuujj3500,t_LQuujj4000])
-	treesNames.append(['t_LQuujj300','t_LQuujj400','t_LQuujj500','t_LQuujj600','t_LQuujj700','t_LQuujj800','t_LQuujj900','t_LQuujj1000','t_LQuujj1100','t_LQuujj1200','t_LQuujj1300','t_LQuujj1400','t_LQuujj1500','t_LQuujj1600','t_LQuujj1700','t_LQuujj1800','t_LQuujj1900','t_LQuujj2000','t_LQuujj2100','t_LQuujj2200','t_LQuujj2300','t_LQuujj2400','t_LQuujj2500','t_LQuujj2600','t_LQuujj2700','t_LQuujj2800','t_LQuujj2900','t_LQuujj3000','t_LQuujj3500','t_LQuujj4000'])
+        #Do backgrounds
+        if False:
+                #treenames = ['TTBar','ZJets','WJets','VV','TTV','sTop']
+                #trees  = [[t_TTBar],[t_ZJets],[t_WJets],[t_DiBoson],[t_TTV],[t_SingleTop]]
+                #treesNames = [['t_TTBar'],['t_ZJets'],['t_WJets'],['t_DiBoson'],['t_TTV'],['t_SingleTop']]
+                treenames = ['ZJets']
+                trees  = [[t_ZJets]]
+                treesNames = [['t_ZJets']]
+        #Do signal
+        if False:
+                treenames = ['Signal']
+                trees = [[t_LQuujj300,t_LQuujj400,t_LQuujj500,t_LQuujj600,t_LQuujj700,t_LQuujj800,t_LQuujj900,t_LQuujj1000,t_LQuujj1100,t_LQuujj1200,t_LQuujj1300,t_LQuujj1400,t_LQuujj1500,t_LQuujj1600,t_LQuujj1700,t_LQuujj1800,t_LQuujj1900,t_LQuujj2000,t_LQuujj2100,t_LQuujj2200,t_LQuujj2300,t_LQuujj2400,t_LQuujj2500,t_LQuujj2600,t_LQuujj2700,t_LQuujj2800,t_LQuujj2900,t_LQuujj3000,t_LQuujj3500,t_LQuujj4000]]
+                treesNames = [['t_LQuujj300','t_LQuujj400','t_LQuujj500','t_LQuujj600','t_LQuujj700','t_LQuujj800','t_LQuujj900','t_LQuujj1000','t_LQuujj1100','t_LQuujj1200','t_LQuujj1300','t_LQuujj1400','t_LQuujj1500','t_LQuujj1600','t_LQuujj1700','t_LQuujj1800','t_LQuujj1900','t_LQuujj2000','t_LQuujj2100','t_LQuujj2200','t_LQuujj2300','t_LQuujj2400','t_LQuujj2500','t_LQuujj2600','t_LQuujj2700','t_LQuujj2800','t_LQuujj2900','t_LQuujj3000','t_LQuujj3500','t_LQuujj4000']]
 
-	
+        
+        uncnames = ['pdf_uujj_'+x for x in treenames]
+
 	# ================================================================================================================
 	# Loop over trees to consider
 	for ii in range(len(trees)):
@@ -2893,8 +2911,8 @@ def PDF4LHCUncStudy(MuMuOptCutFile,MuNuOptCutFile,versionname):
 		#ResultDict[uncnames[ii]+'_uujj']['cteq'] = []
 		#ResultDict[uncnames[ii]+'_uujj']['mmth'] = []
 		ResultDict[uncnames[ii]+'_uujj']['nnpdf'] = []		
-		if 'ZJets' in uncnames[ii]:
-			norm_sel = '(M_uu>80)*(M_uu<100)'
+		#if 'ZJets' in uncnames[ii]:
+		#	norm_sel = '(M_uu>80)*(M_uu<100)'
 		_tnew = _t.CopyTree(preselectionmumu + '*'+norm_sel)
 		# Get the preselection values for all PDF members
 		presel_central_value = QuickIntegral(_tnew,NormalWeightMuMu,1.0)[0]
@@ -2950,12 +2968,12 @@ def PDF4LHCUncStudy(MuMuOptCutFile,MuNuOptCutFile,versionname):
 			finsel_varied_nnpdf_values = [QuickIntegral(_tnewsel,NormalWeightMuMu+_fact[0]+_fact[1],1.0)[0] for _fact in nnpdfweights]
 			#print 'final varied:',finsel_varied_nnpdf_values
 
-			# Normalize Z and Signal at preselection #fixme removing signal
-			if 'ZJet' in uncnames[ii] :#or 'Signal' in uncnames[ii]:
-				finsel_central_value /= presel_central_value
-				#finsel_varied_cteq_values = [finsel_varied_cteq_values[jj]/presel_varied_cteq_values[jj] for jj in range(len(presel_varied_cteq_values))]
-				#finsel_varied_mmth_values = [finsel_varied_mmth_values[jj]/presel_varied_mmth_values[jj] for jj in range(len(presel_varied_mmth_values))]
-				finsel_varied_nnpdf_values = [finsel_varied_nnpdf_values[jj]/presel_varied_nnpdf_values[jj] for jj in range(len(presel_varied_nnpdf_values))]
+			# Normalize Z and Signal at preselection #fixme removing this
+			#if 'ZJet' in uncnames[ii] :#or 'Signal' in uncnames[ii]:
+			#	finsel_central_value /= presel_central_value
+			#	#finsel_varied_cteq_values = [finsel_varied_cteq_values[jj]/presel_varied_cteq_values[jj] for jj in range(len(presel_varied_cteq_values))]
+			#	#finsel_varied_mmth_values = [finsel_varied_mmth_values[jj]/presel_varied_mmth_values[jj] for jj in range(len(presel_varied_mmth_values))]
+			#	finsel_varied_nnpdf_values = [finsel_varied_nnpdf_values[jj]/presel_varied_nnpdf_values[jj] for jj in range(len(presel_varied_nnpdf_values))]
 
 			if finsel_central_value >0.0:
                                 #print 'central:',finsel_central_value,' first variation:',finsel_varied_nnpdf_values[0]
@@ -3000,7 +3018,7 @@ def PDF4LHCUncStudy(MuMuOptCutFile,MuNuOptCutFile,versionname):
 			print systematic+'%'
 			result += systematic+','
 			junkfile.Close()
-                        os.remove(junkfile.name)
+                        #os.remove(junkfile.GetName()) #fixme have to figure out how to remove file
 
 
 		result = result[:-1]+']'
@@ -3127,9 +3145,9 @@ def PDF4LHCUncStudy(MuMuOptCutFile,MuNuOptCutFile,versionname):
 	
 
 	#print '\n\n---------- Summary of PDF systematics as percentages --------\n'
-	# for result in ResultList:
+        #for result in ResultList:
 	# 	print result
-	# print '\n\n'
+        #print '\n\n'
 
 
 
@@ -3137,8 +3155,8 @@ def PDF4LHCPlotsFromResultDict(filename,versionname):
 	import json
 	dictionary = json.load(open(filename))
 	
-	mass = [200 + x*50 for x in range(37)]
-
+	#mass = [200 + x*50 for x in range(37)]
+        mass = pdf_MASS
 	resultlist = []
 
 	def rms(X):
@@ -3160,7 +3178,7 @@ def PDF4LHCPlotsFromResultDict(filename,versionname):
 
 		c0 = TCanvas("c1","",1200,900)
 		gStyle.SetOptStat(0)
-		cl = TH1F('cl','cl',1,175,2025)
+		cl = TH1F('cl','cl',1,275,4025)
 		cl.SetLineStyle(2)
 		gStyle.SetOptTitle(1)
 		cl.GetXaxis().SetTitle("LQ Mass [GeV]")
@@ -4352,13 +4370,21 @@ def ModSelection(selection,sysmethod,channel_log):
 		if 'PREFIREdown' in sysmethod :
 			selection = selection.replace('prefireWeight','prefireWeight_down')
 
-		if 'BTAGSFup' in sysmethod :
+		if 'BTAG' in sysmethod and 'up' in sysmethod:
 			if year == '2016':
 				selection = selection.replace('*(1-(1-(DeepJet_jet1>0.3093)*bTagSF_jet1)*(1-(DeepJet_jet2>0.3093)*bTagSF_jet2))',bTagSFmediumUp)
-		if 'BTAGSFdown' in sysmethod :
-			if year == '2016':
-				selection = selection.replace('*(1-(1-(DeepJet_jet1>0.3093)*bTagSF_jet1)*(1-(DeepJet_jet2>0.3093)*bTagSF_jet2))',bTagSFmediumDown)
-
+                        if year == '2017':
+ 				selection = selection.replace('*(1-(1-(DeepJet_jet1>0.3033)*bTagSF_jet1)*(1-(DeepJet_jet2>0.3033)*bTagSF_jet2))',bTagSFmedium2017Up)
+ 			if year == '2018':
+ 				selection = selection.replace('*(1-(1-(DeepJet_jet1>0.2770)*bTagSF_jet1)*(1-(DeepJet_jet2>0.2770)*bTagSF_jet2))',bTagSFmedium2018Up)
+ 		if 'BTAG' in sysmethod and 'down' in sysmethod:
+ 			if year == '2016':
+ 				selection = selection.replace('*(1-(1-(DeepJet_jet1>0.3093)*bTagSF_jet1)*(1-(DeepJet_jet2>0.3093)*bTagSF_jet2))',bTagSFmedium2016Down)
+ 			if year == '2017':
+ 				selection = selection.replace('*(1-(1-(DeepJet_jet1>0.3033)*bTagSF_jet1)*(1-(DeepJet_jet2>0.3033)*bTagSF_jet2))',bTagSFmedium2017Down)
+ 			if year == '2018':
+ 				selection = selection.replace('*(1-(1-(DeepJet_jet1>0.2770)*bTagSF_jet1)*(1-(DeepJet_jet2>0.2770)*bTagSF_jet2))',bTagSFmedium2018Down)
+	
 	return selection
 
 
