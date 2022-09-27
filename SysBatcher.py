@@ -20,15 +20,19 @@ if btags not in ['0','1','2']:
 	print "Please enter b tag requirement with argument '-b' [0, 1, 2]\nExiting..."
 	exit()
 
-# Read teh LQ Result Producer
+# Read the LQ Result Producer
 f = [line for line in open('LQResultProducer.py','r')]
 
 # Find the line the FullAnalysis function that contains the systematic variations, and get all those variations
 for line in f:
-	if '_Variations = ' in line and '#' not in line: 
+	if '_Variations'+year+' = ' in line and '#' not in line: 
 		line = line.replace('\t','')
 		line = line.replace('\n','')
 		line = line.replace(' ','')
+		exec(line)
+	if "_Variations = _Variations"+year in line and '#' not in line:
+		line = line.replace('\t','')
+		line = line.replace('\n','')
 		exec(line)
 
 # Get the current working drectory (to be used in making launcher scripts)
@@ -54,7 +58,7 @@ for c in ['uujj']: #,'uvjj']:
 
 
 			# Replace the _Variations = [ ... ] line with our single variation
-			if '_Variations = ' in line and '#' not in line: 
+			if '_Variations'+year+' = ' in line and '#' not in line: 
 				line = line.split('=')[0]+' = [\''+v+'\']\n'
 			dowrite = True
 
