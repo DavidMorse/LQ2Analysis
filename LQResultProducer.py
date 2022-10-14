@@ -3413,6 +3413,7 @@ def setZeroBinErrors_tgraph(data_hist,data, bg, sig_hist1, sig_hist2, blinded):
 	for bins in range(nBins):
 		alpha = 1 - 0.6827;
 		N = data.GetY()[bins]
+		if N<0:N=0
 		w = data_hist.GetBinWidth(bins+1);
 		bin = data.GetY()[bins]
 		binBG = bg.GetStack().Last().GetBinContent(bins+1)
@@ -6502,22 +6503,15 @@ def MakeBasicPlot(recovariable,xlabel,presentationbinning,selection,weight,FileD
 	if isDisplaced: channel='displaced'
 	os.system('mkdir Results_'+version_name+'/Plots')
 	if 'final' not in tagname:
-		if 'enhanced' in tagname:
-			os.system('mkdir Results_'+version_name+'/Plots/Enhanced_selection')
-			c1.Print('Results_'+version_name+'/Plots/Enhanced_selection/BasicLQ_'+channel+'_'+recovariable+'_'+tagname+'.pdf')
-			c1.Print('Results_'+version_name+'/Plots/Enhanced_selection/BasicLQ_'+channel+'_'+recovariable+'_'+tagname+'.png')
-			print 'Results_'+version_name+'/Plots/Enhanced_selection/BasicLQ_'+channel+'_'+recovariable+'_'+tagname+'.pdf',
-		else:
-			os.system('mkdir Results_'+version_name+'/Plots/Preselection')
-			c1.Print('Results_'+version_name+'/Plots/Preselection/BasicLQ_'+channel+'_'+recovariable+'_'+tagname+'.pdf')
-			c1.Print('Results_'+version_name+'/Plots/Preselection/BasicLQ_'+channel+'_'+recovariable+'_'+tagname+'.png')
-			print 'Results_'+version_name+'/Plots/Preselection/BasicLQ_'+channel+'_'+recovariable+'_'+tagname+'.pdf',
-
+		os.system('mkdir Results_'+version_name+'/Plots/'+MuMuOptCutDir)
+		c1.Print('Results_'+version_name+'/Plots/'+MuMuOptCutDir+'/BasicLQ_'+channel+'_'+recovariable+'_'+tagname+'.pdf')
+		c1.Print('Results_'+version_name+'/Plots/'+MuMuOptCutDir+'/BasicLQ_'+channel+'_'+recovariable+'_'+tagname+'.png')
+		print 'Results_'+version_name+'/Plots/'+MuMuOptCutDir+'/BasicLQ_'+channel+'_'+recovariable+'_'+tagname+'.pdf',
 	else:
-		os.system('mkdir Results_'+version_name+'/Plots/Final_selection')
-		c1.Print('Results_'+version_name+'/Plots/Final_selection/BasicLQ_'+channel+'_'+recovariable+'_'+tagname+str(plotmass)+'.pdf')
-		c1.Print('Results_'+version_name+'/Plots/Final_selection/BasicLQ_'+channel+'_'+recovariable+'_'+tagname+str(plotmass)+'.png')	
-		print 'Results_'+version_name+'/Plots/Final_selection/BasicLQ_'+channel+'_'+recovariable+'_'+tagname+str(plotmass)+'.pdf',
+		os.system('mkdir Results_'+version_name+'/Plots/'+MuMuOptCutDir)
+		c1.Print('Results_'+version_name+'/Plots/'+MuMuOptCutDir+'/BasicLQ_'+channel+'_'+recovariable+'_'+tagname+str(plotmass)+'.pdf')
+		c1.Print('Results_'+version_name+'/Plots/'+MuMuOptCutDir+'/BasicLQ_'+channel+'_'+recovariable+'_'+tagname+str(plotmass)+'.png')	
+		print 'Results_'+version_name+'/Plots/'+MuMuOptCutDir+'/BasicLQ_'+channel+'_'+recovariable+'_'+tagname+str(plotmass)+'.pdf',
 	print ' ...Done.'
 
 	return resstring
