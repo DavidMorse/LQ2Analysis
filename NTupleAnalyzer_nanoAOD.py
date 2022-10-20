@@ -2054,7 +2054,10 @@ def FullKinematicCalculation(T,variation):
 	#_passWptCut = T.GenParticleWorZSystemPt<100.0#checkWpt(T,0,100)
 	#[_passWptCut,_WSystemPt] = checkWorZpt(T,0,100,'W')
 	#[_passZptCut,_ZSystemPt] = checkWorZpt(T,0,50,'Z')
-	_WorZSystemPt = 0#T.LHE_Vpt # no longer exists?
+        if isData:
+                _WorZSystemPt = 0
+	else:
+                _WorZSystemPt = T.LHE_Vpt
 	#print 'passWptCut:',passWptCut
 
         #ptHat
