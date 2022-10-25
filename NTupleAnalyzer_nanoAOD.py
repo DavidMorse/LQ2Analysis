@@ -173,7 +173,7 @@ _kinematicvariables += ['M_uujj']
 _kinematicvariables += ['M_uuj1','M_uuj2','M_u1j1j2','M_u2j1j2']
 _kinematicvariables += ['MT_uvjj1','MT_uvjj2','M_uvjj','MT_uvjj']
 _kinematicvariables += ['MH_uujj','MH_uvjj']
-_kinematicvariables += ['JetCount','MuonCount','ElectronCount','GenJetCount']
+_kinematicvariables += ['JetCount','MuonCount','MuonCountPt20','MuonCountPt30','ElectronCount','ElectronCountPt20','ElectronCountPt30','GenJetCount']
 _kinematicvariables += ['IsMuon_muon1','IsMuon_muon2']
 _kinematicvariables += ['passTrigMu1','passTrigMu2']
 _kinematicvariables += ['muonIndex1','muonIndex2']
@@ -1285,6 +1285,7 @@ def TightHighPtIDMuons(T,_met,variation,isdata):
 	#         Also returns modified MET for systematic variations.
 	muons = []
 	muoninds = []
+	muonsPt20,muonsPt30 = [],[]
 
 	# Collections get reordered several times--establish all necessary quantities here so they can be sorted
 	muonDict = {}
@@ -1395,10 +1396,7 @@ def TightHighPtIDMuons(T,_met,variation,isdata):
 		# FOR RUN I: High PT conditions from https://twiki.cern.ch/twiki/bin/view/CMSPublic/SWGuideMuonId
 		# FOR RUN II: High PT conditions from https://twiki.cern.ch/twiki/bin/view/CMS/SWGuideMuonIdRun2
 		# NTuple definitions in https://raw.githubusercontent.com/CMSLQ/RootTupleMakerV2/master/src/RootTupleMakerV2_Muons.cc
-		muonPass = True
-		# A preliminary pT cut. This also encompasses the GlobalMuon conditions, since
-		# all non-global muons have cocktail pT of -1 in the ntuples.
-		muonPass *= (_MuonCocktailPt[n] > 45)     
+		muonPass = True   
 		# Eta requirement
 		muonPass *= (abs(_MuonCocktailEta[n]) < 2.4)
         # This uses the muon id and iso flags for id and isolation
@@ -1450,6 +1448,19 @@ def TightHighPtIDMuons(T,_met,variation,isdata):
 		if nonisoswitch != True:
 			Pass *= (T.MuonTrackerIsoSumPT[n]/_MuonCocktailPt[n])<0.1
 		"""
+
+
+		# A preliminary pT cut. This also encompasses the GlobalMuon conditions, since
+		# all non-global muons have cocktail pT of -1 in the ntuples.
+                muon = TLorentzVector()		
+                muon.SetPtEtaPhiM(_MuonCocktailPt[n],_MuonCocktailEta[n],_MuonCocktailPhi[n],0)
+
+		muonPass *= (_MuonCocktailPt[n] > 20)  
+                if muonPass: muonsPt20.append(muon)
+		muonPass *= (_MuonCocktailPt[n] > 30)  
+                if muonPass: muonsPt30.append(muon) 
+		muonPass *= (_MuonCocktailPt[n] > 45)  
+
 		# Propagate MET changes if undergoing systematic variation
 		if muonPass:
 			NewMu = TLorentzVector()
@@ -1471,7 +1482,7 @@ def TightHighPtIDMuons(T,_met,variation,isdata):
 			muoninds.append(n)
 			deltainvpts.append(deltainvpt)
 			
-	return [muons,muoninds,_met,trk_isos,charges,deltainvpts,chi2,pfid,layers]
+	return [muons,muonsPt20,muonsPt30,muoninds,_met,trk_isos,charges,deltainvpts,chi2,pfid,layers]
 
 
 def HEEPElectrons(T,_met,variation):
@@ -1481,6 +1492,7 @@ def HEEPElectrons(T,_met,variation):
 	#         Also returns modified MET for systematic variations.	
 	electrons = []
 	electroninds = []
+	electronsPt20, electronsPt30 = [],[]
 	if variation=='EESup':	
 		_ElectronPt = [pt*1.01 for pt in T.Electron_pt]#fixme PtHeep]
 	elif variation=='EESdown':	
@@ -1492,7 +1504,6 @@ def HEEPElectrons(T,_met,variation):
 
 	for n in range(len(_ElectronPt)):
 		Pass = True
-		Pass *= (_ElectronPt > 45)
 		Pass *= abs(T.Electron_eta[n])<2.5
 
 		barrel = bool((abs(T.Electron_eta[n]))<1.4442)#fixme make sure don't need SC eta
@@ -1526,6 +1537,14 @@ def HEEPElectrons(T,_met,variation):
 			Pass *= T.ElectronMissingHits[n] <=1
 			Pass *= T.ElectronLeadVtxDistXY[n]<0.05
 		"""
+                ele = TLorentzVector()
+                ele.SetPtEtaPhiM(_ElectronPt[n],T.Electron_eta[n],T.Electron_phi[n],0)
+		Pass *= (_ElectronPt > 20)
+		if (Pass): electronsPt20.append(ele)
+                Pass *= (_ElectronPt > 30)
+                if (Pass): electronsPt30.append(ele)
+                Pass *= (_ElectronPt > 45)
+
 		if (Pass):
 			NewEl = TLorentzVector()
 			OldEl = TLorentzVector()
@@ -1537,7 +1556,7 @@ def HEEPElectrons(T,_met,variation):
 		if (Pass):
 			electrons.append(NewEl)
 			electroninds.append(n)
-	return [electrons,electroninds,_met]
+	return [electrons,electronsPt20,electronsPt30,electroninds,_met]
 
 def JERModifiedPt(res,resSF,resSFup,resSFdown,pt,eta,phi,T,modtype):
 	# Pupose: Modify reco jets based on genjets. Input is pt/eta/phi of a jet. 
@@ -2065,10 +2084,10 @@ def FullKinematicCalculation(T,variation):
 	# MET as a vector
 	met = MetVector(T)
 	# ID Muons,Electrons
-	[muons,goodmuoninds,met,trkisos,charges,dpts,chi2,pfid,layers] = TightHighPtIDMuons(T,met,variation,isData)
+	[muons,muonsPT20,muonsPT30,goodmuoninds,met,trkisos,charges,dpts,chi2,pfid,layers] = TightHighPtIDMuons(T,met,variation,isData)
 	# muons_forjetsep = MuonsForJetSeparation(T)
 	# taus_forjetsep = TausForJetSeparation(T)
-	[electrons,electroninds,met] = HEEPElectrons(T,met,variation)
+	[electrons,electronsPT20,electronsPT30,electroninds,met] = HEEPElectrons(T,met,variation)
 	# ID Jets and filter from leptons
 	[jets,jetinds,met,failthreshold,neutralhadronEF,neutralemEF,btagDeepJetScores,btagSFs,btagSFs_up,btagSFs_down,PUIds] = TightIDJets(T,met,variation,isData)
         # Filter jets from good muons and electrons.
@@ -2087,7 +2106,11 @@ def FullKinematicCalculation(T,variation):
 
 	# Muon and Jet Counts
 	_mucount = len(muons)
+	_mucountPt20 = len(muonsPT20)
+	_mucountPt30 = len(muonsPT30)
 	_elcount = len(electrons)
+	_elcountPt20 = len(electronsPT20)
+	_elcountPt30 = len(electronsPT30)
 	_jetcount = len(jets)
 
 	# Make sure there are two of every object, even if zero
@@ -2326,7 +2349,7 @@ def FullKinematicCalculation(T,variation):
 	toreturn += [_Muuj1,_Muuj2,_Mu1j1j2,_Mu2j1j2]
 	toreturn += [_MTuvjj1, _MTuvjj2,_Muvjj, _MTuvjj]
 	toreturn += [_MHuujj,_MHuvjj]
-	toreturn += [_jetcount,_mucount,_elcount,_genjetcount]
+	toreturn += [_jetcount,_mucount,_mucountPt20,_mucountPt30,_elcount,_elcountPt20,_elcountPt30,_genjetcount]
 	toreturn += [_ismuon_muon1,_ismuon_muon2]
 	toreturn += [_passTrigMu1,_passTrigMu2]
 	toreturn += [_muonInd1,_muonInd2]
