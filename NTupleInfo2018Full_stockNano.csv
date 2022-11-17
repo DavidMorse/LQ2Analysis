@@ -9,8 +9,8 @@ Run2018D-02Apr2020-v1,1,1,SingleMuData,Cert_314472-325175_13TeV_17SeptEarlyReRec
 #
 #DY+jets
 #
-DYJetsToLL_Pt-0To50,5352.57924,12456495273184,ZJets,0,/store/group/phys_exotica/leptonsPlusJets/LQ/LQ2/stockNanoSkim/NanoAODv7/2018_muPtCut20/gmadigan/
-DYJetsToLL_Pt-50To100,363.81428,119578608640,ZJets,0,/store/group/phys_exotica/leptonsPlusJets/LQ/LQ2/stockNanoSkim/NanoAODv7/2018_muPtCut20/gmadigan/
+DYJetsToLL_Pt-0To50,5352.57924,12456495272928,ZJets,0,/store/group/phys_exotica/leptonsPlusJets/LQ/LQ2/stockNanoSkim/NanoAODv7/2018_muPtCut20/gmadigan/
+DYJetsToLL_Pt-50To100,363.81428,119578608320,ZJets,0,/store/group/phys_exotica/leptonsPlusJets/LQ/LQ2/stockNanoSkim/NanoAODv7/2018_muPtCut20/gmadigan/
 DYJetsToLL_Pt-100To250,84.014804,17888382344,ZJets,0,/store/group/phys_exotica/leptonsPlusJets/LQ/LQ2/stockNanoSkim/NanoAODv7/2018_muPtCut20/gmadigan/
 DYJetsToLL_Pt-250To400,3.22826,165953664,ZJets,0,/store/group/phys_exotica/leptonsPlusJets/LQ/LQ2/stockNanoSkim/NanoAODv7/2018_muPtCut20/gmadigan/
 DYJetsToLL_Pt-400To650,0.436041,2070432,ZJets,0,/store/group/phys_exotica/leptonsPlusJets/LQ/LQ2/stockNanoSkim/NanoAODv7/2018_muPtCut20/gmadigan/
@@ -18,22 +18,22 @@ DYJetsToLL_Pt-650ToInf,0.040981,198926,ZJets,0,/store/group/phys_exotica/leptons
 #
 #TTBar
 #
-TTTo2L2Nu,87.31,4635769335,TTBar,0,/store/group/phys_exotica/leptonsPlusJets/LQ/LQ2/stockNanoSkim/NanoAODv7/2018_muPtCut20/gmadigan/
+TTTo2L2Nu,87.31,4471411239,TTBar,0,/store/group/phys_exotica/leptonsPlusJets/LQ/LQ2/stockNanoSkim/NanoAODv7/2018_muPtCut20/gmadigan/
 TTToHadronic,377.96,102733996608,TTBar,0,/store/group/phys_exotica/leptonsPlusJets/LQ/LQ2/stockNanoSkim/NanoAODv7/2018_muPtCut20/gmadigan/
-TTToSemiLeptonic,365.34,90424810144,TTBar,0,/store/group/phys_exotica/leptonsPlusJets/LQ/LQ2/stockNanoSkim/NanoAODv7/2018_muPtCut20/gmadigan/
+TTToSemiLeptonic,365.34,90424810098,TTBar,0,/store/group/phys_exotica/leptonsPlusJets/LQ/LQ2/stockNanoSkim/NanoAODv7/2018_muPtCut20/gmadigan/
 #
 #TTV 
 #
 ttHTobb,0.291,11231808,TTV,0,/store/group/phys_exotica/leptonsPlusJets/LQ/LQ2/stockNanoSkim/NanoAODv7/2018_muPtCut20/gmadigan/
 ttHToNonbb,0.213,3963935,TTV,0,/store/group/phys_exotica/leptonsPlusJets/LQ/LQ2/stockNanoSkim/NanoAODv7/2018_muPtCut20/gmadigan/
-TTWJetsToLNu,0.179,1690091,TTV,0,/store/group/phys_exotica/leptonsPlusJets/LQ/LQ2/stockNanoSkim/NanoAODv7/2018_muPtCut20/gmadigan/
+TTWJetsToLNu,0.179,1125212,TTV,0,/store/group/phys_exotica/leptonsPlusJets/LQ/LQ2/stockNanoSkim/NanoAODv7/2018_muPtCut20/gmadigan/
 TTWJetsToQQ,0.371,580758,TTV,0,/store/group/phys_exotica/leptonsPlusJets/LQ/LQ2/stockNanoSkim/NanoAODv7/2018_muPtCut20/gmadigan/
 TTZToLLNuNu,0.26,3226764,TTV,0,/store/group/phys_exotica/leptonsPlusJets/LQ/LQ2/stockNanoSkim/NanoAODv7/2018_muPtCut20/gmadigan/
 TTZToQQ,0.60,4880506,TTV,0,/store/group/phys_exotica/leptonsPlusJets/LQ/LQ2/stockNanoSkim/NanoAODv7/2018_muPtCut20/gmadigan/
 #
 #Single Top
 #
-ST_s-channel_4f,10.32,332438486,SingleTop,0,/store/group/phys_exotica/leptonsPlusJets/LQ/LQ2/stockNanoSkim/NanoAODv7/2018_muPtCut20/gmadigan/
+ST_s-channel_4f,10.32,332438485,SingleTop,0,/store/group/phys_exotica/leptonsPlusJets/LQ/LQ2/stockNanoSkim/NanoAODv7/2018_muPtCut20/gmadigan/
 ST_t-channel_top_4f,136.02,185952736,SingleTop,0,/store/group/phys_exotica/leptonsPlusJets/LQ/LQ2/stockNanoSkim/NanoAODv7/2018_muPtCut20/gmadigan/
 ST_t-channel_antitop_4f,80.95,5125996514,SingleTop,0,/store/group/phys_exotica/leptonsPlusJets/LQ/LQ2/stockNanoSkim/NanoAODv7/2018_muPtCut20/gmadigan/
 ST_tW_top_5f_inclusiveDecays,35.85,334874722,SingleTop,0,/store/group/phys_exotica/leptonsPlusJets/LQ/LQ2/stockNanoSkim/NanoAODv7/2018_muPtCut20/gmadigan/
@@ -41,10 +41,10 @@ ST_tW_antitop_5f_inclusiveDecays,35.85,263114690,SingleTop,0,/store/group/phys_e
 #
 #W+Jets
 #
-WJetsToLNu_Wpt-0To50_,57297.39264,0,WJetsPtBin,0,/store/group/phys_exotica/leptonsPlusJets/LQ/LQ2/stockNanoSkim/NanoAODv7/2018_muPtCut20/gmadigan/ # Not on DAS
+WJetsToLNu_Wpt-0To50_,57297.39264,18750972510976,WJetsPtBin,0,/store/group/phys_exotica/leptonsPlusJets/LQ/LQ2/stockNanoSkim/NanoAODv7/2018_muPtCut20/gmadigan/
 WJetsToLNu_Pt-50To100_,3298.3733,168695740416,WJetsPtBin,0,/store/group/phys_exotica/leptonsPlusJets/LQ/LQ2/stockNanoSkim/NanoAODv7/2018_muPtCut20/gmadigan/
-WJetsToLNu_Pt-100To250_,689.7496,166040870784,WJetsPtBin,0,/store/group/phys_exotica/leptonsPlusJets/LQ/LQ2/stockNanoSkim/NanoAODv7/2018_muPtCut20/gmadigan/
-WJetsToLNu_Pt-250To400_,24.5069,587476588,WJetsPtBin,0,/store/group/phys_exotica/leptonsPlusJets/LQ/LQ2/stockNanoSkim/NanoAODv7/2018_muPtCut20/gmadigan/
+WJetsToLNu_Pt-100To250_,689.7496,166040871488,WJetsPtBin,0,/store/group/phys_exotica/leptonsPlusJets/LQ/LQ2/stockNanoSkim/NanoAODv7/2018_muPtCut20/gmadigan/
+WJetsToLNu_Pt-250To400_,24.5069,420238252,WJetsPtBin,0,/store/group/phys_exotica/leptonsPlusJets/LQ/LQ2/stockNanoSkim/NanoAODv7/2018_muPtCut20/gmadigan/
 WJetsToLNu_Pt-400To600_,3.110131,15201634,WJetsPtBin,0,/store/group/phys_exotica/leptonsPlusJets/LQ/LQ2/stockNanoSkim/NanoAODv7/2018_muPtCut20/gmadigan/
 WJetsToLNu_Pt-600ToInf_,0.468318,2255852,WJetsPtBin,0,/store/group/phys_exotica/leptonsPlusJets/LQ/LQ2/stockNanoSkim/NanoAODv7/2018_muPtCut20/gmadigan/
 #
@@ -59,7 +59,7 @@ WZTo2L2Q,5.595,275210259,DiBoson_WZTo2L2Q,0,/store/group/phys_exotica/leptonsPlu
 WZTo1L1Nu2Q,10.71,337491868,DiBoson_WZTo1L1Nu2Q,0,/store/group/phys_exotica/leptonsPlusJets/LQ/LQ2/stockNanoSkim/NanoAODv7/2018_muPtCut20/gmadigan/
 WZTo2Q2Nu,6.324,328092508,DiBoson_WZTo2Q2Nu,0,/store/group/phys_exotica/leptonsPlusJets/LQ/LQ2/stockNanoSkim/NanoAODv7/2018_muPtCut20/gmadigan/
 ZZTo4L,1.212,55635913,DiBoson_ZZTo4L,0,/store/group/phys_exotica/leptonsPlusJets/LQ/LQ2/stockNanoSkim/NanoAODv7/2018_muPtCut20/gmadigan/
-ZZTo2L2Q,3.22,157311204,DiBoson_ZZTo2L2Q,0,/store/group/phys_exotica/leptonsPlusJets/LQ/LQ2/stockNanoSkim/NanoAODv7/2018_muPtCut20/gmadigan/
+ZZTo2L2Q,3.22,157311202,DiBoson_ZZTo2L2Q,0,/store/group/phys_exotica/leptonsPlusJets/LQ/LQ2/stockNanoSkim/NanoAODv7/2018_muPtCut20/gmadigan/
 ZZTo2Q2Nu,4.04,410907836,DiBoson_ZZTo2Q2Nu,0,/store/group/phys_exotica/leptonsPlusJets/LQ/LQ2/stockNanoSkim/NanoAODv7/2018_muPtCut20/gmadigan/
 #ZZTo4Q,6.896587,0,DiBoson_ZZTo4Q,0,/store/group/phys_exotica/leptonsPlusJets/LQ/LQ2/stockNanoSkim/NanoAODv7/2018_muPtCut20/gmadigan/ # Not on DAS
 VVTo2L2Nu,11.95,262138482,DiBoson_VVTo2L2Nu,0,/store/group/phys_exotica/leptonsPlusJets/LQ/LQ2/stockNanoSkim/NanoAODv7/2018_muPtCut20/gmadigan/
