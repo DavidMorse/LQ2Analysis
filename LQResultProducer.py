@@ -203,7 +203,7 @@ NormalWeight2018 = "(Flag_dataYear2018*("+str(lumi2018)+"*weight_topPt"+bTagSFme
 
 NormalWeightMuMu = "("+NormalWeight2016+"+"+NormalWeight2017+"+"+NormalWeight2018+")"+doublemuHLT+doubleMuRecoSF+doubleMuIsoSF+doubleMuIdSF
 NormalWeightMuNu = str(lumi)+'*weight_central'+singlemuHLT+singleMuRecoSF+singleMuIsoSF+singleMuIdSF
-NormalWeightDiBoson = "((Flag_dataYear2016*"+str(lumi2016)+")+(Flag_dataYear2017*"+str(lumi2017)+")+(Flag_dataYear2018*"+str(lumi2018)+"))*weight_topPt*prefireWeight"+doublemuHLT+doubleMuRecoSF+doubleMuIsoSF+doubleMuIdSF
+NormalWeightDiBoson = "((Flag_dataYear2016*prefireWeight*"+str(lumi2016)+")+(Flag_dataYear2017*prefireWeight*"+str(lumi2017)+")+(Flag_dataYear2018*"+str(lumi2018)+"))*weight_topPt"+doublemuHLT+doubleMuRecoSF+doubleMuIsoSF+doubleMuIdSF
 
 
 #fixme checking eta restriction on muons and electrons to fix r_uu/eu
@@ -248,8 +248,8 @@ passfilter += '*(Flag_BadPFMuonFilter)'#*Flag_BadChargedHadron)'
 
 # This defines the preselections for the mu-mu, mu-nu, and e-mu samples
 preselectionmumu_single = '((Pt_muon1>53)*(Pt_muon2>53)*(Pt_jet1>50)*(St_uujj>250)*(M_uu>50)*(DR_muon1muon2>0.3)'+bTagselmedium+')'
-preselectionmumu = '((Pt_muon1>53)*(Pt_muon2>53)*(Pt_jet1>50)*(Pt_jet2>50)*(St_uujj>300)*(M_uu>50)*(DR_muon1muon2>0.3)*((MuonCount+ElectronCount)<3)'+bTagselmedium+')'
-preselectionmumu_3lep = '((Pt_muon1>53)*(Pt_muon2>53)*(Pt_jet1>50)*(Pt_jet2>50)*(St_uujj>300)*(M_uu>50)*(DR_muon1muon2>0.3)*((MuonCount+ElectronCount)>2))'
+preselectionmumu = '((Pt_muon1>53)*(Pt_muon2>53)*(Pt_jet1>50)*(Pt_jet2>50)*(St_uujj>300)*(M_uu>50)*(DR_muon1muon2>0.3)*((MuonCountPt20+ElectronCountPt20)<3)'+bTagselmedium+')'
+preselectionmumu_3lep = '((Pt_muon1>53)*(Pt_muon2>53)*(Pt_jet1>50)*(Pt_jet2>50)*(St_uujj>300)*(M_uu>50)*(DR_muon1muon2>0.3)*((MuonCountPt20+ElectronCountPt20)>2))'#+bTagselmedium+')'
 preselectionmunu = '((Pt_muon1>53)*(Pt_muon2<53)*(Pt_miss>55)*(Pt_jet1>50)*(Pt_jet2>50)*(Pt_ele1<53)*(St_uvjj>300)*(MT_uv>50.0)*(DPhi_muon1met>0.8)*(DPhi_jet1met>0.5))'
 preselectionemu  = '((Pt_muon1>53)*(Pt_muon2>53)*(Pt_jet1>50)*(Pt_jet2>50)*(St_uujj>300)*(M_uu>50)*(DR_muon1muon2>0.3))'
 
@@ -475,6 +475,7 @@ stbinning = [200,225]
 bosonbinning = [50,60,70,80,90,100,110,120]
 bosonzoombinning_uujj_Z = [50,70,120]
 bosonzoombinning_uujj_TT = [95,100]
+bosonzoombinning_uujj_VV = [28,70,150]
 metzoombinning_uujj_TT = [95,100]
 metzoombinning_uujj_Z = [0,5,10,15,22,30,40,55,75,100]
 	
@@ -505,7 +506,7 @@ for x in range(40):
        		bosonzoombinning_uujj_TT.append(bosonzoombinning_uujj_TT[-1] + (bosonzoombinning_uujj_TT[-1] - bosonzoombinning_uujj_TT[-2])*1.25)	       	
 	if metzoombinning_uujj_TT[-1] < 900:
 	       	metzoombinning_uujj_TT.append(metzoombinning_uujj_TT[-1] + (metzoombinning_uujj_TT[-1] - metzoombinning_uujj_TT[-2])*1.4)
-		
+                        
 vbinning = [50,0,50]
 nbinning = [10,0,10]
 ptbinning = [round(x) for x in ptbinning]
@@ -773,6 +774,8 @@ def main():
 		#munu2 = '(MT_uv>70)*(MT_uv<110)*(JetCount>3.5)'
 		# SFs with updated integrated luminosities
 
+                #[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = GetMuMuScaleFactors( NormalWeightMuMu+'*'+preselectionmumu, NormalDirectory, '(M_uu>80)*(M_uu<100)', '(M_uu>100)*(M_uu<250)',0,0)
+                #exit()
 		if year == '2016':
 			[[Rz_uuj,Rz_uuj_err],[Rtt_uuj,Rtt_uuj_err]] = [[1.004,0.016],[0.997,0.013]] #2016 stock NanoAODv7 with 1 btag (uub) 
 			[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = [[1.02,0.017],[0.991,0.015]] #2016 stock NanoAODv7 with 1 btag (uubj) (Rz_uujj = 89% purity, Rtt_uujj = 87% purity)
@@ -799,12 +802,13 @@ def main():
 			[[Rz_uuj,Rz_uuj_err],[Rtt_uuj,Rtt_uuj_err]] = GetMuMuScaleFactors( NormalWeightMuMu+'*'+preselectionmumu_single, NormalDirectory, '(M_uu>80)*(M_uu<100)', '(M_uu>100)*(M_uu<250)',0,0)
 			[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = GetMuMuScaleFactors( NormalWeightMuMu+'*'+preselectionmumu, NormalDirectory, '(M_uu>80)*(M_uu<100)', '(M_uu>100)*(M_uu<250)',0,0)
 
-
-                #[Rvv_uujj,Rvv_uujj_err] = GetDiBosonScaleFactor( NormalWeightDiBoson+'*'+preselectionmumu_3lep, NormalDirectory, '(M_uu>80)*(M_uu<100)', Rz_uujj, Rtt_uujj, 0)
- 		[Rvv_uujj,Rvv_uujj_err] = [1.0,0.0] #fixme setting to 1 for now
-                MakeBasicPlot("M_uu","M^{#mu#mu} [GeV]",bosonzoombinning_uujj_Z,preselectionmumu_3lep,NormalWeightDiBoson,NormalDirectory,'controlzoom_VVRegion_noSF','uujj',Rz_uujj, 1.0 , Rtt_uujj,1.0,'',version_name,1000)
- 		MakeBasicPlot("M_uu","M^{#mu#mu} [GeV]",bosonzoombinning_uujj_Z,preselectionmumu_3lep,NormalWeightDiBoson,NormalDirectory,'controlzoom_VVRegion','uujj',Rz_uujj, 1.0 , Rtt_uujj,Rvv_uujj,'',version_name,1000)
-		#exit()
+                [[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = GetMuMuScaleFactors( NormalWeightMuMu+'*'+preselectionmumu, NormalDirectory, '(M_uu>80)*(M_uu<100)', '(M_uu>100)*(M_uu<250)',0,0)
+                [Rvv_uujj,Rvv_uujj_err] = GetDiBosonScaleFactor( NormalWeightDiBoson+'*'+preselectionmumu_3lep, NormalDirectory, '(M_uu>80)*(M_uu<100)', Rz_uujj, Rtt_uujj, 0)
+ 		
+                #[Rvv_uujj,Rvv_uujj_err] = [1.0,0.0] #fixme setting to 1 for now
+                MakeBasicPlot("M_uu","M^{#mu#mu} [GeV]",bosonzoombinning_uujj_VV,preselectionmumu_3lep,NormalWeightDiBoson,NormalDirectory,'controlzoom_VVRegion_noSF','uujj',Rz_uujj, 1.0 , Rtt_uujj,1.0,'',version_name,1000)
+ 		MakeBasicPlot("M_uu","M^{#mu#mu} [GeV]",bosonzoombinning_uujj_VV,preselectionmumu_3lep,NormalWeightDiBoson,NormalDirectory,'controlzoom_VVRegion','uujj',Rz_uujj, 1.0 , Rtt_uujj,Rvv_uujj,'',version_name,1000)
+		exit()
 		#[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = [[1.025,0.04],[1.147,0.019]]#TTBar MC, 2016 customNano
 		#[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = [[0.925,0.005],[1.000,0.023]]#TTBarDataDriven
 		#[[Rw_uvjj,Rw_uvjj_err],[Rtt_uvjj,Rtt_uvjj_err]] = [[0.977,0.052],[0.932,0.039]]#TTBarMC
@@ -1373,14 +1377,21 @@ def main():
                         binnedValsZ.append([Rz_uujj,Rz_uujj_err])
                         binnedValsTT.append([Rtt_uujj,Rtt_uujj_err])
                 """
-                
+                """
                 for Range in [['0','100'],['100','200'],['200','400'],['400','99999']]:
 			Cut = '*(Pt_jet1>'+Range[0]+')*(Pt_jet1<'+Range[1]+')'
 			print '*********',Cut
 			[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = GetMuMuScaleFactors( NormalWeightMuMu+'*'+preselectionmumu+Cut, NormalDirectory, '(M_uu>80)*(M_uu<100)', '(M_uu>100)*(M_uu<250)',1,1)
                         binnedValsZ.append([Rz_uujj,Rz_uujj_err])
                         binnedValsTT.append([Rtt_uujj,Rtt_uujj_err])
-                
+                """
+                for Range in [['0','100'],['100','200'],['200','400'],['400','99999']]:
+			Cut = '*(WorZSystemPt>'+Range[0]+')*(WorZSystemPt<'+Range[1]+')'
+			print '*********',Cut
+			[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = GetMuMuScaleFactors( NormalWeightMuMu+'*'+preselectionmumu+Cut, NormalDirectory, '(M_uu>80)*(M_uu<100)', '(M_uu>100)*(M_uu<250)',1,1)
+                        binnedValsZ.append([Rz_uujj,Rz_uujj_err])
+                        binnedValsTT.append([Rtt_uujj,Rtt_uujj_err])
+                    
                 print '---------------------------------------------'
                 print 'nominal Z/TT' , nominalZ , nominalTT
                 print 'binning Z:'
@@ -5053,13 +5064,15 @@ def GetDiBosonScaleFactor( selection, FileDirectory, controlregion_1, zscale, tt
 	ttv1 = QuickIntegral(t_TTV,selection + '*' + controlregion_1,1.0)
 	#q1 = QuickIntegral(t_QCDMu,selection   + '*' + controlregion_1,1.0)
 
-	Other1 = [ s1[0]+w1[0]+Z1[0]+T1[0]+ttv1[0], math.sqrt( s1[1]*s1[1] + w1[1]*w1[1] + Z1[1]*Z1[1] + T1[1]*T1[1] + ttv1[1]*ttv1[1]) ]
+	#Other1 = [ s1[0]+w1[0]+Z1[0]+T1[0]+ttv1[0], math.sqrt( s1[1]*s1[1] + w1[1]*w1[1] + Z1[1]*Z1[1] + T1[1]*T1[1] + ttv1[1]*ttv1[1]) ]
+	Other1 = [ s1[0]+w1[0]+Z1[0]+T1[0], math.sqrt( s1[1]*s1[1] + w1[1]*w1[1] + Z1[1]*Z1[1] + T1[1]*T1[1]) ]
 	VVvals = []
 
 	if isQuick: loops=100
 	else: loops=10000
+        vvttv = [v1[0]+ttv1[0],math.sqrt(v1[1]*v1[1]+ttv1[1]*ttv1[1])]
 	for x in range(loops):
-                variation = (RR(N1) - RR(Other1))/(RR(v1))
+                variation = (RR(N1) - RR(Other1))/(RR(vvttv))
                 VVvals.append(variation)
 
 	VVout =  GetStats(VVvals)
@@ -5072,10 +5085,10 @@ def GetDiBosonScaleFactor( selection, FileDirectory, controlregion_1, zscale, tt
 	print 'ST:',s1
 	print 'W:',w1
 	print 'TTV:',ttv1
-	print 'Other (all but VV):',Other1
+	print 'Other (all but VV and TTV):',Other1
 
 
-	print 'MuMu: RVV  = ', VVout[-1]
+	print 'MuMu: RVV/TTV  = ', VVout[-1]
 	return [ VVout[0], VVout[1] ]
 
 def GetMuMuScaleFactorsData( selection, FileDirectory, controlregion_1, controlregion_2, canUseTTDD, isQuick):
