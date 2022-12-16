@@ -40,7 +40,7 @@ elif year == '2018':
 	QCDDirectory    = '/eos/cms/store/group/phys_exotica/leptonsPlusJets/LQ/LQ2/trees/NTupleAnalyzer_nanoAOD_Full2016QCDNonIsoQuickTest_2019_10_14/SummaryFiles' #Placeholder
 	EMuDirectory    = '/eos/cms/store/group/phys_exotica/leptonsPlusJets/LQ/LQ2/trees/NTupleAnalyzer_nanoAOD_Full2016EMuSwitch_2019_10_14/SummaryFiles' #Placeholder
 elif "comb" in year:
-	NormalDirectory = '/eos/cms/store/group/phys_exotica/leptonsPlusJets/LQ/LQ2/comboTrees/SummaryFiles'
+	NormalDirectory = '/eos/cms/store/group/phys_exotica/leptonsPlusJets/LQ/LQ2/stockNanoTrees/NanoAODv7/combined/gmadigan/FullDataMC_muPt20/SummaryFiles'
 	QCDDirectory    = '/eos/cms/store/group/phys_exotica/leptonsPlusJets/LQ/LQ2/trees/NTupleAnalyzer_nanoAOD_Full2016QCDNonIsoQuickTest_2019_10_14/SummaryFiles' #Placeholder
 	EMuDirectory    = '/eos/cms/store/group/phys_exotica/leptonsPlusJets/LQ/LQ2/trees/NTupleAnalyzer_nanoAOD_Full2016EMuSwitch_2019_10_14/SummaryFiles' #Placeholder
 else:
@@ -248,7 +248,7 @@ passfilter += '*(Flag_BadPFMuonFilter)'#*Flag_BadChargedHadron)'
 
 # This defines the preselections for the mu-mu, mu-nu, and e-mu samples
 preselectionmumu_single = '((Pt_muon1>53)*(Pt_muon2>53)*(Pt_jet1>50)*(St_uujj>250)*(M_uu>50)*(DR_muon1muon2>0.3)'+bTagselmedium+')'
-preselectionmumu = '((Pt_muon1>53)*(Pt_muon2>53)*(Pt_jet1>50)*(Pt_jet2>50)*(St_uujj>300)*(M_uu>50)*(DR_muon1muon2>0.3)*((MuonCount+ElectronCount)<3)'+bTagselmedium+')'
+preselectionmumu = '((Pt_muon1>53)*(Pt_muon2>53)*(Pt_jet1>50)*(Pt_jet2>50)*(St_uujj>300)*(M_uu>50)*(DR_muon1muon2>0.3)*((MuonCountPt20+ElectronCountPt20)<3)'+bTagselmedium+')'
 preselectionmumu_3lep = '((Pt_muon1>53)*(Pt_muon2>53)*(Pt_jet1>50)*(Pt_jet2>50)*(St_uujj>300)*(M_uu>50)*(DR_muon1muon2>0.3)*((MuonCount+ElectronCount)>2))'
 preselectionmunu = '((Pt_muon1>53)*(Pt_muon2<53)*(Pt_miss>55)*(Pt_jet1>50)*(Pt_jet2>50)*(Pt_ele1<53)*(St_uvjj>300)*(MT_uv>50.0)*(DPhi_muon1met>0.8)*(DPhi_jet1met>0.5))'
 preselectionemu  = '((Pt_muon1>53)*(Pt_muon2>53)*(Pt_jet1>50)*(Pt_jet2>50)*(St_uujj>300)*(M_uu>50)*(DR_muon1muon2>0.3))'
@@ -531,12 +531,12 @@ def main():
 	# for this, and make use of it. e.g. For systematic variations, we can run in batch instead
 	# of running serially, which speeds things up.
 
-	version_name = year+'_muPt20' # scriptflag
+	version_name = year+'_muPt20_dibosonSF' # scriptflag
 	#version_name = 'Testing_noQCD_14nov' # use sf tag above if this is the real folder
 	os.system('mkdir Results_'+version_name) 
 
 	global MuMuOptCutDir
-	MuMuOptCutDir = 'Enhanced_selection' # scriptflag
+	MuMuOptCutDir = 'Final_selection' # scriptflag
 	os.system('mkdir Results_'+version_name+'/'+MuMuOptCutDir) # scriptflag
 	MuMuOptCutFile = 'Results_'+version_name+'/'+MuMuOptCutDir+'/Opt_LQuujj_Cuts.txt' # scriptflag
 	#MuMuOptCutFile = 'Results_'+version_name+'/OptLQ_uujjCuts_Smoothed_pol2cutoff.txt'
@@ -730,7 +730,7 @@ def main():
 	# ====================================================================================================================================================== #
 	# This is a basic plotting routine to make Analysis Note style plots with ratio plots. AN Analysis-Note
 	# ====================================================================================================================================================== #
-	if True :
+	if False :
 		#global preselectionmumu 
 		# Some modifications to the ST and LQ mass binning
 		bjetbinning = [0,.05]
@@ -771,39 +771,47 @@ def main():
 		munu2plot = munu2#'(MT_uv>70)*(MT_uv<150)*(((CISV_jet1>0.8484)+(CISV_jet2>0.8484))>=1)*(0.561694*((1.+(0.31439*Pt_jet1))/(1.+(0.17756*Pt_jet1))))'#*(CISV_jet1>CISV_jet2)+(0.901114+(1.40704e-05*(Pt_jet2)))*(CISV_jet2>0.8484)*(CISV_jet1<CISV_jet2))'
 		#munu1 = '(MT_uv>70)*(MT_uv<110)*(JetCount<3.5)'
 		#munu2 = '(MT_uv>70)*(MT_uv<110)*(JetCount>3.5)'
-		# SFs with updated integrated luminosities
+
+		# SFs updated with veto on more than two pT > 20 GeV leptons
 
 		if year == '2016':
-			[[Rz_uuj,Rz_uuj_err],[Rtt_uuj,Rtt_uuj_err]] = [[1.004,0.016],[0.997,0.013]] #2016 stock NanoAODv7 with 1 btag (uub) 
-			[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = [[1.02,0.017],[0.991,0.015]] #2016 stock NanoAODv7 with 1 btag (uubj) (Rz_uujj = 89% purity, Rtt_uujj = 87% purity)
+			[[Rz_uuj,Rz_uuj_err],[Rtt_uuj,Rtt_uuj_err]] = [[1.006,0.015],[0.997,0.013]] #[[1.004,0.016],[0.997,0.013]] #2016 stock NanoAODv7 with 1 btag (uub) 
+			[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = [[1.022,0.017],[0.989,0.014]] #[[1.02,0.017],[0.991,0.015]] #2016 stock NanoAODv7 with 1 btag (uubj) (Rz_uujj = 89% purity, Rtt_uujj = 87% purity)
+			[Rvv_uujj,Rvv_uujj_err] = [1.064,0.116]
 		elif year == '2017':
-			[[Rz_uuj,Rz_uuj_err],[Rtt_uuj,Rtt_uuj_err]]  =  [[1.38,0.019],[1.09,0.011]] #2017 stock NanoAODv7 with 1 btag (uub)
-			[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = [[1.367,0.02],[1.098,0.013]] #2017 stock NanoAODv7 with 1 btag (uubj) (Rz_uujj = 89% purity, Rtt_uujj = 89% purity)
+			[[Rz_uuj,Rz_uuj_err],[Rtt_uuj,Rtt_uuj_err]]  =  [[1.376,0.019],[1.086,0.011]] #[[1.38,0.019],[1.09,0.011]] #2017 stock NanoAODv7 with 1 btag (uub)
+			[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = [[1.364,0.021],[1.094,0.013]] #[[1.367,0.02],[1.098,0.013]] #2017 stock NanoAODv7 with 1 btag (uubj) (Rz_uujj = 89% purity, Rtt_uujj = 89% purity)
+			[Rvv_uujj,Rvv_uujj_err] = [1.242,0.125]
 		elif year == '2018':
-			[[Rz_uuj,Rz_uuj_err],[Rtt_uuj,Rtt_uuj_err]]  =  [[1.298,0.015],[1.01,0.009]] #2018 stock NanoAODv7 with 1 btag (uub)
-			[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]]  =  [[1.299,0.017],[1.015,0.01]] #2018 stock NanoAODv7 with 1 btag (uubj) (Rz_uujj = 88% purity, Rtt_uujj = 88% purity)
+			[[Rz_uuj,Rz_uuj_err],[Rtt_uuj,Rtt_uuj_err]]  =  [[1.298,0.016],[0.975,0.009]] #[[1.298,0.015],[1.01,0.009]] #2018 stock NanoAODv7 with 1 btag (uub)
+			[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]]  =  [[1.298,0.017],[0.979,0.01]] #[[1.299,0.017],[1.015,0.01]] #2018 stock NanoAODv7 with 1 btag (uubj) (Rz_uujj = 88% purity, Rtt_uujj = 88% purity)
+			[Rvv_uujj,Rvv_uujj_err] = [1.366,0.11]
 		elif "comb" in year:
-			[[Rz_uuj_2016,Rz_uuj_2016_err],[Rtt_uuj_2016,Rtt_uuj_2016_err]] = [[1.004,0.016],[0.997,0.013]] #2016 stock NanoAODv7 with 1 btag (uub) 
-			[[Rz_uujj_2016,Rz_uujj_2016_err],[Rtt_uujj_2016,Rtt_uujj_2016_err]] = [[1.02,0.017],[0.991,0.015]] #2016 stock NanoAODv7 with 1 btag (uubj) (Rz_uujj = 89% purity, Rtt_uujj = 87% purity)
-			[[Rz_uuj_2017,Rz_uuj_2017_err],[Rtt_uuj_2017,Rtt_uuj_2017_err]]  =  [[1.38,0.019],[1.09,0.011]] #2017 stock NanoAODv7 with 1 btag (uub)
-			[[Rz_uujj_2017,Rz_uujj_2017_err],[Rtt_uujj_2017,Rtt_uujj_2017_err]] = [[1.367,0.02],[1.098,0.013]] #2017 stock NanoAODv7 with 1 btag (uubj) (Rz_uujj = 89% purity, Rtt_uujj = 89% purity)
-			[[Rz_uuj_2018,Rz_uuj_2018_err],[Rtt_uuj_2018,Rtt_uuj_2018_err]]  =  [[1.298,0.015],[1.01,0.009]] #2018 stock NanoAODv7 with 1 btag (uub)
-			[[Rz_uujj_2018,Rz_uujj_2018_err],[Rtt_uujj_2018,Rtt_uujj_2018_err]]  =  [[1.299,0.017],[1.015,0.01]] #2018 stock NanoAODv7 with 1 btag (uubj) (Rz_uujj = 88% purity, Rtt_uujj = 88% purity)
+			[[Rz_uuj_2016,Rz_uuj_2016_err],[Rtt_uuj_2016,Rtt_uuj_2016_err]] = [[1.006,0.015],[0.997,0.013]] #[[1.004,0.016],[0.997,0.013]] #2016 stock NanoAODv7 with 1 btag (uub) 
+			[[Rz_uujj_2016,Rz_uujj_2016_err],[Rtt_uujj_2016,Rtt_uujj_2016_err]] = [[1.022,0.017],[0.989,0.014]] #[[1.02,0.017],[0.991,0.015]] #2016 stock NanoAODv7 with 1 btag (uubj) (Rz_uujj = 89% purity, Rtt_uujj = 87% purity)
+			[Rvv_uujj_2016,Rvv_uujj_2016_err] = [1.064,0.116]
+			[[Rz_uuj_2017,Rz_uuj_2017_err],[Rtt_uuj_2017,Rtt_uuj_2017_err]]  =  [[1.376,0.019],[1.086,0.011]] #[[1.38,0.019],[1.09,0.011]] #2017 stock NanoAODv7 with 1 btag (uub)
+			[[Rz_uujj_2017,Rz_uujj_2017_err],[Rtt_uujj_2017,Rtt_uujj_2017_err]] = [[1.364,0.021],[1.094,0.013]] #[[1.367,0.02],[1.098,0.013]] #2017 stock NanoAODv7 with 1 btag (uubj) (Rz_uujj = 89% purity, Rtt_uujj = 89% purity)
+			[Rvv_uujj_2017,Rvv_uujj_2017_err] = [1.242,0.125]
+			[[Rz_uuj_2018,Rz_uuj_2018_err],[Rtt_uuj_2018,Rtt_uuj_2018_err]]  =  [[1.298,0.016],[0.975,0.009]] #[[1.298,0.015],[1.01,0.009]] #2018 stock NanoAODv7 with 1 btag (uub)
+			[[Rz_uujj_2018,Rz_uujj_2018_err],[Rtt_uujj_2018,Rtt_uujj_2018_err]]  =  [[1.298,0.017],[0.979,0.01]] #[[1.299,0.017],[1.015,0.01]] #2018 stock NanoAODv7 with 1 btag (uubj) (Rz_uujj = 88% purity, Rtt_uujj = 88% purity)
+			[Rvv_uujj_2018,Rvv_uujj_2018_err] = [1.366,0.11]
 
 			Rz_uuj = "((Flag_dataYear2016*"+str(Rz_uuj_2016)+")+(Flag_dataYear2017*"+str(Rz_uuj_2017)+")+(Flag_dataYear2018*"+str(Rz_uuj_2018)+"))"
 			Rtt_uuj = "((Flag_dataYear2016*"+str(Rtt_uuj_2016)+")+(Flag_dataYear2017*"+str(Rtt_uuj_2017)+")+(Flag_dataYear2018*"+str(Rtt_uuj_2018)+"))"
 			Rz_uujj = "((Flag_dataYear2016*"+str(Rz_uujj_2016)+")+(Flag_dataYear2017*"+str(Rz_uujj_2017)+")+(Flag_dataYear2018*"+str(Rz_uujj_2018)+"))"
 			Rtt_uujj = "((Flag_dataYear2016*"+str(Rtt_uujj_2016)+")+(Flag_dataYear2017*"+str(Rtt_uujj_2017)+")+(Flag_dataYear2018*"+str(Rtt_uujj_2018)+"))"
+			Rvv_uujj = "((Flag_dataYear2016*"+str(Rvv_uujj_2016)+")+(Flag_dataYear2017*"+str(Rvv_uujj_2017)+")+(Flag_dataYear2018*"+str(Rvv_uujj_2018)+"))"
 
 		else:
 			[[Rz_uuj,Rz_uuj_err],[Rtt_uuj,Rtt_uuj_err]] = GetMuMuScaleFactors( NormalWeightMuMu+'*'+preselectionmumu_single, NormalDirectory, '(M_uu>80)*(M_uu<100)', '(M_uu>100)*(M_uu<250)',0,0)
 			[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = GetMuMuScaleFactors( NormalWeightMuMu+'*'+preselectionmumu, NormalDirectory, '(M_uu>80)*(M_uu<100)', '(M_uu>100)*(M_uu<250)',0,0)
 
 
-                #[Rvv_uujj,Rvv_uujj_err] = GetDiBosonScaleFactor( NormalWeightDiBoson+'*'+preselectionmumu_3lep, NormalDirectory, '(M_uu>80)*(M_uu<100)', Rz_uujj, Rtt_uujj, 0)
- 		[Rvv_uujj,Rvv_uujj_err] = [1.0,0.0] #fixme setting to 1 for now
-                MakeBasicPlot("M_uu","M^{#mu#mu} [GeV]",bosonzoombinning_uujj_Z,preselectionmumu_3lep,NormalWeightDiBoson,NormalDirectory,'controlzoom_VVRegion_noSF','uujj',Rz_uujj, 1.0 , Rtt_uujj,1.0,'',version_name,1000)
- 		MakeBasicPlot("M_uu","M^{#mu#mu} [GeV]",bosonzoombinning_uujj_Z,preselectionmumu_3lep,NormalWeightDiBoson,NormalDirectory,'controlzoom_VVRegion','uujj',Rz_uujj, 1.0 , Rtt_uujj,Rvv_uujj,'',version_name,1000)
+		#[Rvv_uujj,Rvv_uujj_err] = GetDiBosonScaleFactor( NormalWeightDiBoson+'*'+preselectionmumu_3lep, NormalDirectory, '(M_uu>80)*(M_uu<100)', Rz_uujj, Rtt_uujj, 0)
+		#[Rvv_uujj,Rvv_uujj_err] = [1.0,0.0] #fixme setting to 1 for now
+		MakeBasicPlot("M_uu","M^{#mu#mu} [GeV]",bosonzoombinning_uujj_Z,preselectionmumu_3lep,NormalWeightDiBoson,NormalDirectory,'controlzoom_VVRegion_noSF','uujj',Rz_uujj, 1.0 , Rtt_uujj,1.0,'',version_name,1000)
+		MakeBasicPlot("M_uu","M^{#mu#mu} [GeV]",bosonzoombinning_uujj_Z,preselectionmumu_3lep,NormalWeightDiBoson,NormalDirectory,'controlzoom_VVRegion','uujj',Rz_uujj, 1.0 , Rtt_uujj,Rvv_uujj,'',version_name,1000)
 		#exit()
 		#[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = [[1.025,0.04],[1.147,0.019]]#TTBar MC, 2016 customNano
 		#[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = [[0.925,0.005],[1.000,0.023]]#TTBarDataDriven
@@ -4469,6 +4477,10 @@ def SysTable(optimlog, selection_uujj,selection_uvjj,NormalDirectory, weight,sys
 	[[Rz_uuj,Rz_uuj_err],[Rtt_uuj,Rtt_uuj_err]] = GetMuMuScaleFactors( NormalWeightMuMu+'*'+preselectionmumu_single, NormalDirectory, '(M_uu>80)*(M_uu<100)', '(M_uu>100)*(M_uu<250)',0,0)
 	[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = GetMuMuScaleFactors( NormalWeightMuMu+'*'+preselectionmumu, NormalDirectory, '(M_uu>80)*(M_uu<100)', '(M_uu>100)*(M_uu<250)',0,0)
 	[[Rw_uvjj,Rw_uvjj_err],[Rtt_uvjj,Rtt_uvjj_err]] = [[1.0,0.0],[1.0,0.0]]
+	[Rvv_uujj_2016,Rvv_uujj_2016_err] = [1.064,0.116]
+	[Rvv_uujj_2017,Rvv_uujj_2017_err] = [1.242,0.125]
+	[Rvv_uujj_2018,Rvv_uujj_2018_err] = [1.366,0.11]
+
 
 	Rz_uujj_print = str(round(Rz_uujj,3)) + ' $\\pm$ ' + str(round(Rz_uujj_err,3))	
 	Rtt_uujj_print = str(round(Rtt_uujj,3)) + ' $\\pm$ ' + str(round(Rtt_uujj_err,3))	
@@ -4569,6 +4581,15 @@ def SysTable(optimlog, selection_uujj,selection_uvjj,NormalDirectory, weight,sys
 		rdiboson = 1
 		#rqcd = 1
 		rttv = 1
+		if year == '2016':
+			rdiboson = Rvv_uujj_2016
+			rttv = Rvv_uujj_2016
+		elif year == '2017':
+			rdiboson = Rvv_uujj_2017
+			rttv = Rvv_uujj_2017
+		elif year == '2018':
+			rdiboson = Rvv_uujj_2018
+			rttv = Rvv_uujj_2018
 		rsig = 1
 		_rt = rt
 		_rw = rw
@@ -5911,7 +5932,7 @@ def MakeBasicPlot(recovariable,xlabel,presentationbinning,selection,weight,FileD
 	print tt_sel_weight
 	hs_rec_TTBar=CreateHisto('hs_rec_TTBar','t#bar{t}',t_T,recovariable,presentationbinning,tt_sel_weight,TTStackStyle,Label)
 	hs_rec_SingleTop=CreateHisto('hs_rec_SingleTop','SingleTop',t_SingleTop,recovariable,presentationbinning,selection+'*'+weight,StopStackStyle,Label)
-	hs_rec_TTV=CreateHisto('hs_rec_TTV','t#bar{t}V',t_TTV,recovariable,presentationbinning,selection+'*'+weight,TTVStackStyle,Label)
+	hs_rec_TTV=CreateHisto('hs_rec_TTV','t#bar{t}V',t_TTV,recovariable,presentationbinning,selection+'*('+str(vvscale)+')*'+weight,TTVStackStyle,Label)
 	#hs_rec_QCD=CreateHisto('hs_rec_QCD','QCD',t_QCDMu,recovariable,presentationbinning,selection+'*'+weight,QCDStackStyle,Label)
 
 	if 'TTBarDataDriven' in tagname:
