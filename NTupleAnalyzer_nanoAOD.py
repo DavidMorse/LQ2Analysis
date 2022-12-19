@@ -185,7 +185,7 @@ _kinematicvariables += ['bTagSF_jet1_up','bTagSF_jet2_up']
 _kinematicvariables += ['bTagSF_jet1_down','bTagSF_jet2_down']
 _kinematicvariables += ['PULoosej1','PUMediumj1','PUTightj1']
 _kinematicvariables += ['PULoosej2','PUMediumj2','PUTightj2']
-_kinematicvariables += ['WorZSystemPt']
+_kinematicvariables += ['WorZSystemPt','WorZSystemPtRECO']
 #_kinematicvariables += ['passWptCut','passZptCut','WorZSystemPt']
 #_kinematicvariables += ['WSystemPt','ZSystemPt']
 _kinematicvariables += ['matchedLQ']
@@ -2240,6 +2240,11 @@ def FullKinematicCalculation(T,variation):
 	[_mu1recoSF,_mu1recoSFup,_mu1recoSFdown,_mu1idSF,_mu1idSFup,_mu1idSFdown,_mu1isoSF,_mu1isoSFup,_mu1isoSFdown,_mu1hltSF,_mu1hltSFup,_mu1hltSFdown] = getMuonSF(_ptmu1,_etamu1,_phimu1)
 	[_mu2recoSF,_mu2recoSFup,_mu2recoSFdown,_mu2idSF,_mu2idSFup,_mu2idSFdown,_mu2isoSF,_mu2isoSFup,_mu2isoSFdown,_mu2hltSF,_mu2hltSFup,_mu2hltSFdown] = getMuonSF(_ptmu2,_etamu2,_phimu2)
 
+        mu1_, mu2_ = TLorentzVector(), TLorentzVector()
+        mu1_.SetPtEtaPhiM(_ptmu1,_etamu1,_phimu1,0)
+        mu2_.SetPtEtaPhiM(_ptmu2,_etamu2,_phimu2,0)
+        _WorZSystemPtRECO=(mu1_+mu2_).Pt()
+
 	_Muujj1_gen=0
 	_Muujj2_gen=0
 	_MHuujj_gen=0
@@ -2361,7 +2366,7 @@ def FullKinematicCalculation(T,variation):
 	toreturn += [_btagSF1_down,_btagSF2_down]
 	toreturn += [_PULoosej1,_PUMediumj1,_PUTightj1]
 	toreturn += [_PULoosej2,_PUMediumj2,_PUTightj2]
-	toreturn += [_WorZSystemPt]
+	toreturn += [_WorZSystemPt,_WorZSystemPtRECO]
 	#toreturn += [_passWptCut,_passZptCut,_WorZSystemPt]
 	#toreturn += [_WSystemPt,_ZSystemPt]
 	toreturn += [_matchedLQ]
