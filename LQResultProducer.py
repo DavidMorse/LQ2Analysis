@@ -6011,12 +6011,12 @@ def MakeBasicPlot(recovariable,xlabel,presentationbinning,selection,weight,FileD
 		print 'Total Background:',totBg,'+-',totErr
 		print 'Data            :',hs_rec_Data.Integral(0,-1)
 
-		hs_rec_DiBoson.SetTitle("Other background")
-		hs_rec_DiBoson.Add(hs_rec_WJets)
-		hs_rec_DiBoson.Add(hs_rec_SingleTop)
+		hs_rec_DiBoson.SetTitle("VV + t#bar{t}V")
 		hs_rec_DiBoson.Add(hs_rec_TTV)
+		hs_rec_WJets.SetTitle("Other background")
+		hs_rec_WJets.Add(hs_rec_SingleTop)
 		#hs_rec_DiBoson.Add(hs_rec_QCD)
-		SM=[hs_rec_DiBoson,hs_rec_TTBar,hs_rec_ZJets]
+		SM=[hs_rec_WJets,hs_rec_DiBoson,hs_rec_TTBar,hs_rec_ZJets]
 
 	if channel == 'susy':
 		sig1name = 'm_{LQ} = 500 GeV'
@@ -6286,19 +6286,20 @@ def MakeBasicPlot(recovariable,xlabel,presentationbinning,selection,weight,FileD
 		leg.SetTextSize(.045)
 	leg.AddEntry(hs_rec_Data,"Data","lpe");
 	if channel=='uujj':
-		leg.AddEntry(hs_rec_ZJets,'Z/^{}#gamma* + jets')
+		leg.AddEntry(hs_rec_ZJets,'Z/^{}#gamma*+jets')
 	if channel=='uvjj':
 		leg.AddEntry(hs_rec_WJets,'W + jets')
 	leg.AddEntry(hs_rec_TTBar,'t#bar{t}' + (' (e #mu est)')*('TTBarDataDrivena' in tagname))
-
-	leg.AddEntry(hs_rec_DiBoson,'Other background')
+	leg.AddEntry(hs_rec_DiBoson,'VV + t#bar{t}V')
 	if 'final' not in tagname:
+		leg.AddEntry(hs_rec_WJets,'W+jets + Single Top')
 		if 'PAS' in tagname:
 			leg.AddEntry(hs_bgband,'Unc. (stat + syst)')
 		leg.AddEntry(hs_rec_Signal,sig1name,"l")
 		if 'BDT_discrim_M' not in recovariable:
 			leg.AddEntry(hs_rec_Signal2,sig2name,"l")
 	else:
+		leg.AddEntry(hs_rec_WJets,'Single Top')
 		if 'PAS' in tagname:
 			leg.AddEntry(hs_bgband,'Unc. (stat + syst)')
 		if isDisplaced:
