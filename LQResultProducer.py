@@ -6286,20 +6286,20 @@ def MakeBasicPlot(recovariable,xlabel,presentationbinning,selection,weight,FileD
 		leg.SetTextSize(.045)
 	leg.AddEntry(hs_rec_Data,"Data","lpe");
 	if channel=='uujj':
-		leg.AddEntry(hs_rec_ZJets,'Z/^{}#gamma* + jets')
+		leg.AddEntry(hs_rec_ZJets,'Z/^{}#gamma*+jets')
 	if channel=='uvjj':
 		leg.AddEntry(hs_rec_WJets,'W + jets')
 	leg.AddEntry(hs_rec_TTBar,'t#bar{t}' + (' (e #mu est)')*('TTBarDataDrivena' in tagname))
 	leg.AddEntry(hs_rec_DiBoson,'VV + t#bar{t}V')
 	if 'final' not in tagname:
-		leg.AddEntry(hs_rec_WJets,'Other background')
+		leg.AddEntry(hs_rec_WJets,'W+jets + Single Top')
 		if 'PAS' in tagname:
 			leg.AddEntry(hs_bgband,'Unc. (stat + syst)')
 		leg.AddEntry(hs_rec_Signal,sig1name,"l")
 		if 'BDT_discrim_M' not in recovariable:
 			leg.AddEntry(hs_rec_Signal2,sig2name,"l")
 	else:
-		leg.AddEntry(hs_rec_WJets,'t + jets')
+		leg.AddEntry(hs_rec_WJets,'Single Top')
 		if 'PAS' in tagname:
 			leg.AddEntry(hs_bgband,'Unc. (stat + syst)')
 		if isDisplaced:
