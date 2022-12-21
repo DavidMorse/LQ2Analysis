@@ -6011,12 +6011,12 @@ def MakeBasicPlot(recovariable,xlabel,presentationbinning,selection,weight,FileD
 		print 'Total Background:',totBg,'+-',totErr
 		print 'Data            :',hs_rec_Data.Integral(0,-1)
 
-		hs_rec_DiBoson.SetTitle("Other background")
-		hs_rec_DiBoson.Add(hs_rec_WJets)
-		hs_rec_DiBoson.Add(hs_rec_SingleTop)
+		hs_rec_DiBoson.SetTitle("VV and ttV")
 		hs_rec_DiBoson.Add(hs_rec_TTV)
+		hs_rec_WJets.SetTitle("Other background")
+		hs_rec_WJets.Add(hs_rec_SingleTop)
 		#hs_rec_DiBoson.Add(hs_rec_QCD)
-		SM=[hs_rec_DiBoson,hs_rec_TTBar,hs_rec_ZJets]
+		SM=[hs_rec_WJets,hs_rec_DiBoson,hs_rec_TTBar,hs_rec_ZJets]
 
 	if channel == 'susy':
 		sig1name = 'm_{LQ} = 500 GeV'
@@ -6291,7 +6291,8 @@ def MakeBasicPlot(recovariable,xlabel,presentationbinning,selection,weight,FileD
 		leg.AddEntry(hs_rec_WJets,'W + jets')
 	leg.AddEntry(hs_rec_TTBar,'t#bar{t}' + (' (e #mu est)')*('TTBarDataDrivena' in tagname))
 
-	leg.AddEntry(hs_rec_DiBoson,'Other background')
+	leg.AddEntry(hs_rec_DiBoson,'VV and t#bar{t}V')
+	leg.AddEntry(hs_rec_WJets,'Other background')
 	if 'final' not in tagname:
 		if 'PAS' in tagname:
 			leg.AddEntry(hs_bgband,'Unc. (stat + syst)')
