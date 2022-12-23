@@ -6289,7 +6289,7 @@ def MakeBasicPlot(recovariable,xlabel,presentationbinning,selection,weight,FileD
 		leg.AddEntry(hs_rec_ZJets,'Z/^{}#gamma*+jets')
 	if channel=='uvjj':
 		leg.AddEntry(hs_rec_WJets,'W + jets')
-	leg.AddEntry(hs_rec_TTBar,'t#bar{t}' + (' (e #mu est)')*('TTBarDataDrivena' in tagname))
+	leg.AddEntry(hs_rec_TTBar,'t#bar{t}+jets' + (' (e #mu est)')*('TTBarDataDrivena' in tagname))
 	leg.AddEntry(hs_rec_DiBoson,'VV + t#bar{t}V')
 	if 'final' not in tagname:
 		leg.AddEntry(hs_rec_WJets,'W+jets + Single Top')
