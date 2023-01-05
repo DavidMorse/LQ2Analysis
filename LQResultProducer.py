@@ -4485,8 +4485,8 @@ def SysTable(optimlog, selection_uujj,selection_uvjj,NormalDirectory, weight,sys
 	[[Rz_uuj,Rz_uuj_err],[Rtt_uuj,Rtt_uuj_err]] = GetMuMuScaleFactors( NormalWeightMuMu+'*'+preselectionmumu_single, NormalDirectory, '(M_uu>80)*(M_uu<100)', '(M_uu>100)*(M_uu<250)',0,0)
 	[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = GetMuMuScaleFactors( NormalWeightMuMu+'*'+preselectionmumu, NormalDirectory, '(M_uu>80)*(M_uu<100)', '(M_uu>100)*(M_uu<250)',0,0)
 	[Rvv_uujj,Rvv_uujj_err] = GetDiBosonScaleFactor( NormalWeightDiBoson+'*'+preselectionmumu_3lep, NormalDirectory, '(M_uu>80)*(M_uu<100)', Rz_uujj, Rtt_uujj, 0)
-	[Rvv_uujj_up,Rvv_uujj_err_up] = GetDiBosonScaleFactor( NormalWeightDiBoson+'*'+preselectionmumu_3lep, NormalDirectory, '(M_uu>80)*(M_uu<100)', Rz_uujj+Rz_uujj_err, Rtt_uujj+Rtt_uujj_err, 0)
-	[Rvv_uujj_down,Rvv_uujj_err_down] = GetDiBosonScaleFactor( NormalWeightDiBoson+'*'+preselectionmumu_3lep, NormalDirectory, '(M_uu>80)*(M_uu<100)', Rz_uujj-Rz_uujj_err, Rtt_uujj-Rtt_uujj_err, 0)
+	#[Rvv_uujj_up,Rvv_uujj_err_up] = GetDiBosonScaleFactor( NormalWeightDiBoson+'*'+preselectionmumu_3lep, NormalDirectory, '(M_uu>80)*(M_uu<100)', Rz_uujj+Rz_uujj_err, Rtt_uujj+Rtt_uujj_err, 0)
+	#[Rvv_uujj_down,Rvv_uujj_err_down] = GetDiBosonScaleFactor( NormalWeightDiBoson+'*'+preselectionmumu_3lep, NormalDirectory, '(M_uu>80)*(M_uu<100)', Rz_uujj-Rz_uujj_err, Rtt_uujj-Rtt_uujj_err, 0)
 
 	[[Rw_uvjj,Rw_uvjj_err],[Rtt_uvjj,Rtt_uvjj_err]] = [[1.0,0.0],[1.0,0.0]]
 
@@ -4529,9 +4529,9 @@ def SysTable(optimlog, selection_uujj,selection_uvjj,NormalDirectory, weight,sys
 	if 'TTNORM' in sysmethod and 'down' in sysmethod :  
 		rt += -_e_rt 	
 	if 'VVNORM' in sysmethod and 'up' in sysmethod :
-		rvv = Rvv_uujj_up
+		rvv += _e_rvv #rvv = Rvv_uujj_up
 	if 'VVNORM' in sysmethod and 'down' in sysmethod :
-		rvv = Rvv_uujj_down
+		rvv += -_e_rvv #rvv = Rvv_uujj_down
 
 	#if 'SHAPETT' in sysmethod : 
 		#if 'uujj' in optimlog: 
