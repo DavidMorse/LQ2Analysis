@@ -8911,17 +8911,15 @@ def blind(h,name,num,tag,chan):
 	if name == 'M_uu':
 		blindstart = 300
 	elif 'St' in name and 'uujj' in chan:
-		blindstart = 3000
+		blindstart = 1500
 	elif 'Pt_jet2' in name:
 		blindstart = 1400
 	elif 'uujj2' in name:
-		blindstart = 1300
-	elif ('M_uu' in name and 'uujj2' not in name) or 'Pt_miss' in name or 'MT_uv' in name:
-		blindstart = 1500
-	elif 'Pt_muon1' in name:
-		blindstart=1000
+		blindstart = 800
+	elif ('M_uu' in name and 'uujj2' not in name) or 'Pt_muon1' in name or 'Pt_miss' in name or 'MT_uv' in name:
+		blindstart = 800
 	elif 'Pt_muon2' in name:
-		blindstart=400
+		blindstart=300
 	elif 'BDT' in name:
 		if name == 'LQToBMu_pair_uubj_BDT_discrim_M300':
 			blindstart= -0.8001
