@@ -532,13 +532,13 @@ def main():
 	# for this, and make use of it. e.g. For systematic variations, we can run in batch instead
 	# of running serially, which speeds things up.
 
-	version_name = year+'_muPt20_dibosonSF' # scriptflag
+	version_name = year # scriptflag
 	#version_name = 'Testing_noQCD_14nov' # use sf tag above if this is the real folder
 	os.system('mkdir Results_'+version_name) 
 
 	global MuMuOptCutDir
 	MuMuOptCutDir = 'Final_selection' # scriptflag
-	os.system('mkdir Results_'+version_name+'/'+MuMuOptCutDir) # scriptflag
+	#os.system('mkdir Results_'+version_name+'/'+MuMuOptCutDir) # scriptflag
 	MuMuOptCutFile = 'Results_'+version_name+'/'+MuMuOptCutDir+'/Opt_LQuujj_Cuts.txt' # scriptflag
 	#MuMuOptCutFile = 'Results_'+version_name+'/OptLQ_uujjCuts_Smoothed_pol2cutoff.txt'
 	MuNuOptCutFile = 'Results_'+version_name+'/OptLQ_uvjjCuts_Smoothed_pol2cutoff.txt' # scriptflag
@@ -778,26 +778,43 @@ def main():
                 #[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = GetMuMuScaleFactors( NormalWeightMuMu+'*'+preselectionmumu, NormalDirectory, '(M_uu>80)*(M_uu<100)', '(M_uu>100)*(M_uu<250)',0,0)
                 #exit()
 		if year == '2016':
-			[[Rz_uuj,Rz_uuj_err],[Rtt_uuj,Rtt_uuj_err]] = [[1.006,0.015],[0.997,0.013]] #[[1.004,0.016],[0.997,0.013]] #2016 stock NanoAODv7 with 1 btag (uub) 
-			[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = [[1.022,0.017],[0.989,0.014]] #[[1.02,0.017],[0.991,0.015]] #2016 stock NanoAODv7 with 1 btag (uubj) (Rz_uujj = 89% purity, Rtt_uujj = 87% purity)
+			[[Rz_uuj,Rz_uuj_err],[Rtt_uuj,Rtt_uuj_err]] = [[1.006,0.015],[0.997,0.013]] #2016 stock NanoAODv7 with 1 btag (uub) 
+			[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = [[1.022,0.017],[0.989,0.014]] #2016 stock NanoAODv7 with 1 btag (uubj) (Rz_uujj = 89% purity, Rtt_uujj = 87% purity)
+			Rz_uujj = "((1.025*(JetCount==2))+(0.949*(JetCount==3))+(1.152*(JetCount==4))+(1.470*(JetCount>=5)))"
+			Rz_uujj_err = "((0.017*(JetCount==2))+(0.032*(JetCount==3))+(0.077*(JetCount==4))+(0.160*(JetCount>=5)))"
 			[Rvv_uujj,Rvv_uujj_err] = [1.064,0.116]
+
 		elif year == '2017':
-			[[Rz_uuj,Rz_uuj_err],[Rtt_uuj,Rtt_uuj_err]]  =  [[1.376,0.019],[1.086,0.011]] #[[1.38,0.019],[1.09,0.011]] #2017 stock NanoAODv7 with 1 btag (uub)
-			[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = [[1.364,0.021],[1.094,0.013]] #[[1.367,0.02],[1.098,0.013]] #2017 stock NanoAODv7 with 1 btag (uubj) (Rz_uujj = 89% purity, Rtt_uujj = 89% purity)
+			[[Rz_uuj,Rz_uuj_err],[Rtt_uuj,Rtt_uuj_err]]  =  [[1.376,0.019],[1.086,0.011]] #2017 stock NanoAODv7 with 1 btag (uub)
+			[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = [[1.364,0.021],[1.094,0.013]] #2017 stock NanoAODv7 with 1 btag (uubj) (Rz_uujj = 89% purity, Rtt_uujj = 89% purity)
+			Rz_uujj = "((1.236*(JetCount==2))+(1.503*(JetCount==3))+(2.050*(JetCount==4))+(2.815*(JetCount>=5)))"
+			Rz_uujj_err = "((0.021*(JetCount==2))+(0.041*(JetCount==3))+(0.127*(JetCount==4))+(0.350*(JetCount>=5)))"
 			[Rvv_uujj,Rvv_uujj_err] = [1.242,0.125]
+
 		elif year == '2018':
-			[[Rz_uuj,Rz_uuj_err],[Rtt_uuj,Rtt_uuj_err]]  =  [[1.298,0.016],[0.975,0.009]] #[[1.298,0.015],[1.01,0.009]] #2018 stock NanoAODv7 with 1 btag (uub)
-			[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]]  =  [[1.298,0.017],[0.979,0.01]] #[[1.299,0.017],[1.015,0.01]] #2018 stock NanoAODv7 with 1 btag (uubj) (Rz_uujj = 88% purity, Rtt_uujj = 88% purity)
+			[[Rz_uuj,Rz_uuj_err],[Rtt_uuj,Rtt_uuj_err]]  =  [[1.298,0.016],[0.975,0.009]] #2018 stock NanoAODv7 with 1 btag (uub)
+			[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]]  =  [[1.298,0.017],[0.979,0.01]] #2018 stock NanoAODv7 with 1 btag (uubj) (Rz_uujj = 88% purity, Rtt_uujj = 88% purity)
+			Rz_uujj = "((1.164*(JetCount==2))+(1.437*(JetCount==3))+(2.023*(JetCount==4))+(2.804*(JetCount>=5)))"
+			Rz_uujj_err = "((0.017*(JetCount==2))+(0.040*(JetCount==3))+(0.113*(JetCount==4))+(0.335*(JetCount>=5)))"
 			[Rvv_uujj,Rvv_uujj_err] = [1.366,0.11]
+
 		elif "comb" in year:
-			[[Rz_uuj_2016,Rz_uuj_2016_err],[Rtt_uuj_2016,Rtt_uuj_2016_err]] = [[1.006,0.015],[0.997,0.013]] #[[1.004,0.016],[0.997,0.013]] #2016 stock NanoAODv7 with 1 btag (uub) 
-			[[Rz_uujj_2016,Rz_uujj_2016_err],[Rtt_uujj_2016,Rtt_uujj_2016_err]] = [[1.022,0.017],[0.989,0.014]] #[[1.02,0.017],[0.991,0.015]] #2016 stock NanoAODv7 with 1 btag (uubj) (Rz_uujj = 89% purity, Rtt_uujj = 87% purity)
+			[[Rz_uuj_2016,Rz_uuj_2016_err],[Rtt_uuj_2016,Rtt_uuj_2016_err]] = [[1.006,0.015],[0.997,0.013]] #2016 stock NanoAODv7 with 1 btag (uub) 
+			[[Rz_uujj_2016,Rz_uujj_2016_err],[Rtt_uujj_2016,Rtt_uujj_2016_err]] = [[1.022,0.017],[0.989,0.014]] #2016 stock NanoAODv7 with 1 btag (uubj) (Rz_uujj = 89% purity, Rtt_uujj = 87% purity)
+			Rz_uujj_2016 = "((1.025*(JetCount==2))+(0.949*(JetCount==3))+(1.152*(JetCount==4))+(1.470*(JetCount>=5)))"
+			Rz_uujj_2016_err = "((0.017*(JetCount==2))+(0.032*(JetCount==3))+(0.077*(JetCount==4))+(0.160*(JetCount>=5)))"
 			[Rvv_uujj_2016,Rvv_uujj_2016_err] = [1.064,0.116]
-			[[Rz_uuj_2017,Rz_uuj_2017_err],[Rtt_uuj_2017,Rtt_uuj_2017_err]]  =  [[1.376,0.019],[1.086,0.011]] #[[1.38,0.019],[1.09,0.011]] #2017 stock NanoAODv7 with 1 btag (uub)
-			[[Rz_uujj_2017,Rz_uujj_2017_err],[Rtt_uujj_2017,Rtt_uujj_2017_err]] = [[1.364,0.021],[1.094,0.013]] #[[1.367,0.02],[1.098,0.013]] #2017 stock NanoAODv7 with 1 btag (uubj) (Rz_uujj = 89% purity, Rtt_uujj = 89% purity)
+
+			[[Rz_uuj_2017,Rz_uuj_2017_err],[Rtt_uuj_2017,Rtt_uuj_2017_err]]  =  [[1.376,0.019],[1.086,0.011]] #2017 stock NanoAODv7 with 1 btag (uub)
+			[[Rz_uujj_2017,Rz_uujj_2017_err],[Rtt_uujj_2017,Rtt_uujj_2017_err]] = [[1.364,0.021],[1.094,0.013]] #2017 stock NanoAODv7 with 1 btag (uubj) (Rz_uujj = 89% purity, Rtt_uujj = 89% purity)
+			Rz_uujj_2017 = "((1.236*(JetCount==2))+(1.503*(JetCount==3))+(2.050*(JetCount==4))+(2.815*(JetCount>=5)))"
+			Rz_uujj_2017_err = "((0.021*(JetCount==2))+(0.041*(JetCount==3))+(0.127*(JetCount==4))+(0.350*(JetCount>=5)))"
 			[Rvv_uujj_2017,Rvv_uujj_2017_err] = [1.242,0.125]
-			[[Rz_uuj_2018,Rz_uuj_2018_err],[Rtt_uuj_2018,Rtt_uuj_2018_err]]  =  [[1.298,0.016],[0.975,0.009]] #[[1.298,0.015],[1.01,0.009]] #2018 stock NanoAODv7 with 1 btag (uub)
-			[[Rz_uujj_2018,Rz_uujj_2018_err],[Rtt_uujj_2018,Rtt_uujj_2018_err]]  =  [[1.298,0.017],[0.979,0.01]] #[[1.299,0.017],[1.015,0.01]] #2018 stock NanoAODv7 with 1 btag (uubj) (Rz_uujj = 88% purity, Rtt_uujj = 88% purity)
+
+			[[Rz_uuj_2018,Rz_uuj_2018_err],[Rtt_uuj_2018,Rtt_uuj_2018_err]]  =  [[1.298,0.016],[0.975,0.009]] #2018 stock NanoAODv7 with 1 btag (uub)
+			[[Rz_uujj_2018,Rz_uujj_2018_err],[Rtt_uujj_2018,Rtt_uujj_2018_err]]  =  [[1.298,0.017],[0.979,0.01]] #2018 stock NanoAODv7 with 1 btag (uubj) (Rz_uujj = 88% purity, Rtt_uujj = 88% purity)
+			Rz_uujj_2018 = "((1.164*(JetCount==2))+(1.437*(JetCount==3))+(2.023*(JetCount==4))+(2.804*(JetCount>=5)))"
+			Rz_uujj_2018_err = "((0.017*(JetCount==2))+(0.040*(JetCount==3))+(0.113*(JetCount==4))+(0.335*(JetCount>=5)))"
 			[Rvv_uujj_2018,Rvv_uujj_2018_err] = [1.366,0.11]
 
 			Rz_uuj = "((Flag_dataYear2016*"+str(Rz_uuj_2016)+")+(Flag_dataYear2017*"+str(Rz_uuj_2017)+")+(Flag_dataYear2018*"+str(Rz_uuj_2018)+"))"
@@ -5937,10 +5954,14 @@ def MakeBasicPlot(recovariable,xlabel,presentationbinning,selection,weight,FileD
 		hs_rec_Data=CreateHisto('hs_rec_Data','Data',t_SingleMuData,recovariable,presentationbinning,selection+dataHLT,DataRecoStyle,Label)
 	
 	hs_rec_DiBoson=CreateHisto('hs_rec_DiBoson','DiBoson',t_DiBoson,recovariable,presentationbinning,selection+'*('+str(vvscale)+')*'+weight,DiBosonStackStyle,Label)
+
+	print 'Doing zjets:'
+	print selection+'*('+str(zscale)+')*'+weight
 	hs_rec_ZJets=CreateHisto('hs_rec_ZJets','Z+Jets',t_Z,recovariable,presentationbinning,selection+'*('+str(zscale)+')*'+weight,ZStackStyle,Label)
+
 	print 'Doing ttbar:'
 	#print selection+'*('+str(ttscale)+')*'+weight
-	print tt_sel_weight
+	#print tt_sel_weight
 	hs_rec_TTBar=CreateHisto('hs_rec_TTBar','t#bar{t}',t_T,recovariable,presentationbinning,tt_sel_weight,TTStackStyle,Label)
 	hs_rec_SingleTop=CreateHisto('hs_rec_SingleTop','SingleTop',t_SingleTop,recovariable,presentationbinning,selection+'*'+weight,StopStackStyle,Label)
 	hs_rec_TTV=CreateHisto('hs_rec_TTV','t#bar{t}V',t_TTV,recovariable,presentationbinning,selection+'*('+str(vvscale)+')*'+weight,TTVStackStyle,Label)
@@ -8890,15 +8911,17 @@ def blind(h,name,num,tag,chan):
 	if name == 'M_uu':
 		blindstart = 300
 	elif 'St' in name and 'uujj' in chan:
-		blindstart = 1500
+		blindstart = 3000
 	elif 'Pt_jet2' in name:
 		blindstart = 1400
 	elif 'uujj2' in name:
-		blindstart = 800
-	elif ('M_uu' in name and 'uujj2' not in name) or 'Pt_muon1' in name or 'Pt_miss' in name or 'MT_uv' in name:
-		blindstart = 800
+		blindstart = 1300
+	elif ('M_uu' in name and 'uujj2' not in name) or 'Pt_miss' in name or 'MT_uv' in name:
+		blindstart = 1500
+	elif 'Pt_muon1' in name:
+		blindstart=1000
 	elif 'Pt_muon2' in name:
-		blindstart=300
+		blindstart=400
 	elif 'BDT' in name:
 		if name == 'LQToBMu_pair_uubj_BDT_discrim_M300':
 			blindstart= -0.8001
