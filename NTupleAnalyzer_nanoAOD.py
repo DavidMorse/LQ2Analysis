@@ -2773,8 +2773,6 @@ for n in range(N):
 	Branches['Flag_dataYear2017'][0] = bool(year=='2017')
 	Branches['Flag_dataYear2018'][0] = bool(year=='2018')
 
-
-
 	isZJets = 0
 	isTTBar = 0
 	isTTV = 0
@@ -2789,7 +2787,7 @@ for n in range(N):
 		isZJets = 1
 	elif 'TT_' in name:
 		isTTBar = 1
-	elif 'TTV' in name or 'ttH' in name or 'TTW' in name or 'TTZ' in name:
+	elif 'ttH' in name or 'TTW' in name or 'TTZ' in name:
 		isTTV = 1
 	elif 'WW' in name or 'ZZ' in name or 'WZ' in name or 'VV' in name:
 		isDiBoson = 1
