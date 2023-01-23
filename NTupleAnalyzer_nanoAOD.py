@@ -226,6 +226,7 @@ _flags = ['pass_HLTIsoMu27','pass_HLTMu45_eta2p1','pass_HLTMu50','pass_HLTMu55',
 _flags += ['passPrimaryVertex','passTriggerObjectMatching','passDataCert']
 _flags += ['Flag_BadChargedCandidateFilter','Flag_BadChargedCandidateSummer16Filter','Flag_BadPFMuonFilter','Flag_BadPFMuonSummer16Filter','Flag_CSCTightHalo2015Filter','Flag_CSCTightHaloFilter','Flag_CSCTightHaloTrkMuUnvetoFilter','Flag_EcalDeadCellBoundaryEnergyFilter','Flag_EcalDeadCellTriggerPrimitiveFilter','Flag_HBHENoiseFilter','Flag_HBHENoiseIsoFilter','Flag_HcalStripHaloFilter','Flag_METFilters','Flag_chargedHadronTrackResolutionFilter','Flag_ecalBadCalibFilter','Flag_ecalBadCalibFilterV2','Flag_ecalLaserCorrFilter','Flag_eeBadScFilter','Flag_globalSuperTightHalo2016Filter','Flag_globalTightHalo2016Filter','Flag_goodVertices','Flag_hcalLaserEventFilter','Flag_muonBadTrackFilter','Flag_trkPOGFilters','Flag_trkPOG_logErrorTooManyClusters','Flag_trkPOG_manystripclus53X','Flag_trkPOG_toomanystripclus53X']
 _flags += ['Flag_dataYear2016','Flag_dataYear2017','Flag_dataYear2018']
+_flags += ['Flag_ZJets','Flag_TTBar','Flag_TTV','Flag_DiBoson','Flag_SingleTop','Flag_WJets','Flag_Background','Flag_Signal','Flag_Data']
 _variations = ['','JESup','JESdown','MESup','MESdown','JERup','JERdown','MER']
 if nonisoswitch==True or emuswitch==True or quicktestswitch==True:
 	print 'NOT performing systematics...'
@@ -2771,6 +2772,45 @@ for n in range(N):
 	Branches['Flag_dataYear2016'][0] = bool(year=='2016')
 	Branches['Flag_dataYear2017'][0] = bool(year=='2017')
 	Branches['Flag_dataYear2018'][0] = bool(year=='2018')
+
+	isZJets = 0
+	isTTBar = 0
+	isTTV = 0
+	isDiBoson = 0
+	isSingleTop = 0
+	isWJets = 0
+	isBackground = 0
+	isSignal = 0
+	isData = 0
+
+	if 'DYJets' in name:
+		isZJets = 1
+	elif 'TT_' in name or 'TTTo' in name:
+		isTTBar = 1
+	elif 'ttH' in name or 'TTW' in name or 'TTZ' in name:
+		isTTV = 1
+	elif 'WW' in name or 'ZZ' in name or 'WZ' in name or 'VV' in name:
+		isDiBoson = 1
+	elif 'ST' in name:
+		isSingleTop = 1
+	elif 'WJets' in name and 'TTWJets' not in name:
+		isWJets = 1
+	if isZJets+isTTBar+isTTV+isDiBoson+isSingleTop+isWJets:
+		isBackground = 1
+	elif 'LQ' in name:
+		isSignal = 1
+	elif 'SingleMuon' in name:
+		isData = 1
+
+	Branches['Flag_ZJets'][0] = isZJets
+	Branches['Flag_TTBar'][0] = isTTBar
+	Branches['Flag_TTV'][0] = isTTV
+	Branches['Flag_DiBoson'][0] = isDiBoson
+	Branches['Flag_SingleTop'][0] = isSingleTop
+	Branches['Flag_WJets'][0] = isWJets
+	Branches['Flag_Background'][0] = isBackground
+	Branches['Flag_Signal'][0] = isSignal
+	Branches['Flag_Data'][0] = isData
 
 	## ===========================  Calculate everything!  ============================= ##
 
