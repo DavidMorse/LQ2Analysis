@@ -28,7 +28,8 @@ if btags not in ['0','1','2']:
 
 # Directory where root files are kept and the tree you want to get root files from
 if year == '2016':
-	NormalDirectory = '/eos/cms/store/group/phys_exotica/leptonsPlusJets/LQ/LQ2/stockNanoTrees/NanoAODv7/2016/gmadigan/NTupleAnalyzer_nanoAOD_FullDataMC_2016_muPt20_2022_11_13_17_47_42/SummaryFiles'
+        NormalDirectory = '/eos/cms/store/group/phys_exotica/leptonsPlusJets/LQ/LQ2/stockNanoTrees/NanoAODv7/2016/gmadigan/NTupleAnalyzer_nanoAOD_FullDataMC_2016_muPt20_2022_11_13_17_47_42/SummaryFiles'
+	#NormalDirectory = '/eos/cms/store/group/phys_exotica/leptonsPlusJets/LQ/LQ2/dmorseTmp/NTupleAnalyzer_nanoAOD_Full2016_zptRECO_2023_01_03/SummaryFiles'
 	QCDDirectory    = '/eos/cms/store/group/phys_exotica/leptonsPlusJets/LQ/LQ2/trees/NTupleAnalyzer_nanoAOD_Full2016QCDNonIsoQuickTest_2019_10_14/SummaryFiles' #Placeholder
 	EMuDirectory    = '/eos/cms/store/group/phys_exotica/leptonsPlusJets/LQ/LQ2/trees/NTupleAnalyzer_nanoAOD_Full2016EMuSwitch_2019_10_14/SummaryFiles' #Placeholder
 elif year == '2017':
@@ -1312,7 +1313,7 @@ def main():
 	# This is for scale factor studies
 	# ====================================================================================================================================================== #
 
-	if False:
+	if True:
 		"""
 		mtCR = '*(MT_uv>70)*(MT_uv<110)'
 		mtSR = '*(((MT_uv>50)*(MT_uv<70)+(MT_uv>110))>0)'
@@ -1360,6 +1361,14 @@ def main():
                         binnedValsTT.append([Rtt_uujj,Rtt_uujj_err])
                 """
                 """
+                for muPtRange in [['50','85'],['85','110'],['110','160'],['160','200'],['200','99999']]:
+                        ptCut = '*(Pt_muon2>'+muPtRange[0]+')*(Pt_muon2<'+muPtRange[1]+')'
+                        print '*********',ptCut
+			[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = GetMuMuScaleFactors( NormalWeightMuMu+'*'+preselectionmumu+ptCut, NormalDirectory, '(M_uu>80)*(M_uu<100)', '(M_uu>100)*(M_uu<250)',0,1)
+                        binnedValsZ.append([Rz_uujj,Rz_uujj_err])
+                        binnedValsTT.append([Rtt_uujj,Rtt_uujj_err])
+                """
+                """
 		for stRange in [['300','400'],['400','650'],['650','900'],['900','99999']]:
 			stCut = '*(St_uujj>'+stRange[0]+')*(St_uujj<'+stRange[1]+')'
 			print '*********',stCut
@@ -1368,8 +1377,16 @@ def main():
                         binnedValsTT.append([Rtt_uujj,Rtt_uujj_err])
 		"""
                 """
-                for mujRange in [['0','250'],['250','750'],['750','99999']]:
+                for mujRange in [['0','150'],['150','300'],['300','500'],['500','99999']]:
 			mujCut = '*(M_uujj2>'+mujRange[0]+')*(M_uujj2<'+mujRange[1]+')'
+			print '*********',mujCut
+			[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = GetMuMuScaleFactors( NormalWeightMuMu+'*'+preselectionmumu+mujCut, NormalDirectory, '(M_uu>80)*(M_uu<100)', '(M_uu>100)*(M_uu<250)',1,1)
+                        binnedValsZ.append([Rz_uujj,Rz_uujj_err])
+                        binnedValsTT.append([Rtt_uujj,Rtt_uujj_err])
+                """
+                """
+                for mujRange in [['0','150'],['150','300'],['300','500'],['500','99999']]:
+			mujCut = '*(M_uujj1>'+mujRange[0]+')*(M_uujj1<'+mujRange[1]+')'
 			print '*********',mujCut
 			[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = GetMuMuScaleFactors( NormalWeightMuMu+'*'+preselectionmumu+mujCut, NormalDirectory, '(M_uu>80)*(M_uu<100)', '(M_uu>100)*(M_uu<250)',1,1)
                         binnedValsZ.append([Rz_uujj,Rz_uujj_err])
@@ -1385,11 +1402,12 @@ def main():
                 """
                 """
                 for Range in [['0','100'],['100','200'],['200','400'],['400','99999']]:
-			Cut = '*(Pt_jet1>'+Range[0]+')*(Pt_jet1<'+Range[1]+')'
+			Cut = '*(Pt_jet2>'+Range[0]+')*(Pt_jet2<'+Range[1]+')'
 			print '*********',Cut
 			[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = GetMuMuScaleFactors( NormalWeightMuMu+'*'+preselectionmumu+Cut, NormalDirectory, '(M_uu>80)*(M_uu<100)', '(M_uu>100)*(M_uu<250)',1,1)
                         binnedValsZ.append([Rz_uujj,Rz_uujj_err])
                         binnedValsTT.append([Rtt_uujj,Rtt_uujj_err])
+                """
                 """
                 for Range in [['0','100'],['100','200'],['200','400'],['400','99999']]:
 			Cut = '*(WorZSystemPt>'+Range[0]+')*(WorZSystemPt<'+Range[1]+')'
@@ -1397,7 +1415,23 @@ def main():
 			[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = GetMuMuScaleFactors( NormalWeightMuMu+'*'+preselectionmumu+Cut, NormalDirectory, '(M_uu>80)*(M_uu<100)', '(M_uu>100)*(M_uu<250)',1,1)
                         binnedValsZ.append([Rz_uujj,Rz_uujj_err])
                         binnedValsTT.append([Rtt_uujj,Rtt_uujj_err])
-                    
+                """ 
+                
+                for Range in [['0','100'],['100','200'],['200','400'],['400','99999']]:
+			Cut = '*((JetCount==6)*WorZSystemPtRECO>'+Range[0]+')*((JetCount==6)*WorZSystemPtRECO<'+Range[1]+')'
+			print '*********',Cut
+			[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = GetMuMuScaleFactors( NormalWeightMuMu+'*'+preselectionmumu+Cut, NormalDirectory, '(M_uu>80)*(M_uu<100)', '(M_uu>100)*(M_uu<250)',1,1)
+                        binnedValsZ.append([Rz_uujj,Rz_uujj_err])
+                        binnedValsTT.append([Rtt_uujj,Rtt_uujj_err])
+                
+                """
+                for Range in [['2'],['3'],['4'],['5'],['6']]:
+			Cut = '*(JetCount=='+Range[0]+')'
+			print '*********',Cut
+			[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = GetMuMuScaleFactors( NormalWeightMuMu+'*'+preselectionmumu+Cut, NormalDirectory, '(M_uu>80)*(M_uu<100)', '(M_uu>100)*(M_uu<250)',1,1)
+                        binnedValsZ.append([Rz_uujj,Rz_uujj_err])
+                        binnedValsTT.append([Rtt_uujj,Rtt_uujj_err])
+                """
                 print '---------------------------------------------'
                 print 'nominal Z/TT' , nominalZ , nominalTT
                 print 'binning Z:'
@@ -4999,16 +5033,16 @@ def GetMuMuScaleFactors( selection, FileDirectory, controlregion_1, controlregio
 	T1 = QuickIntegral(t_TTBar,selection + '*' + controlregion_1,1.0)
 	s1 = QuickIntegral(t_SingleTop,selection + '*' + controlregion_1,1.0)
 	w1 = QuickIntegral(t_WJets,selection + '*' + controlregion_1,1.0)
-	v1 = Rvv_uujj*QuickIntegral(t_DiBoson,selection + '*' + controlregion_1,1.0)
-	ttv1 = Rvv_uujj*QuickIntegral(t_TTV,selection + '*' + controlregion_1,1.0)
+	v1 = QuickIntegral(t_DiBoson,selection + '*' + controlregion_1,1.0)
+	ttv1 = QuickIntegral(t_TTV,selection + '*' + controlregion_1,1.0)
 	#q1 = QuickIntegral(t_QCDMu,selection   + '*' + controlregion_1,1.0)
 
 	Z2 = QuickIntegral(t_ZJets,selection + '*' + controlregion_2,1.0)
 	T2 = QuickIntegral(t_TTBar,selection + '*' + controlregion_2,1.0)
 	s2 = QuickIntegral(t_SingleTop,selection + '*' + controlregion_2,1.0)
 	w2 = QuickIntegral(t_WJets,selection + '*' + controlregion_2,1.0)
-	v2 = Rvv_uujj*QuickIntegral(t_DiBoson,selection + '*' + controlregion_2,1.0)
-	ttv2 = Rvv_uujj*QuickIntegral(t_TTV,selection + '*' + controlregion_2,1.0)
+	v2 = QuickIntegral(t_DiBoson,selection + '*' + controlregion_2,1.0)
+	ttv2 = QuickIntegral(t_TTV,selection + '*' + controlregion_2,1.0)
 	#q2 = QuickIntegral(t_QCDMu,selection   + '*' + controlregion_2,1.0)
 
 	if useDataDrivenTTbar and canUseTTDD:
