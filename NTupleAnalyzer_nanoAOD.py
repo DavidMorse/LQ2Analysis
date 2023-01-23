@@ -2785,7 +2785,7 @@ for n in range(N):
 
 	if 'DYJets' in name:
 		isZJets = 1
-	elif 'TT_' in name:
+	elif 'TT_' in name or 'TTTo' in name:
 		isTTBar = 1
 	elif 'ttH' in name or 'TTW' in name or 'TTZ' in name:
 		isTTV = 1
