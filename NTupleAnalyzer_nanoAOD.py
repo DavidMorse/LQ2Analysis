@@ -93,6 +93,9 @@ if year == '2016': rc = RoccoR("RoccoR/RoccoR2016.txt")
 elif year == '2017': rc = RoccoR("RoccoR/RoccoR2017.txt")
 elif year == '2018': rc = RoccoR("RoccoR/RoccoR2018UL.txt")
 
+# Hardcode number of PDF variations
+nPDF = 103
+
 # Get the file, tree, and number of entries
 print name
 
@@ -334,6 +337,7 @@ def GetPURescalingFactors(puversion):
 def GetPDFWeightVars(T):
 	# Purpose: Determine all the branch names needed to store the PDFWeights 
 	#         for CTEQ, MMTH, and NNPDF in flat (non vector) form. 
+        global nPDF
 	if T.run>1:
 		return []
 	else:
@@ -348,7 +352,7 @@ def GetPDFWeightVars(T):
 		#
 		#for x in range(101):
 		#	pdfweights.append('factor_nnpdf_'+str(x+1))
-                for x in range(len(T.LHEPdfWeight)):
+                for x in range(nPDF):
 			pdfweights.append('factor_pdf_'+str(x+1))
 
 		return pdfweights
@@ -763,22 +767,26 @@ def GetPUWeight(T,version,puversion):
 
 
 def GetPDFWeights(T):
-	# Purpose: Gather the pdf weights into a single list. 	
+	# Purpose: Gather the pdf weights into a single list. 
+	global nPDF
 	_allweights = []
 	#for x in range(len(T.PDFCTEQWeights)):
 	#	if(T.PDFCTEQWeights[x]>-10 and T.PDFCTEQWeights[x]<10): _allweights.append(T.PDFCTEQWeights[x])
 	#for x in range(len(T.PDFMMTHWeights)):
 	#	if(T.PDFMMTHWeights[x]>-10 and T.PDFMMTHWeights[x]<10): _allweights.append(T.PDFMMTHWeights[x])
-	extras=0
-	if 'amcatnloxxx' in amcNLOname :
-		for x in range(len(T.PDFNNPDFWeightsAMCNLO)):
-			_allweights.append(T.PDFNNPDFWeightsAMCNLO[x]/T.PDFNNPDFWeightsAMCNLO[0])
-		#extras = 101-len(T.PDFNNPDFWeightsAMCNLO)
-	else:
-		for x in range(len(T.LHEPdfWeight)):
-		        #if(T.PDFNNPDFWeights[x]>-10 and T.PDFNNPDFWeights[x]<10): _allweights.append(T.PDFNNPDFWeights[x])
-			_allweights.append(T.LHEPdfWeight[x])
-		#extras = 101-len(T.LHEPdfWeight)
+	#extras=0
+	#if 'amcatnloxxx' in amcNLOname :
+	#	for x in range(len(T.PDFNNPDFWeightsAMCNLO)):
+	#		_allweights.append(T.PDFNNPDFWeightsAMCNLO[x]/T.PDFNNPDFWeightsAMCNLO[0])
+	#	#extras = 101-len(T.PDFNNPDFWeightsAMCNLO)
+        for x in range(nPDF):
+                #if(T.PDFNNPDFWeights[x]>-10 and T.PDFNNPDFWeights[x]<10): _allweights.append(T.PDFNNPDFWeights[x])
+                if x<len(T.LHEPdfWeight):
+                        _allweights.append(T.LHEPdfWeight[x])
+                else:
+                        _allweights.append(1.0)
+                        
+        #extras = 101-len(T.LHEPdfWeight)
 	#for x in range(extras):
 	#	_allweights.append(1.0)
 	return _allweights
