@@ -1286,12 +1286,13 @@ def GetRochesterSys(_ptCollection, _etaCollection, _phiCollection, _chargeCollec
 			
 	return _ptCollection
 
-def TightHighPtIDMuons(T,_met,variation,isdata):
+def TightHighPtIDMuons(T,_met,variation):
 	# Purpose: Gets the collection of muons passing high-pT muon ID and relative track Iso. 
 	#		  Applies muon momentum resolution smearing.
 	#         Returns muons as TLorentzVectors, and indices corrresponding
 	#         to the surviving muons of the muon collection. 
 	#         Also returns modified MET for systematic variations.
+	global isData
 	muons = []
 	muoninds = []
 	muonsPt20,muonsPt30 = [],[]
@@ -1310,7 +1311,7 @@ def TightHighPtIDMuons(T,_met,variation,isdata):
 	# Gen pT won't get used for any calculations unless MC
 	# If no gen info found, set pT to -999 (negative value is important to keep later)
 	_MuonCocktailGenPt = [-999 for pt in T.Muon_pt]
-	if not isdata: _MuonCocktailGenPt = [T.GenPart_pt[genInd] if 0 <= genInd < T.nGenPart else -999 for genInd in T.Muon_genPartIdx]
+	if not isData: _MuonCocktailGenPt = [T.GenPart_pt[genInd] if 0 <= genInd < T.nGenPart else -999 for genInd in T.Muon_genPartIdx]
 
 	# Muon_highPtId and Muon_tkIsoId are stored as type UChar_t (unsigned characters)
 	# passing the objects through a python array and specifying typecode 'B' allows them to be returned as integers
@@ -1332,7 +1333,7 @@ def TightHighPtIDMuons(T,_met,variation,isdata):
     # https://twiki.cern.ch/twiki/bin/view/CMS/MuonLegacy2017#Momentum_Resolution
     # https://twiki.cern.ch/twiki/bin/view/CMS/MuonLegacy2018#Momentum_Resolution
 
-	if isdata:
+	if isData:
 		# Correct muon pT scale with Rochester corrections if pT < 200 GeV
 		_MuonCocktailPt = [rc.kScaleDT(Q, pt, eta, phi, 0, 0)*pt if pt < 200 else pt for pt, eta, phi, Q in zip(_MuonCocktailPt, _MuonCocktailEta, _MuonCocktailPhi, _MuonCocktailCharge)]
 
@@ -1389,7 +1390,7 @@ def TightHighPtIDMuons(T,_met,variation,isdata):
 	
 		# For alignment correction studies in MC, the pT is modified according to
 		# parameterizations of the position
-		if alignementcorrswitch == True and isdata==False:
+		if alignementcorrswitch == True and isData==False:
 			if abs(deltainvpt) > 0.0000001:
 				__Pt_mu = _MuonCocktailPt[n]
 				__Eta_mu = _MuonCocktailEta[n]
@@ -1675,15 +1676,15 @@ def JERModifiedPt(res,resSF,resSFup,resSFdown,pt,eta,phi,T,modtype):
 	pt += adjustmentfactor
 	return max(0.,pt)
 
-def TightIDJets(T,met,variation,isdata):
+def TightIDJets(T,met,variation):
 	# Pupose: Gets the collection of jets passing loose PFJet ID. 
 	#         Returns jets as TLorentzVectors, and indices corrresponding
 	#         to the surviving jetss of the jet collection. 
 	#         Also returns modified MET for systematic variations.	
-  
+	global isData
   	_PFJetPt = [pt for pt in T.Jet_pt]
 
-	if (isdata):
+	if (isData):
 		_PFJetPt = [pt for pt in T.Jet_pt]
 	else:
 		if variation=='JERup':	
@@ -2093,12 +2094,12 @@ def FullKinematicCalculation(T,variation):
 	# MET as a vector
 	met = MetVector(T)
 	# ID Muons,Electrons
-	[muons,muonsPT20,muonsPT30,goodmuoninds,met,trkisos,charges,dpts,chi2,pfid,layers] = TightHighPtIDMuons(T,met,variation,isData)
+	[muons,muonsPT20,muonsPT30,goodmuoninds,met,trkisos,charges,dpts,chi2,pfid,layers] = TightHighPtIDMuons(T,met,variation)
 	# muons_forjetsep = MuonsForJetSeparation(T)
 	# taus_forjetsep = TausForJetSeparation(T)
 	[electrons,electronsPT20,electronsPT30,electroninds,met] = HEEPElectrons(T,met,variation)
 	# ID Jets and filter from leptons
-	[jets,jetinds,met,failthreshold,neutralhadronEF,neutralemEF,btagDeepJetScores,btagSFs,btagSFs_up,btagSFs_down,PUIds] = TightIDJets(T,met,variation,isData)
+	[jets,jetinds,met,failthreshold,neutralhadronEF,neutralemEF,btagDeepJetScores,btagSFs,btagSFs_up,btagSFs_down,PUIds] = TightIDJets(T,met,variation)
         # Filter jets from good muons and electrons.
         # Filter jets and associated collections - jets must be first element in the array!! (don't put met or failthreshold, they are not arrays)
         # All arrays MUST have same length as the jets, and all associated collections of the jets MUST be added here - think btagging, SF, etc.....
@@ -2606,8 +2607,37 @@ for n in range(N):
 	if n%1000==0:
 		print 'Processing event',n, 'of', N # where we are in the loop...
 
+	isZJets = 0
+	isTTBar = 0
+	isTTV = 0
+	isDiBoson = 0
+	isSingleTop = 0
+	isWJets = 0
+	isBackground = 0
+	isSignal = 0
+	isData = 0
+
+	if 'SingleMuon' in name:
+		isData = 1
+	elif 'LQToBMu' in name:
+		isSignal = 1
+	elif 'DYJets' in name:
+		isZJets = 1
+	elif 'TT_' in name or 'TTTo' in name:
+		isTTBar = 1
+	elif 'ttH' in name or 'TTW' in name or 'TTZ' in name:
+		isTTV = 1
+	elif 'WW' in name or 'ZZ' in name or 'WZ' in name or 'VV' in name:
+		isDiBoson = 1
+	elif 'ST' in name:
+		isSingleTop = 1
+	elif 'WJets' in name and 'TTWJets' not in name:
+		isWJets = 1
+	if isZJets+isTTBar+isTTV+isDiBoson+isSingleTop+isWJets:
+		isBackground = 1
 	
-	isData = t.run>1
+	print 'isData = ',isData
+
 	## ===========================  BASIC SETUP  ============================= ##
 	# print '-----'
 	# Assign Weights
@@ -2780,35 +2810,6 @@ for n in range(N):
 	Branches['Flag_dataYear2016'][0] = bool(year=='2016')
 	Branches['Flag_dataYear2017'][0] = bool(year=='2017')
 	Branches['Flag_dataYear2018'][0] = bool(year=='2018')
-
-	isZJets = 0
-	isTTBar = 0
-	isTTV = 0
-	isDiBoson = 0
-	isSingleTop = 0
-	isWJets = 0
-	isBackground = 0
-	isSignal = 0
-	isData = 0
-
-	if 'DYJets' in name:
-		isZJets = 1
-	elif 'TT_' in name or 'TTTo' in name:
-		isTTBar = 1
-	elif 'ttH' in name or 'TTW' in name or 'TTZ' in name:
-		isTTV = 1
-	elif 'WW' in name or 'ZZ' in name or 'WZ' in name or 'VV' in name:
-		isDiBoson = 1
-	elif 'ST' in name:
-		isSingleTop = 1
-	elif 'WJets' in name and 'TTWJets' not in name:
-		isWJets = 1
-	if isZJets+isTTBar+isTTV+isDiBoson+isSingleTop+isWJets:
-		isBackground = 1
-	elif 'LQ' in name:
-		isSignal = 1
-	elif 'SingleMuon' in name:
-		isData = 1
 
 	Branches['Flag_ZJets'][0] = isZJets
 	Branches['Flag_TTBar'][0] = isTTBar
