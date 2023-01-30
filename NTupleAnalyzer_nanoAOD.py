@@ -2636,7 +2636,6 @@ for n in range(N):
 	if isZJets+isTTBar+isTTV+isDiBoson+isSingleTop+isWJets:
 		isBackground = 1
 	
-	print 'isData = ',isData
 
 	## ===========================  BASIC SETUP  ============================= ##
 	# print '-----'
