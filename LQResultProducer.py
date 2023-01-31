@@ -533,7 +533,7 @@ def main():
 	# for this, and make use of it. e.g. For systematic variations, we can run in batch instead
 	# of running serially, which speeds things up.
 
-	version_name = year # scriptflag
+	version_name = year+"_Unblinded" # scriptflag
 	#version_name = 'Testing_noQCD_14nov' # use sf tag above if this is the real folder
 	os.system('mkdir Results_'+version_name) 
 
@@ -6301,12 +6301,12 @@ def MakeBasicPlot(recovariable,xlabel,presentationbinning,selection,weight,FileD
 		hs_rec_Signal3.Draw("HISTSAME")
 		hs_rec_Signal4.Draw("HISTSAME")
 	#setZeroBinErrors(hs_rec_Data,MCStack)
-	blinded=True
+	blinded=False
 	if blinded: blind(hs_rec_Data,recovariable,1,tagname,channel)#fixme
         #hs_rec_Data.Draw("E0PSAME")
 	hs_rec_Data_tgraph = TGraphAsymmErrors(hs_rec_Data)
-	blinded=True
-	if 'BDT' in tagname: blinded=True
+	blinded=False
+	if 'BDT' in tagname: blinded=False
 	if 'final' not in tagname and 'BDT_discrim' not in recovariable:
 		setZeroBinErrors_tgraph(hs_rec_Data,hs_rec_Data_tgraph,MCStack,hs_rec_Signal,hs_rec_Signal2,blinded)
 	else:
