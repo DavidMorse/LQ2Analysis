@@ -28,12 +28,11 @@ if btags not in ['0','1','2']:
 
 # Directory where root files are kept and the tree you want to get root files from
 if year == '2016':
-        NormalDirectory = '/eos/cms/store/group/phys_exotica/leptonsPlusJets/LQ/LQ2/stockNanoTrees/NanoAODv7/2016/gmadigan/NTupleAnalyzer_nanoAOD_FullDataMC_2016_muPt20_2022_11_13_17_47_42/SummaryFiles'
-	#NormalDirectory = '/eos/cms/store/group/phys_exotica/leptonsPlusJets/LQ/LQ2/dmorseTmp/NTupleAnalyzer_nanoAOD_Full2016_zptRECO_2023_01_03/SummaryFiles'
+	NormalDirectory = '/eos/cms/store/group/phys_exotica/leptonsPlusJets/LQ/LQ2/stockNanoTrees/NanoAODv7/2016/gmadigan/NTupleAnalyzer_nanoAOD_FullRun2DataMC_2016_2023_01_26_18_25_50/SummaryFiles'
 	QCDDirectory    = '/eos/cms/store/group/phys_exotica/leptonsPlusJets/LQ/LQ2/trees/NTupleAnalyzer_nanoAOD_Full2016QCDNonIsoQuickTest_2019_10_14/SummaryFiles' #Placeholder
 	EMuDirectory    = '/eos/cms/store/group/phys_exotica/leptonsPlusJets/LQ/LQ2/trees/NTupleAnalyzer_nanoAOD_Full2016EMuSwitch_2019_10_14/SummaryFiles' #Placeholder
 elif year == '2017':
-	NormalDirectory = '/eos/cms/store/group/phys_exotica/leptonsPlusJets/LQ/LQ2/stockNanoTrees/NanoAODv7/2017/gmadigan/NTupleAnalyzer_nanoAOD_FullDataMC_2017_muPt20_2022_11_17/SummaryFiles'
+	NormalDirectory = '/eos/cms/store/group/phys_exotica/leptonsPlusJets/LQ/LQ2/stockNanoTrees/NanoAODv7/2017/gmadigan/NTupleAnalyzer_nanoAOD_FullRun2DataMC_2017_2023_01_26/SummaryFiles'
 	QCDDirectory    = '/eos/cms/store/group/phys_exotica/leptonsPlusJets/LQ/LQ2/trees/NTupleAnalyzer_nanoAOD_Full2016QCDNonIsoQuickTest_2019_10_14/SummaryFiles' #Placeholder
 	EMuDirectory    = '/eos/cms/store/group/phys_exotica/leptonsPlusJets/LQ/LQ2/trees/NTupleAnalyzer_nanoAOD_Full2016EMuSwitch_2019_10_14/SummaryFiles' #Placeholder
 elif year == '2018':
@@ -827,6 +826,14 @@ def main():
 		else:
 			[[Rz_uuj,Rz_uuj_err],[Rtt_uuj,Rtt_uuj_err]] = GetMuMuScaleFactors( NormalWeightMuMu+'*'+preselectionmumu_single, NormalDirectory, '(M_uu>80)*(M_uu<100)', '(M_uu>100)*(M_uu<250)',0,0)
 			[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = GetMuMuScaleFactors( NormalWeightMuMu+'*'+preselectionmumu, NormalDirectory, '(M_uu>80)*(M_uu<100)', '(M_uu>100)*(M_uu<250)',0,0)
+
+			njetbinnedSFs = []
+			njetbinning = [2,3,4,5]
+			for njet in njetbinning:
+				njetbinnedSFs.append(GetMuMuScaleFactors( NormalWeightMuMu+'*'+preselectionmumu+'*(NJets=='+njet+')', NormalDirectory, '(M_uu>80)*(M_uu<100)', '(M_uu>100)*(M_uu<250)',0,0)[0])
+			Rz_uujj = "(("+njetbinnedSFs[0][0]+"*(JetCount==2))+("+njetbinnedSFs[1][0]+"*(JetCount==3))+("+njetbinnedSFs[2][0]+"*(JetCount==4))+("+njetbinnedSFs[3][0]+"*(JetCount>=5)))"
+			Rz_uujj_err = "(("+njetbinnedSFs[0][1]+"*(JetCount==2))+("+njetbinnedSFs[1][1]+"*(JetCount==3))+("+njetbinnedSFs[2][1]+"*(JetCount==4))+("+njetbinnedSFs[3][1]+"*(JetCount>=5)))"
+
 			[Rvv_uujj,Rvv_uujj_err] = GetDiBosonScaleFactor( NormalWeightDiBoson+'*'+preselectionmumu_3lep, NormalDirectory, '(M_uu>80)*(M_uu<100)', Rz_uujj, Rtt_uujj, 0)
 
 		#exit()
@@ -4536,11 +4543,17 @@ def SysTable(optimlog, selection_uujj,selection_uvjj,NormalDirectory, weight,sys
 	[[Rz_uuj,Rz_uuj_err],[Rtt_uuj,Rtt_uuj_err]] = GetMuMuScaleFactors( NormalWeightMuMu+'*'+preselectionmumu_single, NormalDirectory, '(M_uu>80)*(M_uu<100)', '(M_uu>100)*(M_uu<250)',0,0)
 	[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = GetMuMuScaleFactors( NormalWeightMuMu+'*'+preselectionmumu, NormalDirectory, '(M_uu>80)*(M_uu<100)', '(M_uu>100)*(M_uu<250)',0,0)
 	[Rvv_uujj,Rvv_uujj_err] = GetDiBosonScaleFactor( NormalWeightDiBoson+'*'+preselectionmumu_3lep, NormalDirectory, '(M_uu>80)*(M_uu<100)', Rz_uujj, Rtt_uujj, 0)
-	#[Rvv_uujj_up,Rvv_uujj_err_up] = GetDiBosonScaleFactor( NormalWeightDiBoson+'*'+preselectionmumu_3lep, NormalDirectory, '(M_uu>80)*(M_uu<100)', Rz_uujj+Rz_uujj_err, Rtt_uujj+Rtt_uujj_err, 0)
-	#[Rvv_uujj_down,Rvv_uujj_err_down] = GetDiBosonScaleFactor( NormalWeightDiBoson+'*'+preselectionmumu_3lep, NormalDirectory, '(M_uu>80)*(M_uu<100)', Rz_uujj-Rz_uujj_err, Rtt_uujj-Rtt_uujj_err, 0)
 
+	njetbinnedSFs = []
+	njetbinning = [2,3,4,5]
+	for njet in njetbinning:
+		njetbinnedSFs.append(GetMuMuScaleFactors( NormalWeightMuMu+'*'+preselectionmumu+'*(NJets=='+njet+')', NormalDirectory, '(M_uu>80)*(M_uu<100)', '(M_uu>100)*(M_uu<250)',0,0)[0])
+	Rz_uujj = "(("+njetbinnedSFs[0][0]+"*(JetCount==2))+("+njetbinnedSFs[1][0]+"*(JetCount==3))+("+njetbinnedSFs[2][0]+"*(JetCount==4))+("+njetbinnedSFs[3][0]+"*(JetCount>=5)))"
+	Rz_uujj_err = "(("+njetbinnedSFs[0][1]+"*(JetCount==2))+("+njetbinnedSFs[1][1]+"*(JetCount==3))+("+njetbinnedSFs[2][1]+"*(JetCount==4))+("+njetbinnedSFs[3][1]+"*(JetCount>=5)))"
+
+	[Rvv_uujj,Rvv_uujj_err] = GetDiBosonScaleFactor( NormalWeightDiBoson+'*'+preselectionmumu_3lep, NormalDirectory, '(M_uu>80)*(M_uu<100)', Rz_uujj, Rtt_uujj, 0)
 	[[Rw_uvjj,Rw_uvjj_err],[Rtt_uvjj,Rtt_uvjj_err]] = [[1.0,0.0],[1.0,0.0]]
-
+ 
 	Rz_uujj_print = str(round(Rz_uujj,3)) + ' $\\pm$ ' + str(round(Rz_uujj_err,3))	
 	Rtt_uujj_print = str(round(Rtt_uujj,3)) + ' $\\pm$ ' + str(round(Rtt_uujj_err,3))	
 	Rw_uvjj_print = str(round(Rw_uvjj,3)) + ' $\\pm$ ' + str(round(Rw_uvjj_err,3))	
