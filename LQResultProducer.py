@@ -8311,9 +8311,9 @@ def OptimizeCutsBDT(bins,presel,weight,tag,scalefacs,cutfile,channel):
 					# Here we create 1-dimensional histogram with the binning we desire
 					exec( h_sample + ' = TH1D("'+h_sample+'","'+h_sample+'",'+str(nBins)+','+str(binLow)+','+str(binHigh)+')' )
 
-					# Then project the BDT score variable onto the histogram with preselection cuts, weights, scale factors
+					# Then project the BDT score variable onto the histogram with preselection cuts, M_uujj cut at the LQ mass, weights, scale factors
 					# and importantly, the final selection cut we are looping through 
-					exec( t_sample + '.Project("'+h_sample+'","'+cutVariable+'","'+presel+'*'+cut+'*('+weight+'*'+scalefac+')")' )
+					exec( t_sample + '.Project("'+h_sample+'","'+cutVariable+'","'+presel+'*(M_uujj<'+cutMass+')*'+cut+'*('+weight+'*'+scalefac+')")' )
 
 					# Get the number of events for the given cut with 'Integral'
 					# Note 1: Integrates to get area (not 'generated' event count which is different)
