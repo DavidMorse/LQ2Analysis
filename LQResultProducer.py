@@ -4546,8 +4546,8 @@ def SysTable(optimlog, selection_uujj,selection_uvjj,NormalDirectory, weight,sys
 	[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = GetMuMuScaleFactors( NormalWeightMuMu+'*'+preselectionmumu, NormalDirectory, '(M_uu>80)*(M_uu<100)', '(M_uu>100)*(M_uu<250)',0,0)
 
 	Rz_binned = [GetMuMuScaleFactors( NormalWeightMuMu+'*'+preselectionmumu+'*(JetCount=='+str(njet)+')'+'*'+weight, NormalDirectory, '(M_uu>80)*(M_uu<100)', '(M_uu>100)*(M_uu<250)',0,0)[0] for njet in range(2,6)]
-	Rz_uujj = "(("+str(Rz_binned[0][0])+"*(JetCount==2))+("+str(str(Rz_binned[1][0])+"*(JetCount==3))+("+str(str(Rz_binned[2][0])+"*(JetCount==4))+("+str(str(Rz_binned[3][0])+"*(JetCount>=5)))"
-	Rz_uujj_err = "(("+str(str(Rz_binned[0][1])+"*(JetCount==2))+("+str(str(Rz_binned[1][1])+"*(JetCount==3))+("+str(str(Rz_binned[2][1])+"*(JetCount==4))+("+str(str(Rz_binned[3][1])+"*(JetCount>=5)))"
+	Rz_uujj = "(("+str(Rz_binned[0][0])+"*(JetCount==2))+("+str(Rz_binned[1][0])+"*(JetCount==3))+("+str(Rz_binned[2][0])+"*(JetCount==4))+("+str(Rz_binned[3][0])+"*(JetCount>=5)))"
+	Rz_uujj_err = "(("+str(Rz_binned[0][1])+"*(JetCount==2))+("+str(Rz_binned[1][1])+"*(JetCount==3))+("+str(Rz_binned[2][1])+"*(JetCount==4))+("+str(Rz_binned[3][1])+"*(JetCount>=5)))"
 
 	[Rvv_uujj,Rvv_uujj_err] = GetDiBosonScaleFactor( NormalWeightDiBoson+'*'+preselectionmumu_3lep, NormalDirectory, '(M_uu>80)*(M_uu<100)', Rz_uujj, Rtt_uujj, 0)
 	[[Rw_uvjj,Rw_uvjj_err],[Rtt_uvjj,Rtt_uvjj_err]] = [[1.0,0.0],[1.0,0.0]]
