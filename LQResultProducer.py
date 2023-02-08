@@ -8904,7 +8904,7 @@ def ShapeSystematic(channel,normalWeight,presel,cutFile):
 				VV = QuickIntegral(t_DiBoson,selection[0]+'*'+str(Rvv_uujj),1.0)
 				TTV = QuickIntegral(t_TTV,selection[0]+'*'+str(Rvv_uujj),1.0)
 				VV[0]+= TTV[0]
-				tmpErr = sqrt(VV[1]*VV[1] + TTV[1]*TTV[1])
+				tmpErr = math.sqrt(VV[1]*VV[1] + TTV[1]*TTV[1])
 				VV[1] = tmpErr
 
 				Z_diff  = QuickIntegral(t_ZJets,thisSel+'*'+str(Rz_diff[weight]),1.0)
@@ -8913,7 +8913,7 @@ def ShapeSystematic(channel,normalWeight,presel,cutFile):
 				VV_diff = QuickIntegral(t_DiBoson,thisSel+'*'+str(Rvv_diff[weight]),1.0)
 				TTV_diff = QuickIntegral(t_TTV,thisSel+'*'+str(Rvv_diff[weight]),1.0)
 				VV_diff[0] += TTV_diff[0]
-				tmpErr = sqrt(VV_diff[1]*VV_diff[1] + TTV_diff[1]*TTV_diff[1])
+				tmpErr = math.sqrt(VV_diff[1]*VV_diff[1] + TTV_diff[1]*TTV_diff[1])
 				VV_diff[1] = tmpErr
 			
 			elif 'uvjj' in channel:
