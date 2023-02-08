@@ -8868,7 +8868,7 @@ def ShapeSystematic(channel,normalWeight,presel,cutFile):
 	Rz_uujj = "(("+str(Rz_binned[0][0])+"*(JetCount==2))+("+str(Rz_binned[1][0])+"*(JetCount==3))+("+str(Rz_binned[2][0])+"*(JetCount==4))+("+str(Rz_binned[3][0])+"*(JetCount>=5)))"
 	Rz_uujj_err = "(("+str(Rz_binned[0][1])+"*(JetCount==2))+("+str(Rz_binned[1][1])+"*(JetCount==3))+("+str(Rz_binned[2][1])+"*(JetCount==4))+("+str(Rz_binned[3][1])+"*(JetCount>=5)))"
 
-	[Rvv_uujj,Rvv_uujj_err] = GetDiBosonScaleFactor( NormalWeightDiBoson+'*'+preselectionmumu_3lep+'*'+weight, NormalDirectory, '(M_uu>80)*(M_uu<100)', Rz_uujj, Rtt_uujj, 1)
+	[Rvv_uujj,Rvv_uujj_err] = GetDiBosonScaleFactor( NormalWeightDiBoson+'*'+preselectionmumu_3lep, NormalDirectory, '(M_uu>80)*(M_uu<100)', Rz_uujj, Rtt_uujj, 1)
 
 	#Get presel scale factors for each weight
 	for weight in scaleWeights:
@@ -8878,7 +8878,7 @@ def ShapeSystematic(channel,normalWeight,presel,cutFile):
 			[[Rz_diff[weight],Rz_err_diff[weight]],[Rtt_diff[weight],Rtt_err_diff[weight]]] = GetMuMuScaleFactors(NormalWeightMuMu+'*'+preselectionmumu+'*'+weight, NormalDirectory, '(M_uu>80)*(M_uu<100)', '(M_uu>100)*(M_uu<250)',0,1)
 
 			# Replace modified flat Rz in Rz_diff with jet-multiplicity-binned Rz
-			Rz_binned = [GetMuMuScaleFactors( NormalWeightMuMu+'*'+preselectionmumu+'*(NJets=='+njet+')'+'*'+weight, NormalDirectory, '(M_uu>80)*(M_uu<100)', '(M_uu>100)*(M_uu<250)',0,1)[0] for njet in range(2,6)]
+			Rz_binned = [GetMuMuScaleFactors( NormalWeightMuMu+'*'+preselectionmumu+'*(JetCount=='+str(njet)+')'+'*'+weight, NormalDirectory, '(M_uu>80)*(M_uu<100)', '(M_uu>100)*(M_uu<250)',0,1)[0] for njet in range(2,6)]
 			Rz_diff[weight] = "(("+str(Rz_binned[0][0])+"*(JetCount==2))+("+str(Rz_binned[1][0])+"*(JetCount==3))+("+str(Rz_binned[2][0])+"*(JetCount==4))+("+str(Rz_binned[3][0])+"*(JetCount>=5)))"
 			Rz_err_diff[weight] = "(("+str(Rz_binned[0][1])+"*(JetCount==2))+("+str(Rz_binned[1][1])+"*(JetCount==3))+("+str(Rz_binned[2][1])+"*(JetCount==4))+("+str(Rz_binned[3][1])+"*(JetCount>=5)))"
 
