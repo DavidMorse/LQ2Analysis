@@ -36,11 +36,11 @@ elif year == '2017':
 	QCDDirectory    = '/eos/cms/store/group/phys_exotica/leptonsPlusJets/LQ/LQ2/trees/NTupleAnalyzer_nanoAOD_Full2016QCDNonIsoQuickTest_2019_10_14/SummaryFiles' #Placeholder
 	EMuDirectory    = '/eos/cms/store/group/phys_exotica/leptonsPlusJets/LQ/LQ2/trees/NTupleAnalyzer_nanoAOD_Full2016EMuSwitch_2019_10_14/SummaryFiles' #Placeholder
 elif year == '2018':
-	NormalDirectory = '/eos/cms/store/group/phys_exotica/leptonsPlusJets/LQ/LQ2/stockNanoTrees/NanoAODv7/2018/gmadigan/NTupleAnalyzer_nanoAOD_FullDataMC_2018_muPt20_2022_11_19_02_15_16/SummaryFiles'
+	NormalDirectory = '/eos/cms/store/group/phys_exotica/leptonsPlusJets/LQ/LQ2/stockNanoTrees/NanoAODv7/2018/gmadigan/NTupleAnalyzer_nanoAOD_FullRun2DataMC_2018_2023_01_30/SummaryFiles'
 	QCDDirectory    = '/eos/cms/store/group/phys_exotica/leptonsPlusJets/LQ/LQ2/trees/NTupleAnalyzer_nanoAOD_Full2016QCDNonIsoQuickTest_2019_10_14/SummaryFiles' #Placeholder
 	EMuDirectory    = '/eos/cms/store/group/phys_exotica/leptonsPlusJets/LQ/LQ2/trees/NTupleAnalyzer_nanoAOD_Full2016EMuSwitch_2019_10_14/SummaryFiles' #Placeholder
 elif "comb" in year:
-	NormalDirectory = '/eos/cms/store/group/phys_exotica/leptonsPlusJets/LQ/LQ2/stockNanoTrees/NanoAODv7/combined/gmadigan/FullDataMC_muPt20/SummaryFiles'
+	NormalDirectory = '/eos/cms/store/group/phys_exotica/leptonsPlusJets/LQ/LQ2/stockNanoTrees/NanoAODv7/combined/gmadigan/FullRun2DataMC_combined_2023_01/SummaryFiles'
 	QCDDirectory    = '/eos/cms/store/group/phys_exotica/leptonsPlusJets/LQ/LQ2/trees/NTupleAnalyzer_nanoAOD_Full2016QCDNonIsoQuickTest_2019_10_14/SummaryFiles' #Placeholder
 	EMuDirectory    = '/eos/cms/store/group/phys_exotica/leptonsPlusJets/LQ/LQ2/trees/NTupleAnalyzer_nanoAOD_Full2016EMuSwitch_2019_10_14/SummaryFiles' #Placeholder
 else:
@@ -538,7 +538,7 @@ def main():
 
 	global MuMuOptCutDir
 	MuMuOptCutDir = 'Final_selection' # scriptflag
-	#os.system('mkdir Results_'+version_name+'/'+MuMuOptCutDir) # scriptflag
+	os.system('mkdir Results_'+version_name+'/'+MuMuOptCutDir) # scriptflag
 	MuMuOptCutFile = 'Results_'+version_name+'/'+MuMuOptCutDir+'/Opt_LQuujj_Cuts.txt' # scriptflag
 	#MuMuOptCutFile = 'Results_'+version_name+'/OptLQ_uujjCuts_Smoothed_pol2cutoff.txt'
 	MuNuOptCutFile = 'Results_'+version_name+'/OptLQ_uvjjCuts_Smoothed_pol2cutoff.txt' # scriptflag
@@ -1284,13 +1284,57 @@ def main():
 		#[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = [[1.025,0.04],[1.147,0.019]]#TTBar MC, 2016 customNano
 		#[[Rw_uvjj,Rw_uvjj_err],[Rtt_uvjj,Rtt_uvjj_err]] = [[0.934,0.01],[0.984,0.008]]#TTBarMC, eta-driven SF, no top-pt reweight
 		[[Rw_uvjj,Rw_uvjj_err],[Rtt_uvjj,Rtt_uvjj_err]] = [[1.0,0.0],[1.0,0.0]]
-		[[Rz_uuj,Rz_uuj_err],[Rtt_uuj,Rtt_uuj_err]] = GetMuMuScaleFactors( NormalWeightMuMu+'*'+preselectionmumu_single, NormalDirectory, '(M_uu>80)*(M_uu<100)', '(M_uu>100)*(M_uu<250)',0,0)
-		[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = GetMuMuScaleFactors( NormalWeightMuMu+'*'+preselectionmumu, NormalDirectory, '(M_uu>80)*(M_uu<100)', '(M_uu>100)*(M_uu<250)',0,0)
+		#[[Rz_uuj,Rz_uuj_err],[Rtt_uuj,Rtt_uuj_err]] = GetMuMuScaleFactors( NormalWeightMuMu+'*'+preselectionmumu_single, NormalDirectory, '(M_uu>80)*(M_uu<100)', '(M_uu>100)*(M_uu<250)',0,0)
+		#[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = GetMuMuScaleFactors( NormalWeightMuMu+'*'+preselectionmumu, NormalDirectory, '(M_uu>80)*(M_uu<100)', '(M_uu>100)*(M_uu<250)',0,0)
+
+		if year == '2016':
+			[[Rz_uuj,Rz_uuj_err],[Rtt_uuj,Rtt_uuj_err]] = [[1.006,0.015],[0.997,0.013]] #2016 stock NanoAODv7 with 1 btag (uub) 
+			[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = [[1.022,0.017],[0.989,0.014]] #2016 stock NanoAODv7 with 1 btag (uubj) (Rz_uujj = 89% purity, Rtt_uujj = 87% purity)
+			Rz_uujj = "((1.025*(JetCount==2))+(0.949*(JetCount==3))+(1.152*(JetCount==4))+(1.470*(JetCount>=5)))"
+			Rz_uujj_err = "((0.017*(JetCount==2))+(0.032*(JetCount==3))+(0.077*(JetCount==4))+(0.160*(JetCount>=5)))"
+			[Rvv_uujj,Rvv_uujj_err] = [1.064,0.116]
+
+		elif year == '2017':
+			[[Rz_uuj,Rz_uuj_err],[Rtt_uuj,Rtt_uuj_err]]  =  [[1.376,0.019],[1.086,0.011]] #2017 stock NanoAODv7 with 1 btag (uub)
+			[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = [[1.364,0.021],[1.094,0.013]] #2017 stock NanoAODv7 with 1 btag (uubj) (Rz_uujj = 89% purity, Rtt_uujj = 89% purity)
+			Rz_uujj = "((1.236*(JetCount==2))+(1.503*(JetCount==3))+(2.050*(JetCount==4))+(2.815*(JetCount>=5)))"
+			Rz_uujj_err = "((0.021*(JetCount==2))+(0.041*(JetCount==3))+(0.127*(JetCount==4))+(0.350*(JetCount>=5)))"
+			[Rvv_uujj,Rvv_uujj_err] = [1.242,0.125]
+
+		elif year == '2018':
+			[[Rz_uuj,Rz_uuj_err],[Rtt_uuj,Rtt_uuj_err]]  =  [[1.298,0.016],[0.975,0.009]] #2018 stock NanoAODv7 with 1 btag (uub)
+			[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]]  =  [[1.298,0.017],[0.979,0.01]] #2018 stock NanoAODv7 with 1 btag (uubj) (Rz_uujj = 88% purity, Rtt_uujj = 88% purity)
+			Rz_uujj = "((1.164*(JetCount==2))+(1.437*(JetCount==3))+(2.023*(JetCount==4))+(2.804*(JetCount>=5)))"
+			Rz_uujj_err = "((0.017*(JetCount==2))+(0.040*(JetCount==3))+(0.113*(JetCount==4))+(0.335*(JetCount>=5)))"
+			[Rvv_uujj,Rvv_uujj_err] = [1.366,0.11]
+
+		elif "comb" in year:
+			[[Rz_uuj_2016,Rz_uuj_2016_err],[Rtt_uuj_2016,Rtt_uuj_2016_err]] = [[1.006,0.015],[0.997,0.013]] #2016 stock NanoAODv7 with 1 btag (uub) 
+			[[Rz_uujj_2016,Rz_uujj_2016_err],[Rtt_uujj_2016,Rtt_uujj_2016_err]] = [[1.022,0.017],[0.989,0.014]] #2016 stock NanoAODv7 with 1 btag (uubj) (Rz_uujj = 89% purity, Rtt_uujj = 87% purity)
+			Rz_uujj_2016 = "((1.025*(JetCount==2))+(0.949*(JetCount==3))+(1.152*(JetCount==4))+(1.470*(JetCount>=5)))"
+			Rz_uujj_2016_err = "((0.017*(JetCount==2))+(0.032*(JetCount==3))+(0.077*(JetCount==4))+(0.160*(JetCount>=5)))"
+			[Rvv_uujj_2016,Rvv_uujj_2016_err] = [1.064,0.116]
+
+			[[Rz_uuj_2017,Rz_uuj_2017_err],[Rtt_uuj_2017,Rtt_uuj_2017_err]]  =  [[1.376,0.019],[1.086,0.011]] #2017 stock NanoAODv7 with 1 btag (uub)
+			[[Rz_uujj_2017,Rz_uujj_2017_err],[Rtt_uujj_2017,Rtt_uujj_2017_err]] = [[1.364,0.021],[1.094,0.013]] #2017 stock NanoAODv7 with 1 btag (uubj) (Rz_uujj = 89% purity, Rtt_uujj = 89% purity)
+			Rz_uujj_2017 = "((1.236*(JetCount==2))+(1.503*(JetCount==3))+(2.050*(JetCount==4))+(2.815*(JetCount>=5)))"
+			Rz_uujj_2017_err = "((0.021*(JetCount==2))+(0.041*(JetCount==3))+(0.127*(JetCount==4))+(0.350*(JetCount>=5)))"
+			[Rvv_uujj_2017,Rvv_uujj_2017_err] = [1.242,0.125]
+
+			[[Rz_uuj_2018,Rz_uuj_2018_err],[Rtt_uuj_2018,Rtt_uuj_2018_err]]  =  [[1.298,0.016],[0.975,0.009]] #2018 stock NanoAODv7 with 1 btag (uub)
+			[[Rz_uujj_2018,Rz_uujj_2018_err],[Rtt_uujj_2018,Rtt_uujj_2018_err]]  =  [[1.298,0.017],[0.979,0.01]] #2018 stock NanoAODv7 with 1 btag (uubj) (Rz_uujj = 88% purity, Rtt_uujj = 88% purity)
+			Rz_uujj_2018 = "((1.164*(JetCount==2))+(1.437*(JetCount==3))+(2.023*(JetCount==4))+(2.804*(JetCount>=5)))"
+			Rz_uujj_2018_err = "((0.017*(JetCount==2))+(0.040*(JetCount==3))+(0.113*(JetCount==4))+(0.335*(JetCount>=5)))"
+			[Rvv_uujj_2018,Rvv_uujj_2018_err] = [1.366,0.11]
+
+			Rz_uuj = "((Flag_dataYear2016*"+str(Rz_uuj_2016)+")+(Flag_dataYear2017*"+str(Rz_uuj_2017)+")+(Flag_dataYear2018*"+str(Rz_uuj_2018)+"))"
+			Rtt_uuj = "((Flag_dataYear2016*"+str(Rtt_uuj_2016)+")+(Flag_dataYear2017*"+str(Rtt_uuj_2017)+")+(Flag_dataYear2018*"+str(Rtt_uuj_2018)+"))"
+			Rz_uujj = "((Flag_dataYear2016*"+str(Rz_uujj_2016)+")+(Flag_dataYear2017*"+str(Rz_uujj_2017)+")+(Flag_dataYear2018*"+str(Rz_uujj_2018)+"))"
+			Rtt_uujj = "((Flag_dataYear2016*"+str(Rtt_uujj_2016)+")+(Flag_dataYear2017*"+str(Rtt_uujj_2017)+")+(Flag_dataYear2018*"+str(Rtt_uujj_2018)+"))"
+			Rvv_uujj = "((Flag_dataYear2016*"+str(Rvv_uujj_2016)+")+(Flag_dataYear2017*"+str(Rvv_uujj_2017)+")+(Flag_dataYear2018*"+str(Rvv_uujj_2018)+"))"
 
 
-
-
-		scaleFactors = [Rz_uujj,Rtt_uujj,Rw_uvjj]
+		scaleFactors = [Rz_uujj,Rtt_uujj,Rw_uvjj,Rvv_uujj]
 		# Optimize final selection cuts on BDT score
 		if optimizeBDT:
 			cutFileBDT = 'Results_'+version_name+'/Log_LQuujj_Cuts.txt'
@@ -1336,7 +1380,7 @@ def main():
 	# This is for scale factor studies
 	# ====================================================================================================================================================== #
 
-	if True:
+	if False:
 		"""
 		mtCR = '*(MT_uv>70)*(MT_uv<110)'
 		mtSR = '*(((MT_uv>50)*(MT_uv<70)+(MT_uv>110))>0)'
@@ -2981,7 +3025,7 @@ def PDF4LHCUncStudy(MuMuOptCutFile,MuNuOptCutFile,versionname):
 	# UUJJ CHANNEL SYSTEMATICS
 
         #Do backgrounds
-        if True:
+        if False:
                 #treenames = ['TTBar','ZJets','WJets','VV','TTV','sTop']
                 #trees  = [[t_TTBar],[t_ZJets],[t_WJets],[t_DiBoson],[t_TTV],[t_SingleTop]]
                 #treesNames = [['t_TTBar'],['t_ZJets'],['t_WJets'],['t_DiBoson'],['t_TTV'],['t_SingleTop']]
@@ -8202,7 +8246,7 @@ def OptimizeCutsBDT(bins,presel,weight,tag,scalefacs,cutfile,channel):
 	signals = [x for (x,y) in sorted(signals, key = lambda element : element[1])]
 
 	# Set each scale factor
-	[R_z,R_tt,R_w] = scalefacs
+	[R_z,R_tt,R_w,R_vv] = scalefacs
 
 	# Get number of bins
 	lowBound = bins[0]
@@ -8251,7 +8295,7 @@ def OptimizeCutsBDT(bins,presel,weight,tag,scalefacs,cutfile,channel):
 
 				# Loop through cuts here
 				for cut in cuts:
-					print 'Applying cut: ',cut
+					#print 'Applying cut: ',cut
 
 					# Tree ('t_' prefix) and Histogram ('h_' prefix) names for current sample
 					t_sample = 't_'+sample
@@ -8261,13 +8305,15 @@ def OptimizeCutsBDT(bins,presel,weight,tag,scalefacs,cutfile,channel):
 					scalefac = '1.0'
 					if 'ZJets' in sample: scalefac = str(R_z)
 					if 'TTBar' in sample: scalefac = str(R_tt)
+					if 'DiBoson' in sample: scalefac = str(R_vv)
+					if 'TTV' in sample: scalefac = str(R_vv)
 
 					# Here we create 1-dimensional histogram with the binning we desire
 					exec( h_sample + ' = TH1D("'+h_sample+'","'+h_sample+'",'+str(nBins)+','+str(binLow)+','+str(binHigh)+')' )
 
-					# Then project the BDT score variable onto the histogram with preselection cuts, weights, scale factors
+					# Then project the BDT score variable onto the histogram with preselection cuts, M_uujj cut at the LQ mass, weights, scale factors
 					# and importantly, the final selection cut we are looping through 
-					exec( t_sample + '.Project("'+h_sample+'","'+cutVariable+'","'+presel+'*'+cut+'*('+weight+'*'+scalefac+')")' )
+					exec( t_sample + '.Project("'+h_sample+'","'+cutVariable+'","'+presel+'*(M_uujj>'+cutMass+')*'+cut+'*('+weight+'*'+scalefac+')")' )
 
 					# Get the number of events for the given cut with 'Integral'
 					# Note 1: Integrates to get area (not 'generated' event count which is different)
@@ -8275,7 +8321,7 @@ def OptimizeCutsBDT(bins,presel,weight,tag,scalefacs,cutfile,channel):
 					exec( 'nBins = '+h_sample+'.GetNbinsX()+1')
 					exec( 'Int = ' + h_sample + '.Integral(1,'+str(nBins)+')' )
 					cutVal = cut.split('>')[-1].rstrip(')')
-
+					print 'events_'+sample+'[\''+cutVariable+'\'][\''+cutVal+'\'] = '+str(Int)
 					# Write lines that will fill subdictionaries; each subdictionary: key = cut value, value = number of sample events
 					l.write('events_'+sample+'[\''+cutVariable+'\'][\''+cutVal+'\'] = '+str(Int)+'\n')
 
