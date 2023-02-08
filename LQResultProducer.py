@@ -1380,7 +1380,7 @@ def main():
 	# This is for scale factor studies
 	# ====================================================================================================================================================== #
 
-	if True:
+	if False:
 		"""
 		mtCR = '*(MT_uv>70)*(MT_uv<110)'
 		mtSR = '*(((MT_uv>50)*(MT_uv<70)+(MT_uv>110))>0)'
@@ -3025,7 +3025,7 @@ def PDF4LHCUncStudy(MuMuOptCutFile,MuNuOptCutFile,versionname):
 	# UUJJ CHANNEL SYSTEMATICS
 
         #Do backgrounds
-        if True:
+        if False:
                 #treenames = ['TTBar','ZJets','WJets','VV','TTV','sTop']
                 #trees  = [[t_TTBar],[t_ZJets],[t_WJets],[t_DiBoson],[t_TTV],[t_SingleTop]]
                 #treesNames = [['t_TTBar'],['t_ZJets'],['t_WJets'],['t_DiBoson'],['t_TTV'],['t_SingleTop']]
@@ -8295,7 +8295,7 @@ def OptimizeCutsBDT(bins,presel,weight,tag,scalefacs,cutfile,channel):
 
 				# Loop through cuts here
 				for cut in cuts:
-					print 'Applying cut: ',cut
+					#print 'Applying cut: ',cut
 
 					# Tree ('t_' prefix) and Histogram ('h_' prefix) names for current sample
 					t_sample = 't_'+sample
@@ -8313,7 +8313,7 @@ def OptimizeCutsBDT(bins,presel,weight,tag,scalefacs,cutfile,channel):
 
 					# Then project the BDT score variable onto the histogram with preselection cuts, M_uujj cut at the LQ mass, weights, scale factors
 					# and importantly, the final selection cut we are looping through 
-					exec( t_sample + '.Project("'+h_sample+'","'+cutVariable+'","'+presel+'*(M_uujj<'+cutMass+')*'+cut+'*('+weight+'*'+scalefac+')")' )
+					exec( t_sample + '.Project("'+h_sample+'","'+cutVariable+'","'+presel+'*(M_uujj>'+cutMass+')*'+cut+'*('+weight+'*'+scalefac+')")' )
 
 					# Get the number of events for the given cut with 'Integral'
 					# Note 1: Integrates to get area (not 'generated' event count which is different)
@@ -8321,7 +8321,7 @@ def OptimizeCutsBDT(bins,presel,weight,tag,scalefacs,cutfile,channel):
 					exec( 'nBins = '+h_sample+'.GetNbinsX()+1')
 					exec( 'Int = ' + h_sample + '.Integral(1,'+str(nBins)+')' )
 					cutVal = cut.split('>')[-1].rstrip(')')
-
+					print 'events_'+sample+'[\''+cutVariable+'\'][\''+cutVal+'\'] = '+str(Int)
 					# Write lines that will fill subdictionaries; each subdictionary: key = cut value, value = number of sample events
 					l.write('events_'+sample+'[\''+cutVariable+'\'][\''+cutVal+'\'] = '+str(Int)+'\n')
 
