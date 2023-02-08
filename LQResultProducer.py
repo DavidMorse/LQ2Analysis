@@ -36,11 +36,11 @@ elif year == '2017':
 	QCDDirectory    = '/eos/cms/store/group/phys_exotica/leptonsPlusJets/LQ/LQ2/trees/NTupleAnalyzer_nanoAOD_Full2016QCDNonIsoQuickTest_2019_10_14/SummaryFiles' #Placeholder
 	EMuDirectory    = '/eos/cms/store/group/phys_exotica/leptonsPlusJets/LQ/LQ2/trees/NTupleAnalyzer_nanoAOD_Full2016EMuSwitch_2019_10_14/SummaryFiles' #Placeholder
 elif year == '2018':
-	NormalDirectory = '/eos/cms/store/group/phys_exotica/leptonsPlusJets/LQ/LQ2/stockNanoTrees/NanoAODv7/2018/gmadigan/NTupleAnalyzer_nanoAOD_FullDataMC_2018_muPt20_2022_11_19_02_15_16/SummaryFiles'
+	NormalDirectory = '/eos/cms/store/group/phys_exotica/leptonsPlusJets/LQ/LQ2/stockNanoTrees/NanoAODv7/2018/gmadigan/NTupleAnalyzer_nanoAOD_FullRun2DataMC_2018_2023_01_30/SummaryFiles'
 	QCDDirectory    = '/eos/cms/store/group/phys_exotica/leptonsPlusJets/LQ/LQ2/trees/NTupleAnalyzer_nanoAOD_Full2016QCDNonIsoQuickTest_2019_10_14/SummaryFiles' #Placeholder
 	EMuDirectory    = '/eos/cms/store/group/phys_exotica/leptonsPlusJets/LQ/LQ2/trees/NTupleAnalyzer_nanoAOD_Full2016EMuSwitch_2019_10_14/SummaryFiles' #Placeholder
 elif "comb" in year:
-	NormalDirectory = '/eos/cms/store/group/phys_exotica/leptonsPlusJets/LQ/LQ2/stockNanoTrees/NanoAODv7/combined/gmadigan/FullDataMC_muPt20/SummaryFiles'
+	NormalDirectory = '/eos/cms/store/group/phys_exotica/leptonsPlusJets/LQ/LQ2/stockNanoTrees/NanoAODv7/combined/gmadigan/FullRun2DataMC_combined_2023_01/SummaryFiles'
 	QCDDirectory    = '/eos/cms/store/group/phys_exotica/leptonsPlusJets/LQ/LQ2/trees/NTupleAnalyzer_nanoAOD_Full2016QCDNonIsoQuickTest_2019_10_14/SummaryFiles' #Placeholder
 	EMuDirectory    = '/eos/cms/store/group/phys_exotica/leptonsPlusJets/LQ/LQ2/trees/NTupleAnalyzer_nanoAOD_Full2016EMuSwitch_2019_10_14/SummaryFiles' #Placeholder
 else:
@@ -321,34 +321,34 @@ pdf_uujj_ZJets = [0.51,1.08,1.47,1.78,1.86,2.3,2.67,2.77,2.77,2.97,2.97,3.5,3.5,
 pdf_uujj_WJets = [8.04,8.04,9.05,9.05,9.05,9.05,9.05,9.05,9.05,9.05,9.05,9.05,9.05,9.05,9.05,9.05,9.05,9.05,9.05,9.05,9.05,9.05,9.05,9.05,9.05,9.05,9.05,9.05,9.05,9.05,9.05,9.05,9.05,9.05,9.05,9.05,9.05]
 pdf_uujj_VV = [1.54,1.57,1.85,2.46,3.33,3.33,3.33,3.33,3.33,3.33,3.33,3.33,3.33,3.33,3.33,3.33,3.33,3.33,3.33,3.33,3.33,3.33,3.33,3.33,3.33,3.33,3.33,3.33,3.33,3.33,3.33,3.33,3.33,3.33,3.33,3.33,3.33]
 pdf_uujj_sTop = [0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0]
-pdf_uujj_TTV_uujj = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+pdf_uujj_TTV = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
 pdf_uujj_QCD = [0.32,0.32,0.32,0.32,0.32,0.32,0.32,0.32,0.32,0.32,0.32,0.32,0.32,0.32,0.32,0.32,0.32,0.32,0.32,0.32,0.32,0.32,0.32,0.32,0.32,0.32,0.32,0.32,0.32,0.32,0.32,0.32,0.32,0.32,0.32,0.32,0.32]
 
 if year == '2016':
-        pdf_uujj_Signal_uujj = [8.28,8.28,8.28,8.28,8.28,8.28,8.28,9.43,9.51,10.19,13.61,15.84,17.74,22.37,24.66,33.73,39.05,47.41,53.81,62.91,67.83,74.65,81.78,88.43,93.78,99.26,100.,100.,100.,100.]
-        pdf_uujj_TTBar_uujj = [1.96,1.96,2.03,2.18,2.41,2.68,2.97,3.23,3.49,3.81,3.96,4.41,4.58,4.58,4.84,5.46,5.46,5.46,5.46,5.46,5.46,5.46,5.46,5.46,5.46,5.46,5.46,5.46,5.46,5.46]
-        pdf_uujj_ZJets_uujj = [1.47,1.47,1.55,1.55,1.55,1.55,1.55,1.55,1.74,1.78,1.78,1.83,1.86,1.86,1.93,2.18,2.28,2.5,2.85,3.19,3.59,3.9,3.9,4.99,4.99,5.41,6.15,7.96,9.69,9.69]
-        pdf_uujj_WJets_uujj = [3.46,3.46,3.46,3.46,3.46,3.46,3.46,3.46,3.46,3.46,3.46,3.46,3.46,3.46,3.46,3.46,3.46,3.46,3.46,3.46,3.46,3.46,3.46,3.46,3.46,3.46,3.46,3.46,3.46,3.46]
-        pdf_uujj_VV_uujj = [1.05,1.05,1.06,1.06,1.06,1.06,1.19,1.19,1.28,1.41,1.41,1.71,1.84,2.46,2.7,2.7,2.7,2.7,2.7,2.7,2.7,2.7,2.7,2.7,2.7,2.7,2.7,2.7,2.7,2.7]
-        pdf_uujj_sTop_uujj = [7.1,7.1,7.23,7.6,8.18,8.69,9.42,10.31,11.28,11.93,12.81,13.45,13.96,16.75,16.75,16.75,16.75,16.75,16.75,16.75,16.75,16.75,16.75,16.75,16.75,16.75,16.75,16.75,16.75,16.75]
-        pdf_uujj_TTV_uujj = [1.92,1.93,1.99,2.16,2.37,2.53,2.73,2.74,2.95,3.16,3.16,3.65,3.65,3.98,4.08,4.08,4.08,5.84,6.28,8.06,27.04,62.15,62.15,62.15,62.15,62.15,62.15,62.15,62.15,62.15]
+        pdf_uujj_Signal = [8.28,8.28,8.28,8.28,8.28,8.28,8.28,9.43,9.51,10.19,13.61,15.84,17.74,22.37,24.66,33.73,39.05,47.41,53.81,62.91,67.83,74.65,81.78,88.43,93.78,99.26,100.,100.,100.,100.]
+        pdf_uujj_TTBar = [1.96,1.96,2.03,2.18,2.41,2.68,2.97,3.23,3.49,3.81,3.96,4.41,4.58,4.58,4.84,5.46,5.46,5.46,5.46,5.46,5.46,5.46,5.46,5.46,5.46,5.46,5.46,5.46,5.46,5.46]
+        pdf_uujj_ZJets = [1.47,1.47,1.55,1.55,1.55,1.55,1.55,1.55,1.74,1.78,1.78,1.83,1.86,1.86,1.93,2.18,2.28,2.5,2.85,3.19,3.59,3.9,3.9,4.99,4.99,5.41,6.15,7.96,9.69,9.69]
+        pdf_uujj_WJets = [3.46,3.46,3.46,3.46,3.46,3.46,3.46,3.46,3.46,3.46,3.46,3.46,3.46,3.46,3.46,3.46,3.46,3.46,3.46,3.46,3.46,3.46,3.46,3.46,3.46,3.46,3.46,3.46,3.46,3.46]
+        pdf_uujj_VV = [1.05,1.05,1.06,1.06,1.06,1.06,1.19,1.19,1.28,1.41,1.41,1.71,1.84,2.46,2.7,2.7,2.7,2.7,2.7,2.7,2.7,2.7,2.7,2.7,2.7,2.7,2.7,2.7,2.7,2.7]
+        pdf_uujj_sTop = [7.1,7.1,7.23,7.6,8.18,8.69,9.42,10.31,11.28,11.93,12.81,13.45,13.96,16.75,16.75,16.75,16.75,16.75,16.75,16.75,16.75,16.75,16.75,16.75,16.75,16.75,16.75,16.75,16.75,16.75]
+        pdf_uujj_TTV = [1.92,1.93,1.99,2.16,2.37,2.53,2.73,2.74,2.95,3.16,3.16,3.65,3.65,3.98,4.08,4.08,4.08,5.84,6.28,8.06,27.04,62.15,62.15,62.15,62.15,62.15,62.15,62.15,62.15,62.15]
 elif year == '2017':
-        pdf_uujj_Signal_uujj = [7.78,7.78,7.87,7.87,7.87,7.87,7.87,9.26,10.06,10.06,10.06,16.42,20.19,25.03,28.57,35.85,42.13,49.23,56.8,63.7,49.7,78.7,85.7,92.8,71.6,100.,100.,100.,100.,100.]
-        pdf_uujj_TTBar_uujj = [2.42,2.43,2.64,3.09,3.72,4.33,4.92,5.57,6.06,6.65,7.16,7.62,7.88,8.34,8.34,9.25,9.81,10.11,10.71,10.71,11.24,11.67,11.67,11.67,11.67,11.67,11.67,11.67,11.67,11.67]
-        pdf_uujj_ZJets_uujj = [2.99,3.03,3.08,3.21,4.17,4.65,5.37,5.37,6.14,6.14,6.14,6.14,6.14,6.85,6.85,6.85,6.85,6.87,7.35,7.35,7.55,8.32,1.05,2.72,3.41,5.31]
-        #pdf_uujj_ZJets_uujj = [3.03,3.06,3.11,3.22,4.18,4.66,5.38,5.38,6.14,6.14,6.14,6.14,6.14,6.85,6.85,6.85,6.85,6.87,7.35,7.35,7.55,8.32,8.32,8.32,8.32,8.32,8.32,8.32,8.32,8.32]
-        pdf_uujj_WJets_uujj = [4.57,4.57,4.57,4.57,4.57,4.57,4.57,4.57,4.57,4.57,4.57,4.57,4.57,4.57,4.57,4.57,4.57,4.57,4.57,4.57,4.57,4.57,4.57,4.57,4.57,4.57,4.57,4.57,4.57,4.57]
-        pdf_uujj_VV_uujj = [1.23,1.23,1.64,1.67,1.84,2.61,3.58,3.94,4.59,5.19,5.19,6.73,6.93,8.09,8.09,8.58,8.58,8.58,8.58,8.58,8.58,8.58,8.58,8.58,8.58,8.58,8.58,8.58,8.58,8.58]
-        pdf_uujj_TTV_uujj = [4.5,4.52,4.67,5.01,5.47,6.0,6.7,7.02,7.39,7.54,7.89,8.29,8.98,8.98,8.98,8.98,8.98,8.98,8.98,8.98,10.66,10.66,10.66,14.72,15.18,15.18,15.18,15.18,15.18,15.18]
-        pdf_uujj_sTop_uujj = [6.96,6.97,7.15,7.65,8.39,8.84,9.63,10.46,11.11,11.87,12.84,14.11,14.59,15.57,16.96,16.96,16.96,16.96,16.96,16.96,16.96,16.96,16.96,16.96,16.96,16.96,16.96,16.96,16.96,16.96]
+        pdf_uujj_Signal = [7.78,7.78,7.87,7.87,7.87,7.87,7.87,9.26,10.06,10.06,10.06,16.42,20.19,25.03,28.57,35.85,42.13,49.23,56.8,63.7,49.7,78.7,85.7,92.8,71.6,100.,100.,100.,100.,100.]
+        pdf_uujj_TTBar = [2.42,2.43,2.64,3.09,3.72,4.33,4.92,5.57,6.06,6.65,7.16,7.62,7.88,8.34,8.34,9.25,9.81,10.11,10.71,10.71,11.24,11.67,11.67,11.67,11.67,11.67,11.67,11.67,11.67,11.67]
+        pdf_uujj_ZJets = [2.99,3.03,3.08,3.21,4.17,4.65,5.37,5.37,6.14,6.14,6.14,6.14,6.14,6.85,6.85,6.85,6.85,6.87,7.35,7.35,7.55,8.32,1.05,2.72,3.41,5.31]
+        #pdf_uujj_ZJets = [3.03,3.06,3.11,3.22,4.18,4.66,5.38,5.38,6.14,6.14,6.14,6.14,6.14,6.85,6.85,6.85,6.85,6.87,7.35,7.35,7.55,8.32,8.32,8.32,8.32,8.32,8.32,8.32,8.32,8.32]
+        pdf_uujj_WJets = [4.57,4.57,4.57,4.57,4.57,4.57,4.57,4.57,4.57,4.57,4.57,4.57,4.57,4.57,4.57,4.57,4.57,4.57,4.57,4.57,4.57,4.57,4.57,4.57,4.57,4.57,4.57,4.57,4.57,4.57]
+        pdf_uujj_VV = [1.23,1.23,1.64,1.67,1.84,2.61,3.58,3.94,4.59,5.19,5.19,6.73,6.93,8.09,8.09,8.58,8.58,8.58,8.58,8.58,8.58,8.58,8.58,8.58,8.58,8.58,8.58,8.58,8.58,8.58]
+        pdf_uujj_TTV = [4.5,4.52,4.67,5.01,5.47,6.0,6.7,7.02,7.39,7.54,7.89,8.29,8.98,8.98,8.98,8.98,8.98,8.98,8.98,8.98,10.66,10.66,10.66,14.72,15.18,15.18,15.18,15.18,15.18,15.18]
+        pdf_uujj_sTop = [6.96,6.97,7.15,7.65,8.39,8.84,9.63,10.46,11.11,11.87,12.84,14.11,14.59,15.57,16.96,16.96,16.96,16.96,16.96,16.96,16.96,16.96,16.96,16.96,16.96,16.96,16.96,16.96,16.96,16.96]
 elif year == '2018':
-        pdf_uujj_Signal_uujj = [9.72,9.72,9.72,9.72,9.72,10.59,11.96,13.41,15.17,17.69,21.05,25.09,29.32,35.0,41.74,48.16,55.45,63.75,77.67,87.35,94.71,100.,100.,100.,100.,100.,100.,100.,100.,100.]
-        pdf_uujj_TTBar_uujj = [2.54,2.55,2.77,3.24,3.83,4.43,4.98,5.57,6.15,6.65,6.97,7.51,8.09,8.65,8.8,8.8,8.92,9.58,9.58,9.61,9.61,10.47,10.47,10.47,10.47,10.47,10.47,10.47,10.47,10.47]
-        pdf_uujj_ZJets_uujj = [2.68,2.68,2.97,3.55,4.14,4.78,4.78,4.99,4.99,5.42,6.59,7.46,8.43,10.25,11.8,11.8,12.6,14.78,14.78,14.78,14.78,14.78,14.78,14.78,14.78,14.78,14.78,14.78,14.78,14.78]
-        pdf_uujj_WJets_uujj = [3.66,3.66,3.66,3.66,3.66,3.66,3.66,3.66,3.66,3.66,3.66,3.66,3.66,3.66,3.66,3.66,3.66,3.66,3.66,3.66,3.66,3.66,3.66,3.66,3.66,3.66,3.66,3.66,3.66,3.66]
-        pdf_uujj_VV_uujj = [0.96,0.96,1.04,1.17,1.4,1.65,2.37,3.29,4.03,4.47,5.75,6.55,6.97,7.75,7.75,7.75,7.75,7.75,7.75,8.05,8.05,8.05,8.05,8.05,8.05,8.05,8.05,8.05,8.05,8.05]
-        pdf_uujj_TTV_uujj = [4.87,4.87,5.08,5.54,6.18,6.62,7.33,8.24,8.34,8.97,9.45,9.65,10.73,10.73,12.1,13.36,15.24,16.79,17.56,17.56,17.73,18.89,20.46,20.47,21.26,27.73,27.73,27.73,27.73,27.73]
-        pdf_uujj_sTop_uujj = [7.1,7.1,7.23,7.6,8.18,8.69,9.42,10.31,11.28,11.93,12.81,13.45,13.96,16.75,16.75,16.75,16.75,16.75,16.75,16.75,16.75,16.75,16.75,16.75,16.75,16.75,16.75,16.75,16.75,16.75]
+        pdf_uujj_Signal = [9.72,9.72,9.72,9.72,9.72,10.59,11.96,13.41,15.17,17.69,21.05,25.09,29.32,35.0,41.74,48.16,55.45,63.75,77.67,87.35,94.71,100.,100.,100.,100.,100.,100.,100.,100.,100.]
+        pdf_uujj_TTBar = [2.54,2.55,2.77,3.24,3.83,4.43,4.98,5.57,6.15,6.65,6.97,7.51,8.09,8.65,8.8,8.8,8.92,9.58,9.58,9.61,9.61,10.47,10.47,10.47,10.47,10.47,10.47,10.47,10.47,10.47]
+        pdf_uujj_ZJets = [2.68,2.68,2.97,3.55,4.14,4.78,4.78,4.99,4.99,5.42,6.59,7.46,8.43,10.25,11.8,11.8,12.6,14.78,14.78,14.78,14.78,14.78,14.78,14.78,14.78,14.78,14.78,14.78,14.78,14.78]
+        pdf_uujj_WJets = [3.66,3.66,3.66,3.66,3.66,3.66,3.66,3.66,3.66,3.66,3.66,3.66,3.66,3.66,3.66,3.66,3.66,3.66,3.66,3.66,3.66,3.66,3.66,3.66,3.66,3.66,3.66,3.66,3.66,3.66]
+        pdf_uujj_VV = [0.96,0.96,1.04,1.17,1.4,1.65,2.37,3.29,4.03,4.47,5.75,6.55,6.97,7.75,7.75,7.75,7.75,7.75,7.75,8.05,8.05,8.05,8.05,8.05,8.05,8.05,8.05,8.05,8.05,8.05]
+        pdf_uujj_TTV = [4.87,4.87,5.08,5.54,6.18,6.62,7.33,8.24,8.34,8.97,9.45,9.65,10.73,10.73,12.1,13.36,15.24,16.79,17.56,17.56,17.73,18.89,20.46,20.47,21.26,27.73,27.73,27.73,27.73,27.73]
+        pdf_uujj_sTop = [7.1,7.1,7.23,7.6,8.18,8.69,9.42,10.31,11.28,11.93,12.81,13.45,13.96,16.75,16.75,16.75,16.75,16.75,16.75,16.75,16.75,16.75,16.75,16.75,16.75,16.75,16.75,16.75,16.75,16.75]
 
 
 #placeholders for uvjj analysis
@@ -359,6 +359,10 @@ pdf_uvjj_TTBar = [2.18,2.18,2.18,3.54,5.16,6.33,7.34,10.01,14.36,14.36,14.36,14.
 pdf_uvjj_ZJets = [2.98,2.98,2.98,3.15,3.49,3.49,3.49,3.49,3.49,3.49,3.49,3.49,3.49,3.49,3.49,3.49,3.49,3.49,3.49,3.49,3.49,3.49,3.49,3.49,3.49,3.49,3.49,3.49,3.49,3.49,3.49,3.49,3.49,3.49,3.49,3.49,3.49]
 pdf_uvjj_VV = [3.35,3.35,3.35,3.41,3.62,3.73,4.03,4.03,4.03,4.03,4.03,4.03,4.03,4.03,4.03,4.03,4.03,4.03,4.03,4.03,4.03,4.03,4.03,4.03,4.03,4.03,4.03,4.03,4.03,4.03,4.03,4.03,4.03,4.03,4.03,4.03,4.03]
 pdf_uvjj_Signal = [0.35,0.35,0.35,0.53,0.83,0.83,0.83,0.83,0.83,0.83,0.83,0.84,1.21,1.21,1.62,1.62,2.22,2.35,2.35,2.35,2.35,2.35,2.35,2.35,2.35,2.35,2.35,2.35,2.35,2.35,2.35,2.35,2.35,2.35,2.35,2.35,2.35]
+
+# Muon Momentum Scale systematics with the Generalized Endpoint method extracted from study with 2016 signal and background MC at enhanced selection
+GEScaleSys_Background = [0.0,0.0,0.02,0.03,0.02,0.08,0.01,0.1,0.18,0.15,0.16,0.49,0.38,1.22,0.07,4.38,3.27,1.78,3.16,1.44,9.75,1.92,0.03,1.98,0.43,3.28,0.95,46.79,60.05]
+GEScaleSys_Signal = [0.02,0.0,0.02,0.0,0.01,0.02,0.05,0.11,0.05,0.13,0.12,0.16,0.18,0.15,0.11,0.15,0.09,0.03,0.09,0.1,0.18,0.23,0.27,0.27,0.38,0.3,0.41,0.4,0.48]
 
 # These are the total background uncertainties. They are used just to make some error bands on plots. 
 totunc_uujj = [5.02, 5.28, 5.42, 5.8, 6.16, 6.81, 7.74, 8.72, 9.46, 9.47, 9.83, 10.5, 11.65, 9.13, 10.39, 12.17, 11.6, 12.58, 12.27, 14.08, 16.11, 16.09, 15.8, 12.07, 11.88, 11.03, 11.75, 11.75, 12.32, 11.75, 11.75, 11.75, 11.75, 11.75, 11.75, 11.75, 11.75]
@@ -537,7 +541,7 @@ def main():
 	os.system('mkdir Results_'+version_name) 
 
 	global MuMuOptCutDir
-	MuMuOptCutDir = 'Final_selection' # scriptflag
+	MuMuOptCutDir = 'Enhanced_selection' # scriptflag
 	#os.system('mkdir Results_'+version_name+'/'+MuMuOptCutDir) # scriptflag
 	MuMuOptCutFile = 'Results_'+version_name+'/'+MuMuOptCutDir+'/Opt_LQuujj_Cuts.txt' # scriptflag
 	#MuMuOptCutFile = 'Results_'+version_name+'/OptLQ_uujjCuts_Smoothed_pol2cutoff.txt'
@@ -827,12 +831,9 @@ def main():
 			[[Rz_uuj,Rz_uuj_err],[Rtt_uuj,Rtt_uuj_err]] = GetMuMuScaleFactors( NormalWeightMuMu+'*'+preselectionmumu_single, NormalDirectory, '(M_uu>80)*(M_uu<100)', '(M_uu>100)*(M_uu<250)',0,0)
 			[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = GetMuMuScaleFactors( NormalWeightMuMu+'*'+preselectionmumu, NormalDirectory, '(M_uu>80)*(M_uu<100)', '(M_uu>100)*(M_uu<250)',0,0)
 
-			njetbinnedSFs = []
-			njetbinning = [2,3,4,5]
-			for njet in njetbinning:
-				njetbinnedSFs.append(GetMuMuScaleFactors( NormalWeightMuMu+'*'+preselectionmumu+'*(NJets=='+njet+')', NormalDirectory, '(M_uu>80)*(M_uu<100)', '(M_uu>100)*(M_uu<250)',0,0)[0])
-			Rz_uujj = "(("+njetbinnedSFs[0][0]+"*(JetCount==2))+("+njetbinnedSFs[1][0]+"*(JetCount==3))+("+njetbinnedSFs[2][0]+"*(JetCount==4))+("+njetbinnedSFs[3][0]+"*(JetCount>=5)))"
-			Rz_uujj_err = "(("+njetbinnedSFs[0][1]+"*(JetCount==2))+("+njetbinnedSFs[1][1]+"*(JetCount==3))+("+njetbinnedSFs[2][1]+"*(JetCount==4))+("+njetbinnedSFs[3][1]+"*(JetCount>=5)))"
+			Rz_binned = [GetMuMuScaleFactors( NormalWeightMuMu+'*'+preselectionmumu+'*(JetCount=='+str(njet)+')'+'*'+weight, NormalDirectory, '(M_uu>80)*(M_uu<100)', '(M_uu>100)*(M_uu<250)',0,0)[0] for njet in range(2,6)]
+			Rz_uujj = "(("+Rz_binned[0][0]+"*(JetCount==2))+("+Rz_binned[1][0]+"*(JetCount==3))+("+Rz_binned[2][0]+"*(JetCount==4))+("+Rz_binned[3][0]+"*(JetCount>=5)))"
+			Rz_uujj_err = "(("+Rz_binned[0][1]+"*(JetCount==2))+("+Rz_binned[1][1]+"*(JetCount==3))+("+Rz_binned[2][1]+"*(JetCount==4))+("+Rz_binned[3][1]+"*(JetCount>=5)))"
 
 			[Rvv_uujj,Rvv_uujj_err] = GetDiBosonScaleFactor( NormalWeightDiBoson+'*'+preselectionmumu_3lep, NormalDirectory, '(M_uu>80)*(M_uu<100)', Rz_uujj, Rtt_uujj, 0)
 
@@ -1321,7 +1322,7 @@ def main():
 	# This is for shape systematics
 	# ====================================================================================================================================================== #
 
-	if False :
+	if True :
 		MuMuOptTestCutFile = 'Results_'+version_name+'/'+MuMuOptCutDir+'/Opt_LQuujj_Cuts.txt' #OptLQ_uujjCuts_Smoothed_pol2cutoff.txt'
 		MuNuOptTestCutFile = 'Results_'+version_name+'/OptLQ_uvjjCuts_Smoothed_pol2cutoff.txt'
 		# Get Scale Factors
@@ -1336,7 +1337,7 @@ def main():
 	# This is for scale factor studies
 	# ====================================================================================================================================================== #
 
-	if True:
+	if False:
 		"""
 		mtCR = '*(MT_uv>70)*(MT_uv<110)'
 		mtSR = '*(((MT_uv>50)*(MT_uv<70)+(MT_uv>110))>0)'
@@ -2981,7 +2982,7 @@ def PDF4LHCUncStudy(MuMuOptCutFile,MuNuOptCutFile,versionname):
 	# UUJJ CHANNEL SYSTEMATICS
 
         #Do backgrounds
-        if True:
+        if False:
                 #treenames = ['TTBar','ZJets','WJets','VV','TTV','sTop']
                 #trees  = [[t_TTBar],[t_ZJets],[t_WJets],[t_DiBoson],[t_TTV],[t_SingleTop]]
                 #treesNames = [['t_TTBar'],['t_ZJets'],['t_WJets'],['t_DiBoson'],['t_TTV'],['t_SingleTop']]
@@ -4351,6 +4352,7 @@ def ModSelection(selection,sysmethod,channel_log):
 	_kinematicvariables += ['M_uu','MT_uv']
 	_kinematicvariables += ['M_uujj']
 	_kinematicvariables += ['DR_muon1muon2','DPhi_muon1met','DPhi_jet1met']
+	_kinematicvariables += ['MuonCountPt20','ElectronCountPt20']
 	_kinematicvariables += ['LQToBMu_pair_uubj_BDT_discrim_M300', 'LQToBMu_pair_uubj_BDT_discrim_M400', 'LQToBMu_pair_uubj_BDT_discrim_M500']
 	_kinematicvariables += ['LQToBMu_pair_uubj_BDT_discrim_M600', 'LQToBMu_pair_uubj_BDT_discrim_M700', 'LQToBMu_pair_uubj_BDT_discrim_M800']
 	_kinematicvariables += ['LQToBMu_pair_uubj_BDT_discrim_M900', 'LQToBMu_pair_uubj_BDT_discrim_M1000', 'LQToBMu_pair_uubj_BDT_discrim_M1100']
@@ -4542,14 +4544,10 @@ def SysTable(optimlog, selection_uujj,selection_uvjj,NormalDirectory, weight,sys
 	# SFs with updated integrated luminosities
 	[[Rz_uuj,Rz_uuj_err],[Rtt_uuj,Rtt_uuj_err]] = GetMuMuScaleFactors( NormalWeightMuMu+'*'+preselectionmumu_single, NormalDirectory, '(M_uu>80)*(M_uu<100)', '(M_uu>100)*(M_uu<250)',0,0)
 	[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = GetMuMuScaleFactors( NormalWeightMuMu+'*'+preselectionmumu, NormalDirectory, '(M_uu>80)*(M_uu<100)', '(M_uu>100)*(M_uu<250)',0,0)
-	[Rvv_uujj,Rvv_uujj_err] = GetDiBosonScaleFactor( NormalWeightDiBoson+'*'+preselectionmumu_3lep, NormalDirectory, '(M_uu>80)*(M_uu<100)', Rz_uujj, Rtt_uujj, 0)
 
-	njetbinnedSFs = []
-	njetbinning = [2,3,4,5]
-	for njet in njetbinning:
-		njetbinnedSFs.append(GetMuMuScaleFactors( NormalWeightMuMu+'*'+preselectionmumu+'*(NJets=='+njet+')', NormalDirectory, '(M_uu>80)*(M_uu<100)', '(M_uu>100)*(M_uu<250)',0,0)[0])
-	Rz_uujj = "(("+njetbinnedSFs[0][0]+"*(JetCount==2))+("+njetbinnedSFs[1][0]+"*(JetCount==3))+("+njetbinnedSFs[2][0]+"*(JetCount==4))+("+njetbinnedSFs[3][0]+"*(JetCount>=5)))"
-	Rz_uujj_err = "(("+njetbinnedSFs[0][1]+"*(JetCount==2))+("+njetbinnedSFs[1][1]+"*(JetCount==3))+("+njetbinnedSFs[2][1]+"*(JetCount==4))+("+njetbinnedSFs[3][1]+"*(JetCount>=5)))"
+	Rz_binned = [GetMuMuScaleFactors( NormalWeightMuMu+'*'+preselectionmumu+'*(JetCount=='+str(njet)+')'+'*'+weight, NormalDirectory, '(M_uu>80)*(M_uu<100)', '(M_uu>100)*(M_uu<250)',0,0)[0] for njet in range(2,6)]
+	Rz_uujj = "(("+Rz_binned[0][0]+"*(JetCount==2))+("+Rz_binned[1][0]+"*(JetCount==3))+("+Rz_binned[2][0]+"*(JetCount==4))+("+Rz_binned[3][0]+"*(JetCount>=5)))"
+	Rz_uujj_err = "(("+Rz_binned[0][1]+"*(JetCount==2))+("+Rz_binned[1][1]+"*(JetCount==3))+("+Rz_binned[2][1]+"*(JetCount==4))+("+Rz_binned[3][1]+"*(JetCount>=5)))"
 
 	[Rvv_uujj,Rvv_uujj_err] = GetDiBosonScaleFactor( NormalWeightDiBoson+'*'+preselectionmumu_3lep, NormalDirectory, '(M_uu>80)*(M_uu<100)', Rz_uujj, Rtt_uujj, 0)
 	[[Rw_uvjj,Rw_uvjj_err],[Rtt_uvjj,Rtt_uvjj_err]] = [[1.0,0.0],[1.0,0.0]]
@@ -4698,6 +4696,7 @@ def SysTable(optimlog, selection_uujj,selection_uvjj,NormalDirectory, weight,sys
 				_rw      *= (1.0+pdf_uujj_WJets[nalign]*0.01)
 				rstop    *= (1.0+pdf_uujj_sTop[nalign]*0.01)
 				rdiboson *= (1.0+pdf_uujj_VV[nalign]*0.01)
+				rttv 	 *= (1.0+pdf_uujj_TTV[nalign]*0.01)
 				#rqcd     *= (1.0+pdf_uujj_QCD[nalign]*0.01)
 				rsig     *= (1.0+pdf_uujj_Signal[nalign]*0.01)
 
@@ -4709,6 +4708,23 @@ def SysTable(optimlog, selection_uujj,selection_uvjj,NormalDirectory, weight,sys
 				rdiboson *= (1.0+pdf_uvjj_VV[nalign]*0.01)
 				#rqcd     *= (1.0+pdf_uvjj_QCD[nalign]*0.01)
 				rsig     *= (1.0+pdf_uvjj_Signal[nalign]*0.01)
+
+		if 'GE' in sysmethod and 'up' in sysmethod:
+			_rt      	*= (1.0+GEScaleSys_Background[nalign]*0.01)
+			_rw      	*= (1.0+GEScaleSys_Background[nalign]*0.01)
+			_rz      	*= (1.0+GEScaleSys_Background[nalign]*0.01)
+			rstop    	*= (1.0+GEScaleSys_Background[nalign]*0.01)
+			rdiboson	*= (1.0+GEScaleSys_Background[nalign]*0.01)
+			rttv		*= (1.0+GEScaleSys_Background[nalign]*0.01)
+			rsig 		*= (1.0+GEScaleSys_Signal[nalign]*0.01)
+		if 'GE' in sysmethod and 'down' in sysmethod:
+			_rt      	*= (1.0-GEScaleSys_Background[nalign]*0.01)
+			_rw      	*= (1.0-GEScaleSys_Background[nalign]*0.01)
+			_rz      	*= (1.0-GEScaleSys_Background[nalign]*0.01)
+			rstop    	*= (1.0-GEScaleSys_Background[nalign]*0.01)
+			rdiboson	*= (1.0-GEScaleSys_Background[nalign]*0.01)
+			rttv		*= (1.0-GEScaleSys_Background[nalign]*0.01)
+			rsig 		*= (1.0-GEScaleSys_Signal[nalign]*0.01)
 
 		exec('treefeed = ['+chan+']')
 		treefeed.append(t_SingleMuData)
@@ -4913,11 +4929,11 @@ def FullAnalysis(optimlog,selection_uujj,selection_uvjj,NormalDirectory,weight,u
 	#Splitting MUONIDISO and MUONHLT into up and down to account for asymmetric high pt corrections
 	#_Variations = ['','JESup','JESdown','MESup','MESdown','JERup','JERdown','MER','LUMIup','LUMIdown','PUup','PUdown','ZNORMup','ZNORMdown','WNORMup','WNORMdown','TTNORMup','TTNORMdown','SHAPETT','SHAPEZ','SHAPEW','SHAPEVV','MUONIDISOup','MUONIDISOdown','MUONHLTup','MUONHLTdown','PDF','HIPup','HIPdown','BTAGup','BTAGdown']
 
-	_Variations2016 = ['','JESup','JESdown','MESup','MESdown','JERup','JERdown','MER','LUMICorrup','LUMICorrdown','LUMI16Uncorrup','LUMI16Uncorrdown','PUup','PUdown','ZNORMup','ZNORMdown','TTNORMup','TTNORMdown','VVNORMup','VVNORMdown','SHAPETT','SHAPEZ','SHAPEVV','MUONIDup', 'MUONIDdown', 'MUONISOup', 'MUONISOdown','MUONHLTup','MUONHLTdown','MUONRECOup','MUONRECOdown','PDF','BTAGup','BTAGdown','TOPPTup','TOPPTdown','PREFIREup','PREFIREdown']
+	_Variations2016 = ['','JESup','JESdown','MESup','MESdown','GEup','GEdown','JERup','JERdown','MER','LUMICorrup','LUMICorrdown','LUMI16Uncorrup','LUMI16Uncorrdown','PUup','PUdown','ZNORMup','ZNORMdown','TTNORMup','TTNORMdown','VVNORMup','VVNORMdown','SHAPETT','SHAPEZ','SHAPEVV','MUONIDup', 'MUONIDdown', 'MUONISOup', 'MUONISOdown','MUONHLTup','MUONHLTdown','MUONRECOup','MUONRECOdown','PDF','BTAGup','BTAGdown','TOPPTup','TOPPTdown','PREFIREup','PREFIREdown']
 
-	_Variations2017 = ['','JES17up','JES17down','MES17up','MES17down','JER17up','JER17down','MER17','LUMICorrup','LUMICorrdown','LUMI17Uncorrup','LUMI17Uncorrdown','LUMI1718up','LUMI1718down','PUup','PUdown','ZNORM17up','ZNORM17down','TTNORM17up','TTNORM17down','VVNORM17up','VVNORM17down','SHAPETT','SHAPEZ','SHAPEVV','MUONID17up', 'MUONID17down', 'MUONISO17up', 'MUONISO17down','MUONHLT17up','MUONHLT17down','MUONRECO17up','MUONRECO17down','PDF','BTAG17up','BTAG17down','TOPPT17up','TOPPT17down','PREFIRE17up','PREFIRE17down']
+	_Variations2017 = ['','JES17up','JES17down','MES17up','MES17down','GE17up','GE17down','JER17up','JER17down','MER17','LUMICorrup','LUMICorrdown','LUMI17Uncorrup','LUMI17Uncorrdown','LUMI1718up','LUMI1718down','PUup','PUdown','ZNORM17up','ZNORM17down','TTNORM17up','TTNORM17down','VVNORM17up','VVNORM17down','SHAPETT','SHAPEZ','SHAPEVV','MUONID17up', 'MUONID17down', 'MUONISO17up', 'MUONISO17down','MUONHLT17up','MUONHLT17down','MUONRECO17up','MUONRECO17down','PDF','BTAG17up','BTAG17down','TOPPT17up','TOPPT17down','PREFIRE17up','PREFIRE17down']
 
-	_Variations2018 = ['','JES18up','JES18down','MES18up','MES18down','JER18up','JER18down','MER18','LUMICorrup','LUMICorrdown','LUMI18Uncorrup','LUMI18Uncorrdown','LUMI1718up','LUMI1718down','PUup','PUdown','ZNORM18up','ZNORM18down','TTNORM18up','TTNORM18down','VVNOR18Mup','VVNORM18down','SHAPETT','SHAPEZ','SHAPEVV','MUONID18up', 'MUONID18down', 'MUONISO18up', 'MUONISO18down','MUONHLT18up','MUONHLT18down','MUONRECO18up','MUONRECO18down','PDF','BTAG18up','BTAG18down','TOPPT18up','TOPPT18down','PREFIRE18up','PREFIRE18down']
+	_Variations2018 = ['','JES18up','JES18down','MES18up','MES18down','GE18up','GE18down','JER18up','JER18down','MER18','LUMICorrup','LUMICorrdown','LUMI18Uncorrup','LUMI18Uncorrdown','LUMI1718up','LUMI1718down','PUup','PUdown','ZNORM18up','ZNORM18down','TTNORM18up','TTNORM18down','VVNOR18Mup','VVNORM18down','SHAPETT','SHAPEZ','SHAPEVV','MUONID18up', 'MUONID18down', 'MUONISO18up', 'MUONISO18down','MUONHLT18up','MUONHLT18down','MUONRECO18up','MUONRECO18down','PDF','BTAG18up','BTAG18down','TOPPT18up','TOPPT18down','PREFIRE18up','PREFIRE18down']
 
 	if year == '2016': _Variations = _Variations2016
 	if year == '2017': _Variations = _Variations2017	
@@ -8835,8 +8851,8 @@ def ShapeSystematic(channel,normalWeight,presel,cutFile):
 	Rw_err_diff = dict((x,0.) for x in scaleWeights)
 	Rtt_diff = dict((x,0.) for x in scaleWeights)
 	Rtt_err_diff = dict((x,0.) for x in scaleWeights)
-	RVV_diff = dict((x,0.) for x in scaleWeights)
-	RVV_err_diff = dict((x,0.) for x in scaleWeights)
+	Rvv_diff = dict((x,0.) for x in scaleWeights)
+	Rvv_err_diff = dict((x,0.) for x in scaleWeights)
 
 	#Get un-modified presel scale factors
 	#munu1 = '(MT_uv>70)*(MT_uv<110)*(((CISV_jet1>0.5426)+(CISV_jet2>0.5426))<1)*(2-0.887973*((1.+(0.0523821*Pt_jet1))/(1.+(0.0460876*Pt_jet1))))'
@@ -8846,10 +8862,28 @@ def ShapeSystematic(channel,normalWeight,presel,cutFile):
 	[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = GetMuMuScaleFactors( NormalWeightMuMu+'*'+preselectionmumu, NormalDirectory, '(M_uu>80)*(M_uu<100)', '(M_uu>100)*(M_uu<250)',0,1)
 	#[[Rw_uvjj,Rw_uvjj_err],[Rtt_uvjj,Rtt_uvjj_err]] = GetMuNuScaleFactors( NormalWeightMuNu+'*'+preselectionmunu, NormalDirectory,munu1,munu2,1)
 	[[Rw_uvjj,Rw_uvjj_err],[Rtt_uvjj,Rtt_uvjj_err]] = [[1.0,0.0],[1.0,0.0]]
+
+	# Replace flat Rz with jet-multiplicity-binned Rz
+	Rz_binned = [GetMuMuScaleFactors( NormalWeightMuMu+'*'+preselectionmumu+'*(JetCount=='+str(njet)+')', NormalDirectory, '(M_uu>80)*(M_uu<100)', '(M_uu>100)*(M_uu<250)',0,1)[0] for njet in range(2,6)]
+	Rz_uujj = "(("+Rz_binned[0][0]+"*(JetCount==2))+("+Rz_binned[1][0]+"*(JetCount==3))+("+Rz_binned[2][0]+"*(JetCount==4))+("+Rz_binned[3][0]+"*(JetCount>=5)))"
+	Rz_uujj_err = "(("+Rz_binned[0][1]+"*(JetCount==2))+("+Rz_binned[1][1]+"*(JetCount==3))+("+Rz_binned[2][1]+"*(JetCount==4))+("+Rz_binned[3][1]+"*(JetCount>=5)))"
+
+	[Rvv_uujj,Rvv_uujj_err] = GetDiBosonScaleFactor( NormalWeightDiBoson+'*'+preselectionmumu_3lep+'*'+weight, NormalDirectory, '(M_uu>80)*(M_uu<100)', Rz_uujj, Rtt_uujj, 1)
+
 	#Get presel scale factors for each weight
 	for weight in scaleWeights:
 		if 'uujj' in channel:
+
+			# Initialize modified flat Rz and Rtt
 			[[Rz_diff[weight],Rz_err_diff[weight]],[Rtt_diff[weight],Rtt_err_diff[weight]]] = GetMuMuScaleFactors(NormalWeightMuMu+'*'+preselectionmumu+'*'+weight, NormalDirectory, '(M_uu>80)*(M_uu<100)', '(M_uu>100)*(M_uu<250)',0,1)
+
+			# Replace modified flat Rz in Rz_diff with jet-multiplicity-binned Rz
+			Rz_binned = [GetMuMuScaleFactors( NormalWeightMuMu+'*'+preselectionmumu+'*(NJets=='+njet+')'+'*'+weight, NormalDirectory, '(M_uu>80)*(M_uu<100)', '(M_uu>100)*(M_uu<250)',0,1)[0] for njet in range(2,6)]
+			Rz_diff[weight] = "(("+Rz_binned[0][0]+"*(JetCount==2))+("+Rz_binned[1][0]+"*(JetCount==3))+("+Rz_binned[2][0]+"*(JetCount==4))+("+Rz_binned[3][0]+"*(JetCount>=5)))"
+			Rz_err_diff[weight] = "(("+Rz_binned[0][1]+"*(JetCount==2))+("+Rz_binned[1][1]+"*(JetCount==3))+("+Rz_binned[2][1]+"*(JetCount==4))+("+Rz_binned[3][1]+"*(JetCount>=5)))"
+
+			[Rvv_diff[weight],Rvv_err_diff[weight]] = GetDiBosonScaleFactor( NormalWeightDiBoson+'*'+preselectionmumu_3lep+'*'+weight, NormalDirectory, '(M_uu>80)*(M_uu<100)', Rz_diff[weight], Rtt_diff[weight], 1)
+
 		elif 'uvjj' in channel:
 			[[Rw_diff[weight],Rw_err_diff[weight]],[Rtt_diff[weight],Rtt_err_diff[weight]]] = GetMuNuScaleFactors(NormalWeightMuNu+'*'+preselectionmunu+'*'+weight, NormalDirectory, munu1, munu2,1)
 	for selection in Sels :
@@ -8867,11 +8901,16 @@ def ShapeSystematic(channel,normalWeight,presel,cutFile):
 				Z  = QuickIntegral(t_ZJets,selection[0]+'*'+str(Rz_uujj),1.0)
 				W  = QuickIntegral(t_WJets,selection[0],1.0)
 				tt = QuickIntegral(t_TTBar,selection[0]+'*'+str(Rtt_uujj),1.0)
-				VV = QuickIntegral(t_DiBoson,selection[0],1.0)
+				VV = QuickIntegral(t_DiBoson,selection[0]+'*'+str(Rvv_uujj),1.0)
+				TTV = QuickIntegral(t_TTV,selection[0]+'*'+str(Rvv_uujj),1.0)
+				VV += TTV
+
 				Z_diff  = QuickIntegral(t_ZJets,thisSel+'*'+str(Rz_diff[weight]),1.0)
 				W_diff  = W
 				tt_diff = QuickIntegral(t_TTBar,thisSel+'*'+str(Rtt_diff[weight]),1.0)
-				VV_diff = QuickIntegral(t_DiBoson,thisSel,1.0)
+				VV_diff = QuickIntegral(t_DiBoson,thisSel+'*'+str(Rvv_diff[weight]),1.0)
+				TTV_diff = QuickIntegral(t_TTV,thisSel+'*'+str(Rvv_diff[weight]),1.0)
+				VV_diff += TTV_diff
 			
 			elif 'uvjj' in channel:
 				Z  = QuickIntegral(t_ZJets,selection[0],1.0)
@@ -8927,7 +8966,7 @@ def ShapeSystematic(channel,normalWeight,presel,cutFile):
 	print 'shapesysvar_'+channel+'_zjets  =',shapesysvar_Zjets
 	print 'shapesysvar_'+channel+'_wjets  =',shapesysvar_Wjets
 	print 'shapesysvar_'+channel+'_ttjets =',shapesysvar_TTjets
-	print 'shapesysvar_'+channel+'_vvjets =',shapesysvar_VVjets
+	print 'shapesysvar_'+channel+'_vv	  =',shapesysvar_VVjets
 
 	
 	#sys.stdout.write('shapesysvar')
