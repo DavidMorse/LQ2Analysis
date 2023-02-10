@@ -8461,7 +8461,7 @@ def OptimizeCutsBDT(bins,presel,weight,tag,scalefacs,cutfile,channel):
 		valuetable = sorted(valuetable)
 
 	# Here we write the cuts to a log file
-	with open('Results_'+tag+'/Opt'+signalType+'_'+channel+'Cuts_BDT.txt','w') as optimlog:
+	with open('Results_'+tag+'/Opt_'+signalType+channel+'_Cuts.txt','w') as optimlog:
 		for mass in range(len(valuetable)):
 			# Write string to optimization log file
 			optimlog.write(valuetable[mass][1])
