@@ -8388,7 +8388,10 @@ def OptimizeCutsBDT(bins,presel,weight,tag,scalefacs,cutfile,channel):
 
 	# Get LQ cross sections from ntuple info csv files
 	# Store in a dictionary with key = 'signal' (e.g., 'LQuujj300') and value = xsec
-	with open('NTupleInfo'+year+'Full_stockNano.csv','r') as NTupleInfocsv:
+	# If year == 'combined,' get cross-sections from 2016 info list as default 
+	xsecYear = year
+	if "comb" in year: xsecYear = "2016"
+	with open('NTupleInfo'+xsecYear+'Full_stockNano.csv','r') as NTupleInfocsv:
 		for line in NTupleInfocsv:
 			if signalType+'To'+channelDict[btags] in line and channelDict[channel] in line and '#' not in line:
 				xsecs[signalType+channel+line.split(',')[0].split('-')[-1].split('_')[0]] = float(line.split(',')[1])
@@ -8458,7 +8461,7 @@ def OptimizeCutsBDT(bins,presel,weight,tag,scalefacs,cutfile,channel):
 		valuetable = sorted(valuetable)
 
 	# Here we write the cuts to a log file
-	with open('Results_'+tag+'/Opt'+signalType+'_'+channel+'Cuts_BDT.txt','w') as optimlog:
+	with open('Results_'+tag+'/Opt_'+signalType+channel+'_Cuts.txt','w') as optimlog:
 		for mass in range(len(valuetable)):
 			# Write string to optimization log file
 			optimlog.write(valuetable[mass][1])
