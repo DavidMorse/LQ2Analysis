@@ -785,40 +785,40 @@ def main():
 			[[Rz_uuj,Rz_uuj_err],[Rtt_uuj,Rtt_uuj_err]] = [[1.006,0.015],[0.997,0.013]] #2016 stock NanoAODv7 with 1 btag (uub) 
 			[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = [[1.022,0.017],[0.989,0.014]] #2016 stock NanoAODv7 with 1 btag (uubj) (Rz_uujj = 89% purity, Rtt_uujj = 87% purity)
 			Rz_uujj = "((1.025*(JetCount==2))+(0.949*(JetCount==3))+(1.152*(JetCount==4))+(1.470*(JetCount>=5)))"
-			Rz_uujj_err = "((0.017*(JetCount==2))+(0.032*(JetCount==3))+(0.077*(JetCount==4))+(0.160*(JetCount>=5)))"
+			Rz_uujj_err = [0.017, 0.032, 0.077, 0.160]
 			[Rvv_uujj,Rvv_uujj_err] = [1.064,0.116]
 
 		elif year == '2017':
 			[[Rz_uuj,Rz_uuj_err],[Rtt_uuj,Rtt_uuj_err]]  =  [[1.376,0.019],[1.086,0.011]] #2017 stock NanoAODv7 with 1 btag (uub)
 			[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = [[1.364,0.021],[1.094,0.013]] #2017 stock NanoAODv7 with 1 btag (uubj) (Rz_uujj = 89% purity, Rtt_uujj = 89% purity)
 			Rz_uujj = "((1.236*(JetCount==2))+(1.503*(JetCount==3))+(2.050*(JetCount==4))+(2.815*(JetCount>=5)))"
-			Rz_uujj_err = "((0.021*(JetCount==2))+(0.041*(JetCount==3))+(0.127*(JetCount==4))+(0.350*(JetCount>=5)))"
+			Rz_uujj_err = [0.021, 0.041, 0.127, 0.350]
 			[Rvv_uujj,Rvv_uujj_err] = [1.242,0.125]
 
 		elif year == '2018':
 			[[Rz_uuj,Rz_uuj_err],[Rtt_uuj,Rtt_uuj_err]]  =  [[1.298,0.016],[0.975,0.009]] #2018 stock NanoAODv7 with 1 btag (uub)
 			[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]]  =  [[1.298,0.017],[0.979,0.01]] #2018 stock NanoAODv7 with 1 btag (uubj) (Rz_uujj = 88% purity, Rtt_uujj = 88% purity)
 			Rz_uujj = "((1.164*(JetCount==2))+(1.437*(JetCount==3))+(2.023*(JetCount==4))+(2.804*(JetCount>=5)))"
-			Rz_uujj_err = "((0.017*(JetCount==2))+(0.040*(JetCount==3))+(0.113*(JetCount==4))+(0.335*(JetCount>=5)))"
+			Rz_uujj_err = [0.017, 0.040, 0.113, 0.335]
 			[Rvv_uujj,Rvv_uujj_err] = [1.366,0.11]
 
 		elif "comb" in year:
 			[[Rz_uuj_2016,Rz_uuj_2016_err],[Rtt_uuj_2016,Rtt_uuj_2016_err]] = [[1.006,0.015],[0.997,0.013]] #2016 stock NanoAODv7 with 1 btag (uub) 
 			[[Rz_uujj_2016,Rz_uujj_2016_err],[Rtt_uujj_2016,Rtt_uujj_2016_err]] = [[1.022,0.017],[0.989,0.014]] #2016 stock NanoAODv7 with 1 btag (uubj) (Rz_uujj = 89% purity, Rtt_uujj = 87% purity)
 			Rz_uujj_2016 = "((1.025*(JetCount==2))+(0.949*(JetCount==3))+(1.152*(JetCount==4))+(1.470*(JetCount>=5)))"
-			Rz_uujj_2016_err = "((0.017*(JetCount==2))+(0.032*(JetCount==3))+(0.077*(JetCount==4))+(0.160*(JetCount>=5)))"
+			Rz_uujj_2016_err = [0.017, 0.032, 0.077, 0.160]
 			[Rvv_uujj_2016,Rvv_uujj_2016_err] = [1.064,0.116]
 
 			[[Rz_uuj_2017,Rz_uuj_2017_err],[Rtt_uuj_2017,Rtt_uuj_2017_err]]  =  [[1.376,0.019],[1.086,0.011]] #2017 stock NanoAODv7 with 1 btag (uub)
 			[[Rz_uujj_2017,Rz_uujj_2017_err],[Rtt_uujj_2017,Rtt_uujj_2017_err]] = [[1.364,0.021],[1.094,0.013]] #2017 stock NanoAODv7 with 1 btag (uubj) (Rz_uujj = 89% purity, Rtt_uujj = 89% purity)
 			Rz_uujj_2017 = "((1.236*(JetCount==2))+(1.503*(JetCount==3))+(2.050*(JetCount==4))+(2.815*(JetCount>=5)))"
-			Rz_uujj_2017_err = "((0.021*(JetCount==2))+(0.041*(JetCount==3))+(0.127*(JetCount==4))+(0.350*(JetCount>=5)))"
+			Rz_uujj_2017_err = [0.021, 0.041, 0.127, 0.350]
 			[Rvv_uujj_2017,Rvv_uujj_2017_err] = [1.242,0.125]
 
 			[[Rz_uuj_2018,Rz_uuj_2018_err],[Rtt_uuj_2018,Rtt_uuj_2018_err]]  =  [[1.298,0.016],[0.975,0.009]] #2018 stock NanoAODv7 with 1 btag (uub)
 			[[Rz_uujj_2018,Rz_uujj_2018_err],[Rtt_uujj_2018,Rtt_uujj_2018_err]]  =  [[1.298,0.017],[0.979,0.01]] #2018 stock NanoAODv7 with 1 btag (uubj) (Rz_uujj = 88% purity, Rtt_uujj = 88% purity)
 			Rz_uujj_2018 = "((1.164*(JetCount==2))+(1.437*(JetCount==3))+(2.023*(JetCount==4))+(2.804*(JetCount>=5)))"
-			Rz_uujj_2018_err = "((0.017*(JetCount==2))+(0.040*(JetCount==3))+(0.113*(JetCount==4))+(0.335*(JetCount>=5)))"
+			Rz_uujj_2018_err = [0.017, 0.040, 0.113, 0.335]
 			[Rvv_uujj_2018,Rvv_uujj_2018_err] = [1.366,0.11]
 
 			Rz_uuj = "((Flag_dataYear2016*"+str(Rz_uuj_2016)+")+(Flag_dataYear2017*"+str(Rz_uuj_2017)+")+(Flag_dataYear2018*"+str(Rz_uuj_2018)+"))"
@@ -833,7 +833,7 @@ def main():
 
 			Rz_binned = [GetMuMuScaleFactors( NormalWeightMuMu+'*'+preselectionmumu+'*(JetCount=='+str(njet)+')', NormalDirectory, '(M_uu>80)*(M_uu<100)', '(M_uu>100)*(M_uu<250)',0,0)[0] for njet in range(2,6)]
 			Rz_uujj = "(("+str(Rz_binned[0][0])+"*(JetCount==2))+("+str(Rz_binned[1][0])+"*(JetCount==3))+("+str(Rz_binned[2][0])+"*(JetCount==4))+("+str(Rz_binned[3][0])+"*(JetCount>=5)))"
-			Rz_uujj_err = "(("+str(Rz_binned[0][1])+"*(JetCount==2))+("+str(Rz_binned[1][1])+"*(JetCount==3))+("+str(Rz_binned[2][1])+"*(JetCount==4))+("+str(Rz_binned[3][1])+"*(JetCount>=5)))"
+			Rz_uujj_err = [Rz_binned[0][1], Rz_binned[1][1], Rz_binned[2][1], Rz_binned[3][1]]
 
 			[Rvv_uujj,Rvv_uujj_err] = GetDiBosonScaleFactor( NormalWeightDiBoson+'*'+preselectionmumu_3lep, NormalDirectory, '(M_uu>80)*(M_uu<100)', Rz_uujj, Rtt_uujj, 0)
 
@@ -4591,12 +4591,16 @@ def SysTable(optimlog, selection_uujj,selection_uvjj,NormalDirectory, weight,sys
 
 	Rz_binned = [GetMuMuScaleFactors( selection_uujj+'*(JetCount=='+str(njet)+')', NormalDirectory, '(M_uu>80)*(M_uu<100)', '(M_uu>100)*(M_uu<250)',0,0)[0] for njet in range(2,6)]
 	Rz_uujj = "(("+str(Rz_binned[0][0])+"*(JetCount==2))+("+str(Rz_binned[1][0])+"*(JetCount==3))+("+str(Rz_binned[2][0])+"*(JetCount==4))+("+str(Rz_binned[3][0])+"*(JetCount>=5)))"
-	Rz_uujj_err = "(("+str(Rz_binned[0][1])+"*(JetCount==2))+("+str(Rz_binned[1][1])+"*(JetCount==3))+("+str(Rz_binned[2][1])+"*(JetCount==4))+("+str(Rz_binned[3][1])+"*(JetCount>=5)))"
+	Rz_uujj_err = [Rz_binned[0][1],Rz_binned[1][1],Rz_binned[2][1],Rz_binned[3][1]]
+
+	# Get total Rz +/- uncertainty for ZNORM systematic variations here. Includes +/- 10% systematic to cover st/muj kinematic difference
+	Rz_uujj_up = "(("+str(1.1*Rz_binned[0][0] + Rz_uujj_err[0])+"*(JetCount==2))+("+str(1.1*Rz_binned[1][0] + Rz_uujj_err[1])+"*(JetCount==3))+("+str(1.1*Rz_binned[2][0] + Rz_uujj_err[2])+"*(JetCount==4))+("+str(1.1*Rz_binned[3][0] + Rz_uujj_err[3])+"*(JetCount>=5)))"
+	Rz_uujj_down = "(("+str(0.9*Rz_binned[0][0] - Rz_uujj_err[0])+"*(JetCount==2))+("+str(0.9*Rz_binned[1][0] - Rz_uujj_err[1])+"*(JetCount==3))+("+str(0.9*Rz_binned[2][0] - Rz_uujj_err[2])+"*(JetCount==4))+("+str(0.9*Rz_binned[3][0] - Rz_uujj_err[3])+"*(JetCount>=5)))"
 
 	[Rvv_uujj,Rvv_uujj_err] = GetDiBosonScaleFactor( selection_uujj_diboson, NormalDirectory, '(M_uu>80)*(M_uu<100)', Rz_uujj, Rtt_uujj, 0)
 	[[Rw_uvjj,Rw_uvjj_err],[Rtt_uvjj,Rtt_uvjj_err]] = [[1.0,0.0],[1.0,0.0]]
  
-	Rz_uujj_print = 'R_{Z} = (' + ' '.join( [str(round(Rz_binned[i][0],3)) + ' $\\pm$ ' + str(round(Rz_binned[i][1],3)) + ',' for i in range(4)] ).rstrip(',') + ')'
+	Rz_uujj_print = 'R_{Z} = (' + ' '.join( [str(round(Rz_binned[i][0],3)) + ' $\\pm$ ' + str(round(Rz_uujj_err[i],3)) + ',' for i in range(4)] ).rstrip(',') + ')'
 	Rtt_uujj_print = 'R_{tt} = ' + str(round(Rtt_uujj,3)) + ' $\\pm$ ' + str(round(Rtt_uujj_err,3))
 	Rvv_uujj_print = 'R_{VV} = ' + str(round(Rvv_uujj,3)) + ' $\\pm$ ' + str(round(Rvv_uujj_err,3))
 	#Rw_uvjj_print = str(round(Rw_uvjj,3)) + ' $\\pm$ ' + str(round(Rw_uvjj_err,3))	
@@ -4622,11 +4626,9 @@ def SysTable(optimlog, selection_uujj,selection_uvjj,NormalDirectory, weight,sys
 
 
 	if 'ZNORM' in sysmethod and 'up' in sysmethod :   
-		rz *= 1.1# adding this to cover st/muj kinematic difference
-		rz += _e_rz 
+		rz = Rz_uujj_up 
 	if 'ZNORM' in sysmethod and 'down' in sysmethod : 
-		rz *= 0.9# adding this to cover st/muj kinematic difference
-		rz += -_e_rz 
+		rz = Rz_uujj_down
 	if 'WNORM' in sysmethod and 'up' in sysmethod :     
 		rw += _e_rw
 	if 'WNORM' in sysmethod and 'down' in sysmethod :  
@@ -4636,9 +4638,9 @@ def SysTable(optimlog, selection_uujj,selection_uvjj,NormalDirectory, weight,sys
 	if 'TTNORM' in sysmethod and 'down' in sysmethod :  
 		rt += -_e_rt 	
 	if 'VVNORM' in sysmethod and 'up' in sysmethod :
-		rvv += _e_rvv #rvv = Rvv_uujj_up
+		rvv += _e_rvv
 	if 'VVNORM' in sysmethod and 'down' in sysmethod :
-		rvv += -_e_rvv #rvv = Rvv_uujj_down
+		rvv += -_e_rvv
 
 	#if 'SHAPETT' in sysmethod : 
 		#if 'uujj' in optimlog: 
@@ -4696,11 +4698,11 @@ def SysTable(optimlog, selection_uujj,selection_uvjj,NormalDirectory, weight,sys
 
 
 
-		rstop = 1
+		rstop = 1.0
 		rdiboson = rvv
 		#rqcd = 1
 		rttv = rvv
-		rsig = 1
+		rsig = 1.0
 		_rt = rt
 		_rw = rw
 		_rz = rz
@@ -4715,7 +4717,7 @@ def SysTable(optimlog, selection_uujj,selection_uvjj,NormalDirectory, weight,sys
 			if 'uujj' in optimlog:
 				#_rz *= (1.0+shapesysvar_uujj_zjets[nalign+1]*0.01)
 				#fixme adding this to cover pt-binned vs inclusive shape difference
-				_rz *= (1.0 + math.sqrt(.04*.04+shapesysvar_uujj_zjets[nalign+1]*0.01*shapesysvar_uujj_zjets[nalign+1]*0.01))
+				_rz += '*('+str(1.0 + math.sqrt(.04*.04+shapesysvar_uujj_zjets[nalign+1]*0.01*shapesysvar_uujj_zjets[nalign+1]*0.01))+')'
                         #if 'uvjj' in optimlog:
 			#	_rz *= (1.0+shapesysvar_uvjj_zjets[nalign+1]*0.01)
 
@@ -4737,7 +4739,7 @@ def SysTable(optimlog, selection_uujj,selection_uvjj,NormalDirectory, weight,sys
 		if 'PDF' in sysmethod:
 			if 'uujj' in optimlog:
 				_rt      *= (1.0+pdf_uujj_TTBar[nalign]*0.01)
-				_rz      *= (1.0+pdf_uujj_ZJets[nalign]*0.01)
+				_rz 	 += '*('+str(1.0+pdf_uujj_ZJets[nalign]*0.01)+')'
 				_rw      *= (1.0+pdf_uujj_WJets[nalign]*0.01)
 				rstop    *= (1.0+pdf_uujj_sTop[nalign]*0.01)
 				rdiboson *= (1.0+pdf_uujj_VV[nalign]*0.01)
@@ -4755,21 +4757,12 @@ def SysTable(optimlog, selection_uujj,selection_uvjj,NormalDirectory, weight,sys
 				rsig     *= (1.0+pdf_uvjj_Signal[nalign]*0.01)
 
 		if 'GE' in sysmethod and 'up' in sysmethod:
-			_rt      	*= (1.0+GEScaleSys_Background[nalign]*0.01)
-			_rw      	*= (1.0+GEScaleSys_Background[nalign]*0.01)
-			_rz      	*= (1.0+GEScaleSys_Background[nalign]*0.01)
-			rstop    	*= (1.0+GEScaleSys_Background[nalign]*0.01)
-			rdiboson	*= (1.0+GEScaleSys_Background[nalign]*0.01)
-			rttv		*= (1.0+GEScaleSys_Background[nalign]*0.01)
-			rsig 		*= (1.0+GEScaleSys_Signal[nalign]*0.01)
+			rglobalb	*= (1.0+GEScaleSys_Background[nalign]*0.01)
+			rglobals	*= (1.0+GEScaleSys_Signal[nalign]*0.01)
+
 		if 'GE' in sysmethod and 'down' in sysmethod:
-			_rt      	*= (1.0-GEScaleSys_Background[nalign]*0.01)
-			_rw      	*= (1.0-GEScaleSys_Background[nalign]*0.01)
-			_rz      	*= (1.0-GEScaleSys_Background[nalign]*0.01)
-			rstop    	*= (1.0-GEScaleSys_Background[nalign]*0.01)
-			rdiboson	*= (1.0-GEScaleSys_Background[nalign]*0.01)
-			rttv		*= (1.0-GEScaleSys_Background[nalign]*0.01)
-			rsig 		*= (1.0-GEScaleSys_Signal[nalign]*0.01)
+			rglobalb	*= (1.0-GEScaleSys_Background[nalign]*0.01)
+			rglobals	*= (1.0-GEScaleSys_Signal[nalign]*0.01)
 
 		exec('treefeed = ['+chan+']')
 		treefeed.append(t_SingleMuData)
@@ -8913,7 +8906,7 @@ def ShapeSystematic(channel,normalWeight,presel,cutFile):
 	# Replace flat Rz with jet-multiplicity-binned Rz
 	Rz_binned = [GetMuMuScaleFactors( NormalWeightMuMu+'*'+preselectionmumu+'*(JetCount=='+str(njet)+')', NormalDirectory, '(M_uu>80)*(M_uu<100)', '(M_uu>100)*(M_uu<250)',0,1)[0] for njet in range(2,6)]
 	Rz_uujj = "(("+str(Rz_binned[0][0])+"*(JetCount==2))+("+str(Rz_binned[1][0])+"*(JetCount==3))+("+str(Rz_binned[2][0])+"*(JetCount==4))+("+str(Rz_binned[3][0])+"*(JetCount>=5)))"
-	Rz_uujj_err = "(("+str(Rz_binned[0][1])+"*(JetCount==2))+("+str(Rz_binned[1][1])+"*(JetCount==3))+("+str(Rz_binned[2][1])+"*(JetCount==4))+("+str(Rz_binned[3][1])+"*(JetCount>=5)))"
+	Rz_uujj_err = [Rz_binned[0][1],Rz_binned[1][1],Rz_binned[2][1],Rz_binned[3][1]]
 
 	[Rvv_uujj,Rvv_uujj_err] = GetDiBosonScaleFactor( NormalWeightDiBoson+'*'+preselectionmumu_3lep, NormalDirectory, '(M_uu>80)*(M_uu<100)', Rz_uujj, Rtt_uujj, 1)
 
@@ -8925,10 +8918,9 @@ def ShapeSystematic(channel,normalWeight,presel,cutFile):
 			[[Rz_diff[weight],Rz_err_diff[weight]],[Rtt_diff[weight],Rtt_err_diff[weight]]] = GetMuMuScaleFactors(NormalWeightMuMu+'*'+preselectionmumu+'*'+weight, NormalDirectory, '(M_uu>80)*(M_uu<100)', '(M_uu>100)*(M_uu<250)',0,1)
 
 			# Replace modified flat Rz in Rz_diff with jet-multiplicity-binned Rz
-			Rz_binned = [GetMuMuScaleFactors( NormalWeightMuMu+'*'+preselectionmumu+'*(JetCount=='+str(njet)+')'+'*'+weight, NormalDirectory, '(M_uu>80)*(M_uu<100)', '(M_uu>100)*(M_uu<250)',0,1)[0] for njet in range(2,6)]
-			Rz_diff[weight] = "(("+str(Rz_binned[0][0])+"*(JetCount==2))+("+str(Rz_binned[1][0])+"*(JetCount==3))+("+str(Rz_binned[2][0])+"*(JetCount==4))+("+str(Rz_binned[3][0])+"*(JetCount>=5)))"
-			Rz_err_diff[weight] = "(("+str(Rz_binned[0][1])+"*(JetCount==2))+("+str(Rz_binned[1][1])+"*(JetCount==3))+("+str(Rz_binned[2][1])+"*(JetCount==4))+("+str(Rz_binned[3][1])+"*(JetCount>=5)))"
-
+			Rz_binned_wt = [GetMuMuScaleFactors( NormalWeightMuMu+'*'+preselectionmumu+'*(JetCount=='+str(njet)+')*'+weight, NormalDirectory, '(M_uu>80)*(M_uu<100)', '(M_uu>100)*(M_uu<250)',0,1)[0] for njet in range(2,6)]
+			Rz_diff[weight] = "(("+str(Rz_binned_wt[0][0])+"*(JetCount==2))+("+str(Rz_binned_wt[1][0])+"*(JetCount==3))+("+str(Rz_binned_wt[2][0])+"*(JetCount==4))+("+str(Rz_binned_wt[3][0])+"*(JetCount>=5)))"
+			Rz_err_diff[weight] = [Rz_binned_wt[0][1],Rz_binned_wt[1][1],Rz_binned_wt[2][1],Rz_binned_wt[3][1]]
 			[Rvv_diff[weight],Rvv_err_diff[weight]] = GetDiBosonScaleFactor( NormalWeightDiBoson+'*'+preselectionmumu_3lep+'*'+weight, NormalDirectory, '(M_uu>80)*(M_uu<100)', Rz_diff[weight], Rtt_diff[weight], 1)
 
 		elif 'uvjj' in channel:
