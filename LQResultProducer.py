@@ -8847,7 +8847,8 @@ def FixFinalCards(cardsets):
 	fout = open(f,'w')
 	for c in cardsets:
 		for line in open(c,'r'):
-			if 'observation' in line: line = 'observation 0\n'
+			# Unblinding
+			#if 'observation' in line: line = 'observation 0\n'
 			line = line.replace('bin  1  1  1  1  1  1  1 ','bin  lqToBMu  lqToBMu  lqToBMu  lqToBMu  lqToBMu  lqToBMu  lqToBMu ')
 			line = line.replace('bin 1','bin lqToBMu')
 			line = line.replace('uujj','_M_')
