@@ -1209,9 +1209,9 @@ def main():
 	# Alternatively, you can run > python SysBatcher.py --launch to do each table in a separate batch job
 	# When done, proceed to the next step to make higgs limit cards
 	if False : 
-		#FullAnalysis(MuMuOptCutFile, preselectionmumu,preselectionmunu,NormalDirectory,NormalWeightMuMu,'TTBarDataDriven') 
-		FullAnalysis(MuMuOptCutFile, preselectionmumu,preselectionmunu,NormalDirectory,NormalWeightMuMu,'normal') # scriptflag 
-		#FullAnalysis(MuNuOptCutFile, preselectionmumu,preselectionmunu,NormalDirectory,NormalWeightMuNu,'normal')
+		#FullAnalysis(MuMuOptCutFile, preselectionmumu,preselectionmunu,preselectionmumu_3lep,NormalDirectory,NormalWeightMuMu,NormalWeightDiBoson,'TTBarDataDriven') 
+		FullAnalysis(MuMuOptCutFile, preselectionmumu, preselectionmunu, preselectionmumu_3lep, NormalDirectory, NormalWeightMuMu, NormalWeightDiBoson, 'normal') # scriptflag 
+		#FullAnalysis(MuNuOptCutFile, preselectionmumu,preselectionmunu,preselectionmumu_3lep,NormalDirectory,NormalWeightMuNu,NormalWeightDiBoson,'normal')
 	if False :
  		uujjcardfiles = MuMuOptCutFile.replace('.txt','_systable*.txt')
 		#uvjjcardfiles = MuNuOptCutFile.replace('.txt','_systable*.txt')
@@ -1373,8 +1373,8 @@ def main():
 		#[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = GetMuMuScaleFactors( NormalWeightMuMu+'*'+preselectionmumu, NormalDirectory, '(M_uu>80)*(M_uu<100)', '(M_uu>100)',0,1)
 		#[[Rw_uvjj,Rw_uvjj_err],[Rtt_uvjj,Rtt_uvjj_err]] = GetMuNuScaleFactors( NormalWeightMuNu+'*'+preselectionmunu, NormalDirectory, munu1,munu2,1)#fixme todo varying control sample MT window
 		
-		ShapeSystematic('uujj',NormalWeightMuMu,preselectionmumu,MuMuOptTestCutFile)
-		#ShapeSystematic('uvjj',NormalWeightMuNu,preselectionmunu,MuNuOptTestCutFile)
+		ShapeSystematic('uujj',NormalWeightMuMu,NormalWeightDiBoson,preselectionmumu,preselectionmumu_3lep,MuMuOptTestCutFile)
+		#ShapeSystematic('uvjj',NormalWeightMuNu,NormalWeightDiBoson,preselectionmunu,preselectionmumu_3lep,MuNuOptTestCutFile)
 
 
 	# ====================================================================================================================================================== #
@@ -4553,7 +4553,7 @@ def ModSelection(selection,sysmethod,channel_log):
 	return selection
 
 
-def SysTable(optimlog, selection_uujj,selection_uvjj,NormalDirectory, weight,sysmethod):
+def SysTable(optimlog, selection_uujj,selection_uvjj,selection_uujj_Rvv,NormalDirectory,weight,weight_Rvv,sysmethod):
 	global munu1
 	global munu2
 	for f in NormalFiles:
@@ -4564,10 +4564,10 @@ def SysTable(optimlog, selection_uujj,selection_uvjj,NormalDirectory, weight,sys
 		exec (_tree+" = "+_treeTmp+".Get(\""+TreeName+"\")")
 	selection_uujj = selection_uujj+'*'+weight
 	selection_uvjj = selection_uvjj+'*'+weight
-	selection_uujj_diboson = NormalWeightDiBoson+'*'+preselectionmumu_3lep
+	selection_uujj_Rvv = selection_uujj_Rvv+'*'+weight_Rvv
 	selection_uujj = ModSelection(selection_uujj,sysmethod,optimlog)
 	selection_uvjj = ModSelection(selection_uvjj,sysmethod,optimlog)
-	selection_uujj_diboson = ModSelection(selection_uujj_diboson,sysmethod,optimlog)
+	selection_uujj_Rvv = ModSelection(selection_uujj_Rvv,sysmethod,optimlog)
 
 	if sysmethod == 'BTAGup':
 		if 'uvjj' in optimlog:
@@ -4597,7 +4597,7 @@ def SysTable(optimlog, selection_uujj,selection_uvjj,NormalDirectory, weight,sys
 	Rz_uujj_up = "(("+str(1.1*Rz_binned[0][0] + Rz_uujj_err[0])+"*(JetCount==2))+("+str(1.1*Rz_binned[1][0] + Rz_uujj_err[1])+"*(JetCount==3))+("+str(1.1*Rz_binned[2][0] + Rz_uujj_err[2])+"*(JetCount==4))+("+str(1.1*Rz_binned[3][0] + Rz_uujj_err[3])+"*(JetCount>=5)))"
 	Rz_uujj_down = "(("+str(0.9*Rz_binned[0][0] - Rz_uujj_err[0])+"*(JetCount==2))+("+str(0.9*Rz_binned[1][0] - Rz_uujj_err[1])+"*(JetCount==3))+("+str(0.9*Rz_binned[2][0] - Rz_uujj_err[2])+"*(JetCount==4))+("+str(0.9*Rz_binned[3][0] - Rz_uujj_err[3])+"*(JetCount>=5)))"
 
-	[Rvv_uujj,Rvv_uujj_err] = GetDiBosonScaleFactor( selection_uujj_diboson, NormalDirectory, '(M_uu>80)*(M_uu<100)', Rz_uujj, Rtt_uujj, 0)
+	[Rvv_uujj,Rvv_uujj_err] = GetDiBosonScaleFactor( selection_uujj_Rvv, NormalDirectory, '(M_uu>80)*(M_uu<100)', Rz_uujj, Rtt_uujj, 0)
 	[[Rw_uvjj,Rw_uvjj_err],[Rtt_uvjj,Rtt_uvjj_err]] = [[1.0,0.0],[1.0,0.0]]
  
 	Rz_uujj_print = 'R_{Z} = (' + ' '.join( [str(round(Rz_binned[i][0],3)) + ' $\\pm$ ' + str(round(Rz_uujj_err[i],3)) + ',' for i in range(4)] ).rstrip(',') + ')'
@@ -4956,7 +4956,7 @@ def SysTableTTDD(optimlog, selection_uujj,selection_uvjj,NormalDirectory, weight
 		QuickSysTableLineTTDD(treefeed,selections,scalefacs,sysfile,chan,rglobals,rglobalb)
 		# break
 
-def FullAnalysis(optimlog,selection_uujj,selection_uvjj,NormalDirectory,weight,usedd):
+def FullAnalysis(optimlog,selection_uujj,selection_uvjj,selection_uujj_Rvv,NormalDirectory,weight,weight_Rvv,usedd):
         global year
 	TTDD = False
 	if usedd=='TTBarDataDriven':
@@ -4986,7 +4986,7 @@ def FullAnalysis(optimlog,selection_uujj,selection_uvjj,NormalDirectory,weight,u
 		if TTDD:
 			SysTableTTDD(optimlog, selection_uujj, selection_uvjj,NormalDirectory, weight,v)
 		else:
-			SysTable(optimlog, selection_uujj, selection_uvjj,NormalDirectory, weight,v)
+			SysTable(optimlog, selection_uujj, selection_uvjj, selection_uujj_Rvv, NormalDirectory, weight, weight_Rvv, v)
 
 def GetScaleFactors(n1,n2,a1,a2,b1,b2,o1,o2):
 	Ra = 1.0
@@ -8856,11 +8856,12 @@ def FixFinalCards(cardsets):
 	fout.close()
 	return f
 
-def ShapeSystematic(channel,normalWeight,presel,cutFile):
+def ShapeSystematic(channel,normalWeight,normalWeight_Rvv,presel,presel_Rvv,cutFile):
 	print '\n\n--------------\n--------------\nRunning shape systematics for',channel,'channel.  This will take some time, be patient....'
 	NoSelection = ['1.0','No selection!']
 	Selection = [normalWeight,'Weight only']
 	PreSelection = [normalWeight+'*'+presel,'Preselection']
+	PreSelection_Rvv = normalWeight_Rvv+'*'+presel_Rvv
 	#Sels = [NoSelection,Selection,PreSelection]
 	Sels = [PreSelection]
 	for line in open(cutFile,'r'):
@@ -8899,29 +8900,34 @@ def ShapeSystematic(channel,normalWeight,presel,cutFile):
 	#munu2 = '(MT_uv>70)*(MT_uv<110)*(((CISV_jet1>0.8484)+(CISV_jet2>0.8484))>=1)*(0.561694*((1.+(0.31439*Pt_jet1))/(1.+(0.17756*Pt_jet1))))'#*(CISV_jet1>CISV_jet2)+(0.901114+(1.40704e-05*(Pt_jet2)))*(CISV_jet2>0.8484)*(CISV_jet1<CISV_jet2))'
 	#munu1 = '(MT_uv>100)*(MT_uv<150)*(((CISV_jet1>0.5)+(CISV_jet2>0.5))<1)'
 	#munu2 = '(MT_uv>100)*(MT_uv<150)*(((CISV_jet1>0.8484)+(CISV_jet2>0.8484))>=1)*((0.901114+(1.32145e-05*(Pt_jet1))))'#*(CISV_jet1>CISV_jet2)+(0.901114+(1.40704e-05*(Pt_jet2)))*(CISV_jet2>0.8484)*(CISV_jet1<CISV_jet2))'
-	[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = GetMuMuScaleFactors( NormalWeightMuMu+'*'+preselectionmumu, NormalDirectory, '(M_uu>80)*(M_uu<100)', '(M_uu>100)*(M_uu<250)',0,1)
+	[[Rz_uujj,Rz_uujj_err],[Rtt_uujj,Rtt_uujj_err]] = GetMuMuScaleFactors( PreSelection[0], NormalDirectory, '(M_uu>80)*(M_uu<100)', '(M_uu>100)*(M_uu<250)',0,1)
 	#[[Rw_uvjj,Rw_uvjj_err],[Rtt_uvjj,Rtt_uvjj_err]] = GetMuNuScaleFactors( NormalWeightMuNu+'*'+preselectionmunu, NormalDirectory,munu1,munu2,1)
 	[[Rw_uvjj,Rw_uvjj_err],[Rtt_uvjj,Rtt_uvjj_err]] = [[1.0,0.0],[1.0,0.0]]
 
 	# Replace flat Rz with jet-multiplicity-binned Rz
-	Rz_binned = [GetMuMuScaleFactors( NormalWeightMuMu+'*'+preselectionmumu+'*(JetCount=='+str(njet)+')', NormalDirectory, '(M_uu>80)*(M_uu<100)', '(M_uu>100)*(M_uu<250)',0,1)[0] for njet in range(2,6)]
+	Rz_binned = [GetMuMuScaleFactors( PreSelection[0]+'*(JetCount=='+str(njet)+')', NormalDirectory, '(M_uu>80)*(M_uu<100)', '(M_uu>100)*(M_uu<250)',0,1)[0] for njet in range(2,6)]
 	Rz_uujj = "(("+str(Rz_binned[0][0])+"*(JetCount==2))+("+str(Rz_binned[1][0])+"*(JetCount==3))+("+str(Rz_binned[2][0])+"*(JetCount==4))+("+str(Rz_binned[3][0])+"*(JetCount>=5)))"
 	Rz_uujj_err = [Rz_binned[0][1],Rz_binned[1][1],Rz_binned[2][1],Rz_binned[3][1]]
 
-	[Rvv_uujj,Rvv_uujj_err] = GetDiBosonScaleFactor( NormalWeightDiBoson+'*'+preselectionmumu_3lep, NormalDirectory, '(M_uu>80)*(M_uu<100)', Rz_uujj, Rtt_uujj, 1)
+	[Rvv_uujj,Rvv_uujj_err] = GetDiBosonScaleFactor( PreSelection_Rvv, NormalDirectory, '(M_uu>80)*(M_uu<100)', Rz_uujj, Rtt_uujj, 1)
 
 	#Get presel scale factors for each weight
 	for weight in scaleWeights:
 		if 'uujj' in channel:
 
+			# Modify selections for SFs with scale weight
+			PreSel_diff = PreSelection[0]+'*'+weight
+			PreSel_Rvv_diff = PreSelection_Rvv+'*'+weight
+
 			# Initialize modified flat Rz and Rtt
-			[[Rz_diff[weight],Rz_err_diff[weight]],[Rtt_diff[weight],Rtt_err_diff[weight]]] = GetMuMuScaleFactors(NormalWeightMuMu+'*'+preselectionmumu+'*'+weight, NormalDirectory, '(M_uu>80)*(M_uu<100)', '(M_uu>100)*(M_uu<250)',0,1)
+			[[Rz_diff[weight],Rz_err_diff[weight]],[Rtt_diff[weight],Rtt_err_diff[weight]]] = GetMuMuScaleFactors(PreSel_diff, NormalDirectory, '(M_uu>80)*(M_uu<100)', '(M_uu>100)*(M_uu<250)',0,1)
 
 			# Replace modified flat Rz in Rz_diff with jet-multiplicity-binned Rz
-			Rz_binned_wt = [GetMuMuScaleFactors( NormalWeightMuMu+'*'+preselectionmumu+'*(JetCount=='+str(njet)+')*'+weight, NormalDirectory, '(M_uu>80)*(M_uu<100)', '(M_uu>100)*(M_uu<250)',0,1)[0] for njet in range(2,6)]
-			Rz_diff[weight] = "(("+str(Rz_binned_wt[0][0])+"*(JetCount==2))+("+str(Rz_binned_wt[1][0])+"*(JetCount==3))+("+str(Rz_binned_wt[2][0])+"*(JetCount==4))+("+str(Rz_binned_wt[3][0])+"*(JetCount>=5)))"
-			Rz_err_diff[weight] = [Rz_binned_wt[0][1],Rz_binned_wt[1][1],Rz_binned_wt[2][1],Rz_binned_wt[3][1]]
-			[Rvv_diff[weight],Rvv_err_diff[weight]] = GetDiBosonScaleFactor( NormalWeightDiBoson+'*'+preselectionmumu_3lep+'*'+weight, NormalDirectory, '(M_uu>80)*(M_uu<100)', Rz_diff[weight], Rtt_diff[weight], 1)
+			Rz_binned_diff = [GetMuMuScaleFactors( PreSel_diff+'*(JetCount=='+str(njet)+')', NormalDirectory, '(M_uu>80)*(M_uu<100)', '(M_uu>100)*(M_uu<250)',0,1)[0] for njet in range(2,6)]
+			Rz_diff[weight] = "(("+str(Rz_binned_diff[0][0])+"*(JetCount==2))+("+str(Rz_binned_diff[1][0])+"*(JetCount==3))+("+str(Rz_binned_diff[2][0])+"*(JetCount==4))+("+str(Rz_binned_diff[3][0])+"*(JetCount>=5)))"
+			Rz_err_diff[weight] = [Rz_binned_diff[0][1],Rz_binned_diff[1][1],Rz_binned_diff[2][1],Rz_binned_diff[3][1]]
+
+			[Rvv_diff[weight],Rvv_err_diff[weight]] = GetDiBosonScaleFactor( PreSel_Rvv_diff, NormalDirectory, '(M_uu>80)*(M_uu<100)', Rz_diff[weight], Rtt_diff[weight], 1)
 
 		elif 'uvjj' in channel:
 			[[Rw_diff[weight],Rw_err_diff[weight]],[Rtt_diff[weight],Rtt_err_diff[weight]]] = GetMuNuScaleFactors(NormalWeightMuNu+'*'+preselectionmunu+'*'+weight, NormalDirectory, munu1, munu2,1)
