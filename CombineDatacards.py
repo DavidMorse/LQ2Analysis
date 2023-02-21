@@ -5,8 +5,8 @@ parser.add_argument("-y", "--year", dest="year", help="option to pick running ye
 options = parser.parse_args()
 year = str(options.year)
 
-FinalDatacard = 'Results_'+year+'_muPt20_dibosonSF/Final_selection/FinalCardsFinSelSysLQ_'+year+'.txt'
-SysDatacard = 'Results_'+year+'_muPt20_dibosonSF/Enhanced_selection/FinalCardsLQ_'+year+'.txt'
+FinalDatacard = 'Results_'+year+'_Unblinded/Final_selection/FinalCardsFinSelSysLQ_'+year+'.txt'
+SysDatacard = 'Results_'+year+'_Unblinded/Enhanced_selection/FinalCardsLQ_'+year+'.txt'
 
 SysLines = {}
 
@@ -32,7 +32,7 @@ with open(FinalDatacard,'r') as finFile:
 
 masses = ['300','400','500','600','700','800','900','1000','1100','1200','1300','1400','1500','1600','1700','1800','1900','2000','2100','2200','2300','2400','2500','2600','2700','2800','2900','3000','3500','4000']
 
-with open('Results_'+year+'_muPt20_dibosonSF/Final_selection/FinalCardsLQ_'+year+'.txt','w') as outFile:
+with open('Results_'+year+'_Unblinded/Final_selection/FinalCardsLQ_'+year+'.txt','w') as outFile:
     for mass in masses:
         rateLine = 1000000000000
         for i,finLine in enumerate(FinLines[mass]):
