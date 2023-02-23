@@ -45,7 +45,7 @@ for c in ['uujj']: #,'uvjj']:
 	for v in _Variations:
 		tmpnum += 1
 		# this will be the new .py file for this channel/variation
-		runfile = '__'+('LQResultProducer.py').replace('.py','__'+v+'__'+c+'.py')
+		runfile = '__'+('LQResultProducer.py').replace('.py','__'+year+'__'+v+'__'+c+'.py')
 		fout = open(runfile,'w')
 
 		# Loop over lines, and detect whether the line is in the main function

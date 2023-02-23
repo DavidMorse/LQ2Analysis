@@ -12,7 +12,7 @@ ESTIMATIONMETHOD = ' -M AsymptoticLimits '
 METHOD = '-M HybridNew --rule CLs --frequentist CONFIGURATION --clsAcc=0 -s -1 -T 70 -i 70 --singlePoint SINGLEPOINT --saveToys --saveHybridResult'
 person = (os.popen('whoami').readlines())[0].replace('\n','')
 
-blind = True
+blind = False
 
 masses = []
 do_BetaOne = 0
@@ -236,7 +236,10 @@ if do_BetaOne == 1:
 			ntry += 1
 			rAbsAcc='.000005'
 			print ('combine '+ESTIMATIONMETHOD+' CLSLimits/BetaOne'+cdir+'/confbetaone_'+cdir+'_'+name[x]+'.cfg --expectSignal 1'+' --rMax '+str(rmax)+'  --rAbsAcc '+rAbsAcc)
-			EstimationInformation = os.popen('combine '+ESTIMATIONMETHOD+' CLSLimits/BetaOne'+cdir+'/confbetaone_'+cdir+'_'+name[x]+'.cfg  --expectSignal 1'+' --rMax '+str(rmax)+' --rAbsAcc '+rAbsAcc+' --run blind').readlines()
+			if blind:
+				EstimationInformation = os.popen('combine '+ESTIMATIONMETHOD+' CLSLimits/BetaOne'+cdir+'/confbetaone_'+cdir+'_'+name[x]+'.cfg  --expectSignal 1'+' --rMax '+str(rmax)+' --rAbsAcc '+rAbsAcc+' --run blind').readlines()
+			else:
+				EstimationInformation = os.popen('combine '+ESTIMATIONMETHOD+' CLSLimits/BetaOne'+cdir+'/confbetaone_'+cdir+'_'+name[x]+'.cfg  --expectSignal 1'+' --rMax '+str(rmax)+' --rAbsAcc '+rAbsAcc).readlines()
 			#print ('combine '+METHOD.replace('SINGLEPOINT',str(rmax)).replace('CONFIGURATION','CLSLimits/BetaOne'+cdir+'/confbetaone_'+cdir+'_'+name[x]+'.cfg'))
 			#EstimationInformation = os.popen('combine '+METHOD.replace('SINGLEPOINT',str(rmax)).replace('CONFIGURATION','CLSLimits/BetaOne'+cdir+'/confbetaone_'+cdir+'_'+name[x]+'.cfg')).readlines()
 
