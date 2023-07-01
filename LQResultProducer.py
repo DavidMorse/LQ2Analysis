@@ -4616,6 +4616,41 @@ def ModSelection(selection,sysmethod,channel_log):
 
 	return selection
 
+def ParameterizeSysLine(sysLines, maxSysLines, mass):
+
+	# Hardcoded parameters are extracted from fitting 1000, 1500, and 1800 GeV total background systematics
+	# Hardcoded total background systematics are for 1800 GeV (where parameterization starts) 
+	# If systematics are updated--these quantities should be recomputed
+	# Can use MakeTablesFromDatacards.py and SystematicFitStudy.py to get totBkgSys and fit parameters
+	# Updated 6/30/2023
+
+	params = [0.,0.]
+	if year == "2016": 
+		params = [0.010080612244897947, -1.3488775510203816]
+		totBkgSys = 16.56
+	if year == "2017": 
+		params = [0.012532653061224476, -2.7934693877550747]
+		totBkgSys = 20.45
+	if year == "2018": 
+		params = [0.013472448979591828, -3.8605102040816113]
+		totBkgSys = 20.42
+
+	scale = (params[0]*mass + params[1])/totBkgSys
+
+	allNewSysLines = []
+
+	for i, sysLine in enumerate(maxSysLines):
+
+		# Use signal systematics from nominal datacard
+		newSysLine = sysLines[i].split()[0]+"  "+sysLines[i].split()[1]+"   "+sysLines[i].split()[2]+" "
+
+		# Use paramaterized systematics extrapolated from 1800 GeV systematics
+		for sys in sysLine.split()[3:]:
+			newSysLine += str(1.0 + scale*(float(sys)-1.0))+" "
+
+		allNewSysLines.append(newSysLine)
+
+	return allNewSysLines
 
 def SysTable(optimlog, selection_uujj,selection_uvjj,selection_uujj_Rvv,NormalDirectory,weight,weight_Rvv,sysmethod):
 	global munu1
@@ -4818,6 +4853,7 @@ def SysTable(optimlog, selection_uujj,selection_uvjj,selection_uujj_Rvv,NormalDi
 			rglobals	*= (1.0-GEScaleSys_Signal[nalign]*0.01)
 
 		exec('treefeed = ['+chan+']')
+
 		treefeed.append(t_SingleMuData)
 		#treefeed.append([t_TTBar,t_ZJets,t_WJets,t_SingleTop,t_DiBoson,t_QCDMu])
 		treefeed.append([t_TTBar,t_ZJets,t_WJets,t_SingleTop,t_DiBoson,t_TTV])
@@ -8911,13 +8947,15 @@ def ParseFinalCards(cardcoll):
 		fout.write( rateline+'\n')
 		fout.write( ' '+'\n')
 		
-		#if channel=='uujj' and int(LQmass)==1500:
-		#	syslinesMax = syslines
+		if channel=='uujj' and int(LQmass)==1800:
+			syslinesMax = syslines
+
 		if channel=='uvjj' and int(LQmass)==900:
 			syslinesMax = syslines
 
-		#if channel=='uujj' and int(LQmass)>1500:
-		#	syslines = syslinesMax
+		if channel=='uujj' and int(LQmass)>1800:
+			syslines = ParameterizeSysLine(syslines, syslinesMax, int(LQmass))
+
 		if channel=='uvjj' and int(LQmass)>900:
 			syslines = syslinesMax
 		

@@ -521,6 +521,65 @@ def RatePlotLines(rates, masses):
 
 	return lines
 
+
+def SysRangesByYearTable(rates, sysList, sysNames):
+	
+	from datetime import date
+
+	today = date.today().strftime("%m/%d/%y")
+
+	sysTable = '% Systematic ranges, per year - ' + today + ' \n'
+	sysTable += r'\begin{table}[htbp]' + '\n'
+	sysTable += '\t' + r'\begin{center}' + '\n'
+	sysTable += '\t\t' + r'\caption{Range of systematic uncertainties on signal (Sig.) and background (Bkg.) in 2016, 2017, and 2018.}' + '\n'
+	sysTable += '\t\t' + r'\begin{tabular}{lcccccc}' + '\n'
+	sysTable += '\t\t\t' + r'\hline\hline' + '\n'
+	sysTable += '\t\t\t' + r'& \multicolumn{2}{c}{2016 (min--max) [\%]} & \multicolumn{2}{c}{2017 (min--max) [\%]} & \multicolumn{2}{c}{2018 (min--max) [\%]} \\'+ '\n'
+	sysTable += '\t\t\t' + r'Systematic & Sig. (\%) & Bkg. (\%) & Sig. (\%) & Bkg. (\%) & Sig. (\%) & Bkg. (\%) \\ \hline' + '\n'
+
+	sigSysNames = rates[mass]["2016"]["Signal"].GetAllRelSys()
+	bkgSysNames = rates[mass]["2016"]["Background"].GetAllRelSys()	
+
+	for sysName in sysList:
+		if "Total" in sysName: continue
+		sysTable += '\t\t\t' + sysNames[sysName]
+		for year in ['2016', '2017', '2018']:
+
+			sigSysMin = round(100*min([rates[m][year]["Signal"].GetRelSys(sysName) for m in rates]), 2)
+			sigSysMax = round(100*max([rates[m][year]["Signal"].GetRelSys(sysName) for m in rates]), 2)
+
+			bkgSysMin = round(100*min([rates[m][year]["Background"].GetRelSys(sysName) for m in rates]), 2)
+			bkgSysMax = round(100*max([rates[m][year]["Background"].GetRelSys(sysName) for m in rates]), 2)
+
+			if sysName in sigSysNames and sysName in bkgSysNames and "Total" not in sysName:
+				if 'PREFIRE' in sysName and '2018' in year:
+					sysTable += ' & -- & --'
+				elif sysName in ["PDF","TOPPT","TTNORM","SHAPETT","VVNORM","SHAPEVV","ZNORM","SHAPEZ"]:
+					sysTable += ' & -- & ' + str(bkgSysMin) + '--' + str(bkgSysMax)
+				else:
+					sysTable += ' & ' + str(sigSysMin) + '--' + str(sigSysMax) + ' & ' + str(bkgSysMin) + '--' + str(bkgSysMax)
+		sysTable += r' \\' + '\n'
+
+	sysTable = sysTable.rstrip() 
+	sysTable += r' \hline' + '\n'
+	sysTable += '\t\t\t' + r'Total syst. uncertainty '
+	for year in ['2016', '2017', '2018']:
+		sigSysTotalMin = round(100*min([rates[m][year]["Signal"].GetRelSys("Total") for m in rates]), 2)
+		sigSysTotalMax = round(100*max([rates[m][year]["Signal"].GetRelSys("Total") for m in rates]), 2)
+
+		bkgSysTotalMin = round(100*min([rates[m][year]["Background"].GetRelSys("Total") for m in rates]), 2)
+		bkgSysTotalMax = round(100*max([rates[m][year]["Background"].GetRelSys("Total") for m in rates]), 2)
+
+		sysTable += ' & ' + str(sigSysTotalMin) + '--' + str(sigSysTotalMax) + ' & ' + str(bkgSysTotalMin) + '--' + str(bkgSysTotalMax)
+	sysTable += r' \\ \hline\hline' + '\n'
+	sysTable += '\t\t' + r'\end{tabular}' + '\n'
+	sysTable += '\t\t' + r'\label{tab:SysRangesByYear}' + '\n'
+	sysTable += '\t' + r'\end{center}' + '\n'
+	sysTable += r'\end{table}'
+
+	return sysTable
+
+
 def YieldsTable(rates, masses, year):
 	from datetime import date
 
@@ -687,24 +746,57 @@ def SystematicsTable(rates, mass, sysList, sysNames, year):
 	return sysTable
 
 
+def SystematicsByYearTable(rates, mass, sysList, sysNames):
+	from datetime import date
+
+	mass = str(mass)
+
+	today = date.today().strftime("%m/%d/%y")
+
+	sysTable = '% Systematic uncertainties M = ' + mass + ', per year - ' + today + ' \n'
+	sysTable += r'\begin{table}[htbp]' + '\n'
+	sysTable += '\t' + r'\begin{center}' + '\n'
+	sysTable += '\t\t' + r'\caption{Systematic uncertainties and their effects on signal (Sig.) and background (Bkg.) in 2016, 2017, and 2018 for $M_{LQ}=\SI{' + mass + r'}{~GeV}$ final selection. All uncertainties are symmetric.}' + '\n'
+	sysTable += '\t\t' + r'\begin{tabular}{lcccccc}' + '\n'
+	sysTable += '\t\t\t' + r'\hline\hline' + '\n'
+	sysTable += '\t\t\t' + r'& \multicolumn{2}{c}{2016} & \multicolumn{2}{c}{2017} & \multicolumn{2}{c}{2018} \\'+ '\n'
+	sysTable += '\t\t\t' + r'Systematic & Sig. (\%) & Bkg. (\%) & Sig. (\%) & Bkg. (\%) & Sig. (\%) & Bkg. (\%) \\ \hline' + '\n'
+
+	sigSysNames = rates[mass]["2016"]["Signal"].GetAllRelSys()
+	bkgSysNames = rates[mass]["2016"]["Background"].GetAllRelSys()	
+
+	for sysName in sysList:
+		if "Total" in sysName: continue
+		sysTable += '\t\t\t' + sysNames[sysName]
+		for year in ['2016', '2017', '2018']:
+			sigSys = round(100*rates[mass][year]["Signal"].GetRelSys(sysName), 2)
+			bkgSys = round(100*rates[mass][year]["Background"].GetRelSys(sysName), 2)
+			if sysName in sigSysNames and sysName in bkgSysNames and "Total" not in sysName:
+				if 'PREFIRE' in sysName and '2018' in year:
+					sysTable += ' & -- & --'
+				elif sysName in ["PDF","TOPPT","TTNORM","SHAPETT","VVNORM","SHAPEVV","ZNORM","SHAPEZ"]:
+					sysTable += ' & -- & ' + str(bkgSys)
+				else:
+					sysTable += ' & ' + str(sigSys) + ' & ' + str(bkgSys)
+		sysTable += r' \\' + '\n'
+
+	sysTable = sysTable.rstrip() 
+	sysTable += r' \hline' + '\n'
+	sysTable += '\t\t\t' + r'Total syst. uncertainty '
+	for year in ['2016', '2017', '2018']:
+		sigSysTotal = round(100*rates[mass][year]["Signal"].GetRelSys("Total"), 2)
+		bkgSysTotal = round(100*rates[mass][year]["Background"].GetRelSys("Total"), 2)
+		sysTable +=  ' & ' + str(sigSysTotal) + ' & ' + str(bkgSysTotal)
+	sysTable += r' \\ \hline\hline' + '\n'
+	sysTable += '\t\t' + r'\end{tabular}' + '\n'
+	sysTable += '\t\t' + r'\label{tab:SysUncertainties_' + mass + '}\n'
+	sysTable += '\t' + r'\end{center}' + '\n'
+	sysTable += r'\end{table}'
+
+	return sysTable
 
 
-parser = ArgumentParser()
-parser.add_argument("-y", "--year", dest="year", help="option to pick running year (2016,2017,2018,comb)", metavar="YEAR")
-parser.add_argument("-e", "--enhanced", dest="sys", help="path to datacard for systematic uncertainties (enhanced selection)", metavar="SYS")
-parser.add_argument("-f", "--final", dest="stat", help="path to datacard for statistical uncertainties (final selection)", metavar="STAT")
-options = parser.parse_args()
-globYear = str(options.year)
-sysFile = str(options.sys)
-statFile = str(options.stat)
-
-sysInfo = [line for line in open(sysFile,'r')]
-statInfo = [line for line in open(statFile,'r')]
-
-sysCards = GetCards(sysInfo)
-statCards = GetCards(statInfo)
-
-massNames = ["300","400","500","600","700","800","900","1000","1100","1200","1300","1400","1500","1600","1700","1800","1900","2000","2100","2200","2300","2400","2500","2600","2700","2800","2900","3000","3500"]#,"4000"]
+massNames = ["300","400","500","600","700","800","900","1000","1100","1200","1300","1400","1500","1600","1700","1800","1900","2000","2100","2200","2300","2400","2500","2600","2700","2800","2900","3000"]#,"3500"]#,"4000"]
 baseSysNames = ["BTAG","JER","JES","LUMI","MER","MES","MUONID","MUONISO","MUONRECO","MUONHLT","PREFIRE","PU","PDF","TOPPT","TTNORM","SHAPETT","VVNORM","SHAPEVV","ZNORM","SHAPEZ","Total"]
 sysTableNames = {
 	"BTAG": "b-jet tagging efficiency",
@@ -729,9 +821,82 @@ sysTableNames = {
 	"SHAPEZ": "\ZJETS shape"
 }
 
+parser = ArgumentParser()
+parser.add_argument("-y", "--year", dest="year", help="option to pick running year (2016,2017,2018,comb)", metavar="YEAR")
+parser.add_argument("-e", "--enhanced", dest="sys", help="path to datacard for systematic uncertainties (enhanced selection)", metavar="SYS")
+parser.add_argument("-f", "--final", dest="stat", help="path to datacard for statistical uncertainties (final selection)", metavar="STAT")
+options = parser.parse_args()
+globYear = str(options.year)
+sysFile = str(options.sys)
+statFile = str(options.stat)
+
+sysInfo = [line for line in open(sysFile,'r')]
+statInfo = [line for line in open(statFile,'r')]
+
+sysCards = GetCards(sysInfo)
+statCards = GetCards(statInfo)
+
 allRates = ParseCards(sysCards,statCards)
 
+if False:
+	# Make sure to use option -y 2016 (or 2017, or 2018), not -y combined if datacards are separate
+	sysFile_2016 = 'Results_2016_paramSys/Enhanced_selection/EnhancedCardsLQ_2016.txt'
+	statFile_2016 = 'Results_2016_paramSys/Final_selection/FinalCardsFinSelSysLQ_2016.txt'
+	sysFile_2017 = 'Results_2017_paramSys/Enhanced_selection/EnhancedCardsLQ_2017.txt'
+	statFile_2017 = 'Results_2017_paramSys/Final_selection/FinalCardsFinSelSysLQ_2017.txt'
+	sysFile_2018 = 'Results_2018_paramSys/Enhanced_selection/EnhancedCardsLQ_2018.txt'
+	statFile_2018 = 'Results_2018_paramSys/Final_selection/FinalCardsFinSelSysLQ_2018.txt'
+
+	sysInfo_2016 = [line for line in open(sysFile_2016,'r')]
+	statInfo_2016 = [line for line in open(statFile_2016,'r')]
+
+	sysInfo_2017 = [line for line in open(sysFile_2017,'r')]
+	statInfo_2017 = [line for line in open(statFile_2017,'r')]
+
+	sysInfo_2018 = [line for line in open(sysFile_2018,'r')]
+	statInfo_2018 = [line for line in open(statFile_2018,'r')]
+
+	sysCards_2016 = GetCards(sysInfo_2016)
+	statCards_2016 = GetCards(statInfo_2016)
+
+	sysCards_2017 = GetCards(sysInfo_2017)
+	statCards_2017 = GetCards(statInfo_2017)
+
+	sysCards_2018 = GetCards(sysInfo_2018)
+	statCards_2018 = GetCards(statInfo_2018)
+
+	allRates_2016 = ParseCards(sysCards_2016,statCards_2016)
+	allRates_2017 = ParseCards(sysCards_2017,statCards_2017)
+	allRates_2018 = ParseCards(sysCards_2018,statCards_2018)
+
+	allRates = {}
+
+	# Merge datacards if not combined
+	for mass in massNames:
+		allRates[mass] = {}
+		allRates[mass]["2016"] = allRates_2016[mass]["2016"]
+		allRates[mass]["2017"] = allRates_2017[mass]["2016"]
+		allRates[mass]["2018"] = allRates_2018[mass]["2016"]
+
+
 # Print tables here
-# print YieldsTable(allRates, massNames, "Combined")
-print SystematicsTable(allRates, "1800", baseSysNames, sysTableNames, "Combined")
-#print RatePlotLines(allRates, massNames)
+print YieldsTable(allRates, massNames, "Combined")
+#print SystematicsTable(allRates, "1800", baseSysNames, sysTableNames, "Combined")
+for mass in massNames:
+	print SystematicsByYearTable(allRates, mass, baseSysNames, sysTableNames)
+	print ''
+print SysRangesByYearTable(allRates, baseSysNames, sysTableNames)
+
+allSys = allRates["300"]["2016"]["Background"].GetAllRelSys()
+for sys in allSys:
+	print '# '+sys
+	for year in ['2016','2017','2018']:
+		sigSysStr = 'sigSys_'+year+'_param = dict(zip(masses,['
+		bkgSysStr = 'bkgSys_'+year+'_param = dict(zip(masses,['
+		for mass in massNames:
+			sigSysStr +=  str(round(100*allRates[mass][year]["Signal"].GetRelSys("Total"), 2))+','
+			bkgSysStr +=  str(round(100*allRates[mass][year]["Background"].GetRelSys("Total"), 2))+','
+		sigSysStr = sigSysStr.rstrip(',') + ']))'
+		bkgSysStr = bkgSysStr.rstrip(',') + ']))'
+		print sigSysStr
+		print bkgSysStr
