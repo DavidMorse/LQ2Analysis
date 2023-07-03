@@ -363,8 +363,30 @@ pdf_uvjj_Signal = [0.35,0.35,0.35,0.53,0.83,0.83,0.83,0.83,0.83,0.83,0.83,0.84,1
 GEScaleSys_Background = [0.0,0.0,0.02,0.03,0.02,0.08,0.01,0.1,0.18,0.15,0.16,0.49,0.38,1.22,0.07,4.38,3.27,3.27,1.78,3.16,1.44,9.75,1.92,0.03,1.98,0.43,3.28,0.95,46.79,60.05]
 GEScaleSys_Signal = [0.02,0.0,0.02,0.0,0.01,0.02,0.05,0.11,0.05,0.13,0.12,0.16,0.18,0.15,0.11,0.15,0.09,0.09,0.03,0.09,0.1,0.18,0.23,0.27,0.27,0.38,0.3,0.41,0.4,0.48]
 
+# Background event yields for systematic bands in preselection plots
+# Enhanced selection background
+bkgEventsEnhanced_uujj_2016 = [3118,3102,2709,2017,1352,880,597,401.9,261.4,183.6,125.5,86.2,65.2,47.4,35.2,25.9,20,15.1,12.2,8.4,6.9,5.36,4.07,2.55,2.32,1.47,1.33,0.73,0.249,0.0455]
+bkgEventsEnhanced_uujj_2017 = [3951,3929,3413,2488,1664.6,1091.2,714.9,476.7,320.7,220,152.8,109.5,82.1,62.6,43.4,31.8,24,18.6,14.96,10.24,7.96,5.95,4.66,3.7,2.84,2.64,2.23,1.8,0.83,0.272]
+bkgEventsEnhanced_uujj_2018 = [5595,5568,4857,3570,2418,1616,1078,724,502.2,347.1,238.4,170,120.2,88.6,68.1,50.4,36.6,28.3,22,16,12.12,9.33,7.58,5.93,4.1,4.09,3.86,3.41,1.89,0.386]
+
+# Final selection background
+bkgEventsFinal_uujj_2016 = [1.1,1.18,1.79,0.282,0.304,0.012,0.179,0.219,0.46,0.282,0.0478,0.376,0.037,0.174,0.0306,0.0,0.088,0.075,0.072,0.0291,0.038,0.0149,0.0,0.0,0.036,0.0,0.0,0.0,0.028,0.0]
+bkgEventsFinal_uujj_2017 = [2.31,0.191,2.38,0.597,0.644,0.486,0.0477,0.22,0.19,0.077,0.0285,0.234,0.073,0.056,0.0316,0.0367,0.0565,0.0477,0.0078,0.0,0.007,0.0212,0.0178,0.0,0.0067,0.0,0.006,0.0,0.0,0.0]
+bkgEventsFinal_uujj_2018 = [3.4,0.163,0.818,0.36,0.553,0.432,0.407,0.0813,0.335,0.0203,0.0285,0.223,0.02,0.0,0.0374,0.0,0.138,0.0,0.0,0.0178,0.0,0.018,0.0,0.0178,0.024,0.0063,0.0178,0.0,0.0063,0.0063]
+
 # These are the total background uncertainties. They are used just to make some error bands on plots. 
-totunc_uujj = [5.02, 5.28, 5.42, 5.8, 6.16, 6.81, 7.74, 8.72, 9.46, 9.47, 9.83, 10.5, 11.65, 9.13, 10.39, 12.17, 11.6, 12.58, 12.27, 14.08, 16.11, 16.09, 15.8, 12.07, 11.88, 11.03, 11.75, 11.75, 12.32, 11.75, 11.75, 11.75, 11.75, 11.75, 11.75, 11.75, 11.75]
+totunc_uujj_2016 = [3.63, 3.62, 3.74, 4.46, 5.37, 6.4, 7.37, 8.59, 10.14, 11.49, 11.93, 12.33, 14.15, 15.03, 14.69, 16.55, 19.18, 20.82, 26.33, 26.15, 28.74, 38.14, 41.1, 43.3, 46.36, 47.11, 51.06, 54.72, 117.02, 247.57]
+totunc_uujj_2017 = [4.94, 4.97, 5.19, 5.6, 6.11, 7.21, 8.72, 10.15, 11.32, 12.76, 14.17, 14.18, 14.91, 17.39, 17.26, 20.45, 20.77, 24.17, 33.72, 30.81, 34.52, 43.58, 44.52, 45.03, 45.95, 46.58, 49.63, 54.31, 117.89, 243.33]
+totunc_uujj_2018 = [4.15, 4.18, 4.36, 4.71, 5.33, 6.46, 7.89, 9.63, 10.77, 11.94, 13.55, 14.55, 16.3, 17.61, 18.76, 20.43, 23.25, 24.9, 29.29, 31.31, 33.4, 41.52, 43.87, 44.74, 53.02, 59.57, 50.93, 52.4, 117.25, 255.02]
+
+if year == '2016': totunc_uujj = totunc_uujj_2016
+elif year == '2017': totunc_uujj = totunc_uujj_2017
+elif year == '2018': totunc_uujj = totunc_uujj_2018
+elif 'comb' in year:
+	#totunc_uujj = [round((x[0]*x[1] + x[2]*x[3] + x[4]*x[5])/(x[0]+x[2]+x[4]),2) for x in list(zip(bkgEventsEnhanced_uujj_2016, totunc_uujj_2016, bkgEventsEnhanced_uujj_2017, totunc_uujj_2017, bkgEventsEnhanced_uujj_2018, totunc_uujj_2018))]
+	totunc_uujj = [7.41, 7.43, 7.75, 8.58, 9.72, 11.61, 13.88, 16.42, 18.63, 20.92, 22.95, 23.77, 26.24, 28.96, 29.42, 33.31, 36.6, 40.47, 51.86, 51.13, 55.97, 71.27, 74.8, 76.83, 84.09, 89.09, 87.55, 93.22, 203.32, 203.32] #fixme - missing 4000, using 3500 as placeholder
+
+#totunc_uujj = [5.02, 5.28, 5.42, 5.8, 6.16, 6.81, 7.74, 8.72, 9.46, 9.47, 9.83, 10.5, 11.65, 9.13, 10.39, 12.17, 11.6, 12.58, 12.27, 14.08, 16.11, 16.09, 15.8, 12.07, 11.88, 11.03, 11.75, 11.75, 12.32, 11.75, 11.75, 11.75, 11.75, 11.75, 11.75, 11.75, 11.75]
 totunc_uvjj = [6.62, 6.84, 6.38, 7.96, 8.19, 9.53, 12.13, 10.11, 10.15, 10.98, 11.25, 11.88, 14.74, 14.71, 12.98, 13.2, 13.39, 13.54, 13.79, 14.2, 14.33, 14.43, 14.15, 13.91, 13.66, 14.02, 14.01, 14.02, 13.96, 14.0, 13.6, 13.99, 13.97, 14.53, 14.51, 14.48, 13.41]
 
 # Muon alignment Uncs, [uujj sig, uujj bg, uvjj sig, [uvjj bg] ] Only uvjj BG significantly varies with mass
@@ -478,7 +500,8 @@ stbinning = [200,225]
 bosonbinning = [50,60,70,80,90,100,110,120]
 bosonzoombinning_uujj_Z = [50,70,120]
 bosonzoombinning_uujj_TT = [95,100]
-bosonzoombinning_uujj_VV = [28,70,150]
+bosonzoombinning_uujj_ZTT = [70,71]
+bosonzoombinning_uujj_VV = [25,70,120]
 metzoombinning_uujj_TT = [95,100]
 metzoombinning_uujj_Z = [0,5,10,15,22,30,40,55,75,100]
 	
@@ -492,24 +515,26 @@ drbinning = [70,0,7]
 phibinning = [26,-3.1416,3.1416]
 dphibinning = [64,0,3.2]
 
-for x in range(40):
-	if ptbinning[-1] < 2000:
-       		ptbinning.append(ptbinning[-1]+(ptbinning[-1] - ptbinning[-2])*1.2)
-       	if ptbinning2[-1] < 700:
-       		ptbinning2.append(ptbinning2[-1]+(ptbinning2[-1] - ptbinning2[-2])*1.2)
-       	if metbinning2[-1] < 900:
-       		metbinning2.append(metbinning2[-1]+(metbinning2[-1] - metbinning2[-2])*1.2)		
-       	if stbinning[-1] < 3200:
-       		stbinning.append(stbinning[-1]+(stbinning[-1] - stbinning[-2])*1.2)
-       	if bosonbinning[-1]<1000:
-       		bosonbinning.append(bosonbinning[-1]+ (bosonbinning[-1] - bosonbinning[-2])*1.2 )
-       	if lqbinning[-1]<2000:
-       		lqbinning.append(lqbinning[-1]+(lqbinning[-1] - lqbinning[-2])*1.1)
-       	if bosonzoombinning_uujj_TT[-1] < 900:
-       		bosonzoombinning_uujj_TT.append(bosonzoombinning_uujj_TT[-1] + (bosonzoombinning_uujj_TT[-1] - bosonzoombinning_uujj_TT[-2])*1.25)	       	
+for x in range(100):
+	if ptbinning[-1] < 2000: 
+		ptbinning.append(ptbinning[-1]+(ptbinning[-1] - ptbinning[-2])*1.2)
+	if ptbinning2[-1] < 700:
+		ptbinning2.append(ptbinning2[-1]+(ptbinning2[-1] - ptbinning2[-2])*1.2)
+	if metbinning2[-1] < 900:
+		metbinning2.append(metbinning2[-1]+(metbinning2[-1] - metbinning2[-2])*1.2)		
+	if stbinning[-1] < 3200:
+		stbinning.append(stbinning[-1]+(stbinning[-1] - stbinning[-2])*1.2)
+	if bosonbinning[-1]<1000:
+		bosonbinning.append(bosonbinning[-1]+ (bosonbinning[-1] - bosonbinning[-2])*1.2 )
+	if lqbinning[-1]<2000:
+		lqbinning.append(lqbinning[-1]+(lqbinning[-1] - lqbinning[-2])*1.1)
+	if bosonzoombinning_uujj_TT[-1] < 900:
+		bosonzoombinning_uujj_TT.append(bosonzoombinning_uujj_TT[-1] + (bosonzoombinning_uujj_TT[-1] - bosonzoombinning_uujj_TT[-2])*1.25)
+	if bosonzoombinning_uujj_ZTT[-1] < 250:
+		bosonzoombinning_uujj_ZTT.append(bosonzoombinning_uujj_ZTT[-1] + (bosonzoombinning_uujj_ZTT[-1] - bosonzoombinning_uujj_ZTT[-2])*1.1)     	
 	if metzoombinning_uujj_TT[-1] < 900:
-	       	metzoombinning_uujj_TT.append(metzoombinning_uujj_TT[-1] + (metzoombinning_uujj_TT[-1] - metzoombinning_uujj_TT[-2])*1.4)
-                        
+		metzoombinning_uujj_TT.append(metzoombinning_uujj_TT[-1] + (metzoombinning_uujj_TT[-1] - metzoombinning_uujj_TT[-2])*1.4) 
+
 vbinning = [50,0,50]
 nbinning = [10,0,10]
 ptbinning = [round(x) for x in ptbinning]
@@ -865,13 +890,14 @@ def main():
 		#MakeEfficiencyPlot(NormalDirectory,NormalWeightMuNu,MuNuOptCutFile,'LQuvjj',version_name,1)
 		#exit()
 		# Here are a few plots which are zoomed-in on control regions. 
-		MakeBasicPlot("M_uu","M^{#mu#mu} [GeV]",bosonzoombinning_uujj_Z,preselectionmumu,NormalWeightMuMu,NormalDirectory,'controlzoom_ZRegion','uujj',Rz_uujj,Rw_uvjj,Rtt_uujj,Rvv_uujj,'',version_name,1000)
+		MakeBasicPlot("M_uu","M_{#mu#mu} [GeV]",bosonzoombinning_uujj_Z,preselectionmumu,NormalWeightMuMu,NormalDirectory,'controlzoom_ZRegion','uujj',Rz_uujj,Rw_uvjj,Rtt_uujj,Rvv_uujj,'',version_name,1000)
 		MakeBasicPlot("Pt_miss","E_{T}^{miss} [GeV]",metzoombinning_uujj_Z,preselectionmumu+'*(M_uu>80)*(M_uu<100)*(Pt_miss<100)',NormalWeightMuMu,NormalDirectory,'controlzoom_ZRegion','uujj',Rz_uujj,Rw_uvjj,Rtt_uujj,Rvv_uujj,'',version_name,1000)
-		MakeBasicPlot("M_uu","M^{#mu#mu} [GeV]",bosonzoombinning_uujj_TT,preselectionmumu+'*(M_uu>100)*(Pt_miss>=100)',NormalWeightMuMu,NormalDirectory,'controlzoom_TTRegion','uujj',Rz_uujj,Rw_uvjj,Rtt_uujj,Rvv_uujj,'',version_name,1000)
+		MakeBasicPlot("M_uu","M_{#mu#mu} [GeV]",bosonzoombinning_uujj_TT,preselectionmumu+'*(M_uu>100)*(Pt_miss>=100)',NormalWeightMuMu,NormalDirectory,'controlzoom_TTRegion','uujj',Rz_uujj,Rw_uvjj,Rtt_uujj,Rvv_uujj,'',version_name,1000)
+		MakeBasicPlot("M_uu","M_{#mu#mu} [GeV]",bosonzoombinning_uujj_ZTT,preselectionmumu,NormalWeightMuMu,NormalDirectory,'controlzoom_ZTTRegion','uujj',Rz_uujj,Rw_uvjj,Rtt_uujj,Rvv_uujj,'',version_name,1000)
 		MakeBasicPlot("Pt_miss","E_{T}^{miss} [GeV]",metzoombinning_uujj_TT,preselectionmumu+'*(M_uu>100)*(Pt_miss>=100)',NormalWeightMuMu,NormalDirectory,'controlzoom_TTRegion','uujj',Rz_uujj,Rw_uvjj,Rtt_uujj,Rvv_uujj,'',version_name,1000)
 		MakeBasicPlot("GoodVertexCount","N_{Vertices}",vbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'linscale','uujj',Rz_uujj,Rw_uvjj,Rtt_uujj,Rvv_uujj,'',version_name,1000)
-		MakeBasicPlot("M_uu","M^{#mu#mu} [GeV]",bosonzoombinning_uujj_Z,preselectionmumu_3lep,NormalWeightDiBoson,NormalDirectory,'controlzoom_VVRegion_noSF','uujj',Rz_uujj, 1.0 , Rtt_uujj,1.0,'',version_name,1000)
-		MakeBasicPlot("M_uu","M^{#mu#mu} [GeV]",bosonzoombinning_uujj_Z,preselectionmumu_3lep,NormalWeightDiBoson,NormalDirectory,'controlzoom_VVRegion','uujj',Rz_uujj, 1.0 , Rtt_uujj,Rvv_uujj,'',version_name,1000)
+		MakeBasicPlot("M_uu","M_{#mu#mu} [GeV]",bosonzoombinning_uujj_VV,preselectionmumu_3lep,NormalWeightDiBoson,NormalDirectory,'controlzoom_VVRegion_noSF','uujj',Rz_uujj, 1.0 , Rtt_uujj,1.0,'',version_name,1000)
+		MakeBasicPlot("M_uu","M_{#mu#mu} [GeV]",bosonzoombinning_uujj_VV,preselectionmumu_3lep,NormalWeightDiBoson,NormalDirectory,'controlzoom_VVRegion','uujj',Rz_uujj, 1.0 , Rtt_uujj,Rvv_uujj,'',version_name,1000)
 		#MakeBasicPlot("CISV_jet1","Jet1 CSV score",bjetbinning,preselectionmunu+'*(MT_uv>70)*(MT_uv<150)*(JetCount<3.5)',NormalWeightMuNu,NormalDirectory,'controlzoom_WRegion','uvjj',Rz_uujj, Rw_uvjj,Rtt_uvjj,'',version_name,850)
 		#MakeBasicPlot("CISV_jet2","Jet2 CSV score",bjetbinning,preselectionmunu+'*(MT_uv>70)*(MT_uv<150)*(JetCount<3.5)',NormalWeightMuNu,NormalDirectory,'controlzoom_WRegion','uvjj',Rz_uujj, Rw_uvjj,Rtt_uvjj,'',version_name,850)
 		#MakeBasicPlot("CISV_jet1","Jet1 CSV score",bjetbinning,preselectionmunu+'*(MT_uv>70)*(MT_uv<150)*(JetCount>3.5)',NormalWeightMuNu,NormalDirectory,'controlzoom_TTRegion','uvjj',Rz_uujj, Rw_uvjj,Rtt_uvjj,'',version_name,850)
@@ -975,7 +1001,7 @@ def main():
 		MakeBasicPlot("Phi_muon1","#phi(#mu_{1}) [GeV]",phibinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj,Rw_uvjj,Rtt_uujj,Rvv_uujj,'',version_name,1000)
 		MakeBasicPlot("Phi_muon2","#phi(#mu_{2}) [GeV]",phibinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj,Rw_uvjj,Rtt_uujj,Rvv_uujj,'',version_name,1000)	
 		MakeBasicPlot("St_uujj","S_{T}^{#mu#mujj} [GeV]",stbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj,Rw_uvjj,Rtt_uujj,Rvv_uujj,'',version_name,1000)
-		MakeBasicPlot("M_uu","M^{#mu#mu} [GeV]",bosonbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj,Rw_uvjj,Rtt_uujj,Rvv_uujj,'',version_name,1000)
+		MakeBasicPlot("M_uu","M_{#mu#mu} [GeV]",bosonbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj,Rw_uvjj,Rtt_uujj,Rvv_uujj,'',version_name,1000)
 		MakeBasicPlot("M_uujj2","M_{#muj}_{2} [GeV]",lqbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj,Rw_uvjj,Rtt_uujj,Rvv_uujj,'',version_name,1000)
 		MakeBasicPlot("M_jj","M_{jj} [GeV]",bosonbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj,Rw_uvjj,Rtt_uujj,Rvv_uujj,'',version_name,1000)
 		MakeBasicPlot("MH_uujj","M_{#muj} (lead jet combo) [GeV]",lqbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj,Rw_uvjj,Rtt_uujj,Rvv_uujj,'',version_name,1000)
@@ -984,7 +1010,7 @@ def main():
 		MakeBasicPlot("M_uujj","M_{#mu#mujj} [GeV]",lqbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj,Rw_uvjj,Rtt_uujj,Rvv_uujj,'',version_name,1000)
 		MakeBasicPlot("JetCount","N_{jet}",nbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj,Rw_uvjj,Rtt_uujj,Rvv_uujj,'',version_name,1000)
 		[[Rz_uujj_muCount,Rz_uujj_muCount_err],[Rtt_uujj_muCount,Rtt_uujj_muCount_err]] = GetMuMuScaleFactors( NormalWeightMuMu+'*'+preselectionmumu, NormalDirectory, '(M_uu>80)*(M_uu<100)', '(M_uu>100)',0,0)
-		MakeBasicPlot("MuonCount","N_{#mu}",nbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj_muCount, Rw_uvjj,Rtt_uujj_muCount,'',version_name,1000)#removing TTBarDataDriven cause this makes weird muon count comparison
+		MakeBasicPlot("MuonCount","N_{#mu}",nbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj_muCount, Rw_uvjj,Rtt_uujj_muCount,Rvv_uujj,'',version_name,1000)#removing TTBarDataDriven cause this makes weird muon count comparison
 		MakeBasicPlot("ElectronCount","N_{e}",nbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj,Rw_uvjj,Rtt_uujj,Rvv_uujj,'',version_name,1000)#removing TTBarDataDriven cause this makes weird muon count comparison
 		MakeBasicPlot("DR_muon1muon2","#DeltaR(#mu_{1},#mu_{2})",drbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj,Rw_uvjj,Rtt_uujj,Rvv_uujj,'',version_name,1000)
 		MakeBasicPlot("DR_muon1jet1","#DeltaR(#mu_{1},j_{1})",drbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'standard','uujj',Rz_uujj,Rw_uvjj,Rtt_uujj,Rvv_uujj,'',version_name,1000)
@@ -1044,7 +1070,45 @@ def main():
 		MakeBasicPlot("DPhi_muon1jet1","#Delta #phi(#mu,j_{1})",dphibinning,preselectionmunu,NormalWeightMuNu,NormalDirectory,'standard','uvjj',Rz_uujj, Rw_uvjj,Rtt_uvjj,'',version_name,850)
 		MakeBasicPlot("DPhi_muon1jet2","#Delta #phi(#mu,j_{2})",dphibinning,preselectionmunu,NormalWeightMuNu,NormalDirectory,'standard','uvjj',Rz_uujj, Rw_uvjj,Rtt_uvjj,'',version_name,850)
 		"""
-
+		bdtbinning = [0.90,0.91,0.92,0.93,0.94,0.95,0.96,0.97,0.98,0.99,1.00]
+		bdtbinning = [0.98,0.982]
+		bdtLastBin = bdtbinning[-1]
+		while bdtLastBin < 1.0:
+			bdtbinning.append(bdtbinning[-1]+bdtbinning[-1]-bdtbinning[-2])
+			bdtLastBin = bdtbinning[-1]
+		print bdtbinning
+		# Final selection BDT plots
+		MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M300","BDT score (M_{LQ} = 300 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'final','uujj',Rz_uujj,Rw_uvjj,Rtt_uujj,Rvv_uujj,MuMuOptCutFile,version_name,300)
+		MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M400","BDT score (M_{LQ} = 400 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'final','uujj',Rz_uujj,Rw_uvjj,Rtt_uujj,Rvv_uujj,MuMuOptCutFile,version_name,400)
+		MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M500","BDT score (M_{LQ} = 500 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'final','uujj',Rz_uujj,Rw_uvjj,Rtt_uujj,Rvv_uujj,MuMuOptCutFile,version_name,500)
+		MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M600","BDT score (M_{LQ} = 600 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'final','uujj',Rz_uujj,Rw_uvjj,Rtt_uujj,Rvv_uujj,MuMuOptCutFile,version_name,600)
+		MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M700","BDT score (M_{LQ} = 700 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'final','uujj',Rz_uujj,Rw_uvjj,Rtt_uujj,Rvv_uujj,MuMuOptCutFile,version_name,700)
+		MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M800","BDT score (M_{LQ} = 800 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'final','uujj',Rz_uujj,Rw_uvjj,Rtt_uujj,Rvv_uujj,MuMuOptCutFile,version_name,800)
+		MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M900","BDT score (M_{LQ} = 900 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'final','uujj',Rz_uujj,Rw_uvjj,Rtt_uujj,Rvv_uujj,MuMuOptCutFile,version_name,900)
+		MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M1000","BDT score (M_{LQ} = 1000 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'final','uujj',Rz_uujj,Rw_uvjj,Rtt_uujj,Rvv_uujj,MuMuOptCutFile,version_name,1000)
+		MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M1100","BDT score (M_{LQ} = 1100 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'final','uujj',Rz_uujj,Rw_uvjj,Rtt_uujj,Rvv_uujj,MuMuOptCutFile,version_name,1100)
+		MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M1200","BDT score (M_{LQ} = 1200 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'final','uujj',Rz_uujj,Rw_uvjj,Rtt_uujj,Rvv_uujj,MuMuOptCutFile,version_name,1200)
+		MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M1300","BDT score (M_{LQ} = 1300 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'final','uujj',Rz_uujj,Rw_uvjj,Rtt_uujj,Rvv_uujj,MuMuOptCutFile,version_name,1300)
+		MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M1400","BDT score (M_{LQ} = 1400 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'final','uujj',Rz_uujj,Rw_uvjj,Rtt_uujj,Rvv_uujj,MuMuOptCutFile,version_name,1400)
+		MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M1500","BDT score (M_{LQ} = 1500 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'final','uujj',Rz_uujj,Rw_uvjj,Rtt_uujj,Rvv_uujj,MuMuOptCutFile,version_name,1500)
+		MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M1600","BDT score (M_{LQ} = 1600 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'final','uujj',Rz_uujj,Rw_uvjj,Rtt_uujj,Rvv_uujj,MuMuOptCutFile,version_name,1600)
+		MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M1700","BDT score (M_{LQ} = 1700 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'final','uujj',Rz_uujj,Rw_uvjj,Rtt_uujj,Rvv_uujj,MuMuOptCutFile,version_name,1700)
+		MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M1800","BDT score (M_{LQ} = 1800 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'final','uujj',Rz_uujj,Rw_uvjj,Rtt_uujj,Rvv_uujj,MuMuOptCutFile,version_name,1800)
+		MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M1900","BDT score (M_{LQ} = 1900 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'final','uujj',Rz_uujj,Rw_uvjj,Rtt_uujj,Rvv_uujj,MuMuOptCutFile,version_name,1900)
+		MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M2000","BDT score (M_{LQ} = 2000 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'final','uujj',Rz_uujj,Rw_uvjj,Rtt_uujj,Rvv_uujj,MuMuOptCutFile,version_name,2000)
+		MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M2100","BDT score (M_{LQ} = 2100 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'final','uujj',Rz_uujj,Rw_uvjj,Rtt_uujj,Rvv_uujj,MuMuOptCutFile,version_name,2100)
+		MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M2200","BDT score (M_{LQ} = 2200 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'final','uujj',Rz_uujj,Rw_uvjj,Rtt_uujj,Rvv_uujj,MuMuOptCutFile,version_name,2200)
+		MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M2300","BDT score (M_{LQ} = 2300 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'final','uujj',Rz_uujj,Rw_uvjj,Rtt_uujj,Rvv_uujj,MuMuOptCutFile,version_name,2300)
+		MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M2400","BDT score (M_{LQ} = 2400 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'final','uujj',Rz_uujj,Rw_uvjj,Rtt_uujj,Rvv_uujj,MuMuOptCutFile,version_name,2400)
+		MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M2500","BDT score (M_{LQ} = 2500 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'final','uujj',Rz_uujj,Rw_uvjj,Rtt_uujj,Rvv_uujj,MuMuOptCutFile,version_name,2500)
+		MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M2600","BDT score (M_{LQ} = 2600 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'final','uujj',Rz_uujj,Rw_uvjj,Rtt_uujj,Rvv_uujj,MuMuOptCutFile,version_name,2600)
+		MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M2700","BDT score (M_{LQ} = 2700 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'final','uujj',Rz_uujj,Rw_uvjj,Rtt_uujj,Rvv_uujj,MuMuOptCutFile,version_name,2700)
+		MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M2800","BDT score (M_{LQ} = 2800 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'final','uujj',Rz_uujj,Rw_uvjj,Rtt_uujj,Rvv_uujj,MuMuOptCutFile,version_name,2800)
+		MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M2900","BDT score (M_{LQ} = 2900 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'final','uujj',Rz_uujj,Rw_uvjj,Rtt_uujj,Rvv_uujj,MuMuOptCutFile,version_name,2900)
+		MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M3000","BDT score (M_{LQ} = 3000 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'final','uujj',Rz_uujj,Rw_uvjj,Rtt_uujj,Rvv_uujj,MuMuOptCutFile,version_name,3000)
+		MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M3500","BDT score (M_{LQ} = 3500 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'final','uujj',Rz_uujj,Rw_uvjj,Rtt_uujj,Rvv_uujj,MuMuOptCutFile,version_name,3500)
+		MakeBasicPlot("LQToBMu_pair_uubj_BDT_discrim_M4000","BDT score (M_{LQ} = 4000 GeV)",bdtbinning,preselectionmumu,NormalWeightMuMu,NormalDirectory,'final','uujj',Rz_uujj,Rw_uvjj,Rtt_uujj,Rvv_uujj,MuMuOptCutFile,version_name,4000)
+		exit()
 		# Full Selection Plots
 		for lqmass in [300,400,500,600,700,800,900,1000,1100,1200,1300,1400,1500,1600,1700,1800,1900,2000,2100,2200,2300,2400,2500]:
 			#for lqmass in [650,800,1000,1100,1200,1500]:
@@ -1338,7 +1402,7 @@ def main():
 		# Optimize final selection cuts on BDT score
 		if optimizeBDT:
 			cutFileBDT = 'Results_'+version_name+'/Log_LQuujj_BDT_Cuts.txt'
-			BDTbins = [0.9,1.0,0.001]
+			BDTbins = [0.0,1.0,0.01]
 			OptimizeCutsBDT(BDTbins,preselectionmumu,NormalWeightMuMu,version_name,scaleFactors,cutFileBDT,'uujj')
 		elif not doLongLived :
 			MuMuOptTestCutFile = 'Results_'+version_name+'/OptLQ_uujjCuts_Smoothed_pol2cutoff.txt'
@@ -3556,6 +3620,7 @@ def setZeroBinErrors_tgraph(data_hist,data, bg, sig_hist1, sig_hist2, blinded):
 		if bin>0 or binBG>0:
 			start=True
 		#if start: print "\n----Bin:"+str(bins)+" bg:"+str(bg.GetStack().Last().GetBinContent(bins))+"\n"
+		#if (bg.GetStack().Last().GetBinContent(bins+1)>.0004 or sig_hist1.GetBinContent(bins+1)>.0004 or sig_hist2.GetBinContent(bins+1)>.0004):#and bin<=10 :#and bg.GetStack().Last().GetBinContent(bins+1)>.05:# and bin!=0:
 		if start and (bg.GetStack().Last().GetBinContent(bins+1)>.04 or sig_hist1.GetBinContent(bins+1)>0.04 or sig_hist2.GetBinContent(bins+1)>0.04):#and bin<=10 :#and bg.GetStack().Last().GetBinContent(bins+1)>.05:# and bin!=0:
 		#	data.SetBinErrorOption(TH1.kPoisson)
 			if blinded==False:
@@ -4551,6 +4616,41 @@ def ModSelection(selection,sysmethod,channel_log):
 
 	return selection
 
+def ParameterizeSysLine(sysLines, maxSysLines, mass):
+
+	# Hardcoded parameters are extracted from fitting 1000, 1500, and 1800 GeV total background systematics
+	# Hardcoded total background systematics are for 1800 GeV (where parameterization starts) 
+	# If systematics are updated--these quantities should be recomputed
+	# Can use MakeTablesFromDatacards.py and SystematicFitStudy.py to get totBkgSys and fit parameters
+	# Updated 6/30/2023
+
+	params = [0.,0.]
+	if year == "2016": 
+		params = [0.010080612244897947, -1.3488775510203816]
+		totBkgSys = 16.56
+	if year == "2017": 
+		params = [0.012532653061224476, -2.7934693877550747]
+		totBkgSys = 20.45
+	if year == "2018": 
+		params = [0.013472448979591828, -3.8605102040816113]
+		totBkgSys = 20.42
+
+	scale = (params[0]*mass + params[1])/totBkgSys
+
+	allNewSysLines = []
+
+	for i, sysLine in enumerate(maxSysLines):
+
+		# Use signal systematics from nominal datacard
+		newSysLine = sysLines[i].split()[0]+"  "+sysLines[i].split()[1]+"   "+sysLines[i].split()[2]+" "
+
+		# Use paramaterized systematics extrapolated from 1800 GeV systematics
+		for sys in sysLine.split()[3:]:
+			newSysLine += str(1.0 + scale*(float(sys)-1.0))+" "
+
+		allNewSysLines.append(newSysLine)
+
+	return allNewSysLines
 
 def SysTable(optimlog, selection_uujj,selection_uvjj,selection_uujj_Rvv,NormalDirectory,weight,weight_Rvv,sysmethod):
 	global munu1
@@ -4620,9 +4720,6 @@ def SysTable(optimlog, selection_uujj,selection_uvjj,selection_uujj_Rvv,NormalDi
 		selection = selection_uvjj
 		alignmentcorrs = [alignmentuncs[2],alignmentuncs[3]]
 
-	rglobals = 1.0
-	rglobalb = 1.0
-
 
 	if 'ZNORM' in sysmethod and 'up' in sysmethod :   
 		rz = Rz_uujj_up 
@@ -4687,24 +4784,16 @@ def SysTable(optimlog, selection_uujj,selection_uvjj,selection_uujj_Rvv,NormalDi
 				nalign = ii
 		print nalign
 
-		if 'ALIGN' in sysmethod :
-			if 'uujj' in optimlog:
-				rglobals = 1.0 + alignmentcorrs[0]*.01
-				rglobalb = 1.0 + alignmentcorrs[1]*.01
-			if 'uvjj' in optimlog:
-				rglobals = 1.0 + alignmentcorrs[0]*.01
-				rglobalb = 1.0 + alignmentcorrs[1][nalign] *.01
-
-
-
+		rglobals = 1.0
+		rglobalb = 1.0
 		rstop = 1.0
 		rdiboson = rvv
-		#rqcd = 1
 		rttv = rvv
 		rsig = 1.0
 		_rt = rt
 		_rw = rw
 		_rz = rz
+		
                 #for shape, do nalign+1 because the first entry is preselection
 		if sysmethod == 'SHAPETT':
 			if 'uujj' in optimlog:
@@ -4744,7 +4833,7 @@ def SysTable(optimlog, selection_uujj,selection_uvjj,selection_uujj_Rvv,NormalDi
 				rdiboson *= (1.0+pdf_uujj_VV[nalign]*0.01)
 				rttv 	 *= (1.0+pdf_uujj_TTV[nalign]*0.01)
 				#rqcd     *= (1.0+pdf_uujj_QCD[nalign]*0.01)
-				rsig     *= (1.0+pdf_uujj_Signal[nalign]*0.01)
+				#rsig     *= (1.0+pdf_uujj_Signal[nalign]*0.01)
 
 			if 'uvjj' in optimlog:
 				_rt      *= (1.0+pdf_uvjj_TTBar[nalign]*0.01)
@@ -4753,7 +4842,7 @@ def SysTable(optimlog, selection_uujj,selection_uvjj,selection_uujj_Rvv,NormalDi
 				rstop    *= (1.0+pdf_uvjj_sTop[nalign]*0.01)
 				rdiboson *= (1.0+pdf_uvjj_VV[nalign]*0.01)
 				#rqcd     *= (1.0+pdf_uvjj_QCD[nalign]*0.01)
-				rsig     *= (1.0+pdf_uvjj_Signal[nalign]*0.01)
+				#rsig     *= (1.0+pdf_uvjj_Signal[nalign]*0.01)
 
 		if 'GE' in sysmethod and 'up' in sysmethod:
 			rglobalb	*= (1.0+GEScaleSys_Background[nalign]*0.01)
@@ -4764,6 +4853,7 @@ def SysTable(optimlog, selection_uujj,selection_uvjj,selection_uujj_Rvv,NormalDi
 			rglobals	*= (1.0-GEScaleSys_Signal[nalign]*0.01)
 
 		exec('treefeed = ['+chan+']')
+
 		treefeed.append(t_SingleMuData)
 		#treefeed.append([t_TTBar,t_ZJets,t_WJets,t_SingleTop,t_DiBoson,t_QCDMu])
 		treefeed.append([t_TTBar,t_ZJets,t_WJets,t_SingleTop,t_DiBoson,t_TTV])
@@ -4970,7 +5060,7 @@ def FullAnalysis(optimlog,selection_uujj,selection_uvjj,selection_uujj_Rvv,Norma
 
 	_Variations2017 = ['','JES17up','JES17down','MES17up','MES17down','GE17up','GE17down','JER17up','JER17down','MER17','LUMICorrup','LUMICorrdown','LUMI17Uncorrup','LUMI17Uncorrdown','LUMI1718up','LUMI1718down','PUup','PUdown','ZNORM17up','ZNORM17down','TTNORM17up','TTNORM17down','VVNORM17up','VVNORM17down','SHAPETT','SHAPEZ','SHAPEVV','MUONID17up', 'MUONID17down', 'MUONISO17up', 'MUONISO17down','MUONHLT17up','MUONHLT17down','MUONRECO17up','MUONRECO17down','PDF','BTAG17up','BTAG17down','TOPPT17up','TOPPT17down','PREFIRE17up','PREFIRE17down']
 
-	_Variations2018 = ['','JES18up','JES18down','MES18up','MES18down','GE18up','GE18down','JER18up','JER18down','MER18','LUMICorrup','LUMICorrdown','LUMI18Uncorrup','LUMI18Uncorrdown','LUMI1718up','LUMI1718down','PUup','PUdown','ZNORM18up','ZNORM18down','TTNORM18up','TTNORM18down','VVNOR18Mup','VVNORM18down','SHAPETT','SHAPEZ','SHAPEVV','MUONID18up', 'MUONID18down', 'MUONISO18up', 'MUONISO18down','MUONHLT18up','MUONHLT18down','MUONRECO18up','MUONRECO18down','PDF','BTAG18up','BTAG18down','TOPPT18up','TOPPT18down','PREFIRE18up','PREFIRE18down']
+	_Variations2018 = ['','JES18up','JES18down','MES18up','MES18down','GE18up','GE18down','JER18up','JER18down','MER18','LUMICorrup','LUMICorrdown','LUMI18Uncorrup','LUMI18Uncorrdown','LUMI1718up','LUMI1718down','PUup','PUdown','ZNORM18up','ZNORM18down','TTNORM18up','TTNORM18down','VVNORM18up','VVNORM18down','SHAPETT','SHAPEZ','SHAPEVV','MUONID18up', 'MUONID18down', 'MUONISO18up', 'MUONISO18down','MUONHLT18up','MUONHLT18down','MUONRECO18up','MUONRECO18down','PDF','BTAG18up','BTAG18down','TOPPT18up','TOPPT18down','PREFIRE18up','PREFIRE18down']
 
 	if year == '2016': _Variations = _Variations2016
 	if year == '2017': _Variations = _Variations2017	
@@ -5914,7 +6004,11 @@ def MakeBasicPlot(recovariable,xlabel,presentationbinning,selection,weight,FileD
 		pad3.SetTopMargin(0.0)
 		#pad2.SetBottomMargin(0.0)
 		pad3.SetBottomMargin(0.43)
-		if 'final' not in tagname:
+		if 'final' in tagname:
+			for m in range(len(pdf_MASS)):
+				if str(pdf_MASS[m]) in str(plotmass):
+					perc = syslist[m]
+		else:
 			perc = syslist[0]
 	else:
 		# if 'final' not in tagname:
@@ -6343,7 +6437,10 @@ def MakeBasicPlot(recovariable,xlabel,presentationbinning,selection,weight,FileD
 	for x in SM:
 		# x.Scale(mcdatascalepres)
 		MCStack.Add(x)
-		x.SetMaximum(10*hs_rec_Data.GetMaximum())
+		if 'final' in tagname:
+			x.SetMaximum(1000*hs_rec_Signal.GetMaximum())
+		else:
+			x.SetMaximum(10*hs_rec_Data.GetMaximum())
 
 	MCStack.Draw("HIST")
 	c1.cd(1).SetLogy()
@@ -6426,6 +6523,8 @@ def MakeBasicPlot(recovariable,xlabel,presentationbinning,selection,weight,FileD
 			leg.AddEntry(hs_rec_Signal,'m_{LQ} = '+str(plotmass)+' GeV, '+betamarker,"l")
 	leg.Draw()
 
+	PrivateWork=False
+
 	sqrts = "#sqrt{s} = 13 TeV";
 	l1=TLatex()
 	l1.SetTextAlign(12)
@@ -6437,6 +6536,12 @@ def MakeBasicPlot(recovariable,xlabel,presentationbinning,selection,weight,FileD
 	l2.SetTextFont(62)
 	l2.SetNDC()
 	l2.SetTextSize(0.08)
+	l3=TLatex()
+	l3.SetTextAlign(12)
+	l3.SetTextFont(42)
+	l3.SetNDC()
+	l3.SetTextSize(0.06)
+
  
 	if  'PAS' in tagname and 'tagfree' not in tagname:
 		#l1.DrawLatex(0.18,0.94,"CMS #it{Preliminary}      "+sqrts+", 19.7 fb^{-1}")
@@ -6452,6 +6557,11 @@ def MakeBasicPlot(recovariable,xlabel,presentationbinning,selection,weight,FileD
 			l1.DrawLatex(0.155,0.77,"#mu#mujj")
 		if channel=='uvjj':
 			l1.DrawLatex(0.155,0.77,"#mu#nujj")
+	elif PrivateWork==True:
+		#l1.DrawLatex(0.18,0.94,"                          "+sqrts+", 225.57 pb^{-1}")
+		l1.DrawLatex(0.12,0.94,"#it{Private} #it{Work}                       "+lumiInvfb+" fb^{-1} (13 TeV)")
+		l2.DrawLatex(0.15,0.84,"CMS")
+		l3.DrawLatex(0.15,0.77,"Data/Simulation")
 	else:
 		#l1.DrawLatex(0.18,0.94,"                          "+sqrts+", 225.57 pb^{-1}")
 		l1.DrawLatex(0.12,0.94,"#it{Preliminary}                           "+lumiInvfb+" fb^{-1} (13 TeV)")
@@ -6473,25 +6583,25 @@ def MakeBasicPlot(recovariable,xlabel,presentationbinning,selection,weight,FileD
 
 	MCStack.SetMinimum(yaxismin)
 	if 'final' in tagname:
-		MCStack.SetMaximum(75*hs_rec_Data.GetMaximum())
+		MCStack.SetMaximum(1000*hs_rec_Signal.GetMaximum())
 	else:
 		MCStack.SetMaximum(100*hs_rec_Data.GetMaximum())
-	if 'control' in tagname:
-		MCStack.SetMaximum(100000*hs_rec_Data.GetMaximum())
-	if 'St' in recovariable or 'GoodVertex' in recovariable:
-		MCStack.SetMaximum(250*hs_rec_Data.GetMaximum())
-	if 'GoodVertex' in recovariable and 'linscale' in tagname:
-		MCStack.SetMaximum(2.0*hs_rec_Data.GetMaximum())
-	if 'St' in recovariable and 'final' in tagname:
-		#MCStack.SetMaximum(50*hs_rec_Data.GetMaximum())
-		MCStack.SetMaximum(50*hs_rec_Signal.GetMaximum())
-	if 'DPhi' in recovariable or ('MT' in recovariable and 'control' in tagname):
-		MCStack.SetMaximum(2.0*hs_rec_Data.GetMaximum())
-	if blinded==True and 'final' in tagname:
-		if plotmass < 2000:
-			MCStack.SetMaximum(1000*hs_rec_Signal.GetMaximum())
-		else:
-			MCStack.SetMaximum(1000*MCStack.GetMaximum())
+		if 'control' in tagname:
+			MCStack.SetMaximum(100000*hs_rec_Data.GetMaximum())
+		if 'St' in recovariable or 'GoodVertex' in recovariable:
+			MCStack.SetMaximum(250*hs_rec_Data.GetMaximum())
+		if 'GoodVertex' in recovariable and 'linscale' in tagname:
+			MCStack.SetMaximum(2.0*hs_rec_Data.GetMaximum())
+		if 'St' in recovariable and 'final' in tagname:
+			#MCStack.SetMaximum(50*hs_rec_Data.GetMaximum())
+			MCStack.SetMaximum(50*hs_rec_Signal.GetMaximum())
+		if 'DPhi' in recovariable or ('MT' in recovariable and 'control' in tagname):
+			MCStack.SetMaximum(2.0*hs_rec_Data.GetMaximum())
+		if blinded==True and 'final' in tagname:
+			if plotmass < 2000:
+				MCStack.SetMaximum(1000*hs_rec_Signal.GetMaximum())
+			else:
+				MCStack.SetMaximum(1000*MCStack.GetMaximum())
 	resstring = ''
 	if 'PAS' not in tagname:
 		pad3.cd()
@@ -6510,9 +6620,12 @@ def MakeBasicPlot(recovariable,xlabel,presentationbinning,selection,weight,FileD
 		RatHistNum.Divide(RatHistDen)
 		# for x in RatHistNum.GetNbinsX():
 		# 	print RatHistNum.GetBinCenter(x), RatHistNum.GetBinContent(x)
-
-		RatHistNum.SetMaximum(1.599)#fixme was 1.499
-		RatHistNum.SetMinimum(0.401)#fixme was 0.501
+		if 'controlzoom_ZTTRegion' in tagname:
+			RatHistNum.SetMaximum(1.299)
+			RatHistNum.SetMinimum(0.701)
+		else:
+			RatHistNum.SetMaximum(1.599)#fixme was 1.499
+			RatHistNum.SetMinimum(0.401)#fixme was 0.501
 
 
 		RatHistNum.GetYaxis().SetTitleFont(42);
@@ -6698,6 +6811,8 @@ def MakeBasicPlot(recovariable,xlabel,presentationbinning,selection,weight,FileD
 
 
 	recovariable = recovariable.replace('/','_DIV_')
+	if "weight_nopu" in weight:
+		recovariable = recovariable+"_NoPUweights"
 	
 	gPad.Update()
 	l=TLine()
@@ -8264,7 +8379,7 @@ def OptimizeCutsBDT(bins,presel,weight,tag,scalefacs,cutfile,channel):
 	binning = [int(round((upBound-lowBound)/binWidth)),lowBound,upBound]
 
 	# Set bin range and number of bins in 'binning'
-	nBins = binning[0]
+	nBinsTotal = binning[0]
 	binLow = binning[1]
 	binHigh = binning[2]
 
@@ -8290,7 +8405,7 @@ def OptimizeCutsBDT(bins,presel,weight,tag,scalefacs,cutfile,channel):
 			cutVariable = BDTstring+cutMass
 
 			# List of cuts as strings, e.g., '(LQToBMu_pair_uubj_BDT_discrim_M300>-1.0)'
-			cuts = ['('+cutVariable+'>'+str(x)+')' for x in ConvertBinning(binning)]
+			cuts = ['('+cutVariable+'>'+str(x)+')' for x in ConvertBinning(binning)[:-1]]
 			print 'Get cuts on M_LQ = ',cutMass,' GeV:'
 
 			# Samples we want event counts of, i.e., SM backgrounds and current signal mass
@@ -8303,34 +8418,41 @@ def OptimizeCutsBDT(bins,presel,weight,tag,scalefacs,cutfile,channel):
 				l.write('events_'+sample+'[\''+cutVariable+'\'] = {}\n')
 
 				# Loop through cuts here
-				for cut in cuts:
-					#print 'Applying cut: ',cut
+				#for cut in cuts:
+				#print 'Applying cut: ',cut
 
-					# Tree ('t_' prefix) and Histogram ('h_' prefix) names for current sample
-					t_sample = 't_'+sample
-					h_sample = 'h_'+sample
+				# Tree ('t_' prefix) and Histogram ('h_' prefix) names for current sample
+				t_sample = 't_'+sample
+				h_sample = 'h_'+sample
 
-					# Set Z+Jets and tt-bar scale factores
-					scalefac = '1.0'
-					if 'ZJets' in sample: scalefac = str(R_z)
-					if 'TTBar' in sample: scalefac = str(R_tt)
-					if 'DiBoson' in sample: scalefac = str(R_vv)
-					if 'TTV' in sample: scalefac = str(R_vv)
+				# Set Z+Jets, tt-bar, and ttV/VV scale factors
+				scalefac = '1.0'
+				if 'ZJets' in sample: scalefac = str(R_z)
+				if 'TTBar' in sample: scalefac = str(R_tt)
+				if 'DiBoson' in sample: scalefac = str(R_vv)
+				if 'TTV' in sample: scalefac = str(R_vv)
 
-					# Here we create 1-dimensional histogram with the binning we desire
-					exec( h_sample + ' = TH1D("'+h_sample+'","'+h_sample+'",'+str(nBins)+','+str(binLow)+','+str(binHigh)+')' )
-
-					# Then project the BDT score variable onto the histogram with preselection cuts, M_uujj cut at the LQ mass, weights, scale factors
-					# and importantly, the final selection cut we are looping through 
-					exec( t_sample + '.Project("'+h_sample+'","'+cutVariable+'","'+presel+'*(M_uujj>'+cutMass+')*'+cut+'*('+weight+'*'+scalefac+')")' )
-
+				# Here we create 1-dimensional histogram with the binning we desire
+				exec( h_sample + ' = TH1D("'+h_sample+'","'+h_sample+'",'+str(nBinsTotal)+','+str(binLow)+','+str(binHigh)+')' )
+				print h_sample + ' = TH1D("'+h_sample+'","'+h_sample+'",'+str(nBinsTotal)+','+str(binLow)+','+str(binHigh)+')'
+				# Then project the BDT score variable onto the histogram with preselection cuts, M_uujj cut at the LQ mass, weights, scale factors
+				# and importantly, the final selection cut we are looping through 
+				enhancedSelection = presel+"*(M_uu>250)*(M_uujj>"+cutMass+")"
+				#finalSelection = enhancedSelection+"*"+cut
+				exec( t_sample + '.Project("'+h_sample+'","'+cutVariable+'","'+enhancedSelection+'*('+weight+'*'+scalefac+')")' )
+				print t_sample + '.Project("'+h_sample+'","'+cutVariable+'","'+enhancedSelection+'*('+weight+'*'+scalefac+')")'
+				#exec( 'nBins = '+h_sample+'.GetNbinsX()+1')
+				for i, cut in enumerate(cuts):
+					cutBin = i+1
+					lastBin = nBinsTotal+1
 					# Get the number of events for the given cut with 'Integral'
 					# Note 1: Integrates to get area (not 'generated' event count which is different)
 					# Note 2: Integrates between bin indicies, not x-axis values
-					exec( 'nBins = '+h_sample+'.GetNbinsX()+1')
-					exec( 'Int = ' + h_sample + '.Integral(1,'+str(nBins)+')' )
+					
+					exec( 'Int = ' + h_sample + '.Integral('+str(cutBin)+','+str(lastBin)+')' )
 					cutVal = cut.split('>')[-1].rstrip(')')
-					print 'events_'+sample+'[\''+cutVariable+'\'][\''+cutVal+'\'] = '+str(Int)
+					print cut+' : '+h_sample+'.Integral('+str(cutBin)+','+str(lastBin)+') = '+str(Int)
+					#print 'events_'+sample+'[\''+cutVariable+'\'][\''+cutVal+'\'] = '+str(Int)
 					# Write lines that will fill subdictionaries; each subdictionary: key = cut value, value = number of sample events
 					l.write('events_'+sample+'[\''+cutVariable+'\'][\''+cutVal+'\'] = '+str(Int)+'\n')
 
@@ -8391,7 +8513,8 @@ def OptimizeCutsBDT(bins,presel,weight,tag,scalefacs,cutfile,channel):
 
 
 	# Get a list of the cut values, i.e., bin edges (e.g., -1.0, -0.95, ..., 0.95, 1.0)
-	binList = [str(b) for b in ConvertBinning(binning)]
+	binList = [str(b) for b in ConvertBinning(binning)[:-1]] 
+	print binList
 
 	# Loop to optimze the cut value for each signal hypothesis
 	# Use the Punzi significance as a figure of merit (FOM)
@@ -8403,7 +8526,7 @@ def OptimizeCutsBDT(bins,presel,weight,tag,scalefacs,cutfile,channel):
 	for signal in signalEventsAll:
 		# Initalize
 		maxPunziFOM = -99999
-		bestCutVal = 0
+		bestCutVal = binning[1]
 
 		# Get signal mass as a string
 		signalMass = signal.strip(signalType+channel)
@@ -8424,7 +8547,7 @@ def OptimizeCutsBDT(bins,presel,weight,tag,scalefacs,cutfile,channel):
 			# Add event counts of all the backgrounds together (ZJets + TTBar + DiBoson + ...) for the current cut
 			for background in backgroundEventsAll:
 				nBackground += backgroundEventsAll[background][BDTstring+signalMass][str(cutValue)]
-			if nSignal + nBackground < 0.001:
+			if nSignal + nBackground < 0.000001:
 				continue
 
 			# Initialize the signal efficiency
@@ -8824,13 +8947,15 @@ def ParseFinalCards(cardcoll):
 		fout.write( rateline+'\n')
 		fout.write( ' '+'\n')
 		
-		#if channel=='uujj' and int(LQmass)==1500:
-		#	syslinesMax = syslines
+		if channel=='uujj' and int(LQmass)==1800:
+			syslinesMax = syslines
+
 		if channel=='uvjj' and int(LQmass)==900:
 			syslinesMax = syslines
 
-		#if channel=='uujj' and int(LQmass)>1500:
-		#	syslines = syslinesMax
+		if channel=='uujj' and int(LQmass)>1800:
+			syslines = ParameterizeSysLine(syslines, syslinesMax, int(LQmass))
+
 		if channel=='uvjj' and int(LQmass)>900:
 			syslines = syslinesMax
 		

@@ -41,10 +41,10 @@ MUONRECO=[]
 PDF=[]
 PREFIRE=[]
 PU=[]
-BTAG=[]
 TOPPT=[]
 TTNORM=[]
 TTSHAPE=[]
+VVNORM=[]
 VVSHAPE=[]
 ZNORM=[]
 ZSHAPE=[]
@@ -83,7 +83,9 @@ with open(sysRangeTabAllYears,'r') as inSysRangeTabAllYears:
             TTNORM.append(line.split('&')[1].strip()+' & '+line.split('&')[2].split(r'\\')[0].strip())
         if 'TT shape' in line:
             TTSHAPE.append(line.split('&')[1].strip()+' & '+line.split('&')[2].split(r'\\')[0].strip())
-        if 'Diboson shape' in line:
+        if 'VV normalization' in line:
+            VVNORM.append(line.split('&')[1].strip()+' & '+line.split('&')[2].split(r'\\')[0].strip())
+        if 'VV shape' in line:
             VVSHAPE.append(line.split('&')[1].strip()+' & '+line.split('&')[2].split(r'\\')[0].strip())
         if 'Z normalization' in line:
             ZNORM.append(line.split('&')[1].strip()+' & '+line.split('&')[2].split(r'\\')[0].strip())
@@ -93,29 +95,30 @@ with open(sysRangeTabAllYears,'r') as inSysRangeTabAllYears:
 fullSysRangeTable = ""
 fullSysRangeTable += r'\begin{table}[htbp]' + '\n'
 fullSysRangeTable += '\t' + r'\begin{center}' + '\n'
-fullSysRangeTable += '\t\t' + r'\caption{Range of systematic uncertainties on signal (Sig.) and background (Bkg.) in 2016.}' + '\n'
+fullSysRangeTable += '\t\t' + r'\caption{Range of systematic uncertainties on signal (Sig.) and background (Bkg.) in 2016, 2017, and 2018.}' + '\n'
 fullSysRangeTable += '\t\t' + r'\begin{tabular}{lcccccc}' + '\n'
 fullSysRangeTable += '\t\t\t' + r'\hline\hline' + '\n'
-fullSysRangeTable += '\t\t\t' + r' & \multicolumn{2}{c}{2016 (min - max) [\%]} & \multicolumn{2}{c}{2017 (min - max) [\%]} & \multicolumn{2}{c}{2018 (min - max) [\%]}' + '\n'
+fullSysRangeTable += '\t\t\t' + r' & \multicolumn{2}{c}{2016 (min - max) [\%]} & \multicolumn{2}{c}{2017 (min - max) [\%]} & \multicolumn{2}{c}{2018 (min - max) [\%]} \\' + '\n'
 fullSysRangeTable += '\t\t\t' + r'Systematic & Sig. &  Bkg. & Sig. &  Bkg. & Sig. &  Bkg.  \\ \hline' + '\n'
 
-fullSysRangeTable += '\t\t\tb-jet tagging & ' + BTAG[0] + ' & ' + BTAG[1] + ' & ' + BTAG[2] + r' \\' + '\n'
+fullSysRangeTable += '\t\t\tb-jet tagging efficiency & ' + BTAG[0] + ' & ' + BTAG[1] + ' & ' + BTAG[2] + r' \\' + '\n'
 fullSysRangeTable += '\t\t\tJet energy resolution & ' + JER[0] + ' & ' + JER[1] + ' & ' + JER[2] + r' \\' + '\n'
 fullSysRangeTable += '\t\t\tJet energy scale & ' + JES[0] + ' & ' + JES[1] + ' & ' + JES[2] + r' \\' + '\n'
 fullSysRangeTable += '\t\t\tLuminosity & ' + LUMI[0] + ' & ' + LUMI[1] + ' & ' + LUMI[2] + r' \\' + '\n'
 fullSysRangeTable += '\t\t\tMuon energy resolution & ' + MER[0] + ' & ' + MER[1] + ' & ' + MER[2] + r' \\' + '\n'
 fullSysRangeTable += '\t\t\tMuon energy scale & ' + MES[0] + ' & ' + MES[1] + ' & ' + MES[2] + r' \\' + '\n'
-fullSysRangeTable += '\t\t\tMuon trigger & ' + MUONHLT[0] + ' & ' + MUONHLT[1] + ' & ' + MUONHLT[2] + r' \\' + '\n'
 fullSysRangeTable += '\t\t\tMuon identification & ' + MUONID[0] + ' & ' + MUONID[1] + ' & ' + MUONID[2] + r' \\' + '\n'
 fullSysRangeTable += '\t\t\tMuon isolation & ' + MUONISO[0] + ' & ' + MUONISO[1] + ' & ' + MUONISO[2] + r' \\' + '\n'
 fullSysRangeTable += '\t\t\tMuon reconstruction & ' + MUONRECO[0] + ' & ' + MUONRECO[1] + ' & ' + MUONRECO[2] + r' \\' + '\n'
+fullSysRangeTable += '\t\t\tMuon trigger & ' + MUONHLT[0] + ' & ' + MUONHLT[1] + ' & ' + MUONHLT[2] + r' \\' + '\n'
 fullSysRangeTable += '\t\t\tPDF & ' + PDF[0] + ' & ' + PDF[1] + ' & ' + PDF[2] + r' \\' + '\n'
-fullSysRangeTable += '\t\t\tPrefire reweighting & ' + PREFIRE[0] + ' & ' + PREFIRE[1] + ' & ' + PREFIRE[2] + r' \\' + '\n'
 fullSysRangeTable += '\t\t\tPileup & ' + PU[0] + ' & ' + PU[1] + ' & ' + PU[2] + r' \\' + '\n'
-fullSysRangeTable += '\t\t\tTop pT reweighting & ' + TOPPT[0] + ' & ' + TOPPT[1] + ' & ' + TOPPT[2] + r' \\' + '\n'
+fullSysRangeTable += '\t\t\tPrefire reweighting & ' + PREFIRE[0] + ' & ' + PREFIRE[1] + ' & ' + PREFIRE[2] + r' \\' + '\n'
+fullSysRangeTable += '\t\t\tTop $p_T$ reweighting & ' + TOPPT[0] + ' & ' + TOPPT[1] + ' & ' + TOPPT[2] + r' \\' + '\n'
 fullSysRangeTable += '\t\t\tTT normalization & ' + TTNORM[0] + ' & ' + TTNORM[1] + ' & ' + TTNORM[2] + r' \\' + '\n'
 fullSysRangeTable += '\t\t\tTT shape & ' + TTSHAPE[0] + ' & ' + TTSHAPE[1] + ' & ' + TTSHAPE[2] + r' \\' + '\n'
-fullSysRangeTable += '\t\t\tDiboson shape & ' + VVSHAPE[0] + ' & ' + VVSHAPE[1] + ' & ' + VVSHAPE[2] + r' \\' + '\n'
+fullSysRangeTable += '\t\t\tVV normalization & ' + VVNORM[0] + ' & ' + VVNORM[1] + ' & ' + VVNORM[2] + r' \\' + '\n'
+fullSysRangeTable += '\t\t\tVV shape & ' + VVSHAPE[0] + ' & ' + VVSHAPE[1] + ' & ' + VVSHAPE[2] + r' \\' + '\n'
 fullSysRangeTable += '\t\t\tZ normalization & ' + ZNORM[0] + ' & ' + ZNORM[1] + ' & ' + ZNORM[2] + r' \\' + '\n'
 fullSysRangeTable += '\t\t\tZ shape & ' + ZSHAPE[0] + ' & ' + ZSHAPE[1] + ' & ' + ZSHAPE[2] + r' \\ \hline \hline' + '\n'
 

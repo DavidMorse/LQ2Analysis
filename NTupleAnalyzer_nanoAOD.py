@@ -1298,7 +1298,12 @@ def TightHighPtIDMuons(T,_met,variation):
 	muonsPt20,muonsPt30 = [],[]
 
 	# Collections get reordered several times--establish all necessary quantities here so they can be sorted
-	muonDict = {}
+	
+	# Used to propogate pT changes to MET
+	_OrigMuonCocktailPt = [pt for pt in T.Muon_pt]
+	_OrigMuonCocktailEta = [eta for eta in T.Muon_eta]
+	_OrigMuonCocktailPhi = [phi for phi in T.Muon_phi]
+
 	# Use TuneP momentum
 	_MuonCocktailPt = [tunepRelPt*pt for pt, tunepRelPt in zip(T.Muon_pt,T.Muon_tunepRelPt)]
 	_MuonCocktailEta = [eta for eta in T.Muon_eta]
@@ -1319,14 +1324,9 @@ def TightHighPtIDMuons(T,_met,variation):
 	_MuonCocktailID = array.array('B',T.Muon_highPtId).tolist()
 	_MuonCocktailIso = array.array('B',T.Muon_tkIsoId).tolist()
 
-	# Used to propogate pT changes to MET
-	_preSmearCocktailPt = _MuonCocktailPt
-	_preSmearCocktailEta = _MuonCocktailEta
-	_preSmearCocktailPhi = _MuonCocktailPhi
-
 	# Reorder the muon collections by the TuneP pT (high pT -> low pT)
 	# Make sure Pt cocktail is first element in list!
-	_MuonCocktailPt, _MuonCocktailEta, _MuonCocktailPhi, _MuonCocktailCharge, _randList, _MuonCocktailID, _MuonCocktailIso, _preSmearCocktailPt, _preSmearCocktailEta, _preSmearCocktailPhi = SortCollections([_MuonCocktailPt, _MuonCocktailEta, _MuonCocktailPhi, _MuonCocktailCharge, _randList, _MuonCocktailID, _MuonCocktailIso, _preSmearCocktailPt, _preSmearCocktailEta, _preSmearCocktailPhi])
+	_MuonCocktailPt, _MuonCocktailEta, _MuonCocktailPhi, _MuonCocktailCharge, _randList, _MuonCocktailID, _MuonCocktailIso, _OrigMuonCocktailPt, _OrigMuonCocktailEta, _OrigMuonCocktailPhi = SortCollections([_MuonCocktailPt, _MuonCocktailEta, _MuonCocktailPhi, _MuonCocktailCharge, _randList, _MuonCocktailID, _MuonCocktailIso, _OrigMuonCocktailPt, _OrigMuonCocktailEta, _OrigMuonCocktailPhi])
 
 	# Following perscription for muon momentum smearing of 15% from resolution uncertainty
     # https://twiki.cern.ch/twiki/bin/view/CMS/MuonLegacy2016#Momentum_Resolution
@@ -1339,7 +1339,7 @@ def TightHighPtIDMuons(T,_met,variation):
 
 		# Reorder the collections after Rochester scale corrections (high pT -> low pT)
 		# Make sure Pt cocktail is first element in list!
-		_MuonCocktailPt, _MuonCocktailEta, _MuonCocktailPhi, _MuonCocktailCharge, _randList, _MuonCocktailID, _MuonCocktailIso, _preSmearCocktailPt, _preSmearCocktailEta, _preSmearCocktailPhi = SortCollections([_MuonCocktailPt, _MuonCocktailEta, _MuonCocktailPhi, _MuonCocktailCharge, _randList, _MuonCocktailID, _MuonCocktailIso, _preSmearCocktailPt, _preSmearCocktailEta, _preSmearCocktailPhi])
+		_MuonCocktailPt, _MuonCocktailEta, _MuonCocktailPhi, _MuonCocktailCharge, _randList, _MuonCocktailID, _MuonCocktailIso, _OrigMuonCocktailPt, _OrigMuonCocktailEta, _OrigMuonCocktailPhi = SortCollections([_MuonCocktailPt, _MuonCocktailEta, _MuonCocktailPhi, _MuonCocktailCharge, _randList, _MuonCocktailID, _MuonCocktailIso, _OrigMuonCocktailPt, _OrigMuonCocktailEta, _OrigMuonCocktailPhi])
 
 	else:
 		# Correct muon pT scale and resolution with Rochester corrections if pT < 200 GeV
@@ -1351,7 +1351,7 @@ def TightHighPtIDMuons(T,_met,variation):
 
 		# Reorder the collections after extra resolution corrections (high pT -> low pT)
 		# Make sure Pt cocktail is first element in list!
-		_MuonCocktailPt, _MuonCocktailEta, _MuonCocktailPhi, _MuonCocktailCharge, _randList, _MuonCocktailID, _MuonCocktailIso, _preSmearCocktailPt, _preSmearCocktailEta, _preSmearCocktailPhi = SortCollections([_MuonCocktailPt, _MuonCocktailEta, _MuonCocktailPhi, _MuonCocktailCharge, _randList, _MuonCocktailID, _MuonCocktailIso, _preSmearCocktailPt, _preSmearCocktailEta, _preSmearCocktailPhi])
+		_MuonCocktailPt, _MuonCocktailEta, _MuonCocktailPhi, _MuonCocktailCharge, _randList, _MuonCocktailID, _MuonCocktailIso, _OrigMuonCocktailPt, _OrigMuonCocktailEta, _OrigMuonCocktailPhi = SortCollections([_MuonCocktailPt, _MuonCocktailEta, _MuonCocktailPhi, _MuonCocktailCharge, _randList, _MuonCocktailID, _MuonCocktailIso, _OrigMuonCocktailPt, _OrigMuonCocktailEta, _OrigMuonCocktailPhi])
 
 		if 'MES' in variation: 
 			# Perform Rochester scale systematics here with the "variation" list
@@ -1476,7 +1476,7 @@ def TightHighPtIDMuons(T,_met,variation):
 			NewMu = TLorentzVector()
 			OldMu = TLorentzVector()
 			NewMu.SetPtEtaPhiM(_MuonCocktailPt[n],_MuonCocktailEta[n],_MuonCocktailPhi[n],0)
-			OldMu.SetPtEtaPhiM(_preSmearCocktailPt[n], _preSmearCocktailEta[n], _preSmearCocktailPhi[n],0)#fixme cocktail pt?
+			OldMu.SetPtEtaPhiM(_OrigMuonCocktailPt[n], _OrigMuonCocktailEta[n], _OrigMuonCocktailPhi[n],0)#fixme cocktail pt?
 
 			_met = PropagatePTChangeToMET(_met,OldMu,NewMu)
 

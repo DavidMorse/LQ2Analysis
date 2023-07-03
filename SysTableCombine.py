@@ -21,12 +21,13 @@ sysTabFileName = sysTabFile.split('/')[-1].split('_')[0]
 # Compare this list to keys in sysDict (in loop below)
 sysToInclude = [
     "BTAG",
+    "GE",
     "JER",
     "JES",
     "LUMI16Uncorr",
+    "LUMI1718",
     "LUMI17Uncorr",
     "LUMI18Uncorr",
-    "LUMI1718",
     "LUMICorr",
     "MER",
     "MES",
@@ -42,6 +43,7 @@ sysToInclude = [
     "SHAPEZ",
     "TOPPT",
     "TTNORM",
+    "VVNORM",
     "ZNORM",
     "Total"
 ]
@@ -52,6 +54,7 @@ for year in years:
     
     sysDict[year] = {
         "BTAG": {"Signal": [], "Background": []},
+        "GE": {"Signal": [], "Background": []},
         "JER": {"Signal": [], "Background": []},
         "JES": {"Signal": [], "Background": []},
         "LUMI16Uncorr": {"Signal": [], "Background": []},
@@ -73,6 +76,7 @@ for year in years:
         "SHAPEZ": {"Signal": [], "Background": []},
         "TOPPT": {"Signal": [], "Background": []},
         "TTNORM": {"Signal": [], "Background": []},
+        "VVNORM": {"Signal": [], "Background": []},
         "ZNORM": {"Signal": [], "Background": []},
         "Total": {"Signal": [], "Background": []}
     }
@@ -83,6 +87,9 @@ for year in years:
             if "BTAG" in line: 
                 sysDict[year]["BTAG"]["Signal"].append(line.split("&")[1])
                 sysDict[year]["BTAG"]["Background"].append(line.split("&")[2].split(r'\\')[0])
+            if "GE" in line: 
+                sysDict[year]["GE"]["Signal"].append(line.split("&")[1])
+                sysDict[year]["GE"]["Background"].append(line.split("&")[2].split(r'\\')[0])
             if "JER" in line: 
                 sysDict[year]["JER"]["Signal"].append(line.split("&")[1])
                 sysDict[year]["JER"]["Background"].append(line.split("&")[2].split(r'\\')[0])
@@ -93,29 +100,29 @@ for year in years:
                 if "LUMI16Uncorr" in line: 
                     sysDict[year]["LUMI16Uncorr"]["Signal"].append(line.split("&")[1])
                     sysDict[year]["LUMI16Uncorr"]["Background"].append(line.split("&")[2].split(r'\\')[0])
-                    sysDict[year]["LUMI17Uncorr"]["Signal"].append("n/a")
-                    sysDict[year]["LUMI17Uncorr"]["Background"].append("n/a")
-                    sysDict[year]["LUMI18Uncorr"]["Signal"].append("n/a")
-                    sysDict[year]["LUMI18Uncorr"]["Background"].append("n/a")
-                    sysDict[year]["LUMI1718"]["Signal"].append("n/a")
-                    sysDict[year]["LUMI1718"]["Background"].append("n/a")
+                    sysDict[year]["LUMI17Uncorr"]["Signal"].append("--")
+                    sysDict[year]["LUMI17Uncorr"]["Background"].append("--")
+                    sysDict[year]["LUMI18Uncorr"]["Signal"].append("--")
+                    sysDict[year]["LUMI18Uncorr"]["Background"].append("--")
+                    sysDict[year]["LUMI1718"]["Signal"].append("--")
+                    sysDict[year]["LUMI1718"]["Background"].append("--")
             if year == '2017':
                 if "LUMI17Uncorr" in line: 
-                    sysDict[year]["LUMI16Uncorr"]["Signal"].append("n/a")
-                    sysDict[year]["LUMI16Uncorr"]["Background"].append("n/a")
+                    sysDict[year]["LUMI16Uncorr"]["Signal"].append("--")
+                    sysDict[year]["LUMI16Uncorr"]["Background"].append("--")
                     sysDict[year]["LUMI17Uncorr"]["Signal"].append(line.split("&")[1])
                     sysDict[year]["LUMI17Uncorr"]["Background"].append(line.split("&")[2].split(r'\\')[0])
-                    sysDict[year]["LUMI18Uncorr"]["Signal"].append("n/a")
-                    sysDict[year]["LUMI18Uncorr"]["Background"].append("n/a")
+                    sysDict[year]["LUMI18Uncorr"]["Signal"].append("--")
+                    sysDict[year]["LUMI18Uncorr"]["Background"].append("--")
                 if "LUMI1718" in line:
                     sysDict[year]["LUMI1718"]["Signal"].append(line.split("&")[1])
                     sysDict[year]["LUMI1718"]["Background"].append(line.split("&")[2].split(r'\\')[0])
             if year == '2018':
                 if "LUMI18Uncorr" in line: 
-                    sysDict[year]["LUMI16Uncorr"]["Signal"].append("n/a")
-                    sysDict[year]["LUMI16Uncorr"]["Background"].append("n/a")
-                    sysDict[year]["LUMI17Uncorr"]["Signal"].append("n/a")
-                    sysDict[year]["LUMI17Uncorr"]["Background"].append("n/a")
+                    sysDict[year]["LUMI16Uncorr"]["Signal"].append("--")
+                    sysDict[year]["LUMI16Uncorr"]["Background"].append("--")
+                    sysDict[year]["LUMI17Uncorr"]["Signal"].append("--")
+                    sysDict[year]["LUMI17Uncorr"]["Background"].append("--")
                     sysDict[year]["LUMI18Uncorr"]["Signal"].append(line.split("&")[1])
                     sysDict[year]["LUMI18Uncorr"]["Background"].append(line.split("&")[2].split(r'\\')[0])
                 if "LUMI1718" in line:
@@ -147,8 +154,8 @@ for year in years:
                 sysDict[year]["PDF"]["Background"].append(line.split("&")[2].split(r'\\')[0])
             if "PREFIRE" in line:
                 if year == "2018":
-                    sysDict[year]["PREFIRE"]["Signal"].append("n/a")
-                    sysDict[year]["PREFIRE"]["Background"].append("n/a")
+                    sysDict[year]["PREFIRE"]["Signal"].append("--")
+                    sysDict[year]["PREFIRE"]["Background"].append("--")
                 else:
                     sysDict[year]["PREFIRE"]["Signal"].append(line.split("&")[1])
                     sysDict[year]["PREFIRE"]["Background"].append(line.split("&")[2].split(r'\\')[0])
@@ -156,22 +163,25 @@ for year in years:
                 sysDict[year]["PU"]["Signal"].append(line.split("&")[1])
                 sysDict[year]["PU"]["Background"].append(line.split("&")[2].split(r'\\')[0])
             if "SHAPETT" in line:
-                sysDict[year]["SHAPETT"]["Signal"].append("n/a")
+                sysDict[year]["SHAPETT"]["Signal"].append("--")
                 sysDict[year]["SHAPETT"]["Background"].append(line.split("&")[2].split(r'\\')[0])
             if "SHAPEVV" in line: 
-                sysDict[year]["SHAPEVV"]["Signal"].append("n/a")
+                sysDict[year]["SHAPEVV"]["Signal"].append("--")
                 sysDict[year]["SHAPEVV"]["Background"].append(line.split("&")[2].split(r'\\')[0])
             if "SHAPEZ" in line: 
-                sysDict[year]["SHAPEZ"]["Signal"].append("n/a")
+                sysDict[year]["SHAPEZ"]["Signal"].append("--")
                 sysDict[year]["SHAPEZ"]["Background"].append(line.split("&")[2].split(r'\\')[0])
             if "TOPPT" in line: 
-                sysDict[year]["TOPPT"]["Signal"].append("n/a")
+                sysDict[year]["TOPPT"]["Signal"].append("--")
                 sysDict[year]["TOPPT"]["Background"].append(line.split("&")[2].split(r'\\')[0])
             if "TTNORM" in line: 
-                sysDict[year]["TTNORM"]["Signal"].append("n/a")
+                sysDict[year]["TTNORM"]["Signal"].append("--")
                 sysDict[year]["TTNORM"]["Background"].append(line.split("&")[2].split(r'\\')[0])
+            if "VVNORM" in line: 
+                sysDict[year]["VVNORM"]["Signal"].append("--")
+                sysDict[year]["VVNORM"]["Background"].append(line.split("&")[2].split(r'\\')[0])
             if "ZNORM" in line: 
-                sysDict[year]["ZNORM"]["Signal"].append("n/a")
+                sysDict[year]["ZNORM"]["Signal"].append("--")
                 sysDict[year]["ZNORM"]["Background"].append(line.split("&")[2].split(r'\\')[0])
             if "Total" in line: 
                 sysDict[year]["Total"]["Signal"].append(line.split("&")[1])

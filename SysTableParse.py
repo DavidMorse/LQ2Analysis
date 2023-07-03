@@ -33,6 +33,7 @@ jess=[]
 aligns=[]
 mers=[]
 mess=[]
+ges=[]
 muids=[]
 muisos=[]
 murecos=[]
@@ -46,10 +47,12 @@ wnorms=[]
 wshapes=[]
 znorms=[]
 zshapes=[]
+vvnorms=[]
 vvshapes=[]
 hips=[]
 btags=[]
 toppts=[]
+totals = []
 
 lumi=[999.,0.]
 lumi16=[999.,0.]
@@ -61,6 +64,7 @@ jes=[999.,0.]
 align=[999.,0.]
 mer=[999.,0.]
 mes=[999.,0.]
+ge=[999.,0.]
 muid=[999.,0.]
 muiso=[999.,0.]
 mureco=[999.,0.]
@@ -74,6 +78,7 @@ wnorm=[999.,0.]
 wshape=[999.,0.]
 znorm=[999.,0.]
 zshape=[999.,0.]
+vvnorm=[999.,0.]
 vvshape=[999.,0.]
 hip=[999.,0.]
 btag=[999.,0.]
@@ -89,6 +94,7 @@ jesSig=[999.,0.]
 alignSig=[999.,0.]
 merSig=[999.,0.]
 mesSig=[999.,0.]
+geSig=[999.,0.]
 muidSig=[999.,0.]
 muisoSig=[999.,0.]
 murecoSig=[999.,0.]
@@ -102,6 +108,7 @@ wnormSig=[999.,0.]
 wshapeSig=[999.,0.]
 znormSig=[999.,0.]
 zshapeSig=[999.,0.]
+vvnormSig=[999.,0.]
 vvshapeSig=[999.,0.]
 hipSig=[999.,0.]
 btagSig=[999.,0.]
@@ -122,6 +129,13 @@ lumi1718BkgForLumiTot = []
 lumi1718SigForLumiTot = []
 lumiTotBkg = []
 lumiTotSig = []
+lumiTotBkgSorted = []
+lumiTotSigSorted = []
+
+mesTotBkg = []
+mesTotSig = []
+mesTotBkgSorted = []
+mesTotSigSorted = []
 
 gotToBetaHalf=False
 def cardtotex(card):
@@ -272,6 +286,13 @@ def cardtotex(card):
 				if r_s < znormSig[0]:znormSig[0]=r_s
 				if r_s > znormSig[1]:znormSig[1]=r_s
 				znorms.append(r_b)
+			if 'VVNORM' in sysname:
+				sysname = "VVNORM"
+				if r_b < vvnorm[0]:vvnorm[0]=r_b
+				if r_b > vvnorm[1]:vvnorm[1]=r_b
+				if r_s < vvnormSig[0]:vvnormSig[0]=r_s
+				if r_s > vvnormSig[1]:vvnormSig[1]=r_s
+				vvnorms.append(r_b)
 			if 'MUONID' in sysname:
 				sysname = 'MUONID'
 				if r_b < muid[0]:muid[0]=r_b
@@ -321,6 +342,13 @@ def cardtotex(card):
 				if r_s < jerSig[0]:jerSig[0]=r_s
 				if r_s > jerSig[1]:jerSig[1]=r_s
 				jers.append(r_b)
+			if 'GE' in sysname:
+				sysname = 'GE'
+				if r_b < ge[0]:ge[0]=r_b
+				if r_b > ge[1]:ge[1]=r_b
+				if r_s < geSig[0]:geSig[0]=r_s
+				if r_s > geSig[1]:geSig[1]=r_s
+				ges.append(r_b)
 			if 'MES' in sysname:
 				sysname = 'MES'
 				if r_b < mes[0]:mes[0]=r_b
@@ -414,8 +442,20 @@ def cardtotex(card):
 	for i,sys in enumerate(lumiTotSig):
 		if sys < 0.0: lumiTotSig[i] = 0.0
 
-	lumiTotBkgSorted = sorted(lumiTotBkg)
-	lumiTotSigSorted = sorted(lumiTotSig)
+	for sys in sorted(lumiTotBkg): lumiTotBkgSorted.append(sys)
+	for sys in sorted(lumiTotSig): lumiTotSigSorted.append(sys)
+
+	# Combine Rochester and GE systematics into single "MES" systematic for "range" table
+	mesTotBkg = [round(math.sqrt(x[0]*x[0] + x[1]*x[1]),2) for x in list(zip(mess,ges))] 
+	mesTotSig = [round(math.sqrt(x[0]*x[0] + x[1]*x[1]),2) for x in list(zip(mess,ges))]
+	
+	for i,sys in enumerate(mesTotBkg):
+		if sys < 0.0: mesTotBkg[i] = 0.0
+	for i,sys in enumerate(mesTotSig):
+		if sys < 0.0: mesTotSig[i] = 0.0
+
+	for sys in sorted(mesTotBkg): mesTotBkgSorted.append(sys)
+	for sys in sorted(mesTotSig): mesTotSigSorted.append(sys)
 
 	textable = r'%'+year+r'% %'+mass+r'%'+'\n'
 	textable += '\\begin{table}[htbp]\n\\begin{center}\n'
@@ -426,9 +466,9 @@ def cardtotex(card):
 	textablelines = []
 	for s in range(len(sysnames)):
 		ss = signalsystematics[s]
-		if ss == '0.0': ss = '--'
+		#if ss == '0.0': ss = '--'
 		bb = backgroundsystematics[s]
-		if bb == '0.0': bb = '--'		
+		#if bb == '0.0': bb = '--'		
 		textableline = sysnames[s] + ' & ' + ss + ' & '+bb+ '\\\\ \n'
 		textablelines.append(textableline)
 	
@@ -454,6 +494,7 @@ def cardtotex(card):
 	textable += '\\end{tabular}\n\\label{tab:SysUncertainties_'+texchan+'_'+mass+'}\n\\end{center}\n\\end{table}\n\n'
 	systotSig.append(systot_s)
 	systot.append(systot_b)
+	totals.append(round(100*(math.sqrt( (sum([float(x)*float(x)*.01*.01  for x in backgroundsystematics ])) )),2))
 	# if '300' in mass or '500' in mass or '700' in mass or '1000' in mass:
 	#if '400' in mass or '650' in mass:
 	print textable
@@ -494,15 +535,15 @@ print '\n Deliniation of systematics list'
 for ii in range(len(totinfo)):
 	print cards[ii][0].replace('\n',''), sysuncs[ii]
 
-for x in [jer,jes,lumi,lumi16,lumi17,lumi18,lumi1718,align,mer,mes,muid,muiso,mureco,pdf,pu,prefire,trig,hip,btag,ttnorm,ttshape,wnorm,wshape,znorm,zshape,vvshape,toppt,jerSig,jesSig,lumiSig,lumi16Sig,lumi17Sig,lumi18Sig,lumi1718Sig,alignSig,merSig,mesSig,muidSig,muisoSig,murecoSig,pdfSig,puSig,prefireSig,trigSig,hipSig,btagSig,ttnormSig,ttshapeSig,wnormSig,wshapeSig,znormSig,zshapeSig,vvshapeSig,topptSig] :
+for x in [jer,jes,lumi,lumi16,lumi17,lumi18,lumi1718,align,mer,mes,ge,muid,muiso,mureco,pdf,pu,prefire,trig,hip,btag,ttnorm,ttshape,wnorm,wshape,znorm,zshape,vvnorm,vvshape,toppt,jerSig,jesSig,lumiSig,lumi16Sig,lumi17Sig,lumi18Sig,lumi1718Sig,alignSig,merSig,mesSig,geSig,muidSig,muisoSig,murecoSig,pdfSig,puSig,prefireSig,trigSig,hipSig,btagSig,ttnormSig,ttshapeSig,wnormSig,wshapeSig,znormSig,zshapeSig,vvnormSig,vvshapeSig,topptSig] :
 	if x[0]==999.0: x[0]=0.0
 
 
 SysRangeTable = '\\begin{table}[htbp]\n\\begin{center}\n'
 SysRangeTable += '\\caption{Range of systematic uncertainties on signal (Sig.) and background (Bkg.) in '+year+'.}\n'
 SysRangeTable += '\\begin{tabular}{lcc}\n\\hline\\hline\n'
-SysRangeTable += 'Systematic		&  Sig. (min - max) [\%] &  Bkg. (min - max) [\%] ' + r' \\ \hline' + '\n'
-SysRangeTable += 'b-jet tagging		& ' + str(btagSig[0]) + '-' + str(btagSig[1]) + ' & ' + str(btag[0]) + '-' + str(btag[1]) + r' \\' + '\n'
+SysRangeTable += 'Systematic				&  Sig. (min - max) [\%] &  Bkg. (min - max) [\%] ' + r' \\ \hline' + '\n'
+SysRangeTable += 'b-jet tagging efficiency	& ' + str(btagSig[0]) + '-' + str(btagSig[1]) + ' & ' + str(btag[0]) + '-' + str(btag[1]) + r' \\' + '\n'
 SysRangeTable += 'Jet energy resolution  	& ' + str(jerSig[0]) + '-' + str(jerSig[1]) + ' & ' + str(jer[0]) + '-' + str(jer[1]) + r' \\' + '\n'
 SysRangeTable += 'Jet energy scale       	& ' + str(jesSig[0]) + '-' + str(jesSig[1]) + ' & ' + str(jes[0]) + '-' + str(jes[1]) + r' \\' + '\n'
 #if year == '2016': SysRangeTable += 'Luminosity (uncorrelated) & ' + str(lumi16Sig[0]) + '-' + str(lumi16Sig[1]) + ' & ' + str(lumi16[0]) + '-' + str(lumi16[1]) + r' \\' + '\n'
@@ -511,23 +552,25 @@ SysRangeTable += 'Jet energy scale       	& ' + str(jesSig[0]) + '-' + str(jesSi
 #if year == '2017': SysRangeTable += 'Luminosity (2018-correlated)   & ' + str(lumi1718Sig[0]) + '-' + str(lumi1718Sig[1]) + ' & ' + str(lumi1718[0]) + '-' + str(lumi1718[1]) + r' \\' + '\n'
 #if year == '2018': SysRangeTable += 'Luminosity (2017-correlated)   & ' + str(lumi1718Sig[0]) + '-' + str(lumi1718Sig[1]) + ' & ' + str(lumi1718[0]) + '-' + str(lumi1718[1]) + r' \\' + '\n'
 #SysRangeTable += 'Luminosity (fully-correlated) 	& ' + str(lumiSig[0]) + '-' + str(lumiSig[1]) + ' & ' + str(lumi[0]) + '-' + str(lumi[1]) + r' \\' + '\n'
-SysRangeTable += 'Luminosity		 		& ' + str(lumiTotSig[0]) + '-' + str(lumiTotSig[-1]) + ' & ' + str(lumiTotBkg[0]) + '-' + str(lumiTotBkg[-1]) + r' \\' + '\n'
+SysRangeTable += 'Luminosity		 		& ' + str(lumiTotSigSorted[0]) + '-' + str(lumiTotSigSorted[-1]) + ' & ' + str(lumiTotBkgSorted[0]) + '-' + str(lumiTotBkgSorted[-1]) + r' \\' + '\n'
 SysRangeTable += 'Muon energy resolution 	& ' + str(merSig[0]) + '-' + str(merSig[1]) + ' & ' + str(mer[0]) + '-' + str(mer[1]) + r' \\' + '\n'
-SysRangeTable += 'Muon energy scale      	& ' + str(mesSig[0]) + '-' + str(mesSig[1]) + ' & ' + str(mes[0]) + '-' + str(mes[1]) + r' \\' + '\n'
-SysRangeTable += 'Muon trigger           	& ' + str(trigSig[0]) + '-' + str(trigSig[1]) + ' & ' + str(trig[0]) + '-' + str(trig[1]) + r' \\' + '\n'
-SysRangeTable += 'Muon identification    	& ' + str(muidSig[0]) + '-' + str(muidSig[1]) + ' & ' + str(muid[0]) + '-' + str(muid[1]) + r' \\' + '\n'
-SysRangeTable += 'Muon isolation         	& ' + str(muisoSig[0]) + '-' + str(muisoSig[1]) + ' & ' + str(muiso[0]) + '-' + str(muiso[1]) + r' \\' + '\n'
-SysRangeTable += 'Muon reconstruction    	& ' + str(murecoSig[0]) + '-' + str(murecoSig[1]) + ' & ' + str(mureco[0]) + '-' + str(mureco[1]) + r' \\' + '\n'
+SysRangeTable += 'Muon energy scale			& ' + str(mesTotSigSorted[0]) + '-' + str(mesTotSigSorted[-1]) + ' & ' + str(mesTotBkgSorted[0]) + '-' + str(mesTotBkgSorted[-1]) + r' \\' + '\n'
+SysRangeTable += 'Muon identification		& ' + str(muidSig[0]) + '-' + str(muidSig[1]) + ' & ' + str(muid[0]) + '-' + str(muid[1]) + r' \\' + '\n'
+SysRangeTable += 'Muon isolation			& ' + str(muisoSig[0]) + '-' + str(muisoSig[1]) + ' & ' + str(muiso[0]) + '-' + str(muiso[1]) + r' \\' + '\n'
+SysRangeTable += 'Muon reconstruction		& ' + str(murecoSig[0]) + '-' + str(murecoSig[1]) + ' & ' + str(mureco[0]) + '-' + str(mureco[1]) + r' \\' + '\n'
+SysRangeTable += 'Muon trigger				& ' + str(trigSig[0]) + '-' + str(trigSig[1]) + ' & ' + str(trig[0]) + '-' + str(trig[1]) + r' \\' + '\n'
 SysRangeTable += 'PDF                    	& ' + str(pdfSig[0]) + '-' + str(pdfSig[1]) + ' & ' + str(pdf[0]) + '-' + str(pdf[1]) + r' \\' + '\n'
-SysRangeTable += 'Prefire weighting			& ' + str(prefireSig[0]) + '-' +  str(prefireSig[1]) + ' & ' + str(prefire[0]) + '-' +  str(prefire[1]) + r' \\' + '\n'
+if year == '2018': SysRangeTable += 'Prefire weighting			& -- & --' + r' \\' + '\n'
+else: SysRangeTable += 'Prefire weighting			& ' + str(prefireSig[0]) + '-' +  str(prefireSig[1]) + ' & ' + str(prefire[0]) + '-' +  str(prefire[1]) + r' \\' + '\n'
 SysRangeTable += 'Pileup                	& ' + str(puSig[0]) + '-' + str(puSig[1]) + ' & ' + str(pu[0]) + '-' + str(pu[1]) + r' \\' + '\n'
-SysRangeTable += 'TT shape               	& ' + str(ttshapeSig[0]) + '-' + str(ttshapeSig[1]) + ' & ' + str(ttshape[0]) + '-' + str(ttshape[1]) + r' \\' + '\n'
-SysRangeTable += 'Diboson shape          	& ' + str(vvshapeSig[0]) + '-' + str(vvshapeSig[1]) + ' & ' + str(vvshape[0]) + '-' + str(vvshape[1]) + r' \\' + '\n'
-SysRangeTable += 'Z shape                	& ' + str(zshapeSig[0]) + '-' + str(zshapeSig[1]) + ' & ' + str(zshape[0]) + '-' + str(zshape[1]) + r' \\' + '\n'
 SysRangeTable += 'Top $p_T$ reweighting     & ' + str(topptSig[0]) + '-' + str(topptSig[1]) + ' & ' + str(toppt[0]) + '-' + str(toppt[1]) + r' \\' + '\n'
-SysRangeTable += 'TT normalization       	& ' + str(ttnormSig[0]) + '-' + str(ttnormSig[1]) + ' & ' + str(ttnorm[0]) + '-' + str(ttnorm[1]) + r' \\' + '\n'
-SysRangeTable += 'Z normalization        	& ' + str(znormSig[0]) + '-' + str(znormSig[1]) + ' & ' + str(znorm[0]) + '-' + str(znorm[1]) + r' \\ \hline\hline' + '\n'
-#SysRangeTable += 'Total                 	& ' + str(systotSig[0]) + '-' + str(systotSig[-1]) + ' & ' + str(systot[0]) + '-' + str(systot[-1]) + r' \\ \hline\hline' + '\n'
+SysRangeTable += 'TT normalization       	& -- & ' + str(ttnorm[0]) + '-' + str(ttnorm[1]) + r' \\' + '\n'
+SysRangeTable += 'TT shape               	& -- & ' + str(ttshape[0]) + '-' + str(ttshape[1]) + r' \\' + '\n'
+SysRangeTable += 'VV normalization      	& -- & ' + str(vvnorm[0]) + '-' + str(vvnorm[1]) + r' \\' + '\n'
+SysRangeTable += 'VV shape          		& -- & ' + str(vvshape[0]) + '-' + str(vvshape[1]) + r' \\' + '\n'
+SysRangeTable += 'Z normalization        	& -- & ' + str(znorm[0]) + '-' + str(znorm[1]) + r' \\' + '\n'
+SysRangeTable += 'Z shape                	& -- & ' + str(zshape[0]) + '-' + str(zshape[1]) + r' \\' + '\n'
+SysRangeTable += 'Total                 	& ' + str(systotSig[0]) + '-' + str(systotSig[-1]) + ' & ' + str(systot[0]) + '-' + str(systot[-1]) + r' \\ \hline\hline' + '\n'
 SysRangeTable += '\\end{tabular}\n\\label{tab:SysRanges'+year+'}\n\\end{center}\n\\end{table}\n\n'
 
 print '\n'
@@ -537,9 +580,9 @@ with open(sysTableTex.replace('SysTables','SysRangesTable'),'w') as outFile:
 	outFile.write(SysRangeTable)
 
 #print '\n\n'
-systos = ['jers','jess','lumis','lumi16s','lumi17s','lumi18s','lumi1718s','aligns','mers','mess','muids','muisos','pdfs','pus','prefires','ttnorms','ttshapes','trigs','wnorms','wshapes','znorms','zshapes','vvshapes','hips','btags','toppts']
+systos = ['jers','jess','lumis','lumi16s','lumi17s','lumi18s','lumi1718s','aligns','mers','mess','ges','muids','muisos','pdfs','pus','prefires','ttnorms','ttshapes','trigs','wnorms','wshapes','znorms','zshapes','vvnorms','vvshapes','hips','btags','toppts','totals']
 i=0
-for x in [jers,jess,lumis,lumi16s,lumi17s,lumi18s,lumi1718s,aligns,mers,mess,muids,muisos,pdfs,pus,prefires,ttnorms,ttshapes,trigs,wnorms,wshapes,znorms,zshapes,vvshapes,hips,btags,toppts]:
+for x in [jers,jess,lumis,lumi16s,lumi17s,lumi18s,lumi1718s,aligns,mers,mess,ges,muids,muisos,pdfs,pus,prefires,ttnorms,ttshapes,trigs,wnorms,wshapes,znorms,zshapes,vvnorms,vvshapes,hips,btags,toppts,totals]:
 	print systos[i],'= ',
 	i=i+1
 	print x
