@@ -12,8 +12,8 @@ elif 'combined' in ResultsDir: year = 'combined'
 
 tag = ResultsDir.split(year+'_')[-1]
 
-FinalDatacard = ResultsDir+'/Final_selection/FinalCardsLQ_'+year+'.txt'
-SysDatacard = ResultsDir+'/Enhanced_selection/FinalCardsLQ_'+year+'.txt'
+FinalDatacard = ResultsDir+'/Final_selection/FinalCardsFinalSysLQ_'+year+'.txt'
+SysDatacard = ResultsDir+'/Enhanced_selection/EnhancedCardsLQ_'+year+'.txt'
 
 SysLines = {}
 
