@@ -565,7 +565,7 @@ def main():
 	os.system('mkdir Results_'+version_name) 
 
 	global MuMuOptCutDir
-	MuMuOptCutDir = 'Enhanced_selection' # scriptflag
+	MuMuOptCutDir = 'Final_selection' # scriptflag
 	#os.system('mkdir Results_'+version_name+'/'+MuMuOptCutDir) # scriptflag
 	MuMuOptCutFile = 'Results_'+version_name+'/'+MuMuOptCutDir+'/Opt_LQuujj_Cuts.txt' # scriptflag
 	#MuMuOptCutFile = 'Results_'+version_name+'/OptLQ_uujjCuts_Smoothed_pol2cutoff.txt'
