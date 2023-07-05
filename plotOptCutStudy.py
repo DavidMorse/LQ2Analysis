@@ -14,9 +14,9 @@ BDTstring = 'LQToBMu_pair_uubj_BDT_discrim_M'
 backgrounds =  ['DiBoson','WJets','TTBar','ZJets','SingleTop','TTV']
 
 # Create list of signal samples (e.g., 'LQuujj300')
-signals = [ "LQuujj300","LQuujj400","LQuujj500","LQuujj600","LQuujj700","LQuujj800","LQuujj900","LQuujj1000","LQuujj1100","LQuujj1200","LQuujj1300","LQuujj1400","LQuujj1500","LQuujj1600","LQuujj1700","LQuujj1800","LQuujj1900","LQuujj2000","LQuujj2100","LQuujj2200","LQuujj2300","LQuujj2400","LQuujj2500","LQuujj2600","LQuujj2700","LQuujj2800","LQuujj2900","LQuujj3000","LQuujj3500","LQuujj4000"]
+signals = ['LQuujj300','LQuujj400','LQuujj500','LQuujj600','LQuujj700','LQuujj800','LQuujj900','LQuujj1000','LQuujj1100','LQuujj1200','LQuujj1300','LQuujj1400','LQuujj1500','LQuujj1600','LQuujj1700','LQuujj1800','LQuujj1900','LQuujj2000','LQuujj2100','LQuujj2200','LQuujj2300','LQuujj2400','LQuujj2500','LQuujj2600','LQuujj2700','LQuujj2800','LQuujj2900','LQuujj3000','LQuujj3500','LQuujj4000']
 
-lumi = 36330.
+lumi = 137620.
 
 def ConvertBinning(binning):
 	binset=[]
@@ -88,7 +88,7 @@ def OptimizeCutsBDT(bins, cutfile, year, channel, btags):
 				#xsecs = {signalType+channel+line.split(',')[0].split('-')[-1].split('_')[0] : float(line.split(',')[1]) for line in NTupleInfocsv if signalType+'To'+channelDict[btags] in line and channelDict[channel] in line}
 
 	# Get a list of the cut values, i.e., bin edges (e.g., -1.0, -0.95, ..., 0.95, 1.0)
-	binList = [str(b) for b in ConvertBinning(binning)]
+	binList = [str(b) for b in ConvertBinning(binning)[:-1]]
 
 	# Loop to optimze the cut value for each signal hypothesis
 	# Use the Punzi significance as a figure of merit (FOM)
@@ -103,7 +103,7 @@ def OptimizeCutsBDT(bins, cutfile, year, channel, btags):
 
 		# Initalize
 		maxPunziFOM = -99999
-		bestCutVal = 0
+		bestCutVal = binning[1]
 
 		punziDict[signal] = []
 
@@ -127,8 +127,8 @@ def OptimizeCutsBDT(bins, cutfile, year, channel, btags):
 			# Add event counts of all the backgrounds together (ZJets + TTBar + DiBoson + ...) for the current cut
 			for background in backgroundEventsAll:
 				nBackground += backgroundEventsAll[background][BDTstring+signalMass][str(cutValue)]
-			if nSignal + nBackground < 0.001:
-				continue
+			#if nSignal + nBackground < 0.001:
+			#	continue
 
 			# Initialize the signal efficiency
 			nSignalEff  = nSignal / nSignalOrig
@@ -172,17 +172,17 @@ def main():
 
 	print "Getting Punzi significance for each mass..."
 
-	fullPath = "/afs/cern.ch/work/g/gmadigan/CMS/Analysis/Leptoquarks/MakeTreesStockNanoAODv6_2/LQ2Analysis13TeV/Results_Testing_2016_stockNanoAODv7_Run2CombBDT_FullSys_PDF"
+	fullPath = "/afs/cern.ch/work/g/gmadigan/CMS/Analysis/Leptoquarks/MakeTreesStockNanoAODv6_2/LQ2Analysis13TeV/Results_combined_CoarseGrainOpt_10bins"
 
 	os.system("mkdir "+fullPath+"/Plots")
 	os.system("mkdir "+fullPath+"/Plots/Optimization")
 
-	bdtBins = [0.9,1.0,0.001]
+	bdtBins = [0.0,1.0,0.1]
 
-	data = OptimizeCutsBDT(bdtBins, fullPath+"Optimization/Log_LQuujj_BDT_Cuts.txt", "2016", "uujj", "1")
+	data = OptimizeCutsBDT(bdtBins, fullPath+"/Log_LQuujj_BDT_Cuts.txt", "2016", "uujj", "1")
 
 	optCuts = {}
-	with open(fullPath+"Optimization/Opt_LQuujj_BDT_Cuts.txt","r") as optcutfile:
+	with open(fullPath+"/Opt_LQuujj_Cuts.txt","r") as optcutfile:
 		for line in optcutfile:
 			mass = line.split('=')[0].split('opt_LQuujj')[-1].strip()
 			bdtcut = float(line.split(mass+'>')[-1].split(')')[0].strip())
@@ -192,8 +192,8 @@ def main():
 
 		print "Plotting for signal:",signal,"..."
 
-		x = np.linspace(0.9,.999,100)
-		y = [pair[1] for pair in data[signal]]
+		x = np.linspace(0.0,.9,10)
+		y = [pair[1] for pair in data[signal] if pair[0] != '1.0']
 
 		mass = signal.split("LQuujj")[-1]
 		

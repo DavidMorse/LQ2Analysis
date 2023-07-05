@@ -1,12 +1,19 @@
 from argparse import ArgumentParser
 
 parser = ArgumentParser()
-parser.add_argument("-y", "--year", dest="year", help="option to pick running year (2016,2017,2018,comb)", metavar="YEAR")
+parser.add_argument("-d", "--dir", dest="dir", help="Name of results directory", metavar="DIR")
 options = parser.parse_args()
-year = str(options.year)
+ResultsDir = str(options.dir)
 
-FinalDatacard = 'Results_'+year+'_Unblinded/Final_selection/FinalCardsFinSelSysLQ_'+year+'.txt'
-SysDatacard = 'Results_'+year+'_Unblinded/Enhanced_selection/FinalCardsLQ_'+year+'.txt'
+if '2016' in ResultsDir: year = '2016'
+elif '2017' in ResultsDir: year = '2017'
+elif '2018' in ResultsDir: year = '2018'
+elif 'combined' in ResultsDir: year = 'combined'
+
+tag = ResultsDir.split(year+'_')[-1]
+
+FinalDatacard = ResultsDir+'/Final_selection/FinalCardsFinalSysLQ_'+year+'.txt'
+SysDatacard = ResultsDir+'/Enhanced_selection/EnhancedCardsLQ_'+year+'.txt'
 
 SysLines = {}
 
@@ -30,9 +37,9 @@ with open(FinalDatacard,'r') as finFile:
         if 'lnN' not in line:
             FinLines[mass].append(line.strip())
 
-masses = ['300','400','500','600','700','800','900','1000','1100','1200','1300','1400','1500','1600','1700','1800','1900','2000','2100','2200','2300','2400','2500','2600','2700','2800','2900','3000','3500','4000']
+masses = ['300','400','500','600','700','800','900','1000','1100','1200','1300','1400','1500','1600','1700','1800','1900','2000','2100','2200','2300','2400','2500','2600','2700','2800','2900','3000','3500']
 
-with open('Results_'+year+'_Unblinded/Final_selection/FinalCardsLQ_'+year+'.txt','w') as outFile:
+with open(ResultsDir+'/Final_selection/FinalCardsLQ_'+year+'_'+tag+'.txt','w') as outFile:
     for mass in masses:
         rateLine = 1000000000000
         for i,finLine in enumerate(FinLines[mass]):
@@ -49,6 +56,7 @@ with open('Results_'+year+'_Unblinded/Final_selection/FinalCardsLQ_'+year+'.txt'
                         newSysLine = sysLine
                     print newSysLine.strip()
                     outFile.write(newSysLine.strip()+'\n')
+        outFile.write('\n')
 
 
 
