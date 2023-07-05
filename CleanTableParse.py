@@ -153,7 +153,7 @@ def cardtotex(card):
 			backgrounds = [float(x) for x in vals[2:]]
 
 		if texchan == 'uujj':
-			if do_PAS: backcols = [['Z+Jets',['ZJets']],['$\\ttbar$',['TTBar']],['VV',['VV']],['Other BG',['WJets','sTop']]]
+			if do_PAS: backcols = [['Z+Jets',['ZJets']],['$\\ttbar$',['TTBar']],['vvTTV',['VV','TTV']],['Other BG',['WJets','sTop']]]
 			#backcols = [['Z+Jets',['ZJets']],['$\\ttbar$',['TTBar']],['Other BG',['WJets','sTop','VV','QCD']]]
 			#backcols = [['Z+Jets',['ZJets']],['$\\ttbar$',['TTBar']],['W+Jets',['WJets']],['sTop',['sTop']],['VV',['VV']],['QCD',['QCD']]]
 			if not do_PAS: backcols = [['Z+Jets',['ZJets']],['$\\ttbar$',['TTBar']],['$\\ttbar$V',['TTV']],['VV',['VV']],['W+Jets',['WJets']],['sTop',['sTop']]]
@@ -173,6 +173,7 @@ def cardtotex(card):
 		if 'gmN' in line:
 			staterr = []
 			entry = line.split()
+                        if not do_PAS: print entry
 			for e in entry:
 				if 'stat' not in e and 'gmN' not in e:
 					if 'e-' in e:
@@ -180,7 +181,7 @@ def cardtotex(card):
 					elif '-' not in e:
 						staterr.append(float(e))
 			staterrs.append(staterr)
-
+                        if not do_PAS: print staterr
 	systematics = syssummary(systable)
 
 	rates = [signal]
@@ -251,27 +252,29 @@ def cardtotex(card):
 	#newlines.append(newline)
 	#print plotline
 	if do_PAS:
-		print 'sig.SetBinContent('+str(int((float(mass)-200)/50+1))+','+str(plotline[1].split('$pm$')[0])+')'
-		print 'sig.SetBinError('+str(int((float(mass)-200)/50+1))+','+str(plotline[1].split('$pm$')[1])+')'
+                massBin = str(int((float(mass)-300)/100+1)) if float(mass)<=3000 else '29'
+		print 'sig.SetBinContent('+massBin+','+str(plotline[1].split('$pm$')[0])+')'
+		print 'sig.SetBinError('+massBin+','+str(plotline[1].split('$pm$')[1])+')'
 		i=2
 		for b in backcols:
 			name = b[0]
 			if name=='W+Jets': name='wjets'
 			if name=='Z+Jets': name='zjets'
 			if name=='$\\ttbar$': name='ttbar'
-			if name=='Other BG': name='other'
+                        if name=='vvTTv': name='vvTTv'
+			if name=='Other BG': name='WT'
 			if '$pm$' in plotline[i]:
-				print name+'.SetBinContent('+str(int((float(mass)-200)/50+1))+','+str(plotline[i].split('$pm$')[0])+')'
-				print name+'.SetBinError('+str(int((float(mass)-200)/50+1))+','+str(plotline[i].split('$pm$')[1])+')'
+				print name+'.SetBinContent('+massBin+','+str(plotline[i].split('$pm$')[0])+')'
+				print name+'.SetBinError('+massBin+','+str(plotline[i].split('$pm$')[1])+')'
 			else:
 			#print str(plotline[i])
-				print name+'.SetBinContent('+str(int((float(mass)-200)/50+1))+','+str(plotline[i].split('$')[0])+')'
-				print name+'.SetBinError('+str(int((float(mass)-200)/50+1))+','+str(plotline[i].split('$')[1].split('}^{+')[-1].replace('}',''))+')'
+				print name+'.SetBinContent('+massBin+','+str(plotline[i].split('$')[0])+')'
+				print name+'.SetBinError('+massBin+','+str(plotline[i].split('$')[1].split('}^{+')[-1].replace('}',''))+')'
 			i=i+1
 
 		ttBGline = plotline[6].split('$')
 	#print ttBGline
-		print 'totBG.SetBinContent('+str(int((float(mass)-200)/50+1))+','+str(ttBGline[0])+')'
+		print 'totBG.SetBinContent('+massBin+','+str(ttBGline[0])+')'
 		staterr,syserr=0.0,0.0
 		if 'pm' in ttBGline[1] and 'pm' in ttBGline[3]:
 			staterr=float(ttBGline[2])
@@ -286,10 +289,10 @@ def cardtotex(card):
 			staterr=float(ttBGline[1].split('}^{+')[-1].replace('}',''))
 			staterr=float(ttBGline[3].split('}^{+')[-1].replace('}',''))
 
-		print 'totBG.SetBinError('+str(int((float(mass)-200)/50+1))+','+str(math.sqrt(staterr**2+systerr**2))+')'
+		print 'totBG.SetBinError('+massBin+','+str(math.sqrt(staterr**2+systerr**2))+')'
 			
-		print 'data.SetBinContent('+str(int((float(mass)-200)/50+1))+','+str(plotline[7])+')'
-		print 'data.SetBinError('+str(int((float(mass)-200)/50+1))+','+str(math.sqrt(float(plotline[7])))+')'
+		print 'data.SetBinContent('+massBin+','+str(plotline[7])+')'
+		print 'data.SetBinError('+massBin+','+str(math.sqrt(float(plotline[7])))+')'
 
 	return tabhead,tabline
 

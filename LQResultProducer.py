@@ -325,13 +325,14 @@ pdf_uujj_TTV = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
 pdf_uujj_QCD = [0.32,0.32,0.32,0.32,0.32,0.32,0.32,0.32,0.32,0.32,0.32,0.32,0.32,0.32,0.32,0.32,0.32,0.32,0.32,0.32,0.32,0.32,0.32,0.32,0.32,0.32,0.32,0.32,0.32,0.32,0.32,0.32,0.32,0.32,0.32,0.32,0.32]
 
 if year == '2016':
-        pdf_uujj_Signal = [8.28,8.28,8.28,8.28,8.28,8.28,8.28,9.43,9.51,10.19,13.61,15.84,17.74,22.37,24.66,33.73,39.05,47.41,53.81,62.91,67.83,74.65,81.78,88.43,93.78,99.26,100.,100.,100.,100.]
+        pdf_uujj_Signal = [8.28,8.28,8.28,8.28,8.28,8.28,8.28,9.43, 9.51,10.19,13.61,15.84,17.74,22.37,24.66,33.73,39.05,47.41,53.81,62.91,67.83,74.65,81.78,88.43,93.78,99.26,100.,100.,100.,100.]
         pdf_uujj_TTBar = [1.96,1.96,2.03,2.18,2.41,2.68,2.97,3.23,3.49,3.81,3.96,4.41,4.58,4.58,4.84,5.46,5.46,5.46,5.46,5.46,5.46,5.46,5.46,5.46,5.46,5.46,5.46,5.46,5.46,5.46]
         pdf_uujj_ZJets = [1.47,1.47,1.55,1.55,1.55,1.55,1.55,1.55,1.74,1.78,1.78,1.83,1.86,1.86,1.93,2.18,2.28,2.5,2.85,3.19,3.59,3.9,3.9,4.99,4.99,5.41,6.15,7.96,9.69,9.69]
         pdf_uujj_WJets = [3.46,3.46,3.46,3.46,3.46,3.46,3.46,3.46,3.46,3.46,3.46,3.46,3.46,3.46,3.46,3.46,3.46,3.46,3.46,3.46,3.46,3.46,3.46,3.46,3.46,3.46,3.46,3.46,3.46,3.46]
         pdf_uujj_VV = [1.05,1.05,1.06,1.06,1.06,1.06,1.19,1.19,1.28,1.41,1.41,1.71,1.84,2.46,2.7,2.7,2.7,2.7,2.7,2.7,2.7,2.7,2.7,2.7,2.7,2.7,2.7,2.7,2.7,2.7]
         pdf_uujj_sTop = [7.1,7.1,7.23,7.6,8.18,8.69,9.42,10.31,11.28,11.93,12.81,13.45,13.96,16.75,16.75,16.75,16.75,16.75,16.75,16.75,16.75,16.75,16.75,16.75,16.75,16.75,16.75,16.75,16.75,16.75]
         pdf_uujj_TTV = [1.92,1.93,1.99,2.16,2.37,2.53,2.73,2.74,2.95,3.16,3.16,3.65,3.65,3.98,4.08,4.08,4.08,5.84,6.28,8.06,27.04,62.15,62.15,62.15,62.15,62.15,62.15,62.15,62.15,62.15]
+
 elif year == '2017':
         pdf_uujj_Signal = [7.78,7.78,7.87,7.87,7.87,7.87,7.87,9.26,10.06,10.06,10.06,16.42,20.19,25.03,28.57,35.85,42.13,49.23,56.8,63.7,49.7,78.7,85.7,92.8,71.6,100.,100.,100.,100.,100.]
         pdf_uujj_TTBar = [2.42,2.43,2.64,3.09,3.72,4.33,4.92,5.57,6.06,6.65,7.16,7.62,7.88,8.34,8.34,9.25,9.81,10.11,10.71,10.71,11.24,11.67,11.67,11.67,11.67,11.67,11.67,11.67,11.67,11.67]
@@ -734,7 +735,7 @@ def main():
 	# ====================================================================================================================================================== #
 	# This is a basic plotting routine to make Analysis Note style plots with ratio plots. AN Analysis-Note
 	# ====================================================================================================================================================== #
-	if False :
+	if True :
 		#global preselectionmumu 
 		# Some modifications to the ST and LQ mass binning
 		bjetbinning = [0,.05]
@@ -858,12 +859,13 @@ def main():
 			#QuickTable(MuNuOptCutFile, preselectionmunu,NormalWeightMuNu,Rz_uujj, Rw_uvjj,Rtt_uvjj,0)
 			exit()
                 #Signal efficiency*acceptance at final selection
-		#MuMuOptCutFileEff = 'Results_Testing_2016_ReRecoWithH/OptLQ_uujjCuts_Smoothed_pol2cutoff.txt'
-		#MuNuOptCutFileEff = 'Results_Testing_Summer16/OptLQ_uvjjCuts_Smoothed_pol2cutoff_no1500.txt'
+		MuMuOptCutFileEff = 'Results_Testing_2016_ReRecoWithH/OptLQ_uujjCuts_Smoothed_pol2cutoff.txt'
+                MuMuOptCutFileEff = 'Results_comb_Unblinded/Opt_LQuujj_Cuts.txt'	
+                #MuNuOptCutFileEff = 'Results_Testing_Summer16/OptLQ_uvjjCuts_Smoothed_pol2cutoff_no1500.txt'
 		
-		#MakeEfficiencyPlot(NormalDirectory,NormalWeightMuMu,MuMuOptCutFile,'LQuujj',version_name,1)
+		MakeEfficiencyPlot(NormalDirectory,NormalWeightMuMu,MuMuOptCutFileEff,'LQuujj',version_name,1)
 		#MakeEfficiencyPlot(NormalDirectory,NormalWeightMuNu,MuNuOptCutFile,'LQuvjj',version_name,1)
-		#exit()
+		exit()
 		# Here are a few plots which are zoomed-in on control regions. 
 		MakeBasicPlot("M_uu","M^{#mu#mu} [GeV]",bosonzoombinning_uujj_Z,preselectionmumu,NormalWeightMuMu,NormalDirectory,'controlzoom_ZRegion','uujj',Rz_uujj,Rw_uvjj,Rtt_uujj,Rvv_uujj,'',version_name,1000)
 		MakeBasicPlot("Pt_miss","E_{T}^{miss} [GeV]",metzoombinning_uujj_Z,preselectionmumu+'*(M_uu>80)*(M_uu<100)*(Pt_miss<100)',NormalWeightMuMu,NormalDirectory,'controlzoom_ZRegion','uujj',Rz_uujj,Rw_uvjj,Rtt_uujj,Rvv_uujj,'',version_name,1000)
@@ -1577,6 +1579,7 @@ def main():
 		#masses=pdf_MASS
 		#print masses
 		#masses.append(2025)
+                """
 		sig = TH1F("sig","LQ signal;m_{LQ} [GeV];Final selection event yield",37,175,2025)
 		wjets = TH1F("wjets","W+jets;m_{LQ} [GeV];Final selection event yield",37,175,2025)
 		zjets = TH1F("zjets","Z+jets;m_{LQ} [GeV];Final selection event yield",37,175,2025)
@@ -1585,12 +1588,461 @@ def main():
 		other = TH1F("other","Other Background;m_{LQ} [GeV];Final selection event yield",37,175,2025)
 		totBG = TH1F("totBG","Total Background;m_{LQ} [GeV];Final selection event yield",37,175,2025)
 		data = TH1F("data","Data;m_{LQ} [GeV];Final selection event yield",37,175,2025)
+                """
+                finalBins = [250+x*100 for x in range(29)]
+                #finalBins.append(4050)
+                nnBins = len(finalBins)-1
+		sig = TH1F("sig","LQ signal;m_{LQ} [GeV];Final selection event yield",nnBins,array('f',finalBins))
+		st = TH1F("st","W+jets + t;m_{LQ} [GeV];Final selection event yield",nnBins,array('f',finalBins))
+		zjets = TH1F("zjets","Z+jets;m_{LQ} [GeV];Final selection event yield",nnBins,array('f',finalBins))
+		ttbar = TH1F("ttbar","t#overline{t}+jets;m_{LQ} [GeV];Final selection event yield",nnBins,array('f',finalBins))
+		vvttv = TH1F("vvttv","VV + t#overline{t}V;m_{LQ} [GeV];Final selection event yield",nnBins,array('f',finalBins))
+		#other = TH1F("other","Other Background;m_{LQ} [GeV];Final selection event yield",nnBins,array('f',finalBins))
+		totBG = TH1F("totBG","Total Background;m_{LQ} [GeV];Final selection event yield",nnBins,array('f',finalBins))
+		data = TH1F("data","Data;m_{LQ} [GeV];Final selection event yield",nnBins,array('f',finalBins))
 		data.Sumw2()
 		#data.SetBinErrorOption(TH1.kPoisson)
 		data.SetLineWidth(2)
 		data.SetMarkerSize(2)
                 #uujj
 		channel = 'uujj'
+                #2016-2018 LQToBMu
+                zjets.SetBinContent(1,3.64153)
+                zjets.SetBinError(1,1.03515)
+                st.SetBinContent(1,0.70439)
+                st.SetBinError(1,0.64853)
+                sig.SetBinContent(1,72245.41319)
+                sig.SetBinError(1,4152.80077)
+                totBG.SetBinContent(1,6.80252)
+                totBG.SetBinError(1,0.79223)
+                ttbar.SetBinContent(1,1.64401)
+                ttbar.SetBinError(1,0.37008)
+                vvttv.SetBinContent(1,0.8126)
+                vvttv.SetBinError(1,0.31815)
+                data.SetBinContent(1,5.0)
+                data.SetBinError(1,2.23607)
+                # M = 400
+                zjets.SetBinContent(2,0.84573)
+                zjets.SetBinError(2,0.25603)
+                st.SetBinContent(2,0.37821)
+                st.SetBinError(2,0.47081)
+                sig.SetBinContent(2,20312.8363)
+                sig.SetBinError(2,1073.34091)
+                totBG.SetBinContent(2,1.53881)
+                totBG.SetBinError(2,0.4392)
+                ttbar.SetBinContent(2,0.23183)
+                ttbar.SetBinError(2,0.16407)
+                vvttv.SetBinContent(2,0.08303)
+                vvttv.SetBinError(2,0.0407)
+                data.SetBinContent(2,1.0)
+                data.SetBinError(2,1.0)
+                # M = 500
+                zjets.SetBinContent(3,2.31405)
+                zjets.SetBinError(3,0.65762)
+                st.SetBinContent(3,1.12486)
+                st.SetBinError(3,0.9918)
+                sig.SetBinContent(3,12930.99903)
+                sig.SetBinError(3,680.96213)
+                totBG.SetBinContent(3,4.99039)
+                totBG.SetBinError(3,0.77599)
+                ttbar.SetBinContent(3,1.11933)
+                ttbar.SetBinError(3,0.38216)
+                vvttv.SetBinContent(3,0.43214)
+                vvttv.SetBinError(3,0.16223)
+                data.SetBinContent(3,6.0)
+                data.SetBinError(3,2.44949)
+                # M = 600
+                zjets.SetBinContent(4,0.73416)
+                zjets.SetBinError(4,0.22163)
+                st.SetBinContent(4,0.0)
+                st.SetBinError(4,0.26125)
+                sig.SetBinContent(4,5215.13861)
+                sig.SetBinError(4,284.45679)
+                totBG.SetBinContent(4,1.23935)
+                totBG.SetBinError(4,0.34957)
+                ttbar.SetBinContent(4,0.27937)
+                ttbar.SetBinError(4,0.18337)
+                vvttv.SetBinContent(4,0.22583)
+                vvttv.SetBinError(4,0.08744)
+                data.SetBinContent(4,4.0)
+                data.SetBinError(4,2.0)
+                # M = 700
+                zjets.SetBinContent(5,1.14363)
+                zjets.SetBinError(5,0.3362)
+                st.SetBinContent(5,0.00451)
+                st.SetBinError(5,0.23198)
+                sig.SetBinContent(5,2669.22223)
+                sig.SetBinError(5,152.57135)
+                totBG.SetBinContent(5,1.50053)
+                totBG.SetBinError(5,0.34094)
+                ttbar.SetBinContent(5,0.27515)
+                ttbar.SetBinError(5,0.18918)
+                vvttv.SetBinContent(5,0.07724)
+                vvttv.SetBinError(5,0.03543)
+                data.SetBinContent(5,1.0)
+                data.SetBinError(5,1.0)
+                # M = 800
+                zjets.SetBinContent(6,0.44914)
+                zjets.SetBinError(6,0.1482)
+                st.SetBinContent(6,0.0)
+                st.SetBinError(6,0.26125)
+                sig.SetBinContent(6,1278.16709)
+                sig.SetBinError(6,77.85725)
+                totBG.SetBinContent(6,0.92993)
+                totBG.SetBinError(6,0.34383)
+                ttbar.SetBinContent(6,0.27655)
+                ttbar.SetBinError(6,0.19056)
+                vvttv.SetBinContent(6,0.20424)
+                vvttv.SetBinError(6,0.09429)
+                data.SetBinContent(6,1.0)
+                data.SetBinError(6,1.0)
+                # M = 900
+                zjets.SetBinContent(7,0.44055)
+                zjets.SetBinError(7,0.13008)
+                st.SetBinContent(7,0.0)
+                st.SetBinError(7,0.26125)
+                sig.SetBinContent(7,633.5529)
+                sig.SetBinError(7,41.76393)
+                totBG.SetBinContent(7,0.63374)
+                totBG.SetBinError(7,0.32485)
+                ttbar.SetBinContent(7,0.0)
+                ttbar.SetBinError(7,0.15946)
+                vvttv.SetBinContent(7,0.19319)
+                vvttv.SetBinError(7,0.08719)
+                data.SetBinContent(7,0.0)
+                data.SetBinError(7,0.0)
+                # M = 1000
+                zjets.SetBinContent(8,0.328)
+                zjets.SetBinError(8,0.10424)
+                st.SetBinContent(8,0.0)
+                st.SetBinError(8,0.26125)
+                sig.SetBinContent(8,321.80692)
+                sig.SetBinError(8,23.25316)
+                totBG.SetBinContent(8,0.5197)
+                totBG.SetBinError(8,0.31893)
+                ttbar.SetBinContent(8,0.06873)
+                ttbar.SetBinError(8,0.15229)
+                vvttv.SetBinContent(8,0.12296)
+                vvttv.SetBinError(8,0.05963)
+                data.SetBinContent(8,2.0)
+                data.SetBinError(8,1.41421)
+                # M = 1100
+                zjets.SetBinContent(9,0.73089)
+                zjets.SetBinError(9,0.23973)
+                st.SetBinContent(9,0.0)
+                st.SetBinError(9,0.26125)
+                sig.SetBinContent(9,174.82719)
+                sig.SetBinError(9,14.04388)
+                totBG.SetBinContent(9,0.98493)
+                totBG.SetBinError(9,0.362)
+                ttbar.SetBinContent(9,0.07593)
+                ttbar.SetBinError(9,0.15603)
+                vvttv.SetBinContent(9,0.17811)
+                vvttv.SetBinError(9,0.08046)
+                data.SetBinContent(9,1.0)
+                data.SetBinError(9,1.0)
+                # M = 1200
+                zjets.SetBinContent(10,0.08632)
+                zjets.SetBinError(10,0.05475)
+                st.SetBinContent(10,0.19004)
+                st.SetBinError(10,0.35294)
+                sig.SetBinContent(10,82.87453)
+                sig.SetBinError(10,7.44444)
+                totBG.SetBinContent(10,0.3792)
+                totBG.SetBinError(10,0.168)
+                ttbar.SetBinContent(10,0.0)
+                ttbar.SetBinError(10,0.15946)
+                vvttv.SetBinContent(10,0.10284)
+                vvttv.SetBinError(10,0.06434)
+                data.SetBinContent(10,1.0)
+                data.SetBinError(10,1.0)
+                # M = 1300
+                zjets.SetBinContent(11,0.0751)
+                zjets.SetBinError(11,0.04009)
+                st.SetBinContent(11,0.0)
+                st.SetBinError(11,0.26125)
+                sig.SetBinContent(11,43.63688)
+                sig.SetBinError(11,4.46925)
+                totBG.SetBinContent(11,0.10492)
+                totBG.SetBinError(11,0.168)
+                ttbar.SetBinContent(11,0.0)
+                ttbar.SetBinError(11,0.15946)
+                vvttv.SetBinContent(11,0.02981)
+                vvttv.SetBinError(11,0.03857)
+                data.SetBinContent(11,1.0)
+                data.SetBinError(11,1.0)
+                # M = 1400
+                zjets.SetBinContent(12,0.43282)
+                zjets.SetBinError(12,0.14681)
+                st.SetBinContent(12,0.19004)
+                st.SetBinError(12,0.34161)
+                sig.SetBinContent(12,27.39032)
+                sig.SetBinError(12,3.20832)
+                totBG.SetBinContent(12,0.83248)
+                totBG.SetBinError(12,0.42371)
+                ttbar.SetBinContent(12,0.0)
+                ttbar.SetBinError(12,0.15946)
+                vvttv.SetBinContent(12,0.20962)
+                vvttv.SetBinError(12,0.12843)
+                data.SetBinContent(12,1.0)
+                data.SetBinError(12,1.0)
+                # M = 1500
+                zjets.SetBinContent(13,0.08453)
+                zjets.SetBinError(13,0.04835)
+                st.SetBinContent(13,0.0)
+                st.SetBinError(13,0.26125)
+                sig.SetBinContent(13,13.28925)
+                sig.SetBinError(13,1.76371)
+                totBG.SetBinContent(13,0.12999)
+                totBG.SetBinError(13,0.31123)
+                ttbar.SetBinContent(13,0.0)
+                ttbar.SetBinError(13,0.15946)
+                vvttv.SetBinContent(13,0.04546)
+                vvttv.SetBinError(13,0.03017)
+                data.SetBinContent(13,0.0)
+                data.SetBinError(13,0.0)
+                # M = 1600
+                zjets.SetBinContent(14,0.19914)
+                zjets.SetBinError(14,0.08278)
+                st.SetBinContent(14,0.0)
+                st.SetBinError(14,0.26125)
+                sig.SetBinContent(14,7.6256)
+                sig.SetBinError(14,1.16652)
+                totBG.SetBinContent(14,0.23177)
+                totBG.SetBinError(14,0.31735)
+                ttbar.SetBinContent(14,0.0)
+                ttbar.SetBinError(14,0.15946)
+                vvttv.SetBinContent(14,0.03262)
+                vvttv.SetBinError(14,0.03503)
+                data.SetBinContent(14,1.0)
+                data.SetBinError(14,1.0)
+                # M = 1700
+                zjets.SetBinContent(15,0.09277)
+                zjets.SetBinError(15,0.04037)
+                st.SetBinContent(15,0.0)
+                st.SetBinError(15,0.26125)
+                sig.SetBinContent(15,4.06404)
+                sig.SetBinError(15,0.71876)
+                totBG.SetBinContent(15,0.09964)
+                totBG.SetBinError(15,0.30896)
+                ttbar.SetBinContent(15,0.0)
+                ttbar.SetBinError(15,0.15946)
+                vvttv.SetBinContent(15,0.00686)
+                vvttv.SetBinError(15,0.02494)
+                data.SetBinContent(15,0.0)
+                data.SetBinError(15,0.0)
+                # M = 1800
+                zjets.SetBinContent(16,0.03332)
+                zjets.SetBinError(16,0.04052)
+                st.SetBinContent(16,0.0)
+                st.SetBinError(16,0.26125)
+                sig.SetBinContent(16,2.23961)
+                sig.SetBinError(16,0.44527)
+                totBG.SetBinContent(16,0.03676)
+                totBG.SetBinError(16,0.30959)
+                ttbar.SetBinContent(16,0.0)
+                ttbar.SetBinError(16,0.15946)
+                vvttv.SetBinContent(16,0.00344)
+                vvttv.SetBinError(16,0.02459)
+                data.SetBinContent(16,0.0)
+                data.SetBinError(16,0.0)
+                # M = 1900
+                zjets.SetBinContent(17,0.10827)
+                zjets.SetBinError(17,0.07487)
+                st.SetBinContent(17,0.0)
+                st.SetBinError(17,0.26125)
+                sig.SetBinContent(17,1.35139)
+                sig.SetBinError(17,0.30573)
+                totBG.SetBinContent(17,0.28232)
+                totBG.SetBinError(17,0.33727)
+                ttbar.SetBinContent(17,0.10467)
+                ttbar.SetBinError(17,0.17913)
+                vvttv.SetBinContent(17,0.06938)
+                vvttv.SetBinError(17,0.05364)
+                data.SetBinContent(17,0.0)
+                data.SetBinError(17,0.0)
+                # M = 2000
+                zjets.SetBinContent(18,0.09869)
+                zjets.SetBinError(18,0.07236)
+                st.SetBinContent(18,0.0)
+                st.SetBinError(18,0.26125)
+                sig.SetBinContent(18,0.75427)
+                sig.SetBinError(18,0.19107)
+                totBG.SetBinContent(18,0.12271)
+                totBG.SetBinError(18,0.31539)
+                ttbar.SetBinContent(18,0.0)
+                ttbar.SetBinError(18,0.15946)
+                vvttv.SetBinContent(18,0.02401)
+                vvttv.SetBinError(18,0.03011)
+                data.SetBinContent(18,0.0)
+                data.SetBinError(18,0.0)
+                # M = 2100
+                zjets.SetBinContent(19,0.07704)
+                zjets.SetBinError(19,0.0748)
+                st.SetBinContent(19,0.0)
+                st.SetBinError(19,0.26125)
+                sig.SetBinContent(19,0.41934)
+                sig.SetBinError(19,0.11891)
+                totBG.SetBinContent(19,0.08027)
+                totBG.SetBinError(19,0.31351)
+                ttbar.SetBinContent(19,0.0)
+                ttbar.SetBinError(19,0.15946)
+                vvttv.SetBinContent(19,0.00323)
+                vvttv.SetBinError(19,0.02492)
+                data.SetBinContent(19,1.0)
+                data.SetBinError(19,1.0)
+                # M = 2200
+                zjets.SetBinContent(20,0.02909)
+                zjets.SetBinError(20,0.05511)
+                st.SetBinContent(20,0.0)
+                st.SetBinError(20,0.26125)
+                sig.SetBinContent(20,0.22105)
+                sig.SetBinError(20,0.06968)
+                totBG.SetBinContent(20,0.04693)
+                totBG.SetBinError(20,0.31213)
+                ttbar.SetBinContent(20,0.0)
+                ttbar.SetBinError(20,0.15946)
+                vvttv.SetBinContent(20,0.01783)
+                vvttv.SetBinError(20,0.02825)
+                data.SetBinContent(20,0.0)
+                data.SetBinError(20,0.0)
+                # M = 2300
+                zjets.SetBinContent(21,0.04165)
+                zjets.SetBinError(21,0.05303)
+                st.SetBinContent(21,0.0)
+                st.SetBinError(21,0.26125)
+                sig.SetBinContent(21,0.12649)
+                sig.SetBinError(21,0.04302)
+                totBG.SetBinContent(21,0.04519)
+                totBG.SetBinError(21,0.31113)
+                ttbar.SetBinContent(21,0.0)
+                ttbar.SetBinError(21,0.15946)
+                vvttv.SetBinContent(21,0.00353)
+                vvttv.SetBinError(21,0.0248)
+                data.SetBinContent(21,0.0)
+                data.SetBinError(21,0.0)
+                # M = 2400
+                zjets.SetBinContent(22,0.02891)
+                zjets.SetBinError(22,0.04775)
+                st.SetBinContent(22,0.0)
+                st.SetBinError(22,0.26125)
+                sig.SetBinContent(22,0.07271)
+                sig.SetBinError(22,0.02694)
+                totBG.SetBinContent(22,0.05386)
+                totBG.SetBinError(22,0.31318)
+                ttbar.SetBinContent(22,0.0)
+                ttbar.SetBinError(22,0.15946)
+                vvttv.SetBinContent(22,0.02494)
+                vvttv.SetBinError(22,0.04605)
+                data.SetBinContent(22,0.0)
+                data.SetBinError(22,0.0)
+                # M = 2500
+                zjets.SetBinContent(23,0.01954)
+                zjets.SetBinError(23,0.04175)
+                st.SetBinContent(23,0.0)
+                st.SetBinError(23,0.26125)
+                sig.SetBinContent(23,0.04211)
+                sig.SetBinError(23,0.01684)
+                totBG.SetBinContent(23,0.01955)
+                totBG.SetBinError(23,0.30983)
+                ttbar.SetBinContent(23,0.0)
+                ttbar.SetBinError(23,0.15946)
+                vvttv.SetBinContent(23,0.0)
+                vvttv.SetBinError(23,0.02438)
+                data.SetBinContent(23,1.0)
+                data.SetBinError(23,1.0)
+                # M = 2600
+                zjets.SetBinContent(24,0.00111)
+                zjets.SetBinError(24,0.04577)
+                st.SetBinContent(24,0.0)
+                st.SetBinError(24,0.26125)
+                sig.SetBinContent(24,0.02346)
+                sig.SetBinError(24,0.01008)
+                totBG.SetBinContent(24,0.02206)
+                totBG.SetBinError(24,0.3111)
+                ttbar.SetBinContent(24,0.0)
+                ttbar.SetBinError(24,0.15946)
+                vvttv.SetBinContent(24,0.02095)
+                vvttv.SetBinError(24,0.04141)
+                data.SetBinContent(24,0.0)
+                data.SetBinError(24,0.0)
+                # M = 2700
+                zjets.SetBinContent(25,0.0429)
+                zjets.SetBinError(25,0.06553)
+                st.SetBinContent(25,0.0)
+                st.SetBinError(25,0.26125)
+                sig.SetBinContent(25,0.0132)
+                sig.SetBinError(25,0.00603)
+                totBG.SetBinContent(25,0.06711)
+                totBG.SetBinError(25,0.31789)
+                ttbar.SetBinContent(25,0.0)
+                ttbar.SetBinError(25,0.15946)
+                vvttv.SetBinContent(25,0.02421)
+                vvttv.SetBinError(25,0.21112)
+                data.SetBinContent(25,0.0)
+                data.SetBinError(25,0.0)
+                # M = 2800
+                zjets.SetBinContent(26,0.00121)
+                zjets.SetBinError(26,0.0384)
+                st.SetBinContent(26,0.0)
+                st.SetBinError(26,0.26125)
+                sig.SetBinContent(26,0.00732)
+                sig.SetBinError(26,0.00355)
+                totBG.SetBinContent(26,0.00751)
+                totBG.SetBinError(26,0.30898)
+                ttbar.SetBinContent(26,0.0)
+                ttbar.SetBinError(26,0.15946)
+                vvttv.SetBinContent(26,0.00629)
+                vvttv.SetBinError(26,0.01784)
+                data.SetBinContent(26,1.0)
+                data.SetBinError(26,1.0)
+                # M = 2900
+                zjets.SetBinContent(27,0.00604)
+                zjets.SetBinError(27,0.03911)
+                st.SetBinContent(27,0.0)
+                st.SetBinError(27,0.26125)
+                sig.SetBinContent(27,0.00406)
+                sig.SetBinError(27,0.00209)
+                totBG.SetBinContent(27,0.02388)
+                totBG.SetBinError(27,0.31057)
+                ttbar.SetBinContent(27,0.0)
+                ttbar.SetBinError(27,0.15946)
+                vvttv.SetBinContent(27,0.01783)
+                vvttv.SetBinError(27,0.03548)
+                data.SetBinContent(27,1.0)
+                data.SetBinError(27,1.0)
+                # M = 3000
+                zjets.SetBinContent(28,0.00352)
+                zjets.SetBinError(28,0.0369)
+                st.SetBinContent(28,0.0)
+                st.SetBinError(28,0.26125)
+                sig.SetBinContent(28,0.00229)
+                sig.SetBinError(28,0.00124)
+                totBG.SetBinContent(28,0.00353)
+                totBG.SetBinError(28,0.30924)
+                ttbar.SetBinContent(28,0.0)
+                ttbar.SetBinError(28,0.15946)
+                vvttv.SetBinContent(28,0.0)
+                vvttv.SetBinError(28,0.02438)
+                data.SetBinContent(28,0.0)
+                data.SetBinError(28,0.0)
+                # M = 3500
+                #zjets.SetBinContent(29,0.02841)
+                #zjets.SetBinError(29,0.09432)
+                #st.SetBinContent(29,0.0)
+                #st.SetBinError(29,0.26125)
+                #sig.SetBinContent(29,0.00015)
+                #sig.SetBinError(29,0.0001)
+                #totBG.SetBinContent(29,0.0347)
+                #totBG.SetBinError(29,0.32553)
+                #ttbar.SetBinContent(29,0.0)
+                #ttbar.SetBinError(29,0.15946)
+                #vvttv.SetBinContent(29,0.00629)
+                #vvttv.SetBinError(29,0.02862)
+                #data.SetBinContent(29,0.0)
+                #data.SetBinError(29,0.0)
+                #2016 LQToSMu
+                """
 		sig.SetBinContent(1, 531700 )
 		sig.SetBinError(1, 4700  )
 		zjets.SetBinContent(1, 2973.2 )
@@ -2109,23 +2561,23 @@ def main():
 		totBG.SetBinError(37,0.6989277502)
 		data.SetBinContent(37, 2 )
 		#data.SetBinError(37,1.41421356237)
-
+                """
 
 		zjets.SetFillColor(kBlue)
 		ttbar.SetFillColor(kOrange)
-		VV.SetFillColor(kCyan)
-		other.SetFillColor(kRed)
+		vvttv.SetFillColor(kCyan)
+		st.SetFillColor(kRed)
 		totBG.SetFillColor(kGray)
 		totBG.SetLineWidth(0)
 		totBG.SetMarkerSize(0)
 		zjets.SetLineColor(kBlue)
 		ttbar.SetLineColor(kOrange)
-		VV.SetLineColor(kCyan)
-		other.SetLineColor(kRed)
+		vvttv.SetLineColor(kCyan)
+		st.SetLineColor(kRed)
 		zjets.SetFillStyle(3013)
 		ttbar.SetFillStyle(3004)
-		VV.SetFillStyle(3005)
-		other.SetFillStyle(3007)
+		vvttv.SetFillStyle(3005)
+		st.SetFillStyle(3007)
 		totBG.SetFillStyle(3144)
 		sig.SetMarkerSize(0)
 		sig.SetLineStyle(2)
@@ -2157,7 +2609,7 @@ def main():
 
 
 		MCStack = THStack ("MCStack",";m_{LQ} [GeV];Final selection event yield")
-		for x in [other,VV,ttbar,zjets]:
+		for x in [vvttv,st,ttbar,zjets]:
 			x.SetMarkerSize(0)
 			x.SetLineWidth(2)
 			MCStack.Add(x)
@@ -2165,8 +2617,8 @@ def main():
 			#x->SetBinErrorOption(TH1::kPoisson)
 		#data.SetBinErrorOption(TH1.kPoisson)
 
-		MCStack.SetMinimum(1)
-		MCStack.SetMaximum(5*sig.GetMaximum())
+		MCStack.SetMinimum(.01)
+		MCStack.SetMaximum(2*sig.GetMaximum())
 		pad1.SetTicks(0,1)
 		MCStack.Draw("HIST")
 		MCStack.GetXaxis().SetTitleFont(42)
@@ -2186,7 +2638,7 @@ def main():
 		totBG.Draw("e3sames")
 		sig.Draw("hist same")
 		dataTGraph.Draw("pesames")
-		leg = TLegend(0.45,0.49,0.91,0.85,"","brNDC")	
+		leg = TLegend(0.5,0.51,0.91,0.87,"","brNDC")	
 		leg.SetTextFont(42)
 		leg.SetFillColor(0)
 		leg.SetFillStyle(0)
@@ -2196,8 +2648,8 @@ def main():
 			leg.AddEntry(dataTGraph,'Data','pe')
 			leg.AddEntry(zjets,'Z+jets','f')
 			leg.AddEntry(ttbar,'t#bar{t}+jets','f')
-			leg.AddEntry(VV,'VV','f')
-			leg.AddEntry(other,'Other background','f')
+			leg.AddEntry(vvttv,'VV + t#bar{t}V','f')
+			leg.AddEntry(st,'W+jets + t','f')
 		if 'uvjj' in channel:
 			leg.AddEntry(dataTGraph,'Data','pe')
 			leg.AddEntry(wjets,'W+jets','f')
@@ -2205,7 +2657,7 @@ def main():
 			leg.AddEntry(VV,'VV','f')
 			leg.AddEntry(other,'Other background','f')
 		leg.AddEntry(totBG,'stat + syst uncertainty','f')
-		leg.AddEntry(sig,'LQ signal','l')
+		leg.AddEntry(sig,'LQ#bar{LQ}#rightarrow#mub#mu#bar{b} signal','l')
 		leg.Draw()
 		l1=TLatex()
 		l1.SetTextAlign(12)
@@ -2223,17 +2675,19 @@ def main():
 		l3.SetNDC()
 		l3.SetTextSize(0.05)
 		if isPAS:
-			l1.DrawLatex(0.13,0.94,"                                                35.9 fb^{-1} (13 TeV)")
+			l1.DrawLatex(0.13,0.94,"                                                138 fb^{-1} (13 TeV)")
 		else:
-			l1.DrawLatex(0.13,0.94,"#it{Preliminary}                              35.9 fb^{-1} (13 TeV)")
+			l1.DrawLatex(0.13,0.94,"#it{Preliminary}                              138 fb^{-1} (13 TeV)")
 		l2.DrawLatex(0.15,0.86,"CMS")
-		if 'uujj' in channel:
-			l3.DrawLatex(0.155,0.8,"#mu#mujj")
+		#if 'uujj' in channel:
+		#	l3.DrawLatex(0.155,0.8,"LQ#bar{LQ}#rightarrow#mub#mub")
 		if 'uvjj' in channel:
 			l3.DrawLatex(0.155,0.8,"#mu#nujj")
 		c1.Print('Results_'+version_name+'/BasicLQ_'+channel+'_finalSelectionPlot.pdf')
 		print 'Saving histogram.... Results_'+version_name+'/BasicLQ_'+channel+'_finalSelectionPlot.pdf'
 		
+                exit()
+
 		#uvjj
 		channel='uvjj'
 		data.SetBinErrorOption(TH1.kPoisson)
@@ -2814,8 +3268,8 @@ def main():
 			#x.SetMaximum(*sig.GetMaximum())
 			#x->SetBinErrorOption(TH1::kPoisson)
 
-		MCStack.SetMinimum(1)
-		MCStack.SetMaximum(5*sig.GetMaximum())
+		MCStack.SetMinimum(.01)
+		MCStack.SetMaximum(1*sig.GetMaximum())
 		MCStack.Draw("HIST")
 		MCStack.GetXaxis().SetTitleFont(42)
 		MCStack.GetYaxis().SetTitleFont(42)
@@ -2853,7 +3307,7 @@ def main():
 			leg.AddEntry(VV,'VV','f')
 			leg.AddEntry(other,'Other background','f')
 		leg.AddEntry(totBG,'stat + syst uncertainty','f')
-		leg.AddEntry(sig,'LQ signal','l')
+		leg.AddEntry(sig,'LQ#bar{LQ}#rightarrow#mub#mub signal','l')
 		leg.Draw()
 		if isPAS:
 			l1.DrawLatex(0.13,0.94,"                                                35.9 fb^{-1} (13 TeV)")
@@ -2979,7 +3433,7 @@ def PDF4LHCUncStudy(MuMuOptCutFile,MuNuOptCutFile,versionname):
 		exec (_tree+" = "+_treeTmp+".Get(\""+TreeName+"\")")
 
 	N_cteq = 53
-	N_nnpdf = 33
+	N_nnpdf = 101
         N_mmth = 51
 
 	#cteqweights = ['*(factor_cteq_'+str(n+1)+'/factor_cteq_1)' for n in range(N_cteq)]
@@ -3026,17 +3480,17 @@ def PDF4LHCUncStudy(MuMuOptCutFile,MuNuOptCutFile,versionname):
 
         #Do backgrounds
         if False:
-                #treenames = ['TTBar','ZJets','WJets','VV','TTV','sTop']
-                #trees  = [[t_TTBar],[t_ZJets],[t_WJets],[t_DiBoson],[t_TTV],[t_SingleTop]]
-                #treesNames = [['t_TTBar'],['t_ZJets'],['t_WJets'],['t_DiBoson'],['t_TTV'],['t_SingleTop']]
-                treenames = ['ZJets']
-                trees  = [[t_ZJets]]
-                treesNames = [['t_ZJets']]
+                treenames = ['TTBar','ZJets','WJets','VV','TTV','sTop']
+                trees  = [[t_TTBar],[t_ZJets],[t_WJets],[t_DiBoson],[t_TTV],[t_SingleTop]]
+                treesNames = [['t_TTBar'],['t_ZJets'],['t_WJets'],['t_DiBoson'],['t_TTV'],['t_SingleTop']]
+                #treenames = ['TTBar']
+                #trees  = [[t_TTBar]]
+                #treesNames = [['t_TTBar']]
         #Do signal
-        if False:
+        if True:
                 treenames = ['Signal']
-                trees = [[t_LQuujj300,t_LQuujj400,t_LQuujj500,t_LQuujj600,t_LQuujj700,t_LQuujj800,t_LQuujj900,t_LQuujj1000,t_LQuujj1100,t_LQuujj1200,t_LQuujj1300,t_LQuujj1400,t_LQuujj1500,t_LQuujj1600,t_LQuujj1700,t_LQuujj1800,t_LQuujj1900,t_LQuujj2000,t_LQuujj2100,t_LQuujj2200,t_LQuujj2300,t_LQuujj2400,t_LQuujj2500,t_LQuujj2600,t_LQuujj2700,t_LQuujj2800,t_LQuujj2900,t_LQuujj3000,t_LQuujj3500,t_LQuujj4000]]
-                treesNames = [['t_LQuujj300','t_LQuujj400','t_LQuujj500','t_LQuujj600','t_LQuujj700','t_LQuujj800','t_LQuujj900','t_LQuujj1000','t_LQuujj1100','t_LQuujj1200','t_LQuujj1300','t_LQuujj1400','t_LQuujj1500','t_LQuujj1600','t_LQuujj1700','t_LQuujj1800','t_LQuujj1900','t_LQuujj2000','t_LQuujj2100','t_LQuujj2200','t_LQuujj2300','t_LQuujj2400','t_LQuujj2500','t_LQuujj2600','t_LQuujj2700','t_LQuujj2800','t_LQuujj2900','t_LQuujj3000','t_LQuujj3500','t_LQuujj4000']]
+                trees = [[t_LQuujj300,t_LQuujj400,t_LQuujj500,t_LQuujj600,t_LQuujj700,t_LQuujj800,t_LQuujj900,t_LQuujj1000,t_LQuujj1100,t_LQuujj1200,t_LQuujj1300,t_LQuujj1400,t_LQuujj1500,t_LQuujj1600,t_LQuujj1700,t_LQuujj1800]]#,t_LQuujj1900,t_LQuujj2000,t_LQuujj2100,t_LQuujj2200,t_LQuujj2300,t_LQuujj2400,t_LQuujj2500,t_LQuujj2600,t_LQuujj2700,t_LQuujj2800,t_LQuujj2900,t_LQuujj3000,t_LQuujj3500,t_LQuujj4000]]
+                treesNames = [['t_LQuujj300','t_LQuujj400','t_LQuujj500','t_LQuujj600','t_LQuujj700','t_LQuujj800','t_LQuujj900','t_LQuujj1000','t_LQuujj1100','t_LQuujj1200','t_LQuujj1300','t_LQuujj1400','t_LQuujj1500','t_LQuujj1600','t_LQuujj1700','t_LQuujj1800']]#,'t_LQuujj1900','t_LQuujj2000','t_LQuujj2100','t_LQuujj2200','t_LQuujj2300','t_LQuujj2400','t_LQuujj2500','t_LQuujj2600','t_LQuujj2700','t_LQuujj2800','t_LQuujj2900','t_LQuujj3000','t_LQuujj3500','t_LQuujj4000']]
 
         
         uncnames = ['pdf_uujj_'+x for x in treenames]
@@ -5631,13 +6085,14 @@ def MakeEfficiencyPlot(FileDirectory,weight,cutlog,channel,version_name,isPAS):
 	if isDisplaced : 
 		masses   = pdf_MASS_displaced
 	else : masses = pdf_MASS
-	highMass = masses[-1] #fixme this is a temporary solution, need to figure out how to handle last entry in cutlog correctly
+	highMass = 3000#masses[-1] #fixme this is a temporary solution, need to figure out how to handle last entry in cutlog correctly
 	if isDisplaced : 
 		xsecs=[64.5085,8.51615,1.83537,0.51848,0.174599,0.0670476,0.0283338,0.0128895,0.00615134,0.00307413,0.00159844]
 		xsecsErr=[9.29555,1.18564,0.251418,0.0693711,0.02306,0.00894609,0.00401518,0.00195954,0.00100238,0.000532983,0.000296045]
 	elif 'uujj' in channel :
-		xsecs = [6.06E+01,2.03E+01,8.04E+00,3.59E+00,1.74E+00,9.06E-01,4.96E-01,2.84E-01,1.69E-01,1.03E-01,6.48E-02,4.16E-02,2.73E-02,1.82E-02,1.23E-02,8.45E-03,5.86E-03,4.11E-03,2.91E-03,2.08E-03,1.50E-03,1.09E-03,7.95E-04,5.85E-04,4.33E-04,3.21E-04,2.40E-04,1.80E-04,1.35E-04,1.02E-04,7.74E-05,5.88E-05,4.48E-05,3.43E-05,2.62E-05,2.01E-05,1.55E-05]#this assumes 200-2000
-		xsecsErr = [2.50E+00,1.09E+00,5.35E-01,2.85E-01,1.61E-01,9.52E-02,5.78E-02,3.69E-02,2.37E-02,1.57E-02,1.06E-02,7.27E-03,5.03E-03,3.55E-03,2.53E-03,1.83E-03,1.33E-03,9.82E-04,7.25E-04,5.41E-04,4.07E-04,3.09E-04,2.34E-04,1.79E-04,1.38E-04,1.06E-04,8.24E-05,6.43E-05,5.01E-05,3.92E-05,3.08E-05,2.43E-05,1.92E-05,1.52E-05,1.20E-05,9.55E-06,7.59E-06]
+		#xsecs = [6.06E+01,2.03E+01,8.04E+00,3.59E+00,1.74E+00,9.06E-01,4.96E-01,2.84E-01,1.69E-01,1.03E-01,6.48E-02,4.16E-02,2.73E-02,1.82E-02,1.23E-02,8.45E-03,5.86E-03,4.11E-03,2.91E-03,2.08E-03,1.50E-03,1.09E-03,7.95E-04,5.85E-04,4.33E-04,3.21E-04,2.40E-04,1.80E-04,1.35E-04,1.02E-04,7.74E-05,5.88E-05,4.48E-05,3.43E-05,2.62E-05,2.01E-05,1.55E-05]#this assumes 200-2000, from 2016 analysis
+                xsecs = [8.402e+00,1.813e+00,5.010e-01,1.706e-01,6.449e-02,2.680e-02,1.190e-02,5.515e-03,2.696e-03,1.346e-03,6.991e-04,3.675e-04,1.964e-04,1.065e-04,5.903e-05,3.288e-05,1.828e-05,1.042e-05,5.865e-06,3.286e-06,1.861e-06,1.060e-06,6.150e-07,3.470e-07,1.990e-07,1.122e-07,6.403e-08,3.698e-08]
+		#xsecsErr = [2.50E+00,1.09E+00,5.35E-01,2.85E-01,1.61E-01,9.52E-02,5.78E-02,3.69E-02,2.37E-02,1.57E-02,1.06E-02,7.27E-03,5.03E-03,3.55E-03,2.53E-03,1.83E-03,1.33E-03,9.82E-04,7.25E-04,5.41E-04,4.07E-04,3.09E-04,2.34E-04,1.79E-04,1.38E-04,1.06E-04,8.24E-05,6.43E-05,5.01E-05,3.92E-05,3.08E-05,2.43E-05,1.92E-05,1.52E-05,1.20E-05,9.55E-06,7.59E-06]
 	elif 'uvjj' in channel :
 		xsecs = [30.3,10.15,4.02,1.795,0.87,0.453,0.248,0.142,0.0845,0.0515,0.0324,0.0208,0.01365,0.0091,0.00615,0.004225,0.00293,0.002055,0.001455,0.00104,0.00075,0.000545,0.0003975,0.0002925,0.0002165,0.0001605,0.00012,9e-05,6.75e-05,5.1e-05,3.87e-05,2.94e-05,2.24e-05,1.715e-05,1.31e-05,1.005e-05,7.75e-06]
 		xsecsErr=[1.25,0.545,0.2675,0.1425,0.0805,0.0476,0.0289,0.01845,0.01185,0.00785,0.0053,0.003635,0.002515,0.001775,0.001265,0.000915,0.000665,0.000491,0.0003625,0.0002705,0.0002035,0.0001545,0.000117,8.95e-05,6.9e-05,5.3e-05,4.12e-05,3.215e-05,2.505e-05,1.96e-05,1.54e-05,1.215e-05,9.6e-06,7.6e-06,6e-06,4.775e-06,3.795e-06]
@@ -5721,7 +6176,7 @@ def MakeEfficiencyPlot(FileDirectory,weight,cutlog,channel,version_name,isPAS):
 		if massBins==0: lowMass=plotmass
 		massBins=massBins+1
 	if isDisplaced : binWidth=50
-	else : binWidth=25
+	else : binWidth=50
 	ratHistFinal = TH1F("ratHistFinal","ratHistFinal",massBins,lowMass-binWidth,highMass+binWidth)
 	if isDisplaced : 
 		ratHistFinal.GetXaxis().SetTitle("#tilde{t} Mass [GeV]")

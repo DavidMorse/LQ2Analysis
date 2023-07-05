@@ -213,7 +213,8 @@ if do_BetaOne == 1:
 		fsub.write('cp '+mdir+'/CLSLimits/BetaOne'+cdir+'/confbetaone_'+cdir+'_'+name[x]+ '.cfg . '+ cr)
 		fsub.write('SUBCOMMAND'+'\n')
 		fsub.close()
-		
+                #continue   # this is if you just want to make the individual cards for combination
+
 		## Estimate the r values with Asymptotic CLs
 		EstimationInformation = [' r < 0.000000']
 		if 'LQ' in lqtype:
@@ -469,7 +470,7 @@ if do_BetaHalf == 1:
 		fsub.write('cp '+mdir+'/CLSLimits/BetaHalf'+cdir+'/confbetahalf_'+cdir+'_'+name[x]+ '.cfg . '+ cr)
 		fsub.write('SUBCOMMAND'+'\n')
 		fsub.close()
-		
+
 		## Estimate the r values with Asymptotic CLs
 		EstimationInformation = [' r < 0.000000']
 		if 'LQ' in lqtype:
@@ -756,7 +757,7 @@ if do_combo == 1:
 			fsub.write('SUBCOMMAND2'+'\n')
 			fsub.write('mv higgs*root ComboBetaHalf_'+thisname+'_R_RVALUE2_ind_`bash -c \'echo $RANDOM\'`.root \n')						
 			fsub.close()
-			
+
 			## Estimate the r values with Asymptotic CLs
 			EstimationInformation0 = [' r < 0.000000']
 			rmax = 10000.0
